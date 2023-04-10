@@ -1,0 +1,58 @@
+{
+	"name": "photo-block",
+	"version": "1.0.0",
+	"description": "En easy to use, but comprehensive photo block for WordPress",
+	"main": "index.js",
+	"sideEffects": false,
+	"scripts": {
+		"start": "wp-scripts start --env mode=development",
+		"dev": "wp-scripts start --env mode=development",
+		"build": "wp-scripts build --env mode=production"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/dlxplugins/photo-block/"
+	},
+	"author": "Ronald Huereca",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/dlxplugins/photo-block/"
+	},
+	"homepage": "https://dlxplugins.com/plugins/photo-block/",
+	"devDependencies": {
+		"@babel/eslint-parser": "^7.18.2",
+		"@babel/plugin-proposal-class-properties": "^7.17.12",
+		"@babel/plugin-transform-arrow-functions": "^7.17.12",
+		"@babel/preset-env": "^7.18.2",
+		"@babel/preset-react": "^7.17.12",
+		"@types/react": "^18.0.23",
+		"@wordpress/scripts": "^26.0.0",
+		"babel-loader": "^8.2.5",
+		"classnames": "^2.3.1",
+		"css-loader": "^6.7.1",
+		"eslint": "^8.18.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"grunt": "^1.5.3",
+		"grunt-contrib-compress": "^2.0.0",
+		"hex-to-rgba": "^2.0.1",
+		"mini-css-extract-plugin": "^2.6.1",
+		"node-sass": "^7.0.1",
+		"prettier": "^2.7.1",
+		"prettier-eslint": "^13.0.0",
+		"prop-types": "^15.8.1",
+		"qs": "^6.10.5",
+		"resolve-url-loader": "^5.0.0",
+		"sass-loader": "^12.6.0",
+		"styled-components": "^5.3.5",
+		"use-async-resource": "^2.2.2",
+		"util": "^0.12.4",
+		"webpack": "^5.76.2",
+		"webpack-cli": "^4.10.0",
+		"webpack-remove-empty-scripts": "^0.7.3"
+	},
+	"dependencies": {
+		"@wordpress/a11y": "^3.11.0",
+		"@wordpress/icons": "^8.4.0"
+	}
+}
