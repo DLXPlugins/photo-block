@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'DLXPlugins\\PhotoBlock\\' => array($baseDir . '/php'),
+    'DLXPlugins\\PhotoBlock\\' => array($baseDir . '/includes'),
 );

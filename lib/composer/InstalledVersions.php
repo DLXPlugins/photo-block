@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '1f2ea3f03857abef6dc93985bc4b21bacf1623ac',
+    'reference' => '26db11e3551d4a65a397bd1f474ac327695093bc',
     'name' => 'dlxplugins/photo-block',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '1f2ea3f03857abef6dc93985bc4b21bacf1623ac',
+      'reference' => '26db11e3551d4a65a397bd1f474ac327695093bc',
     ),
   ),
 );

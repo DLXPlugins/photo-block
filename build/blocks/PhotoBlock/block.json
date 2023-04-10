@@ -1,0 +1,220 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "title": "Photo Block",
+  "apiVersion": 2,
+  "name": "dlxplugins/photo-block",
+  "category": "common",
+  "icon": "<svg aria-hidden='true' focusable='false' data-prefix='fas' data-icon='share-alt' className='svg-inline--fa fa-share-alt fa-w-14' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'><path fill='currentColor' d='M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z'></path></svg>",
+  "description": "An easy-to-use Click to Share block.",
+  "keywords": [
+    "photo",
+    "block",
+    "image",
+    "picture",
+    "photos"
+  ],
+  "version": "1.0.0",
+  "textdomain": "photo-block",
+  "attributes": {
+    "uniqueId": {
+      "type": "string",
+      "default": ""
+    },
+    "align": {
+      "type": "string",
+      "default": "center"
+    },
+    "caption": {
+      "type": "string",
+      "default": ""
+    },
+    "altText": {
+      "type": "string",
+      "default": ""
+    },
+    "overlayText": {
+      "type": "string",
+      "default": ""
+    },
+    "overlayTextPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingSize": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": null,
+          "unitSync": null
+        },
+        "tablet": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": null,
+          "unitSync": null
+        },
+        "desktop": {
+          "top": "20",
+          "right": "20",
+          "bottom": "20",
+          "left": "20",
+          "unit": "px",
+          "unitSync": true
+        }
+      }
+    },
+    "marginSize": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": null,
+          "unitSync": null
+        },
+        "tablet": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": null,
+          "unitSync": null
+        },
+        "desktop": {
+          "top": "20",
+          "right": "",
+          "bottom": "20",
+          "left": "",
+          "unit": "px",
+          "unitSync": true
+        }
+      }
+    },
+    "borderWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": null,
+          "unitSync": null
+        },
+        "tablet": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": null,
+          "unitSync": null
+        },
+        "desktop": {
+          "top": "1",
+          "right": "1",
+          "bottom": "1",
+          "left": "1",
+          "unit": "px",
+          "unitSync": true
+        }
+      }
+    },
+    "borderRadiusSize": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": null,
+          "unitSync": null
+        },
+        "tablet": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": null,
+          "unitSync": null
+        },
+        "desktop": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "unit": "px",
+          "unitSync": true
+        }
+      }
+    },
+    "typographyCaption": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "fontFamily": "",
+          "fontFamilySlug": "",
+          "fontSize": "",
+          "fontSizeUnit": "px",
+          "fontWeight": "",
+          "lineHeight": "",
+          "lineHeightUnit": "em",
+          "textTransform": "",
+          "letterSpacing": "",
+          "letterSpacingUnit": "px",
+          "fontFallback": "",
+          "fontType": "web"
+        },
+        "tablet": {
+          "fontFamily": "",
+          "fontFamilySlug": "",
+          "fontSize": "",
+          "fontSizeUnit": "px",
+          "fontWeight": "",
+          "lineHeight": "",
+          "lineHeightUnit": "em",
+          "textTransform": "",
+          "letterSpacing": "",
+          "letterSpacingUnit": "px",
+          "fontFallback": "",
+          "fontType": "web"
+        },
+        "desktop": {
+          "fontFamily": "Arial",
+          "fontFamilySlug": "arial",
+          "fontSize": "24",
+          "fontSizeUnit": "px",
+          "fontWeight": "normal",
+          "lineHeight": "1.3",
+          "lineHeightUnit": "em",
+          "textTransform": "none",
+          "letterSpacing": "0",
+          "letterSpacingUnit": "px",
+          "fontFallback": "serif",
+          "fontType": "web"
+        }
+      }
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "align": true,
+    "className": true,
+    "alignWide": true,
+    "defaultStylePicker": false
+  },
+  "example": {
+    "attributes": {}
+  },
+  "editorScript": "dlx-photo-block-editor",
+  "editorStyle": "dlx-photo-block-editor-css",
+  "style": "dlx-photo-block-frontend-and-editor"
+}

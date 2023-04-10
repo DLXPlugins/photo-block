@@ -66,8 +66,11 @@ class PhotoBlock {
 		load_plugin_textdomain( 'photo-block', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
+	/**
+	 * Entry point for the plugin.
+	 */
 	public function plugins_loaded() {
-		// When all plugins have been loaded.
+		Blocks::run();
 	}
 }
 
@@ -76,5 +79,6 @@ add_action( 'plugins_loaded', __NAMESPACE__ . '\photo_block_instantiate' );
  * Instantiate the HAS class.
  */
 function photo_block_instantiate() {
-	PhotoBlock::get_instance();
+	$photoblock = PhotoBlock::get_instance();
+	$photoblock->plugins_loaded();
 }

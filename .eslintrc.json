@@ -1,8 +1,6 @@
 {
 	"parser": "@babel/eslint-parser",
 	"globals": {
-		"wp": true,
-		"wpApiSettings": true,
 		"window": true,
 		"document": true,
 		"React": "readonly"

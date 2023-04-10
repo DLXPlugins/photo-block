@@ -16,7 +16,7 @@ class ComposerStaticInite064b2f8eb879ee89381b1343a1805be
     public static $prefixDirsPsr4 = array (
         'DLXPlugins\\PhotoBlock\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/php',
+            0 => __DIR__ . '/../..' . '/includes',
         ),
     );
 
