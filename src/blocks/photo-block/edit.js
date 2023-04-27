@@ -1,7 +1,7 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import {
@@ -40,6 +40,9 @@ const PhotoBlock = ( props ) => {
 		),
 	} );
 
+	// Store the filepond upload ref.
+	const filepondRef = useRef( null );
+
 	const [ screen, setScreen ] = useState( 'initial' ); // Can be initial, edit, crop, preview, data.
 
 	const { attributes, setAttributes, clientId } = props;
@@ -70,8 +73,8 @@ const PhotoBlock = ( props ) => {
 		return (
 			<>
 				<div className="dlx-photo-block__screen-initial">
-					<UploadTypes />
-					<UploadTarget />
+					<UploadTypes ref={ filepondRef } />
+					<UploadTarget ref={ filepondRef } />
 				</div>
 			</>
 		)

@@ -25,15 +25,21 @@ import {
 	Upload,
 } from 'lucide-react';
 
+import { forwardRef } from '@wordpress/element';
+
 import { __ } from '@wordpress/i18n';
 
-const UploadTypes = ( props ) => {
+const UploadTypes = forwardRef( ( props, ref ) => {
+
 	return (
 		<>
 			<div className="dlx-photo-block__upload-types__container">
 				<Button
 					variant="secondary"
 					icon={ <Upload /> }
+					onClick={ () => {
+						ref.current.browse();
+					} }
 				>
 					{ __( 'Upload', 'photo-block' ) }
 				</Button>
@@ -58,5 +64,5 @@ const UploadTypes = ( props ) => {
 			</div>
 		</>
 	);
-};
+} );
 export default UploadTypes;
