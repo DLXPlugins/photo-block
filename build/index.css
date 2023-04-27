@@ -1,0 +1,38 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/photo-block/editor.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+svg.lucide {
+  fill: none;
+  color: currentColor;
+}
+
+.dlx-photo-block__container {
+  border: 1px solid #000;
+  padding: 15px;
+}
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/UploadTypes/editor.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__upload-types__container button.components-button {
+  margin-right: 8px;
+}
+.dlx-photo-block__upload-types__container button.components-button.has-icon {
+  padding: 15px 20px;
+}
+.dlx-photo-block__upload-types__container button.components-button:last-of-type {
+  margin-right: 0;
+}
+/*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/UploadTarget/editor.scss ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__upload-target__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+  width: 100%;
+  border: 4px dashed #c3c4c7;
+  margin-top: 15px;
+}
+
+/*# sourceMappingURL=index.css.map*/

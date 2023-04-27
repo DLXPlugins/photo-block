@@ -1,6 +1,4 @@
-/**
- * External dependencies
- */
+import './editor.scss';
 
 import classnames from 'classnames';
 import { useEffect, useState } from '@wordpress/element';
@@ -29,6 +27,9 @@ import {
 
 import { useInstanceId } from '@wordpress/compose';
 
+import UploadTypes from '../../components/UploadTypes';
+import UploadTarget from '../../components/UploadTarget';
+
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
 	const blockProps = useBlockProps( {
@@ -39,7 +40,7 @@ const PhotoBlock = ( props ) => {
 		),
 	} );
 
-	const [ screen, setScreen ] = useState( 'initial' ); // Can be initial, edit, crop, preview.
+	const [ screen, setScreen ] = useState( 'initial' ); // Can be initial, edit, crop, preview, data.
 
 	const { attributes, setAttributes, clientId } = props;
 
@@ -68,24 +69,9 @@ const PhotoBlock = ( props ) => {
 	const getInitialScreen = () => {
 		return (
 			<>
-				<h2>{ __( 'Add a Photo', 'photo-block' ) }</h2>
-				<p className="description">{ __( 'Upload an image file, pick one from your media library, or add one with a URL.', 'photo-block' ) }</p>
-				<div className="dlx-photo-block__initial-screen-buttons">
-					<Button
-						variant="primary"
-					>
-						{ __( 'Upload', 'photo-block' ) }
-					</Button>
-					<Button
-						variant="primary"
-					>
-						{ __( 'Media Library', 'photo-block' ) }
-					</Button>
-					<Button
-						variant="primary"
-					>
-						{ __( 'Add Photo from URL', 'photo-block' ) }
-					</Button>
+				<div className="dlx-photo-block__screen-initial">
+					<UploadTypes />
+					<UploadTarget />
 				</div>
 			</>
 		)
@@ -96,7 +82,7 @@ const PhotoBlock = ( props ) => {
 	 *
 	 * @return {Element} The screen to display.
 	 */
-	const getScreen = () => {
+	const getCurrentScreen = () => {
 		switch ( screen ) {
 			case 'initial':
 				return getInitialScreen();
@@ -113,10 +99,7 @@ const PhotoBlock = ( props ) => {
 	const block = (
 		<>
 			<section className="dlx-photo-block__container">
-				<div className="dlx-photo-block__block-title">
-					<h2>{ __( 'Photo Block', 'photo-block' ) }</h2>
-				</div>
-				<div className="dlx-photo-block__block-content">{ getScreen() }</div>
+				{ getCurrentScreen() }
 			</section>
 		</>
 	);

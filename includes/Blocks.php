@@ -70,12 +70,12 @@ class Blocks {
 			true
 		);
 
-		wp_register_script(
-			'dlx-photo-block-editor',
+		wp_register_style(
+			'dlx-photo-block-editor-css',
 			Functions::get_plugin_url( 'build/index.css' ),
 			array(),
 			Functions::get_plugin_version(),
-			true
+			'all'
 		);
 	}
 
