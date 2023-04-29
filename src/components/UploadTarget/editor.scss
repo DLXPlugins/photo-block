@@ -32,13 +32,14 @@
 	}
 	.dlx-photo-block__upload-target__filepond {
 		position: absolute;
-		z-index: 2;
+		z-index: 1;
 		width: 100%;
 		height: 100%;
 	}
 	.dlx-photo-block__upload-target__label {
 		position: relative;
-		z-index: 1;
+		z-index: 2;
+		pointer-events: none;
 	}
 	.filepond--wrapper {
 		position: absolute;
@@ -50,5 +51,12 @@
 		cursor: pointer;
 		width: 100%;
 		height: 100%;
+	}
+
+	ul.filepond--list {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		background: #FFF;
 	}
 }
