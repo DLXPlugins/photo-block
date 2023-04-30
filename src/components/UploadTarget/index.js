@@ -3,9 +3,7 @@
  */
 import './editor.scss';
 
-import {
-	Spinner,
-} from '@wordpress/components';
+import { Spinner } from '@wordpress/components';
 
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
@@ -14,26 +12,37 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import 'filepond/dist/filepond.min.css';
 
-import { forwardRef, useState, useContext, useEffect } from '@wordpress/element';
-
 import {
-	Upload,
-	Redo,
-} from 'lucide-react';
+	forwardRef,
+	useContext,
+} from '@wordpress/element';
+
+import { Upload } from 'lucide-react';
 
 import { __ } from '@wordpress/i18n';
 
 import UploaderContext from '../../contexts/UploaderContext';
 
 // Register filepond plugins.
-registerPlugin( FilePondPluginImagePreview, FilePondPluginImageExifOrientation, FilePondPluginFileValidateType );
+registerPlugin(
+	FilePondPluginImagePreview,
+	FilePondPluginImageExifOrientation,
+	FilePondPluginFileValidateType
+);
 
 import { redoSvg, processSvg } from '../../blocks/photo-block/icons/filepond';
 const UploadTarget = forwardRef( ( props, ref ) => {
+	const {
+		setImageFile,
+		isUploading,
+		setIsUploading,
+		isProcessingUpload,
+		setIsProcessingUpload,
+		setIsUploadError,
+		setScreen,
+	} = useContext( UploaderContext );
 
-	const [ isLoadingImage, setIsLoadingImage ] = useState( false );
-	const [ uploadProgress, setUploadProgress ] = useState( 0 );
-	const { imageFile, setImageFile, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError, setIsUploadError, setScreen }	= useContext( UploaderContext );
+	const { setAttributes } = props;
 
 	return (
 		<>
@@ -43,7 +52,17 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 						allowMultiple={ false }
 						maxFiles={ 1 }
 						server={ {
-							process: ( fieldName, file, metadata, load, error, progress, abort, transfer, options ) => {
+							process: (
+								fieldName,
+								file,
+								metadata,
+								load,
+								error,
+								progress,
+								abort,
+								transfer,
+								options
+							) => {
 								// todo - Need error checking and handling here.
 								const formData = new FormData();
 								formData.append( 'file', file, file.name );
@@ -55,6 +74,11 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 								};
 								request.onload = function() {
 									if ( request.status >= 200 && request.status < 300 ) {
+										setAttributes(
+											{
+												photo: JSON.parse( request.responseText ),
+											}
+										);
 										setImageFile( JSON.parse( request.responseText ) );
 										load( request.responseText );
 									} else {
@@ -87,9 +111,6 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 							setIsUploading( false );
 							setIsProcessingUpload( false );
 						} }
-						onprocessfileprogress={ ( file, progress ) => {
-							setUploadProgress( Math.round( progress * 100 ) );
-						} }
 						onerror={ ( error ) => {
 							setIsUploadError( true );
 							setIsUploading( false );
@@ -99,22 +120,27 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 						iconRetry={ redoSvg }
 						iconProcess={ processSvg }
 						onprocessfile={ ( error, file ) => {
-							console.log( error, file);
 							setIsProcessingUpload( false );
 							setIsUploading( false );
 							setScreen( 'edit' );
+							setAttributes(
+								{
+									screen: 'edit',
+								}
+							);
 						} }
 					/>
 				</div>
-				{ ( ! isUploading && ! isProcessingUpload ) && (
+				{ ! isUploading && ! isProcessingUpload && (
 					<div className="dlx-photo-block__upload-target__label">
-						<div className="dlx-photo-block__upload-target__label-svg"><Upload /></div>
+						<div className="dlx-photo-block__upload-target__label-svg">
+							<Upload />
+						</div>
 						<div className="dlx-photo-block__upload-target__label-text">
 							{ __( 'Drag Photo Here or Upload', 'photo-block' ) }
 						</div>
 					</div>
 				) }
-				
 			</div>
 		</>
 	);

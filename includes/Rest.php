@@ -51,7 +51,7 @@ class Rest {
 			return new \WP_Error( 'no_image', __( 'No image was uploaded.', 'photo-block' ), array( 'status' => 400 ) );
 		}
 
-		$file = $image['file'];
+		$file       = $image['file'];
 		$file_types = $image['file']['type'] ?? '';
 
 		// Validate the image.

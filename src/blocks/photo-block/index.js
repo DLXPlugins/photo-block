@@ -7,7 +7,7 @@ import Edit from './edit';
 
 const PhotoBlock = ( props ) => {
 	const [ imageFile, setImageFile ] = useState( null );
-	const [ screen, setScreen ] = useState( 'initial' ); // Can be initial, edit, crop, preview, data.
+	const [ screen, setScreen ] = useState( props.attributes.screen ); // Can be initial, edit, crop, preview, data.
 	const [ isUploading, setIsUploading ] = useState( false );
 	const [ isProcessingUpload, setIsProcessingUpload ] = useState( false );
 	const [ isUploadError, setIsUploadError ] = useState( false );

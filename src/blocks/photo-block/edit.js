@@ -15,6 +15,7 @@ import {
 	ToggleControl,
 	Toolbar,
 	ToolbarButton,
+	ToolbarGroup,
 	Popover,
 	PlaceHolder,
 } from '@wordpress/components';
@@ -27,14 +28,17 @@ import {
 
 import { useInstanceId } from '@wordpress/compose';
 
-import UploadTypes from '../../components/UploadTypes';
-import UploadTarget from '../../components/UploadTarget';
-import UploadStatus from '../../components/UploadStatus';
-
 import UploaderContext from '../../contexts/UploaderContext';
+import InitialScreen from '../../screens/Initial';
+import EditScreen from '../../screens/Edit';
+import { Crop, Image, Accessibility, Link } from 'lucide-react';
 
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
+
+	// Read in context values.
+	const { imageFile, screen, setScreen, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError  }	= useContext( UploaderContext );
+
 	const blockProps = useBlockProps( {
 		className: classnames(
 			`dlx-photo-block`,
@@ -43,9 +47,6 @@ const PhotoBlock = ( props ) => {
 		),
 	} );
 
-	// Read in context values.
-	const { imageFile, screen, setScreen, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError  }	= useContext( UploaderContext );
-
 	// Store the filepond upload ref.
 	const filepondRef = useRef( null );
 
@@ -53,6 +54,7 @@ const PhotoBlock = ( props ) => {
 
 	const {
 		uniqueId,
+		photo,
 		align,
 		caption,
 		altText,
@@ -73,33 +75,6 @@ const PhotoBlock = ( props ) => {
 		setAttributes( { uniqueId: generatedUniqueId } );
 	}, [] );
 
-	const getInitialScreen = () => {
-		return (
-			<>
-				<div className="dlx-photo-block__screen-initial">
-					{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
-						<UploadTypes ref={ filepondRef } />
-					) }
-					{ ( isUploading || isProcessingUpload || isUploadError ) && (
-						<UploadStatus ref={ filepondRef } />
-					) }
-					<UploadTarget ref={ filepondRef } />
-				</div>
-			</>
-		)
-	};
-
-	const getEditScreen = () => {
-		const { url, id, width, height } = imageFile;
-		return (
-			<>
-				<div className="dlx-photo-block__screen-edit">
-					<img src={ url } width={ width } height={ height } alt="" />
-				</div>
-			</>
-		);
-	};
-
 	/**
 	 * Get the screen to display.
 	 *
@@ -108,9 +83,65 @@ const PhotoBlock = ( props ) => {
 	const getCurrentScreen = () => {
 		switch ( screen ) {
 			case 'initial':
-				return getInitialScreen();
+				return <InitialScreen forwardRef={ filepondRef } attributes={ attributes } setAttributes={ setAttributes } />;
 			case 'edit':
-				return getEditScreen();
+				return <EditScreen attributes={ attributes } setAttributes={ setAttributes } />;
+			// case 'edit':
+			// 	return getEditScreen();
+			// case 'crop':
+			// 	return getCropScreen();
+			// case 'preview':
+			// 	return getPreviewScreen();
+		}
+		return null;
+	};
+
+	/**
+	 * Get the current toolbar for the screen.
+	 *
+	 * @return {Element} The toolbar to display.
+	 */
+	const getCurrentToolbar = () => {
+		switch ( screen ) {
+			case 'edit':
+				return (
+					<BlockControls>
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ <Crop /> }
+								label={ __( 'Crop and Edit', 'photo-block' ) }
+								onClick={ () => {
+									setScreen( 'edit' );
+								} }
+							>
+								{ __( 'Crop and Edit', 'photo-block' ) }
+							</ToolbarButton>
+							<ToolbarButton
+								icon={ <Image /> }
+								label={ __( 'Replace Image', 'photo-block' ) }
+								onClick={ () => {
+									setScreen( 'initial' );
+								} }
+							>
+								{ __( 'Replace Image', 'photo-block' ) }
+							</ToolbarButton>
+						</ToolbarGroup>
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ <Accessibility /> }
+								label={ __( 'Set Accessibility Options', 'photo-block' ) }
+								onClick={ () => {
+								} }
+							/>
+							<ToolbarButton
+								icon={ <Link /> }
+								label={ __( 'Set Link Options', 'photo-block' ) }
+								onClick={ () => {
+								} }
+							/>
+						</ToolbarGroup>
+					</BlockControls>
+				);
 			// case 'edit':
 			// 	return getEditScreen();
 			// case 'crop':
@@ -124,6 +155,7 @@ const PhotoBlock = ( props ) => {
 	const block = (
 		<>
 			<section className="dlx-photo-block__container">
+				{ getCurrentToolbar() }
 				{ getCurrentScreen() }
 			</section>
 		</>
