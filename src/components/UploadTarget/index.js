@@ -4,18 +4,6 @@
 import './editor.scss';
 
 import {
-	PanelBody,
-	PanelRow,
-	RangeControl,
-	TextControl,
-	TextareaControl,
-	ButtonGroup,
-	Button,
-	ToggleControl,
-	Toolbar,
-	ToolbarButton,
-	Popover,
-	PlaceHolder,
 	Spinner,
 } from '@wordpress/components';
 
@@ -51,22 +39,6 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 		<>
 			<div className="dlx-photo-block__upload-target__container">
 				<div className="dlx-photo-block__upload-target__filepond">
-					{ ( isLoadingImage && false ) && (
-						<div className="dlx-photo-block__upload-target__filepond__loading-overlay">
-							<div className="dlx-photo-block__upload-target__filepond__loading">
-								<Spinner />
-							</div>
-							<div className="dlx-photo-block__upload-target__filepond__loading-label">
-								{ __( 'Uploading Image', 'photo-block' ) }
-							</div>
-							{ 
-								uploadProgress > 0 && (
-									<div className="dlx-photo-block__upload-target__filepond__loading-progress">
-										<div className="dlx-photo-block__upload-target__filepond__loading-progress-bar" style={ { width: `${ uploadProgress }%` } }></div>
-									</div>
-							)}
-						</div>
-					) }
 					<FilePond
 						allowMultiple={ false }
 						maxFiles={ 1 }

@@ -399,7 +399,7 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
     className: "dlx-photo-block__upload-target__container"
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-target__filepond"
-  }, isLoadingImage && false && /*#__PURE__*/0, /*#__PURE__*/React.createElement(react_filepond__WEBPACK_IMPORTED_MODULE_2__.FilePond, {
+  }, /*#__PURE__*/React.createElement(react_filepond__WEBPACK_IMPORTED_MODULE_2__.FilePond, {
     allowMultiple: false,
     maxFiles: 1,
     server: "/api",
