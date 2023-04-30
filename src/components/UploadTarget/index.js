@@ -33,7 +33,7 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 
 	const [ isLoadingImage, setIsLoadingImage ] = useState( false );
 	const [ uploadProgress, setUploadProgress ] = useState( 0 );
-	const { imageFile, setImageFile, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError, setIsUploadError }	= useContext( UploaderContext );
+	const { imageFile, setImageFile, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError, setIsUploadError, setScreen }	= useContext( UploaderContext );
 
 	return (
 		<>
@@ -55,6 +55,7 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 								};
 								request.onload = function() {
 									if ( request.status >= 200 && request.status < 300 ) {
+										setImageFile( JSON.parse( request.responseText ) );
 										load( request.responseText );
 									} else {
 										error( 'oh no' );
@@ -94,12 +95,15 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 							setIsUploading( false );
 							setIsProcessingUpload( false );
 						} }
-						onaddfile={ ( error, file ) => {
-							setImageFile( file );
-						} }
 						imagePreviewMaxFileSize="4MB"
 						iconRetry={ redoSvg }
 						iconProcess={ processSvg }
+						onprocessfile={ ( error, file ) => {
+							console.log( error, file);
+							setIsProcessingUpload( false );
+							setIsUploading( false );
+							setScreen( 'edit' );
+						} }
 					/>
 				</div>
 				{ ( ! isUploading && ! isProcessingUpload ) && (

@@ -45,6 +45,7 @@ var PhotoBlock = function PhotoBlock(props) {
 
   // Read in context values.
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_10__["default"]),
+    imageFile = _useContext.imageFile,
     screen = _useContext.screen,
     setScreen = _useContext.setScreen,
     isUploading = _useContext.isUploading,
@@ -90,6 +91,20 @@ var PhotoBlock = function PhotoBlock(props) {
       ref: filepondRef
     })));
   };
+  var getEditScreen = function getEditScreen() {
+    var url = imageFile.url,
+      id = imageFile.id,
+      width = imageFile.width,
+      height = imageFile.height;
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__screen-edit"
+    }, /*#__PURE__*/React.createElement("img", {
+      src: url,
+      width: width,
+      height: height,
+      alt: ""
+    })));
+  };
 
   /**
    * Get the screen to display.
@@ -100,6 +115,8 @@ var PhotoBlock = function PhotoBlock(props) {
     switch (screen) {
       case 'initial':
         return getInitialScreen();
+      case 'edit':
+        return getEditScreen();
       // case 'edit':
       // 	return getEditScreen();
       // case 'crop':
@@ -411,7 +428,8 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
     isProcessingUpload = _useContext.isProcessingUpload,
     setIsProcessingUpload = _useContext.setIsProcessingUpload,
     isUploadError = _useContext.isUploadError,
-    setIsUploadError = _useContext.setIsUploadError;
+    setIsUploadError = _useContext.setIsUploadError,
+    setScreen = _useContext.setScreen;
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-target__container"
   }, /*#__PURE__*/React.createElement("div", {
@@ -432,6 +450,7 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
         };
         request.onload = function () {
           if (request.status >= 200 && request.status < 300) {
+            setImageFile(JSON.parse(request.responseText));
             load(request.responseText);
           } else {
             error('oh no');
@@ -471,12 +490,15 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
       setIsUploading(false);
       setIsProcessingUpload(false);
     },
-    onaddfile: function onaddfile(error, file) {
-      setImageFile(file);
-    },
     imagePreviewMaxFileSize: "4MB",
     iconRetry: _blocks_photo_block_icons_filepond__WEBPACK_IMPORTED_MODULE_11__.redoSvg,
-    iconProcess: _blocks_photo_block_icons_filepond__WEBPACK_IMPORTED_MODULE_11__.processSvg
+    iconProcess: _blocks_photo_block_icons_filepond__WEBPACK_IMPORTED_MODULE_11__.processSvg,
+    onprocessfile: function onprocessfile(error, file) {
+      console.log(error, file);
+      setIsProcessingUpload(false);
+      setIsUploading(false);
+      setScreen('edit');
+    }
   })), !isUploading && !isProcessingUpload && /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-target__label"
   }, /*#__PURE__*/React.createElement("div", {

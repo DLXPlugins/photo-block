@@ -44,7 +44,7 @@ const PhotoBlock = ( props ) => {
 	} );
 
 	// Read in context values.
-	const { screen, setScreen, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError  }	= useContext( UploaderContext );
+	const { imageFile, screen, setScreen, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError  }	= useContext( UploaderContext );
 
 	// Store the filepond upload ref.
 	const filepondRef = useRef( null );
@@ -89,6 +89,17 @@ const PhotoBlock = ( props ) => {
 		)
 	};
 
+	const getEditScreen = () => {
+		const { url, id, width, height } = imageFile;
+		return (
+			<>
+				<div className="dlx-photo-block__screen-edit">
+					<img src={ url } width={ width } height={ height } alt="" />
+				</div>
+			</>
+		);
+	};
+
 	/**
 	 * Get the screen to display.
 	 *
@@ -98,6 +109,8 @@ const PhotoBlock = ( props ) => {
 		switch ( screen ) {
 			case 'initial':
 				return getInitialScreen();
+			case 'edit':
+				return getEditScreen();
 			// case 'edit':
 			// 	return getEditScreen();
 			// case 'crop':

@@ -81,7 +81,7 @@ class Rest {
 		$attachment_id = $uploaded_file;
 
 		// Get the Image URL.
-		$image_url = wp_get_attachment_image_src( $attachment_id );
+		$image_url = wp_get_attachment_image_src( $attachment_id, 'large' );
 
 		// Return the image URL and ID.
 		return array(
