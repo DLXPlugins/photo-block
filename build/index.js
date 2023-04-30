@@ -119,6 +119,23 @@ var PhotoBlock = function PhotoBlock(props) {
 
 /***/ }),
 
+/***/ "./src/blocks/photo-block/icons/filepond.js":
+/*!**************************************************!*\
+  !*** ./src/blocks/photo-block/icons/filepond.js ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "processSvg": function() { return /* binding */ processSvg; },
+/* harmony export */   "redoSvg": function() { return /* binding */ redoSvg; }
+/* harmony export */ });
+var redoSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-redo-2"><path d="m15 14 5-5-5-5"></path><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"></path></svg>';
+var processSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>';
+
+/***/ }),
+
 /***/ "./src/blocks/photo-block/index.js":
 /*!*****************************************!*\
   !*** ./src/blocks/photo-block/index.js ***!
@@ -351,7 +368,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__);
 /* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
-/* harmony import */ var _icons_filepond__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../icons/filepond */ "./src/icons/filepond.js");
+/* harmony import */ var _blocks_photo_block_icons_filepond__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../blocks/photo-block/icons/filepond */ "./src/blocks/photo-block/icons/filepond.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -402,7 +419,33 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
   }, /*#__PURE__*/React.createElement(react_filepond__WEBPACK_IMPORTED_MODULE_2__.FilePond, {
     allowMultiple: false,
     maxFiles: 1,
-    server: "/api",
+    server: {
+      process: function process(fieldName, file, metadata, load, error, progress, _abort, transfer, options) {
+        // todo - Need error checking and handling here.
+        var formData = new FormData();
+        formData.append('file', file, file.name);
+        var request = new XMLHttpRequest();
+        request.open('POST', photoBlock.restUrl + '/add-image');
+        request.setRequestHeader('X-WP-Nonce', photoBlock.restNonce);
+        request.upload.onprogress = function (e) {
+          progress(e.lengthComputable, e.loaded, e.total);
+        };
+        request.onload = function () {
+          if (request.status >= 200 && request.status < 300) {
+            load(request.responseText);
+          } else {
+            error('oh no');
+          }
+        };
+        request.send(formData);
+        return {
+          abort: function abort() {
+            request.abort();
+            _abort();
+          }
+        };
+      }
+    },
     credits: false,
     stylePanelLayout: "integrated",
     labelIdle: "",
@@ -432,8 +475,8 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
       setImageFile(file);
     },
     imagePreviewMaxFileSize: "4MB",
-    iconRetry: _icons_filepond__WEBPACK_IMPORTED_MODULE_11__.redoSvg,
-    iconProcess: _icons_filepond__WEBPACK_IMPORTED_MODULE_11__.processSvg
+    iconRetry: _blocks_photo_block_icons_filepond__WEBPACK_IMPORTED_MODULE_11__.redoSvg,
+    iconProcess: _blocks_photo_block_icons_filepond__WEBPACK_IMPORTED_MODULE_11__.processSvg
   })), !isUploading && !isProcessingUpload && /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-target__label"
   }, /*#__PURE__*/React.createElement("div", {
@@ -510,23 +553,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var UploaderContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createContext)();
 /* harmony default export */ __webpack_exports__["default"] = (UploaderContext);
-
-/***/ }),
-
-/***/ "./src/icons/filepond.js":
-/*!*******************************!*\
-  !*** ./src/icons/filepond.js ***!
-  \*******************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "processSvg": function() { return /* binding */ processSvg; },
-/* harmony export */   "redoSvg": function() { return /* binding */ redoSvg; }
-/* harmony export */ });
-var redoSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-redo-2"><path d="m15 14 5-5-5-5"></path><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"></path></svg>';
-var processSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>';
 
 /***/ }),
 

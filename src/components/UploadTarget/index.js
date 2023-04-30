@@ -14,7 +14,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import 'filepond/dist/filepond.min.css';
 
-import { forwardRef, useState, useContext } from '@wordpress/element';
+import { forwardRef, useState, useContext, useEffect } from '@wordpress/element';
 
 import {
 	Upload,
@@ -28,7 +28,7 @@ import UploaderContext from '../../contexts/UploaderContext';
 // Register filepond plugins.
 registerPlugin( FilePondPluginImagePreview, FilePondPluginImageExifOrientation, FilePondPluginFileValidateType );
 
-import { redoSvg, processSvg } from '../../icons/filepond';
+import { redoSvg, processSvg } from '../../blocks/photo-block/icons/filepond';
 const UploadTarget = forwardRef( ( props, ref ) => {
 
 	const [ isLoadingImage, setIsLoadingImage ] = useState( false );
@@ -42,7 +42,33 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 					<FilePond
 						allowMultiple={ false }
 						maxFiles={ 1 }
-						server="/api"
+						server={ {
+							process: ( fieldName, file, metadata, load, error, progress, abort, transfer, options ) => {
+								// todo - Need error checking and handling here.
+								const formData = new FormData();
+								formData.append( 'file', file, file.name );
+								const request = new XMLHttpRequest();
+								request.open( 'POST', photoBlock.restUrl + '/add-image' );
+								request.setRequestHeader( 'X-WP-Nonce', photoBlock.restNonce );
+								request.upload.onprogress = ( e ) => {
+									progress( e.lengthComputable, e.loaded, e.total );
+								};
+								request.onload = function() {
+									if ( request.status >= 200 && request.status < 300 ) {
+										load( request.responseText );
+									} else {
+										error( 'oh no' );
+									}
+								};
+								request.send( formData );
+								return {
+									abort: () => {
+										request.abort();
+										abort();
+									},
+								};
+							},
+						} }
 						credits={ false }
 						stylePanelLayout="integrated"
 						labelIdle=""

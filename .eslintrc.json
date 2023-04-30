@@ -3,7 +3,8 @@
 	"globals": {
 		"window": true,
 		"document": true,
-		"React": "readonly"
+		"React": "readonly",
+		"photoBlock": "readonly"
 	},
 	"env": {
 		"browser": true,

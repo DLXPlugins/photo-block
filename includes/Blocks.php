@@ -69,6 +69,14 @@ class Blocks {
 			Functions::get_plugin_version(),
 			true
 		);
+		wp_localize_script(
+			'dlx-photo-block-editor',
+			'photoBlock',
+			array(
+				'restUrl' => rest_url( 'dlxplugins/photo-block/v1' ),
+				'restNonce' => wp_create_nonce( 'wp_rest' ),
+			)
+		);
 
 		wp_register_style(
 			'dlx-photo-block-editor-css',

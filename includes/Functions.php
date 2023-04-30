@@ -102,6 +102,30 @@ class Functions {
 	}
 
 	/**
+	 * Get the plugin's supported mime types.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array The supported mime types.
+	 */
+	public static function get_supported_mime_types() {
+		$valid_mime_types = array(
+			'image/jpeg',
+			'image/png',
+			'image/gif',
+			'image/webp',
+		);
+		/**
+		 * Filter the valid mime types for the photo block.
+		 *
+		 * @param array $valid_mime_types The valid mime types.
+		 */
+		$valid_mime_types = apply_filters( 'photo_block_valid_mime_types', $valid_mime_types );
+
+		return $valid_mime_types;
+	}
+
+	/**
 	 * Array data that must be sanitized.
 	 *
 	 * @param array $data Data to be sanitized.
