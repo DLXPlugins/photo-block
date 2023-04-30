@@ -20,34 +20,52 @@ import {
 } from '@wordpress/components';
 
 import { FilePond, registerPlugin } from 'react-filepond';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import 'filepond/dist/filepond.min.css';
 
-import { forwardRef } from '@wordpress/element';
-
+import { forwardRef, useState, useContext } from '@wordpress/element';
 
 import {
 	Upload,
+	Redo,
 } from 'lucide-react';
 
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 
+import UploaderContext from '../../contexts/UploaderContext';
+
+// Register filepond plugins.
+registerPlugin( FilePondPluginImagePreview, FilePondPluginImageExifOrientation, FilePondPluginFileValidateType );
+
+import { redoSvg, processSvg } from '../../icons/filepond';
 const UploadTarget = forwardRef( ( props, ref ) => {
 
 	const [ isLoadingImage, setIsLoadingImage ] = useState( false );
+	const [ uploadProgress, setUploadProgress ] = useState( 0 );
+	const { imageFile, setImageFile, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError, setIsUploadError }	= useContext( UploaderContext );
+
 	return (
 		<>
 			<div className="dlx-photo-block__upload-target__container">
 				<div className="dlx-photo-block__upload-target__filepond">
-					{ isLoadingImage && (
-						<>
+					{ ( isLoadingImage && false ) && (
+						<div className="dlx-photo-block__upload-target__filepond__loading-overlay">
 							<div className="dlx-photo-block__upload-target__filepond__loading">
 								<Spinner />
 							</div>
 							<div className="dlx-photo-block__upload-target__filepond__loading-label">
 								{ __( 'Uploading Image', 'photo-block' ) }
 							</div>
-						</>
+							{ 
+								uploadProgress > 0 && (
+									<div className="dlx-photo-block__upload-target__filepond__loading-progress">
+										<div className="dlx-photo-block__upload-target__filepond__loading-progress-bar" style={ { width: `${ uploadProgress }%` } }></div>
+									</div>
+							)}
+						</div>
 					) }
 					<FilePond
 						allowMultiple={ false }
@@ -60,12 +78,33 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 						allowRemove={ false }
 						allowRevert={ false }
 						ref={ ref }
-						onaddfilestart={ ( file ) => {
-							setIsLoadingImage( true );
+						labelFileTypeNotAllowed={ __( 'Invalid file type', 'photo-block' ) }
+						labelTapToCancel={ __( 'Click to cancel', 'photo-block' ) }
+						acceptedFileTypes={ [ 'image/*' ] }
+						onaddfilestart={ () => {
+							setIsUploading( true );
 						} }
+						onprocessfileabort={ () => {
+							setIsUploading( false );
+							setIsProcessingUpload( false );
+						} }
+						onprocessfileprogress={ ( file, progress ) => {
+							setUploadProgress( Math.round( progress * 100 ) );
+						} }
+						onerror={ ( error ) => {
+							setIsUploadError( true );
+							setIsUploading( false );
+							setIsProcessingUpload( false );
+						} }
+						onaddfile={ ( error, file ) => {
+							setImageFile( file );
+						} }
+						imagePreviewMaxFileSize="4MB"
+						iconRetry={ redoSvg }
+						iconProcess={ processSvg }
 					/>
 				</div>
-				{ ! isLoadingImage && (
+				{ ( ! isUploading && ! isProcessingUpload ) && (
 					<div className="dlx-photo-block__upload-target__label">
 						<div className="dlx-photo-block__upload-target__label-svg"><Upload /></div>
 						<div className="dlx-photo-block__upload-target__label-text">

@@ -1,7 +1,7 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useState, useRef } from '@wordpress/element';
+import { useEffect, useState, useRef, useContext } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import {
@@ -29,6 +29,9 @@ import { useInstanceId } from '@wordpress/compose';
 
 import UploadTypes from '../../components/UploadTypes';
 import UploadTarget from '../../components/UploadTarget';
+import UploadStatus from '../../components/UploadStatus';
+
+import UploaderContext from '../../contexts/UploaderContext';
 
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
@@ -40,10 +43,11 @@ const PhotoBlock = ( props ) => {
 		),
 	} );
 
+	// Read in context values.
+	const { screen, setScreen, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError  }	= useContext( UploaderContext );
+
 	// Store the filepond upload ref.
 	const filepondRef = useRef( null );
-
-	const [ screen, setScreen ] = useState( 'initial' ); // Can be initial, edit, crop, preview, data.
 
 	const { attributes, setAttributes, clientId } = props;
 
@@ -73,7 +77,12 @@ const PhotoBlock = ( props ) => {
 		return (
 			<>
 				<div className="dlx-photo-block__screen-initial">
-					<UploadTypes ref={ filepondRef } />
+					{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
+						<UploadTypes ref={ filepondRef } />
+					) }
+					{ ( isUploading || isProcessingUpload || isUploadError ) && (
+						<UploadStatus ref={ filepondRef } />
+					) }
 					<UploadTarget ref={ filepondRef } />
 				</div>
 			</>

@@ -1,8 +1,38 @@
 import metadata from './block.json';
-const { registerBlockType } = wp.blocks;
+import { registerBlockType } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
+import UploaderContext from '../../contexts/UploaderContext';
+import Edit from './edit';
+
+const PhotoBlock = ( props ) => {
+	const [ imageFile, setImageFile ] = useState( null );
+	const [ screen, setScreen ] = useState( 'initial' ); // Can be initial, edit, crop, preview, data.
+	const [ isUploading, setIsUploading ] = useState( false );
+	const [ isProcessingUpload, setIsProcessingUpload ] = useState( false );
+	const [ isUploadError, setIsUploadError ] = useState( false );
+
+	return (
+		<UploaderContext.Provider
+			value={ {
+				imageFile,
+				setImageFile,
+				screen,
+				setScreen,
+				isUploading,
+				setIsUploading,
+				isProcessingUpload,
+				setIsProcessingUpload,
+				isUploadError,
+				setIsUploadError,
+			} }
+		>
+			<Edit { ...props } />
+		</UploaderContext.Provider>
+	);
+};
 
 // Import JS
-import Edit from './edit';
 
 const PhotoBlockIcon = (
 	<svg
@@ -86,7 +116,7 @@ const PhotoBlockIcon = (
 
 registerBlockType( metadata, {
 	icon: PhotoBlockIcon,
-	edit: Edit,
+	edit: PhotoBlock,
 
 	// Render via PHP
 	save() {

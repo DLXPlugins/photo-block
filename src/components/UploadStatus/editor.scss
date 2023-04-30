@@ -1,0 +1,14 @@
+.dlx-photo-block__upload-status {
+	button.components-button {
+		margin-right: 8px;
+
+		&.has-icon {
+			padding: 15px 20px;
+		}
+		
+
+		&:last-of-type {
+			margin-right: 0;
+		}
+	}
+}
