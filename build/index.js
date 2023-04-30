@@ -453,6 +453,16 @@ var PhotoBlock = function PhotoBlock(props) {
           attributes: attributes,
           setAttributes: setAttributes
         });
+      case 'crop':
+        return /*#__PURE__*/React.createElement(_pqina_react_pintura__WEBPACK_IMPORTED_MODULE_9__.PinturaEditor, _extends({}, editorConfig, {
+          src: imageRef.current,
+          onProcess: function onProcess(imageWriterResult) {
+            // todo - save image to media library. Overwrite existing sizes.
+            // todo - save image to block attributes.
+            setShowPinturaEditor(false);
+            setScreen('edit');
+          }
+        }));
       // case 'edit':
       // 	return getEditScreen();
       // case 'crop':
@@ -476,7 +486,7 @@ var PhotoBlock = function PhotoBlock(props) {
           icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_13__["default"], null),
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Crop and Edit', 'photo-block'),
           onClick: function onClick() {
-            setShowPinturaEditor(true);
+            setScreen('crop');
           }
         }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Crop and Edit', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToolbarButton, {
           icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_14__["default"], null),
@@ -507,19 +517,11 @@ var PhotoBlock = function PhotoBlock(props) {
     if (!showPinturaEditor) {
       return null;
     }
-    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_pqina_react_pintura__WEBPACK_IMPORTED_MODULE_9__.PinturaEditor, _extends({}, editorConfig, {
-      src: imageRef.current,
-      onProcess: function onProcess(imageWriterResult) {
-        console.log('imageWriterResult', imageWriterResult);
-        // setAttributes( { photo: imageWriterResult } );
-        // setShowPinturaEditor( false );
-      }
-    })));
+    return /*#__PURE__*/React.createElement(React.Fragment, null);
   };
-
   var block = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", {
     className: "dlx-photo-block__container"
-  }, getPinturaEditor(), getCurrentToolbar(), getCurrentScreen()));
+  }, getCurrentToolbar(), getCurrentScreen()));
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", blockProps, block));
 };
 /* harmony default export */ __webpack_exports__["default"] = (PhotoBlock);
@@ -1037,11 +1039,11 @@ var InitialScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.forwardRe
   return /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-initial"
   }, !isUploading && !isProcessingUpload && !isUploadError && /*#__PURE__*/React.createElement(_components_UploadTypes__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    ref: ref
+    forwardRef: ref
   }), (isUploading || isProcessingUpload || isUploadError) && /*#__PURE__*/React.createElement(_components_UploadStatus__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    ref: ref
+    forwardRef: ref
   }), /*#__PURE__*/React.createElement(_components_UploadTarget__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    ref: ref,
+    forwardRef: ref,
     attributes: props.attributes,
     setAttributes: props.setAttributes
   }));

@@ -10,12 +10,12 @@ const InitialScreen = forwardRef( ( props, ref ) => {
 	return (
 		<div className="dlx-photo-block__screen-initial">
 			{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
-				<UploadTypes ref={ ref } />
+				<UploadTypes forwardRef={ ref } />
 			) }
 			{ ( isUploading || isProcessingUpload || isUploadError ) && (
-				<UploadStatus ref={ ref } />
+				<UploadStatus forwardRef={ ref } />
 			) }
-			<UploadTarget ref={ ref } attributes={ props.attributes } setAttributes={ props.setAttributes } />
+			<UploadTarget forwardRef={ ref } attributes={ props.attributes } setAttributes={ props.setAttributes } />
 		</div>
 	);
 } );

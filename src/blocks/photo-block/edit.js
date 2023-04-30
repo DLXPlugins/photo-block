@@ -110,6 +110,19 @@ const PhotoBlock = ( props ) => {
 				return (
 					<EditScreen ref={ imageRef } attributes={ attributes } setAttributes={ setAttributes } />
 				);
+			case 'crop':
+				return (
+					<PinturaEditor
+						{ ...editorConfig }
+						src={ imageRef.current }
+						onProcess={ ( imageWriterResult ) => {
+							// todo - save image to media library. Overwrite existing sizes.
+							// todo - save image to block attributes.
+							setShowPinturaEditor( false );
+							setScreen( 'edit' );
+						} }
+					/>
+				);
 			// case 'edit':
 			// 	return getEditScreen();
 			// case 'crop':
@@ -135,7 +148,7 @@ const PhotoBlock = ( props ) => {
 								icon={ <Crop /> }
 								label={ __( 'Crop and Edit', 'photo-block' ) }
 								onClick={ () => {
-									setShowPinturaEditor( true );
+									setScreen( 'crop' );
 								} }
 							>
 								{ __( 'Crop and Edit', 'photo-block' ) }
@@ -180,15 +193,7 @@ const PhotoBlock = ( props ) => {
 		}
 		return (
 			<>
-				<PinturaEditor
-					{ ...editorConfig }
-					src={ imageRef.current }
-					onProcess={ ( imageWriterResult ) => {
-						console.log( 'imageWriterResult', imageWriterResult );
-						// setAttributes( { photo: imageWriterResult } );
-						// setShowPinturaEditor( false );
-					} }
-				/>
+				
 			</>
 		);
 	};
@@ -196,7 +201,6 @@ const PhotoBlock = ( props ) => {
 	const block = (
 		<>
 			<section className="dlx-photo-block__container">
-				{ getPinturaEditor() }
 				{ getCurrentToolbar() }
 				{ getCurrentScreen() }
 			</section>
