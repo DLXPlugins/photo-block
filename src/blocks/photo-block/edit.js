@@ -37,7 +37,16 @@ const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
 
 	// Read in context values.
-	const { imageFile, screen, setScreen, isUploading, setIsUploading, isProcessingUpload, setIsProcessingUpload, isUploadError  }	= useContext( UploaderContext );
+	const {
+		imageFile,
+		screen,
+		setScreen,
+		isUploading,
+		setIsUploading,
+		isProcessingUpload,
+		setIsProcessingUpload,
+		isUploadError,
+	} = useContext( UploaderContext );
 
 	const blockProps = useBlockProps( {
 		className: classnames(
@@ -83,9 +92,17 @@ const PhotoBlock = ( props ) => {
 	const getCurrentScreen = () => {
 		switch ( screen ) {
 			case 'initial':
-				return <InitialScreen forwardRef={ filepondRef } attributes={ attributes } setAttributes={ setAttributes } />;
+				return (
+					<InitialScreen
+						forwardRef={ filepondRef }
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+					/>
+				);
 			case 'edit':
-				return <EditScreen attributes={ attributes } setAttributes={ setAttributes } />;
+				return (
+					<EditScreen attributes={ attributes } setAttributes={ setAttributes } />
+				);
 			// case 'edit':
 			// 	return getEditScreen();
 			// case 'crop':
@@ -130,14 +147,12 @@ const PhotoBlock = ( props ) => {
 							<ToolbarButton
 								icon={ <Accessibility /> }
 								label={ __( 'Set Accessibility Options', 'photo-block' ) }
-								onClick={ () => {
-								} }
+								onClick={ () => {} }
 							/>
 							<ToolbarButton
 								icon={ <Link /> }
 								label={ __( 'Set Link Options', 'photo-block' ) }
-								onClick={ () => {
-								} }
+								onClick={ () => {} }
 							/>
 						</ToolbarGroup>
 					</BlockControls>
