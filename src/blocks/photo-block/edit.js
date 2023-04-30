@@ -1,4 +1,5 @@
 import './editor.scss';
+import '@pqina/pintura/pintura.css';
 
 import classnames from 'classnames';
 import { useEffect, useState, useRef, useContext } from '@wordpress/element';
@@ -27,6 +28,9 @@ import {
 } from '@wordpress/block-editor';
 
 import { useInstanceId } from '@wordpress/compose';
+import { getEditorDefaults } from '@pqina/pintura';
+import { PinturaEditor } from '@pqina/react-pintura';
+const editorConfig = getEditorDefaults();
 
 import UploaderContext from '../../contexts/UploaderContext';
 import InitialScreen from '../../screens/Initial';
@@ -35,6 +39,8 @@ import { Crop, Image, Accessibility, Link } from 'lucide-react';
 
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
+
+	const [ showPinturaEditor, setShowPinturaEditor ] = useState( false );
 
 	// Read in context values.
 	const {
@@ -58,6 +64,7 @@ const PhotoBlock = ( props ) => {
 
 	// Store the filepond upload ref.
 	const filepondRef = useRef( null );
+	const imageRef = useRef( null );
 
 	const { attributes, setAttributes, clientId } = props;
 
@@ -101,7 +108,7 @@ const PhotoBlock = ( props ) => {
 				);
 			case 'edit':
 				return (
-					<EditScreen attributes={ attributes } setAttributes={ setAttributes } />
+					<EditScreen ref={ imageRef } attributes={ attributes } setAttributes={ setAttributes } />
 				);
 			// case 'edit':
 			// 	return getEditScreen();
@@ -128,7 +135,7 @@ const PhotoBlock = ( props ) => {
 								icon={ <Crop /> }
 								label={ __( 'Crop and Edit', 'photo-block' ) }
 								onClick={ () => {
-									setScreen( 'edit' );
+									setShowPinturaEditor( true );
 								} }
 							>
 								{ __( 'Crop and Edit', 'photo-block' ) }
@@ -167,9 +174,29 @@ const PhotoBlock = ( props ) => {
 		return null;
 	};
 
+	const getPinturaEditor = () => {
+		if ( ! showPinturaEditor ) {
+			return null;
+		}
+		return (
+			<>
+				<PinturaEditor
+					{ ...editorConfig }
+					src={ imageRef.current }
+					onProcess={ ( imageWriterResult ) => {
+						console.log( 'imageWriterResult', imageWriterResult );
+						// setAttributes( { photo: imageWriterResult } );
+						// setShowPinturaEditor( false );
+					} }
+				/>
+			</>
+		);
+	};
+
 	const block = (
 		<>
 			<section className="dlx-photo-block__container">
+				{ getPinturaEditor() }
 				{ getCurrentToolbar() }
 				{ getCurrentScreen() }
 			</section>

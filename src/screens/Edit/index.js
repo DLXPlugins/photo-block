@@ -1,12 +1,12 @@
 import './editor.scss';
 
-import { useContext, useState } from '@wordpress/element';
+import { useContext, useState, forwardRef } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
 import UploaderContext from '../../contexts/UploaderContext';
 
 
 
-const EditScreen = ( props ) => {
+const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes } = props;
 	const { photo } = attributes;
 	const { url, id, width, height } = photo;
@@ -21,9 +21,9 @@ const EditScreen = ( props ) => {
 				}
 				<img src={ url } width={ width } height={ height } alt="" onLoad={ () => {
 					setImageLoading( false );
-				}} />
+				}} ref={ ref } />
 			</div>
 		</>
 	);
-};
+} );
 export default EditScreen;
