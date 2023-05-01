@@ -1,8 +1,26 @@
 import './editor.scss';
 
 import { useContext, useState, forwardRef } from '@wordpress/element';
-import { Spinner } from '@wordpress/components';
+import { Spinner, PanelBody,
+	PanelRow,
+	RangeControl,
+	TextControl,
+	TextareaControl,
+	ButtonGroup,
+	Button,
+	ToggleControl,
+	Toolbar,
+	ToolbarButton,
+	ToolbarGroup,
+	ToolbarDropdownMenu,
+	Popover,
+	PlaceHolder,
+	MenuGroup,
+	MenuItem, } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import {
+	InspectorControls,
+} from '@wordpress/block-editor';
 import UploaderContext from '../../contexts/UploaderContext';
 import { useEffect } from 'react';
 import SendCommand from '../../utils/SendCommand';
@@ -10,13 +28,33 @@ import SendCommand from '../../utils/SendCommand';
 
 
 const CropScreen = ( props ) => {
+	const { screen, setScreen, setInspectorControls } = useContext( UploaderContext );
 	const { attributes, setAttributes } = props;
 	const { photo } = attributes;
 	const { url, id, width, height } = photo;
-	const [ setScreen ] = useState( true );
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
 	const [ shouldFetchImage, setShouldFetchImage ] = useState( true );
 	const [ fullsizePhoto, setFullsizePhoto ] = useState( {} );
+
+	// Set the local inspector controls.
+	const localInspectorControls = (
+		<InspectorControls>
+			<PanelBody title={ __( 'Crop Settings', 'photo-block' ) }>
+				<PanelRow>
+					Options here.
+				</PanelRow>
+			</PanelBody>
+		</InspectorControls>
+	);
+
+	/**
+	 * Get a unique ID for the block for inline styling if necessary.
+	 */
+	useEffect( () => {
+		if ( 'crop' === screen ) {
+			setInspectorControls( localInspectorControls );
+		}
+	}, [ screen ] );
 
 	useEffect( () => {
 		async function fetchImage() {

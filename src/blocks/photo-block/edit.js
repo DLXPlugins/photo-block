@@ -84,6 +84,21 @@ const PhotoBlock = ( props ) => {
 		typographyCaption,
 	} = attributes;
 
+	// Set the local inspector controls.
+	const localInspectorControls = (
+		<InspectorControls>
+			<PanelBody title={ __( 'Photo Block Settings', 'photo-block' ) }>
+				<PanelRow>
+					<TextControl
+						label={ __( 'Caption', 'photo-block' ) }
+						value={ caption }
+						onChange={ ( value ) => setAttributes( { caption: value } ) }
+					/>
+				</PanelRow>
+			</PanelBody>
+		</InspectorControls>
+	);
+
 	/**
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
@@ -91,6 +106,15 @@ const PhotoBlock = ( props ) => {
 		// Set unique ID for block (for styling).
 		setAttributes( { uniqueId: generatedUniqueId } );
 	}, [] );
+
+	/**
+	 * Get a unique ID for the block for inline styling if necessary.
+	 */
+	useEffect( () => {
+		if ( 'edit' === screen ) {
+			setInspectorControls( localInspectorControls );
+		}
+	}, [ screen ] );
 
 	/**
 	 * Retrieve a full image via the REST API.
@@ -284,6 +308,7 @@ const PhotoBlock = ( props ) => {
 	const block = (
 		<>
 			<section className="dlx-photo-block__container">
+				{ inspectorControls }
 				{ getCurrentToolbar() }
 				{ getCurrentScreen() }
 			</section>
