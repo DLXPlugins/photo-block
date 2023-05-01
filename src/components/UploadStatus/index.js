@@ -1,5 +1,5 @@
 /**
- * Upload data row including Upload|Media Library|URL|Data.
+ * Uploading including showing Cancel and Retry buttons.
  */
 import './editor.scss';
 
@@ -12,6 +12,12 @@ import { forwardRef, useContext } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import UploaderContext from '../../contexts/UploaderContext';
 
+/**
+ * Upload Status component.
+ *
+ * @param {Object} props - Component props.
+ * @param {Object} ref   - Filepond uploader reference.
+ */
 const UploadStatus = forwardRef( ( props, ref ) => {
 	// Read in context values.
 	const {
@@ -31,7 +37,7 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 						setIsUploadError( false );
 						setIsUploading( false );
 						setIsProcessingUpload( false );
-						ref.current.removeFile();
+						ref.current.removeFile(); // start over. Go back to initial view.
 					} }
 				>
 					{ __( 'Cancel', 'photo-block' ) }
@@ -43,7 +49,7 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 						onClick={ () => {
 							setIsUploading( true );
 							setIsUploadError( false );
-							ref.current.addFile( imageFile.file );
+							ref.current.addFile( imageFile.file ); // Start upload process again.
 						} }
 					>
 						{ __( 'Retry Image', 'photo-block' ) }

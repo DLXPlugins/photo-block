@@ -1,5 +1,4 @@
 import './editor.scss';
-import '@pqina/pintura/pintura.css';
 
 import classnames from 'classnames';
 import { useEffect, useState, useRef, useContext } from '@wordpress/element';
@@ -17,8 +16,11 @@ import {
 	Toolbar,
 	ToolbarButton,
 	ToolbarGroup,
+	ToolbarDropdownMenu,
 	Popover,
 	PlaceHolder,
+	MenuGroup,
+	MenuItem,
 } from '@wordpress/components';
 
 import {
@@ -28,26 +30,22 @@ import {
 } from '@wordpress/block-editor';
 
 import { useInstanceId } from '@wordpress/compose';
-import { getEditorDefaults } from '@pqina/pintura';
-import { PinturaEditor } from '@pqina/react-pintura';
-const editorConfig = getEditorDefaults();
 
 import UploaderContext from '../../contexts/UploaderContext';
 import InitialScreen from '../../screens/Initial';
 import EditScreen from '../../screens/Edit';
-import { Crop, Image, Accessibility, Link } from 'lucide-react';
+import { Crop, Image, Accessibility, Link, ZoomIn, RectangleHorizontal, RotateCcw, RotateCw, Save, X } from 'lucide-react';
 
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
-
-	const [ showPinturaEditor, setShowPinturaEditor ] = useState( false );
-
 	// Read in context values.
 	const {
 		imageFile,
 		screen,
 		setScreen,
 		isUploading,
+		inspectorControls,
+		setInspectorControls,
 		setIsUploading,
 		isProcessingUpload,
 		setIsProcessingUpload,
@@ -112,16 +110,7 @@ const PhotoBlock = ( props ) => {
 				);
 			case 'crop':
 				return (
-					<PinturaEditor
-						{ ...editorConfig }
-						src={ imageRef.current }
-						onProcess={ ( imageWriterResult ) => {
-							// todo - save image to media library. Overwrite existing sizes.
-							// todo - save image to block attributes.
-							setShowPinturaEditor( false );
-							setScreen( 'edit' );
-						} }
-					/>
+					<></>
 				);
 			// case 'edit':
 			// 	return getEditScreen();
@@ -177,6 +166,100 @@ const PhotoBlock = ( props ) => {
 						</ToolbarGroup>
 					</BlockControls>
 				);
+			case 'crop':
+				return (
+					<BlockControls>
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ <ZoomIn /> }
+								label={ __( 'Zoom In', 'photo-block' ) }
+								onClick={ () => {
+								} }
+							/>
+							<ToolbarDropdownMenu
+								icon={ <RectangleHorizontal /> }
+								label={ __( 'Aspect Ratio', 'photo-block' ) }
+							>
+								{ ( { onClose } ) => (
+									<>
+										<MenuGroup>
+											<MenuItem>
+												{ __( 'Original', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem>
+												{ __( 'Square', 'photo-block' ) }
+											</MenuItem>
+										</MenuGroup>
+										<MenuGroup
+											label={ __( 'Landscape', 'photo-block' ) }
+										>
+											<MenuItem>
+												{ __( '16:10', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem>
+												{ __( '16:9', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem>
+												{ __( '4:3', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem>
+												{ __( '3:2', 'photo-block' ) }
+											</MenuItem>
+										</MenuGroup>
+										<MenuGroup
+											label={ __( 'Portrait', 'photo-block' ) }
+										>
+											<MenuItem>
+												{ __( '10:16', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem>
+												{ __( '9:16', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem>
+												{ __( '3:4', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem>
+												{ __( '2:3', 'photo-block' ) }
+											</MenuItem>
+										</MenuGroup>
+									</>
+								) }
+							</ToolbarDropdownMenu>
+							<ToolbarButton
+								icon={ <RotateCcw /> }
+								label={ __( 'Rotate Left', 'photo-block' ) }
+								onClick={ () => {
+								} }
+							/>
+							<ToolbarButton
+								icon={ <RotateCw /> }
+								label={ __( 'Rotate Right', 'photo-block' ) }
+								onClick={ () => {
+								} }
+							/>
+						</ToolbarGroup>
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ <Save /> }
+								label={ __( 'Save Changes', 'photo-block' ) }
+								onClick={ () => {
+									setScreen( 'edit' );
+								} }
+							>
+								{ __( 'Save Changes', 'photo-block' ) }
+							</ToolbarButton>
+							<ToolbarButton
+								icon={ <X /> }
+								label={ __( 'Cancel', 'photo-block' ) }
+								onClick={ () => {
+									setScreen( 'edit' );
+								} }
+							>
+								{ __( 'Cancel', 'photo-block' ) }
+							</ToolbarButton>
+						</ToolbarGroup>
+					</BlockControls>
+				)
 			// case 'edit':
 			// 	return getEditScreen();
 			// case 'crop':
@@ -185,17 +268,6 @@ const PhotoBlock = ( props ) => {
 			// 	return getPreviewScreen();
 		}
 		return null;
-	};
-
-	const getPinturaEditor = () => {
-		if ( ! showPinturaEditor ) {
-			return null;
-		}
-		return (
-			<>
-				
-			</>
-		);
 	};
 
 	const block = (

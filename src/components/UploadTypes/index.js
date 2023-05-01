@@ -23,17 +23,45 @@ import {
 	Link,
 	Image,
 	Upload,
+	ArrowBigLeftDash,
 } from 'lucide-react';
 
-import { forwardRef } from '@wordpress/element';
+import { forwardRef, useContext } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 
+import UploaderContext from '../../contexts/UploaderContext';
+
+/**
+ * UploadTypes component.
+ *
+ * @param {Object} props - Component props.
+ * @param {Object} ref   - Filepond uploader reference.
+ */
 const UploadTypes = forwardRef( ( props, ref ) => {
 
+	// Get context.
+	const {
+		imageFile,
+		setScreen,
+	} = useContext( UploaderContext );
 	return (
 		<>
 			<div className="dlx-photo-block__upload-types__container">
+				{
+					imageFile && (
+						<Button
+							variant="primary"
+							icon={ <ArrowBigLeftDash /> }
+							className="dlx-photo-block__upload-types__back"
+							onClick={ () => {
+								setScreen( 'edit' );
+							} }
+						>
+							{ __( 'Back', 'photo-block' ) }
+						</Button>
+					)
+				}
 				<Button
 					variant="secondary"
 					icon={ <Upload /> }

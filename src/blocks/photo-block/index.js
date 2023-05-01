@@ -6,11 +6,13 @@ import UploaderContext from '../../contexts/UploaderContext';
 import Edit from './edit';
 
 const PhotoBlock = ( props ) => {
-	const [ imageFile, setImageFile ] = useState( null );
+	const [ imageFile, setImageFile ] = useState( props.attributes.photo ?? null );
 	const [ screen, setScreen ] = useState( props.attributes.screen ); // Can be initial, edit, crop, preview, data.
 	const [ isUploading, setIsUploading ] = useState( false );
 	const [ isProcessingUpload, setIsProcessingUpload ] = useState( false );
 	const [ isUploadError, setIsUploadError ] = useState( false );
+	const [ inspectorControls, setInspectorControls ] = useState( null );
+	const [ advancedInspectorControls, setAdvancedInspectorControls ] = useState( null );
 
 	return (
 		<UploaderContext.Provider
@@ -25,6 +27,10 @@ const PhotoBlock = ( props ) => {
 				setIsProcessingUpload,
 				isUploadError,
 				setIsUploadError,
+				inspectorControls,
+				setInspectorControls,
+				advancedInspectorControls,
+				setAdvancedInspectorControls,
 			} }
 		>
 			<Edit { ...props } />

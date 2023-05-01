@@ -52,8 +52,6 @@
 		"webpack-remove-empty-scripts": "^0.7.3"
 	},
 	"dependencies": {
-		"@pqina/pintura": "file:local_modules/pintura",
-		"@pqina/react-pintura": "file:local_modules/react-pintura",
 		"@wordpress/a11y": "^3.11.0",
 		"@wordpress/icons": "^8.4.0",
 		"filepond": "^4.30.4",
