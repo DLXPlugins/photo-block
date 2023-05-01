@@ -41,14 +41,14 @@ const CropScreen = ( props ) => {
 		<InspectorControls>
 			<PanelBody title={ __( 'Crop Settings', 'photo-block' ) }>
 				<PanelRow>
-					Options here.
+					Crop options here
 				</PanelRow>
 			</PanelBody>
 		</InspectorControls>
 	);
 
 	/**
-	 * Get a unique ID for the block for inline styling if necessary.
+	 * Get inspector controls for the screen.
 	 */
 	useEffect( () => {
 		if ( 'crop' === screen ) {

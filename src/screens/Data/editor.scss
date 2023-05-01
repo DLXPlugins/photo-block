@@ -1,0 +1,22 @@
+.dlx-photo-block__screen-edit {
+	display: flex;
+	flex-wrap: wrap;
+
+	.dlx-photo-block__screen-edit-spinner {
+		width: 100%;
+		text-align: center;
+	}
+	svg.components-spinner {
+		width: 36px;
+		height: 36px;
+	}
+}
+.aligncenter .dlx-photo-block__screen-edit {
+	justify-content: center;
+}
+.alignleft .dlx-photo-block__screen-edit {
+	justify-content: flex-start;
+}
+.alignright .dlx-photo-block__screen-edit {
+	justify-content: flex-end;
+}

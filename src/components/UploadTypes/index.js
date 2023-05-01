@@ -86,6 +86,9 @@ const UploadTypes = forwardRef( ( props, ref ) => {
 				<Button
 					variant="secondary"
 					icon={ <Database /> }
+					onClick={ () => {
+						setScreen( 'data' );
+					} }
 				>
 					{ __( 'Data', 'photo-block' ) }
 				</Button>

@@ -37,6 +37,7 @@ import UploaderContext from '../../contexts/UploaderContext';
 import InitialScreen from '../../screens/Initial';
 import EditScreen from '../../screens/Edit';
 import CropScreen from '../../screens/Crop';
+import DataScreen from '../../screens/Data';
 import SendCommand from '../../utils/SendCommand';
 
 const PhotoBlock = ( props ) => {
@@ -146,6 +147,10 @@ const PhotoBlock = ( props ) => {
 			case 'crop':
 				return (
 					<CropScreen attributes={ attributes } setAttributes={ setAttributes } />
+				);
+			case 'data':
+				return (
+					<DataScreen attributes={ attributes } setAttributes={ setAttributes } />
 				);
 			// case 'edit':
 			// 	return getEditScreen();
