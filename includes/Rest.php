@@ -23,16 +23,61 @@ class Rest {
 	 * Register any REST routes for the photo block plugin.
 	 */
 	public static function register_rest_routes() {
+		// Register rest route for saving the image when uploading.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
 			'/add-image',
 			array(
 				'methods'             => 'POST',
-				'callback'            => array( static::class, 'save_image' ),
+				'callback'            => array( static::class, 'rest_save_image' ),
 				'permission_callback' => function () {
 					return current_user_can( 'upload_files' );
 				},
 			),
+		);
+		// Register a rest route for getting an image.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/get-image/id=(?P<id>\d+)',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( static::class, 'rest_get_image' ),
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+			),
+		);
+	}
+
+	/**
+	 * Callback function for the get image REST route.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 *
+	 * @return mixed|array|WP_Error Returns an array with the image URL on success, or a WP_Error object on failure.
+	 */
+	public static function rest_get_image( $request ) {
+		$id = $request->get_param( 'id' );
+
+		// Check image ID.
+		if ( ! $id ) {
+			return new \WP_Error( 'no_image', __( 'No image ID was provided.', 'photo-block' ), array( 'status' => 400 ) );
+		}
+
+		// Get the Image URL.
+		$image_url = wp_get_attachment_image_src( $id, 'full' );
+
+		// Check image URL.
+		if ( ! $image_url ) {
+			return new \WP_Error( 'no_image', __( 'No image was found.', 'photo-block' ), array( 'status' => 400 ) );
+		}
+
+		// Return the image URL and ID.
+		return array(
+			'url'    => $image_url[0],
+			'id'     => $id,
+			'width'  => $image_url[1],
+			'height' => $image_url[2],
 		);
 	}
 
@@ -43,7 +88,7 @@ class Rest {
 	 *
 	 * @return mixed|array|WP_Error Returns an array with the image URL on success, or a WP_Error object on failure.
 	 */
-	public static function save_image( $request ) {
+	public static function rest_save_image( $request ) {
 		$image = $request->get_file_params();
 
 		// Check image.

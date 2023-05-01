@@ -29,12 +29,15 @@ import {
 	BlockControls,
 } from '@wordpress/block-editor';
 
+import { Crop, Image, Accessibility, Link, ZoomIn, RectangleHorizontal, RotateCcw, RotateCw, Save, X } from 'lucide-react';
+
 import { useInstanceId } from '@wordpress/compose';
 
 import UploaderContext from '../../contexts/UploaderContext';
 import InitialScreen from '../../screens/Initial';
 import EditScreen from '../../screens/Edit';
-import { Crop, Image, Accessibility, Link, ZoomIn, RectangleHorizontal, RotateCcw, RotateCw, Save, X } from 'lucide-react';
+import CropScreen from '../../screens/Crop';
+import SendCommand from '../../utils/SendCommand';
 
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
@@ -90,6 +93,14 @@ const PhotoBlock = ( props ) => {
 	}, [] );
 
 	/**
+	 * Retrieve a full image via the REST API.
+	 */
+	const getFullImage = async () => {
+		const response = await SendCommand( photoBlock.restNonce, {}, `${ photoBlock.restUrl + '/get-image' }/id=${ photo.id }`, 'GET' );
+		return response;
+	};
+
+	/**
 	 * Get the screen to display.
 	 *
 	 * @return {Element} The screen to display.
@@ -110,7 +121,7 @@ const PhotoBlock = ( props ) => {
 				);
 			case 'crop':
 				return (
-					<></>
+					<CropScreen attributes={ attributes } setAttributes={ setAttributes } />
 				);
 			// case 'edit':
 			// 	return getEditScreen();

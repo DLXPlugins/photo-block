@@ -24,6 +24,7 @@
 		"@babel/preset-env": "^7.18.2",
 		"@babel/preset-react": "^7.17.12",
 		"@wordpress/scripts": "^26.1.0",
+		"axios": "^1.4.0",
 		"babel-loader": "^8.2.5",
 		"babel-plugin-minify-mangle-names": "^0.5.1",
 		"classnames": "^2.3.1",
