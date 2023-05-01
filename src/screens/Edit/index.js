@@ -16,7 +16,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			<div className="dlx-photo-block__screen-edit">
 				{
 					imageLoading && (
-						<div className="dlx-photo-block__screen-edit-spinner"><Spinner /></div>
+						<div className="dlx-photo-block__screen-edit-spinner" style={ { minWidth: width, minHeight: height, maxWidth: '100%', maxHeight: '100%' } }><Spinner /></div>
 					)
 				}
 				<img src={ url } width={ width } height={ height } alt="" onLoad={ () => {

@@ -2,6 +2,7 @@ import './editor.scss';
 
 import { useContext, useState, forwardRef } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 import UploaderContext from '../../contexts/UploaderContext';
 import { useEffect } from 'react';
 import SendCommand from '../../utils/SendCommand';
@@ -22,6 +23,7 @@ const CropScreen = ( props ) => {
 			const response = await SendCommand( photoBlock.restNonce, {}, `${ photoBlock.restUrl + '/get-image' }/id=${ photo.id }`, 'GET' );
 			const { data } = response;
 			setFullsizePhoto( data );
+			setAttributes( { photo: data } );
 			setShouldShowLoading( false );
 		}
 		fetchImage();
@@ -31,7 +33,7 @@ const CropScreen = ( props ) => {
 			<div className="dlx-photo-block__screen-edit">
 				{
 					shouldShowLoading && (
-						<div className="dlx-photo-block__screen-edit-spinner"><Spinner /></div>
+						<div className="dlx-photo-block__screen-edit-spinner" style={ { minWidth: width, minHeight: height, maxWidth: '100%', maxHeight: '100%' } }><h3>{ __( 'Loading Full Size Image', 'photo-block' ) }</h3><Spinner /></div>
 					)
 				}
 				{
