@@ -381,7 +381,36 @@ svg.lucide {
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/ToolbarAspectRatio/editor.scss ***!
   \******************************************************************************************************************************************************************************************************************************************************************************************************/
-
+.dlx-photo-block__component-aspect-ratio {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 8px;
+  min-width: 325px;
+  box-sizing: border-box;
+  text-align: center;
+}
+.dlx-photo-block__component-aspect-ratio .components-base-control__field {
+  margin: 0;
+}
+.dlx-photo-block__component-aspect-ratio .components-text-control__input {
+  display: inline-block;
+  max-width: 72px;
+}
+.dlx-photo-block__component-aspect-ratio.dlx-photo-block__component-aspect-ratio--active .components-text-control__input {
+  max-width: 48px;
+}
+.dlx-photo-block__component-aspect-ratio label {
+  position: absolute;
+  left: -9999px;
+  clip: rect(0 0 0 0);
+}
+.dlx-photo-block__component-aspect-ratio button.dlx-photo-block__component-aspect-ratio-switch {
+  min-width: unset;
+  height: 30px;
+  margin-left: 8px;
+}
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Data/editor.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************/

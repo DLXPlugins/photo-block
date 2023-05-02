@@ -413,14 +413,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/ToolbarAspectRatio/editor.scss");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
+/* harmony import */ var _utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/CalculateAspectRatioFromPixels */ "./src/utils/CalculateAspectRatioFromPixels.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /**
  * Uploading including showing Cancel and Retry buttons.
  */
+
+
 
 
 
@@ -438,21 +450,32 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
   var attributes = props.attributes,
     setAttributes = props.setAttributes;
   // Read in context values.
-  var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_4__["default"]),
+  var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_5__["default"]),
     imageFile = _useContext.imageFile,
     setIsUploading = _useContext.setIsUploading,
     setIsProcessingUpload = _useContext.setIsProcessingUpload,
     isUploadError = _useContext.isUploadError,
     setIsUploadError = _useContext.setIsUploadError;
+  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    isPopoverOpen = _useState2[0],
+    setIsPopoverOpen = _useState2[1];
+  var _useState3 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+    _useState4 = _slicedToArray(_useState3, 2),
+    popoverRef = _useState4[0],
+    setPopoverRef = _useState4[1];
   var aspectRatioWidth = attributes.aspectRatioWidth,
     aspectRatioHeight = attributes.aspectRatioHeight,
     aspectRatioWidthPixels = attributes.aspectRatioWidthPixels,
     aspectRatioHeightPixels = attributes.aspectRatioHeightPixels,
     aspectRatioUnit = attributes.aspectRatioUnit;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "dlx-photo-block__component-aspect-ratio"
+  var popoverContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: classnames__WEBPACK_IMPORTED_MODULE_3___default()('dlx-photo-block__component-aspect-ratio', {
+      'dlx-photo-block__component-aspect-ratio--active': 'ratio' === aspectRatioUnit,
+      'dlx-photo-block__component-pixels--active': 'pixels' === aspectRatioUnit
+    })
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Aspect Ratio Width', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio Width', 'photo-block'),
     value: aspectRatioWidth,
     onChange: function onChange(value) {
       setAttributes({
@@ -461,8 +484,10 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
     },
     type: "number",
     placeholder: 16
-  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Aspect Ratio Height', 'photo-block'),
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "dlx-photo-block__component-aspect-ratio-splitter"
+  }, /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], null)), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio Height', 'photo-block'),
     value: aspectRatioHeight,
     onChange: function onChange(value) {
       setAttributes({
@@ -471,7 +496,53 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
     },
     type: "number",
     placeholder: 9
-  })));
+  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "secondary",
+    className: "dlx-photo-block__component-aspect-ratio-switch",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Switch modes from Aspect Ratio to Width and Height (pixels)', 'photo-block'),
+    onClick: function onClick() {
+      if (aspectRatioUnit === 'pixels') {
+        // Convert aspect width / height to ratio for display.
+        var humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_6__["default"])(aspectRatioWidthPixels, aspectRatioHeightPixels);
+        console.log(humanImageRatio);
+        setAttributes({
+          aspectRatioWidth: humanImageRatio.width,
+          aspectRatioHeight: humanImageRatio.height,
+          aspectRatioUnit: 'ratio'
+        });
+      } else {
+        // Get 16:9 aspect ratio to pixels.
+        var pxAspectRatioWidth = aspectRatioWidth * aspectRatioHeightPixels;
+        var pxAspectRatioHeight = aspectRatioHeight * aspectRatioWidthPixels;
+        setAttributes({
+          aspectRatioWidthPixels: pxAspectRatioWidth,
+          aspectRatioHeightPixels: pxAspectRatioHeight,
+          aspectRatioUnit: 'pixels'
+        });
+      }
+    },
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Switch modes from Aspect Ratio to Width and Height (pixels)', 'photo-block')
+  }, 'ratio' === aspectRatioUnit ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Pixels', 'photo-block'))));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__toolbar-aspect-ratio"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "secondary",
+    className: "dlx-photo-block__toolbar-aspect-ratio-button",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Crop Size', 'photo-block'),
+    onClick: function onClick() {
+      setIsPopoverOpen(true);
+    },
+    ref: setPopoverRef
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Size', 'photo-block')), isPopoverOpen && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Popover, {
+    position: "bottom center",
+    className: "dlx-photo-block__toolbar-aspect-ratio-popover",
+    onFocusOutside: function onFocusOutside(e) {
+      e.preventDefault();
+      return false;
+    },
+    focusOnMount: true,
+    anchor: popoverRef
+  }, popoverContent));
 });
 /* harmony default export */ __webpack_exports__["default"] = (ToolbarAspectRatio);
 
@@ -1343,6 +1414,42 @@ var InitialScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.forwardRe
   })));
 });
 /* harmony default export */ __webpack_exports__["default"] = (InitialScreen);
+
+/***/ }),
+
+/***/ "./src/utils/CalculateAspectRatioFromPixels.js":
+/*!*****************************************************!*\
+  !*** ./src/utils/CalculateAspectRatioFromPixels.js ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * Returns an aspect ratio in human readable format.
+ *
+ * @param {number} width  Width in pixels.
+ * @param {number} height Height in pixels.
+ * @return {string} Aspect ratio in human readable format.
+ */
+var CalculateAspectRatioFromPixels = function CalculateAspectRatioFromPixels(width, height) {
+  // Find the greatest common factor
+  function findGCF(a, b) {
+    return b === 0 ? a : findGCF(b, a % b);
+  }
+  var gcf = findGCF(width, height);
+
+  // Simplify the ratio
+  var simplifiedWidth = width / gcf;
+  var simplifiedHeight = height / gcf;
+
+  // Format the ratio as "X:Y"
+  return {
+    width: simplifiedWidth,
+    height: simplifiedHeight
+  };
+};
+/* harmony default export */ __webpack_exports__["default"] = (CalculateAspectRatioFromPixels);
 
 /***/ }),
 

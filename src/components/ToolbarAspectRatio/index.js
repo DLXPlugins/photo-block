@@ -22,12 +22,14 @@ import {
 	MenuItem,
 } from '@wordpress/components';
 
-import { XCircle, Redo2 } from 'lucide-react';
+import { XCircle, Redo2, X } from 'lucide-react';
 
-import { useContext, forwardRef } from '@wordpress/element';
+import { useContext, forwardRef, useState } from '@wordpress/element';
+import classnames from 'classnames';
 
 import { __ } from '@wordpress/i18n';
 import UploaderContext from '../../contexts/UploaderContext';
+import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFromPixels';
 
 /**
  * Upload Status component.
@@ -36,7 +38,6 @@ import UploaderContext from '../../contexts/UploaderContext';
  * @return {Object} JSX markup for the component.
  */
 const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
-
 	const { attributes, setAttributes } = props;
 	// Read in context values.
 	const {
@@ -47,6 +48,9 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 		setIsUploadError,
 	} = useContext( UploaderContext );
 
+	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false );
+	const [ popoverRef, setPopoverRef ] = useState( null );
+
 	const {
 		aspectRatioWidth,
 		aspectRatioHeight,
@@ -55,9 +59,16 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 		aspectRatioUnit,
 	} = attributes;
 
-	return (
+	const popoverContent = (
 		<>
-			<div className="dlx-photo-block__component-aspect-ratio">
+			<div
+				className={ classnames( 'dlx-photo-block__component-aspect-ratio', {
+					'dlx-photo-block__component-aspect-ratio--active':
+						'ratio' === aspectRatioUnit,
+					'dlx-photo-block__component-pixels--active':
+						'pixels' === aspectRatioUnit,
+				} ) }
+			>
 				<TextControl
 					label={ __( 'Aspect Ratio Width', 'photo-block' ) }
 					value={ aspectRatioWidth }
@@ -67,6 +78,9 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 					type="number"
 					placeholder={ 16 }
 				/>
+				<span className="dlx-photo-block__component-aspect-ratio-splitter">
+					<X />
+				</span>
 				<TextControl
 					label={ __( 'Aspect Ratio Height', 'photo-block' ) }
 					value={ aspectRatioHeight }
@@ -76,8 +90,82 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 					type="number"
 					placeholder={ 9 }
 				/>
+				<Button
+					variant="secondary"
+					className="dlx-photo-block__component-aspect-ratio-switch"
+					label={ __(
+						'Switch modes from Aspect Ratio to Width and Height (pixels)',
+						'photo-block'
+					) }
+					onClick={ () => {
+						if ( aspectRatioUnit === 'pixels' ) {
+							// Convert aspect width / height to ratio for display.
+							const humanImageRatio = CalculateAspectRatioFromPixels(
+								aspectRatioWidthPixels,
+								aspectRatioHeightPixels
+							);
+							console.log( humanImageRatio );
+							setAttributes( {
+								aspectRatioWidth: humanImageRatio.width,
+								aspectRatioHeight: humanImageRatio.height,
+								aspectRatioUnit: 'ratio',
+							} );
+						} else {
+							// Get 16:9 aspect ratio to pixels.
+							const pxAspectRatioWidth =
+								aspectRatioWidth * aspectRatioHeightPixels;
+							const pxAspectRatioHeight =
+								aspectRatioHeight * aspectRatioWidthPixels;
+							setAttributes( {
+								aspectRatioWidthPixels: pxAspectRatioWidth,
+								aspectRatioHeightPixels: pxAspectRatioHeight,
+								aspectRatioUnit: 'pixels',
+							} );
+						}
+					} }
+					tooltip={ __(
+						'Switch modes from Aspect Ratio to Width and Height (pixels)',
+						'photo-block'
+					) }
+				>
+					{ 'ratio' === aspectRatioUnit
+						? __( 'Aspect Ratio', 'photo-block' )
+						: __( 'Pixels', 'photo-block' ) }
+				</Button>
 			</div>
 		</>
+	);
+
+	return (
+		<div className="dlx-photo-block__toolbar-aspect-ratio">
+			<Button
+				variant="secondary"
+				className="dlx-photo-block__toolbar-aspect-ratio-button"
+				label={ __( 'Set Crop Size', 'photo-block' ) }
+				onClick={ () => {
+					setIsPopoverOpen( true );
+				} }
+				ref={ setPopoverRef }
+			>
+				{ __( 'Set Size', 'photo-block' ) }
+			</Button>
+			{ isPopoverOpen && (
+				<Popover
+					position="bottom center"
+					className="dlx-photo-block__toolbar-aspect-ratio-popover"
+					
+					onFocusOutside={ ( e ) => {
+						e.preventDefault();
+						return false;
+					} }
+					focusOnMount={ true }
+					anchor={ popoverRef }
+				>
+					{ popoverContent }
+				</Popover>
+			) }
+
+		</div>
 	);
 } );
 export default ToolbarAspectRatio;

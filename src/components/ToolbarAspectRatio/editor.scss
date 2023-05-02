@@ -1,0 +1,34 @@
+.dlx-photo-block__component-aspect-ratio {
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	padding: 10px 8px;
+	min-width: 325px;
+	box-sizing: border-box;
+	text-align: center;
+
+	.components-base-control__field {
+		margin: 0;
+	}
+	.components-text-control__input {
+		display: inline-block;
+		max-width: 72px;
+	}
+	&.dlx-photo-block__component-aspect-ratio--active {
+		.components-text-control__input {
+			max-width: 48px;
+		}
+	}
+	label {
+		position: absolute;
+		left: -9999px;
+		clip: rect( 0 0 0 0 );
+	}
+
+	button.dlx-photo-block__component-aspect-ratio-switch {
+		min-width: unset;
+		height: 30px;
+		margin-left: 8px;
+	}
+}
