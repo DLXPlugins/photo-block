@@ -61,6 +61,7 @@
 		"filepond-plugin-image-preview": "^4.6.11",
 		"lucide-react": "^0.182.0",
 		"react-filepond": "^7.1.2",
-		"react-hook-form": "^7.43.9"
+		"react-hook-form": "^7.43.9",
+		"react-image-crop": "^10.0.9"
 	}
 }

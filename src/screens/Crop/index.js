@@ -1,4 +1,5 @@
 import './editor.scss';
+import 'react-image-crop/src/ReactCrop.scss'
 
 import { useContext, useState, forwardRef } from '@wordpress/element';
 import {
@@ -24,6 +25,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { ZoomIn, Check, RotateCcw, RotateCw, Save, X } from 'lucide-react';
+import ReactCrop from 'react-image-crop';
 import UploaderContext from '../../contexts/UploaderContext';
 import { useEffect } from 'react';
 import SendCommand from '../../utils/SendCommand';
@@ -34,13 +36,25 @@ const CropScreen = ( props ) => {
 	const { screen, setScreen, setInspectorControls, setBlockToolbar } =
 		useContext( UploaderContext );
 	const { attributes, setAttributes } = props;
-	const { photo, aspectRatio } = attributes;
-	const { url, id, width, height } = photo;
+	
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
 	const [ shouldFetchImage, setShouldFetchImage ] = useState( true );
 	const [ fullsizePhoto, setFullsizePhoto ] = useState( {} );
 	const [ modifiedPhoto, setModifiedPhoto ] = useState( null );
 	const [ rotateDegrees, setRotateDegrees ] = useState( 0 );
+	const [ crop, setCrop ] = useState( null );
+
+	const {
+		photo,
+		aspectRatio,
+		aspectRatioUnit,
+		aspectRatioWidth,
+		aspectRatioHeight,
+		aspectRatioWidthPixels,
+		aspectRatioHeightPixels,
+	} = attributes;
+
+	const { url, id, width, height } = photo;
 
 	/**
 	 * Rotate an image.
@@ -281,7 +295,14 @@ const CropScreen = ( props ) => {
 			</ToolbarGroup>
 			{ 'custom' === aspectRatio && (
 				<ToolbarGroup>
-					<ToolbarItem as={ forwardRef( ( args, ref ) => ( <ToolbarAspectRatio attributes={ attributes } setAttributes={ setAttributes } forwardRef={ ref } onChange={ ( values ) => {  } }/> ) ) } />
+					<ToolbarItem as={ forwardRef( ( args, ref ) => ( <ToolbarAspectRatio attributes={ attributes } setAttributes={ setAttributes } forwardRef={ ref } onChange={ ( values ) => {
+						setAttributes( {
+							aspectRatioWidth: values.aspectRatioWidth,
+							aspectRatioHeight: values.aspectRatioHeight,
+							aspectRatioWidthPixels: values.aspectRatioWidthPixels,
+							aspectRatioHeightPixels: values.aspectRatioHeightPixels,
+						})
+					  } }/> ) ) } />
 				</ToolbarGroup>
 			) }
 			<ToolbarGroup>
@@ -346,12 +367,20 @@ const CropScreen = ( props ) => {
 				) }
 				{ ! shouldShowLoading && (
 					<>
-						<img
-							src={ fullsizePhoto?.url ?? '' }
-							width={ fullsizePhoto?.width }
-							height={ fullsizePhoto?.height }
-							alt=""
-						/>
+						<ReactCrop
+							crop={ crop }
+							aspect={ ( aspectRatioWidth / aspectRatioHeight ) }
+							onChange={ ( newCrop ) => {
+								setCrop( newCrop );
+							} }
+						>
+							<img
+								src={ fullsizePhoto?.url ?? '' }
+								width={ fullsizePhoto?.width }
+								height={ fullsizePhoto?.height }
+								alt=""
+							/>
+						</ReactCrop>
 					</>
 				) }
 			</div>
