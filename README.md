@@ -11,3 +11,29 @@
 5. Run `grunt` to create a plugin ZIP file.
 
 Perform a Pull Request against the `dev` branch.
+
+### Location of Block Scripts
+
+```
+.
+└── src/
+    └── index.js
+```
+
+```
+.
+└── src/
+    └── blocks/
+        └── photo-block/
+            └── index.js
+```
+
+### Current Screens
+
+The block has several screens, which can be found at:
+
+```
+.
+└── src/
+    └── screens/
+```
