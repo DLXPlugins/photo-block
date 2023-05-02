@@ -53,6 +53,7 @@ const PhotoBlock = ( props ) => {
 		setIsUploading,
 		isProcessingUpload,
 		setIsProcessingUpload,
+		blockToolbar,
 		isUploadError,
 	} = useContext( UploaderContext );
 
@@ -162,159 +163,11 @@ const PhotoBlock = ( props ) => {
 		return null;
 	};
 
-	/**
-	 * Get the current toolbar for the screen.
-	 *
-	 * @return {Element} The toolbar to display.
-	 */
-	const getCurrentToolbar = () => {
-		switch ( screen ) {
-			case 'edit':
-				return (
-					<BlockControls>
-						<ToolbarGroup>
-							<ToolbarButton
-								icon={ <Crop /> }
-								label={ __( 'Crop and Edit', 'photo-block' ) }
-								onClick={ () => {
-									setScreen( 'crop' );
-								} }
-							>
-								{ __( 'Crop and Edit', 'photo-block' ) }
-							</ToolbarButton>
-							<ToolbarButton
-								icon={ <Image /> }
-								label={ __( 'Replace Image', 'photo-block' ) }
-								onClick={ () => {
-									setScreen( 'initial' );
-								} }
-							>
-								{ __( 'Replace Image', 'photo-block' ) }
-							</ToolbarButton>
-						</ToolbarGroup>
-						<ToolbarGroup>
-							<ToolbarButton
-								icon={ <Accessibility /> }
-								label={ __( 'Set Accessibility Options', 'photo-block' ) }
-								onClick={ () => {} }
-							/>
-							<ToolbarButton
-								icon={ <Link /> }
-								label={ __( 'Set Link Options', 'photo-block' ) }
-								onClick={ () => {} }
-							/>
-						</ToolbarGroup>
-					</BlockControls>
-				);
-			case 'crop':
-				return (
-					<BlockControls>
-						<ToolbarGroup>
-							<ToolbarButton
-								icon={ <ZoomIn /> }
-								label={ __( 'Zoom In', 'photo-block' ) }
-								onClick={ () => {
-								} }
-							/>
-							<ToolbarDropdownMenu
-								icon={ <RectangleHorizontal /> }
-								label={ __( 'Aspect Ratio', 'photo-block' ) }
-							>
-								{ ( { onClose } ) => (
-									<>
-										<MenuGroup>
-											<MenuItem>
-												{ __( 'Original', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem>
-												{ __( 'Square', 'photo-block' ) }
-											</MenuItem>
-										</MenuGroup>
-										<MenuGroup
-											label={ __( 'Landscape', 'photo-block' ) }
-										>
-											<MenuItem>
-												{ __( '16:10', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem>
-												{ __( '16:9', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem>
-												{ __( '4:3', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem>
-												{ __( '3:2', 'photo-block' ) }
-											</MenuItem>
-										</MenuGroup>
-										<MenuGroup
-											label={ __( 'Portrait', 'photo-block' ) }
-										>
-											<MenuItem>
-												{ __( '10:16', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem>
-												{ __( '9:16', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem>
-												{ __( '3:4', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem>
-												{ __( '2:3', 'photo-block' ) }
-											</MenuItem>
-										</MenuGroup>
-									</>
-								) }
-							</ToolbarDropdownMenu>
-							<ToolbarButton
-								icon={ <RotateCcw /> }
-								label={ __( 'Rotate Left', 'photo-block' ) }
-								onClick={ () => {
-								} }
-							/>
-							<ToolbarButton
-								icon={ <RotateCw /> }
-								label={ __( 'Rotate Right', 'photo-block' ) }
-								onClick={ () => {
-								} }
-							/>
-						</ToolbarGroup>
-						<ToolbarGroup>
-							<ToolbarButton
-								icon={ <Save /> }
-								label={ __( 'Save Changes', 'photo-block' ) }
-								onClick={ () => {
-									setScreen( 'edit' );
-								} }
-							>
-								{ __( 'Save Changes', 'photo-block' ) }
-							</ToolbarButton>
-							<ToolbarButton
-								icon={ <X /> }
-								label={ __( 'Cancel', 'photo-block' ) }
-								onClick={ () => {
-									setScreen( 'edit' );
-								} }
-							>
-								{ __( 'Cancel', 'photo-block' ) }
-							</ToolbarButton>
-						</ToolbarGroup>
-					</BlockControls>
-				)
-			// case 'edit':
-			// 	return getEditScreen();
-			// case 'crop':
-			// 	return getCropScreen();
-			// case 'preview':
-			// 	return getPreviewScreen();
-		}
-		return null;
-	};
-
 	const block = (
 		<>
 			<section className="dlx-photo-block__container">
 				{ inspectorControls }
-				{ getCurrentToolbar() }
+				{ blockToolbar }
 				{ getCurrentScreen() }
 			</section>
 		</>

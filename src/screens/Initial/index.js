@@ -18,7 +18,7 @@ import UploadStatus from '../../components/UploadStatus';
  * @param {Object} ref   - Filepond uploader reference.
  */
 const InitialScreen = forwardRef( ( props, ref ) => {
-	const { screen, setInspectorControls, isUploading, isProcessingUpload, isUploadError }	= useContext( UploaderContext );
+	const { screen, setInspectorControls, isUploading, isProcessingUpload, isUploadError, setBlockToolbar }	= useContext( UploaderContext );
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
@@ -31,6 +31,7 @@ const InitialScreen = forwardRef( ( props, ref ) => {
 	useEffect( () => {
 		if ( 'initial' === screen ) {
 			setInspectorControls( localInspectorControls );
+			setBlockToolbar( null );
 		}
 	}, [ screen ] );
 

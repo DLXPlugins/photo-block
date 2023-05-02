@@ -13,6 +13,7 @@ const PhotoBlock = ( props ) => {
 	const [ isUploadError, setIsUploadError ] = useState( false );
 	const [ inspectorControls, setInspectorControls ] = useState( null );
 	const [ advancedInspectorControls, setAdvancedInspectorControls ] = useState( null );
+	const [ blockToolbar, setBlockToolbar ] = useState( null );
 
 	return (
 		<UploaderContext.Provider
@@ -31,6 +32,8 @@ const PhotoBlock = ( props ) => {
 				setInspectorControls,
 				advancedInspectorControls,
 				setAdvancedInspectorControls,
+				blockToolbar,
+				setBlockToolbar,
 			} }
 		>
 			<Edit { ...props } />
