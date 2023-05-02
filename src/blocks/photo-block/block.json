@@ -37,6 +37,27 @@
 			"type": "string",
 			"default": "original"
 		},
+		"aspectRatioUnit": {
+			"type": "string",
+			"default": "ratio"
+		},
+		"aspectRatioWidthPixels": {
+			"type": "string",
+			"default": "1280"
+		},
+		"aspectRatioHeightPixels": {
+			"type": "string",
+			"default": "720"
+		},
+		"aspectRatioWidth": {
+			"type": "string",
+			"default": "16"
+		},
+		"aspectRatioHeight": {
+			"type": "string",
+			"default": "9"
+		},
+		
 		"screen": {
 			"type": "string",
 			"default": "initial"

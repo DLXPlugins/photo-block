@@ -12,6 +12,7 @@ import {
 	Button,
 	ToggleControl,
 	Toolbar,
+	ToolbarItem,
 	ToolbarButton,
 	ToolbarGroup,
 	ToolbarDropdownMenu,
@@ -27,6 +28,7 @@ import UploaderContext from '../../contexts/UploaderContext';
 import { useEffect } from 'react';
 import SendCommand from '../../utils/SendCommand';
 import AspectRatioIcon from '../../components/Icons/AspectRatio';
+import ToolbarAspectRatio from '../../components/ToolbarAspectRatio';
 
 const CropScreen = ( props ) => {
 	const { screen, setScreen, setInspectorControls, setBlockToolbar } =
@@ -277,6 +279,11 @@ const CropScreen = ( props ) => {
 					} }
 				/>
 			</ToolbarGroup>
+			{ 'custom' === aspectRatio && (
+				<ToolbarGroup>
+					<ToolbarItem as={ forwardRef( ( args, ref ) => ( <ToolbarAspectRatio attributes={ attributes } setAttributes={ setAttributes } forwardRef={ ref } /> ) ) } />
+				</ToolbarGroup>
+			) }
 			<ToolbarGroup>
 				<ToolbarButton
 					icon={ <Save /> }
