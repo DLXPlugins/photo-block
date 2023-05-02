@@ -22,14 +22,7 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
-import {
-	ZoomIn,
-	RectangleHorizontal,
-	RotateCcw,
-	RotateCw,
-	Save,
-	X,
-} from 'lucide-react';
+import { ZoomIn, Check, RotateCcw, RotateCw, Save, X } from 'lucide-react';
 import UploaderContext from '../../contexts/UploaderContext';
 import { useEffect } from 'react';
 import SendCommand from '../../utils/SendCommand';
@@ -39,7 +32,7 @@ const CropScreen = ( props ) => {
 	const { screen, setScreen, setInspectorControls, setBlockToolbar } =
 		useContext( UploaderContext );
 	const { attributes, setAttributes } = props;
-	const { photo } = attributes;
+	const { photo, aspectRatio } = attributes;
 	const { url, id, width, height } = photo;
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
 	const [ shouldFetchImage, setShouldFetchImage ] = useState( true );
@@ -63,11 +56,13 @@ const CropScreen = ( props ) => {
 			image.src = imgSrc;
 			image.onload = () => {
 				// Get canvas dimensions from image.
-				const radian = degrees * Math.PI / 180;
+				const radian = ( degrees * Math.PI ) / 180;
 				const sin = Math.sin( radian );
 				const cos = Math.cos( radian );
-				const imgWidth = Math.abs( image.width * cos ) + Math.abs( image.height * sin );
-				const imgHeight = Math.abs( image.width * sin ) + Math.abs( image.height * cos );
+				const imgWidth =
+					Math.abs( image.width * cos ) + Math.abs( image.height * sin );
+				const imgHeight =
+					Math.abs( image.width * sin ) + Math.abs( image.height * cos );
 
 				// Begin to rotate.
 				canvas.width = imgWidth;
@@ -97,7 +92,6 @@ const CropScreen = ( props ) => {
 	 * @return {number} The new degree.
 	 */
 	const getDegrees = ( degrees ) => {
-		console.log( rotateDegrees, degrees );
 		const newDegrees = rotateDegrees + degrees;
 		if ( newDegrees === 360 ) {
 			return 0;
@@ -107,6 +101,8 @@ const CropScreen = ( props ) => {
 		}
 		return newDegrees;
 	};
+
+	console.log( aspectRatio );
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
@@ -131,21 +127,127 @@ const CropScreen = ( props ) => {
 				>
 					{ ( { onClose } ) => (
 						<>
-							<MenuGroup>
-								<MenuItem>{ __( 'Original', 'photo-block' ) }</MenuItem>
-								<MenuItem>{ __( 'Square', 'photo-block' ) }</MenuItem>
+							<MenuGroup className="dlx-photo-block__aspect-ratio-group">
+								<MenuItem
+									icon={ 'original' === aspectRatio ? <Check /> : null }
+									isSelected={ 'original' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: 'original' } );
+										onClose();
+									} }
+								>
+									{ __( 'Original', 'photo-block' ) }
+								</MenuItem>
+								<MenuItem
+									icon={ 'square' === aspectRatio ? <Check /> : null }
+									isSelected={ 'square' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: 'square' } );
+										onClose();
+									} }
+								>
+									{ __( 'Square', 'photo-block' ) }
+								</MenuItem>
+								<MenuItem
+									icon={ 'custom' === aspectRatio ? <Check /> : null }
+									isSelected={ 'custom' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: 'custom' } );
+										onClose();
+									} }
+								>
+									{ __( 'Custom', 'photo-block' ) }
+								</MenuItem>
 							</MenuGroup>
-							<MenuGroup label={ __( 'Landscape', 'photo-block' ) }>
-								<MenuItem>{ __( '16:10', 'photo-block' ) }</MenuItem>
-								<MenuItem>{ __( '16:9', 'photo-block' ) }</MenuItem>
-								<MenuItem>{ __( '4:3', 'photo-block' ) }</MenuItem>
-								<MenuItem>{ __( '3:2', 'photo-block' ) }</MenuItem>
+							<MenuGroup
+								label={ __( 'Landscape', 'photo-block' ) }
+								className="dlx-photo-block__aspect-ratio-group"
+							>
+								<MenuItem
+									icon={ '16:10' === aspectRatio ? <Check /> : null }
+									isSelected={ '16:10' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: '16:10' } );
+										onClose();
+									} }
+								>
+									{ __( '16:10', 'photo-block' ) }
+								</MenuItem>
+								<MenuItem
+									icon={ '16:9' === aspectRatio ? <Check /> : null }
+									isSelected={ '16:9' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: '16:9' } );
+										onClose();
+									} }
+								>
+									{ __( '16:9', 'photo-block' ) }
+								</MenuItem>
+								<MenuItem
+									icon={ '4:3' === aspectRatio ? <Check /> : null }
+									isSelected={ '4:3' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: '4:3' } );
+										onClose();
+									} }
+								>
+									{ __( '4:3', 'photo-block' ) }
+								</MenuItem>
+								<MenuItem
+									icon={ '3:2' === aspectRatio ? <Check /> : null }
+									isSelected={ '3:2' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: '3:2' } );
+										onClose();
+									} }
+								>
+									{ __( '3:2', 'photo-block' ) }
+								</MenuItem>
 							</MenuGroup>
-							<MenuGroup label={ __( 'Portrait', 'photo-block' ) }>
-								<MenuItem>{ __( '10:16', 'photo-block' ) }</MenuItem>
-								<MenuItem>{ __( '9:16', 'photo-block' ) }</MenuItem>
-								<MenuItem>{ __( '3:4', 'photo-block' ) }</MenuItem>
-								<MenuItem>{ __( '2:3', 'photo-block' ) }</MenuItem>
+							<MenuGroup
+								label={ __( 'Portrait', 'photo-block' ) }
+								className="dlx-photo-block__aspect-ratio-group"
+							>
+								<MenuItem
+									icon={ '10:16' === aspectRatio ? <Check /> : null }
+									isSelected={ '10:16' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: '10:16' } );
+										onClose();
+									} }
+								>
+									{ __( '10:16', 'photo-block' ) }
+								</MenuItem>
+								<MenuItem
+									icon={ '9:16' === aspectRatio ? <Check /> : null }
+									isSelected={ '9:16' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: '9:16' } );
+										onClose();
+									} }
+								>
+									{ __( '9:16', 'photo-block' ) }
+								</MenuItem>
+								<MenuItem
+									icon={ '3:4' === aspectRatio ? <Check /> : null }
+									isSelected={ '3:4' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: '3:4' } );
+										onClose();
+									} }
+								>
+									{ __( '3:4', 'photo-block' ) }
+								</MenuItem>
+								<MenuItem
+									icon={ '2:3' === aspectRatio ? <Check /> : null }
+									isSelected={ '2:3' === aspectRatio }
+									onClick={ () => {
+										setAttributes( { aspectRatio: '2:3' } );
+										onClose();
+									} }
+								>
+									{ __( '2:3', 'photo-block' ) }
+								</MenuItem>
 							</MenuGroup>
 						</>
 					) }

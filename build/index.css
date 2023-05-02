@@ -375,29 +375,8 @@ svg.lucide {
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************/
-.dlx-photo-block__screen-edit {
-  display: flex;
-  flex-wrap: wrap;
-}
-.dlx-photo-block__screen-edit .dlx-photo-block__screen-edit-spinner {
-  width: 100%;
-  text-align: center;
-}
-.dlx-photo-block__screen-edit svg.components-spinner {
-  width: 36px;
-  height: 36px;
-}
-
-.aligncenter .dlx-photo-block__screen-edit {
-  justify-content: center;
-}
-
-.alignleft .dlx-photo-block__screen-edit {
-  justify-content: flex-start;
-}
-
-.alignright .dlx-photo-block__screen-edit {
-  justify-content: flex-end;
+.dlx-photo-block__aspect-ratio-group svg {
+  fill: none;
 }
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Data/editor.scss ***!

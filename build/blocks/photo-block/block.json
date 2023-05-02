@@ -33,6 +33,10 @@
         "height": ""
       }
     },
+    "aspectRatio": {
+      "type": "string",
+      "default": "original"
+    },
     "screen": {
       "type": "string",
       "default": "initial"
