@@ -281,7 +281,7 @@ const CropScreen = ( props ) => {
 			</ToolbarGroup>
 			{ 'custom' === aspectRatio && (
 				<ToolbarGroup>
-					<ToolbarItem as={ forwardRef( ( args, ref ) => ( <ToolbarAspectRatio attributes={ attributes } setAttributes={ setAttributes } forwardRef={ ref } /> ) ) } />
+					<ToolbarItem as={ forwardRef( ( args, ref ) => ( <ToolbarAspectRatio attributes={ attributes } setAttributes={ setAttributes } forwardRef={ ref } onChange={ ( values ) => {  } }/> ) ) } />
 				</ToolbarGroup>
 			) }
 			<ToolbarGroup>

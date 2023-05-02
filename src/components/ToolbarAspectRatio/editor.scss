@@ -1,10 +1,9 @@
 .dlx-photo-block__component-aspect-ratio {
 	display: flex;
 	height: 100%;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	padding: 10px 8px;
-	min-width: 325px;
 	box-sizing: border-box;
 	text-align: center;
 
@@ -29,6 +28,8 @@
 	button.dlx-photo-block__component-aspect-ratio-switch {
 		min-width: unset;
 		height: 30px;
-		margin-left: 8px;
+		margin-left: 4px;
+		padding-left: 15px;
+		padding-right: 15px;
 	}
 }

@@ -25,11 +25,16 @@ import {
 import { XCircle, Redo2, X } from 'lucide-react';
 
 import { useContext, forwardRef, useState } from '@wordpress/element';
+
+import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
+
 import classnames from 'classnames';
 
 import { __ } from '@wordpress/i18n';
 import UploaderContext from '../../contexts/UploaderContext';
 import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFromPixels';
+import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
+import { useEffect } from 'react';
 
 /**
  * Upload Status component.
@@ -51,45 +56,124 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 	const [ isModalOpen, setIsModalOpen ] = useState( false );
 	const [ modalRef, setModalRef ] = useState( null );
 
+	const getDefaultValues = () => {
+		return {
+			aspectRatioWidth: attributes.aspectRatioWidth,
+			aspectRatioHeight: attributes.aspectRatioHeight,
+			aspectRatioWidthPixels: attributes.aspectRatioWidthPixels,
+			aspectRatioHeightPixels: attributes.aspectRatioHeightPixels,
+			aspectRatioUnit: attributes.aspectRatioUnit,
+		};
+	};
+
 	const {
-		aspectRatioWidth,
-		aspectRatioHeight,
-		aspectRatioWidthPixels,
-		aspectRatioHeightPixels,
-		aspectRatioUnit,
-	} = attributes;
+		register,
+		control,
+		handleSubmit,
+		setValue,
+		getValues,
+		reset,
+		trigger,
+		setError,
+		clearErrors,
+	} = useForm( {
+		defaultValues: getDefaultValues(),
+	} );
+
+	const { errors } = useFormState( {
+		control,
+	} );
+	const formValues = useWatch( { control } );
+	
+	// Broadcast when values are changed.
+	useEffect( () => {
+		props.onChange( { ...formValues } );
+	}, [ formValues ] );
 
 	return (
 		<>
 			<div
 				className={ classnames( 'dlx-photo-block__component-aspect-ratio', {
 					'dlx-photo-block__component-aspect-ratio--active':
-						'ratio' === aspectRatioUnit,
+						'ratio' === getValues( 'aspectRatioUnit' ),
 					'dlx-photo-block__component-pixels--active':
-						'pixels' === aspectRatioUnit,
+						'pixels' === getValues( 'aspectRatioUnit' ),
 				} ) }
 			>
-				<TextControl
-					label={ __( 'Aspect Ratio Width', 'photo-block' ) }
-					value={ aspectRatioWidth }
-					onChange={ ( value ) => {
-						setAttributes( { aspectRatioWidth: value } );
-					} }
-					type="number"
-					placeholder={ 16 }
-				/>
-				<span className="dlx-photo-block__component-aspect-ratio-splitter">
-					<X />
-				</span>
-				<TextControl
-					label={ __( 'Aspect Ratio Height', 'photo-block' ) }
-					value={ aspectRatioHeight }
-					onChange={ ( value ) => {
-						setAttributes( { aspectRatioHeight: value } );
-					} }
-					type="number"
-					placeholder={ 9 }
-				/>
+				{ getValues( 'aspectRatioUnit' ) === 'ratio' && (
+					<>
+						<Controller
+							name="aspectRatioWidth"
+							control={ control }
+							render={ ( { field: { onChange, value } } ) => (
+								<TextControl
+									label={ __( 'Aspect Ratio Width', 'photo-block' ) }
+									value={ value }
+									onChange={ ( newValue ) => {
+										onChange( newValue );
+									} }
+									type="number"
+									placeholder={ 16 }
+								/>
+							) }
+						/>
+						<span className="dlx-photo-block__component-aspect-ratio-splitter">
+							<X />
+						</span>
+						<Controller
+							name="aspectRatioHeight"
+							control={ control }
+							render={ ( { field: { onChange, value } } ) => (
+								<TextControl
+									label={ __( 'Aspect Ratio Height', 'photo-block' ) }
+									value={ value }
+									onChange={ ( newValue ) => {
+										onChange( newValue );
+									} }
+									type="number"
+									placeholder={ 9 }
+								/>
+							) }
+						/>
+					</>
+				) }
+				{ getValues( 'aspectRatioUnit' ) === 'pixels' && (
+					<>
+						<Controller
+							name="aspectRatioWidthPixels"
+							control={ control }
+							render={ ( { field: { onChange, value } } ) => (
+								<TextControl
+									label={ __( 'Pixel Width', 'photo-block' ) }
+									value={ value }
+									onChange={ ( newValue ) => {
+										onChange( newValue );
+									} }
+									type="number"
+									placeholder={ 16 }
+								/>
+							) }
+						/>
+						<span className="dlx-photo-block__component-aspect-ratio-splitter">
+							<X />
+						</span>
+						<Controller
+							name="aspectRatioHeightPixels"
+							control={ control }
+							render={ ( { field: { onChange, value } } ) => (
+								<TextControl
+									label={ __( 'Pixel Height', 'photo-block' ) }
+									value={ value }
+									onChange={ ( newValue ) => {
+										onChange( newValue );
+									} }
+									type="number"
+									placeholder={ 9 }
+								/>
+							) }
+						/>
+					</>
+				) }
 				<Button
 					variant="secondary"
 					className="dlx-photo-block__component-aspect-ratio-switch"
@@ -98,29 +182,24 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 						'photo-block'
 					) }
 					onClick={ () => {
-						if ( aspectRatioUnit === 'pixels' ) {
+						const aspectRatioWidthPixels = getValues( 'aspectRatioWidthPixels' );
+						const aspectRatioHeightPixels = getValues( 'aspectRatioHeightPixels' );
+						const aspectRatioWidth = getValues( 'aspectRatioWidth' );
+						const aspectRatioHeight = getValues( 'aspectRatioHeight' );
+						if ( getValues( 'aspectRatioUnit' ) === 'pixels' ) {
 							// Convert aspect width / height to ratio for display.
 							const humanImageRatio = CalculateAspectRatioFromPixels(
 								aspectRatioWidthPixels,
 								aspectRatioHeightPixels
 							);
-							console.log( humanImageRatio );
-							setAttributes( {
-								aspectRatioWidth: humanImageRatio.width,
-								aspectRatioHeight: humanImageRatio.height,
-								aspectRatioUnit: 'ratio',
-							} );
+							setValue( 'aspectRatioWidth', humanImageRatio.width );
+							setValue( 'aspectRatioHeight', humanImageRatio.height );
+							setValue( 'aspectRatioUnit', 'ratio' );
 						} else {
-							// Get 16:9 aspect ratio to pixels.
-							const pxAspectRatioWidth =
-								aspectRatioWidth * aspectRatioHeightPixels;
-							const pxAspectRatioHeight =
-								aspectRatioHeight * aspectRatioWidthPixels;
-							setAttributes( {
-								aspectRatioWidthPixels: pxAspectRatioWidth,
-								aspectRatioHeightPixels: pxAspectRatioHeight,
-								aspectRatioUnit: 'pixels',
-							} );
+							const pixelsWidthHeight = CalculateDimensionsFromAspectRatio( `${ aspectRatioWidth }:${ aspectRatioHeight }`, getValues( 'aspectRatioWidthPixels' ) );
+							setValue( 'aspectRatioWidthPixels', pixelsWidthHeight.width );
+							setValue( 'aspectRatioHeightPixels', pixelsWidthHeight.height );
+							setValue( 'aspectRatioUnit', 'pixels' );
 						}
 					} }
 					tooltip={ __(
@@ -128,7 +207,7 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 						'photo-block'
 					) }
 				>
-					{ 'ratio' === aspectRatioUnit
+					{ 'ratio' === getValues( 'aspectRatioUnit' )
 						? __( 'Aspect Ratio', 'photo-block' )
 						: __( 'Pixels', 'photo-block' ) }
 				</Button>
