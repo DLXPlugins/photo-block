@@ -33,6 +33,7 @@ import {
 import UploaderContext from '../../contexts/UploaderContext';
 import { useEffect } from 'react';
 import SendCommand from '../../utils/SendCommand';
+import AspectRatioIcon from '../../components/Icons/AspectRatio';
 
 const CropScreen = ( props ) => {
 	const { screen, setScreen, setInspectorControls, setBlockToolbar } =
@@ -43,6 +44,69 @@ const CropScreen = ( props ) => {
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
 	const [ shouldFetchImage, setShouldFetchImage ] = useState( true );
 	const [ fullsizePhoto, setFullsizePhoto ] = useState( {} );
+	const [ modifiedPhoto, setModifiedPhoto ] = useState( null );
+	const [ rotateDegrees, setRotateDegrees ] = useState( 0 );
+
+	/**
+	 * Rotate an image.
+	 *
+	 * @param {string} imgSrc  The Image URL.
+	 * @param {number} degrees The degrees in which to rotate the image.
+	 * @return {Promise} A promise that resolves with the new image URL.
+	 */
+	const rotateImage = ( imgSrc, degrees ) => {
+		return new Promise( ( resolve, reject ) => {
+			const canvas = document.createElement( 'canvas' );
+			const context = canvas.getContext( '2d' );
+			const image = new Image();
+			image.crossOrigin = 'anonymous';
+			image.src = imgSrc;
+			image.onload = () => {
+				// Get canvas dimensions from image.
+				const radian = degrees * Math.PI / 180;
+				const sin = Math.sin( radian );
+				const cos = Math.cos( radian );
+				const imgWidth = Math.abs( image.width * cos ) + Math.abs( image.height * sin );
+				const imgHeight = Math.abs( image.width * sin ) + Math.abs( image.height * cos );
+
+				// Begin to rotate.
+				canvas.width = imgWidth;
+				canvas.height = imgHeight;
+				context.translate( canvas.width / 2, canvas.height / 2 );
+				context.rotate( ( degrees * Math.PI ) / 180 );
+				context.drawImage( image, -image.width / 2, -image.height / 2 );
+				canvas.toBlob( ( blob ) => {
+					const newImageUrl = URL.createObjectURL( blob );
+					resolve( {
+						url: newImageUrl,
+						width: canvas.width,
+						height: canvas.height,
+					} );
+				}, 'image/png' );
+			};
+			image.onerror = ( error ) => {
+				reject( error );
+			};
+		} );
+	};
+
+	/**
+	 * Return the current degree for the rotation items.
+	 *
+	 * @param {number} degrees The degree to add/subtract.
+	 * @return {number} The new degree.
+	 */
+	const getDegrees = ( degrees ) => {
+		console.log( rotateDegrees, degrees );
+		const newDegrees = rotateDegrees + degrees;
+		if ( newDegrees === 360 ) {
+			return 0;
+		}
+		if ( newDegrees === -360 ) {
+			return 0;
+		}
+		return newDegrees;
+	};
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
@@ -62,7 +126,7 @@ const CropScreen = ( props ) => {
 					onClick={ () => {} }
 				/>
 				<ToolbarDropdownMenu
-					icon={ <RectangleHorizontal /> }
+					icon={ <AspectRatioIcon /> }
 					label={ __( 'Aspect Ratio', 'photo-block' ) }
 				>
 					{ ( { onClose } ) => (
@@ -89,12 +153,26 @@ const CropScreen = ( props ) => {
 				<ToolbarButton
 					icon={ <RotateCcw /> }
 					label={ __( 'Rotate Left', 'photo-block' ) }
-					onClick={ () => {} }
+					onClick={ () => {
+						const degrees = getDegrees( -90 );
+						setRotateDegrees( degrees );
+						rotateImage( photo.url, degrees ).then( ( newImage ) => {
+							setFullsizePhoto( newImage );
+							setModifiedPhoto( newImage );
+						} );
+					} }
 				/>
 				<ToolbarButton
 					icon={ <RotateCw /> }
 					label={ __( 'Rotate Right', 'photo-block' ) }
-					onClick={ () => {} }
+					onClick={ () => {
+						const degrees = getDegrees( 90 );
+						setRotateDegrees( degrees );
+						rotateImage( photo.url, degrees ).then( ( newImage ) => {
+							setFullsizePhoto( newImage );
+							setModifiedPhoto( newImage );
+						} );
+					} }
 				/>
 			</ToolbarGroup>
 			<ToolbarGroup>
@@ -121,15 +199,8 @@ const CropScreen = ( props ) => {
 	);
 
 	/**
-	 * Get inspector controls for the screen.
+	 * Fetch the full size image for cropping.
 	 */
-	useEffect( () => {
-		if ( 'crop' === screen ) {
-			setInspectorControls( localInspectorControls );
-			setBlockToolbar( localToolbar );
-		}
-	}, [ screen ] );
-
 	useEffect( () => {
 		async function fetchImage() {
 			const response = await SendCommand(
@@ -147,6 +218,8 @@ const CropScreen = ( props ) => {
 	}, [ shouldFetchImage ] );
 	return (
 		<>
+			{ localInspectorControls }
+			{ localToolbar }
 			<div className="dlx-photo-block__screen-edit">
 				{ shouldShowLoading && (
 					<div
@@ -166,8 +239,8 @@ const CropScreen = ( props ) => {
 					<>
 						<img
 							src={ fullsizePhoto?.url ?? '' }
-							width={ width }
-							height={ height }
+							width={ fullsizePhoto?.width }
+							height={ fullsizePhoto?.height }
 							alt=""
 						/>
 					</>

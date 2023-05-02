@@ -25,26 +25,19 @@ const InitialScreen = forwardRef( ( props, ref ) => {
 		<InspectorControls />
 	);
 
-	/**
-	 * Set inspector controls for the screen.
-	 */
-	useEffect( () => {
-		if ( 'initial' === screen ) {
-			setInspectorControls( localInspectorControls );
-			setBlockToolbar( null );
-		}
-	}, [ screen ] );
-
 	return (
-		<div className="dlx-photo-block__screen-initial">
-			{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
-				<UploadTypes forwardRef={ ref } />
-			) }
-			{ ( isUploading || isProcessingUpload || isUploadError ) && (
-				<UploadStatus forwardRef={ ref } />
-			) }
-			<UploadTarget forwardRef={ ref } attributes={ props.attributes } setAttributes={ props.setAttributes } />
-		</div>
+		<>
+			{ localInspectorControls }
+			<div className="dlx-photo-block__screen-initial">
+				{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
+					<UploadTypes forwardRef={ ref } />
+				) }
+				{ ( isUploading || isProcessingUpload || isUploadError ) && (
+					<UploadStatus forwardRef={ ref } />
+				) }
+				<UploadTarget forwardRef={ ref } attributes={ props.attributes } setAttributes={ props.setAttributes } />
+			</div>
+		</>
 	);
 } );
 export default InitialScreen;

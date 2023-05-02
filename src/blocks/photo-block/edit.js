@@ -166,8 +166,6 @@ const PhotoBlock = ( props ) => {
 	const block = (
 		<>
 			<section className="dlx-photo-block__container">
-				{ inspectorControls }
-				{ blockToolbar }
 				{ getCurrentScreen() }
 			</section>
 		</>

@@ -22,18 +22,9 @@ const DataScreen = forwardRef( ( props, ref ) => {
 		</InspectorControls>
 	);
 
-	/**
-	 * Get inspector controls for the screen.
-	 */
-	useEffect( () => {
-		if ( 'data' === screen ) {
-			setInspectorControls( localInspectorControls );
-			setBlockToolbar( null );
-		}
-	}, [ screen ] );
-
 	return (
 		<>
+			{ localInspectorControls }
 			<div className="dlx-photo-block__screen-data">
 				data stuff here.
 			</div>

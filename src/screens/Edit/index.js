@@ -64,18 +64,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		</BlockControls>
 	);
 
-	/**
-	 * Get inspector controls for the screen.
-	 */
-	useEffect( () => {
-		if ( 'edit' === screen ) {
-			setInspectorControls( localInspectorControls );
-			setBlockToolbar( localToolbar );
-		}
-	}, [ screen ] );
-
 	return (
 		<>
+			{ localInspectorControls }
+			{ localToolbar }
 			<div className="dlx-photo-block__screen-edit">
 				{ imageLoading && (
 					<div
