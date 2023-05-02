@@ -16,7 +16,7 @@ import {
 	ToolbarButton,
 	ToolbarGroup,
 	ToolbarDropdownMenu,
-	Popover,
+	Modal,
 	PlaceHolder,
 	MenuGroup,
 	MenuItem,
@@ -48,8 +48,8 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 		setIsUploadError,
 	} = useContext( UploaderContext );
 
-	const [ isPopoverOpen, setIsPopoverOpen ] = useState( false );
-	const [ popoverRef, setPopoverRef ] = useState( null );
+	const [ isModalOpen, setIsModalOpen ] = useState( false );
+	const [ modalRef, setModalRef ] = useState( null );
 
 	const {
 		aspectRatioWidth,
@@ -59,7 +59,7 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 		aspectRatioUnit,
 	} = attributes;
 
-	const popoverContent = (
+	return (
 		<>
 			<div
 				className={ classnames( 'dlx-photo-block__component-aspect-ratio', {
@@ -134,38 +134,6 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 				</Button>
 			</div>
 		</>
-	);
-
-	return (
-		<div className="dlx-photo-block__toolbar-aspect-ratio">
-			<Button
-				variant="secondary"
-				className="dlx-photo-block__toolbar-aspect-ratio-button"
-				label={ __( 'Set Crop Size', 'photo-block' ) }
-				onClick={ () => {
-					setIsPopoverOpen( true );
-				} }
-				ref={ setPopoverRef }
-			>
-				{ __( 'Set Size', 'photo-block' ) }
-			</Button>
-			{ isPopoverOpen && (
-				<Popover
-					position="bottom center"
-					className="dlx-photo-block__toolbar-aspect-ratio-popover"
-					
-					onFocusOutside={ ( e ) => {
-						e.preventDefault();
-						return false;
-					} }
-					focusOnMount={ true }
-					anchor={ popoverRef }
-				>
-					{ popoverContent }
-				</Popover>
-			) }
-
-		</div>
 	);
 } );
 export default ToolbarAspectRatio;

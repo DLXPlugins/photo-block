@@ -458,18 +458,18 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
     setIsUploadError = _useContext.setIsUploadError;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
-    isPopoverOpen = _useState2[0],
-    setIsPopoverOpen = _useState2[1];
+    isModalOpen = _useState2[0],
+    setIsModalOpen = _useState2[1];
   var _useState3 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
     _useState4 = _slicedToArray(_useState3, 2),
-    popoverRef = _useState4[0],
-    setPopoverRef = _useState4[1];
+    modalRef = _useState4[0],
+    setModalRef = _useState4[1];
   var aspectRatioWidth = attributes.aspectRatioWidth,
     aspectRatioHeight = attributes.aspectRatioHeight,
     aspectRatioWidthPixels = attributes.aspectRatioWidthPixels,
     aspectRatioHeightPixels = attributes.aspectRatioHeightPixels,
     aspectRatioUnit = attributes.aspectRatioUnit;
-  var popoverContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_3___default()('dlx-photo-block__component-aspect-ratio', {
       'dlx-photo-block__component-aspect-ratio--active': 'ratio' === aspectRatioUnit,
       'dlx-photo-block__component-pixels--active': 'pixels' === aspectRatioUnit
@@ -523,26 +523,6 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
     },
     tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Switch modes from Aspect Ratio to Width and Height (pixels)', 'photo-block')
   }, 'ratio' === aspectRatioUnit ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Pixels', 'photo-block'))));
-  return /*#__PURE__*/React.createElement("div", {
-    className: "dlx-photo-block__toolbar-aspect-ratio"
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: "secondary",
-    className: "dlx-photo-block__toolbar-aspect-ratio-button",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Crop Size', 'photo-block'),
-    onClick: function onClick() {
-      setIsPopoverOpen(true);
-    },
-    ref: setPopoverRef
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Size', 'photo-block')), isPopoverOpen && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Popover, {
-    position: "bottom center",
-    className: "dlx-photo-block__toolbar-aspect-ratio-popover",
-    onFocusOutside: function onFocusOutside(e) {
-      e.preventDefault();
-      return false;
-    },
-    focusOnMount: true,
-    anchor: popoverRef
-  }, popoverContent));
 });
 /* harmony default export */ __webpack_exports__["default"] = (ToolbarAspectRatio);
 
