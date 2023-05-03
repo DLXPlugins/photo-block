@@ -509,6 +509,12 @@ svg.lucide {
 .alignright .dlx-photo-block__screen-edit {
   justify-content: flex-end;
 }
+
+.dlx-photo-block__a11y-popover {
+  min-width: 325px;
+  padding: 15px;
+  padding-top: 0;
+}
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************/
