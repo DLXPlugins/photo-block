@@ -99,9 +99,19 @@ class Rest {
 		$file       = $image['file'];
 		$file_types = $image['file']['type'] ?? '';
 
+		// Check if is webp image that is being read in as text/html.
+		$can_skip_file_check = false;
+		if ( 'text/html' === $file_types ) {
+			// Check for webp extension.
+			$extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
+			if ( 'webp' === $extension ) {
+				$can_skip_file_check = true;
+			}
+		}
+
 		// Validate the image.
 		$valid_mime_types = Functions::get_supported_mime_types();
-		if ( ! in_array( $file_types, $valid_mime_types, true ) ) {
+		if ( ! in_array( $file_types, $valid_mime_types, true ) && ! $can_skip_file_check ) {
 			return new \WP_Error(
 				'invalid_image_type',
 				__( 'Invalid image type. Only JPG, PNG, GIF, and WEBP files are supported.', 'photo-block' ),

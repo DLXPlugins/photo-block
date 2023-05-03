@@ -53,6 +53,39 @@ svg.lucide {
 .dlx-photo-block__upload-types__container button.dlx-photo-block__upload-types__back.components-button {
   color: #FFF;
 }
+
+.dlx-photo-block__upload-types-url__container {
+  display: grid;
+  grid-template-columns: 1fr 75px 75px;
+  grid-gap: 8px;
+}
+.dlx-photo-block__upload-types-url__container input[type=url] {
+  display: inline-block;
+  min-height: 40px;
+}
+.dlx-photo-block__upload-types-url__container label {
+  position: absolute;
+  left: -9999px;
+  clip: rect(0 0 0 0);
+}
+.dlx-photo-block__upload-types-url__container button.components-button {
+  margin-right: 8px;
+  min-width: unset;
+  height: 30px;
+  margin-left: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+}
+.dlx-photo-block__upload-types-url__container button.components-button.has-icon {
+  padding: 20px 20px;
+}
+.dlx-photo-block__upload-types-url__container button.components-button.dlx-photo-block__upload-types-url__upload {
+  color: #FFFFFF;
+}
+.dlx-photo-block__upload-types-url__container button.components-button:last-of-type {
+  margin-right: 0;
+}
 /*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/UploadTarget/editor.scss ***!
   \************************************************************************************************************************************************************************************************************************************************************************************************/

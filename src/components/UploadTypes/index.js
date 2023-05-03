@@ -25,10 +25,12 @@ import {
 	Link,
 	Image,
 	Upload,
+	CheckCircle2,
+	XCircle,
 	ArrowBigLeftDash,
 } from 'lucide-react';
 
-import { useContext, useCallback } from '@wordpress/element';
+import { useContext, useState, useEffect, useRef } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 
@@ -50,6 +52,57 @@ const UploadTypes = ( props ) => {
 		filepondInstance,
 		setImageFile,
 	} = useContext( UploaderContext );
+
+	const [ isUrlSelected, setIsUrlSelected ] = useState( false );
+	const [ url, setUrl ] = useState( '' );
+	const [ urlInput, setUrlInput ] = useState( null );
+
+	/**
+	 * Focus on url when entered.
+	 */
+	useEffect( () => {
+		if ( null !== urlInput ) {
+			urlInput.focus();
+		}
+	}, [ urlInput ] );
+
+	if ( isUrlSelected ) {
+		return (
+			<>
+				<div className="dlx-photo-block__upload-types-url__container">
+					<TextControl
+						type="url"
+						label={ __( 'Photo URL', 'photo-block' ) }
+						value={ url }
+						onChange={ ( value ) => {
+							setUrl( value );
+						} }
+						ref={ setUrlInput }
+						placeholder={ __( 'Please enter a valid image URL', 'photo-block' ) }
+					/>
+					<Button
+						variant="primary"
+						icon={ <CheckCircle2 /> }
+						className="dlx-photo-block__upload-types-url__upload"
+						onClick={ () => {
+							console.log( url );
+							filepondInstance.addFile( url );
+						} }
+						label={ __( 'Upload', 'photo-block' ) }
+					/>
+					<Button
+						variant="secondary"
+						icon={ <XCircle /> }
+						className="dlx-photo-block__upload-types-url__cancel"
+						onClick={ () => {
+							setIsUrlSelected( false );
+						} }
+						label={ __( 'Cancel', 'photo-block' ) }
+					/>
+				</div>
+			</>
+		);
+	}
 
 	return (
 		<>
@@ -115,6 +168,9 @@ const UploadTypes = ( props ) => {
 				<Button
 					variant="secondary"
 					icon={ <Link /> }
+					onClick={ () => {
+						setIsUrlSelected( true );
+					} }
 				>
 					{ __( 'URL', 'photo-block' ) }
 				</Button>
