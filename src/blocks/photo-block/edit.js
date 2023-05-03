@@ -125,7 +125,6 @@ const PhotoBlock = ( props ) => {
 			case 'initial':
 				return (
 					<InitialScreen
-						forwardRef={ filepondRef }
 						attributes={ attributes }
 						setAttributes={ setAttributes }
 					/>

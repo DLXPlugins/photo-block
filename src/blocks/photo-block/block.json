@@ -57,7 +57,18 @@
 			"type": "string",
 			"default": "9"
 		},
-		
+		"mediaLibraryAspectRatio": {
+			"type": "string",
+			"default": "16:9"
+		},
+		"mediaLibrarySuggestedWidth": {
+			"type": "string",
+			"default": "1280"
+		},
+		"mediaLibrarySuggestedHeight": {
+			"type": "string",
+			"default": "720"
+		},
 		"screen": {
 			"type": "string",
 			"default": "initial"

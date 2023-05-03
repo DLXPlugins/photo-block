@@ -18,6 +18,8 @@ import {
 	PlaceHolder,
 } from '@wordpress/components';
 
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+
 import {
 	Database,
 	Link,
@@ -26,7 +28,7 @@ import {
 	ArrowBigLeftDash,
 } from 'lucide-react';
 
-import { forwardRef, useContext } from '@wordpress/element';
+import { useContext, useCallback } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 
@@ -39,13 +41,16 @@ import UploaderContext from '../../contexts/UploaderContext';
  * @return {Function} Component.
  */
 const UploadTypes = ( props ) => {
+	const { attributes, setAttributes } = props;
 
 	// Get context.
 	const {
 		imageFile,
 		setScreen,
 		filepondInstance,
+		setImageFile,
 	} = useContext( UploaderContext );
+
 	return (
 		<>
 			<div className="dlx-photo-block__upload-types__container">
@@ -72,12 +77,41 @@ const UploadTypes = ( props ) => {
 				>
 					{ __( 'Upload', 'photo-block' ) }
 				</Button>
-				<Button
-					variant="secondary"
-					icon={ <Image /> }
-				>
-					{ __( 'Media Library', 'photo-block' ) }
-				</Button>
+				<MediaUploadCheck>
+					<MediaUpload
+						allowedTypes="image"
+						mode="browse"
+						multiple={ false }
+						title={ __( 'Please select a Photo', 'photo-block' ) }
+						render={ ( { open } ) => (
+							<Button
+								variant="secondary"
+								icon={ <Image /> }
+								onClick={ () => {
+									open();
+								} }
+							>
+								{ __( 'Media Library', 'photo-block' ) }
+							</Button>
+						) }
+						onSelect={ ( media ) => {
+							const selectedMedia = {
+								id: media.id,
+								url: media.sizes?.large?.url ?? media.sizes.full.url,
+								width: media.sizes?.large?.width ?? media.sizes.full.width,
+								height: media.sizes?.large?.height ?? media.sizes.full.height,
+								alt: media.alt,
+								caption: media.caption,
+							};
+							setAttributes( {
+								photo: selectedMedia,
+							} );
+							setImageFile( selectedMedia );
+							setScreen( 'edit' );
+						} }
+					/>
+				</MediaUploadCheck>
+
 				<Button
 					variant="secondary"
 					icon={ <Link /> }
