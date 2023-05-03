@@ -1504,45 +1504,9 @@ var InitialScreen = function InitialScreen(props) {
     isUploading = _useContext.isUploading,
     isProcessingUpload = _useContext.isProcessingUpload,
     isUploadError = _useContext.isUploadError;
-  var attributes = props.attributes,
-    setAttributes = props.setAttributes;
-  var mediaLibraryAspectRatio = attributes.mediaLibraryAspectRatio,
-    mediaLibrarySuggestedWidth = attributes.mediaLibrarySuggestedWidth,
-    mediaLibrarySuggestedHeight = attributes.mediaLibrarySuggestedHeight;
 
   // Set the local inspector controls.
-  var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Media Library Settings', 'photo-block'),
-    initialOpen: true
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Aspect Ratio', 'photo-block'),
-    value: mediaLibraryAspectRatio,
-    onChange: function onChange(value) {
-      setAttributes({
-        mediaLibraryAspectRatio: value
-      });
-    }
-  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Suggested Width', 'photo-block'),
-    value: mediaLibrarySuggestedWidth,
-    type: "number",
-    onChange: function onChange(value) {
-      setAttributes({
-        mediaLibrarySuggestedWidth: value
-      });
-    },
-    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Suggested width in pixels for the image in the media library.', 'photo-block')
-  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Suggested Height', 'photo-block'),
-    value: mediaLibrarySuggestedHeight,
-    type: "number",
-    onChange: function onChange(value) {
-      setAttributes({
-        mediaLibrarySuggestedHeight: value
-      });
-    },
-    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Suggested height in pixels for the image in the media library.', 'photo-block')
-  }))));
+  var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null);
   return /*#__PURE__*/React.createElement(React.Fragment, null, localInspectorControls, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-initial"
   }, !isUploading && !isProcessingUpload && !isUploadError && /*#__PURE__*/React.createElement(_components_UploadTypes__WEBPACK_IMPORTED_MODULE_5__["default"], {

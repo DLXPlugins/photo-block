@@ -41,49 +41,9 @@ import UploadStatus from '../../components/UploadStatus';
 const InitialScreen = ( props ) => {
 	const { screen, isUploading, isProcessingUpload, isUploadError } = useContext( UploaderContext );
 
-	const { attributes, setAttributes } = props;
-	const { mediaLibraryAspectRatio, mediaLibrarySuggestedWidth, mediaLibrarySuggestedHeight } = attributes;
-
 	// Set the local inspector controls.
 	const localInspectorControls = (
-		<InspectorControls>
-			<PanelBody
-				title={ __( 'Media Library Settings', 'photo-block' ) }
-				initialOpen={ true }
-			>
-				<PanelRow>
-					<TextControl
-						label={ __( 'Aspect Ratio', 'photo-block' ) }
-						value={ mediaLibraryAspectRatio }
-						onChange={ ( value ) => {
-							setAttributes( { mediaLibraryAspectRatio: value } );
-						} }
-					/>
-				</PanelRow>
-				<PanelRow>
-					<TextControl
-						label={ __( 'Suggested Width', 'photo-block' ) }
-						value={ mediaLibrarySuggestedWidth }
-						type="number"
-						onChange={ ( value ) => {
-							setAttributes( { mediaLibrarySuggestedWidth: value } );
-						} }
-						help={ __( 'Suggested width in pixels for the image in the media library.', 'photo-block' ) }
-					/>
-				</PanelRow>
-				<PanelRow>
-					<TextControl
-						label={ __( 'Suggested Height', 'photo-block' ) }
-						value={ mediaLibrarySuggestedHeight }
-						type="number"
-						onChange={ ( value ) => {
-							setAttributes( { mediaLibrarySuggestedHeight: value } );
-						} }
-						help={ __( 'Suggested height in pixels for the image in the media library.', 'photo-block' ) }
-					/>
-				</PanelRow>
-			</PanelBody>
-		</InspectorControls>
+		<InspectorControls />
 	);
 
 	return (
