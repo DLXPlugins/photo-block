@@ -54,8 +54,6 @@ var PhotoBlock = function PhotoBlock(props) {
     screen = _useContext.screen,
     setScreen = _useContext.setScreen,
     isUploading = _useContext.isUploading,
-    inspectorControls = _useContext.inspectorControls,
-    setInspectorControls = _useContext.setInspectorControls,
     setIsUploading = _useContext.setIsUploading,
     isProcessingUpload = _useContext.isProcessingUpload,
     setIsProcessingUpload = _useContext.setIsProcessingUpload,
@@ -106,15 +104,6 @@ var PhotoBlock = function PhotoBlock(props) {
       uniqueId: generatedUniqueId
     });
   }, []);
-
-  /**
-   * Get a unique ID for the block for inline styling if necessary.
-   */
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    if ('edit' === screen) {
-      setInspectorControls(localInspectorControls);
-    }
-  }, [screen]);
 
   /**
    * Retrieve a full image via the REST API.
@@ -259,16 +248,8 @@ var PhotoBlock = function PhotoBlock(props) {
     setIsUploadError = _useState10[1];
   var _useState11 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
     _useState12 = _slicedToArray(_useState11, 2),
-    inspectorControls = _useState12[0],
-    setInspectorControls = _useState12[1];
-  var _useState13 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
-    _useState14 = _slicedToArray(_useState13, 2),
-    advancedInspectorControls = _useState14[0],
-    setAdvancedInspectorControls = _useState14[1];
-  var _useState15 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
-    _useState16 = _slicedToArray(_useState15, 2),
-    blockToolbar = _useState16[0],
-    setBlockToolbar = _useState16[1];
+    filepondInstance = _useState12[0],
+    setFilepondInstance = _useState12[1];
   return /*#__PURE__*/React.createElement(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_4__["default"].Provider, {
     value: {
       imageFile: imageFile,
@@ -281,12 +262,8 @@ var PhotoBlock = function PhotoBlock(props) {
       setIsProcessingUpload: setIsProcessingUpload,
       isUploadError: isUploadError,
       setIsUploadError: setIsUploadError,
-      inspectorControls: inspectorControls,
-      setInspectorControls: setInspectorControls,
-      advancedInspectorControls: advancedInspectorControls,
-      setAdvancedInspectorControls: setAdvancedInspectorControls,
-      blockToolbar: blockToolbar,
-      setBlockToolbar: setBlockToolbar
+      filepondInstance: filepondInstance,
+      setFilepondInstance: setFilepondInstance
     }
   }, /*#__PURE__*/React.createElement(_edit__WEBPACK_IMPORTED_MODULE_5__["default"], props));
 };
@@ -648,16 +625,16 @@ __webpack_require__.r(__webpack_exports__);
  * Upload Status component.
  *
  * @param {Object} props - Component props.
- * @param {Object} ref   - Filepond uploader reference.
  */
-var UploadStatus = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef)(function (props, ref) {
+var UploadStatus = function UploadStatus(props) {
   // Read in context values.
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_4__["default"]),
     imageFile = _useContext.imageFile,
     setIsUploading = _useContext.setIsUploading,
     setIsProcessingUpload = _useContext.setIsProcessingUpload,
     isUploadError = _useContext.isUploadError,
-    setIsUploadError = _useContext.setIsUploadError;
+    setIsUploadError = _useContext.setIsUploadError,
+    filepondInstance = _useContext.filepondInstance;
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-status"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -667,7 +644,7 @@ var UploadStatus = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef
       setIsUploadError(false);
       setIsUploading(false);
       setIsProcessingUpload(false);
-      ref.current.removeFile(); // start over. Go back to initial view.
+      filepondInstance.removeFile(); // start over. Go back to initial view.
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Cancel', 'photo-block')), isUploadError && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
@@ -675,10 +652,10 @@ var UploadStatus = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef
     onClick: function onClick() {
       setIsUploading(true);
       setIsUploadError(false);
-      ref.current.addFile(imageFile.file); // Start upload process again.
+      filepondInstance.addFile(imageFile.file); // Start upload process again.
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Retry Image', 'photo-block'))));
-});
+};
 /* harmony default export */ __webpack_exports__["default"] = (UploadStatus);
 
 /***/ }),
@@ -729,7 +706,7 @@ __webpack_require__.r(__webpack_exports__);
 // Register filepond plugins.
 (0,react_filepond__WEBPACK_IMPORTED_MODULE_2__.registerPlugin)((filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_3___default()), (filepond_plugin_image_exif_orientation__WEBPACK_IMPORTED_MODULE_4___default()), (filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_5___default()));
 
-var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef)(function (props, ref) {
+var UploadTarget = function UploadTarget(props) {
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_10__["default"]),
     setImageFile = _useContext.setImageFile,
     isUploading = _useContext.isUploading,
@@ -737,7 +714,8 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
     isProcessingUpload = _useContext.isProcessingUpload,
     setIsProcessingUpload = _useContext.setIsProcessingUpload,
     setIsUploadError = _useContext.setIsUploadError,
-    setScreen = _useContext.setScreen;
+    setScreen = _useContext.setScreen,
+    setFilepondInstance = _useContext.setFilepondInstance;
   var setAttributes = props.setAttributes;
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-target__container"
@@ -780,10 +758,9 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
     credits: false,
     stylePanelLayout: "integrated",
     labelIdle: "",
-    labelFileLoading: false,
     allowRemove: false,
     allowRevert: false,
-    ref: ref,
+    ref: setFilepondInstance,
     labelFileTypeNotAllowed: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Invalid file type', 'photo-block'),
     labelTapToCancel: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Click to cancel', 'photo-block'),
     acceptedFileTypes: ['image/*'],
@@ -817,7 +794,7 @@ var UploadTarget = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_8__.forwardRef
   }, /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"], null)), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-target__label-text"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Drag Photo Here or Upload', 'photo-block')))));
-});
+};
 /* harmony default export */ __webpack_exports__["default"] = (UploadTarget);
 
 /***/ }),
@@ -857,13 +834,14 @@ __webpack_require__.r(__webpack_exports__);
  * UploadTypes component.
  *
  * @param {Object} props - Component props.
- * @param {Object} ref   - Filepond uploader reference.
+ * @return {Function} Component.
  */
-var UploadTypes = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef)(function (props, ref) {
+var UploadTypes = function UploadTypes(props) {
   // Get context.
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_4__["default"]),
     imageFile = _useContext.imageFile,
-    setScreen = _useContext.setScreen;
+    setScreen = _useContext.setScreen,
+    filepondInstance = _useContext.filepondInstance;
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-types__container"
   }, imageFile && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -877,7 +855,7 @@ var UploadTypes = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef)
     variant: "secondary",
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], null),
     onClick: function onClick() {
-      ref.current.browse();
+      filepondInstance.browse();
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Upload', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
@@ -892,7 +870,7 @@ var UploadTypes = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef)
       setScreen('data');
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Data', 'photo-block'))));
-});
+};
 /* harmony default export */ __webpack_exports__["default"] = (UploadTypes);
 
 /***/ }),
@@ -972,9 +950,7 @@ var CropScreen = function CropScreen(props) {
   var _fullsizePhoto$url;
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_7__["default"]),
     screen = _useContext.screen,
-    setScreen = _useContext.setScreen,
-    setInspectorControls = _useContext.setInspectorControls,
-    setBlockToolbar = _useContext.setBlockToolbar;
+    setScreen = _useContext.setScreen;
   var attributes = props.attributes,
     setAttributes = props.setAttributes;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
@@ -1338,9 +1314,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     height = photo.height;
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_4__["default"]),
     screen = _useContext.screen,
-    setScreen = _useContext.setScreen,
-    setInspectorControls = _useContext.setInspectorControls,
-    setBlockToolbar = _useContext.setBlockToolbar;
+    setScreen = _useContext.setScreen;
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, "Data options here");
@@ -1401,9 +1375,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     setImageLoading = _useState2[1];
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_5__["default"]),
     screen = _useContext.screen,
-    setScreen = _useContext.setScreen,
-    setInspectorControls = _useContext.setInspectorControls,
-    setBlockToolbar = _useContext.setBlockToolbar;
+    setScreen = _useContext.setScreen;
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, "Edit options here");
@@ -1486,29 +1458,22 @@ __webpack_require__.r(__webpack_exports__);
  * @param {Object} props - Component props.
  * @param {Object} ref   - Filepond uploader reference.
  */
-var InitialScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(function (props, ref) {
+var InitialScreen = function InitialScreen(props) {
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_2__["default"]),
     screen = _useContext.screen,
-    setInspectorControls = _useContext.setInspectorControls,
     isUploading = _useContext.isUploading,
     isProcessingUpload = _useContext.isProcessingUpload,
-    isUploadError = _useContext.isUploadError,
-    setBlockToolbar = _useContext.setBlockToolbar;
+    isUploadError = _useContext.isUploadError;
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null);
   return /*#__PURE__*/React.createElement(React.Fragment, null, localInspectorControls, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-initial"
-  }, !isUploading && !isProcessingUpload && !isUploadError && /*#__PURE__*/React.createElement(_components_UploadTypes__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    forwardRef: ref
-  }), (isUploading || isProcessingUpload || isUploadError) && /*#__PURE__*/React.createElement(_components_UploadStatus__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    forwardRef: ref
-  }), /*#__PURE__*/React.createElement(_components_UploadTarget__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    forwardRef: ref,
+  }, !isUploading && !isProcessingUpload && !isUploadError && /*#__PURE__*/React.createElement(_components_UploadTypes__WEBPACK_IMPORTED_MODULE_3__["default"], null), (isUploading || isProcessingUpload || isUploadError) && /*#__PURE__*/React.createElement(_components_UploadStatus__WEBPACK_IMPORTED_MODULE_5__["default"], null), /*#__PURE__*/React.createElement(_components_UploadTarget__WEBPACK_IMPORTED_MODULE_4__["default"], {
     attributes: props.attributes,
     setAttributes: props.setAttributes
   })));
-});
+};
 /* harmony default export */ __webpack_exports__["default"] = (InitialScreen);
 
 /***/ }),

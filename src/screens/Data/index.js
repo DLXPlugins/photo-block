@@ -12,7 +12,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 	const { photo } = attributes;
 	const { url, id, width, height } = photo;
 
-	const { screen, setScreen, setInspectorControls, setBlockToolbar } = useContext( UploaderContext );
+	const { screen, setScreen } = useContext( UploaderContext );
 
 
 	// Set the local inspector controls.

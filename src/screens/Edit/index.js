@@ -19,7 +19,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
 
-	const { screen, setScreen, setInspectorControls, setBlockToolbar } =
+	const { screen, setScreen } =
 		useContext( UploaderContext );
 
 	// Set the local inspector controls.

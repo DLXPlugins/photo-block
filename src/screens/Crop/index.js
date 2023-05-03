@@ -33,7 +33,7 @@ import AspectRatioIcon from '../../components/Icons/AspectRatio';
 import ToolbarAspectRatio from '../../components/ToolbarAspectRatio';
 
 const CropScreen = ( props ) => {
-	const { screen, setScreen, setInspectorControls, setBlockToolbar } =
+	const { screen, setScreen } =
 		useContext( UploaderContext );
 	const { attributes, setAttributes } = props;
 	

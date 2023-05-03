@@ -16,9 +16,8 @@ import UploaderContext from '../../contexts/UploaderContext';
  * Upload Status component.
  *
  * @param {Object} props - Component props.
- * @param {Object} ref   - Filepond uploader reference.
  */
-const UploadStatus = forwardRef( ( props, ref ) => {
+const UploadStatus = ( props ) => {
 	// Read in context values.
 	const {
 		imageFile,
@@ -26,6 +25,7 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 		setIsProcessingUpload,
 		isUploadError,
 		setIsUploadError,
+		filepondInstance,
 	} = useContext( UploaderContext );
 	return (
 		<>
@@ -37,7 +37,7 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 						setIsUploadError( false );
 						setIsUploading( false );
 						setIsProcessingUpload( false );
-						ref.current.removeFile(); // start over. Go back to initial view.
+						filepondInstance.removeFile(); // start over. Go back to initial view.
 					} }
 				>
 					{ __( 'Cancel', 'photo-block' ) }
@@ -49,7 +49,7 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 						onClick={ () => {
 							setIsUploading( true );
 							setIsUploadError( false );
-							ref.current.addFile( imageFile.file ); // Start upload process again.
+							filepondInstance.addFile( imageFile.file ); // Start upload process again.
 						} }
 					>
 						{ __( 'Retry Image', 'photo-block' ) }
@@ -58,5 +58,5 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 			</div>
 		</>
 	);
-} );
+};
 export default UploadStatus;

@@ -36,14 +36,15 @@ import UploaderContext from '../../contexts/UploaderContext';
  * UploadTypes component.
  *
  * @param {Object} props - Component props.
- * @param {Object} ref   - Filepond uploader reference.
+ * @return {Function} Component.
  */
-const UploadTypes = forwardRef( ( props, ref ) => {
+const UploadTypes = ( props ) => {
 
 	// Get context.
 	const {
 		imageFile,
 		setScreen,
+		filepondInstance,
 	} = useContext( UploaderContext );
 	return (
 		<>
@@ -66,7 +67,7 @@ const UploadTypes = forwardRef( ( props, ref ) => {
 					variant="secondary"
 					icon={ <Upload /> }
 					onClick={ () => {
-						ref.current.browse();
+						filepondInstance.browse();
 					} }
 				>
 					{ __( 'Upload', 'photo-block' ) }
@@ -95,5 +96,5 @@ const UploadTypes = forwardRef( ( props, ref ) => {
 			</div>
 		</>
 	);
-} );
+};
 export default UploadTypes;

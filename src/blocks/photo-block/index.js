@@ -11,9 +11,7 @@ const PhotoBlock = ( props ) => {
 	const [ isUploading, setIsUploading ] = useState( false );
 	const [ isProcessingUpload, setIsProcessingUpload ] = useState( false );
 	const [ isUploadError, setIsUploadError ] = useState( false );
-	const [ inspectorControls, setInspectorControls ] = useState( null );
-	const [ advancedInspectorControls, setAdvancedInspectorControls ] = useState( null );
-	const [ blockToolbar, setBlockToolbar ] = useState( null );
+	const [ filepondInstance, setFilepondInstance ] = useState( null );
 
 	return (
 		<UploaderContext.Provider
@@ -28,12 +26,8 @@ const PhotoBlock = ( props ) => {
 				setIsProcessingUpload,
 				isUploadError,
 				setIsUploadError,
-				inspectorControls,
-				setInspectorControls,
-				advancedInspectorControls,
-				setAdvancedInspectorControls,
-				blockToolbar,
-				setBlockToolbar,
+				filepondInstance,
+				setFilepondInstance,
 			} }
 		>
 			<Edit { ...props } />

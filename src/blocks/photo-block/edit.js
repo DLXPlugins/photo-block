@@ -48,8 +48,6 @@ const PhotoBlock = ( props ) => {
 		screen,
 		setScreen,
 		isUploading,
-		inspectorControls,
-		setInspectorControls,
 		setIsUploading,
 		isProcessingUpload,
 		setIsProcessingUpload,
@@ -108,15 +106,6 @@ const PhotoBlock = ( props ) => {
 		// Set unique ID for block (for styling).
 		setAttributes( { uniqueId: generatedUniqueId } );
 	}, [] );
-
-	/**
-	 * Get a unique ID for the block for inline styling if necessary.
-	 */
-	useEffect( () => {
-		if ( 'edit' === screen ) {
-			setInspectorControls( localInspectorControls );
-		}
-	}, [ screen ] );
 
 	/**
 	 * Retrieve a full image via the REST API.

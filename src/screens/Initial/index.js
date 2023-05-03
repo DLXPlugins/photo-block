@@ -17,8 +17,8 @@ import UploadStatus from '../../components/UploadStatus';
  * @param {Object} props - Component props.
  * @param {Object} ref   - Filepond uploader reference.
  */
-const InitialScreen = forwardRef( ( props, ref ) => {
-	const { screen, setInspectorControls, isUploading, isProcessingUpload, isUploadError, setBlockToolbar }	= useContext( UploaderContext );
+const InitialScreen = ( props ) => {
+	const { screen, isUploading, isProcessingUpload, isUploadError }	= useContext( UploaderContext );
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
@@ -30,14 +30,14 @@ const InitialScreen = forwardRef( ( props, ref ) => {
 			{ localInspectorControls }
 			<div className="dlx-photo-block__screen-initial">
 				{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
-					<UploadTypes forwardRef={ ref } />
+					<UploadTypes />
 				) }
 				{ ( isUploading || isProcessingUpload || isUploadError ) && (
-					<UploadStatus forwardRef={ ref } />
+					<UploadStatus />
 				) }
-				<UploadTarget forwardRef={ ref } attributes={ props.attributes } setAttributes={ props.setAttributes } />
+				<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } />
 			</div>
 		</>
 	);
-} );
+};
 export default InitialScreen;

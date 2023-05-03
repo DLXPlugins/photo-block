@@ -13,8 +13,8 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import 'filepond/dist/filepond.min.css';
 
 import {
-	forwardRef,
 	useContext,
+	useState,
 } from '@wordpress/element';
 
 import { Upload } from 'lucide-react';
@@ -31,7 +31,7 @@ registerPlugin(
 );
 
 import { redoSvg, processSvg } from '../../blocks/photo-block/icons/filepond';
-const UploadTarget = forwardRef( ( props, ref ) => {
+const UploadTarget = ( props ) => {
 	const {
 		setImageFile,
 		isUploading,
@@ -40,6 +40,7 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 		setIsProcessingUpload,
 		setIsUploadError,
 		setScreen,
+		setFilepondInstance,
 	} = useContext( UploaderContext );
 
 	const { setAttributes } = props;
@@ -97,10 +98,9 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 						credits={ false }
 						stylePanelLayout="integrated"
 						labelIdle=""
-						labelFileLoading={ false }
 						allowRemove={ false }
 						allowRevert={ false }
-						ref={ ref }
+						ref={ setFilepondInstance }
 						labelFileTypeNotAllowed={ __( 'Invalid file type', 'photo-block' ) }
 						labelTapToCancel={ __( 'Click to cancel', 'photo-block' ) }
 						acceptedFileTypes={ [ 'image/*' ] }
@@ -144,5 +144,5 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 			</div>
 		</>
 	);
-} );
+};
 export default UploadTarget;
