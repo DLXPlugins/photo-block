@@ -126,6 +126,31 @@ class Functions {
 	}
 
 	/**
+	 * Get the plugin's supported file extensions.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array The supported file extensions.
+	 */
+	public static function get_supported_file_extensions() {
+		$file_extensions = array(
+			'jpeg',
+			'jpg',
+			'gif',
+			'png',
+			'webp',
+		);
+		/**
+		 * Filter the valid file extensions for the photo block.
+		 *
+		 * @param array $file_extensions The valid mime types.
+		 */
+		$file_extensions = apply_filters( 'photo_block_file_extensions', $file_extensions );
+
+		return $file_extensions;
+	}
+
+	/**
 	 * Array data that must be sanitized.
 	 *
 	 * @param array $data Data to be sanitized.

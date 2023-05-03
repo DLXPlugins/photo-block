@@ -66,7 +66,12 @@ const UploadTarget = ( props ) => {
 							) => {
 								// todo - Need error checking and handling here.
 								const formData = new FormData();
-								formData.append( 'file', file, file.name );
+								// If file is not an object, treat as full URL.
+								if ( 'object' !== typeof file ) {
+									formData.append( 'url', file );
+								} else {
+									formData.append( 'file', file, file.name );
+								}
 								const request = new XMLHttpRequest();
 								request.open( 'POST', photoBlock.restUrl + '/add-image' );
 								request.setRequestHeader( 'X-WP-Nonce', photoBlock.restNonce );
@@ -86,6 +91,7 @@ const UploadTarget = ( props ) => {
 										error( 'oh no' );
 									}
 								};
+								console.log( formData );
 								request.send( formData );
 								return {
 									abort: () => {

@@ -25,16 +25,22 @@ import {
 	Link,
 	Image,
 	Upload,
-	CheckCircle2,
+	AlertCircle,
+	Loader2,
 	XCircle,
 	ArrowBigLeftDash,
+	Notice,
 } from 'lucide-react';
 
 import { useContext, useState, useEffect, useRef } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
+import classnames from 'classnames';
 
 import UploaderContext from '../../contexts/UploaderContext';
+import SendCommand from '../../utils/SendCommand';
+
+import WPNotice from '../../components/Notice';
 
 /**
  * UploadTypes component.
@@ -56,6 +62,9 @@ const UploadTypes = ( props ) => {
 	const [ isUrlSelected, setIsUrlSelected ] = useState( false );
 	const [ url, setUrl ] = useState( '' );
 	const [ urlInput, setUrlInput ] = useState( null );
+	const [ isUrlValidationError, setIsUrlValidationError ] = useState( false );
+	const [ isUrlSaving, setIsUrlSaving ] = useState( false );
+	const [ urlValidationErrorMessage, setUrlValidationErrorMessage ] = useState( '' );
 
 	/**
 	 * Focus on url when entered.
@@ -66,15 +75,44 @@ const UploadTypes = ( props ) => {
 		}
 	}, [ urlInput ] );
 
+	/**
+	 * Check for a valid URL before submitting via Ajax.
+	 *
+	 * @param {string} testUrl The URL string to check.
+	 * @return {boolean} True if the URL is valid, false if not.
+	 */
+	const isValidUrl = ( testUrl ) => {
+		// Test the beginning part of the URL.
+		const urlValidation = /^((http|https):\/\/)/;
+		if ( ! urlValidation.test( testUrl ) ) {
+			return false;
+		}
+
+		// Test the file extension.
+		const validExtensions = [ 'jpg', 'jpeg', 'png', 'gif', 'webp' ];
+		const parseUrl = new URL( testUrl );
+		const path = parseUrl.pathname.toLowerCase();
+
+		return validExtensions.some( ( extension ) => path.endsWith( extension ) );
+	};
+
 	if ( isUrlSelected ) {
 		return (
 			<>
 				<div className="dlx-photo-block__upload-types-url__container">
 					<TextControl
 						type="url"
+						className={
+							classnames( 'dlx-photo-block__upload-types-url__input', {
+								'is-url-saving': isUrlSaving,
+								'is-validation-error': isUrlValidationError,
+							} )
+						}
 						label={ __( 'Photo URL', 'photo-block' ) }
 						value={ url }
 						onChange={ ( value ) => {
+							setUrlValidationErrorMessage( '' );
+							setIsUrlValidationError( false );
 							setUrl( value );
 						} }
 						ref={ setUrlInput }
@@ -82,11 +120,45 @@ const UploadTypes = ( props ) => {
 					/>
 					<Button
 						variant="primary"
-						icon={ <CheckCircle2 /> }
-						className="dlx-photo-block__upload-types-url__upload"
+						icon={ isUrlSaving ? <Loader2 /> : <Upload /> }
+						disabled={ isUrlSaving || isUrlValidationError }
+						className={ classnames( 'dlx-photo-block__upload-types-url__upload', {
+							'is-url-saving': isUrlSaving,
+							'is-validation-error': isUrlValidationError,
+						} )
+						}
 						onClick={ () => {
-							console.log( url );
-							filepondInstance.addFile( url );
+							// Perform validation on the URL.
+							if ( ! isValidUrl( url ) ) {
+								setUrlValidationErrorMessage( __( 'Please enter a valid image URL', 'photo-block' ) );
+								setIsUrlValidationError( true );
+								urlInput.focus();
+								return;
+							}
+							setUrlValidationErrorMessage( '' );
+							setIsUrlSaving( true );
+							setIsUrlValidationError( false );
+							SendCommand(
+								photoBlock.restNonce,
+								{ url },
+								photoBlock.restUrl + '/add-image-from-url',
+								'POST'
+							).then( ( response ) => {
+								// Successful response.
+								const maybeUrl = response.data?.url ?? false; // Double-checking.
+								if ( maybeUrl ) {
+									setAttributes( { photo: response.data } );
+									setImageFile( response.data );
+									setScreen( 'edit' );
+								}
+							} ).catch( ( error ) => {
+								const errorMessage = error?.response?.data?.message ?? __( 'An unknown error occurred', 'photo-block' );
+								setUrlValidationErrorMessage( errorMessage );
+								setIsUrlValidationError( true );
+								urlInput.focus();
+							} ).then( () => {
+								setIsUrlSaving( false );
+							} );
 						} }
 						label={ __( 'Upload', 'photo-block' ) }
 					/>
@@ -96,10 +168,26 @@ const UploadTypes = ( props ) => {
 						className="dlx-photo-block__upload-types-url__cancel"
 						onClick={ () => {
 							setIsUrlSelected( false );
+							setUrlValidationErrorMessage( '' );
+							setIsUrlValidationError( false );
+							setIsUrlSaving( false );
 						} }
 						label={ __( 'Cancel', 'photo-block' ) }
 					/>
 				</div>
+				{
+					isUrlValidationError && (
+						<div className="dlx-photo-block__upload-types-url__error">
+							<WPNotice
+								message={ urlValidationErrorMessage }
+								status="error"
+								politeness="assertive"
+								icon={ AlertCircle }
+								inline={ false }
+							/>
+						</div>
+					)
+				}
 			</>
 		);
 	}

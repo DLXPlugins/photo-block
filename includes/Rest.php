@@ -47,6 +47,68 @@ class Rest {
 				},
 			),
 		);
+
+		// Register rest route for accepting an image URL and processing it.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/add-image-from-url',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( static::class, 'rest_add_image_from_url' ),
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+			),
+		);
+	}
+
+	/**
+	 * Callback function for the add image from URL REST route.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 */
+	public static function rest_add_image_from_url( $request ) {
+		$url = $request->get_param( 'url' );
+
+		// Do basic validation on the URL.
+		if ( ! $url || ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
+			return new \WP_Error( 'invalid_url', __( 'Invalid URL provided.', 'photo-block' ), array( 'status' => 400 ) );
+		}
+
+		// Check file extension.
+		$extension = pathinfo( $url, PATHINFO_EXTENSION );
+		if ( ! $extension ) {
+			return new \WP_Error( 'invalid_url', __( 'File extension not found.', 'photo-block' ), array( 'status' => 400 ) );
+		}
+		$valid_extensions = Functions::get_supported_file_extensions();
+		if ( ! in_array( $extension, $valid_extensions, true ) ) {
+			return new \WP_Error( 'invalid_url', __( 'Invalid file extension.', 'photo-block' ), array( 'status' => 400 ) );
+		}
+
+		// Get the file.
+		// Save the image to the media library.
+		if ( ! function_exists( 'media_sideload_image' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+		}
+		$attachment_id = media_sideload_image( $url, 0, '', 'id' );
+
+		// Check uploaded file for errors.
+		if ( is_wp_error( $attachment_id ) ) {
+			return $attachment_id;
+		}
+
+		// Get the Image URL.
+		$image_url = wp_get_attachment_image_src( $attachment_id, 'large' );
+
+		// Return the image URL and ID.
+		return array(
+			'url'    => $image_url[0],
+			'id'     => $attachment_id,
+			'width'  => $image_url[1],
+			'height' => $image_url[2],
+		);
 	}
 
 	/**
@@ -99,19 +161,9 @@ class Rest {
 		$file       = $image['file'];
 		$file_types = $image['file']['type'] ?? '';
 
-		// Check if is webp image that is being read in as text/html.
-		$can_skip_file_check = false;
-		if ( 'text/html' === $file_types ) {
-			// Check for webp extension.
-			$extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
-			if ( 'webp' === $extension ) {
-				$can_skip_file_check = true;
-			}
-		}
-
 		// Validate the image.
 		$valid_mime_types = Functions::get_supported_mime_types();
-		if ( ! in_array( $file_types, $valid_mime_types, true ) && ! $can_skip_file_check ) {
+		if ( ! in_array( $file_types, $valid_mime_types, true ) ) {
 			return new \WP_Error(
 				'invalid_image_type',
 				__( 'Invalid image type. Only JPG, PNG, GIF, and WEBP files are supported.', 'photo-block' ),
