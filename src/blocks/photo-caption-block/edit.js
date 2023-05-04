@@ -17,6 +17,7 @@ import {
 	ToolbarButton,
 	ToolbarGroup,
 	ToolbarDropdownMenu,
+	Modal,
 	Popover,
 	PlaceHolder,
 	MenuGroup,
@@ -29,9 +30,14 @@ import {
 	BlockControls,
 	useInnerBlocksProps,
 	InnerBlocks,
+	store,
 } from '@wordpress/block-editor';
 
-import { Crop, Image, Accessibility, Link, ZoomIn, RectangleHorizontal, RotateCcw, RotateCw, Save, X } from 'lucide-react';
+import {
+	useDispatch
+} from '@wordpress/data';
+
+import { Trash2, MoveVertical, SeparatorHorizontal, Check } from 'lucide-react';
 
 import { useInstanceId } from '@wordpress/compose';
 
@@ -47,6 +53,10 @@ const PhotoCaptionBlock = ( props ) => {
 		setCaptionPosition,
 	} = useContext( UploaderContext );
 
+	const [ captionPositionPopoverVisible, setCaptionPositionPopoverVisible ] = useState( false );
+	const [ captionPopoverRef, setCaptionPopoverRef ] = useState( null );
+	const [ removeCaptionModalVisible, setRemoveCaptionModalVisible ] = useState( false );
+
 	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
 		{
@@ -61,6 +71,8 @@ const PhotoCaptionBlock = ( props ) => {
 			renderAppender: InnerBlocks.DefaultBlockAppender,
 		}
 	);
+
+	const { removeBlocks } = useDispatch( store );
 
 
 	const blockProps = useBlockProps( {
@@ -86,6 +98,102 @@ const PhotoCaptionBlock = ( props ) => {
 		</InspectorControls>
 	);
 
+	const localToolbar = (
+		<BlockControls>
+			<ToolbarGroup>
+				<ToolbarButton
+					icon={ <SeparatorHorizontal /> }
+					label={ __( 'Caption Position', 'photo-block' ) }
+					onClick={ () => {
+						setCaptionPositionPopoverVisible( true );
+					} }
+					ref={ setCaptionPopoverRef }
+				>
+					{ __( 'Caption Position', 'photo-block' ) }
+				</ToolbarButton>
+				<ToolbarButton
+					icon={ <Trash2 /> }
+					label={ __( 'Remove Caption', 'photo-block' ) }
+					onClick={ () => {
+						setRemoveCaptionModalVisible( true );
+					} }
+				>
+					{ __( 'Remove Caption', 'photo-block' ) }
+				</ToolbarButton>
+			</ToolbarGroup>
+			{ captionPositionPopoverVisible && (
+				<Popover
+					position="bottom center"
+					onClose={ () => {
+						setCaptionPositionPopoverVisible( false );
+					} }
+					anchor={ captionPopoverRef }
+					className="photo-block__caption-position-popover"
+				>
+					<MenuGroup>
+						<MenuItem
+							icon={ 'top' === captionPosition ? <Check /> : null }
+							onClick={ () => {
+								setCaptionPosition( 'top' );
+								setCaptionPositionPopoverVisible( false );
+							} }
+						>
+							{ __( 'Top', 'photo-block' ) }
+						</MenuItem>
+						<MenuItem
+							icon={ 'overlay' === captionPosition ? <Check /> : null }
+							onClick={ () => {
+								setCaptionPosition( 'overlay' );
+								setCaptionPositionPopoverVisible( false );
+							} }
+						>
+							{ __( 'Overlay', 'photo-block' ) }
+						</MenuItem>
+						<MenuItem
+							icon={ 'bottom' === captionPosition ? <Check /> : null }
+							onClick={ () => {
+								setCaptionPosition( 'bottom' );
+								setCaptionPositionPopoverVisible( false );
+							} }
+						>
+							{ __( 'Bottom', 'photo-block' ) }
+						</MenuItem>
+					</MenuGroup>
+				</Popover>
+			) }
+			{ removeCaptionModalVisible && (
+				<Modal
+					title={ __( 'Remove Caption', 'photo-block' ) }
+					onRequestClose={ () => {
+						setRemoveCaptionModalVisible( false );
+					} }
+					className="photo-block__remove-caption-modal"
+				>
+					<p>{ __( 'Are you sure you want to remove the caption?', 'photo-block' ) }</p>
+					<ButtonGroup>
+						<Button
+							variant="primary"
+							onClick={ () => {
+								removeBlocks( clientId );
+								setRemoveCaptionModalVisible( false );
+							} }
+						>
+							{ __( 'Remove Caption', 'photo-block' ) }
+						</Button>
+						<Button
+							variant="secondary"
+							onClick={ () => {
+								setRemoveCaptionModalVisible( false );
+							} }
+						>
+							{ __( 'Cancel', 'photo-block' ) }
+						</Button>
+					</ButtonGroup>
+				</Modal>
+			) }
+		</BlockControls>
+	);
+
 	/**
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
@@ -96,6 +204,8 @@ const PhotoCaptionBlock = ( props ) => {
 
 	const block = (
 		<>
+			{ localInspectorControls }
+			{ localToolbar }
 			<div { ...innerBlockProps } />
 		</>
 	);

@@ -1,0 +1,13 @@
+.photo-block__caption-position-popover {
+	svg {
+		fill: none;
+	}
+}
+.photo-block__remove-caption-modal {
+	button {
+		margin-right: 8px;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}

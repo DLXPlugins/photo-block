@@ -1,5 +1,6 @@
 import metadata from './block.json';
 import { registerBlockType, createBlock } from '@wordpress/blocks';
+import { InnerBlocks } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import UploaderContext from '../../contexts/UploaderContext';
@@ -129,7 +130,7 @@ registerBlockType( metadata, {
 
 	// Render via PHP
 	save() {
-		return null;
+		return <InnerBlocks.Content />;
 	},
 	transforms: {
 		from: [

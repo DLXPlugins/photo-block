@@ -118,8 +118,6 @@ const CropScreen = ( props ) => {
 		return newDegrees;
 	};
 
-	console.log( aspectRatio );
-
 	// Set the local inspector controls.
 	const localInspectorControls = (
 		<InspectorControls>
