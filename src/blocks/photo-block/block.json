@@ -57,6 +57,26 @@
 			"type": "string",
 			"default": "9"
 		},
+		"mediaLinkType": {
+			"type": "string",
+			"default": "none"
+		},
+		"mediaLinkRel": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaLinkAnchorId": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaLinkClass": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaLinkNewTab": {
+			"type": "boolean",
+			"default": false
+		},
 		"mediaLibraryAspectRatio": {
 			"type": "string",
 			"default": "16:9"

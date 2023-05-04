@@ -34,6 +34,7 @@ import classnames from 'classnames';
 
 import UploaderContext from '../../contexts/UploaderContext';
 import SendCommand from '../../utils/SendCommand';
+import MediaLink from '../../components/MediaLink';
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes } = props;
@@ -44,6 +45,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ a11yPopover, setA11yPopover ] = useState( null );
 	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 	const [ imageSizeLoading, setImageSizeLoading ] = useState( false );
+	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
+	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
 
 	const { screen, setScreen } = useContext( UploaderContext );
 
@@ -356,10 +359,16 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					<ToolbarButton
 						icon={ <Link /> }
 						label={ __( 'Set Link Options', 'photo-block' ) }
-						onClick={ () => {} }
+						onClick={ () => {
+							setMediaLinkPopover( ! mediaLinkPopover );
+						} }
+						ref={ setMediaLinkRef }
 					/>
 				</ToolbarGroup>
 			</BlockControls>
+			{ mediaLinkPopover && (
+				<MediaLink attributes={ attributes } setAttributes={ setAttributes } anchorRef={ mediaLinkRef } />
+			) }
 			{ a11yPopover && (
 				<Popover
 					position="bottom center"

@@ -1,0 +1,30 @@
+.dlx-photo-block__media-link-popover {
+	
+
+	.components-popover__content {
+		padding: 15px;
+		min-width: 275px;
+	}
+	.components-base-control {
+		margin-bottom: 0;
+	}
+	.components-base-control__field {
+		margin-bottom: 0;
+	}
+	.components-base-control__help {
+		margin-bottom: 0;
+	}
+}
+.dlx-photo-block__media-link-container {
+	h2 {
+		margin-top: 0;
+	}
+}
+
+.dlx-photo-block__media-link-button-group {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-gap: 8px;
+	align-items: center;
+	margin-bottom: 15px;
+}
