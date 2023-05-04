@@ -126,6 +126,47 @@ class Functions {
 	}
 
 	/**
+	 * Get all the registered image sizes along with their dimensions
+	 *
+	 * @global array $_wp_additional_image_sizes
+	 *
+	 * @link http://core.trac.wordpress.org/ticket/18947 Reference ticket
+	 *
+	 * @return array $image_sizes The image sizes
+	 */
+	public static function get_all_image_sizes() {
+		global $_wp_additional_image_sizes;
+
+		$default_image_sizes = get_intermediate_image_sizes();
+
+		$image_sizes = array();
+		foreach ( $default_image_sizes as $size ) {
+			$image_sizes[ $size ]['label']  = ucfirst( str_replace( array( '-', '_' ), ' ', $size ) );
+			$image_sizes[ $size ]['width']  = intval( get_option( "{$size}_size_w" ) );
+			$image_sizes[ $size ]['height'] = intval( get_option( "{$size}_size_h" ) );
+			$image_sizes[ $size ]['crop']   = get_option( "{$size}_crop" ) ? get_option( "{$size}_crop" ) : false;
+		}
+
+		if ( isset( $_wp_additional_image_sizes ) && count( $_wp_additional_image_sizes ) ) {
+			foreach ( $_wp_additional_image_sizes as $size => $image_size ) {
+				$image_sizes[ $size ]['label']  = ucfirst( str_replace( array( '-', '_' ), ' ', $size ) );
+				$image_sizes[ $size ]['width']  = intval( $image_size['width'] );
+				$image_sizes[ $size ]['height'] = intval( $image_size['height'] );
+				$image_sizes[ $size ]['crop']   = $image_size['crop'] ? $image_size['crop'] : false;
+			}
+		}
+
+		$image_sizes['full'] = array(
+			'label'  => _x( 'Full', 'Full image size', 'photo-block' ),
+			'width'  => 0,
+			'height' => 0,
+			'crop'   => false,
+		);
+
+		return $image_sizes;
+	}
+
+	/**
 	 * Get the plugin's supported file extensions.
 	 *
 	 * @since 1.0.0

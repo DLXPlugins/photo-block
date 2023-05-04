@@ -6,37 +6,115 @@ import {
 	useEffect,
 	forwardRef,
 } from '@wordpress/element';
-import { Spinner, ToolbarGroup, ToolbarButton, Popover, TabPanel, TextControl, TextareaControl, PanelBody, PanelRow } from '@wordpress/components';
+import {
+	Spinner,
+	ToolbarGroup,
+	ToolbarButton,
+	Popover,
+	TabPanel,
+	TextControl,
+	TextareaControl,
+	PanelBody,
+	PanelRow,
+	SelectControl,
+	ButtonGroup,
+	Button,
+} from '@wordpress/components';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { Crop, Image, Accessibility, Link, Settings, Paintbrush } from 'lucide-react';
+import {
+	Crop,
+	Image,
+	Accessibility,
+	Link,
+	Settings,
+	Paintbrush,
+} from 'lucide-react';
+import classnames from 'classnames';
 
 import UploaderContext from '../../contexts/UploaderContext';
+import SendCommand from '../../utils/SendCommand';
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes } = props;
-	const { photo } = attributes;
+	const { photo, imageSize, imageDimensions, imageSizePercentage } = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
 	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
+	const [ imageSizeLoading, setImageSizeLoading ] = useState( false );
 
-	const { screen, setScreen } =
-		useContext( UploaderContext );
+	const { screen, setScreen } = useContext( UploaderContext );
+
+	// Setup useEffect to update image dimensions if empty.
+	useEffect( () => {
+		if ( ! imageDimensions.width || ! imageDimensions.height ) {
+			setAttributes( {
+				imageDimensions: {
+					...photo,
+				},
+			} );
+		}
+	}, [] );
+
+	/**
+	 * Retrieve an image based on size from REST API.
+	 *
+	 * @param {string} size Image size.
+	 */
+	const getImageFromSize = async( size ) => {
+		setImageSizeLoading( true );
+		await SendCommand( photoBlock.restNonce, {},
+			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ photo.id }/size=${ size }`, 'GET' ).
+			then( ( response ) => {
+				setAttributes( { photo: { ...photo, ...response.data } } );
+				setAttributes( { imageDimensions: { ...imageDimensions, ...response.data } } );
+				setAttributes( { imageSizePercentage: '100' } );
+			} ).
+			catch( ( error ) => {
+				// todo: error checking/display.
+				console.error( error );
+			} ).then( () => {
+				setImageSizeLoading( false );
+			} );
+	};
+
+	// Take a width/height and calculate the width based on the aspect ratio.
+	const calculateWidth = ( imageWidth, imageHeight, newHeight ) => {
+		const aspectRatio = imageWidth / imageHeight;
+
+		return Math.round( newHeight * aspectRatio );
+	};
+
+	// Take a width/height and calculate the height based on the aspect ratio.
+	const calculateHeight = ( imageWidth, imageHeight, newWidth ) => {
+		const aspectRatio = imageWidth / imageHeight;
+		return Math.round( newWidth / aspectRatio );
+	};
+
+	// Image Sizes.
+	const imageSizeOptions = [];
+	for ( const key in photoBlock.imageSizes ) {
+		const size = photoBlock.imageSizes[ key ];
+		imageSizeOptions.push( { value: key, label: size.label } );
+	}
 
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
-			<PanelBody title={ __( 'Image Settings', 'photo-block' ) }>
+			<PanelBody title={ __( 'Photo Settings', 'photo-block' ) }>
 				<PanelRow>
 					<TextControl
-						label={ __( 'Image Title', 'photo-block' ) }
+						label={ __( 'Photo Title', 'photo-block' ) }
 						value={ photo.title }
 						onChange={ ( title ) => {
 							setAttributes( { photo: { ...photo, title } } );
 						} }
-						placeholder={ __( 'Please enter a title for this image.', 'photo-block' ) }
+						placeholder={ __(
+							'Please enter a title for this photo.',
+							'photo-block'
+						) }
 					/>
 				</PanelRow>
 				<PanelRow>
@@ -46,19 +124,168 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						onChange={ ( alt ) => {
 							setAttributes( { photo: { ...photo, alt } } );
 						} }
-						placeholder={ __( 'Please describe this image.', 'photo-block' ) }
-						help={ __( 'Alt text provides a description of the image for screen readers and search engines.', 'photo-block' ) }
+						placeholder={ __( 'Please describe this photo.', 'photo-block' ) }
+						help={ __(
+							'Alt text provides a description of the photo for screen readers and search engines.',
+							'photo-block'
+						) }
 					/>
+				</PanelRow>
+				<PanelRow>
+					<SelectControl
+						label={ __( 'Image Size', 'photo-block' ) }
+						value={ imageSize }
+						onChange={ ( size ) => {
+							setAttributes( { imageSize: size } );
+							getImageFromSize( size );
+						} }
+						options={ imageSizeOptions }
+					/>
+				</PanelRow>
+				<PanelRow className="dlx-photo-block__image-dimensions-row">
+					<h2>{ __( 'Image Dimensions', 'photo-block' ) }</h2>
+					{ imageSizeLoading && <Spinner /> }
+					{ ! imageSizeLoading && (
+						<>
+							<div className="dlx-photo-block__image-dimensions">
+								<TextControl
+									label={ __( 'Width', 'photo-block' ) }
+									value={ imageDimensions.width ? imageDimensions.width : width }
+									onChange={ ( newWidth ) => {
+									// Get new height based on new width.
+										const calcHeight = calculateHeight( photo.width, photo.height, newWidth );
+										const newDimensions = {
+											width: newWidth,
+											height: calcHeight,
+										};
+										setAttributes( {
+											imageDimensions: { ...imageDimensions, ...newDimensions },
+										} );
+									} }
+									type="number"
+								/>
+								<TextControl
+									label={ __( 'Height', 'photo-block' ) }
+									value={ imageDimensions.height ? imageDimensions.height : height }
+									onChange={ ( newHeight ) => {
+										const calcWidth = calculateWidth( photo.width, photo.height, newHeight );
+										const newDimensions = {
+											width: calcWidth,
+											height: newHeight,
+										};
+										setAttributes( {
+											imageDimensions: { ...imageDimensions, ...newDimensions },
+										} );
+									} }
+									type="number"
+								/>
+							</div>
+							<div className="dlx-photo-block__image-dimensions-buttons">
+								<ButtonGroup
+									className="dlx-photo-block__image-dimensions-buttons-group"
+								>
+									<Button
+										isSmall
+										variant="secondary"
+										className={ 
+											classnames( 'dlx-photo-block__image-dimensions-buttons-group-button', {
+												'is-pressed': imageSizePercentage === '25' } )
+										}
+										onClick={ () => {
+											// Calc width/height based on percentage.
+											const calcWidth = Math.round( photo.width * 0.25 );
+											const calcHeight = Math.round( photo.height * 0.25 );
+											setAttributes( {
+												imageSizePercentage: '25',
+												imageDimensions: {
+													...imageDimensions,
+													width: calcWidth,
+													height: calcHeight,
+												},
+											} );
+										} }
+									>
+										{ __( '25%', 'photo-block' ) }
+									</Button>
+									<Button
+										isSmall
+										className={ 
+											classnames( 'dlx-photo-block__image-dimensions-buttons-group-button', {
+												'is-pressed': imageSizePercentage === '50' } )
+										}
+										variant="secondary"
+										onClick={ () => {
+											// Calc width/height based on percentage.
+											const calcWidth = Math.round( photo.width * 0.50 );
+											const calcHeight = Math.round( photo.height * 0.50 );
+											setAttributes( {
+												imageSizePercentage: '50',
+												imageDimensions: {
+													...imageDimensions,
+													width: calcWidth,
+													height: calcHeight,
+												},
+											} );
+										} }
+									>
+										{ __( '50%', 'photo-block' ) }
+									</Button>
+									<Button
+										isSmall
+										variant="secondary"
+										className={ 
+											classnames( 'dlx-photo-block__image-dimensions-buttons-group-button', {
+												'is-pressed': imageSizePercentage === '75' } )
+										}
+										onClick={ () => {
+											// Calc width/height based on percentage.
+											const calcWidth = Math.round( photo.width * 0.75 );
+											const calcHeight = Math.round( photo.height * 0.75 );
+											setAttributes( {
+												imageSizePercentage: '75',
+												imageDimensions: {
+													...imageDimensions,
+													width: calcWidth,
+													height: calcHeight,
+												},
+											} );
+										} }
+									>
+										{ __( '75%', 'photo-block' ) }
+									</Button>
+									<Button
+										isSmall
+										variant="secondary"
+										className={ 
+											classnames( 'dlx-photo-block__image-dimensions-buttons-group-button', {
+												'is-pressed': imageSizePercentage === '100' } )
+										}
+										onClick={ () => {
+											// Calc width/height based on percentage.
+											const calcWidth = Math.round( photo.width );
+											const calcHeight = Math.round( photo.height );
+											setAttributes( {
+												imageSizePercentage: '100',
+												imageDimensions: {
+													...imageDimensions,
+													width: calcWidth,
+													height: calcHeight,
+												},
+											} );
+										} }
+									>
+										{ __( '100%', 'photo-block' ) }
+									</Button>
+								</ButtonGroup>
+							</div>
+						</>
+					) }
 				</PanelRow>
 			</PanelBody>
 		</>
 	);
 
-	const stylesInspectorControls = (
-		<>
-			styles go here
-		</>
-	);
+	const stylesInspectorControls = <>styles go here</>;
 
 	const interfaceTabs = (
 		<TabPanel
@@ -67,7 +294,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			onSelect={ ( tab ) => {
 				setInspectorTab( tab );
 			} }
-			children={ () => ( <></> ) }
+			children={ () => <></> }
 			tabs={ [
 				{
 					name: 'settings',
@@ -150,7 +377,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								setAttributes( { photo: { ...photo, alt } } );
 							} }
 							placeholder={ __( 'Please describe this image.', 'photo-block' ) }
-							help={ __( 'Alt text provides a description of the image for screen readers and search engines.', 'photo-block' ) }
+							help={ __(
+								'Alt text provides a description of the image for screen readers and search engines.',
+								'photo-block'
+							) }
 						/>
 					</div>
 				</Popover>
@@ -178,8 +408,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				) }
 				<img
 					src={ url }
-					width={ width }
-					height={ height }
+					width={ imageDimensions.width }
+					height={ imageDimensions.height }
 					alt=""
 					onLoad={ () => {
 						setImageLoading( false );

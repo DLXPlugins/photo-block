@@ -60,6 +60,53 @@ class Rest {
 				},
 			),
 		);
+
+		// Register a rest route for getting an image.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/get-image-by-size/id=(?P<id>\d+)/size=(?P<size>\w+)',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( static::class, 'rest_get_image_by_size' ),
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+			),
+		);
+	}
+
+	/**
+	 * Callback function for getting an image by size.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 */
+	public static function rest_get_image_by_size( $request ) {
+		$id   = $request->get_param( 'id' );
+		$size = $request->get_param( 'size' );
+
+		// Check image ID.
+		if ( ! $id ) {
+			return new \WP_Error( 'no_image', __( 'No image ID was provided.', 'photo-block' ), array( 'status' => 400 ) );
+		}
+
+		// Check image size.
+		if ( ! $size ) {
+			return new \WP_Error( 'no_size', __( 'No image size was provided.', 'photo-block' ), array( 'status' => 400 ) );
+		}
+
+		// Get the Image URL.
+		$image_url = wp_get_attachment_image_src( $id, $size );
+		if ( empty( $image_url ) ) {
+			return new \WP_Error( 'no_image', __( 'No image was found.', 'photo-block' ), array( 'status' => 400 ) );
+		}
+
+		// Return the image URL and ID.
+		return array(
+			'url'    => $image_url[0],
+			'id'     => $id,
+			'width'  => $image_url[1],
+			'height' => $image_url[2],
+		);
 	}
 
 	/**

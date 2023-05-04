@@ -339,7 +339,6 @@ const CropScreen = ( props ) => {
 			);
 			const { data } = response;
 			setFullsizePhoto( data );
-			setAttributes( { photo: data } );
 			setShouldShowLoading( false );
 		}
 		fetchImage();

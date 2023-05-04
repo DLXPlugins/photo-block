@@ -99,6 +99,7 @@ class Blocks {
 				'restUrl'            => rest_url( 'dlxplugins/photo-block/v1' ),
 				'restNonce'          => wp_create_nonce( 'wp_rest' ),
 				'captionInnerBlocks' => $caption_innerblocks_supported,
+				'imageSizes'         => Functions::get_all_image_sizes(),
 			)
 		);
 

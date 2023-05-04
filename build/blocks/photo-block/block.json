@@ -77,9 +77,20 @@
       "type": "string",
       "default": "center"
     },
-    "caption": {
+    "imageSize": {
       "type": "string",
-      "default": ""
+      "default": "large"
+    },
+    "imageDimensions": {
+      "type": "object",
+      "default": {
+        "width": "",
+        "height": ""
+      }
+    },
+    "imageSizePercentage": {
+      "type": "string",
+      "default": "100"
     },
     "altText": {
       "type": "string",

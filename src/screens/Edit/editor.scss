@@ -50,3 +50,24 @@
 		}
 	}
 }
+.dlx-photo-block__image-dimensions-row {
+	display: block;
+	h2 {
+		width: 100%;
+		margin: 0;
+		margin-bottom: 8px;
+	}
+	.dlx-photo-block__image-dimensions {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 15px;
+		margin-bottom: 15px;
+
+		.components-base-control {
+			margin-bottom: 0;
+		}
+		.components-base-control__field {
+			margin-bottom: 0;
+		}
+	}
+}
