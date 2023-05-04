@@ -6,10 +6,10 @@ import {
 	useEffect,
 	forwardRef,
 } from '@wordpress/element';
-import { Spinner, ToolbarGroup, ToolbarButton, Popover, TextControl, TextareaControl } from '@wordpress/components';
+import { Spinner, ToolbarGroup, ToolbarButton, Popover, TabPanel, TextControl, TextareaControl, PanelBody, PanelRow } from '@wordpress/components';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { Crop, Image, Accessibility, Link } from 'lucide-react';
+import { Crop, Image, Accessibility, Link, Settings, Paintbrush } from 'lucide-react';
 
 import UploaderContext from '../../contexts/UploaderContext';
 
@@ -20,13 +20,78 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
+	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 
 	const { screen, setScreen } =
 		useContext( UploaderContext );
 
+	// Set settings inspector Controls.
+	const settingsInspectorControls = (
+		<>
+			<PanelBody title={ __( 'Image Settings', 'photo-block' ) }>
+				<PanelRow>
+					<TextControl
+						label={ __( 'Image Title', 'photo-block' ) }
+						value={ photo.title }
+						onChange={ ( title ) => {
+							setAttributes( { photo: { ...photo, title } } );
+						} }
+						placeholder={ __( 'Please enter a title for this image.', 'photo-block' ) }
+					/>
+				</PanelRow>
+				<PanelRow>
+					<TextareaControl
+						label={ __( 'Alt Text', 'photo-block' ) }
+						value={ photo.alt }
+						onChange={ ( alt ) => {
+							setAttributes( { photo: { ...photo, alt } } );
+						} }
+						placeholder={ __( 'Please describe this image.', 'photo-block' ) }
+						help={ __( 'Alt text provides a description of the image for screen readers and search engines.', 'photo-block' ) }
+					/>
+				</PanelRow>
+			</PanelBody>
+		</>
+	);
+
+	const stylesInspectorControls = (
+		<>
+			styles go here
+		</>
+	);
+
+	const interfaceTabs = (
+		<TabPanel
+			className="dlx-photo-block__inspector-tabs"
+			activeClass="active-tab"
+			onSelect={ ( tab ) => {
+				setInspectorTab( tab );
+			} }
+			children={ () => ( <></> ) }
+			tabs={ [
+				{
+					name: 'settings',
+					title: __( 'Settings', 'photo-block' ),
+					className: 'dlx-photo-block__inspector-tab',
+					icon: <Settings />,
+				},
+				{
+					name: 'styles',
+					title: __( 'Styles', 'photo-block' ),
+					className: 'dlx-photo-block__inspector-tab',
+					icon: <Paintbrush />,
+				},
+			] }
+		/>
+	);
+
 	// Set the local inspector controls.
 	const localInspectorControls = (
-		<InspectorControls>Edit options here</InspectorControls>
+		<InspectorControls>
+			{ interfaceTabs }
+			{ inspectorTab === 'settings' && settingsInspectorControls }
+			{ inspectorTab === 'styles' && stylesInspectorControls }
+		</InspectorControls>
 	);
 
 	const localToolbar = (
@@ -49,7 +114,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							setScreen( 'initial' );
 						} }
 					>
-						{ __( 'Replace Image', 'photo-block' ) }
+						{ __( 'Replace Photo', 'photo-block' ) }
 					</ToolbarButton>
 				</ToolbarGroup>
 				<ToolbarGroup>

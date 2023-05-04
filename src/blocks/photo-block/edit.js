@@ -108,14 +108,6 @@ const PhotoBlock = ( props ) => {
 	}, [] );
 
 	/**
-	 * Retrieve a full image via the REST API.
-	 */
-	const getFullImage = async () => {
-		const response = await SendCommand( photoBlock.restNonce, {}, `${ photoBlock.restUrl + '/get-image' }/id=${ photo.id }`, 'GET' );
-		return response;
-	};
-
-	/**
 	 * Get the screen to display.
 	 *
 	 * @return {Element} The screen to display.

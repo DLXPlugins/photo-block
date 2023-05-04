@@ -1,5 +1,5 @@
 import metadata from './block.json';
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, createBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import UploaderContext from '../../contexts/UploaderContext';
@@ -124,5 +124,15 @@ registerBlockType( metadata, {
 	// Render via PHP
 	save() {
 		return null;
+	},
+	transforms: {
+		from: [
+			{
+				type: 'enter',
+				regExp: /^photoblock$/,
+				transform: () => createBlock( 'dlxplugins/photo-block' ),
+			},
+		],
+		to: [],
 	},
 } );

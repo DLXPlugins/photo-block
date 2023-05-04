@@ -26,3 +26,27 @@
 	padding: 15px;
 	padding-top: 0;
 }
+
+.dlx-photo-block__inspector-tabs {
+	button.components-tab-panel__tabs-item {
+		flex: 1 1 0px;
+
+		&:after {
+			background: #DDD;
+			border-radius: 0;
+			bottom: 0;
+			content: "";
+			height: 1.5px;
+			left: 0;
+			pointer-events: none;
+			position: absolute;
+			right: 0;
+			transition: all .1s linear;
+		}
+		&.active-tab {
+			&:after {
+				background: var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba));
+			}
+		}
+	}
+}

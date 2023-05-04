@@ -515,6 +515,25 @@ svg.lucide {
   padding: 15px;
   padding-top: 0;
 }
+
+.dlx-photo-block__inspector-tabs button.components-tab-panel__tabs-item {
+  flex: 1 1 0px;
+}
+.dlx-photo-block__inspector-tabs button.components-tab-panel__tabs-item:after {
+  background: #DDD;
+  border-radius: 0;
+  bottom: 0;
+  content: "";
+  height: 1.5px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  transition: all 0.1s linear;
+}
+.dlx-photo-block__inspector-tabs button.components-tab-panel__tabs-item.active-tab:after {
+  background: var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba));
+}
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************/

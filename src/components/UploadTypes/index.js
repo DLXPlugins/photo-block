@@ -196,7 +196,7 @@ const UploadTypes = ( props ) => {
 		<>
 			<div className="dlx-photo-block__upload-types__container">
 				{
-					imageFile && (
+					( imageFile.url !== '' ) && (
 						<Button
 							variant="primary"
 							icon={ <ArrowBigLeftDash /> }
