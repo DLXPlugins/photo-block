@@ -5,6 +5,7 @@
   font-size: 16px;
 }
 
+.block-editor-block-icon svg.lucide,
 svg.lucide {
   fill: none;
   color: currentColor;
@@ -844,5 +845,19 @@ svg.lucide {
 .alignright .dlx-photo-block__screen-edit {
   justify-content: flex-end;
 }
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/CaptionAppender/editor.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+.block-list-appender .photo-block-admin__caption-appender > button.components-button {
+  color: #FFF;
+  padding: 25px 20px;
+}
+.block-list-appender .photo-block-admin__caption-appender > button.components-button svg {
+  color: #FFF;
+}
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/photo-caption-block/editor.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+
 
 /*# sourceMappingURL=index.css.map*/

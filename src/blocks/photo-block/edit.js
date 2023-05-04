@@ -26,8 +26,12 @@ import {
 import {
 	InspectorControls,
 	useBlockProps,
-	BlockControls,
+	useInnerBlocksProps,
+	store,
 } from '@wordpress/block-editor';
+
+import { useDispatch, useSelect } from '@wordpress/data';
+
 
 import { Crop, Image, Accessibility, Link, ZoomIn, RectangleHorizontal, RotateCcw, RotateCw, Save, X } from 'lucide-react';
 
@@ -39,6 +43,7 @@ import EditScreen from '../../screens/Edit';
 import CropScreen from '../../screens/Crop';
 import DataScreen from '../../screens/Data';
 import SendCommand from '../../utils/SendCommand';
+import CaptionAppender from '../../components/CaptionAppender';
 
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
@@ -53,6 +58,8 @@ const PhotoBlock = ( props ) => {
 		setIsProcessingUpload,
 		blockToolbar,
 		isUploadError,
+		hasCaption,
+		setHasCaption,
 	} = useContext( UploaderContext );
 
 	const blockProps = useBlockProps( {
@@ -66,8 +73,16 @@ const PhotoBlock = ( props ) => {
 	// Store the filepond upload ref.
 	const filepondRef = useRef( null );
 	const imageRef = useRef( null );
+	const [ captionInnerBlocksRef, setCaptionInnerBlocksRef ] = useState( null );
 
 	const { attributes, setAttributes, clientId } = props;
+
+	// Get a function that'll give us the innerblocks count for a custom inserter.
+	const { getBlockCount } = useSelect(
+        ( select ) => select( store ),
+        []
+    );
+	const innerBlocksCount = getBlockCount( clientId );
 
 	const {
 		uniqueId,
@@ -83,6 +98,25 @@ const PhotoBlock = ( props ) => {
 		borderRadiusSize,
 		typographyCaption,
 	} = attributes;
+
+	const captionInnerBlockProps = useInnerBlocksProps(
+		{
+			className: 'dlx-photo-block__caption',
+			ref: setCaptionInnerBlocksRef,
+		},
+		{
+			allowedBlocks: [ 'dlxplugins/photo-caption-block' ],
+			templateInsertUpdatesSelection: true,
+			renderAppender: () => ( <CaptionAppender numBlocks={ innerBlocksCount } clientId={ clientId } /> ),
+		}
+	);
+
+	/**
+	 * Detect when innerblock has changed.
+	 */
+	// useEffect( () => {
+	// 	console.log( innerBlocksCount );
+	// }, [ innerBlocksCount ] );
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
@@ -143,10 +177,22 @@ const PhotoBlock = ( props ) => {
 		return null;
 	};
 
+	/**
+	 * Returns a caption placeholder or caption if available.
+	 *
+	 * @return {Element} The caption placeholder or caption if available.
+	 */
+	const getCaption = () => {
+		return (
+			<div { ...captionInnerBlockProps } />
+		);
+	};
+
 	const block = (
 		<>
 			<section className="dlx-photo-block__container">
 				{ getCurrentScreen() }
+				{ getCaption() }
 			</section>
 		</>
 	);

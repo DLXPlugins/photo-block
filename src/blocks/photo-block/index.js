@@ -12,6 +12,8 @@ const PhotoBlock = ( props ) => {
 	const [ isProcessingUpload, setIsProcessingUpload ] = useState( false );
 	const [ isUploadError, setIsUploadError ] = useState( false );
 	const [ filepondInstance, setFilepondInstance ] = useState( null );
+	const [ hasCaption, setHasCaption ] = useState( props.attributes.caption ? true : false );
+	const [ captionPosition, setCaptionPosition ] = useState( props.attributes.captionPosition ?? 'bottom' ); // Can be top|bottom|left|right.
 
 	return (
 		<UploaderContext.Provider
@@ -28,6 +30,10 @@ const PhotoBlock = ( props ) => {
 				setIsUploadError,
 				filepondInstance,
 				setFilepondInstance,
+				hasCaption,
+				setHasCaption,
+				captionPosition,
+				setCaptionPosition,
 			} }
 		>
 			<Edit { ...props } />

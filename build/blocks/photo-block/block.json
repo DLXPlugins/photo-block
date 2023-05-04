@@ -85,6 +85,14 @@
       "type": "string",
       "default": ""
     },
+    "hasCaption": {
+      "type": "boolean",
+      "default": false
+    },
+    "captionPosition": {
+      "type": "string",
+      "default": "bottom"
+    },
     "overlayText": {
       "type": "string",
       "default": ""

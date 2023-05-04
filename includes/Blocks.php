@@ -69,12 +69,36 @@ class Blocks {
 			Functions::get_plugin_version(),
 			true
 		);
+
+		// Get supported innerBlocks for the Photo Caption Block.
+		$caption_innerblocks_supported = array(
+			'core/paragraph',
+			'core/heading',
+			'core/list',
+			'core/quote',
+			'core/pullquote',
+			'core/verse',
+			'core/preformatted',
+			'core/spacer',
+			'core/separator',
+			'core/button',
+			'core/columns',
+			'core/group',
+		);
+		/**
+		 * Filter the supported innerBlocks for the Photo Caption Block.
+		 *
+		 * @param array $caption_innerblocks_supported Array of supported innerBlocks.
+		 */
+		$caption_innerblocks_supported = apply_filters( 'photo_block_caption_innerblocks_supported', $caption_innerblocks_supported );
+
 		wp_localize_script(
 			'dlx-photo-block-editor',
 			'photoBlock',
 			array(
-				'restUrl' => rest_url( 'dlxplugins/photo-block/v1' ),
-				'restNonce' => wp_create_nonce( 'wp_rest' ),
+				'restUrl'            => rest_url( 'dlxplugins/photo-block/v1' ),
+				'restNonce'          => wp_create_nonce( 'wp_rest' ),
+				'captionInnerBlocks' => $caption_innerblocks_supported,
 			)
 		);
 

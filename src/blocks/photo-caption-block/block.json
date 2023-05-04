@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"title": "Caption Block",
+	"apiVersion": 2,
+	"name": "dlxplugins/photo-caption-block",
+	"parent": [ "dlxplugins/photo-block" ],
+	"category": "common",
+	"description": "A comprehensive caption block.",
+	"keywords": [
+		"photo",
+		"block",
+		"image",
+		"picture",
+		"photos",
+		"caption",
+		"credit"
+	],
+	"version": "1.0.0",
+	"textdomain": "photo-block",
+	"attributes": {
+		"uniqueId": {
+			"type": "string",
+			"default": ""
+		},
+		"captionPosition": {
+			"type": "string",
+			"default": "bottom"
+		}
+		
+	},
+	"supports": {
+		"anchor": false,
+		"align": false,
+		"className": true,
+		"alignWide": false,
+		"defaultStylePicker": false,
+		"spacing": {
+			"padding": false,
+			"margin": false
+		}
+	},
+	"example": {
+		"attributes": {}
+	},
+	"editorScript": "dlx-photo-block-editor",
+	"editorStyle": "dlx-photo-block-editor-css",
+	"style": "dlx-photo-block-frontend-and-editor"
+}
