@@ -6,7 +6,6 @@ import './editor.scss';
 import {
 	PanelBody,
 	PanelRow,
-	RangeControl,
 	TextControl,
 	TextareaControl,
 	ButtonGroup,
@@ -49,10 +48,6 @@ const MediaLink = ( props ) => {
 
 	// Get context.
 	const {
-		imageFile,
-		setScreen,
-		filepondInstance,
-		setImageFile,
 	} = useContext( UploaderContext );
 
 	const { mediaLinkType, mediaLinkTitle, mediaLinkUrl } = attributes;
@@ -185,6 +180,9 @@ const MediaLink = ( props ) => {
 									onChange={ ( value ) => {
 										if ( '' === attributes.mediaLinkRel && value ) {
 											setAttributes( { mediaLinkRel: 'noopener noreferrer' } );
+										}
+										if ( 'noopener noreferrer' === attributes.mediaLinkRel && ! value ) {
+											setAttributes( { mediaLinkRel: '' } );
 										}
 										setAttributes( { mediaLinkNewTab: value } );
 									} }

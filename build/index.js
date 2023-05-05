@@ -716,6 +716,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
 /* harmony import */ var _URLPicker__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../URLPicker */ "./src/components/URLPicker/index.js");
+function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure " + obj); }
 /**
  * Upload data row including Upload|Media Library|URL|Data.
  */
@@ -741,11 +742,7 @@ var MediaLink = function MediaLink(props) {
     anchorRef = props.anchorRef;
 
   // Get context.
-  var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__["default"]),
-    imageFile = _useContext.imageFile,
-    setScreen = _useContext.setScreen,
-    filepondInstance = _useContext.filepondInstance,
-    setImageFile = _useContext.setImageFile;
+  _objectDestructuringEmpty((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__["default"]));
   var mediaLinkType = attributes.mediaLinkType,
     mediaLinkTitle = attributes.mediaLinkTitle,
     mediaLinkUrl = attributes.mediaLinkUrl;
@@ -850,6 +847,11 @@ var MediaLink = function MediaLink(props) {
       if ('' === attributes.mediaLinkRel && value) {
         setAttributes({
           mediaLinkRel: 'noopener noreferrer'
+        });
+      }
+      if ('noopener noreferrer' === attributes.mediaLinkRel && !value) {
+        setAttributes({
+          mediaLinkRel: ''
         });
       }
       setAttributes({
