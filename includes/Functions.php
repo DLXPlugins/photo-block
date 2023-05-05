@@ -231,6 +231,42 @@ class Functions {
 	}
 
 	/**
+	 * Retrieve the image data for a given attachment ID.
+	 *
+	 * @param int    $attachment_id The attachment ID.
+	 * @param string $size          The image size.
+	 *
+	 * @return array {
+	 *    @type string $url The image URL.
+	 *    @type int $width The image width.
+	 *    @type int $height The image height.
+	 *    @type string $alt The image alt text.
+	 *    @type string $full The link to the full image.
+	 *    @type string $attachment_link The link to the attachment page.
+	 * }
+	 */
+	public static function get_image_data( $attachment_id, $size = 'full' ) {
+
+		// Get requested size.
+		$image_attachment = wp_get_attachment_image_src( $attachment_id, $size );
+		if ( ! $image_attachment ) {
+			return array();
+		}
+		$full_image_attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
+
+		$return = array(
+			'url'             => $image_attachment[0],
+			'width'           => $image_attachment[1],
+			'height'          => $image_attachment[2],
+			'alt'             => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+			'full'            => $full_image_attachment[0],
+			'attachment_link' => get_attachment_link( $attachment_id ),
+		);
+
+		return $return;
+	}
+
+	/**
 	 * Take a _ separated field and convert to camelcase.
 	 *
 	 * @param string $field Field to convert to camelcase.

@@ -19,7 +19,7 @@ import {
 	PlaceHolder,
 } from '@wordpress/components';
 
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+import { isURL, filterURLForDisplay } from '@wordpress/url';
 
 import {
 	Link2Off,
@@ -35,6 +35,7 @@ import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 
 import UploaderContext from '../../contexts/UploaderContext';
+import URLPicker from '../URLPicker';
 
 /**
  * UploadTypes component.
@@ -53,7 +54,7 @@ const MediaLink = ( props ) => {
 		setImageFile,
 	} = useContext( UploaderContext );
 
-	const { mediaLinkType } = attributes;
+	const { mediaLinkType, mediaLinkTitle, mediaLinkUrl } = attributes;
 
 	return (
 		<>
@@ -62,6 +63,9 @@ const MediaLink = ( props ) => {
 				className="dlx-photo-block__media-link-popover"
 				expandOnMobile={ true }
 				focusOnMount={ true }
+				onClose={ () => {
+					props.onClose();
+				} }
 				anchor={ anchorRef }
 			>
 				<div className="dlx-photo-block__media-link-container">
@@ -78,7 +82,7 @@ const MediaLink = ( props ) => {
 								setAttributes( { mediaLinkType: 'none' } );
 							} }
 						>
-							{ __( 'No link', 'photo-block' ) }
+							<span className="dlx-photo-block__media-link-button-text">{ __( 'No link', 'photo-block' ) }</span>
 						</Button>
 						<Button
 							variant="secondary"
@@ -117,6 +121,21 @@ const MediaLink = ( props ) => {
 							{ __( 'Custom link', 'photo-block' ) }
 						</Button>
 					</ButtonGroup>
+					{ 'custom' === mediaLinkType && (
+						<>
+							<URLPicker
+								restNonce={ photoBlock.restNonce }
+								restEndpoint={ photoBlock.restUrl + '/search/pages' }
+								itemIcon={ <Link2 /> }
+								onItemSelect={ ( e, url ) => {
+									setAttributes( {
+										mediaLinkUrl: url,
+									} );
+								} }
+								savedValue={ mediaLinkUrl }
+							/>
+						</>
+					) }
 					{ 'none' !== mediaLinkType && (
 						<PanelBody
 							title={ __( 'Advanced', 'photo-block' ) }
@@ -132,6 +151,16 @@ const MediaLink = ( props ) => {
 										}
 										setAttributes( { mediaLinkNewTab: value } );
 									} }
+								/>
+							</PanelRow>
+							<PanelRow>
+								<TextControl
+									label={ __( 'Link Title', 'photo-block' ) }
+									value={ mediaLinkTitle }
+									onChange={ ( value ) => {
+										setAttributes( { mediaLinkTitle: value } );
+									} }
+									help={ __( 'The link title attribute is for SEO and accessibility purposes. It is used to describe the link.', 'photo-block' ) }
 								/>
 							</PanelRow>
 							<PanelRow>

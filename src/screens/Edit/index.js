@@ -367,7 +367,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				</ToolbarGroup>
 			</BlockControls>
 			{ mediaLinkPopover && (
-				<MediaLink attributes={ attributes } setAttributes={ setAttributes } anchorRef={ mediaLinkRef } />
+				<MediaLink attributes={ attributes } setAttributes={ setAttributes } anchorRef={ mediaLinkRef } onClose={ () => {
+					setMediaLinkPopover( false );
+				}} />
 			) }
 			{ a11yPopover && (
 				<Popover

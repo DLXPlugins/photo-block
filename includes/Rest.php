@@ -73,6 +73,73 @@ class Rest {
 				},
 			),
 		);
+
+		// Register a route for searching posts/pages.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/search/pages',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'publish_posts' );
+				},
+				'callback'            => array( static::class, 'rest_get_pages' ),
+			)
+		);
+	}
+
+	/**
+	 * Returns the 5 most recent posts for the user
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 **/
+	public function rest_get_pages( $request ) {
+		$search = sanitize_text_field( urldecode( $request->get_param( 'search' ) ) );
+
+		$post_types_to_search = array(
+			'post',
+			'page',
+		);
+		/**
+		 * Filter the post types to search.
+		 *
+		 * @param array $post_types_to_search The post types to search.
+		 */
+		$post_types_to_search = apply_filters( 'photo_block_rest_post_types_to_search', $post_types_to_search );
+
+		// Get search query.
+		$args = array(
+			'post_type'      => $post_types_to_search,
+			'post_status'    => 'publish',
+			'posts_per_page' => 20,
+			's'              => $search,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		);
+		if ( empty( $search ) ) {
+			$args['orderby'] = 'date';
+			$args['order']   = 'DESC';
+		}
+
+		// Perform Search Query.
+		$app_query = new \WP_Query( $args );
+
+		// Return array of found posts/pages.
+		$app_data = array();
+		if ( $app_query->have_posts() ) {
+			while ( $app_query->have_posts() ) {
+				$app_query->the_post();
+				$app_data[] = array(
+					'value'     => get_the_ID(),
+					'label'     => html_entity_decode( get_the_title() ),
+					'permalink' => get_the_permalink(),
+					'slug'      => get_post_field( 'post_name', get_the_ID() ),
+					'type'      => get_post_type(),
+				);
+			}
+		}
+
+		wp_send_json_success( $app_data );
 	}
 
 	/**
@@ -94,19 +161,14 @@ class Rest {
 			return new \WP_Error( 'no_size', __( 'No image size was provided.', 'photo-block' ), array( 'status' => 400 ) );
 		}
 
-		// Get the Image URL.
-		$image_url = wp_get_attachment_image_src( $id, $size );
-		if ( empty( $image_url ) ) {
+		// Get the Image data.
+		$image_attachment = Functions::get_image_data( $id, $size );
+		if ( empty( $image_attachment ) ) {
 			return new \WP_Error( 'no_image', __( 'No image was found.', 'photo-block' ), array( 'status' => 400 ) );
 		}
 
 		// Return the image URL and ID.
-		return array(
-			'url'    => $image_url[0],
-			'id'     => $id,
-			'width'  => $image_url[1],
-			'height' => $image_url[2],
-		);
+		return $image_attachment;
 	}
 
 	/**
@@ -147,15 +209,10 @@ class Rest {
 		}
 
 		// Get the Image URL.
-		$image_url = wp_get_attachment_image_src( $attachment_id, 'large' );
+		$attachment_image = Functions::get_image_data( $attachment_id, 'large' );
 
 		// Return the image URL and ID.
-		return array(
-			'url'    => $image_url[0],
-			'id'     => $attachment_id,
-			'width'  => $image_url[1],
-			'height' => $image_url[2],
-		);
+		return $attachment_image;
 	}
 
 	/**
@@ -173,21 +230,16 @@ class Rest {
 			return new \WP_Error( 'no_image', __( 'No image ID was provided.', 'photo-block' ), array( 'status' => 400 ) );
 		}
 
-		// Get the Image URL.
-		$image_url = wp_get_attachment_image_src( $id, 'full' );
+		// Get the Image data.
+		$attachment_data = Functions::get_image_data( $id, 'large' );
 
 		// Check image URL.
-		if ( ! $image_url ) {
+		if ( empty( $attachment_data ) ) {
 			return new \WP_Error( 'no_image', __( 'No image was found.', 'photo-block' ), array( 'status' => 400 ) );
 		}
 
 		// Return the image URL and ID.
-		return array(
-			'url'    => $image_url[0],
-			'id'     => $id,
-			'width'  => $image_url[1],
-			'height' => $image_url[2],
-		);
+		return $attachment_data;
 	}
 
 	/**
@@ -235,14 +287,9 @@ class Rest {
 		$attachment_id = $uploaded_file;
 
 		// Get the Image URL.
-		$image_url = wp_get_attachment_image_src( $attachment_id, 'large' );
+		$attachment_data = Functions::get_image_data( $attachment_id, 'large' );
 
 		// Return the image URL and ID.
-		return array(
-			'url'    => $image_url[0],
-			'id'     => $attachment_id,
-			'width'  => $image_url[1],
-			'height' => $image_url[2],
-		);
+		return $attachment_data;
 	}
 }

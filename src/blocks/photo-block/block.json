@@ -26,11 +26,8 @@
 				"id": "",
 				"url": "",
 				"alt": "",
-				"caption": "",
-				"link": "",
-				"linkTarget": "",
-				"width": "",
-				"height": ""
+				"full": "",
+				"attachment_link": ""
 			}
 		},
 		"aspectRatio": {
@@ -69,7 +66,15 @@
 			"type": "string",
 			"default": ""
 		},
+		"mediaLinkUrl": {
+			"type": "string",
+			"default": ""
+		},
 		"mediaLinkClass": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaLinkTitle": {
 			"type": "string",
 			"default": ""
 		},

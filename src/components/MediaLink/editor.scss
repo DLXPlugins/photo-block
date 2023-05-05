@@ -3,7 +3,7 @@
 
 	.components-popover__content {
 		padding: 15px;
-		min-width: 275px;
+		min-width: 400px;
 	}
 	.components-base-control {
 		margin-bottom: 0;
@@ -23,8 +23,25 @@
 
 .dlx-photo-block__media-link-button-group {
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr 1fr;
 	grid-gap: 8px;
 	align-items: center;
 	margin-bottom: 15px;
+	
+	.components-button.has-icon {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		grid-gap: 8px;
+		align-items: center;
+		text-align: left;
+		padding: 0 15px;
+
+		.dlx-photo-block__media-link-button-text {
+			order: 1;
+		}
+		svg {
+			margin: 0;
+			order: 2;
+		}
+	}
 }
