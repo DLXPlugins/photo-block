@@ -30,6 +30,31 @@
         "attachment_link": ""
       }
     },
+    "photoOpacity": {
+      "type": "number",
+      "default": 100
+    },
+    "photoBlur": {
+      "type": "number",
+      "default": 0
+    },
+    "photoDropShadow": {
+      "type": "object",
+      "default": {
+        "color": "#000000",
+        "opacity": 1,
+        "blur": 0,
+        "spread": 0,
+        "horizontal": 0,
+        "vertical": 0,
+        "inset": false,
+        "enabled": false
+      }
+    },
+    "photoBackgroundColor": {
+      "type": "string",
+      "default": "#FFFFFF"
+    },
     "aspectRatio": {
       "type": "string",
       "default": "original"

@@ -19,6 +19,7 @@ import {
 	PanelRow,
 	SelectControl,
 	ButtonGroup,
+	RangeControl,
 	Button,
 } from '@wordpress/components';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
@@ -37,10 +38,12 @@ import classnames from 'classnames';
 import UploaderContext from '../../contexts/UploaderContext';
 import SendCommand from '../../utils/SendCommand';
 import MediaLink from '../../components/MediaLink';
+import ColorPickerControl from '../../components/ColorPicker';
+import DropShadowControl from '../../components/DropShadow';
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes } = props;
-	const { photo, imageSize, imageDimensions, imageSizePercentage } = attributes;
+	const { uniqueId, photo, imageSize, imageDimensions, imageSizePercentage, photoOpacity, photoBlur, photoDropShadow, photoBackgroundColor } = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
@@ -192,7 +195,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									<Button
 										isSmall
 										variant="secondary"
-										className={ 
+										className={
 											classnames( 'dlx-photo-block__image-dimensions-buttons-group-button', {
 												'is-pressed': imageSizePercentage === '25' } )
 										}
@@ -214,7 +217,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									</Button>
 									<Button
 										isSmall
-										className={ 
+										className={
 											classnames( 'dlx-photo-block__image-dimensions-buttons-group-button', {
 												'is-pressed': imageSizePercentage === '50' } )
 										}
@@ -238,7 +241,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									<Button
 										isSmall
 										variant="secondary"
-										className={ 
+										className={
 											classnames( 'dlx-photo-block__image-dimensions-buttons-group-button', {
 												'is-pressed': imageSizePercentage === '75' } )
 										}
@@ -261,7 +264,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									<Button
 										isSmall
 										variant="secondary"
-										className={ 
+										className={
 											classnames( 'dlx-photo-block__image-dimensions-buttons-group-button', {
 												'is-pressed': imageSizePercentage === '100' } )
 										}
@@ -290,7 +293,51 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
-	const stylesInspectorControls = <>styles go here</>;
+	const stylesInspectorControls = (
+		<>
+			<PanelBody
+				title={ __( 'Image Styles', 'photo-block' ) }
+				initialOpen={ true }
+			>
+				<ColorPickerControl
+					value={ photoBackgroundColor }
+					key={ 'background-color-photo' }
+					onChange={ ( slug, newValue ) => {
+						setAttributes( { photoBackgroundColor: newValue } );
+					} }
+					label={ __( 'Background Color', 'highlight-and-share' ) }
+					defaultColors={ photoBlock.palette }
+					defaultColor={ '#FFFFFF' }
+					slug={ 'background-color-photo' }
+				/>
+				<RangeControl
+					label={ __( 'Opacity', 'photo-block' ) }
+					value={ photoOpacity }
+					onChange={ ( newOpacity ) => {
+						setAttributes( { photoOpacity: newOpacity } );
+					} }
+					min={ 0 }
+					max={ 1 }
+					step={ 0.01 }
+				/>
+				<RangeControl
+					label={ __( 'Blur', 'photo-block' ) }
+					value={ photoBlur }
+					onChange={ ( newBlur ) => {
+						setAttributes( { photoBlur: newBlur } );
+					} }
+					min={ 0 }
+					max={ 10 }
+					step={ 0.01 }
+				/>
+				<DropShadowControl
+					label={ __( 'Drop Shadow', 'photo-block' ) }
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</PanelBody>
+		</>
+	);
 
 	const interfaceTabs = (
 		<TabPanel
@@ -341,12 +388,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					</ToolbarButton>
 					<ToolbarButton
 						icon={ <Stars /> }
-						label={ __( 'Edit Photo', 'photo-block' ) }
+						label={ __( 'Effects', 'photo-block' ) }
 						onClick={ () => {
 							// setScreen( 'initial' );
 						} }
 					>
-						{ __( 'Edit', 'photo-block' ) }
+						{ __( 'Effects', 'photo-block' ) }
 					</ToolbarButton>
 				</ToolbarGroup>
 				<ToolbarGroup>
@@ -382,7 +429,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			{ mediaLinkPopover && (
 				<MediaLink attributes={ attributes } setAttributes={ setAttributes } anchorRef={ mediaLinkRef } onClose={ () => {
 					setMediaLinkPopover( false );
-				}} />
+				} } />
 			) }
 			{ a11yPopover && (
 				<Popover
@@ -425,10 +472,21 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
+	const styles = `
+		#${ uniqueId } .dlx-photo-block__screen-edit-image-wrapper {
+			background: ${ photoBackgroundColor };
+		}
+		#${ uniqueId } img {
+			opacity: ${ photoOpacity };
+			${ photoBlur ? `filter: blur(${ photoBlur }px);` : '' }
+		}
+	`;
+
 	return (
 		<>
 			{ localInspectorControls }
 			{ localToolbar }
+			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
 				{ imageLoading && (
 					<div
@@ -443,16 +501,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<Spinner />
 					</div>
 				) }
-				<img
-					src={ url }
-					width={ imageDimensions.width }
-					height={ imageDimensions.height }
-					alt=""
-					onLoad={ () => {
-						setImageLoading( false );
-					} }
-					ref={ ref }
-				/>
+				<div className="dlx-photo-block__screen-edit-image-wrapper">
+					<img
+						src={ url }
+						width={ imageDimensions.width }
+						height={ imageDimensions.height }
+						alt=""
+						onLoad={ () => {
+							setImageLoading( false );
+						} }
+						ref={ ref }
+					/>
+				</div>
 			</div>
 		</>
 	);

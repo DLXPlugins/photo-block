@@ -281,6 +281,15 @@ class Functions {
 		if ( isset( $settings['color']['palette']['theme'] ) ) {
 			$color_palette = $settings['color']['palette']['theme'];
 		}
+
+		// If empty color palette, try to get from theme supports.
+		if ( empty( $color_palette ) ) {
+			$color_palette = get_theme_support( 'editor-color-palette' );
+			if ( ! empty( $color_palette ) ) {
+				$color_palette = $color_palette[0];
+			}
+		}
+
 		/**
 		 * Filter the color palette used by the plugin.
 		 *

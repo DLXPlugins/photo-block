@@ -3,7 +3,7 @@
  *
  * Credit: Forked from @generateblocks
  */
-
+import './editor.scss';
 import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';

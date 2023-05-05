@@ -190,7 +190,7 @@ const PhotoBlock = ( props ) => {
 
 	const block = (
 		<>
-			<section className="dlx-photo-block__container">
+			<section className="dlx-photo-block__container" id={ uniqueId }>
 				{ getCurrentScreen() }
 				{ getCaption() }
 			</section>
