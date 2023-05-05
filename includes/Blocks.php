@@ -100,6 +100,7 @@ class Blocks {
 				'restNonce'          => wp_create_nonce( 'wp_rest' ),
 				'captionInnerBlocks' => $caption_innerblocks_supported,
 				'imageSizes'         => Functions::get_all_image_sizes(),
+				'palette'            => functions::get_theme_color_palette(),
 			)
 		);
 

@@ -10,6 +10,7 @@ import {
 	Spinner,
 	ToolbarGroup,
 	ToolbarButton,
+	ToolbarItem,
 	Popover,
 	TabPanel,
 	TextControl,
@@ -29,6 +30,7 @@ import {
 	Link,
 	Settings,
 	Paintbrush,
+	Stars,
 } from 'lucide-react';
 import classnames from 'classnames';
 
@@ -330,21 +332,32 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <Crop /> }
-						label={ __( 'Crop and Edit', 'photo-block' ) }
+						label={ __( 'Crop', 'photo-block' ) }
 						onClick={ () => {
 							setScreen( 'crop' );
 						} }
 					>
-						{ __( 'Crop and Edit', 'photo-block' ) }
+						{ __( 'Crop', 'photo-block' ) }
 					</ToolbarButton>
 					<ToolbarButton
+						icon={ <Stars /> }
+						label={ __( 'Edit Photo', 'photo-block' ) }
+						onClick={ () => {
+							// setScreen( 'initial' );
+						} }
+					>
+						{ __( 'Edit', 'photo-block' ) }
+					</ToolbarButton>
+				</ToolbarGroup>
+				<ToolbarGroup>
+					<ToolbarButton
 						icon={ <Image /> }
-						label={ __( 'Replace Image', 'photo-block' ) }
+						label={ __( 'Replace Photo', 'photo-block' ) }
 						onClick={ () => {
 							setScreen( 'initial' );
 						} }
 					>
-						{ __( 'Replace Photo', 'photo-block' ) }
+						{ __( 'Replace', 'photo-block' ) }
 					</ToolbarButton>
 				</ToolbarGroup>
 				<ToolbarGroup>
