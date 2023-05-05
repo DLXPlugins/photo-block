@@ -381,6 +381,19 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				>
 					<div className="dlx-photo-block__a11y-popover">
 						<h3>{ __( 'Accessibility Options', 'photo-block' ) }</h3>
+						<TextControl
+							label={ __( 'Photo Title', 'photo-block' ) }
+							value={ photo.title }
+							onChange={ ( title ) => {
+								setAttributes( { photo: { ...photo, title } } );
+							} }
+							placeholder={ __(
+								'Please enter a title for this photo.',
+								'photo-block'
+							) }
+							help={ __(
+								'The title is used as a tooltip when hovering over the image.', 'photo-block' ) }
+						/>
 						<TextareaControl
 							label={ __( 'Alt Text', 'photo-block' ) }
 							value={ photo.alt }
