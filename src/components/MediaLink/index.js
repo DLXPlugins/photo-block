@@ -26,6 +26,7 @@ import {
 	Link2,
 	Image,
 	FileImage,
+	ExternalLink,
 
 } from 'lucide-react';
 
@@ -134,6 +135,42 @@ const MediaLink = ( props ) => {
 								} }
 								savedValue={ mediaLinkUrl }
 							/>
+						</>
+					) }
+					{ 'image' === mediaLinkType && (
+						<>
+							<div className="pdlx-photo-block__media-link-media-external">
+								<Button
+									variant="link"
+									icon={ <ExternalLink /> }
+									iconSize={ 18 }
+									iconPosition="right"
+									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
+									href={ attributes.photo.full }
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									{ __( 'Media File', 'photo-block' ) }
+								</Button>
+							</div>
+						</>
+					) }
+					{ 'page' === mediaLinkType && (
+						<>
+							<div className="pdlx-photo-block__media-link-media-page">
+								<Button
+									variant="link"
+									icon={ <ExternalLink /> }
+									iconSize={ 18 }
+									iconPosition="right"
+									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
+									href={ attributes.photo.attachment_link }
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									{ __( 'Attachment Page', 'photo-block' ) }
+								</Button>
+							</div>
 						</>
 					) }
 					{ 'none' !== mediaLinkType && (
