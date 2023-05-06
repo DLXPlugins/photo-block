@@ -156,6 +156,20 @@ const DropShadowControl = ( props ) => {
 							/>
 						</div>
 					</div>
+					<div className="dlx-photo-block__drop-shadow-control__settings__inset">
+						<ToggleControl
+							label={ __( 'Inset', 'photo-block' ) }
+							checked={ attributes.photoDropShadow.inset }
+							onChange={ ( value ) => {
+								setAttributes( {
+									photoDropShadow: {
+										...attributes.photoDropShadow,
+										inset: value,
+									},
+								} );
+							} }
+						/>
+					</div>
 				</div>
 			</BaseControl>
 		</>

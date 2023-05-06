@@ -10,7 +10,7 @@ import {
 	Spinner,
 	ToolbarGroup,
 	ToolbarButton,
-	ToolbarItem,
+	ToggleControl,
 	Popover,
 	TabPanel,
 	TextControl,
@@ -330,11 +330,25 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					max={ 10 }
 					step={ 0.01 }
 				/>
-				<DropShadowControl
-					label={ __( 'Drop Shadow', 'photo-block' ) }
-					attributes={ attributes }
-					setAttributes={ setAttributes }
+				<ToggleControl
+					label={ __( 'Enable Dropshadow', 'photo-block' ) }
+					checked={ photoDropShadow.enabled }
+					onChange={ ( newDropShadowEnabled ) => {
+						setAttributes( {
+							photoDropShadow: {
+								...photoDropShadow,
+								enabled: newDropShadowEnabled,
+							},
+						} );
+					} }
 				/>
+				{ photoDropShadow.enabled && (
+					<DropShadowControl
+						label={ __( 'Drop Shadow', 'photo-block' ) }
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+					/>
+				) }
 			</PanelBody>
 		</>
 	);

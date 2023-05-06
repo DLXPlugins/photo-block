@@ -1013,7 +1013,19 @@ var DropShadowControl = function DropShadowControl(props) {
     min: -25,
     max: 25,
     step: 1
-  }))))));
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__drop-shadow-control__settings__inset"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Inset', 'photo-block'),
+    checked: attributes.photoDropShadow.inset,
+    onChange: function onChange(value) {
+      setAttributes({
+        photoDropShadow: _objectSpread(_objectSpread({}, attributes.photoDropShadow), {}, {
+          inset: value
+        })
+      });
+    }
+  })))));
 };
 /* harmony default export */ __webpack_exports__["default"] = (DropShadowControl);
 
@@ -3364,7 +3376,17 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     min: 0,
     max: 10,
     step: 0.01
-  }), /*#__PURE__*/React.createElement(_components_DropShadow__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Enable Dropshadow', 'photo-block'),
+    checked: photoDropShadow.enabled,
+    onChange: function onChange(newDropShadowEnabled) {
+      setAttributes({
+        photoDropShadow: _objectSpread(_objectSpread({}, photoDropShadow), {}, {
+          enabled: newDropShadowEnabled
+        })
+      });
+    }
+  }), photoDropShadow.enabled && /*#__PURE__*/React.createElement(_components_DropShadow__WEBPACK_IMPORTED_MODULE_10__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Drop Shadow', 'photo-block'),
     attributes: attributes,
     setAttributes: setAttributes
