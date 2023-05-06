@@ -1,28 +1,28 @@
 /*
  *
- * Mayfair
+ * photo-block-mayfair
  *
  */
 @import 'shared';
 
-// mixin to extend mayfair filter
-// @mixin mayfair
+// mixin to extend photo-block-mayfair filter
+// @mixin photo-block-mayfair
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include mayfair;
+//     @include photo-block-mayfair;
 //   }
 //   or
 //   img {
-//     @include mayfair(blur(2px));
+//     @include photo-block-mayfair(blur(2px));
 //   }
 //   or
 //   img {
-//     @include mayfair(blur(2px)) {
+//     @include photo-block-mayfair(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin mayfair($filters...) {
+@mixin photo-block-mayfair($filters...) {
   @include filter-base;
   filter: contrast(1.1) saturate(1.1) $filters;
 
@@ -35,8 +35,8 @@
   @content;
 }
 
-// mayfair Instagram filter
-%mayfair,
-.mayfair {
-  @include mayfair;
+// photo-block-mayfair Instagram filter
+%photo-block-mayfair,
+.photo-block-mayfair {
+  @include photo-block-mayfair;
 }

@@ -1,28 +1,28 @@
 /*
  *
- * Perpetua
+ * photo-block-perpetua
  *
  */
 @import 'shared';
 
-// mixin to extend perpetua filter
-// @mixin perpetua
+// mixin to extend photo-block-perpetua filter
+// @mixin photo-block-perpetua
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include perpetua;
+//     @include photo-block-perpetua;
 //   }
 //   or
 //   img {
-//     @include perpetua(blur(2px));
+//     @include photo-block-perpetua(blur(2px));
 //   }
 //   or
 //   img {
-//     @include perpetua(blur(2px)) {
+//     @include photo-block-perpetua(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin perpetua($filters...) {
+@mixin photo-block-perpetua($filters...) {
   @include filter-base;
   @if length($filters) > 0 {
     filter: $filters;
@@ -37,8 +37,8 @@
   @content;
 }
 
-// perpetua Instagram filter
-%perpetua,
-.perpetua {
-  @include perpetua;
+// photo-block-perpetua Instagram filter
+%photo-block-perpetua,
+.photo-block-perpetua {
+  @include photo-block-perpetua;
 }

@@ -1,29 +1,29 @@
 /*
  *
- * Brannan
+ * photo-block-brannan
  *
  */
 @import 'shared';
 
-// mixin to extend brannan filter
-// @mixin brannan
+// mixin to extend photo-block-brannan filter
+// @mixin photo-block-brannan
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include brannan;
+//     @include photo-block-brannan;
 //   }
 //   or
 //   img {
-//     @include brannan(blur(2px));
+//     @include photo-block-brannan(blur(2px));
 //   }
 //   or
 //   img {
-//     @include brannan(blur(2px)) {
+//     @include photo-block-brannan(blur(2px)) {
 //       /*...*/
 //     };
 //   }
 
-@mixin brannan($filters...) {
+@mixin photo-block-brannan($filters...) {
   @include filter-base;
   filter: sepia(0.5) contrast(1.4) $filters;
 
@@ -35,8 +35,8 @@
   @content;
 }
 
-// brannan Instagram filter
-%brannan,
-.brannan {
-  @include brannan;
+// photo-block-brannan Instagram filter
+%photo-block-brannan,
+.photo-block-brannan {
+  @include photo-block-brannan;
 }

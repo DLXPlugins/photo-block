@@ -1,28 +1,28 @@
 /*
  *
- * Nashville
+ * photo-block-nashville
  *
  */
 @import 'shared';
 
-// mixin to extend nashville filter
-// @mixin nashville
+// mixin to extend photo-block-nashville filter
+// @mixin photo-block-nashville
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include nashville;
+//     @include photo-block-nashville;
 //   }
 //   or
 //   img {
-//     @include nashville(blur(2px));
+//     @include photo-block-nashville(blur(2px));
 //   }
 //   or
 //   img {
-//     @include nashville(blur(2px)) {
+//     @include photo-block-nashville(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin nashville($filters...) {
+@mixin photo-block-nashville($filters...) {
   @include filter-base;
   filter: sepia(.2) contrast(1.2) brightness(1.05) saturate(1.2) $filters;
 
@@ -39,8 +39,8 @@
   @content;
 }
 
-// nashville Instagram filter
-%nashville,
-.nashville {
-  @include nashville;
+// photo-block-nashville Instagram filter
+%photo-block-nashville,
+.photo-block-nashville {
+  @include photo-block-nashville;
 }

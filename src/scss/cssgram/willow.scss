@@ -1,27 +1,27 @@
 /*
- * Willow
+ * photo-block-willow
  *
  */
 @import 'shared';
 
-// mixin to extend willow filter
-// @mixin willow
+// mixin to extend photo-block-willow filter
+// @mixin photo-block-willow
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include willow;
+//     @include photo-block-willow;
 //   }
 //   or
 //   img {
-//     @include willow(blur(2px));
+//     @include photo-block-willow(blur(2px));
 //   }
 //   or
 //   img {
-//     @include willow(blur(2px)) {
+//     @include photo-block-willow(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin willow($filters...) {
+@mixin photo-block-willow($filters...) {
   @include filter-base;
   filter: grayscale(.5) contrast(.95) brightness(.9) $filters;
 
@@ -38,8 +38,8 @@
   @content;
 }
 
-// willow Instagram filter
-%willow,
-.willow {
-  @include willow;
+// photo-block-willow Instagram filter
+%photo-block-willow,
+.photo-block-willow {
+  @include photo-block-willow;
 }

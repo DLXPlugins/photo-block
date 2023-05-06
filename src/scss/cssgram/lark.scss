@@ -1,27 +1,27 @@
 /*
- * Lark
+ * photo-block-lark
  *
  */
 @import 'shared';
 
-// mixin to extend lark filter
-// @mixin lark
+// mixin to extend photo-block-lark filter
+// @mixin photo-block-lark
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include lark;
+//     @include photo-block-lark;
 //   }
 //   or
 //   img {
-//     @include lark(blur(2px));
+//     @include photo-block-lark(blur(2px));
 //   }
 //   or
 //   img {
-//     @include lark(blur(2px)) {
+//     @include photo-block-lark(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin lark($filters...) {
+@mixin photo-block-lark($filters...) {
   @include filter-base;
   filter: contrast(.9) $filters;
 
@@ -38,8 +38,8 @@
   @content;
 }
 
-// lark Instagram filter
-%lark,
-.lark {
-  @include lark;
+// photo-block-lark Instagram filter
+%photo-block-lark,
+.photo-block-lark {
+  @include photo-block-lark;
 }

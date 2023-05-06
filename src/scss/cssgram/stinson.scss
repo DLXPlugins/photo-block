@@ -1,29 +1,29 @@
 /*
  *
- * Stinson
+ * photo-block-stinson
  *
  */
 
 @import 'shared';
 
-// mixin to extend stinson filter
-// @mixin stinson
+// mixin to extend photo-block-stinson filter
+// @mixin photo-block-stinson
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include stinson;
+//     @include photo-block-stinson;
 //   }
 //   or
 //   img {
-//     @include stinson(blur(2px));
+//     @include photo-block-stinson(blur(2px));
 //   }
 //   or
 //   img {
-//     @include stinson(blur(2px)) {
+//     @include photo-block-stinson(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin stinson($filters...) {
+@mixin photo-block-stinson($filters...) {
   @include filter-base;
   filter: contrast(0.75) saturate(0.85) brightness(1.15) $filters;
 
@@ -35,8 +35,8 @@
   @content;
 }
 
-// stinson Instagram filter
-%stinson,
-.stinson {
-  @include stinson;
+// photo-block-stinson Instagram filter
+%photo-block-stinson,
+.photo-block-stinson {
+  @include photo-block-stinson;
 }

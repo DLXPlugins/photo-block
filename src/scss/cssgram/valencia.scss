@@ -1,28 +1,28 @@
 /*
  *
- * Valencia
+ * photo-block-valencia
  *
  */
 @import 'shared';
 
-// mixin to extend valencia filter
-// @mixin valencia
+// mixin to extend photo-block-valencia filter
+// @mixin photo-block-valencia
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include valencia;
+//     @include photo-block-valencia;
 //   }
 //   or
 //   img {
-//     @include valencia(blur(2px));
+//     @include photo-block-valencia(blur(2px));
 //   }
 //   or
 //   img {
-//     @include valencia(blur(2px)) {
+//     @include photo-block-valencia(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin valencia($filters...) {
+@mixin photo-block-valencia($filters...) {
   @include filter-base;
   filter: contrast(1.08) brightness(1.08) sepia(0.08) $filters;
 
@@ -35,8 +35,8 @@
   @content;
 }
 
-// valencia Instagram filter
-%valencia,
-.valencia {
-  @include valencia;
+// photo-block-valencia Instagram filter
+%photo-block-valencia,
+.photo-block-valencia {
+  @include photo-block-valencia;
 }

@@ -1,28 +1,28 @@
 /*
  *
- * Brooklyn
+ * photo-block-brooklyn
  *
  */
 @import 'shared';
 
-// mixin to extend brooklyn filter
-// @mixin brooklyn
+// mixin to extend photo-block-brooklyn filter
+// @mixin photo-block-brooklyn
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include brooklyn;
+//     @include photo-block-brooklyn;
 //   }
 //   or
 //   img {
-//     @include brooklyn(blur(2px));
+//     @include photo-block-brooklyn(blur(2px));
 //   }
 //   or
 //   img {
-//     @include brooklyn(blur(2px)) {
+//     @include photo-block-brooklyn(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin brooklyn($filters...) {
+@mixin photo-block-brooklyn($filters...) {
   @include filter-base;
   filter: contrast(.9) brightness(1.1) $filters;
 
@@ -34,8 +34,8 @@
   @content;
 }
 
-// brooklyn Instagram filter
-%brooklyn,
-.brooklyn {
-  @include brooklyn;
+// photo-block-brooklyn Instagram filter
+%photo-block-brooklyn,
+.photo-block-brooklyn {
+  @include photo-block-brooklyn;
 }

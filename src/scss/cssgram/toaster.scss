@@ -1,28 +1,28 @@
 /*
  *
- * Toaster
+ * photo-block-toaster
  *
  */
 @import 'shared';
 
-// mixin to extend toaster filter
-// @mixin toaster
+// mixin to extend photo-block-toaster filter
+// @mixin photo-block-toaster
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include toaster;
+//     @include photo-block-toaster;
 //   }
 //   or
 //   img {
-//     @include toaster(blur(2px));
+//     @include photo-block-toaster(blur(2px));
 //   }
 //   or
 //   img {
-//     @include toaster(blur(2px)) {
+//     @include photo-block-toaster(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin toaster($filters...) {
+@mixin photo-block-toaster($filters...) {
   @include filter-base;
   filter: contrast(1.5) brightness(.9) $filters;
 
@@ -34,8 +34,8 @@
   @content;
 }
 
-// toaster Instagram filter
-%toaster,
-.toaster {
-  @include toaster;
+// photo-block-toaster Instagram filter
+%photo-block-toaster,
+.photo-block-toaster {
+  @include photo-block-toaster;
 }

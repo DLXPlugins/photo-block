@@ -1,27 +1,27 @@
 /*
- * Kelvin
+ * photo-block-kelvin
  *
  */
 @import 'shared';
 
-// mixin to extend kelvin filter
-// @mixin kelvin
+// mixin to extend photo-block-kelvin filter
+// @mixin photo-block-kelvin
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include kelvin;
+//     @include photo-block-kelvin;
 //   }
 //   or
 //   img {
-//     @include kelvin(blur(2px));
+//     @include photo-block-kelvin(blur(2px));
 //   }
 //   or
 //   img {
-//     @include kelvin(blur(2px)) {
+//     @include photo-block-kelvin(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin kelvin($filters...) {
+@mixin photo-block-kelvin($filters...) {
   @include filter-base;
 
   @if length($filters) > 0 {
@@ -41,8 +41,8 @@
   @content;
 }
 
-// kelvin Instagram filter
-%kelvin,
-.kelvin {
-  @include kelvin;
+// photo-block-kelvin Instagram filter
+%photo-block-kelvin,
+.photo-block-kelvin {
+  @include photo-block-kelvin;
 }

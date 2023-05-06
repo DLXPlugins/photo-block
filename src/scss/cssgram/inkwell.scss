@@ -1,36 +1,36 @@
 /*
  *
- * Inkwell
+ * photo-block-inkwell
  *
  */
 @import 'shared';
 
-// mixin to extend inkwell filter
-// @mixin inkwell
+// mixin to extend photo-block-inkwell filter
+// @mixin photo-block-inkwell
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include inkwell;
+//     @include photo-block-inkwell;
 //   }
 //   or
 //   img {
-//     @include inkwell(blur(2px));
+//     @include photo-block-inkwell(blur(2px));
 //   }
 //   or
 //   img {
-//     @include inkwell(blur(2px)) {
+//     @include photo-block-inkwell(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin inkwell($filters...) {
+@mixin photo-block-inkwell($filters...) {
   @include filter-base;
   filter: sepia(.3) contrast(1.1) brightness(1.1) grayscale(1) $filters;
 
   @content;
 }
 
-// inkwell Instagram filter
-%inkwell,
-.inkwell {
-  @include inkwell;
+// photo-block-inkwell Instagram filter
+%photo-block-inkwell,
+.photo-block-inkwell {
+  @include photo-block-inkwell;
 }

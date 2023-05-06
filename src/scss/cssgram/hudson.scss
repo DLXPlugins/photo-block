@@ -1,28 +1,28 @@
 /*
  *
- * Hudson
+ * photo-block-hudson
  *
  */
 @import 'shared';
 
-// mixin to extend hudson filter
-// @mixin hudson
+// mixin to extend photo-block-hudson filter
+// @mixin photo-block-hudson
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include hudson;
+//     @include photo-block-hudson;
 //   }
 //   or
 //   img {
-//     @include hudson(blur(2px));
+//     @include photo-block-hudson(blur(2px));
 //   }
 //   or
 //   img {
-//     @include hudson(blur(2px)) {
+//     @include photo-block-hudson(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin hudson($filters...) {
+@mixin photo-block-hudson($filters...) {
   @include filter-base;
   filter: brightness(1.2) contrast(.9) saturate(1.1) $filters;
 
@@ -35,8 +35,8 @@
   @content;
 }
 
-// hudson Instagram filter
-%hudson,
-.hudson {
-  @include hudson;
+// photo-block-hudson Instagram filter
+%photo-block-hudson,
+.photo-block-hudson {
+  @include photo-block-hudson;
 }

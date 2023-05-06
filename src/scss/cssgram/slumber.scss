@@ -1,28 +1,28 @@
 /*
  *
- * Slumber
+ * photo-block-slumber
  *
  */
 @import 'shared';
 
-// mixin to extend slumber filter
-// @mixin slumber
+// mixin to extend photo-block-slumber filter
+// @mixin photo-block-slumber
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include slumber;
+//     @include photo-block-slumber;
 //   }
 //   or
 //   img {
-//     @include slumber(blur(2px));
+//     @include photo-block-slumber(blur(2px));
 //   }
 //   or
 //   img {
-//     @include slumber(blur(2px)) {
+//     @include photo-block-slumber(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin slumber($filters...) {
+@mixin photo-block-slumber($filters...) {
   @include filter-base;
   filter: saturate(.66) brightness(1.05) $filters;
 
@@ -39,8 +39,8 @@
   @content;
 }
 
-// slumber Instagram filter
-%slumber,
-.slumber {
-  @include slumber;
+// photo-block-slumber Instagram filter
+%photo-block-slumber,
+.photo-block-slumber {
+  @include photo-block-slumber;
 }

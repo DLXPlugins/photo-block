@@ -1,29 +1,29 @@
 /*
  *
- * Aden
+ * photo-block-aden
  *
  */
 
 @import 'shared';
 
-// mixin to extend aden filter
-// @mixin aden
+// mixin to extend photo-block-aden filter
+// @mixin photo-block-aden
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include aden;
+//     @include photo-block-aden;
 //   }
 //   or
 //   img {
-//     @include aden(blur(2px));
+//     @include photo-block-aden(blur(2px));
 //   }
 //   or
 //   img {
-//     @include aden(blur(2px)) {
+//     @include photo-block-aden(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin aden($filters...) {
+@mixin photo-block-aden($filters...) {
   @include filter-base;
   filter: hue-rotate(-20deg) contrast(.9) saturate(.85) brightness(1.2) $filters;
 
@@ -35,8 +35,8 @@
   @content;
 }
 
-// aden Instagram filter
-%aden,
-.aden {
-  @include aden;
+// photo-block-aden Instagram filter
+%photo-block-aden,
+.photo-block-aden {
+  @include photo-block-aden;
 }

@@ -1,27 +1,27 @@
 /*
- * Moon
+ * photo-block-moon
  *
  */
 @import 'shared';
 
-// mixin to extend moon filter
-// @mixin moon
+// mixin to extend photo-block-moon filter
+// @mixin photo-block-moon
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include moon;
+//     @include photo-block-moon;
 //   }
 //   or
 //   img {
-//     @include moon(blur(2px));
+//     @include photo-block-moon(blur(2px));
 //   }
 //   or
 //   img {
-//     @include moon(blur(2px)) {
+//     @include photo-block-moon(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin moon($filters...) {
+@mixin photo-block-moon($filters...) {
   @include filter-base;
   filter: grayscale(1) contrast(1.1) brightness(1.1) $filters;
 
@@ -38,8 +38,8 @@
   @content;
 }
 
-// moon Instagram filter
-%moon,
-.moon {
-  @include moon;
+// photo-block-moon Instagram filter
+%photo-block-moon,
+.photo-block-moon {
+  @include photo-block-moon;
 }

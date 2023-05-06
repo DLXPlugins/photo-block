@@ -4,24 +4,24 @@
  */
 @import 'shared';
 
-// mixin to extend lofi filter
-// @mixin lofi
+// mixin to extend photo-block-lofi filter
+// @mixin photo-block-lofi
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include lofi;
+//     @include photo-block-lofi;
 //   }
 //   or
 //   img {
-//     @include lofi(blur(2px));
+//     @include photo-block-lofi(blur(2px));
 //   }
 //   or
 //   img {
-//     @include lofi(blur(2px)) {
+//     @include photo-block-lofi(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin lofi($filters...) {
+@mixin photo-block-lofi($filters...) {
   @include filter-base;
   filter: saturate(1.1) contrast(1.5) $filters;
 
@@ -33,8 +33,8 @@
   @content;
 }
 
-// lofi Instagram filter
-%lofi,
-.lofi {
-  @include lofi;
+// photo-block-lofi Instagram filter
+%photo-block-lofi,
+.photo-block-lofi {
+  @include photo-block-lofi;
 }

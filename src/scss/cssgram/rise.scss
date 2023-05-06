@@ -1,28 +1,28 @@
 /*
  *
- * Rise
+ * photo-block-rise
  *
  */
 @import 'shared';
 
-// mixin to extend rise filter
-// @mixin rise
+// mixin to extend photo-block-rise filter
+// @mixin photo-block-rise
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include rise;
+//     @include photo-block-rise;
 //   }
 //   or
 //   img {
-//     @include rise(blur(2px));
+//     @include photo-block-rise(blur(2px));
 //   }
 //   or
 //   img {
-//     @include rise(blur(2px)) {
+//     @include photo-block-rise(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin rise($filters...) {
+@mixin photo-block-rise($filters...) {
   @include filter-base;
   filter: brightness(1.05) sepia(.2) contrast(.9) saturate(.9) $filters;
 
@@ -40,8 +40,8 @@
   @content;
 }
 
-// rise Instagram filter
-%rise,
-.rise {
-  @include rise;
+// photo-block-rise Instagram filter
+%photo-block-rise,
+.photo-block-rise {
+  @include photo-block-rise;
 }

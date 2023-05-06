@@ -5,24 +5,24 @@
  */
 @import 'shared';
 
-// mixin to extend xpro2 filter
-// @mixin xpro2
+// mixin to extend photo-block-xpro2 filter
+// @mixin photo-block-xpro2
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include xpro2;
+//     @include photo-block-xpro2;
 //   }
 //   or
 //   img {
-//     @include xpro2(blur(2px));
+//     @include photo-block-xpro2(blur(2px));
 //   }
 //   or
 //   img {
-//     @include xpro2(blur(2px)) {
+//     @include photo-block-xpro2(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin xpro2($filters...) {
+@mixin photo-block-xpro2($filters...) {
   @include filter-base;
   filter: sepia(.3) $filters;
 
@@ -34,8 +34,8 @@
   @content;
 }
 
-// xpro2 Instagram filter
-%xpro2,
-.xpro2 {
-  @include xpro2;
+// photo-block-xpro2 Instagram filter
+%photo-block-xpro2,
+.photo-block-xpro2 {
+  @include photo-block-xpro2;
 }

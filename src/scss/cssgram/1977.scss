@@ -5,23 +5,23 @@
 @import 'shared';
 
 // mixin to extend 1977 filter
-// @mixin _1977
+// @mixin photo-block-1977
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include _1977;
+//     @include photo-block-1977;
 //   }
 //   or
 //   img {
-//     @include _1977(blur(2px));
+//     @include photo-block-1977(blur(2px));
 //   }
 //   or
 //   img {
-//     @include _1977(blur(2px)) {
+//     @include photo-block-1977(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin _1977($filters...) {
+@mixin photo-block-1977($filters...) {
   @include filter-base;
   filter: contrast(1.1) brightness(1.1) saturate(1.3) $filters;
 
@@ -33,7 +33,7 @@
 }
 
 // 1977 Instagram filter
-%_1977,
-._1977 {
-  @include _1977;
+%photo-block-1977,
+.photo-block-1977 {
+  @include photo-block-1977;
 }

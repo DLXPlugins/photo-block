@@ -1,28 +1,28 @@
 /*
  *
- * Gingham
+ * photo-block-gingham
  *
  */
 @import 'shared';
 
-// mixin to extend gingham filter
-// @mixin gingham
+// mixin to extend photo-block-gingham filter
+// @mixin photo-block-gingham
 // @param $filters... {filter} - Zero to many css filters to be added
 // @example
 //   img {
-//     @include gingham;
+//     @include photo-block-gingham;
 //   }
 //   or
 //   img {
-//     @include gingham(blur(2px));
+//     @include photo-block-gingham(blur(2px));
 //   }
 //   or
 //   img {
-//     @include gingham(blur(2px)) {
+//     @include photo-block-gingham(blur(2px)) {
 //       /*...*/
 //     };
 //   }
-@mixin gingham($filters...) {
+@mixin photo-block-gingham($filters...) {
   @include filter-base;
   filter: brightness(1.05) hue-rotate(-10deg) $filters;
 
@@ -34,8 +34,8 @@
   @content;
 }
 
-// gingham Instagram filter
-%gingham,
-.gingham {
-  @include gingham;
+// photo-block-gingham Instagram filter
+%photo-block-gingham,
+.photo-block-gingham {
+  @include photo-block-gingham;
 }
