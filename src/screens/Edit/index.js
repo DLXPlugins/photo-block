@@ -34,6 +34,7 @@ import {
 	Stars,
 } from 'lucide-react';
 import classnames from 'classnames';
+import hexToRgba from 'hex-to-rgba';
 
 import UploaderContext from '../../contexts/UploaderContext';
 import SendCommand from '../../utils/SendCommand';
@@ -486,7 +487,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
-	const styles = `
+	let styles = `
 		#${ uniqueId } .dlx-photo-block__screen-edit-image-wrapper {
 			background: ${ photoBackgroundColor };
 		}
@@ -495,6 +496,14 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			${ photoBlur ? `filter: blur(${ photoBlur }px);` : '' }
 		}
 	`;
+	if ( photoDropShadow.enabled ) {
+		styles += `
+			#${ uniqueId } img {
+				box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${ photoDropShadow.horizontal }px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${ photoDropShadow.spread }px ${ hexToRgba( photoDropShadow.color, photoDropShadow.opacity ) };
+				-webkit-box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${ photoDropShadow.horizontal }px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${ photoDropShadow.spread }px ${ hexToRgba( photoDropShadow.color, photoDropShadow.opacity ) };
+			}
+		`;
+	}
 
 	return (
 		<>

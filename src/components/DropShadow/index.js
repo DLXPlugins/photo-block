@@ -63,11 +63,11 @@ const DropShadowControl = ( props ) => {
 							label={ __( 'Color', 'photo-block' ) }
 							value={ attributes.photoDropShadow.color }
 							valueOpacity={ attributes.photoDropShadow.opacity }
-							onChange={ ( value ) => {
+							onChange={ ( slug, color ) => {
 								setAttributes( {
 									photoDropShadow: {
 										...attributes.photoDropShadow,
-										color: value.color,
+										color,
 									},
 								} );
 							} }
