@@ -55,6 +55,28 @@
 	}
 }
 .dlx-photo-block__image-dimensions-row {
+	h3 {
+		margin: 0;
+		margin-bottom: 8px;
+	}
+	p {
+		margin-bottom: 0;
+	}
+}
+.photo-block__inspector-panel {
+	.components-panel__body-title {
+		svg {
+			fill: none;
+			margin: 0;
+			margin-right: 8px;
+		}
+	}
+	.components-button {
+		justify-content: flex-end;
+		flex-direction: row-reverse;
+	}
+}
+.dlx-photo-block__image-dimensions-row {
 	display: block;
 	h2 {
 		width: 100%;

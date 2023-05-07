@@ -31,6 +31,7 @@ import {
 	Link,
 	Settings,
 	Paintbrush,
+	Shrink,
 	Stars,
 } from 'lucide-react';
 import classnames from 'classnames';
@@ -42,8 +43,13 @@ import MediaLink from '../../components/MediaLink';
 import ColorPickerControl from '../../components/ColorPicker';
 import DropShadowControl from '../../components/DropShadow';
 import CSSGramButtonGroup from '../../components/CSSGramButtonGroup';
-import MaxWidthResponsiveControl from '../../components/MaxWidthResponsive';
+import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
+
+/**
+ * Height units.
+ */
+const heightUnits = [ 'px', 'em', 'rem', '%', 'vh' ];
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps } = props;
@@ -55,10 +61,17 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		imageSizePercentage,
 		photoOpacity,
 		photoBlur,
+		photoObjectFit,
 		photoDropShadow,
 		photoBackgroundColor,
 		cssGramFilter,
 		photoMaximumWidth,
+		containerWidth,
+		containerHeight,
+		containerMaxWidth,
+		containerMaxHeight,
+		containerMinWidth,
+		containerMinHeight,
 	} = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
@@ -138,7 +151,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
-			<PanelBody title={ __( 'Photo Settings', 'photo-block' ) }>
+			<PanelBody
+				title={ __( 'Photo Settings', 'photo-block' ) }
+				icon={ <Image /> }
+				className="photo-block__inspector-panel"
+			>
 				<PanelRow>
 					<TextControl
 						label={ __( 'Photo Title', 'photo-block' ) }
@@ -329,9 +346,30 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									</Button>
 								</ButtonGroup>
 							</div>
+							<PanelRow>
+								<SelectControl
+									label={ __( 'Object Fit', 'photo-block' ) }
+									value={ photoObjectFit }
+									options={ [
+										{ label: __( 'None', 'photo-block' ), value: 'none' },
+										{ label: __( 'Inherit', 'photo-block' ), value: 'inherit' },
+										{ label: __( 'Fill', 'photo-block' ), value: 'fill' },
+										{ label: __( 'Contain', 'photo-block' ), value: 'contain' },
+										{ label: __( 'Cover', 'photo-block' ), value: 'cover' },
+										{ label: __( 'Scale Down', 'photo-block' ), value: 'scale-down' },
+									] }
+									onChange={ ( newObjectFit ) => {
+										setAttributes( { photoObjectFit: newObjectFit } );
+									} }
+									help={ __(
+										'How the image should be resized to fit its container.',
+										'photo-block'
+									) }
+								/>
+							</PanelRow>
 							<div className="dlx-photo-block__image-max-width">
-								<MaxWidthResponsiveControl
-									label={ __( 'Max Width', 'photo-block' ) }
+								<SizeResponsiveControl
+									label={ __( 'Image Max Width', 'photo-block' ) }
 									values={ photoMaximumWidth }
 									screenSize={ deviceType }
 									onValuesChange={ ( newValues ) => {
@@ -342,6 +380,76 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						</>
 					) }
 				</PanelRow>
+			</PanelBody>
+			<PanelBody
+				title={ __( 'Container Sizing', 'photo-block' ) }
+				initialOpen={ false }
+				icon={ <Shrink /> }
+				className="photo-block__inspector-panel"
+			>
+				<div className="dlx-photo-block__container-width">
+					<SizeResponsiveControl
+						label={ __( 'Width', 'photo-block' ) }
+						values={ containerWidth }
+						screenSize={ deviceType }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerWidth: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__container-height">
+					<SizeResponsiveControl
+						label={ __( 'Height', 'photo-block' ) }
+						values={ containerHeight }
+						screenSize={ deviceType }
+						units={ heightUnits }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerHeight: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__container-min-width">
+					<SizeResponsiveControl
+						label={ __( 'Min Width', 'photo-block' ) }
+						values={ containerMinWidth }
+						screenSize={ deviceType }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerMinWidth: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__container-min-height">
+					<SizeResponsiveControl
+						label={ __( 'Min Height', 'photo-block' ) }
+						values={ containerMinHeight }
+						screenSize={ deviceType }
+						units={ heightUnits }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerMinHeight: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__container-max-width">
+					<SizeResponsiveControl
+						label={ __( 'Max Width', 'photo-block' ) }
+						values={ containerMaxWidth }
+						screenSize={ deviceType }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerMaxWidth: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__containermax-height">
+					<SizeResponsiveControl
+						label={ __( 'Max Height', 'photo-block' ) }
+						values={ containerMaxHeight }
+						screenSize={ deviceType }
+						units={ heightUnits }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerMaxHeight: newValues } );
+						} }
+					/>
+				</div>
 			</PanelBody>
 		</>
 	);

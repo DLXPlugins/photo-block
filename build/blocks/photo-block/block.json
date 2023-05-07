@@ -38,6 +38,10 @@
       "type": "number",
       "default": 0
     },
+    "photoObjectFit": {
+      "type": "string",
+      "default": "none"
+    },
     "photoDropShadow": {
       "type": "object",
       "default": {
@@ -69,6 +73,108 @@
         "desktop": {
           "width": "100",
           "unit": "%"
+        }
+      }
+    },
+    "containerWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerHeight": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerMinWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerMaxWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerMinHeight": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerMaxHeight": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
         }
       }
     },

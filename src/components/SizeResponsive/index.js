@@ -37,11 +37,10 @@ import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 
 
 import UploaderContext from '../../contexts/UploaderContext';
-import ColorPickerControl from '../ColorPicker';
 import UnitPicker from '../UnitPicker';
 import { getHierarchicalValueUnit, geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
 import HeadingIconResponsive from '../HeadingIconResponsive';
-const MaxWidthResponsiveControl = ( props ) => {
+const SizeResponsiveControl = ( props ) => {
 	const [ screenSize, setScreenSize ] = useState( 'desktop' );
 	const getDefaultValues = () => {
 		return {
@@ -87,7 +86,7 @@ const MaxWidthResponsiveControl = ( props ) => {
 			<BaseControl className="dlx-photo-block__max-width-responsive-control">
 				<HeadingIconResponsive
 					screenSize={ screenSize }
-					heading={ __( 'Max Width', 'photo-block' ) }
+					heading={ props.label }
 				/>
 				<Controller
 					control={ control }
@@ -95,7 +94,7 @@ const MaxWidthResponsiveControl = ( props ) => {
 					render={ ( { field: { onChange, value } } ) => (
 						<UnitPicker
 							value={ getHierarchicalValueUnit( props.values, screenSize, getValues( screenSize ).unit, 'unit' ) }
-							units={ [ 'px', 'em', 'rem', '%', 'vw' ] }
+							units={ props?.units ? props.units : [ 'px', 'em', 'rem', '%', 'vw' ] }
 							onClick={ ( newValue ) => {
 								onChange( newValue );
 							} }
@@ -127,5 +126,5 @@ const MaxWidthResponsiveControl = ( props ) => {
 	);
 };
 
-export default MaxWidthResponsiveControl;
+export default SizeResponsiveControl;
 
