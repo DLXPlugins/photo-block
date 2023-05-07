@@ -47,6 +47,7 @@ import CaptionAppender from '../../components/CaptionAppender';
 
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
+
 	// Read in context values.
 	const {
 		imageFile,
@@ -157,7 +158,7 @@ const PhotoBlock = ( props ) => {
 				);
 			case 'edit':
 				return (
-					<EditScreen ref={ imageRef } attributes={ attributes } setAttributes={ setAttributes } />
+					<EditScreen ref={ imageRef } attributes={ attributes } setAttributes={ setAttributes } innerBlockProps={ captionInnerBlockProps } />
 				);
 			case 'crop':
 				return (
@@ -192,7 +193,6 @@ const PhotoBlock = ( props ) => {
 		<>
 			<section className="dlx-photo-block__container" id={ uniqueId }>
 				{ getCurrentScreen() }
-				{ getCaption() }
 			</section>
 		</>
 	);

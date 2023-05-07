@@ -55,6 +55,23 @@
       "type": "string",
       "default": "#FFFFFF"
     },
+    "photoMaximumWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "100",
+          "unit": "%"
+        }
+      }
+    },
     "cssGramFilter": {
       "type": "string",
       "default": "none"

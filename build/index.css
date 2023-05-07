@@ -1589,7 +1589,7 @@ svg.lucide {
 
 .dlx-photo-block__screen-edit-image-wrapper {
   position: relative;
-  display: inline-flex;
+  display: block;
 }
 
 .dlx-photo-block__inspector-tabs button.components-tab-panel__tabs-item {
@@ -2005,6 +2005,88 @@ svg.lucide {
 
 .dlx-photo-block__css-gram-image-popover {
   position: absolute !important;
+}
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/MaxWidthResponsive/editor.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__image-max-width {
+  margin: 16px 0;
+}
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/UnitPicker/editor.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************/
+/* Unit Picker Component - Forked from @GenerateBlocks */
+.components-photo-block-units-control-header__units {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+  align-items: center;
+}
+
+.components-photo-block-control__units .components-photo-block-control-buttons__units button.components-button {
+  background: #fff;
+  box-shadow: none !important;
+  color: #929da7;
+  font-size: 10px;
+  padding: 0 5px;
+  position: relative;
+  text-align: center;
+  text-shadow: none;
+  border: 0;
+  border-radius: 0 !important;
+  line-height: 20px;
+  padding: 0 5px;
+  height: auto;
+}
+.components-photo-block-control__units .components-photo-block-control-buttons__units button.components-button.is-primary {
+  background: #fff !important;
+  color: #000 !important;
+  cursor: default;
+  z-index: 1;
+  font-weight: bold;
+}
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/HeadingIconResponsive/editor.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+.components-base-control .dlx-photo-block__heading-icon-responsive-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.components-base-control .dlx-photo-block__heading-icon-responsive {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+.components-base-control .dlx-photo-block__heading-icon svg {
+  font-size: inherit;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.components-base-control .dlx-photo-block__heading {
+  line-height: 1;
+}
+.components-base-control .dlx-photo-block__heading-icon-responsive-icons .components-button.has-icon {
+  position: relative;
+  min-width: unset;
+  box-shadow: unset;
+}
+.components-base-control .dlx-photo-block__heading-icon-responsive-icons .components-button.has-icon.is-active:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba));
+  bottom: -2px;
+  left: 0;
+}
+.components-base-control .dlx-photo-block__heading-icon-responsive-icons svg {
+  width: 14px;
+  height: 14px;
 }
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
