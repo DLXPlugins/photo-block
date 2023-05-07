@@ -55,6 +55,10 @@
 			"type": "string",
 			"default": "#FFFFFF"
 		},
+		"cssGramFilter": {
+			"type": "string",
+			"default": "none"
+		},
 		"aspectRatio": {
 			"type": "string",
 			"default": "original"

@@ -1965,6 +1965,47 @@ svg.lucide {
   position: relative;
   margin-bottom: 0;
 }
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/CSSGramButtonGroup/editor.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__css-gram-image-popover-wrapper {
+  min-width: 400px;
+  padding: 15px;
+  border: 1px solid #ddd;
+}
+
+.dlx-photo-block__css-gram-button-group {
+  position: relative;
+  padding-right: 25px;
+}
+.dlx-photo-block__css-gram-button-group .components-button-group {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 15px;
+  row-gap: 15px;
+}
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/CSSGramButtonPreview/editor.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__css-gram-image-popover-wrapper {
+  min-width: 400px;
+  padding: 15px;
+  border: 1px solid #ddd;
+}
+
+.dlx-photo-block__css-gram-button-group {
+  padding-right: 25px;
+}
+.dlx-photo-block__css-gram-button-group .components-button-group {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 15px;
+  row-gap: 15px;
+}
+
+.dlx-photo-block__css-gram-image-popover {
+  position: absolute !important;
+}
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************/

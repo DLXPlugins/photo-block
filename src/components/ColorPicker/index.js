@@ -55,28 +55,12 @@ const ColorPickerControl = ( props ) => {
 
 	const opacityIcon = (
 		<svg
-			aria-hidden="true"
-			focusable="false"
-			data-prefix="fad"
-			data-icon="tint"
-			className="svg-inline--fa fa-tint fa-w-11"
-			role="img"
 			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 352 512"
+			width={ 24 }
+			height={ 24 }
+			viewBox="0 0 488.47 488.47"
 		>
-			<g className="fa-group">
-				<path
-					className="fa-secondary"
-					fill="currentColor"
-					d="M205.22 22.09c-7.94-28.78-49.44-30.12-58.44 0C100 179.85 0 222.72 0 333.91 0 432.35 78.72 512 176 512s176-79.65 176-178.09c0-111.75-99.79-153.34-146.78-311.82zM176 448A112.14 112.14 0 0 1 64 336a16 16 0 0 1 32 0 80.09 80.09 0 0 0 80 80 16 16 0 0 1 0 32z"
-					opacity="0.4"
-				></path>
-				<path
-					className="fa-primary"
-					fill="currentColor"
-					d="M176 448A112.14 112.14 0 0 1 64 336a16 16 0 0 1 32 0 80.09 80.09 0 0 0 80 80 16 16 0 0 1 0 32z"
-				></path>
-			</g>
+			<path d="M244.235 0S61.058 174.454 61.058 314.016c0 96.347 82.011 174.454 183.177 174.454s183.177-78.107 183.177-174.454C427.412 174.454 244.235 0 244.235 0zm0 91.588c46.976 52.953 97.174 123.655 114.946 183.177H129.292c17.771-59.522 67.968-130.223 114.943-183.177z" />
 		</svg>
 	);
 

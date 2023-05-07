@@ -41,10 +41,11 @@ import SendCommand from '../../utils/SendCommand';
 import MediaLink from '../../components/MediaLink';
 import ColorPickerControl from '../../components/ColorPicker';
 import DropShadowControl from '../../components/DropShadow';
+import CSSGramButtonGroup from '../../components/CSSGramButtonGroup';
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes } = props;
-	const { uniqueId, photo, imageSize, imageDimensions, imageSizePercentage, photoOpacity, photoBlur, photoDropShadow, photoBackgroundColor } = attributes;
+	const { uniqueId, photo, imageSize, imageDimensions, imageSizePercentage, photoOpacity, photoBlur, photoDropShadow, photoBackgroundColor, cssGramFilter } = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
@@ -351,6 +352,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					/>
 				) }
 			</PanelBody>
+			<PanelBody
+				title={ __( 'CSS Styles', 'photo-block' ) }
+				initialOpen={ false }
+			>
+				<CSSGramButtonGroup
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</PanelBody>
 		</>
 	);
 
@@ -376,15 +386,22 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					icon: <Paintbrush />,
 				},
 			] }
-		/>
+		>
+			{ ( tab ) => {
+				switch ( tab.name ) {
+					case 'settings':
+						return settingsInspectorControls;
+					case 'styles':
+						return stylesInspectorControls;
+				}
+			} }
+		</TabPanel>
 	);
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
 		<InspectorControls>
 			{ interfaceTabs }
-			{ inspectorTab === 'settings' && settingsInspectorControls }
-			{ inspectorTab === 'styles' && stylesInspectorControls }
 		</InspectorControls>
 	);
 
@@ -527,6 +544,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				<div className="dlx-photo-block__screen-edit-image-wrapper">
 					<img
 						src={ url }
+						className={ classnames(
+							`photo-block-${ cssGramFilter }`,
+							{
+								'has-css-gram': cssGramFilter !== 'none',
+							}
+						) }
 						width={ imageDimensions.width }
 						height={ imageDimensions.height }
 						alt=""
