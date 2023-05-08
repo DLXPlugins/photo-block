@@ -2107,6 +2107,102 @@ svg.lucide {
   width: 14px;
   height: 14px;
 }
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/DimensionsResponsive/editor.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__dimensions-responsive-sync-interface {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 15px;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface .components-base-control {
+  margin: 0;
+  padding: 0;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface .dlx-photo-block__dimensions-responsive-sync-interface-unit {
+  display: flex;
+  max-width: 50%;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid rgb(148, 148, 148);
+  padding: 0 8px;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface .dlx-photo-block__dimensions-responsive-sync-interface-unit .components-base-control__field,
+.dlx-photo-block__dimensions-responsive-sync-interface .dlx-photo-block__dimensions-responsive-sync-interface-unit .components-base-control {
+  padding: 0;
+  margin: 0;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface .dlx-photo-block__dimensions-responsive-sync-interface-range-sync {
+  display: flex;
+  flex: 1;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface .dlx-photo-block__dimensions-responsive-sync-interface-range-sync .components-range-control {
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  flex: 1;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface .dlx-photo-block__dimensions-responsive-sync-interface-range-sync .components-range-control .components-base-control__field {
+  flex: 1;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface .dlx-photo-block__dimensions-responsive-sync-interface-range-sync .components-base-control__field {
+  margin: 0;
+  padding: 0;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface input[type=number] {
+  max-width: 28px;
+  height: 40px;
+  border: none;
+  outline: none;
+  padding: 0;
+  box-shadow: none !important;
+  -webkit-appearance: auto;
+          appearance: auto;
+  -moz-appearance: textfield;
+  margin: 0;
+  background: none;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface input[type=number]::-webkit-outer-spin-button, .dlx-photo-block__dimensions-responsive-sync-interface input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface select {
+  color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba)) !important;
+  -o-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border-radius: 2px;
+  border: 1px solid transparent !important;
+  padding: 4px;
+  min-height: 40px;
+  outline: none;
+  margin: 0;
+  padding: 0 !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  min-height: auto;
+  width: 100%;
+  max-width: 42px !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  text-align: center;
+  box-shadow: none;
+  text-transform: lowercase;
+  box-sizing: border-box;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface select:hover {
+  cursor: pointer;
+  border: 1px solid var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba)) !important;
+}
+.dlx-photo-block__dimensions-responsive-sync-interface .components-input-control__suffix,
+.dlx-photo-block__dimensions-responsive-sync-interface .components-input-control__backdrop {
+  display: none;
+}
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************/

@@ -1,0 +1,100 @@
+.dlx-photo-block__dimensions-responsive-sync-interface {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	margin-top: 15px;
+
+	.components-base-control {
+		margin: 0;
+		padding: 0;
+	}
+	.dlx-photo-block__dimensions-responsive-sync-interface-unit {
+		display: flex;
+		max-width: 50%;
+		align-items: center;
+		justify-content: flex-start;
+		border: 1px solid rgb(148, 148, 148);
+		padding: 0 8px;
+
+		.components-base-control__field,
+		.components-base-control {
+			padding: 0;
+			margin: 0;
+		}
+	}
+	.dlx-photo-block__dimensions-responsive-sync-interface-range-sync {
+		display: flex;
+		flex: 1;
+
+		.components-range-control {
+			display: flex;
+			align-items: center;
+			padding-left: 8px;
+			padding-right: 8px;
+			flex: 1;
+
+			.components-base-control__field {
+				flex: 1;
+			}
+		}
+		.components-base-control__field {
+			margin: 0;
+			padding: 0;
+		}
+	}
+	input[type="number"] {
+		max-width: 28px;
+		height: 40px;
+		border: none;
+		outline: none;
+		padding: 0;
+		box-shadow: none !important;
+		appearance: auto;
+		-moz-appearance: textfield;
+		margin: 0;
+		background: none;
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+	}
+	select {
+		color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba)) !important;
+		-o-appearance: none;
+		-ms-appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		background: transparent;
+		border-radius: 2px;
+		border: 1px solid transparent !important;
+		padding: 4px;
+		min-height: 40px;
+		outline: none;
+		margin: 0;
+		padding: 0 !important;
+		padding-left: 4px !important;
+		padding-right: 4px !important;
+		min-height: auto;
+		width: 100%;
+		max-width: 42px !important;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		display: block;
+		text-align: center;
+		box-shadow: none;
+		text-transform: lowercase;
+		box-sizing: border-box;
+
+		&:hover {
+			cursor: pointer;
+			border: 1px solid var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba)) !important;
+		}
+		
+	}
+	.components-input-control__suffix,
+	.components-input-control__backdrop {
+		display: none;
+	}
+}

@@ -15,7 +15,6 @@ const HeadingIconResponsive = ( props ) => {
 	const { screenSize, heading } = props;
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
-
 	// Retrieve an icon based on the screen size.
 	const getIcon = () => {
 		switch ( screenSize ) {
@@ -40,7 +39,7 @@ const HeadingIconResponsive = ( props ) => {
 						className={ classnames( 'dlx-photo-block__heading-icon-responsive-icon', {
 							'is-active': deviceType === 'desktop',
 						} ) }
-						onClick={ () => setDeviceType( 'Desktop' )}
+						onClick={ () => setDeviceType( 'Desktop' ) }
 						icon={ <Monitor /> }
 						label={ __( 'Desktop', 'deluxe-photo-gallery' ) }
 					/>
@@ -48,7 +47,7 @@ const HeadingIconResponsive = ( props ) => {
 						className={ classnames( 'dlx-photo-block__heading-icon-responsive-icon', {
 							'is-active': deviceType === 'tablet',
 						} ) }
-						onClick={ () => setDeviceType( 'Tablet' )}
+						onClick={ () => setDeviceType( 'Tablet' ) }
 						icon={ <Tablet /> }
 						label={ __( 'Tablet', 'deluxe-photo-gallery' ) }
 					/>
@@ -56,7 +55,7 @@ const HeadingIconResponsive = ( props ) => {
 						className={ classnames( 'dlx-photo-block__heading-icon-responsive-icon', {
 							'is-active': deviceType === 'mobile',
 						} ) }
-						onClick={ () => setDeviceType( 'Mobile' )}
+						onClick={ () => setDeviceType( 'Mobile' ) }
 						icon={ <Smartphone /> }
 						label={ __( 'Mobile', 'deluxe-photo-gallery' ) }
 					/>

@@ -47,6 +47,7 @@ import DropShadowControl from '../../components/DropShadow';
 import CSSGramButtonGroup from '../../components/CSSGramButtonGroup';
 import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
+import DimensionsResponsive from '../../components/DimensionsResponsive';
 
 /**
  * Height units.
@@ -74,6 +75,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		containerMaxHeight,
 		containerMinWidth,
 		containerMinHeight,
+		paddingSize,
+		marginSize,
 	} = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
@@ -158,6 +161,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				icon={ <Image /> }
 				className="photo-block__inspector-panel"
 			>
+				<DimensionsResponsive
+					label={ __( 'Photo Padding', 'photo-block' ) }
+					values={ paddingSize }
+					onValuesChange={ ( values ) => {
+						setAttributes( { paddingSize: values } );
+					} }
+					labelTop={ __( 'Top Padding', 'photo-block' ) }
+					labelRight={ __( 'Right Padding', 'photo-block' ) }
+					labelBottom={ __( 'Bottom Padding', 'photo-block' ) }
+					labelLeft={ __( 'Left Padding', 'photo-block' ) }
+					labelAll={ __( 'Change Padding', 'photo-block' ) }
+				/>
 				<PanelRow>
 					<TextControl
 						label={ __( 'Photo Title', 'photo-block' ) }
