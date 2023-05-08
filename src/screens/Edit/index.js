@@ -33,6 +33,8 @@ import {
 	Paintbrush,
 	Shrink,
 	Stars,
+	Palette,
+	Wand2,
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
@@ -346,27 +348,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									</Button>
 								</ButtonGroup>
 							</div>
-							<PanelRow>
-								<SelectControl
-									label={ __( 'Object Fit', 'photo-block' ) }
-									value={ photoObjectFit }
-									options={ [
-										{ label: __( 'None', 'photo-block' ), value: 'none' },
-										{ label: __( 'Inherit', 'photo-block' ), value: 'inherit' },
-										{ label: __( 'Fill', 'photo-block' ), value: 'fill' },
-										{ label: __( 'Contain', 'photo-block' ), value: 'contain' },
-										{ label: __( 'Cover', 'photo-block' ), value: 'cover' },
-										{ label: __( 'Scale Down', 'photo-block' ), value: 'scale-down' },
-									] }
-									onChange={ ( newObjectFit ) => {
-										setAttributes( { photoObjectFit: newObjectFit } );
-									} }
-									help={ __(
-										'How the image should be resized to fit its container.',
-										'photo-block'
-									) }
-								/>
-							</PanelRow>
 							<div className="dlx-photo-block__image-max-width">
 								<SizeResponsiveControl
 									label={ __( 'Image Max Width', 'photo-block' ) }
@@ -381,12 +362,106 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					) }
 				</PanelRow>
 			</PanelBody>
+		</>
+	);
+
+	const stylesInspectorControls = (
+		<>
+			<PanelBody
+				title={ __( 'Image Styles', 'photo-block' ) }
+				initialOpen={ true }
+				icon={ <Palette /> }
+				className="photo-block__inspector-panel"
+			>
+				<ColorPickerControl
+					value={ photoBackgroundColor }
+					key={ 'background-color-photo' }
+					onChange={ ( slug, newValue ) => {
+						setAttributes( { photoBackgroundColor: newValue } );
+					} }
+					label={ __( 'Background Color', 'highlight-and-share' ) }
+					defaultColors={ photoBlock.palette }
+					defaultColor={ '#FFFFFF' }
+					slug={ 'background-color-photo' }
+				/>
+				<RangeControl
+					label={ __( 'Opacity', 'photo-block' ) }
+					value={ photoOpacity }
+					onChange={ ( newOpacity ) => {
+						setAttributes( { photoOpacity: newOpacity } );
+					} }
+					min={ 0 }
+					max={ 1 }
+					step={ 0.01 }
+				/>
+				<RangeControl
+					label={ __( 'Blur', 'photo-block' ) }
+					value={ photoBlur }
+					onChange={ ( newBlur ) => {
+						setAttributes( { photoBlur: newBlur } );
+					} }
+					min={ 0 }
+					max={ 10 }
+					step={ 0.01 }
+				/>
+				<ToggleControl
+					label={ __( 'Enable Dropshadow', 'photo-block' ) }
+					checked={ photoDropShadow.enabled }
+					onChange={ ( newDropShadowEnabled ) => {
+						setAttributes( {
+							photoDropShadow: {
+								...photoDropShadow,
+								enabled: newDropShadowEnabled,
+							},
+						} );
+					} }
+				/>
+				{ photoDropShadow.enabled && (
+					<DropShadowControl
+						label={ __( 'Drop Shadow', 'photo-block' ) }
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+					/>
+				) }
+			</PanelBody>
+			<PanelBody
+				title={ __( 'CSS Styles', 'photo-block' ) }
+				initialOpen={ false }
+				className="photo-block__inspector-panel"
+				icon={ <Wand2 /> }
+			>
+				<CSSGramButtonGroup
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</PanelBody>
 			<PanelBody
 				title={ __( 'Container Sizing', 'photo-block' ) }
 				initialOpen={ false }
 				icon={ <Shrink /> }
 				className="photo-block__inspector-panel"
 			>
+				<PanelRow>
+					<SelectControl
+						label={ __( 'Object Fit', 'photo-block' ) }
+						value={ photoObjectFit }
+						options={ [
+							{ label: __( 'None', 'photo-block' ), value: 'none' },
+							{ label: __( 'Inherit', 'photo-block' ), value: 'inherit' },
+							{ label: __( 'Fill', 'photo-block' ), value: 'fill' },
+							{ label: __( 'Contain', 'photo-block' ), value: 'contain' },
+							{ label: __( 'Cover', 'photo-block' ), value: 'cover' },
+							{ label: __( 'Scale Down', 'photo-block' ), value: 'scale-down' },
+						] }
+						onChange={ ( newObjectFit ) => {
+							setAttributes( { photoObjectFit: newObjectFit } );
+						} }
+						help={ __(
+							'How the image should be resized to fit its container.',
+							'photo-block'
+						) }
+					/>
+				</PanelRow>
 				<div className="dlx-photo-block__container-width">
 					<SizeResponsiveControl
 						label={ __( 'Width', 'photo-block' ) }
@@ -450,69 +525,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						} }
 					/>
 				</div>
-			</PanelBody>
-		</>
-	);
-
-	const stylesInspectorControls = (
-		<>
-			<PanelBody title={ __( 'Image Styles', 'photo-block' ) } initialOpen={ true }>
-				<ColorPickerControl
-					value={ photoBackgroundColor }
-					key={ 'background-color-photo' }
-					onChange={ ( slug, newValue ) => {
-						setAttributes( { photoBackgroundColor: newValue } );
-					} }
-					label={ __( 'Background Color', 'highlight-and-share' ) }
-					defaultColors={ photoBlock.palette }
-					defaultColor={ '#FFFFFF' }
-					slug={ 'background-color-photo' }
-				/>
-				<RangeControl
-					label={ __( 'Opacity', 'photo-block' ) }
-					value={ photoOpacity }
-					onChange={ ( newOpacity ) => {
-						setAttributes( { photoOpacity: newOpacity } );
-					} }
-					min={ 0 }
-					max={ 1 }
-					step={ 0.01 }
-				/>
-				<RangeControl
-					label={ __( 'Blur', 'photo-block' ) }
-					value={ photoBlur }
-					onChange={ ( newBlur ) => {
-						setAttributes( { photoBlur: newBlur } );
-					} }
-					min={ 0 }
-					max={ 10 }
-					step={ 0.01 }
-				/>
-				<ToggleControl
-					label={ __( 'Enable Dropshadow', 'photo-block' ) }
-					checked={ photoDropShadow.enabled }
-					onChange={ ( newDropShadowEnabled ) => {
-						setAttributes( {
-							photoDropShadow: {
-								...photoDropShadow,
-								enabled: newDropShadowEnabled,
-							},
-						} );
-					} }
-				/>
-				{ photoDropShadow.enabled && (
-					<DropShadowControl
-						label={ __( 'Drop Shadow', 'photo-block' ) }
-						attributes={ attributes }
-						setAttributes={ setAttributes }
-					/>
-				) }
-			</PanelBody>
-			<PanelBody title={ __( 'CSS Styles', 'photo-block' ) } initialOpen={ false }>
-				<CSSGramButtonGroup
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
 			</PanelBody>
 		</>
 	);
@@ -723,7 +735,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							ref={ ref }
 						/>
 					</div>
-					<figcaption className="dlx-photo-block__screen-edit-caption" { ...innerBlockProps } />
+					<figcaption
+						className="dlx-photo-block__screen-edit-caption"
+						{ ...innerBlockProps }
+					/>
 				</figure>
 			</div>
 		</>
