@@ -144,7 +144,7 @@ const DimensionsResponsive = ( props ) => {
 	 */
 	const getRangeControlMax = () => {
 		// Get current unit.
-		const unit = geHierarchicalPlaceholderValue( values, deviceType, '', 'unit' );
+		const unit = getHierarchicalValueUnit( props.values, deviceType, getValues( deviceType ).unit, 'unit' );
 
 		// Get the max value for the current unit.
 		let max = 100;
@@ -178,7 +178,7 @@ const DimensionsResponsive = ( props ) => {
 	 */
 	const getRangeControlStep = () => {
 		// Get current unit.
-		const unit = geHierarchicalPlaceholderValue( values, deviceType, '', 'unit' );
+		const unit = getHierarchicalValueUnit( props.values, deviceType, getValues( deviceType ).unit, 'unit' );
 
 		// Get the max value for the current unit.
 		let step = 1;
@@ -205,8 +205,6 @@ const DimensionsResponsive = ( props ) => {
 		}
 		return step;
 	};
-
-	console.log( geHierarchicalPlaceholderValue( values, deviceType, 10, 'top' ) );
 
 	const getSyncInterface = () => {
 		if ( ! isSync() ) {

@@ -1288,7 +1288,7 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
    */
   var getRangeControlMax = function getRangeControlMax() {
     // Get current unit.
-    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, '', 'unit');
+    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType).unit, 'unit');
 
     // Get the max value for the current unit.
     var max = 100;
@@ -1322,7 +1322,7 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
    */
   var getRangeControlStep = function getRangeControlStep() {
     // Get current unit.
-    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, '', 'unit');
+    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType).unit, 'unit');
 
     // Get the max value for the current unit.
     var step = 1;
@@ -1348,7 +1348,6 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
     }
     return step;
   };
-  console.log((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, 10, 'top'));
   var getSyncInterface = function getSyncInterface() {
     if (!isSync()) {
       //return null;
