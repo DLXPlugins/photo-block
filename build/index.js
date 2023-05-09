@@ -1190,7 +1190,10 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
         right: props.values.mobile.right,
         bottom: props.values.mobile.bottom,
         left: props.values.mobile.left,
-        unit: props.values.mobile.unit,
+        topUnit: props.values.mobile.topUnit,
+        rightUnit: props.values.mobile.rightUnit,
+        bottomUnit: props.values.mobile.bottomUnit,
+        leftUnit: props.values.mobile.leftUnit,
         unitSync: props.values.mobile.unitSync
       },
       tablet: {
@@ -1198,7 +1201,10 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
         right: props.values.tablet.right,
         bottom: props.values.tablet.bottom,
         left: props.values.tablet.left,
-        unit: props.values.tablet.unit,
+        topUnit: props.values.tablet.topUnit,
+        rightUnit: props.values.tablet.rightUnit,
+        bottomUnit: props.values.tablet.bottomUnit,
+        leftUnit: props.values.tablet.leftUnit,
         unitSync: props.values.tablet.unitSync
       },
       desktop: {
@@ -1206,7 +1212,10 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
         right: props.values.desktop.right,
         bottom: props.values.desktop.bottom,
         left: props.values.desktop.left,
-        unit: props.values.desktop.unit,
+        topUnit: props.values.desktop.topUnit,
+        rightUnit: props.values.desktop.rightUnit,
+        bottomUnit: props.values.desktop.bottomUnit,
+        leftUnit: props.values.desktop.leftUnit,
         unitSync: props.values.desktop.unitSync
       }
     };
@@ -1239,20 +1248,18 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
   };
 
   /**
-   * When the sync value is selected, sync all values to the maximum number.
+   * Sync all unit values at once.
+   *
+   * @param {string} newUnit The new unit value.
    */
-  var syncUnits = function syncUnits() {
+  var syncUnits = function syncUnits(newUnit) {
     // Toggle unit sync value.
     var currentValues = getValues(deviceType);
-    currentValues.unitSync = !currentValues.unitSync;
+    currentValues.topUnit = newUnit;
+    currentValues.rightUnit = newUnit;
+    currentValues.bottomUnit = newUnit;
+    currentValues.leftUnit = newUnit;
     setValue(deviceType, currentValues);
-
-    // If we're syncing, set all values to the maximum.
-    if (currentValues.unitSync) {
-      var numbers = [getValues(deviceType).top, getValues(deviceType).right, getValues(deviceType).bottom, getValues(deviceType).left];
-      var syncValue = Math.max.apply(null, numbers);
-      changeAllValues(syncValue);
-    }
   };
 
   /**
@@ -1266,9 +1273,7 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
     setValue(deviceType, currentValues);
   };
   var onDimensionChange = function onDimensionChange(value) {
-    if ((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(props.values, deviceType, getValues(deviceType).unitSync, 'unitSync')) {
-      changeAllValues(value);
-    }
+    changeAllValues(value);
   };
 
   /**
@@ -1277,18 +1282,20 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
    * @return {boolean} The sync value.
    */
   var isSync = function isSync() {
-    var sync = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, '', 'unitSync');
+    var sync = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, getValues(deviceType).unitSync, 'unitSync');
     return sync;
   };
 
   /**
    * Get the max unit for a given unit.
    *
+   * @param {string} unitVar The unit to get the max value for.
+   *
    * @return {number} The max value for the current unit.
    */
-  var getRangeControlMax = function getRangeControlMax() {
+  var getRangeControlMax = function getRangeControlMax(unitVar) {
     // Get current unit.
-    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType).unit, 'unit');
+    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType)[unitVar], unitVar);
 
     // Get the max value for the current unit.
     var max = 100;
@@ -1318,11 +1325,13 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
   /**
    * Get the range control step for a given unit.
    *
+   * @param {string} unitVar The unit variable to get the step for.
+   *
    * @return {number} The max value for the current unit.
    */
-  var getRangeControlStep = function getRangeControlStep() {
+  var getRangeControlStep = function getRangeControlStep(unitVar) {
     // Get current unit.
-    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType).unit, 'unit');
+    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType)[unitVar], unitVar);
 
     // Get the max value for the current unit.
     var step = 1;
@@ -1350,7 +1359,7 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
   };
   var getSyncInterface = function getSyncInterface() {
     if (!isSync()) {
-      //return null;
+      return null;
     }
     return /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__dimensions-responsive-sync-interface"
@@ -1382,7 +1391,7 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
         });
       }
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
-      name: "".concat(deviceType, ".unit"),
+      name: "".concat(deviceType, ".topUnit"),
       control: control,
       render: function render(_ref2) {
         var _ref2$field = _ref2.field,
@@ -1391,7 +1400,7 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType).unit, 'unit'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".topUnit")), 'topUnit'),
           options: units,
           onChange: function onChange(newValue) {
             _onChange2(newValue);
@@ -1414,8 +1423,8 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
           label: labelAll,
           value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top')),
           min: 0,
-          max: getRangeControlMax(),
-          step: getRangeControlStep(),
+          max: getRangeControlMax('topUnit'),
+          step: getRangeControlStep('topUnit'),
           onChange: function onChange(newValue) {
             _onChange3(newValue);
             onDimensionChange(newValue);
@@ -1429,17 +1438,219 @@ var DimensionsResponsive = function DimensionsResponsive(props) {
       className: "dlx-photo-block__dimensions-responsive-sync-interface-button",
       onClick: function onClick() {
         // Disable syncing.
-        setValue("".concat(deviceType, ".unitSync"), false);
+        var oldValues = getValues(deviceType);
+        oldValues.unitSync = false;
+        setValue(deviceType, oldValues);
+        syncUnits((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".topUnit")), 'topUnit'));
       },
       isPressed: true
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Sync', 'photo-block'))));
+  };
+
+  /**
+   * Get the manual interface.
+   *
+   * @return {Element} The manual interface.
+   */
+  var getManualInterface = function getManualInterface() {
+    if (isSync()) {
+      return null;
+    }
+    return /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__dimensions-responsive-manual-interface"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-top"
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(deviceType, ".top"),
+      control: control,
+      render: function render(_ref4) {
+        var _ref4$field = _ref4.field,
+          _onChange4 = _ref4$field.onChange,
+          value = _ref4$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+          label: labelTop,
+          className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
+          value: value,
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top'),
+          type: "number",
+          min: 0,
+          step: 1,
+          max: "Infinity",
+          onChange: function onChange(newValue) {
+            _onChange4(newValue);
+          },
+          hideLabelFromVision: true,
+          inputMode: "numeric",
+          autoComplete: "off"
+        });
+      }
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(deviceType, ".topUnit"),
+      control: control,
+      render: function render(_ref5) {
+        var _ref5$field = _ref5.field,
+          _onChange5 = _ref5$field.onChange,
+          value = _ref5$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, value, 'topUnit'),
+          options: units,
+          onChange: function onChange(newValue) {
+            _onChange5(newValue);
+          },
+          hideLabelFromVision: true
+        });
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-right"
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(deviceType, ".right"),
+      control: control,
+      render: function render(_ref6) {
+        var _ref6$field = _ref6.field,
+          _onChange6 = _ref6$field.onChange,
+          value = _ref6$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+          label: labelRight,
+          className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
+          value: value,
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'right'),
+          type: "number",
+          min: 0,
+          step: 1,
+          max: "Infinity",
+          onChange: function onChange(newValue) {
+            _onChange6(newValue);
+          },
+          hideLabelFromVision: true,
+          inputMode: "numeric",
+          autoComplete: "off"
+        });
+      }
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(deviceType, ".rightUnit"),
+      control: control,
+      render: function render(_ref7) {
+        var _ref7$field = _ref7.field,
+          _onChange7 = _ref7$field.onChange,
+          value = _ref7$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, value, 'rightUnit'),
+          options: units,
+          onChange: function onChange(newValue) {
+            _onChange7(newValue);
+          },
+          hideLabelFromVision: true
+        });
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-bottom"
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(deviceType, ".bottom"),
+      control: control,
+      render: function render(_ref8) {
+        var _ref8$field = _ref8.field,
+          _onChange8 = _ref8$field.onChange,
+          value = _ref8$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+          label: labelBottom,
+          className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
+          value: value,
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'bottom'),
+          type: "number",
+          min: 0,
+          step: 1,
+          max: "Infinity",
+          onChange: function onChange(newValue) {
+            _onChange8(newValue);
+          },
+          hideLabelFromVision: true,
+          inputMode: "numeric",
+          autoComplete: "off"
+        });
+      }
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(deviceType, ".bottomUnit"),
+      control: control,
+      render: function render(_ref9) {
+        var _ref9$field = _ref9.field,
+          _onChange9 = _ref9$field.onChange,
+          value = _ref9$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, value, 'bottomUnit'),
+          options: units,
+          onChange: function onChange(newValue) {
+            _onChange9(newValue);
+          },
+          hideLabelFromVision: true
+        });
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-left"
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(deviceType, ".left"),
+      control: control,
+      render: function render(_ref10) {
+        var _ref10$field = _ref10.field,
+          _onChange10 = _ref10$field.onChange,
+          value = _ref10$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+          label: labelLeft,
+          className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
+          value: value,
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'left'),
+          type: "number",
+          min: 0,
+          step: 1,
+          max: "Infinity",
+          onChange: function onChange(newValue) {
+            _onChange10(newValue);
+          },
+          hideLabelFromVision: true,
+          inputMode: "numeric",
+          autoComplete: "off"
+        });
+      }
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(deviceType, ".leftUnit"),
+      control: control,
+      render: function render(_ref11) {
+        var _ref11$field = _ref11.field,
+          _onChange11 = _ref11$field.onChange,
+          value = _ref11$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, value, 'leftUnit'),
+          options: units,
+          onChange: function onChange(newValue) {
+            _onChange11(newValue);
+          },
+          hideLabelFromVision: true
+        });
+      }
+    })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      variant: "secondary",
+      className: "dlx-photo-block__dimensions-responsive-sync-manual-button",
+      onClick: function onClick() {
+        var oldValues = getValues(deviceType);
+        oldValues.unitSync = true;
+        setValue(deviceType, oldValues);
+      },
+      isPressed: false
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Sync', 'photo-block')));
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
     className: "dlx-photo-block__dimensions-responsive"
   }, /*#__PURE__*/React.createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_6__["default"], {
     heading: label,
     screenSize: deviceType
-  }), getSyncInterface()));
+  }), getSyncInterface(), getManualInterface()));
 };
 /* harmony default export */ __webpack_exports__["default"] = (DimensionsResponsive);
 
@@ -33758,7 +33969,7 @@ function useForm(props = {}) {
 /***/ (function(module) {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"none"},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageDimensions":{"type":"object","default":{"width":"","height":""}},"imageSizePercentage":{"type":"string","default":"100"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"paddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","unit":null,"unitSync":null},"tablet":{"top":"","right":"","bottom":"","left":"","unit":null,"unitSync":null},"desktop":{"top":"20","right":"20","bottom":"20","left":"20","unit":"px","unitSync":true}}},"marginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","unit":null,"unitSync":null},"tablet":{"top":"","right":"","bottom":"","left":"","unit":null,"unitSync":null},"desktop":{"top":"20","right":"","bottom":"20","left":"","unit":"px","unitSync":true}}},"borderWidth":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","unit":null,"unitSync":null},"tablet":{"top":"","right":"","bottom":"","left":"","unit":null,"unitSync":null},"desktop":{"top":"1","right":"1","bottom":"1","left":"1","unit":"px","unitSync":true}}},"borderRadiusSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","unit":null,"unitSync":null},"tablet":{"top":"","right":"","bottom":"","left":"","unit":null,"unitSync":null},"desktop":{"top":"","right":"","bottom":"","left":"","unit":"px","unitSync":true}}},"typographyCaption":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"24","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.3","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}}},"supports":{"anchor":true,"align":true,"className":true,"alignWide":true,"defaultStylePicker":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"none"},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageDimensions":{"type":"object","default":{"width":"","height":""}},"imageSizePercentage":{"type":"string","default":"100"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"paddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"20","right":"20","bottom":"20","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}}},"supports":{"anchor":true,"align":true,"className":true,"alignWide":true,"defaultStylePicker":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 

@@ -297,158 +297,33 @@
 					"right": "",
 					"bottom": "",
 					"left": "",
-					"unit": null,
-					"unitSync": null
+					"topUnit": null,
+					"rightUnit": null,
+					"bottomUnit": null,
+					"leftUnit": null,
+					"unitSync": true
 				},
 				"tablet": {
 					"top": "",
 					"right": "",
 					"bottom": "",
 					"left": "",
-					"unit": null,
-					"unitSync": null
+					"topUnit": null,
+					"rightUnit": null,
+					"bottomUnit": null,
+					"leftUnit": null,
+					"unitSync": true
 				},
 				"desktop": {
 					"top": "20",
 					"right": "20",
 					"bottom": "20",
 					"left": "20",
-					"unit": "px",
+					"topUnit": "px",
+					"rightUnit": "px",
+					"bottomUnit": "px",
+					"leftUnit": "px",
 					"unitSync": true
-				}
-			}
-		},
-		"marginSize": {
-			"type": "object",
-			"default": {
-				"mobile": {
-					"top": "",
-					"right": "",
-					"bottom": "",
-					"left": "",
-					"unit": null,
-					"unitSync": null
-				},
-				"tablet": {
-					"top": "",
-					"right": "",
-					"bottom": "",
-					"left": "",
-					"unit": null,
-					"unitSync": null
-				},
-				"desktop": {
-					"top": "20",
-					"right": "",
-					"bottom": "20",
-					"left": "",
-					"unit": "px",
-					"unitSync": true
-				}
-			}
-		},
-		"borderWidth": {
-			"type": "object",
-			"default": {
-				"mobile": {
-					"top": "",
-					"right": "",
-					"bottom": "",
-					"left": "",
-					"unit": null,
-					"unitSync": null
-				},
-				"tablet": {
-					"top": "",
-					"right": "",
-					"bottom": "",
-					"left": "",
-					"unit": null,
-					"unitSync": null
-				},
-				"desktop": {
-					"top": "1",
-					"right": "1",
-					"bottom": "1",
-					"left": "1",
-					"unit": "px",
-					"unitSync": true
-				}
-			}
-		},
-		"borderRadiusSize": {
-			"type": "object",
-			"default": {
-				"mobile": {
-					"top": "",
-					"right": "",
-					"bottom": "",
-					"left": "",
-					"unit": null,
-					"unitSync": null
-				},
-				"tablet": {
-					"top": "",
-					"right": "",
-					"bottom": "",
-					"left": "",
-					"unit": null,
-					"unitSync": null
-				},
-				"desktop": {
-					"top": "",
-					"right": "",
-					"bottom": "",
-					"left": "",
-					"unit": "px",
-					"unitSync": true
-				}
-			}
-		},
-		"typographyCaption": {
-			"type": "object",
-			"default": {
-				"mobile": {
-					"fontFamily": "",
-					"fontFamilySlug": "",
-					"fontSize": "",
-					"fontSizeUnit": "px",
-					"fontWeight": "",
-					"lineHeight": "",
-					"lineHeightUnit": "em",
-					"textTransform": "",
-					"letterSpacing": "",
-					"letterSpacingUnit": "px",
-					"fontFallback": "",
-					"fontType": "web"
-				},
-				"tablet": {
-					"fontFamily": "",
-					"fontFamilySlug": "",
-					"fontSize": "",
-					"fontSizeUnit": "px",
-					"fontWeight": "",
-					"lineHeight": "",
-					"lineHeightUnit": "em",
-					"textTransform": "",
-					"letterSpacing": "",
-					"letterSpacingUnit": "px",
-					"fontFallback": "",
-					"fontType": "web"
-				},
-				"desktop": {
-					"fontFamily": "Arial",
-					"fontFamilySlug": "arial",
-					"fontSize": "24",
-					"fontSizeUnit": "px",
-					"fontWeight": "normal",
-					"lineHeight": "1.3",
-					"lineHeightUnit": "em",
-					"textTransform": "none",
-					"letterSpacing": "0",
-					"letterSpacingUnit": "px",
-					"fontFallback": "serif",
-					"fontType": "web"
 				}
 			}
 		}
