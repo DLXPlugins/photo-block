@@ -15,12 +15,13 @@ import { useForm, Controller, useWatch } from 'react-hook-form';
 
 import useDeviceType from '../../hooks/useDeviceType';
 import HeadingIconResponsive from '../HeadingIconResponsive';
+import ColorPickerControl from '../ColorPicker';
 import {
 	getHierarchicalValueUnit,
 	geHierarchicalPlaceholderValue,
 } from '../../utils/TypographyHelper';
 
-const DimensionsResponsiveControl = ( props ) => {
+const BorderResponsiveControl = ( props ) => {
 	const {
 		label,
 		onValuesChange,
@@ -30,7 +31,6 @@ const DimensionsResponsiveControl = ( props ) => {
 		labelBottom,
 		labelLeft,
 		labelAll,
-		isBorderRadius = false,
 	} = props;
 	const [ deviceType ] = useDeviceType( 'Desktop' );
 	const units = props?.units
@@ -40,43 +40,78 @@ const DimensionsResponsiveControl = ( props ) => {
 			{ label: '%', value: '%' },
 			{ label: 'EM', value: 'em' },
 			{ label: 'REM', value: 'rem' },
-			{ label: 'VW', value: 'vw' },
 		];
 
 	const getDefaultValues = () => {
 		return {
 			mobile: {
-				top: props.values.mobile.top,
-				right: props.values.mobile.right,
-				bottom: props.values.mobile.bottom,
-				left: props.values.mobile.left,
-				topUnit: props.values.mobile.topUnit,
-				rightUnit: props.values.mobile.rightUnit,
-				bottomUnit: props.values.mobile.bottomUnit,
-				leftUnit: props.values.mobile.leftUnit,
-				unitSync: props.values.mobile.unitSync,
+				top: {
+					width: props.values.mobile.top.width,
+					unit: props.values.mobile.top.unit,
+					color: props.values.mobile.top.color,
+				},
+				right: {
+					width: props.values.mobile.right.width,
+					unit: props.values.mobile.right.unit,
+					color: props.values.mobile.right.color,
+				},
+				bottom: {
+					width: props.values.mobile.bottom.width,
+					unit: props.values.mobile.bottom.unit,
+					color: props.values.mobile.bottom.color,
+				},
+				left: {
+					width: props.values.mobile.left.width,
+					unit: props.values.mobile.left.unit,
+					color: props.values.mobile.left.color,
+				},
+				unitsSync: props.values.mobile.unitsSync,
 			},
 			tablet: {
-				top: props.values.tablet.top,
-				right: props.values.tablet.right,
-				bottom: props.values.tablet.bottom,
-				left: props.values.tablet.left,
-				topUnit: props.values.tablet.topUnit,
-				rightUnit: props.values.tablet.rightUnit,
-				bottomUnit: props.values.tablet.bottomUnit,
-				leftUnit: props.values.tablet.leftUnit,
-				unitSync: props.values.tablet.unitSync,
+				top: {
+					width: props.values.tablet.top.width,
+					unit: props.values.tablet.top.unit,
+					color: props.values.tablet.top.color,
+				},
+				right: {
+					width: props.values.tablet.right.width,
+					unit: props.values.tablet.right.unit,
+					color: props.values.tablet.right.color,
+				},
+				bottom: {
+					width: props.values.tablet.bottom.width,
+					unit: props.values.tablet.bottom.unit,
+					color: props.values.tablet.bottom.color,
+				},
+				left: {
+					width: props.values.tablet.left.width,
+					unit: props.values.tablet.left.unit,
+					color: props.values.tablet.left.color,
+				},
+				unitsSync: props.values.tablet.unitsSync,
 			},
 			desktop: {
-				top: props.values.desktop.top,
-				right: props.values.desktop.right,
-				bottom: props.values.desktop.bottom,
-				left: props.values.desktop.left,
-				topUnit: props.values.desktop.topUnit,
-				rightUnit: props.values.desktop.rightUnit,
-				bottomUnit: props.values.desktop.bottomUnit,
-				leftUnit: props.values.desktop.leftUnit,
-				unitSync: props.values.desktop.unitSync,
+				top: {
+					width: props.values.desktop.top.width,
+					unit: props.values.desktop.top.unit,
+					color: props.values.desktop.top.color,
+				},
+				right: {
+					width: props.values.desktop.right.width,
+					unit: props.values.desktop.right.unit,
+					color: props.values.desktop.right.color,
+				},
+				bottom: {
+					width: props.values.desktop.bottom.width,
+					unit: props.values.desktop.bottom.unit,
+					color: props.values.desktop.bottom.color,
+				},
+				left: {
+					width: props.values.desktop.left.width,
+					unit: props.values.desktop.left.unit,
+					color: props.values.desktop.left.color,
+				},
+				unitsSync: props.values.desktop.unitsSync,
 			},
 		};
 	};
@@ -88,7 +123,7 @@ const DimensionsResponsiveControl = ( props ) => {
 	const formValues = useWatch( { control } );
 
 	useEffect( () => {
-		onValuesChange( formValues );
+		//onValuesChange( formValues );
 	}, [ formValues ] );
 
 	/**
@@ -229,20 +264,33 @@ const DimensionsResponsiveControl = ( props ) => {
 		return (
 			<div
 				className={ classnames(
-					'dlx-photo-block__dimensions-responsive-sync-interface',
-					{
-						'is-border-radius': isBorderRadius,
-					}
+					'dlx-photo-block__border-responsive-sync-interface'
 				) }
 			>
-				<div className="dlx-photo-block__dimensions-responsive-sync-interface-unit">
+				<div className="dlx-photo-block__border-responsive-sync-interface-unit">
 					<Controller
-						name={ `${ deviceType }.top` }
+						name={ `${ deviceType }.top.color` }
+						control={ control }
+						render={ ( { field: { onChange, value } } ) => (
+							<ColorPickerControl
+								value={ value }
+								onChange={ ( slug, newValue ) => {
+									onChange( newValue );
+								} }
+								label={ __( 'Border Color', 'photo-block' ) }
+								defaultColors={ photoBlock.palette }
+								defaultColor={ '#FFFFFF' }
+								slug={ 'border-color-sync' }
+							/>
+						) }
+					/>
+					<Controller
+						name={ `${ deviceType }.top.width` }
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								label={ labelAll }
-								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
+								className="dlx-photo-block__border-responsive-sync-interface-input"
 								value={ value }
 								placeholder={ geHierarchicalPlaceholderValue(
 									values,
@@ -265,16 +313,16 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 					<Controller
-						name={ `${ deviceType }.topUnit` }
+						name={ `${ deviceType }.top.unit` }
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<SelectControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
+								className="dlx-photo-block__border-responsive-sync-interface-select"
 								label={ __( 'Unit', 'photo-block' ) }
 								value={ getHierarchicalValueUnit(
 									props.values,
 									deviceType,
-									getValues( `${ deviceType }.topUnit` ),
+									getValues( `${ deviceType }.top.unit` ),
 									'topUnit'
 								) }
 								options={ units }
@@ -287,13 +335,13 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 				</div>
-				<div className="dlx-photo-block__dimensions-responsive-sync-interface-range-sync">
+				<div className="dlx-photo-block__border-responsive-sync-interface-range-sync">
 					<Controller
-						name={ `${ deviceType }.top` }
+						name={ `${ deviceType }.top.width` }
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<RangeControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-range"
+								className="dlx-photo-block__border-responsive-sync-interface-range"
 								label={ labelAll }
 								value={ Number(
 									geHierarchicalPlaceholderValue(
@@ -317,7 +365,7 @@ const DimensionsResponsiveControl = ( props ) => {
 					/>
 					<Button
 						variant="secondary"
-						className="dlx-photo-block__dimensions-responsive-sync-interface-button"
+						className="dlx-photo-block__border-responsive-sync-interface-button"
 						onClick={ () => {
 							// Disable syncing.
 							const oldValues = getValues( deviceType );
@@ -327,8 +375,8 @@ const DimensionsResponsiveControl = ( props ) => {
 								getHierarchicalValueUnit(
 									props.values,
 									deviceType,
-									getValues( `${ deviceType }.topUnit` ),
-									'topUnit'
+									getValues( `${ deviceType }.top.unit` ),
+									'top.unit'
 								)
 							);
 						} }
@@ -352,20 +400,17 @@ const DimensionsResponsiveControl = ( props ) => {
 		return (
 			<div
 				className={ classnames(
-					'dlx-photo-block__dimensions-responsive-manual-interface',
-					{
-						'is-border-radius': isBorderRadius,
-					}
+					'dlx-photo-block__border-responsive-manual-interface',
 				) }
 			>
-				<div className="dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-top">
+				<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-top">
 					<Controller
-						name={ `${ deviceType }.top` }
+						name={ `${ deviceType }.top.width` }
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								label={ labelTop }
-								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
+								className="dlx-photo-block__border-responsive-sync-interface-input"
 								value={ value }
 								placeholder={ geHierarchicalPlaceholderValue(
 									values,
@@ -387,11 +432,11 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 					<Controller
-						name={ `${ deviceType }.topUnit` }
+						name={ `${ deviceType }.top.unit` }
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<SelectControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
+								className="dlx-photo-block__border-responsive-sync-interface-select"
 								label={ __( 'Unit', 'photo-block' ) }
 								value={ getHierarchicalValueUnit(
 									props.values,
@@ -408,14 +453,14 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 				</div>
-				<div className="dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-right">
+				<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-right">
 					<Controller
 						name={ `${ deviceType }.right` }
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								label={ labelRight }
-								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
+								className="dlx-photo-block__border-responsive-sync-interface-input"
 								value={ value }
 								placeholder={ geHierarchicalPlaceholderValue(
 									values,
@@ -441,7 +486,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<SelectControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
+								className="dlx-photo-block__border-responsive-sync-interface-select"
 								label={ __( 'Unit', 'photo-block' ) }
 								value={ getHierarchicalValueUnit(
 									props.values,
@@ -458,14 +503,14 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 				</div>
-				<div className="dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-bottom">
+				<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-bottom">
 					<Controller
 						name={ `${ deviceType }.bottom` }
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								label={ labelBottom }
-								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
+								className="dlx-photo-block__border-responsive-sync-interface-input"
 								value={ value }
 								placeholder={ geHierarchicalPlaceholderValue(
 									values,
@@ -491,7 +536,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<SelectControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
+								className="dlx-photo-block__border-responsive-sync-interface-select"
 								label={ __( 'Unit', 'photo-block' ) }
 								value={ getHierarchicalValueUnit(
 									props.values,
@@ -508,14 +553,14 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 				</div>
-				<div className="dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-left">
+				<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-left">
 					<Controller
 						name={ `${ deviceType }.left` }
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								label={ labelLeft }
-								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
+								className="dlx-photo-block__border-responsive-sync-interface-input"
 								value={ value }
 								placeholder={ geHierarchicalPlaceholderValue(
 									values,
@@ -541,7 +586,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<SelectControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
+								className="dlx-photo-block__border-responsive-sync-interface-select"
 								label={ __( 'Unit', 'photo-block' ) }
 								value={ getHierarchicalValueUnit(
 									props.values,
@@ -560,7 +605,7 @@ const DimensionsResponsiveControl = ( props ) => {
 				</div>
 				<Button
 					variant="secondary"
-					className="dlx-photo-block__dimensions-responsive-sync-manual-button"
+					className="dlx-photo-block__border-responsive-sync-manual-button"
 					onClick={ () => {
 						const oldValues = getValues( deviceType );
 						oldValues.unitSync = true;
@@ -576,7 +621,7 @@ const DimensionsResponsiveControl = ( props ) => {
 
 	return (
 		<>
-			<BaseControl className="dlx-photo-block__dimensions-responsive">
+			<BaseControl className="dlx-photo-block__border-responsive">
 				<HeadingIconResponsive heading={ label } screenSize={ deviceType } />
 				{ getSyncInterface() }
 				{ getManualInterface() }
@@ -584,4 +629,4 @@ const DimensionsResponsiveControl = ( props ) => {
 		</>
 	);
 };
-export default DimensionsResponsiveControl;
+export default BorderResponsiveControl;

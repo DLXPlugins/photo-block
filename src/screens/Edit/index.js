@@ -35,6 +35,7 @@ import {
 	Stars,
 	Palette,
 	Wand2,
+	Maximize,
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
@@ -47,7 +48,8 @@ import DropShadowControl from '../../components/DropShadow';
 import CSSGramButtonGroup from '../../components/CSSGramButtonGroup';
 import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
-import DimensionsResponsive from '../../components/DimensionsResponsive';
+import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
+import BorderResponsiveControl from '../../components/BorderResponsive';
 
 /**
  * Height units.
@@ -75,8 +77,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		containerMaxHeight,
 		containerMinWidth,
 		containerMinHeight,
-		paddingSize,
-		marginSize,
+		photoPaddingSize,
+		photoMarginSize,
+		photoBorderRadius,
 	} = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
@@ -161,11 +164,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				icon={ <Image /> }
 				className="photo-block__inspector-panel"
 			>
-				<DimensionsResponsive
+				<BorderResponsiveControl
 					label={ __( 'Photo Padding', 'photo-block' ) }
-					values={ paddingSize }
+					values={ photoPaddingSize }
 					onValuesChange={ ( values ) => {
-						setAttributes( { paddingSize: values } );
+						setAttributes( { photoPaddingSize: values } );
 					} }
 					labelTop={ __( 'Top Padding', 'photo-block' ) }
 					labelRight={ __( 'Right Padding', 'photo-block' ) }
@@ -449,6 +452,51 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 				/>
+			</PanelBody>
+			<PanelBody
+				title={ __( 'Padding, Margin, and Border', 'photo-block' ) }
+				initialOpen={ false }
+				icon={ <Maximize /> }
+				className="photo-block__inspector-panel"
+			>
+				<DimensionsResponsiveControl
+					label={ __( 'Photo Padding', 'photo-block' ) }
+					values={ photoPaddingSize }
+					onValuesChange={ ( values ) => {
+						setAttributes( { photoPaddingSize: values } );
+					} }
+					labelTop={ __( 'Top Padding', 'photo-block' ) }
+					labelRight={ __( 'Right Padding', 'photo-block' ) }
+					labelBottom={ __( 'Bottom Padding', 'photo-block' ) }
+					labelLeft={ __( 'Left Padding', 'photo-block' ) }
+					labelAll={ __( 'Change Padding', 'photo-block' ) }
+				/>
+				<DimensionsResponsiveControl
+					label={ __( 'Photo Margin', 'photo-block' ) }
+					values={ photoMarginSize }
+					onValuesChange={ ( values ) => {
+						setAttributes( { photoMarginSize: values } );
+					} }
+					labelTop={ __( 'Top Margin', 'photo-block' ) }
+					labelRight={ __( 'Right Margin', 'photo-block' ) }
+					labelBottom={ __( 'Bottom Margin', 'photo-block' ) }
+					labelLeft={ __( 'Left Margin', 'photo-block' ) }
+					labelAll={ __( 'Change Margin', 'photo-block' ) }
+				/>
+				<DimensionsResponsiveControl
+					label={ __( 'Photo Border Radius', 'photo-block' ) }
+					values={ photoBorderRadius }
+					onValuesChange={ ( values ) => {
+						setAttributes( { photoBorderRadius: values } );
+					} }
+					labelTop={ __( 'Top-left Radius', 'photo-block' ) }
+					labelRight={ __( 'Top-right Radius', 'photo-block' ) }
+					labelBottom={ __( 'Bottom-right Radius', 'photo-block' ) }
+					labelLeft={ __( 'Bottom-left Radius', 'photo-block' ) }
+					labelAll={ __( 'Change Border Radius', 'photo-block' ) }
+					isBorderRadius={ true }
+				/>
+
 			</PanelBody>
 			<PanelBody
 				title={ __( 'Container Sizing', 'photo-block' ) }
