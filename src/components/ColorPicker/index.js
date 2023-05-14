@@ -34,6 +34,7 @@ const ColorPickerControl = ( props ) => {
 		alpha = false,
 		valueOpacity,
 		slug,
+		hideLabelFromVision = false,
 	} = props;
 
 	useEffect( () => {
@@ -82,7 +83,7 @@ const ColorPickerControl = ( props ) => {
 
 	return (
 		<BaseControl className="photo-block-component-color-picker-wrapper">
-			{ !! label && (
+			{ ( !! label && ! hideLabelFromVision ) && (
 				<h3 className="photo-block-color-component-label">
 					<span>{ label }</span>
 				</h3>

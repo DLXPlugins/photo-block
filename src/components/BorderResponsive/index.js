@@ -65,7 +65,7 @@ const BorderResponsiveControl = ( props ) => {
 					unit: props.values.mobile.left.unit,
 					color: props.values.mobile.left.color,
 				},
-				unitsSync: props.values.mobile.unitsSync,
+				unitSync: props.values.mobile.unitSync,
 			},
 			tablet: {
 				top: {
@@ -88,7 +88,7 @@ const BorderResponsiveControl = ( props ) => {
 					unit: props.values.tablet.left.unit,
 					color: props.values.tablet.left.color,
 				},
-				unitsSync: props.values.tablet.unitsSync,
+				unitSync: props.values.tablet.unitSync,
 			},
 			desktop: {
 				top: {
@@ -111,7 +111,7 @@ const BorderResponsiveControl = ( props ) => {
 					unit: props.values.desktop.left.unit,
 					color: props.values.desktop.left.color,
 				},
-				unitsSync: props.values.desktop.unitsSync,
+				unitSync: props.values.desktop.unitSync,
 			},
 		};
 	};
@@ -123,20 +123,21 @@ const BorderResponsiveControl = ( props ) => {
 	const formValues = useWatch( { control } );
 
 	useEffect( () => {
-		//onValuesChange( formValues );
+		onValuesChange( formValues );
 	}, [ formValues ] );
 
 	/**
 	 * Change the all values in parent.
 	 *
 	 * @param {number} value Value to change to.
+	 * @param {string} key   The key to change.
 	 */
-	const changeAllValues = ( value ) => {
+	const changeAllValues = ( value, key ) => {
 		const oldValues = getValues( deviceType );
-		oldValues.top = value;
-		oldValues.right = value;
-		oldValues.bottom = value;
-		oldValues.left = value;
+		oldValues.top[ key ] = value;
+		oldValues.right[ key ] = value;
+		oldValues.bottom[ key ] = value;
+		oldValues.left[ key ] = value;
 		setValue( deviceType, oldValues );
 	};
 
@@ -148,15 +149,23 @@ const BorderResponsiveControl = ( props ) => {
 	const syncUnits = ( newUnit ) => {
 		// Toggle unit sync value.
 		const currentValues = getValues( deviceType );
-		currentValues.topUnit = newUnit;
-		currentValues.rightUnit = newUnit;
-		currentValues.bottomUnit = newUnit;
-		currentValues.leftUnit = newUnit;
+		currentValues.top.unit = newUnit;
+		currentValues.right.unit = newUnit;
+		currentValues.bottom.unit = newUnit;
+		currentValues.left.unit = newUnit;
 		setValue( deviceType, currentValues );
 	};
 
-	const onDimensionChange = ( value ) => {
-		changeAllValues( value );
+	/**
+	 * Change the unit for a given key.
+	 *
+	 * @param {string} value The new unit value.
+	 * @param {string} key   The key to change.
+	 *
+	 * @return {void}
+	 */
+	const onDimensionChange = ( value, key ) => {
+		changeAllValues( value, key );
 	};
 
 	/**
@@ -178,16 +187,18 @@ const BorderResponsiveControl = ( props ) => {
 	 * Get the max unit for a given unit.
 	 *
 	 * @param {string} unitVar The unit to get the max value for.
+	 * @param {string} subUnit The sub unit to get the max value for.
 	 *
 	 * @return {number} The max value for the current unit.
 	 */
-	const getRangeControlMax = ( unitVar ) => {
+	const getRangeControlMax = ( unitVar, subUnit = '' ) => {
 		// Get current unit.
 		const unit = getHierarchicalValueUnit(
 			props.values,
 			deviceType,
-			getValues( deviceType )[ unitVar ],
-			unitVar
+			getValues( deviceType )[ unitVar ][ subUnit ],
+			unitVar,
+			subUnit
 		);
 
 		// Get the max value for the current unit.
@@ -219,16 +230,18 @@ const BorderResponsiveControl = ( props ) => {
 	 * Get the range control step for a given unit.
 	 *
 	 * @param {string} unitVar The unit variable to get the step for.
+	 * @param {string} subUnit The sub unit to get the step for.
 	 *
 	 * @return {number} The max value for the current unit.
 	 */
-	const getRangeControlStep = ( unitVar ) => {
+	const getRangeControlStep = ( unitVar, subUnit = '' ) => {
 		// Get current unit.
 		const unit = getHierarchicalValueUnit(
 			props.values,
 			deviceType,
-			getValues( deviceType )[ unitVar ],
-			unitVar
+			getValues( deviceType )[ unitVar ][ subUnit ],
+			unitVar,
+			subUnit
 		);
 
 		// Get the max value for the current unit.
@@ -273,14 +286,22 @@ const BorderResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<ColorPickerControl
-								value={ value }
+								value={ geHierarchicalPlaceholderValue(
+									values,
+									deviceType,
+									value,
+									'top',
+									'color'
+								) }
 								onChange={ ( slug, newValue ) => {
 									onChange( newValue );
+									onDimensionChange( newValue, 'color' );
 								} }
 								label={ __( 'Border Color', 'photo-block' ) }
 								defaultColors={ photoBlock.palette }
 								defaultColor={ '#FFFFFF' }
 								slug={ 'border-color-sync' }
+								hideLabelFromVision={ true }
 							/>
 						) }
 					/>
@@ -295,8 +316,9 @@ const BorderResponsiveControl = ( props ) => {
 								placeholder={ geHierarchicalPlaceholderValue(
 									values,
 									deviceType,
-									value,
-									'top'
+									getValues( `${ deviceType }.top.width` ),
+									'top',
+									'width',
 								) }
 								type="number"
 								min={ 0 }
@@ -304,7 +326,7 @@ const BorderResponsiveControl = ( props ) => {
 								max="Infinity"
 								onChange={ ( newValue ) => {
 									onChange( newValue );
-									onDimensionChange( newValue );
+									onDimensionChange( newValue, 'width' );
 								} }
 								hideLabelFromVision={ true }
 								inputMode="numeric"
@@ -323,7 +345,8 @@ const BorderResponsiveControl = ( props ) => {
 									props.values,
 									deviceType,
 									getValues( `${ deviceType }.top.unit` ),
-									'topUnit'
+									'top',
+									'unit'
 								) }
 								options={ units }
 								onChange={ ( newValue ) => {
@@ -348,15 +371,16 @@ const BorderResponsiveControl = ( props ) => {
 										values,
 										deviceType,
 										value,
-										'top'
+										'top',
+										'width'
 									)
 								) }
 								min={ 0 }
-								max={ getRangeControlMax( 'topUnit' ) }
-								step={ getRangeControlStep( 'topUnit' ) }
+								max={ getRangeControlMax( 'top', 'unit' ) }
+								step={ getRangeControlStep( 'top', 'unit' ) }
 								onChange={ ( newValue ) => {
 									onChange( newValue );
-									onDimensionChange( newValue );
+									onDimensionChange( newValue, 'width' );
 								} }
 								withInputField={ false }
 								hideLabelFromVision={ true }
@@ -376,7 +400,8 @@ const BorderResponsiveControl = ( props ) => {
 									props.values,
 									deviceType,
 									getValues( `${ deviceType }.top.unit` ),
-									'top.unit'
+									'top',
+									'unit',
 								)
 							);
 						} }
@@ -398,224 +423,326 @@ const BorderResponsiveControl = ( props ) => {
 			return null;
 		}
 		return (
-			<div
-				className={ classnames(
-					'dlx-photo-block__border-responsive-manual-interface',
-				) }
-			>
-				<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-top">
-					<Controller
-						name={ `${ deviceType }.top.width` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<TextControl
-								label={ labelTop }
-								className="dlx-photo-block__border-responsive-sync-interface-input"
-								value={ value }
-								placeholder={ geHierarchicalPlaceholderValue(
-									values,
-									deviceType,
-									value,
-									'top'
+			<>
+				<div
+					className={ classnames(
+						'dlx-photo-block__border-responsive-manual-interface',
+					) }
+				>
+					<>
+						<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-top">
+							<Controller
+								name={ `${ deviceType }.top.color` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<ColorPickerControl
+										value={ geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'top',
+											'color'
+										) }
+										onChange={ ( slug, newValue ) => {
+											onChange( newValue );
+										} }
+										label={ __( 'Border Color', 'photo-block' ) }
+										defaultColors={ photoBlock.palette }
+										defaultColor={ '#000000' }
+										slug={ 'border-color-top' }
+										hideLabelFromVision={ true }
+									/>
 								) }
-								type="number"
-								min={ 0 }
-								step={ 1 }
-								max="Infinity"
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
-								inputMode="numeric"
-								autoComplete="off"
 							/>
-						) }
-					/>
-					<Controller
-						name={ `${ deviceType }.top.unit` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<SelectControl
-								className="dlx-photo-block__border-responsive-sync-interface-select"
-								label={ __( 'Unit', 'photo-block' ) }
-								value={ getHierarchicalValueUnit(
-									props.values,
-									deviceType,
-									value,
-									'topUnit'
+							<Controller
+								name={ `${ deviceType }.top.width` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ labelTop }
+										className="dlx-photo-block__border-responsive-sync-interface-input"
+										value={ value }
+										placeholder={ geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'top',
+											'width'
+										) }
+										type="number"
+										min={ 0 }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+										inputMode="numeric"
+										autoComplete="off"
+									/>
 								) }
-								options={ units }
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
 							/>
-						) }
-					/>
+							<Controller
+								name={ `${ deviceType }.top.unit` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<SelectControl
+										className="dlx-photo-block__border-responsive-sync-interface-select"
+										label={ __( 'Unit', 'photo-block' ) }
+										value={ getHierarchicalValueUnit(
+											props.values,
+											deviceType,
+											value,
+											'top',
+											'unit'
+										) }
+										options={ units }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+									/>
+								) }
+							/>
+						</div>
+						<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-right">
+							<Controller
+								name={ `${ deviceType }.right.color` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<ColorPickerControl
+										value={ geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'right',
+											'color'
+										) }
+										onChange={ ( slug, newValue ) => {
+											onChange( newValue );
+										} }
+										label={ __( 'Border Color', 'photo-block' ) }
+										defaultColors={ photoBlock.palette }
+										defaultColor={ '#000000' }
+										slug={ 'border-color-right' }
+										hideLabelFromVision={ true }
+									/>
+								) }
+							/>
+							<Controller
+								name={ `${ deviceType }.right.width` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ labelRight }
+										className="dlx-photo-block__border-responsive-sync-interface-input"
+										value={ value }
+										placeholder={ geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'right',
+											'width'
+										) }
+										type="number"
+										min={ 0 }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+										inputMode="numeric"
+										autoComplete="off"
+									/>
+								) }
+							/>
+							<Controller
+								name={ `${ deviceType }.right.unit` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<SelectControl
+										className="dlx-photo-block__border-responsive-sync-interface-select"
+										label={ __( 'Unit', 'photo-block' ) }
+										value={ getHierarchicalValueUnit(
+											props.values,
+											deviceType,
+											value,
+											'right',
+											'unit'
+										) }
+										options={ units }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+									/>
+								) }
+							/>
+						</div>
+						<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-bottom">
+							<Controller
+								name={ `${ deviceType }.bottom.color` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<ColorPickerControl
+										value={ geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'bottom',
+											'color'
+										) }
+										onChange={ ( slug, newValue ) => {
+											onChange( newValue );
+										} }
+										label={ __( 'Border Color', 'photo-block' ) }
+										defaultColors={ photoBlock.palette }
+										defaultColor={ '#000000' }
+										slug={ 'border-color-bottom' }
+										hideLabelFromVision={ true }
+									/>
+								) }
+							/>
+							<Controller
+								name={ `${ deviceType }.bottom.width` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ labelBottom }
+										className="dlx-photo-block__border-responsive-sync-interface-input"
+										value={ value }
+										placeholder={ geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'bottom',
+											'width'
+										) }
+										type="number"
+										min={ 0 }
+										step={ 1 }
+										max="Infinity"
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+										inputMode="numeric"
+										autoComplete="off"
+									/>
+								) }
+							/>
+							<Controller
+								name={ `${ deviceType }.bottom.unit` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<SelectControl
+										className="dlx-photo-block__border-responsive-sync-interface-select"
+										label={ __( 'Unit', 'photo-block' ) }
+										value={ getHierarchicalValueUnit(
+											props.values,
+											deviceType,
+											value,
+											'bottom',
+											'unit'
+										) }
+										options={ units }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+									/>
+								) }
+							/>
+						</div>
+						<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-left">
+							<Controller
+								name={ `${ deviceType }.left.color` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<ColorPickerControl
+										value={ geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'left',
+											'color'
+										) }
+										onChange={ ( slug, newValue ) => {
+											onChange( newValue );
+										} }
+										label={ __( 'Border Color', 'photo-block' ) }
+										defaultColors={ photoBlock.palette }
+										defaultColor={ '#000000' }
+										slug={ 'border-color-left' }
+										hideLabelFromVision={ true }
+									/>
+								) }
+							/>
+							<Controller
+								name={ `${ deviceType }.left.width` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ labelLeft }
+										className="dlx-photo-block__border-responsive-sync-interface-input"
+										value={ value }
+										placeholder={ geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'left',
+											'width'
+										) }
+										type="number"
+										min={ 0 }
+										step={ 1 }
+										max="Infinity"
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+										inputMode="numeric"
+										autoComplete="off"
+									/>
+								) }
+							/>
+							<Controller
+								name={ `${ deviceType }.left.unit` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<SelectControl
+										className="dlx-photo-block__border-responsive-sync-interface-select"
+										label={ __( 'Unit', 'photo-block' ) }
+										value={ getHierarchicalValueUnit(
+											props.values,
+											deviceType,
+											value,
+											'left',
+											'unit'
+										) }
+										options={ units }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+									/>
+								) }
+							/>
+						</div>
+						<Button
+							variant="secondary"
+							className="dlx-photo-block__border-responsive-sync-manual-button"
+							onClick={ () => {
+								const oldValues = getValues( deviceType );
+								oldValues.unitSync = true;
+								setValue( deviceType, oldValues );
+							} }
+							isPressed={ false }
+							icon={ <Link /> }
+							label={ __( 'Edit all values together', 'photo-block' ) }
+						/>
+
+					</>
 				</div>
-				<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-right">
-					<Controller
-						name={ `${ deviceType }.right` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<TextControl
-								label={ labelRight }
-								className="dlx-photo-block__border-responsive-sync-interface-input"
-								value={ value }
-								placeholder={ geHierarchicalPlaceholderValue(
-									values,
-									deviceType,
-									value,
-									'right'
-								) }
-								type="number"
-								min={ 0 }
-								step={ 1 }
-								max="Infinity"
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
-								inputMode="numeric"
-								autoComplete="off"
-							/>
-						) }
-					/>
-					<Controller
-						name={ `${ deviceType }.rightUnit` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<SelectControl
-								className="dlx-photo-block__border-responsive-sync-interface-select"
-								label={ __( 'Unit', 'photo-block' ) }
-								value={ getHierarchicalValueUnit(
-									props.values,
-									deviceType,
-									value,
-									'rightUnit'
-								) }
-								options={ units }
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
-							/>
-						) }
-					/>
-				</div>
-				<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-bottom">
-					<Controller
-						name={ `${ deviceType }.bottom` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<TextControl
-								label={ labelBottom }
-								className="dlx-photo-block__border-responsive-sync-interface-input"
-								value={ value }
-								placeholder={ geHierarchicalPlaceholderValue(
-									values,
-									deviceType,
-									value,
-									'bottom'
-								) }
-								type="number"
-								min={ 0 }
-								step={ 1 }
-								max="Infinity"
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
-								inputMode="numeric"
-								autoComplete="off"
-							/>
-						) }
-					/>
-					<Controller
-						name={ `${ deviceType }.bottomUnit` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<SelectControl
-								className="dlx-photo-block__border-responsive-sync-interface-select"
-								label={ __( 'Unit', 'photo-block' ) }
-								value={ getHierarchicalValueUnit(
-									props.values,
-									deviceType,
-									value,
-									'bottomUnit'
-								) }
-								options={ units }
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
-							/>
-						) }
-					/>
-				</div>
-				<div className="dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-left">
-					<Controller
-						name={ `${ deviceType }.left` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<TextControl
-								label={ labelLeft }
-								className="dlx-photo-block__border-responsive-sync-interface-input"
-								value={ value }
-								placeholder={ geHierarchicalPlaceholderValue(
-									values,
-									deviceType,
-									value,
-									'left'
-								) }
-								type="number"
-								min={ 0 }
-								step={ 1 }
-								max="Infinity"
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
-								inputMode="numeric"
-								autoComplete="off"
-							/>
-						) }
-					/>
-					<Controller
-						name={ `${ deviceType }.leftUnit` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<SelectControl
-								className="dlx-photo-block__border-responsive-sync-interface-select"
-								label={ __( 'Unit', 'photo-block' ) }
-								value={ getHierarchicalValueUnit(
-									props.values,
-									deviceType,
-									value,
-									'leftUnit'
-								) }
-								options={ units }
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
-							/>
-						) }
-					/>
-				</div>
-				<Button
-					variant="secondary"
-					className="dlx-photo-block__border-responsive-sync-manual-button"
-					onClick={ () => {
-						const oldValues = getValues( deviceType );
-						oldValues.unitSync = true;
-						setValue( deviceType, oldValues );
-					} }
-					isPressed={ false }
-					icon={ <Link /> }
-					label={ __( 'Edit all values together', 'photo-block' ) }
-				/>
-			</div>
+
+			</>
 		);
 	};
 

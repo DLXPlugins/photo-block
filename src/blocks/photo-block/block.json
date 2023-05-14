@@ -389,7 +389,7 @@
 						"unit": null,
 						"color": ""
 					},
-					"unitsSync": true
+					"unitSync": true
 				},
 				"tablet": {
 					"top": {
@@ -412,7 +412,7 @@
 						"unit": null,
 						"color": ""
 					},
-					"unitsSync": true
+					"unitSync": true
 				},
 				"desktop": {
 					"top": {
@@ -435,7 +435,7 @@
 						"unit": "px",
 						"color": "#000000"
 					},
-					"unitsSync": true
+					"unitSync": true
 				}
 
 			}

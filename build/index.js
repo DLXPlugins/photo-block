@@ -686,7 +686,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           unit: props.values.mobile.left.unit,
           color: props.values.mobile.left.color
         },
-        unitsSync: props.values.mobile.unitsSync
+        unitSync: props.values.mobile.unitSync
       },
       tablet: {
         top: {
@@ -709,7 +709,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           unit: props.values.tablet.left.unit,
           color: props.values.tablet.left.color
         },
-        unitsSync: props.values.tablet.unitsSync
+        unitSync: props.values.tablet.unitSync
       },
       desktop: {
         top: {
@@ -732,7 +732,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           unit: props.values.desktop.left.unit,
           color: props.values.desktop.left.color
         },
-        unitsSync: props.values.desktop.unitsSync
+        unitSync: props.values.desktop.unitSync
       }
     };
   };
@@ -746,20 +746,21 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     control: control
   });
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    //onValuesChange( formValues );
+    onValuesChange(formValues);
   }, [formValues]);
 
   /**
    * Change the all values in parent.
    *
    * @param {number} value Value to change to.
+   * @param {string} key   The key to change.
    */
-  var changeAllValues = function changeAllValues(value) {
+  var changeAllValues = function changeAllValues(value, key) {
     var oldValues = getValues(deviceType);
-    oldValues.top = value;
-    oldValues.right = value;
-    oldValues.bottom = value;
-    oldValues.left = value;
+    oldValues.top[key] = value;
+    oldValues.right[key] = value;
+    oldValues.bottom[key] = value;
+    oldValues.left[key] = value;
     setValue(deviceType, oldValues);
   };
 
@@ -771,14 +772,23 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
   var syncUnits = function syncUnits(newUnit) {
     // Toggle unit sync value.
     var currentValues = getValues(deviceType);
-    currentValues.topUnit = newUnit;
-    currentValues.rightUnit = newUnit;
-    currentValues.bottomUnit = newUnit;
-    currentValues.leftUnit = newUnit;
+    currentValues.top.unit = newUnit;
+    currentValues.right.unit = newUnit;
+    currentValues.bottom.unit = newUnit;
+    currentValues.left.unit = newUnit;
     setValue(deviceType, currentValues);
   };
-  var onDimensionChange = function onDimensionChange(value) {
-    changeAllValues(value);
+
+  /**
+   * Change the unit for a given key.
+   *
+   * @param {string} value The new unit value.
+   * @param {string} key   The key to change.
+   *
+   * @return {void}
+   */
+  var onDimensionChange = function onDimensionChange(value, key) {
+    changeAllValues(value, key);
   };
 
   /**
@@ -795,12 +805,14 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
    * Get the max unit for a given unit.
    *
    * @param {string} unitVar The unit to get the max value for.
+   * @param {string} subUnit The sub unit to get the max value for.
    *
    * @return {number} The max value for the current unit.
    */
   var getRangeControlMax = function getRangeControlMax(unitVar) {
+    var subUnit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
     // Get current unit.
-    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType)[unitVar], unitVar);
+    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType)[unitVar][subUnit], unitVar, subUnit);
 
     // Get the max value for the current unit.
     var max = 100;
@@ -831,12 +843,14 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
    * Get the range control step for a given unit.
    *
    * @param {string} unitVar The unit variable to get the step for.
+   * @param {string} subUnit The sub unit to get the step for.
    *
    * @return {number} The max value for the current unit.
    */
   var getRangeControlStep = function getRangeControlStep(unitVar) {
+    var subUnit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
     // Get current unit.
-    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType)[unitVar], unitVar);
+    var unit = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType)[unitVar][subUnit], unitVar, subUnit);
 
     // Get the max value for the current unit.
     var step = 1;
@@ -878,14 +892,16 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange = _ref$field.onChange,
           value = _ref$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
-          value: value,
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'color'),
           onChange: function onChange(slug, newValue) {
             _onChange(newValue);
+            onDimensionChange(newValue, 'color');
           },
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
           defaultColors: photoBlock.palette,
           defaultColor: '#FFFFFF',
-          slug: 'border-color-sync'
+          slug: 'border-color-sync',
+          hideLabelFromVision: true
         });
       }
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
@@ -899,14 +915,14 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           label: labelAll,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
-          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top'),
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, getValues("".concat(deviceType, ".top.width")), 'top', 'width'),
           type: "number",
           min: 0,
           step: 1,
           max: "Infinity",
           onChange: function onChange(newValue) {
             _onChange2(newValue);
-            onDimensionChange(newValue);
+            onDimensionChange(newValue, 'width');
           },
           hideLabelFromVision: true,
           inputMode: "numeric",
@@ -923,7 +939,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".top.unit")), 'topUnit'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".top.unit")), 'top', 'unit'),
           options: units,
           onChange: function onChange(newValue) {
             _onChange3(newValue);
@@ -944,13 +960,13 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-range",
           label: labelAll,
-          value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top')),
+          value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'width')),
           min: 0,
-          max: getRangeControlMax('topUnit'),
-          step: getRangeControlStep('topUnit'),
+          max: getRangeControlMax('top', 'unit'),
+          step: getRangeControlStep('top', 'unit'),
           onChange: function onChange(newValue) {
             _onChange4(newValue);
-            onDimensionChange(newValue);
+            onDimensionChange(newValue, 'width');
           },
           withInputField: false,
           hideLabelFromVision: true
@@ -964,7 +980,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         var oldValues = getValues(deviceType);
         oldValues.unitSync = false;
         setValue(deviceType, oldValues);
-        syncUnits((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".top.unit")), 'top.unit'));
+        syncUnits((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".top.unit")), 'top', 'unit'));
       },
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Modify all values separately.', 'photo-block'),
       icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null)
@@ -980,28 +996,45 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     if (isSync()) {
       return null;
     }
-    return /*#__PURE__*/React.createElement("div", {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: classnames__WEBPACK_IMPORTED_MODULE_4___default()('dlx-photo-block__border-responsive-manual-interface')
-    }, /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-top"
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-      name: "".concat(deviceType, ".top.width"),
+      name: "".concat(deviceType, ".top.color"),
       control: control,
       render: function render(_ref5) {
         var _ref5$field = _ref5.field,
           _onChange5 = _ref5$field.onChange,
           value = _ref5$field.value;
+        return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'color'),
+          onChange: function onChange(slug, newValue) {
+            _onChange5(newValue);
+          },
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
+          defaultColors: photoBlock.palette,
+          defaultColor: '#000000',
+          slug: 'border-color-top',
+          hideLabelFromVision: true
+        });
+      }
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+      name: "".concat(deviceType, ".top.width"),
+      control: control,
+      render: function render(_ref6) {
+        var _ref6$field = _ref6.field,
+          _onChange6 = _ref6$field.onChange,
+          value = _ref6$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: labelTop,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
-          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top'),
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'width'),
           type: "number",
           min: 0,
-          step: 1,
-          max: "Infinity",
           onChange: function onChange(newValue) {
-            _onChange5(newValue);
+            _onChange6(newValue);
           },
           hideLabelFromVision: true,
           inputMode: "numeric",
@@ -1011,17 +1044,17 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
       name: "".concat(deviceType, ".top.unit"),
       control: control,
-      render: function render(_ref6) {
-        var _ref6$field = _ref6.field,
-          _onChange6 = _ref6$field.onChange,
-          value = _ref6$field.value;
+      render: function render(_ref7) {
+        var _ref7$field = _ref7.field,
+          _onChange7 = _ref7$field.onChange,
+          value = _ref7$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, value, 'topUnit'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, value, 'top', 'unit'),
           options: units,
           onChange: function onChange(newValue) {
-            _onChange6(newValue);
+            _onChange7(newValue);
           },
           hideLabelFromVision: true
         });
@@ -1029,65 +1062,38 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     })), /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-right"
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-      name: "".concat(deviceType, ".right"),
-      control: control,
-      render: function render(_ref7) {
-        var _ref7$field = _ref7.field,
-          _onChange7 = _ref7$field.onChange,
-          value = _ref7$field.value;
-        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
-          label: labelRight,
-          className: "dlx-photo-block__border-responsive-sync-interface-input",
-          value: value,
-          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'right'),
-          type: "number",
-          min: 0,
-          step: 1,
-          max: "Infinity",
-          onChange: function onChange(newValue) {
-            _onChange7(newValue);
-          },
-          hideLabelFromVision: true,
-          inputMode: "numeric",
-          autoComplete: "off"
-        });
-      }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-      name: "".concat(deviceType, ".rightUnit"),
+      name: "".concat(deviceType, ".right.color"),
       control: control,
       render: function render(_ref8) {
         var _ref8$field = _ref8.field,
           _onChange8 = _ref8$field.onChange,
           value = _ref8$field.value;
-        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-          className: "dlx-photo-block__border-responsive-sync-interface-select",
-          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, value, 'rightUnit'),
-          options: units,
-          onChange: function onChange(newValue) {
+        return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'right', 'color'),
+          onChange: function onChange(slug, newValue) {
             _onChange8(newValue);
           },
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
+          defaultColors: photoBlock.palette,
+          defaultColor: '#000000',
+          slug: 'border-color-right',
           hideLabelFromVision: true
         });
       }
-    })), /*#__PURE__*/React.createElement("div", {
-      className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-bottom"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-      name: "".concat(deviceType, ".bottom"),
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+      name: "".concat(deviceType, ".right.width"),
       control: control,
       render: function render(_ref9) {
         var _ref9$field = _ref9.field,
           _onChange9 = _ref9$field.onChange,
           value = _ref9$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
-          label: labelBottom,
+          label: labelRight,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
-          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'bottom'),
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'right', 'width'),
           type: "number",
           min: 0,
-          step: 1,
-          max: "Infinity",
           onChange: function onChange(newValue) {
             _onChange9(newValue);
           },
@@ -1097,7 +1103,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         });
       }
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-      name: "".concat(deviceType, ".bottomUnit"),
+      name: "".concat(deviceType, ".right.unit"),
       control: control,
       render: function render(_ref10) {
         var _ref10$field = _ref10.field,
@@ -1106,7 +1112,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, value, 'bottomUnit'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, value, 'right', 'unit'),
           options: units,
           onChange: function onChange(newValue) {
             _onChange10(newValue);
@@ -1115,25 +1121,44 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         });
       }
     })), /*#__PURE__*/React.createElement("div", {
-      className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-left"
+      className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-bottom"
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-      name: "".concat(deviceType, ".left"),
+      name: "".concat(deviceType, ".bottom.color"),
       control: control,
       render: function render(_ref11) {
         var _ref11$field = _ref11.field,
           _onChange11 = _ref11$field.onChange,
           value = _ref11$field.value;
+        return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'bottom', 'color'),
+          onChange: function onChange(slug, newValue) {
+            _onChange11(newValue);
+          },
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
+          defaultColors: photoBlock.palette,
+          defaultColor: '#000000',
+          slug: 'border-color-bottom',
+          hideLabelFromVision: true
+        });
+      }
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+      name: "".concat(deviceType, ".bottom.width"),
+      control: control,
+      render: function render(_ref12) {
+        var _ref12$field = _ref12.field,
+          _onChange12 = _ref12$field.onChange,
+          value = _ref12$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
-          label: labelLeft,
+          label: labelBottom,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
-          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'left'),
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'bottom', 'width'),
           type: "number",
           min: 0,
           step: 1,
           max: "Infinity",
           onChange: function onChange(newValue) {
-            _onChange11(newValue);
+            _onChange12(newValue);
           },
           hideLabelFromVision: true,
           inputMode: "numeric",
@@ -1141,19 +1166,82 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         });
       }
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-      name: "".concat(deviceType, ".leftUnit"),
+      name: "".concat(deviceType, ".bottom.unit"),
       control: control,
-      render: function render(_ref12) {
-        var _ref12$field = _ref12.field,
-          _onChange12 = _ref12$field.onChange,
-          value = _ref12$field.value;
+      render: function render(_ref13) {
+        var _ref13$field = _ref13.field,
+          _onChange13 = _ref13$field.onChange,
+          value = _ref13$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, value, 'leftUnit'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, value, 'bottom', 'unit'),
           options: units,
           onChange: function onChange(newValue) {
-            _onChange12(newValue);
+            _onChange13(newValue);
+          },
+          hideLabelFromVision: true
+        });
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-left"
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+      name: "".concat(deviceType, ".left.color"),
+      control: control,
+      render: function render(_ref14) {
+        var _ref14$field = _ref14.field,
+          _onChange14 = _ref14$field.onChange,
+          value = _ref14$field.value;
+        return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'left', 'color'),
+          onChange: function onChange(slug, newValue) {
+            _onChange14(newValue);
+          },
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
+          defaultColors: photoBlock.palette,
+          defaultColor: '#000000',
+          slug: 'border-color-left',
+          hideLabelFromVision: true
+        });
+      }
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+      name: "".concat(deviceType, ".left.width"),
+      control: control,
+      render: function render(_ref15) {
+        var _ref15$field = _ref15.field,
+          _onChange15 = _ref15$field.onChange,
+          value = _ref15$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+          label: labelLeft,
+          className: "dlx-photo-block__border-responsive-sync-interface-input",
+          value: value,
+          placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'left', 'width'),
+          type: "number",
+          min: 0,
+          step: 1,
+          max: "Infinity",
+          onChange: function onChange(newValue) {
+            _onChange15(newValue);
+          },
+          hideLabelFromVision: true,
+          inputMode: "numeric",
+          autoComplete: "off"
+        });
+      }
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+      name: "".concat(deviceType, ".left.unit"),
+      control: control,
+      render: function render(_ref16) {
+        var _ref16$field = _ref16.field,
+          _onChange16 = _ref16$field.onChange,
+          value = _ref16$field.value;
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          className: "dlx-photo-block__border-responsive-sync-interface-select",
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
+          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, value, 'left', 'unit'),
+          options: units,
+          onChange: function onChange(newValue) {
+            _onChange16(newValue);
           },
           hideLabelFromVision: true
         });
@@ -1169,7 +1257,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       isPressed: false,
       icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null),
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Edit all values together', 'photo-block')
-    }));
+    }))));
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
     className: "dlx-photo-block__border-responsive"
@@ -1569,7 +1657,9 @@ var ColorPickerControl = function ColorPickerControl(props) {
     _props$alpha = props.alpha,
     alpha = _props$alpha === void 0 ? false : _props$alpha,
     valueOpacity = props.valueOpacity,
-    slug = props.slug;
+    slug = props.slug,
+    _props$hideLabelFromV = props.hideLabelFromVision,
+    hideLabelFromVision = _props$hideLabelFromV === void 0 ? false : _props$hideLabelFromV;
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     setColor(value);
   }, [value]);
@@ -1612,7 +1702,7 @@ var ColorPickerControl = function ColorPickerControl(props) {
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
     className: "photo-block-component-color-picker-wrapper"
-  }, !!label && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("h3", {
+  }, !!label && !hideLabelFromVision && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("h3", {
     className: "photo-block-color-component-label"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, label)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-component-color-picker"
@@ -4835,7 +4925,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     containerMinHeight = attributes.containerMinHeight,
     photoPaddingSize = attributes.photoPaddingSize,
     photoMarginSize = attributes.photoMarginSize,
-    photoBorderRadius = attributes.photoBorderRadius;
+    photoBorderRadius = attributes.photoBorderRadius,
+    photoBorder = attributes.photoBorder;
   var url = photo.url,
     id = photo.id,
     width = photo.width,
@@ -4953,10 +5044,10 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     className: "photo-block__inspector-panel"
   }, /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_16__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Padding', 'photo-block'),
-    values: photoPaddingSize,
+    values: photoBorder,
     onValuesChange: function onValuesChange(values) {
       setAttributes({
-        photoPaddingSize: values
+        photoBorder: values
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Top Padding', 'photo-block'),
@@ -5748,25 +5839,33 @@ function buildDimensionsCSS(props, screenSize) {
  * @param {string} screenSize mobile|tablet|desktop.
  * @param {string} value      Current value.
  * @param {string} type       Type of value (fontFamily, fontSize, fontWeight, letterSpacing, etc.).
+ * @param {string} subType    Sub type of value (top: width, unit, color).
  *
  * @return {string} Value placeholder.
  */
 function geHierarchicalPlaceholderValue(props, screenSize, value, type) {
+  var subType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
   // Check mobile screen size.
   if ('mobile' === screenSize && '' === value) {
     // Check tablet.
-    if ('' !== props.tablet[type]) {
-      return props.tablet[type];
-    } else if ('' !== props.desktop[type]) {
+    if (subType && props.tablet[type][subType] !== '') {
+      return props.tablet[type][subType];
+    } else if (subType && props.desktop[type][subType] !== '') {
       // Check desktop.
+      return props.desktop[type][subType];
+    } else if (props.tablet[type] !== '') {
+      return props.tablet[type];
+    } else if (props.desktop[type] !== '') {
       return props.desktop[type];
     }
   }
 
   // Check tablet screen size.
   if ('tablet' === screenSize && '' === value) {
-    if ('' !== props.desktop[type]) {
+    if (subType && props.desktop[type][subType] !== '') {
       // Check desktop.
+      return props.desktop[type][subType];
+    } else if (props.desktop[type] !== '') {
       return props.desktop[type];
     }
   }
@@ -5783,19 +5882,30 @@ function geHierarchicalPlaceholderValue(props, screenSize, value, type) {
  * @param {string} screenSize mobile|tablet|desktop.
  * @param {string} value      Current value.
  * @param {string} type       Type of value (fontSizeUnit, etc.).
+ * @param {string} subType    Sub type of value (top: width, unit, color).
  *
  * @return {string} Value default or hierarchical value.
  */
 function getHierarchicalValueUnit(props, screenSize, value, type) {
+  var subType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
   // Check mobile screen size.
   if ('mobile' === screenSize && null === value) {
-    if (null === props.tablet[type]) {
+    if (subType && props.tablet[type][subType] !== null) {
+      return props.tablet[type][subType];
+    } else if (subType && props.desktop[type][subType] !== null) {
+      return props.desktop[type][subType];
+    } else if (props.tablet[type] !== null) {
+      return props.tablet[type];
+    } else if (props.desktop[type] !== null) {
       return props.desktop[type];
     }
-    return props.tablet[type];
   }
   if ('tablet' === screenSize && null === value) {
-    return props.desktop[type];
+    if (subType && props.desktop[type][subType] !== null) {
+      return props.desktop[type][subType];
+    } else if (props.desktop[type] !== null) {
+      return props.desktop[type];
+    }
   }
   if (null === value) {
     return 'px';
@@ -34691,7 +34801,7 @@ function useForm(props = {}) {
 /***/ (function(module) {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"none"},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageDimensions":{"type":"object","default":{"width":"","height":""}},"imageSizePercentage":{"type":"string","default":"100"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":""},"right":{"width":"","unit":null,"color":""},"bottom":{"width":"","unit":null,"color":""},"left":{"width":"","unit":null,"color":""},"unitsSync":true},"tablet":{"top":{"width":"","unit":null,"color":""},"right":{"width":"","unit":null,"color":""},"bottom":{"width":"","unit":null,"color":""},"left":{"width":"","unit":null,"color":""},"unitsSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000"},"right":{"width":"0","unit":"px","color":"#000000"},"bottom":{"width":"0","unit":"px","color":"#000000"},"left":{"width":"0","unit":"px","color":"#000000"},"unitsSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}}},"supports":{"anchor":true,"align":true,"className":true,"alignWide":true,"defaultStylePicker":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"none"},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageDimensions":{"type":"object","default":{"width":"","height":""}},"imageSizePercentage":{"type":"string","default":"100"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":""},"right":{"width":"","unit":null,"color":""},"bottom":{"width":"","unit":null,"color":""},"left":{"width":"","unit":null,"color":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":""},"right":{"width":"","unit":null,"color":""},"bottom":{"width":"","unit":null,"color":""},"left":{"width":"","unit":null,"color":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000"},"right":{"width":"0","unit":"px","color":"#000000"},"bottom":{"width":"0","unit":"px","color":"#000000"},"left":{"width":"0","unit":"px","color":"#000000"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}}},"supports":{"anchor":true,"align":true,"className":true,"alignWide":true,"defaultStylePicker":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 

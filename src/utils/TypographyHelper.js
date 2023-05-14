@@ -43,25 +43,32 @@ export function buildDimensionsCSS( props, screenSize ) {
  * @param {string} screenSize mobile|tablet|desktop.
  * @param {string} value      Current value.
  * @param {string} type       Type of value (fontFamily, fontSize, fontWeight, letterSpacing, etc.).
+ * @param {string} subType    Sub type of value (top: width, unit, color).
  *
  * @return {string} Value placeholder.
  */
-export function geHierarchicalPlaceholderValue( props, screenSize, value, type ) {
+export function geHierarchicalPlaceholderValue( props, screenSize, value, type, subType = '' ) {
 	// Check mobile screen size.
 	if ( 'mobile' === screenSize && '' === value ) {
 		// Check tablet.
-		if ( '' !== props.tablet[ type ] ) {
-			return props.tablet[ type ];
-		} else if ( '' !== props.desktop[ type ] ) {
+		if ( subType && props.tablet[ type ][ subType ] !== '' ) {
+			return props.tablet[ type ][ subType ];
+		} else if ( subType && props.desktop[ type ][ subType ] !== '' ) {
 			// Check desktop.
+			return props.desktop[ type ][ subType ];
+		} else if ( props.tablet[ type ] !== '' ) {
+			return props.tablet[ type ];
+		} else if ( props.desktop[ type ] !== '' ) {
 			return props.desktop[ type ];
 		}
 	}
 
 	// Check tablet screen size.
 	if ( 'tablet' === screenSize && '' === value ) {
-		if ( '' !== props.desktop[ type ] ) {
+		if ( subType && props.desktop[ type ][ subType ] !== '' ) {
 			// Check desktop.
+			return props.desktop[ type ][ subType ];
+		} else if ( props.desktop[ type ] !== '' ) {
 			return props.desktop[ type ];
 		}
 	}
@@ -80,23 +87,36 @@ export function geHierarchicalPlaceholderValue( props, screenSize, value, type )
  * @param {string} screenSize mobile|tablet|desktop.
  * @param {string} value      Current value.
  * @param {string} type       Type of value (fontSizeUnit, etc.).
+ * @param {string} subType    Sub type of value (top: width, unit, color).
  *
  * @return {string} Value default or hierarchical value.
  */
-export function getHierarchicalValueUnit( props, screenSize, value, type ) {
+export function getHierarchicalValueUnit( props, screenSize, value, type, subType = '' ) {
 	// Check mobile screen size.
 	if ( 'mobile' === screenSize && null === value ) {
-		if ( null === props.tablet[ type ] ) {
+		if ( subType && props.tablet[ type ][ subType ] !== null ) {
+			return props.tablet[ type ][ subType ];
+		} else if ( subType && props.desktop[ type ][ subType ] !== null ) {
+			return props.desktop[ type ][ subType ];
+		} else if ( props.tablet[ type ] !== null ) {
+			return props.tablet[ type ];
+		} else if ( props.desktop[ type ] !== null ) {
 			return props.desktop[ type ];
 		}
-		return props.tablet[ type ];
 	}
+
 	if ( 'tablet' === screenSize && null === value ) {
-		return props.desktop[ type ];
+		if ( subType && props.desktop[ type ][ subType ] !== null ) {
+			return props.desktop[ type ][ subType ];
+		} else if ( props.desktop[ type ] !== null ) {
+			return props.desktop[ type ];
+		}
 	}
+
 	if ( null === value ) {
 		return 'px';
 	}
+
 	return value;
 }
 

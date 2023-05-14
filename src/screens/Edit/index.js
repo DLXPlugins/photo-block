@@ -80,6 +80,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		photoPaddingSize,
 		photoMarginSize,
 		photoBorderRadius,
+		photoBorder,
 	} = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
@@ -166,9 +167,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			>
 				<BorderResponsiveControl
 					label={ __( 'Photo Padding', 'photo-block' ) }
-					values={ photoPaddingSize }
+					values={ photoBorder }
 					onValuesChange={ ( values ) => {
-						setAttributes( { photoPaddingSize: values } );
+						setAttributes( { photoBorder: values } );
 					} }
 					labelTop={ __( 'Top Padding', 'photo-block' ) }
 					labelRight={ __( 'Right Padding', 'photo-block' ) }
