@@ -15,7 +15,6 @@ import {
 	TabPanel,
 	TextControl,
 	TextareaControl,
-	PanelBody,
 	PanelRow,
 	SelectControl,
 	ButtonGroup,
