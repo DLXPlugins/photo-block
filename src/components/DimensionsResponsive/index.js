@@ -31,6 +31,7 @@ const DimensionsResponsiveControl = ( props ) => {
 		labelLeft,
 		labelAll,
 		isBorderRadius = false,
+		allowNegatives = false,
 	} = props;
 	const [ deviceType ] = useDeviceType( 'Desktop' );
 	const units = props?.units
@@ -137,6 +138,51 @@ const DimensionsResponsiveControl = ( props ) => {
 			'unitSync'
 		);
 		return sync;
+	};
+
+	/**
+	 * Get the min unit for a given unit.
+	 *
+	 * @param {string} unitVar The unit to get the min value for.
+	 *
+	 * @return {number} The min value for the current unit.
+	 */
+	const getRangeControlMin = ( unitVar ) => {
+		if ( ! allowNegatives ) {
+			return 0;
+		}
+
+		// Get current unit.
+		const unit = getHierarchicalValueUnit(
+			props.values,
+			deviceType,
+			getValues( deviceType )[ unitVar ],
+			unitVar
+		);
+
+		// Get the max value for the current unit.
+		let min = -100;
+		switch ( unit ) {
+			case 'px':
+				min = -1000;
+				break;
+			case '%':
+				min = -100;
+				break;
+			case 'em':
+				min = -10;
+				break;
+			case 'rem':
+				min = -10;
+				break;
+			case 'vw':
+				min = -100;
+				break;
+			default:
+				min = -100;
+				break;
+		}
+		return min;
 	};
 
 	/**
@@ -303,7 +349,7 @@ const DimensionsResponsiveControl = ( props ) => {
 										'top'
 									)
 								) }
-								min={ 0 }
+								min={ getRangeControlMin( 'topUnit' ) }
 								max={ getRangeControlMax( 'topUnit' ) }
 								step={ getRangeControlStep( 'topUnit' ) }
 								onChange={ ( newValue ) => {

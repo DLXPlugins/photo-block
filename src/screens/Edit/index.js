@@ -50,6 +50,7 @@ import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
 import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
+import PanelBodyControl from '../../components/PanelBody';
 
 /**
  * Height units.
@@ -160,23 +161,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
-			<PanelBody
+			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }
 				icon={ <Image /> }
 				className="photo-block__inspector-panel"
+				id="photo-block__photo-settings"
+				uniqueId={ uniqueId }
+				initialOpen={ true }
+				scrollAfterOpen={ false }
 			>
-				<BorderResponsiveControl
-					label={ __( 'Photo Padding', 'photo-block' ) }
-					values={ photoBorder }
-					onValuesChange={ ( values ) => {
-						setAttributes( { photoBorder: values } );
-					} }
-					labelTop={ __( 'Top Padding', 'photo-block' ) }
-					labelRight={ __( 'Right Padding', 'photo-block' ) }
-					labelBottom={ __( 'Bottom Padding', 'photo-block' ) }
-					labelLeft={ __( 'Left Padding', 'photo-block' ) }
-					labelAll={ __( 'Change Padding', 'photo-block' ) }
-				/>
 				<PanelRow>
 					<TextControl
 						label={ __( 'Photo Title', 'photo-block' ) }
@@ -380,17 +373,20 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						</>
 					) }
 				</PanelRow>
-			</PanelBody>
+			</PanelBodyControl>
 		</>
 	);
 
 	const stylesInspectorControls = (
 		<>
-			<PanelBody
+			<PanelBodyControl
 				title={ __( 'Image Styles', 'photo-block' ) }
-				initialOpen={ true }
 				icon={ <Palette /> }
 				className="photo-block__inspector-panel"
+				id="photo-block__photo-image-styles"
+				uniqueId={ uniqueId }
+				initialOpen={ true }
+				scrollAfterOpen={ false }
 			>
 				<ColorPickerControl
 					value={ photoBackgroundColor }
@@ -442,23 +438,29 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						setAttributes={ setAttributes }
 					/>
 				) }
-			</PanelBody>
-			<PanelBody
+			</PanelBodyControl>
+			<PanelBodyControl
 				title={ __( 'CSS Styles', 'photo-block' ) }
-				initialOpen={ false }
 				className="photo-block__inspector-panel"
 				icon={ <Wand2 /> }
+				id="photo-block__photo-css-gram"
+				uniqueId={ uniqueId }
+				initialOpen={ false }
+				scrollAfterOpen={ false }
 			>
 				<CSSGramButtonGroup
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 				/>
-			</PanelBody>
-			<PanelBody
+			</PanelBodyControl>
+			<PanelBodyControl
 				title={ __( 'Padding, Margin, and Border', 'photo-block' ) }
 				initialOpen={ false }
 				icon={ <Maximize /> }
 				className="photo-block__inspector-panel"
+				id="photo-block__photo-dimensions-styles"
+				uniqueId={ uniqueId }
+				scrollAfterOpen={ false }
 			>
 				<DimensionsResponsiveControl
 					label={ __( 'Photo Padding', 'photo-block' ) }
@@ -483,6 +485,19 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					labelBottom={ __( 'Bottom Margin', 'photo-block' ) }
 					labelLeft={ __( 'Left Margin', 'photo-block' ) }
 					labelAll={ __( 'Change Margin', 'photo-block' ) }
+					allowNegatives={ true }
+				/>
+				<BorderResponsiveControl
+					label={ __( 'Photo Border', 'photo-block' ) }
+					values={ photoBorder }
+					onValuesChange={ ( values ) => {
+						setAttributes( { photoBorder: values } );
+					} }
+					labelTop={ __( 'Top Border', 'photo-block' ) }
+					labelRight={ __( 'Right Border', 'photo-block' ) }
+					labelBottom={ __( 'Bottom Border', 'photo-block' ) }
+					labelLeft={ __( 'Left Border', 'photo-block' ) }
+					labelAll={ __( 'Change Border', 'photo-block' ) }
 				/>
 				<DimensionsResponsiveControl
 					label={ __( 'Photo Border Radius', 'photo-block' ) }
@@ -498,12 +513,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					isBorderRadius={ true }
 				/>
 
-			</PanelBody>
-			<PanelBody
+			</PanelBodyControl>
+			<PanelBodyControl
 				title={ __( 'Container Sizing', 'photo-block' ) }
 				initialOpen={ false }
 				icon={ <Shrink /> }
 				className="photo-block__inspector-panel"
+				id="photo-block__photo-container-styles"
+				uniqueId={ uniqueId }
+				scrollAfterOpen={ false }
 			>
 				<PanelRow>
 					<SelectControl
@@ -589,7 +607,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						} }
 					/>
 				</div>
-			</PanelBody>
+			</PanelBodyControl>
 		</>
 	);
 
