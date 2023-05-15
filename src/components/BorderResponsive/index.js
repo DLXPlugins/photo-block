@@ -39,10 +39,23 @@ const BorderResponsiveControl = ( props ) => {
 		labelAll,
 	} = props;
 	const [ deviceType ] = useDeviceType( 'Desktop' );
-	const [ showBorderStylePopoverSync, setShowBorderStylePopoverSync ] = useState(
-		false
-	);
-	const [ bordrStyleSyncButtonRef, setBorderSyncStyleButtonRef ] = useState();
+	const [ showBorderStylePopoverSync, setShowBorderStylePopoverSync ] =
+		useState( false );
+	const [ showBorderStylePopoverTop, setShowBorderStylePopoverTop ] =
+		useState( false );
+	const [ showBorderStylePopoverRight, setShowBorderStylePopoverRight ] =
+		useState( false );
+	const [ showBorderStylePopoverBottom, setShowBorderStylePopoverBottom ] =
+		useState( false );
+	const [ showBorderStylePopoverLeft, setShowBorderStylePopoverLeft ] =
+		useState( false );
+	const [ borderStyleSyncButtonRef, setBorderSyncStyleButtonRef ] = useState();
+	const [ borderStyleTopButtonRef, setBorderStyleTopButtonRef ] = useState();
+	const [ borderStyleRightButtonRef, setBorderStyleRightButtonRef ] = useState();
+	const [ borderStyleBottomButtonRef, setBorderStyleBottomButtonRef ] =
+		useState();
+	const [ borderStyleLeftButtonRef, setBorderStyleLeftButtonRef ] = useState();
+
 	const units = props?.units
 		? props.units
 		: [
@@ -50,7 +63,7 @@ const BorderResponsiveControl = ( props ) => {
 			{ label: '%', value: '%' },
 			{ label: 'EM', value: 'em' },
 			{ label: 'REM', value: 'rem' },
-		];
+		  ];
 
 	const getDefaultValues = () => {
 		return {
@@ -307,8 +320,6 @@ const BorderResponsiveControl = ( props ) => {
 			unitVar,
 			'borderStyle'
 		);
-		console.log( getValues() );
-		console.log( borderStyle );
 		return borderStyle;
 	};
 
@@ -330,6 +341,77 @@ const BorderResponsiveControl = ( props ) => {
 			default:
 				return BorderStyleSolidIcon;
 		}
+	};
+
+	/**
+	 * Get the button group used for choosing border style.
+	 *
+	 * @param {string}   unitVar          The unit variable to get the button group for.
+	 * @param {Function} setPopoverClosed Reference to closing the popover.
+	 * @return { Element } button group
+	 */
+	const getPopoverButtonGroup = ( unitVar, setPopoverClosed ) => {
+		return (
+			<div className="dlx-photo-block__border-responsive-sync-interface-border-style-popover">
+				<BaseControl>
+					<h3>{ __( 'Border Style', 'photo-block' ) }</h3>
+					<ButtonGroup className="dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons">
+						<Controller
+							name={ `${ deviceType }.${ unitVar }.borderStyle` }
+							control={ control }
+							render={ ( { field: { onChange, value } } ) => (
+								<>
+									<Button
+										icon={ BorderStyleSolidIcon }
+										label={ __( 'Solid', 'photo-block' ) }
+										onClick={ () => {
+											onChange( 'solid' );
+											setPopoverClosed( true );
+										} }
+										isPressed={ 'solid' === getBorderStyle( unitVar ) }
+									>
+										{ __( 'Solid', 'photo-block' ) }
+									</Button>
+									<Button
+										icon={ BorderStyleDashedIcon }
+										label={ __( 'Dashed', 'photo-block' ) }
+										isPressed={ 'dashed' === getBorderStyle( unitVar ) }
+										onClick={ () => {
+											onChange( 'dashed' );
+											setPopoverClosed( true );
+										} }
+									>
+										{ __( 'Dashed', 'photo-block' ) }
+									</Button>
+									<Button
+										icon={ BorderStyleDottedIcon }
+										label={ __( 'Dotted', 'photo-block' ) }
+										isPressed={ 'dotted' === getBorderStyle( unitVar ) }
+										onClick={ () => {
+											onChange( 'dotted' );
+											setPopoverClosed( true );
+										} }
+									>
+										{ __( 'Dotted', 'photo-block' ) }
+									</Button>
+									<Button
+										icon={ BorderStyleDoubleIcon }
+										label={ __( 'Double', 'photo-block' ) }
+										isPressed={ 'double' === getBorderStyle( unitVar ) }
+										onClick={ () => {
+											onChange( 'double' );
+											setPopoverClosed( true );
+										} }
+									>
+										{ __( 'Double', 'photo-block' ) }
+									</Button>
+								</>
+							) }
+						/>
+					</ButtonGroup>
+				</BaseControl>
+			</div>
+		);
 	};
 
 	const getSyncInterface = () => {
@@ -377,88 +459,88 @@ const BorderResponsiveControl = ( props ) => {
 						} }
 						ref={ setBorderSyncStyleButtonRef }
 					/>
-					{
-						showBorderStylePopoverSync && (
-							<Popover
-								position="bottom center"
-								onClose={ () => {
-									setShowBorderStylePopoverSync( false );
-								} }
-							>
-								<div className="dlx-photo-block__border-responsive-sync-interface-border-style-popover">
-									<BaseControl>
-										<h3>{ __( 'Border Style', 'photo-block' ) }</h3>
-										<ButtonGroup className="dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons">
-											<Controller 
-												name={ `${ deviceType }.top.borderStyle` }
-												control={ control }
-												render={ ( { field: { onChange, value } } ) => (
-													<>
-														<Button
-															icon={ BorderStyleSolidIcon }
-															label={ __( 'Solid', 'photo-block' ) }
-															onClick={ () => {
-																onChange( 'solid' );
-																changeAllValues( 'solid', 'borderStyle' );
+					{ showBorderStylePopoverSync && (
+						<Popover
+							position="bottom center"
+							onClose={ () => {
+								setShowBorderStylePopoverSync( false );
+							} }
+							anchorRef={ borderStyleSyncButtonRef }
+							noArrow={ false }
+						>
+							<div className="dlx-photo-block__border-responsive-sync-interface-border-style-popover">
+								<BaseControl>
+									<h3>{ __( 'Border Style', 'photo-block' ) }</h3>
+									<ButtonGroup className="dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons">
+										<Controller
+											name={ `${ deviceType }.top.borderStyle` }
+											control={ control }
+											render={ ( { field: { onChange, value } } ) => (
+												<>
+													<Button
+														icon={ BorderStyleSolidIcon }
+														label={ __( 'Solid', 'photo-block' ) }
+														onClick={ () => {
+															onChange( 'solid' );
+															changeAllValues( 'solid', 'borderStyle' );
 
-																// Close the popover.
-																setShowBorderStylePopoverSync( false );
-															} }
-															isPressed={ 'solid' === getBorderStyle( 'top' ) }
-														>
-															{ __( 'Solid', 'photo-block' ) }
-														</Button>
-														<Button
-															icon={ BorderStyleDashedIcon }
-															label={ __( 'Dashed', 'photo-block' ) }
-															isPressed={ 'dashed' === getBorderStyle( 'top' ) }
-															onClick={ () => {
-																onChange( 'dashed' );
-																changeAllValues( 'dashed', 'borderStyle' );
+															// Close the popover.
+															setShowBorderStylePopoverSync( false );
+														} }
+														isPressed={ 'solid' === getBorderStyle( 'top' ) }
+													>
+														{ __( 'Solid', 'photo-block' ) }
+													</Button>
+													<Button
+														icon={ BorderStyleDashedIcon }
+														label={ __( 'Dashed', 'photo-block' ) }
+														isPressed={ 'dashed' === getBorderStyle( 'top' ) }
+														onClick={ () => {
+															onChange( 'dashed' );
+															changeAllValues( 'dashed', 'borderStyle' );
 
-																// Close the popover.
-																setShowBorderStylePopoverSync( false );
-															} }
-														>
-															{ __( 'Dashed', 'photo-block' ) }
-														</Button>
-														<Button
-															icon={ BorderStyleDottedIcon }
-															label={ __( 'Dotted', 'photo-block' ) }
-															isPressed={ 'dotted' === getBorderStyle( 'top' ) }
-															onClick={ () => {
-																onChange( 'dotted' );
-																changeAllValues( 'dotted', 'borderStyle' );
+															// Close the popover.
+															setShowBorderStylePopoverSync( false );
+														} }
+													>
+														{ __( 'Dashed', 'photo-block' ) }
+													</Button>
+													<Button
+														icon={ BorderStyleDottedIcon }
+														label={ __( 'Dotted', 'photo-block' ) }
+														isPressed={ 'dotted' === getBorderStyle( 'top' ) }
+														onClick={ () => {
+															onChange( 'dotted' );
+															changeAllValues( 'dotted', 'borderStyle' );
 
-																// Close the popover.
-																setShowBorderStylePopoverSync( false );
-															} }
-														>
-															{ __( 'Dotted', 'photo-block' ) }
-														</Button>
-														<Button
-															icon={ BorderStyleDoubleIcon }
-															label={ __( 'Double', 'photo-block' ) }
-															isPressed={ 'double' === getBorderStyle( 'top' ) }
-															onClick={ () => {
-																onChange( 'double' );
-																changeAllValues( 'double', 'borderStyle' );
+															// Close the popover.
+															setShowBorderStylePopoverSync( false );
+														} }
+													>
+														{ __( 'Dotted', 'photo-block' ) }
+													</Button>
+													<Button
+														icon={ BorderStyleDoubleIcon }
+														label={ __( 'Double', 'photo-block' ) }
+														isPressed={ 'double' === getBorderStyle( 'top' ) }
+														onClick={ () => {
+															onChange( 'double' );
+															changeAllValues( 'double', 'borderStyle' );
 
-																// Close the popover.
-																setShowBorderStylePopoverSync( false );
-															} }
-														>
-															{ __( 'Double', 'photo-block' ) }
-														</Button>
-													</>
-												) }
-											/>
-										</ButtonGroup>
-									</BaseControl>
-								</div>
-							</Popover>
-						)
-					}
+															// Close the popover.
+															setShowBorderStylePopoverSync( false );
+														} }
+													>
+														{ __( 'Double', 'photo-block' ) }
+													</Button>
+												</>
+											) }
+										/>
+									</ButtonGroup>
+								</BaseControl>
+							</div>
+						</Popover>
+					) }
 					<Controller
 						name={ `${ deviceType }.top.width` }
 						control={ control }
@@ -472,7 +554,7 @@ const BorderResponsiveControl = ( props ) => {
 									deviceType,
 									getValues( `${ deviceType }.top.width` ),
 									'top',
-									'width',
+									'width'
 								) }
 								type="number"
 								min={ 0 }
@@ -555,7 +637,7 @@ const BorderResponsiveControl = ( props ) => {
 									deviceType,
 									getValues( `${ deviceType }.top.unit` ),
 									'top',
-									'unit',
+									'unit'
 								)
 							);
 						} }
@@ -580,7 +662,7 @@ const BorderResponsiveControl = ( props ) => {
 			<>
 				<div
 					className={ classnames(
-						'dlx-photo-block__border-responsive-manual-interface',
+						'dlx-photo-block__border-responsive-manual-interface'
 					) }
 				>
 					<>
@@ -608,6 +690,28 @@ const BorderResponsiveControl = ( props ) => {
 									/>
 								) }
 							/>
+							<Button
+								className="dlx-photo-block__border-responsive-sync-interface-border-style"
+								hideLabelFromVision={ true }
+								label={ __( 'Border Style', 'photo-block' ) }
+								icon={ getBorderStyleIcon( 'top' ) }
+								onClick={ () => {
+									setShowBorderStylePopoverTop( ! showBorderStylePopoverTop );
+								} }
+								ref={ setBorderStyleTopButtonRef }
+							/>
+							{ showBorderStylePopoverTop && (
+								<Popover
+									position="bottom center"
+									onClose={ () => {
+										setShowBorderStylePopoverTop( false );
+									} }
+									anchorRef={ borderStyleTopButtonRef }
+									noArrow={ false }
+								>
+									{ getPopoverButtonGroup( 'top', setShowBorderStylePopoverTop ) }
+								</Popover>
+							) }
 							<Controller
 								name={ `${ deviceType }.top.width` }
 								control={ control }
@@ -681,6 +785,28 @@ const BorderResponsiveControl = ( props ) => {
 									/>
 								) }
 							/>
+							<Button
+								className="dlx-photo-block__border-responsive-sync-interface-border-style"
+								hideLabelFromVision={ true }
+								label={ __( 'Border Style', 'photo-block' ) }
+								icon={ getBorderStyleIcon( 'right' ) }
+								onClick={ () => {
+									setShowBorderStylePopoverRight( ! showBorderStylePopoverRight );
+								} }
+								ref={ setBorderStyleRightButtonRef }
+							/>
+							{ showBorderStylePopoverRight && (
+								<Popover
+									placement="left"
+									onClose={ () => {
+										setShowBorderStylePopoverRight( false );
+									} }
+									anchorRef={ borderStyleRightButtonRef }
+									noArrow={ false }
+								>
+									{ getPopoverButtonGroup( 'right', setShowBorderStylePopoverRight ) }
+								</Popover>
+							) }
 							<Controller
 								name={ `${ deviceType }.right.width` }
 								control={ control }
@@ -754,6 +880,28 @@ const BorderResponsiveControl = ( props ) => {
 									/>
 								) }
 							/>
+							<Button
+								className="dlx-photo-block__border-responsive-sync-interface-border-style"
+								hideLabelFromVision={ true }
+								label={ __( 'Border Style', 'photo-block' ) }
+								icon={ getBorderStyleIcon( 'bottom' ) }
+								onClick={ () => {
+									setShowBorderStylePopoverBottom( ! showBorderStylePopoverBottom );
+								} }
+								ref={ setBorderStyleBottomButtonRef }
+							/>
+							{ showBorderStylePopoverBottom && (
+								<Popover
+									position="bottom center"
+									onClose={ () => {
+										setShowBorderStylePopoverBottom( false );
+									} }
+									anchorRef={ borderStyleBottomButtonRef }
+									noArrow={ false }
+								>
+									{ getPopoverButtonGroup( 'bottom', setShowBorderStylePopoverBottom ) }
+								</Popover>
+							) }
 							<Controller
 								name={ `${ deviceType }.bottom.width` }
 								control={ control }
@@ -829,6 +977,28 @@ const BorderResponsiveControl = ( props ) => {
 									/>
 								) }
 							/>
+							<Button
+								className="dlx-photo-block__border-responsive-sync-interface-border-style"
+								hideLabelFromVision={ true }
+								label={ __( 'Border Style', 'photo-block' ) }
+								icon={ getBorderStyleIcon( 'left' ) }
+								onClick={ () => {
+									setShowBorderStylePopoverLeft( ! showBorderStylePopoverLeft );
+								} }
+								ref={ setBorderStyleLeftButtonRef }
+							/>
+							{ showBorderStylePopoverLeft && (
+								<Popover
+									position="Left center"
+									onClose={ () => {
+										setShowBorderStylePopoverLeft( false );
+									} }
+									anchorRef={ borderStyleLeftButtonRef }
+									noArrow={ false }
+								>
+									{ getPopoverButtonGroup( 'left', setShowBorderStylePopoverLeft ) }
+								</Popover>
+							) }
 							<Controller
 								name={ `${ deviceType }.left.width` }
 								control={ control }
@@ -892,10 +1062,8 @@ const BorderResponsiveControl = ( props ) => {
 							icon={ <Link /> }
 							label={ __( 'Edit all values together', 'photo-block' ) }
 						/>
-
 					</>
 				</div>
-
 			</>
 		);
 	};

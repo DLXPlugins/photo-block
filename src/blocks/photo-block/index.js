@@ -14,7 +14,7 @@ const PhotoBlock = ( props ) => {
 	const [ isUploadError, setIsUploadError ] = useState( false );
 	const [ filepondInstance, setFilepondInstance ] = useState( null );
 	const [ hasCaption, setHasCaption ] = useState( props.attributes.caption ? true : false );
-	const [ captionPosition, setCaptionPosition ] = useState( props.attributes.captionPosition ?? 'bottom' ); // Can be top|bottom|left|right.
+	const [ captionPosition, setCaptionPosition ] = useState( props.attributes.captionPosition ?? 'bottom' ); // Can be top|bottom|overlay.
 
 	return (
 		<UploaderContext.Provider

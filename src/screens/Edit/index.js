@@ -91,7 +91,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
 
-	const { screen, setScreen } = useContext( UploaderContext );
+	const { screen, setScreen, captionPosition } = useContext( UploaderContext );
 
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
@@ -169,18 +169,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				initialOpen={ true }
 				scrollAfterOpen={ false }
 			>
-				<BorderResponsiveControl
-					label={ __( 'Photo Border', 'photo-block' ) }
-					values={ photoBorder }
-					onValuesChange={ ( values ) => {
-						setAttributes( { photoBorder: values } );
-					} }
-					labelTop={ __( 'Top Border', 'photo-block' ) }
-					labelRight={ __( 'Right Border', 'photo-block' ) }
-					labelBottom={ __( 'Bottom Border', 'photo-block' ) }
-					labelLeft={ __( 'Left Border', 'photo-block' ) }
-					labelAll={ __( 'Change Border', 'photo-block' ) }
-				/>
 				<PanelRow>
 					<TextControl
 						label={ __( 'Photo Title', 'photo-block' ) }
@@ -813,6 +801,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					</div>
 				) }
 				<figure className="dlx-photo-block__screen-edit-image-wrapper">
+					{ 'top' === captionPosition && (
+						<figcaption
+							className="dlx-photo-block__screen-edit-caption"
+							{ ...innerBlockProps }
+						/>
+					) }
 					<div className="dlx-photo-block__screen-edit-image">
 						<img
 							src={ url }
@@ -828,10 +822,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							ref={ ref }
 						/>
 					</div>
-					<figcaption
-						className="dlx-photo-block__screen-edit-caption"
-						{ ...innerBlockProps }
-					/>
+					{ 'bottom' === captionPosition && (
+						<figcaption
+							className="dlx-photo-block__screen-edit-caption"
+							{ ...innerBlockProps }
+						/>
+					) }
 				</figure>
 			</div>
 		</>

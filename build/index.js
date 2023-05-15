@@ -286,7 +286,7 @@ var PhotoBlock = function PhotoBlock(props) {
   var _useState15 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)((_props$attributes$cap = props.attributes.captionPosition) !== null && _props$attributes$cap !== void 0 ? _props$attributes$cap : 'bottom'),
     _useState16 = _slicedToArray(_useState15, 2),
     captionPosition = _useState16[0],
-    setCaptionPosition = _useState16[1]; // Can be top|bottom|left|right.
+    setCaptionPosition = _useState16[1]; // Can be top|bottom|overlay.
 
   return /*#__PURE__*/React.createElement(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_5__["default"].Provider, {
     value: {
@@ -421,12 +421,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/separator-horizontal.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash-2.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/check.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/maximize.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/shrink.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/separator-horizontal.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash-2.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/check.js");
 /* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
 /* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
+/* harmony import */ var _components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/DimensionsResponsive */ "./src/components/DimensionsResponsive/index.js");
+/* harmony import */ var _components_BorderResponsive__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/BorderResponsive */ "./src/components/BorderResponsive/index.js");
+/* harmony import */ var _components_SizeResponsive__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/SizeResponsive */ "./src/components/SizeResponsive/index.js");
+/* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -443,6 +449,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
+
+
+/**
+ * Height units.
+ */
+var heightUnits = ['px', 'em', 'rem', '%', 'vh'];
 var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var generatedUniqueId = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_7__.useInstanceId)(PhotoCaptionBlock, 'photo-caption-block');
   // Read in context values.
@@ -478,6 +492,12 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   });
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.store),
     removeBlocks = _useDispatch.removeBlocks;
+
+  // Get device.
+  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_12__["default"])('Desktop'),
+    _useDeviceType2 = _slicedToArray(_useDeviceType, 2),
+    deviceType = _useDeviceType2[0],
+    setDeviceType = _useDeviceType2[1];
   var blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.useBlockProps)({
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-caption-block")
   });
@@ -485,21 +505,143 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     setAttributes = props.setAttributes,
     clientId = props.clientId;
   var uniqueId = attributes.uniqueId,
-    blockCaptionPosition = attributes.captionPosition;
+    blockCaptionPosition = attributes.captionPosition,
+    captionPaddingSize = attributes.captionPaddingSize,
+    captionMarginSize = attributes.captionMarginSize,
+    captionBorder = attributes.captionBorder,
+    captionBorderRadius = attributes.captionBorderRadius,
+    containerMaxWidth = attributes.containerMaxWidth,
+    containerMinWidth = attributes.containerMinWidth,
+    containerMaxHeight = attributes.containerMaxHeight,
+    containerMinHeight = attributes.containerMinHeight;
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Block Settings', 'photo-block')
-  }, "settings go here."));
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Padding, Margin, and Border', 'photo-block'),
+    initialOpen: false,
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_13__["default"], null),
+    className: "photo-block__inspector-panel",
+    id: "photo-block__photo-dimensions-styles",
+    uniqueId: uniqueId,
+    scrollAfterOpen: false
+  }, /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Padding', 'photo-block'),
+    values: captionPaddingSize,
+    onValuesChange: function onValuesChange(values) {
+      setAttributes({
+        captionPaddingSize: values
+      });
+    },
+    labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top Padding', 'photo-block'),
+    labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Right Padding', 'photo-block'),
+    labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Padding', 'photo-block'),
+    labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Padding', 'photo-block'),
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Padding', 'photo-block')
+  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Margin', 'photo-block'),
+    values: captionMarginSize,
+    onValuesChange: function onValuesChange(values) {
+      setAttributes({
+        photoMarginSize: values
+      });
+    },
+    labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top Margin', 'photo-block'),
+    labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Right Margin', 'photo-block'),
+    labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Margin', 'photo-block'),
+    labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Margin', 'photo-block'),
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Margin', 'photo-block'),
+    allowNegatives: true
+  }), /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Border', 'photo-block'),
+    values: captionBorder,
+    onValuesChange: function onValuesChange(values) {
+      setAttributes({
+        captionBorder: values
+      });
+    },
+    labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top Border', 'photo-block'),
+    labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Right Border', 'photo-block'),
+    labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Border', 'photo-block'),
+    labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Border', 'photo-block'),
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border', 'photo-block')
+  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Border Radius', 'photo-block'),
+    values: captionBorderRadius,
+    onValuesChange: function onValuesChange(values) {
+      setAttributes({
+        captionBorderRadius: values
+      });
+    },
+    labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top-left Radius', 'photo-block'),
+    labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top-right Radius', 'photo-block'),
+    labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom-right Radius', 'photo-block'),
+    labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom-left Radius', 'photo-block'),
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border Radius', 'photo-block'),
+    isBorderRadius: true
+  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Container Sizing', 'photo-block'),
+    initialOpen: false,
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_14__["default"], null),
+    className: "photo-block__inspector-panel",
+    id: "photo-block__photo-container-styles",
+    uniqueId: uniqueId,
+    scrollAfterOpen: false
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__container-min-width"
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Min Width', 'photo-block'),
+    values: containerMinWidth,
+    screenSize: deviceType,
+    onValuesChange: function onValuesChange(newValues) {
+      setAttributes({
+        containerMinWidth: newValues
+      });
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__container-min-height"
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Min Height', 'photo-block'),
+    values: containerMinHeight,
+    screenSize: deviceType,
+    units: heightUnits,
+    onValuesChange: function onValuesChange(newValues) {
+      setAttributes({
+        containerMinHeight: newValues
+      });
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__container-max-width"
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Max Width', 'photo-block'),
+    values: containerMaxWidth,
+    screenSize: deviceType,
+    onValuesChange: function onValuesChange(newValues) {
+      setAttributes({
+        containerMaxWidth: newValues
+      });
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__containermax-height"
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Max Height', 'photo-block'),
+    values: containerMaxHeight,
+    screenSize: deviceType,
+    units: heightUnits,
+    onValuesChange: function onValuesChange(newValues) {
+      setAttributes({
+        containerMaxHeight: newValues
+      });
+    }
+  }))));
   var localToolbar = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Position', 'photo-block'),
     onClick: function onClick() {
       setCaptionPositionPopoverVisible(true);
     },
     ref: setCaptionPopoverRef
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Position', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove Caption', 'photo-block'),
     onClick: function onClick() {
       setRemoveCaptionModalVisible(true);
@@ -512,19 +654,19 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     anchor: captionPopoverRef,
     className: "photo-block__caption-position-popover"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.MenuGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.MenuItem, {
-    icon: 'top' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null) : null,
+    icon: 'top' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null) : null,
     onClick: function onClick() {
       setCaptionPosition('top');
       setCaptionPositionPopoverVisible(false);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.MenuItem, {
-    icon: 'overlay' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null) : null,
+    icon: 'overlay' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null) : null,
     onClick: function onClick() {
       setCaptionPosition('overlay');
       setCaptionPositionPopoverVisible(false);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.MenuItem, {
-    icon: 'bottom' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null) : null,
+    icon: 'bottom' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null) : null,
     onClick: function onClick() {
       setCaptionPosition('bottom');
       setCaptionPositionPopoverVisible(false);
@@ -662,10 +804,42 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     _useState2 = _slicedToArray(_useState, 2),
     showBorderStylePopoverSync = _useState2[0],
     setShowBorderStylePopoverSync = _useState2[1];
-  var _useState3 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+  var _useState3 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState4 = _slicedToArray(_useState3, 2),
-    bordrStyleSyncButtonRef = _useState4[0],
-    setBorderSyncStyleButtonRef = _useState4[1];
+    showBorderStylePopoverTop = _useState4[0],
+    setShowBorderStylePopoverTop = _useState4[1];
+  var _useState5 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    showBorderStylePopoverRight = _useState6[0],
+    setShowBorderStylePopoverRight = _useState6[1];
+  var _useState7 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    showBorderStylePopoverBottom = _useState8[0],
+    setShowBorderStylePopoverBottom = _useState8[1];
+  var _useState9 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+    _useState10 = _slicedToArray(_useState9, 2),
+    showBorderStylePopoverLeft = _useState10[0],
+    setShowBorderStylePopoverLeft = _useState10[1];
+  var _useState11 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState12 = _slicedToArray(_useState11, 2),
+    borderStyleSyncButtonRef = _useState12[0],
+    setBorderSyncStyleButtonRef = _useState12[1];
+  var _useState13 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState14 = _slicedToArray(_useState13, 2),
+    borderStyleTopButtonRef = _useState14[0],
+    setBorderStyleTopButtonRef = _useState14[1];
+  var _useState15 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState16 = _slicedToArray(_useState15, 2),
+    borderStyleRightButtonRef = _useState16[0],
+    setBorderStyleRightButtonRef = _useState16[1];
+  var _useState17 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState18 = _slicedToArray(_useState17, 2),
+    borderStyleBottomButtonRef = _useState18[0],
+    setBorderStyleBottomButtonRef = _useState18[1];
+  var _useState19 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState20 = _slicedToArray(_useState19, 2),
+    borderStyleLeftButtonRef = _useState20[0],
+    setBorderStyleLeftButtonRef = _useState20[1];
   var units = props !== null && props !== void 0 && props.units ? props.units : [{
     label: 'PX',
     value: 'px'
@@ -914,8 +1088,6 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
   var getBorderStyle = function getBorderStyle(unitVar) {
     // Get current unit.
     var borderStyle = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType)[unitVar].borderStyle, unitVar, 'borderStyle');
-    console.log(getValues());
-    console.log(borderStyle);
     return borderStyle;
   };
 
@@ -938,6 +1110,62 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         return _Icons_BorderStyleSolid__WEBPACK_IMPORTED_MODULE_9__["default"];
     }
   };
+
+  /**
+   * Get the button group used for choosing border style.
+   *
+   * @param {string}   unitVar          The unit variable to get the button group for.
+   * @param {Function} setPopoverClosed Reference to closing the popover.
+   * @return { Element } button group
+   */
+  var getPopoverButtonGroup = function getPopoverButtonGroup(unitVar, setPopoverClosed) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover"
+    }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, null, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons"
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
+      name: "".concat(deviceType, ".").concat(unitVar, ".borderStyle"),
+      control: control,
+      render: function render(_ref) {
+        var _ref$field = _ref.field,
+          onChange = _ref$field.onChange,
+          value = _ref$field.value;
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+          icon: _Icons_BorderStyleSolid__WEBPACK_IMPORTED_MODULE_9__["default"],
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Solid', 'photo-block'),
+          onClick: function onClick() {
+            onChange('solid');
+            setPopoverClosed(true);
+          },
+          isPressed: 'solid' === getBorderStyle(unitVar)
+        }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Solid', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+          icon: _Icons_BorderStyleDashed__WEBPACK_IMPORTED_MODULE_10__["default"],
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dashed', 'photo-block'),
+          isPressed: 'dashed' === getBorderStyle(unitVar),
+          onClick: function onClick() {
+            onChange('dashed');
+            setPopoverClosed(true);
+          }
+        }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dashed', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+          icon: _Icons_BorderStyleDotted__WEBPACK_IMPORTED_MODULE_11__["default"],
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dotted', 'photo-block'),
+          isPressed: 'dotted' === getBorderStyle(unitVar),
+          onClick: function onClick() {
+            onChange('dotted');
+            setPopoverClosed(true);
+          }
+        }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dotted', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+          icon: _Icons_BorderStyleDouble__WEBPACK_IMPORTED_MODULE_12__["default"],
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Double', 'photo-block'),
+          isPressed: 'double' === getBorderStyle(unitVar),
+          onClick: function onClick() {
+            onChange('double');
+            setPopoverClosed(true);
+          }
+        }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Double', 'photo-block')));
+      }
+    }))));
+  };
   var getSyncInterface = function getSyncInterface() {
     if (!isSync()) {
       return null;
@@ -949,10 +1177,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.color"),
       control: control,
-      render: function render(_ref) {
-        var _ref$field = _ref.field,
-          _onChange = _ref$field.onChange,
-          value = _ref$field.value;
+      render: function render(_ref2) {
+        var _ref2$field = _ref2.field,
+          _onChange = _ref2$field.onChange,
+          value = _ref2$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'color'),
           onChange: function onChange(slug, newValue) {
@@ -979,7 +1207,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       position: "bottom center",
       onClose: function onClose() {
         setShowBorderStylePopoverSync(false);
-      }
+      },
+      anchorRef: borderStyleSyncButtonRef,
+      noArrow: false
     }, /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, null, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
@@ -987,10 +1217,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.borderStyle"),
       control: control,
-      render: function render(_ref2) {
-        var _ref2$field = _ref2.field,
-          onChange = _ref2$field.onChange,
-          value = _ref2$field.value;
+      render: function render(_ref3) {
+        var _ref3$field = _ref3.field,
+          onChange = _ref3$field.onChange,
+          value = _ref3$field.value;
         return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
           icon: _Icons_BorderStyleSolid__WEBPACK_IMPORTED_MODULE_9__["default"],
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Solid', 'photo-block'),
@@ -1040,10 +1270,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }))))), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.width"),
       control: control,
-      render: function render(_ref3) {
-        var _ref3$field = _ref3.field,
-          _onChange2 = _ref3$field.onChange,
-          value = _ref3$field.value;
+      render: function render(_ref4) {
+        var _ref4$field = _ref4.field,
+          _onChange2 = _ref4$field.onChange,
+          value = _ref4$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: labelAll,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
@@ -1065,10 +1295,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.unit"),
       control: control,
-      render: function render(_ref4) {
-        var _ref4$field = _ref4.field,
-          _onChange3 = _ref4$field.onChange,
-          value = _ref4$field.value;
+      render: function render(_ref5) {
+        var _ref5$field = _ref5.field,
+          _onChange3 = _ref5$field.onChange,
+          value = _ref5$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
@@ -1086,10 +1316,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.width"),
       control: control,
-      render: function render(_ref5) {
-        var _ref5$field = _ref5.field,
-          _onChange4 = _ref5$field.onChange,
-          value = _ref5$field.value;
+      render: function render(_ref6) {
+        var _ref6$field = _ref6.field,
+          _onChange4 = _ref6$field.onChange,
+          value = _ref6$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-range",
           label: labelAll,
@@ -1136,10 +1366,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.color"),
       control: control,
-      render: function render(_ref6) {
-        var _ref6$field = _ref6.field,
-          _onChange5 = _ref6$field.onChange,
-          value = _ref6$field.value;
+      render: function render(_ref7) {
+        var _ref7$field = _ref7.field,
+          _onChange5 = _ref7$field.onChange,
+          value = _ref7$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'color'),
           onChange: function onChange(slug, newValue) {
@@ -1152,13 +1382,29 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           hideLabelFromVision: true
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
+    }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style",
+      hideLabelFromVision: true,
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block'),
+      icon: getBorderStyleIcon('top'),
+      onClick: function onClick() {
+        setShowBorderStylePopoverTop(!showBorderStylePopoverTop);
+      },
+      ref: setBorderStyleTopButtonRef
+    }), showBorderStylePopoverTop && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Popover, {
+      position: "bottom center",
+      onClose: function onClose() {
+        setShowBorderStylePopoverTop(false);
+      },
+      anchorRef: borderStyleTopButtonRef,
+      noArrow: false
+    }, getPopoverButtonGroup('top', setShowBorderStylePopoverTop)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.width"),
       control: control,
-      render: function render(_ref7) {
-        var _ref7$field = _ref7.field,
-          _onChange6 = _ref7$field.onChange,
-          value = _ref7$field.value;
+      render: function render(_ref8) {
+        var _ref8$field = _ref8.field,
+          _onChange6 = _ref8$field.onChange,
+          value = _ref8$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: labelTop,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
@@ -1177,10 +1423,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.unit"),
       control: control,
-      render: function render(_ref8) {
-        var _ref8$field = _ref8.field,
-          _onChange7 = _ref8$field.onChange,
-          value = _ref8$field.value;
+      render: function render(_ref9) {
+        var _ref9$field = _ref9.field,
+          _onChange7 = _ref9$field.onChange,
+          value = _ref9$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
@@ -1197,10 +1443,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".right.color"),
       control: control,
-      render: function render(_ref9) {
-        var _ref9$field = _ref9.field,
-          _onChange8 = _ref9$field.onChange,
-          value = _ref9$field.value;
+      render: function render(_ref10) {
+        var _ref10$field = _ref10.field,
+          _onChange8 = _ref10$field.onChange,
+          value = _ref10$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'right', 'color'),
           onChange: function onChange(slug, newValue) {
@@ -1213,13 +1459,29 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           hideLabelFromVision: true
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
+    }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style",
+      hideLabelFromVision: true,
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block'),
+      icon: getBorderStyleIcon('right'),
+      onClick: function onClick() {
+        setShowBorderStylePopoverRight(!showBorderStylePopoverRight);
+      },
+      ref: setBorderStyleRightButtonRef
+    }), showBorderStylePopoverRight && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Popover, {
+      placement: "left",
+      onClose: function onClose() {
+        setShowBorderStylePopoverRight(false);
+      },
+      anchorRef: borderStyleRightButtonRef,
+      noArrow: false
+    }, getPopoverButtonGroup('right', setShowBorderStylePopoverRight)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".right.width"),
       control: control,
-      render: function render(_ref10) {
-        var _ref10$field = _ref10.field,
-          _onChange9 = _ref10$field.onChange,
-          value = _ref10$field.value;
+      render: function render(_ref11) {
+        var _ref11$field = _ref11.field,
+          _onChange9 = _ref11$field.onChange,
+          value = _ref11$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: labelRight,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
@@ -1238,10 +1500,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".right.unit"),
       control: control,
-      render: function render(_ref11) {
-        var _ref11$field = _ref11.field,
-          _onChange10 = _ref11$field.onChange,
-          value = _ref11$field.value;
+      render: function render(_ref12) {
+        var _ref12$field = _ref12.field,
+          _onChange10 = _ref12$field.onChange,
+          value = _ref12$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
@@ -1258,10 +1520,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".bottom.color"),
       control: control,
-      render: function render(_ref12) {
-        var _ref12$field = _ref12.field,
-          _onChange11 = _ref12$field.onChange,
-          value = _ref12$field.value;
+      render: function render(_ref13) {
+        var _ref13$field = _ref13.field,
+          _onChange11 = _ref13$field.onChange,
+          value = _ref13$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'bottom', 'color'),
           onChange: function onChange(slug, newValue) {
@@ -1274,13 +1536,29 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           hideLabelFromVision: true
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
+    }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style",
+      hideLabelFromVision: true,
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block'),
+      icon: getBorderStyleIcon('bottom'),
+      onClick: function onClick() {
+        setShowBorderStylePopoverBottom(!showBorderStylePopoverBottom);
+      },
+      ref: setBorderStyleBottomButtonRef
+    }), showBorderStylePopoverBottom && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Popover, {
+      position: "bottom center",
+      onClose: function onClose() {
+        setShowBorderStylePopoverBottom(false);
+      },
+      anchorRef: borderStyleBottomButtonRef,
+      noArrow: false
+    }, getPopoverButtonGroup('bottom', setShowBorderStylePopoverBottom)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".bottom.width"),
       control: control,
-      render: function render(_ref13) {
-        var _ref13$field = _ref13.field,
-          _onChange12 = _ref13$field.onChange,
-          value = _ref13$field.value;
+      render: function render(_ref14) {
+        var _ref14$field = _ref14.field,
+          _onChange12 = _ref14$field.onChange,
+          value = _ref14$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: labelBottom,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
@@ -1301,10 +1579,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".bottom.unit"),
       control: control,
-      render: function render(_ref14) {
-        var _ref14$field = _ref14.field,
-          _onChange13 = _ref14$field.onChange,
-          value = _ref14$field.value;
+      render: function render(_ref15) {
+        var _ref15$field = _ref15.field,
+          _onChange13 = _ref15$field.onChange,
+          value = _ref15$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
@@ -1321,10 +1599,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".left.color"),
       control: control,
-      render: function render(_ref15) {
-        var _ref15$field = _ref15.field,
-          _onChange14 = _ref15$field.onChange,
-          value = _ref15$field.value;
+      render: function render(_ref16) {
+        var _ref16$field = _ref16.field,
+          _onChange14 = _ref16$field.onChange,
+          value = _ref16$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'left', 'color'),
           onChange: function onChange(slug, newValue) {
@@ -1337,13 +1615,29 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           hideLabelFromVision: true
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
+    }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style",
+      hideLabelFromVision: true,
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block'),
+      icon: getBorderStyleIcon('left'),
+      onClick: function onClick() {
+        setShowBorderStylePopoverLeft(!showBorderStylePopoverLeft);
+      },
+      ref: setBorderStyleLeftButtonRef
+    }), showBorderStylePopoverLeft && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Popover, {
+      position: "Left center",
+      onClose: function onClose() {
+        setShowBorderStylePopoverLeft(false);
+      },
+      anchorRef: borderStyleLeftButtonRef,
+      noArrow: false
+    }, getPopoverButtonGroup('left', setShowBorderStylePopoverLeft)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".left.width"),
       control: control,
-      render: function render(_ref16) {
-        var _ref16$field = _ref16.field,
-          _onChange15 = _ref16$field.onChange,
-          value = _ref16$field.value;
+      render: function render(_ref17) {
+        var _ref17$field = _ref17.field,
+          _onChange15 = _ref17$field.onChange,
+          value = _ref17$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: labelLeft,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
@@ -1364,10 +1658,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".left.unit"),
       control: control,
-      render: function render(_ref17) {
-        var _ref17$field = _ref17.field,
-          _onChange16 = _ref17$field.onChange,
-          value = _ref17$field.value;
+      render: function render(_ref18) {
+        var _ref18$field = _ref18.field,
+          _onChange16 = _ref18$field.onChange,
+          value = _ref18$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
@@ -5341,7 +5635,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     setMediaLinkRef = _useState14[1];
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_7__["default"]),
     screen = _useContext.screen,
-    setScreen = _useContext.setScreen;
+    setScreen = _useContext.setScreen,
+    captionPosition = _useContext.captionPosition;
   var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_14__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 2),
     deviceType = _useDeviceType2[0],
@@ -5426,20 +5721,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     uniqueId: uniqueId,
     initialOpen: true,
     scrollAfterOpen: false
-  }, /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_16__["default"], {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Border', 'photo-block'),
-    values: photoBorder,
-    onValuesChange: function onValuesChange(values) {
-      setAttributes({
-        photoBorder: values
-      });
-    },
-    labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Top Border', 'photo-block'),
-    labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Right Border', 'photo-block'),
-    labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Bottom Border', 'photo-block'),
-    labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Left Border', 'photo-block'),
-    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Change Border', 'photo-block')
-  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Title', 'photo-block'),
     value: photo.title,
     onChange: function onChange(title) {
@@ -5947,7 +6229,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     }
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null)), /*#__PURE__*/React.createElement("figure", {
     className: "dlx-photo-block__screen-edit-image-wrapper"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, 'top' === captionPosition && /*#__PURE__*/React.createElement("figcaption", _extends({
+    className: "dlx-photo-block__screen-edit-caption"
+  }, innerBlockProps)), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit-image"
   }, /*#__PURE__*/React.createElement("img", {
     src: url,
@@ -5961,7 +6245,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setImageLoading(false);
     },
     ref: ref
-  })), /*#__PURE__*/React.createElement("figcaption", _extends({
+  })), 'bottom' === captionPosition && /*#__PURE__*/React.createElement("figcaption", _extends({
     className: "dlx-photo-block__screen-edit-caption"
   }, innerBlockProps)))));
 });
@@ -35235,7 +35519,7 @@ module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json
 /***/ (function(module) {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"captionPosition":{"type":"string","default":"bottom"}},"supports":{"anchor":false,"align":false,"className":true,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false}},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"captionPosition":{"type":"string","default":"bottom"},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}}},"supports":{"anchor":false,"align":false,"className":true,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false}},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ })
 

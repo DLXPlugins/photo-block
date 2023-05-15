@@ -37,11 +37,25 @@ import {
 	useDispatch
 } from '@wordpress/data';
 
-import { Trash2, MoveVertical, SeparatorHorizontal, Check } from 'lucide-react';
+import {
+	Trash2,
+	SeparatorHorizontal,
+	Check,
+	Shrink,
+	Maximize,
+} from 'lucide-react';
 
 import { useInstanceId } from '@wordpress/compose';
 
 import UploaderContext from '../../contexts/UploaderContext';
+import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
+import BorderResponsiveControl from '../../components/BorderResponsive';
+import SizeResponsiveControl from '../../components/SizeResponsive';
+import useDeviceType from '../../hooks/useDeviceType';
+/**
+ * Height units.
+ */
+const heightUnits = [ 'px', 'em', 'rem', '%', 'vh' ];
 
 const PhotoCaptionBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoCaptionBlock, 'photo-caption-block' );
@@ -74,6 +88,8 @@ const PhotoCaptionBlock = ( props ) => {
 
 	const { removeBlocks } = useDispatch( store );
 
+	// Get device.
+	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
 	const blockProps = useBlockProps( {
 		className: classnames(
@@ -86,14 +102,131 @@ const PhotoCaptionBlock = ( props ) => {
 	const {
 		uniqueId,
 		captionPosition: blockCaptionPosition,
-
+		captionPaddingSize,
+		captionMarginSize,
+		captionBorder,
+		captionBorderRadius,
+		containerMaxWidth,
+		containerMinWidth,
+		containerMaxHeight,
+		containerMinHeight,
 	} = attributes;
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
 		<InspectorControls>
-			<PanelBody title={ __( 'Caption Block Settings', 'photo-block' ) }>
-				settings go here.
+			<PanelBody
+				title={ __( 'Padding, Margin, and Border', 'photo-block' ) }
+				initialOpen={ false }
+				icon={ <Maximize /> }
+				className="photo-block__inspector-panel"
+				id="photo-block__photo-dimensions-styles"
+				uniqueId={ uniqueId }
+				scrollAfterOpen={ false }
+			>
+				<DimensionsResponsiveControl
+					label={ __( 'Caption Padding', 'photo-block' ) }
+					values={ captionPaddingSize }
+					onValuesChange={ ( values ) => {
+						setAttributes( { captionPaddingSize: values } );
+					} }
+					labelTop={ __( 'Top Padding', 'photo-block' ) }
+					labelRight={ __( 'Right Padding', 'photo-block' ) }
+					labelBottom={ __( 'Bottom Padding', 'photo-block' ) }
+					labelLeft={ __( 'Left Padding', 'photo-block' ) }
+					labelAll={ __( 'Change Padding', 'photo-block' ) }
+				/>
+				<DimensionsResponsiveControl
+					label={ __( 'Caption Margin', 'photo-block' ) }
+					values={ captionMarginSize }
+					onValuesChange={ ( values ) => {
+						setAttributes( { photoMarginSize: values } );
+					} }
+					labelTop={ __( 'Top Margin', 'photo-block' ) }
+					labelRight={ __( 'Right Margin', 'photo-block' ) }
+					labelBottom={ __( 'Bottom Margin', 'photo-block' ) }
+					labelLeft={ __( 'Left Margin', 'photo-block' ) }
+					labelAll={ __( 'Change Margin', 'photo-block' ) }
+					allowNegatives={ true }
+				/>
+				<BorderResponsiveControl
+					label={ __( 'Caption Border', 'photo-block' ) }
+					values={ captionBorder }
+					onValuesChange={ ( values ) => {
+						setAttributes( { captionBorder: values } );
+					} }
+					labelTop={ __( 'Top Border', 'photo-block' ) }
+					labelRight={ __( 'Right Border', 'photo-block' ) }
+					labelBottom={ __( 'Bottom Border', 'photo-block' ) }
+					labelLeft={ __( 'Left Border', 'photo-block' ) }
+					labelAll={ __( 'Change Border', 'photo-block' ) }
+				/>
+				<DimensionsResponsiveControl
+					label={ __( 'Caption Border Radius', 'photo-block' ) }
+					values={ captionBorderRadius }
+					onValuesChange={ ( values ) => {
+						setAttributes( { captionBorderRadius: values } );
+					} }
+					labelTop={ __( 'Top-left Radius', 'photo-block' ) }
+					labelRight={ __( 'Top-right Radius', 'photo-block' ) }
+					labelBottom={ __( 'Bottom-right Radius', 'photo-block' ) }
+					labelLeft={ __( 'Bottom-left Radius', 'photo-block' ) }
+					labelAll={ __( 'Change Border Radius', 'photo-block' ) }
+					isBorderRadius={ true }
+				/>
+
+			</PanelBody>
+			<PanelBody
+				title={ __( 'Container Sizing', 'photo-block' ) }
+				initialOpen={ false }
+				icon={ <Shrink /> }
+				className="photo-block__inspector-panel"
+				id="photo-block__photo-container-styles"
+				uniqueId={ uniqueId }
+				scrollAfterOpen={ false }
+			>
+				<div className="dlx-photo-block__container-min-width">
+					<SizeResponsiveControl
+						label={ __( 'Min Width', 'photo-block' ) }
+						values={ containerMinWidth }
+						screenSize={ deviceType }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerMinWidth: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__container-min-height">
+					<SizeResponsiveControl
+						label={ __( 'Min Height', 'photo-block' ) }
+						values={ containerMinHeight }
+						screenSize={ deviceType }
+						units={ heightUnits }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerMinHeight: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__container-max-width">
+					<SizeResponsiveControl
+						label={ __( 'Max Width', 'photo-block' ) }
+						values={ containerMaxWidth }
+						screenSize={ deviceType }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerMaxWidth: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__containermax-height">
+					<SizeResponsiveControl
+						label={ __( 'Max Height', 'photo-block' ) }
+						values={ containerMaxHeight }
+						screenSize={ deviceType }
+						units={ heightUnits }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerMaxHeight: newValues } );
+						} }
+					/>
+				</div>
 			</PanelBody>
 		</InspectorControls>
 	);

@@ -2549,6 +2549,12 @@ svg.lucide {
 .dlx-photo-block__border-responsive-manual-interface-item .components-input-control__backdrop {
   display: none;
 }
+.dlx-photo-block__border-responsive-sync-interface .photo-block-component-color-picker > .photo-block-color-picker-area.photo-block-component-color-picker-palette,
+.dlx-photo-block__border-responsive-sync-interface .dlx-photo-block__border-responsive-sync-interface-border-style,
+.dlx-photo-block__border-responsive-manual-interface-item .photo-block-component-color-picker > .photo-block-color-picker-area.photo-block-component-color-picker-palette,
+.dlx-photo-block__border-responsive-manual-interface-item .dlx-photo-block__border-responsive-sync-interface-border-style {
+  margin-right: 2px;
+}
 
 .dlx-photo-block__border-responsive-manual-interface-item {
   display: inline-flex;

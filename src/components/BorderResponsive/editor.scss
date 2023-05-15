@@ -111,6 +111,11 @@
 	.components-input-control__backdrop {
 		display: none;
 	}
+
+	.photo-block-component-color-picker > .photo-block-color-picker-area.photo-block-component-color-picker-palette,
+	.dlx-photo-block__border-responsive-sync-interface-border-style {
+		margin-right: 2px;
+	}
 }
 .dlx-photo-block__border-responsive-manual-interface-item  {
 	display: inline-flex;
