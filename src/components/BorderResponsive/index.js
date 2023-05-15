@@ -1,13 +1,15 @@
 import './editor.scss';
 
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import {
 	Button,
+	ButtonGroup,
 	BaseControl,
 	TextControl,
 	SelectControl,
 	RangeControl,
+	Popover,
 } from '@wordpress/components';
 import { Link, Unlink } from 'lucide-react';
 import classnames from 'classnames';
@@ -20,6 +22,10 @@ import {
 	getHierarchicalValueUnit,
 	geHierarchicalPlaceholderValue,
 } from '../../utils/TypographyHelper';
+import BorderStyleSolidIcon from '../Icons/BorderStyleSolid';
+import BorderStyleDashedIcon from '../Icons/BorderStyleDashed';
+import BorderStyleDottedIcon from '../Icons/BorderStyleDotted';
+import BorderStyleDoubleIcon from '../Icons/BorderStyleDouble';
 
 const BorderResponsiveControl = ( props ) => {
 	const {
@@ -33,6 +39,10 @@ const BorderResponsiveControl = ( props ) => {
 		labelAll,
 	} = props;
 	const [ deviceType ] = useDeviceType( 'Desktop' );
+	const [ showBorderStylePopoverSync, setShowBorderStylePopoverSync ] = useState(
+		false
+	);
+	const [ bordrStyleSyncButtonRef, setBorderSyncStyleButtonRef ] = useState();
 	const units = props?.units
 		? props.units
 		: [
@@ -304,6 +314,64 @@ const BorderResponsiveControl = ( props ) => {
 								hideLabelFromVision={ true }
 							/>
 						) }
+					/>
+					<Controller
+						name={ `${ deviceType }.top.borderStyle` }
+						control={ control }
+						render={ ( { field: { onChange, value } } ) => (
+							<>
+								<Button
+									className="dlx-photo-block__border-responsive-sync-interface-border-style"
+									hideLabelFromVision={ true }
+									label={ __( 'Border Style', 'photo-block' ) }
+									icon={ BorderStyleSolidIcon }
+									onClick={ () => {
+										setShowBorderStylePopoverSync( ! showBorderStylePopoverSync );
+									} }
+									ref={ setBorderSyncStyleButtonRef }
+								/>
+								{
+									showBorderStylePopoverSync && (
+										<Popover
+											position="bottom center"
+											onClose={ () => {
+												setShowBorderStylePopoverSync( false );
+											} }
+										>
+											<div className="dlx-photo-block__border-responsive-sync-interface-border-style-popover">
+												<ButtonGroup>
+													<Button
+														icon={ BorderStyleSolidIcon }
+														label={ __( 'Solid', 'photo-block' ) }
+													>
+														{ __( 'Solid', 'photo-block' ) }
+													</Button>
+													<Button
+														icon={ BorderStyleDashedIcon }
+														label={ __( 'Dashed', 'photo-block' ) }
+													>
+														{ __( 'Dashed', 'photo-block' ) }
+													</Button>
+													<Button
+														icon={ BorderStyleDottedIcon }
+														label={ __( 'Dotted', 'photo-block' ) }
+													>
+														{ __( 'Dotted', 'photo-block' ) }
+													</Button>
+													<Button
+														icon={ BorderStyleDoubleIcon }
+														label={ __( 'Double', 'photo-block' ) }
+													>
+														{ __( 'Double', 'photo-block' ) }
+													</Button>
+												</ButtonGroup>
+											</div>
+										</Popover>
+									)
+								}
+							</>
+						) }
+
 					/>
 					<Controller
 						name={ `${ deviceType }.top.width` }

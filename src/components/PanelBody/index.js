@@ -23,7 +23,6 @@ const PanelBodyControl = ( props ) => {
 			const storedValue = JSON.parse( stored );
 			if ( storedValue[ `${ id }` ] ) {
 				const { isOpen } = storedValue[ `${ id }` ];
-				console.log( isOpen, id );
 				setIsPanelOpen( isOpen );
 			}
 		}

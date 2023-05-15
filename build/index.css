@@ -2536,6 +2536,13 @@ svg.lucide {
   cursor: pointer;
   border: 1px solid var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba)) !important;
 }
+.dlx-photo-block__border-responsive-sync-interface .dlx-photo-block__border-responsive-sync-interface-border-style,
+.dlx-photo-block__border-responsive-manual-interface-item .dlx-photo-block__border-responsive-sync-interface-border-style {
+  max-width: 12px;
+  min-width: unset;
+  margin-right: 8px;
+  padding: 0;
+}
 .dlx-photo-block__border-responsive-sync-interface .components-input-control__suffix,
 .dlx-photo-block__border-responsive-sync-interface .components-input-control__backdrop,
 .dlx-photo-block__border-responsive-manual-interface-item .components-input-control__suffix,

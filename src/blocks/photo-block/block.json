@@ -372,22 +372,26 @@
 					"top": {
 						"width": "",
 						"unit": null,
-						"color": ""
+						"color": "",
+						"borderStyle": ""
 					},
 					"right": {
 						"width": "",
 						"unit": null,
-						"color": ""
+						"color": "",
+						"borderStyle": ""
 					},
 					"bottom": {
 						"width": "",
 						"unit": null,
-						"color": ""
+						"color": "",
+						"borderStyle": ""
 					},
 					"left": {
 						"width": "",
 						"unit": null,
-						"color": ""
+						"color": "",
+						"borderStyle": ""
 					},
 					"unitSync": true
 				},
@@ -395,22 +399,26 @@
 					"top": {
 						"width": "",
 						"unit": null,
-						"color": ""
+						"color": "",
+						"borderStyle": ""
 					},
 					"right": {
 						"width": "",
 						"unit": null,
-						"color": ""
+						"color": "",
+						"borderStyle": ""
 					},
 					"bottom": {
 						"width": "",
 						"unit": null,
-						"color": ""
+						"color": "",
+						"borderStyle": ""
 					},
 					"left": {
 						"width": "",
 						"unit": null,
-						"color": ""
+						"color": "",
+						"borderStyle": ""
 					},
 					"unitSync": true
 				},
@@ -418,22 +426,26 @@
 					"top": {
 						"width": "0",
 						"unit": "px",
-						"color": "#000000"
+						"color": "#000000",
+						"borderStyle": "solid"
 					},
 					"right": {
 						"width": "0",
 						"unit": "px",
-						"color": "#000000"
+						"color": "#000000",
+						"borderStyle": "solid"
 					},
 					"bottom": {
 						"width": "0",
 						"unit": "px",
-						"color": "#000000"
+						"color": "#000000",
+						"borderStyle": "solid"
 					},
 					"left": {
 						"width": "0",
 						"unit": "px",
-						"color": "#000000"
+						"color": "#000000",
+						"borderStyle": "solid"
 					},
 					"unitSync": true
 				}

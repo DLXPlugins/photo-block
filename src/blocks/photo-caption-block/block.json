@@ -5,7 +5,7 @@
 	"name": "dlxplugins/photo-caption-block",
 	"parent": [ "dlxplugins/photo-block" ],
 	"category": "common",
-	"description": "A comprehensive caption block.",
+	"description": "A caption for a photo block.",
 	"keywords": [
 		"photo",
 		"block",
