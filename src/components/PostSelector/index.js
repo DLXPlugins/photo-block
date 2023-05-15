@@ -15,6 +15,7 @@ import { speak } from '@wordpress/a11y';
 import {
 	Button,
 	Spinner,
+	TextControl,
 } from '@wordpress/components';
 import { useInstanceId, useDebounce } from '@wordpress/compose';
 import { isURL, filterURLForDisplay } from '@wordpress/url';
@@ -33,13 +34,13 @@ import {
 import SendCommand from '../../utils/SendCommand';
 
 /**
- * URL Selector for Media Library.
+ * Content Picker for post type data.
  *
  * @param {Object} props Incoming props.
  *
- * @return {React.Component} UrlInput component.
+ * @return {React.Component} PostSelectorControl component.
  */
-const URLPicker = ( props ) => {
+const PostSelectorControl = ( props ) => {
 	/**
 	 * Create Refs for inputs.
 	 */
@@ -51,7 +52,7 @@ const URLPicker = ( props ) => {
 	/**
 	 * Set Unique Instance ID.
 	 */
-	const generatedUniqueId = useInstanceId( URLPicker, 'app' );
+	const generatedUniqueId = useInstanceId( PostSelectorControl, 'app' );
 
 	/**
 	 * Set State.
@@ -68,7 +69,7 @@ const URLPicker = ( props ) => {
 	const [ suggestionValue, setSuggestionValue ] = useState( '' );
 	const [ savedSuggestionValue, setSavedSuggestionValue ] = useState( props.savedValue );
 	const [ uniqueInstanceId, setUniqueInstanceId ] = useState(
-		`url-input-control-${ generatedUniqueId }`
+		`post-search-control-${ generatedUniqueId }`
 	);
 	const [ loading, setLoading ] = useState( false );
 
@@ -478,14 +479,14 @@ const URLPicker = ( props ) => {
 	);
 };
 
-URLPicker.defaultProps = {
+PostSelectorControl.defaultProps = {
 	label: __( 'Page', 'photo-block' ),
 	onItemSelect: () => {},
 	hasInititialFocus: false,
 	itemIcon: <></>,
 };
 
-URLPicker.propTypes = {
+PostSelectorControl.propTypes = {
 	restEndpoint: PropTypes.string.isRequired,
 	restNonce: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
@@ -494,4 +495,4 @@ URLPicker.propTypes = {
 	itemIcon: PropTypes.element.isRequired,
 };
 
-export default URLPicker;
+export default PostSelectorControl;

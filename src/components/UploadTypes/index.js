@@ -266,6 +266,10 @@ const UploadTypes = ( props ) => {
 					variant="secondary"
 					icon={ <Database /> }
 					onClick={ () => {
+						setAttributes( {
+							dataMode: true,
+							screen: 'data',
+						} );
 						setScreen( 'data' );
 					} }
 				>

@@ -178,6 +178,22 @@
 				}
 			}
 		},
+		"dataMode": {
+			"type": "boolean",
+			"default": false
+		},
+		"dataImageSource": {
+			"type": "string",
+			"default": "currentPost"
+		},
+		"dataPostType": {
+			"type": "string",
+			"default": "post"
+		},
+		"dataPostId": {
+			"type": "string",
+			"default": ""
+		},
 		"cssGramFilter": {
 			"type": "string",
 			"default": "none"

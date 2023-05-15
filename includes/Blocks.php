@@ -92,6 +92,29 @@ class Blocks {
 		 */
 		$caption_innerblocks_supported = apply_filters( 'photo_block_caption_innerblocks_supported', $caption_innerblocks_supported );
 
+		// Get post types.
+		$post_types       = get_post_types(
+			array(
+				'public' => true,
+			)
+		);
+		$post_type_return = array();
+		foreach ( $post_types as $index => $post_type ) {
+			// Exclude non-standard post types.
+			if ( in_array( $post_type, array( 'attachment', 'revision', 'nav_menu_item' ), true ) ) {
+				continue;
+			}
+			$post_type_label = $post_type;
+			$post_type_data  = get_post_type_object( $post_type );
+			if ( isset( $post_type_data->label ) && ! empty( $post_type_data->label ) ) {
+				$post_type_label = $post_type_data->label;
+			}
+			$post_type_return[] = array(
+				'value' => $post_type,
+				'label' => $post_type_label,
+			);
+		}
+
 		wp_localize_script(
 			'dlx-photo-block-editor',
 			'photoBlock',
@@ -101,6 +124,7 @@ class Blocks {
 				'captionInnerBlocks' => $caption_innerblocks_supported,
 				'imageSizes'         => Functions::get_all_image_sizes(),
 				'palette'            => functions::get_theme_color_palette(),
+				'postTypes'          => $post_type_return,
 			)
 		);
 

@@ -98,6 +98,7 @@ const PhotoBlock = ( props ) => {
 		borderWidth,
 		borderRadiusSize,
 		typographyCaption,
+		dataMode,
 	} = attributes;
 
 	const captionInnerBlockProps = useInnerBlocksProps(
@@ -148,6 +149,14 @@ const PhotoBlock = ( props ) => {
 	 * @return {Element} The screen to display.
 	 */
 	const getCurrentScreen = () => {
+		// If in data mode, show the data screen.
+		if ( dataMode ) {
+			return (
+				<DataScreen attributes={ attributes } setAttributes={ setAttributes } />
+			);
+		}
+
+		// Otherwise get the screen based on the current screen.
 		switch ( screen ) {
 			case 'initial':
 				return (
