@@ -333,3 +333,29 @@
 		margin-right: 8px;
 	}
 }
+
+/**
+ * Popover border style.
+ */
+.dlx-photo-block__border-responsive-sync-interface-border-style-popover {
+	padding: 15px 20px;
+	min-width: 240px;
+	/* Give h3 same style as basecontrol styles */
+	h3 {
+		font-size: 13px;
+		font-weight: 600;
+		margin: 0 0 8px;
+		text-transform: uppercase;
+	}
+	.dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 8px;
+
+		button {
+			display: flex;
+			align-items: center;
+			text-align: left;
+		}
+	}
+}

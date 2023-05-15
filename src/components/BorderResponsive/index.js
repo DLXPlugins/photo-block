@@ -59,21 +59,25 @@ const BorderResponsiveControl = ( props ) => {
 					width: props.values.mobile.top.width,
 					unit: props.values.mobile.top.unit,
 					color: props.values.mobile.top.color,
+					borderStyle: props.values.mobile.top.borderStyle,
 				},
 				right: {
 					width: props.values.mobile.right.width,
 					unit: props.values.mobile.right.unit,
 					color: props.values.mobile.right.color,
+					borderStyle: props.values.mobile.right.borderStyle,
 				},
 				bottom: {
 					width: props.values.mobile.bottom.width,
 					unit: props.values.mobile.bottom.unit,
 					color: props.values.mobile.bottom.color,
+					borderStyle: props.values.mobile.bottom.borderStyle,
 				},
 				left: {
 					width: props.values.mobile.left.width,
 					unit: props.values.mobile.left.unit,
 					color: props.values.mobile.left.color,
+					borderStyle: props.values.mobile.left.borderStyle,
 				},
 				unitSync: props.values.mobile.unitSync,
 			},
@@ -82,21 +86,25 @@ const BorderResponsiveControl = ( props ) => {
 					width: props.values.tablet.top.width,
 					unit: props.values.tablet.top.unit,
 					color: props.values.tablet.top.color,
+					borderStyle: props.values.tablet.top.borderStyle,
 				},
 				right: {
 					width: props.values.tablet.right.width,
 					unit: props.values.tablet.right.unit,
 					color: props.values.tablet.right.color,
+					borderStyle: props.values.tablet.right.borderStyle,
 				},
 				bottom: {
 					width: props.values.tablet.bottom.width,
 					unit: props.values.tablet.bottom.unit,
 					color: props.values.tablet.bottom.color,
+					borderStyle: props.values.tablet.bottom.borderStyle,
 				},
 				left: {
 					width: props.values.tablet.left.width,
 					unit: props.values.tablet.left.unit,
 					color: props.values.tablet.left.color,
+					borderStyle: props.values.tablet.left.borderStyle,
 				},
 				unitSync: props.values.tablet.unitSync,
 			},
@@ -105,21 +113,25 @@ const BorderResponsiveControl = ( props ) => {
 					width: props.values.desktop.top.width,
 					unit: props.values.desktop.top.unit,
 					color: props.values.desktop.top.color,
+					borderStyle: props.values.desktop.top.borderStyle,
 				},
 				right: {
 					width: props.values.desktop.right.width,
 					unit: props.values.desktop.right.unit,
 					color: props.values.desktop.right.color,
+					borderStyle: props.values.desktop.right.borderStyle,
 				},
 				bottom: {
 					width: props.values.desktop.bottom.width,
 					unit: props.values.desktop.bottom.unit,
 					color: props.values.desktop.bottom.color,
+					borderStyle: props.values.desktop.bottom.borderStyle,
 				},
 				left: {
 					width: props.values.desktop.left.width,
 					unit: props.values.desktop.left.unit,
 					color: props.values.desktop.left.color,
+					borderStyle: props.values.desktop.left.borderStyle,
 				},
 				unitSync: props.values.desktop.unitSync,
 			},
@@ -280,6 +292,46 @@ const BorderResponsiveControl = ( props ) => {
 		return step;
 	};
 
+	/**
+	 * Get the border style being used (solid, dashed, dotted, double).
+	 *
+	 * @param {string} unitVar Var used to check relative to device type (typically top, left, right, bottom).
+	 * @return {string} border style (solid, dashed, dotted, double).
+	 */
+	const getBorderStyle = ( unitVar ) => {
+		// Get current unit.
+		const borderStyle = getHierarchicalValueUnit(
+			props.values,
+			deviceType,
+			getValues( deviceType )[ unitVar ].borderStyle,
+			unitVar,
+			'borderStyle'
+		);
+		console.log( getValues() );
+		console.log( borderStyle );
+		return borderStyle;
+	};
+
+	/**
+	 * Get the border icon for the border style being used (solid, dashed, dotted, double).
+	 *
+	 * @param {string} unitVar Var used to check relative to device type (typically top, left, right, bottom).
+	 *
+	 * @return {Element} The border icon.
+	 */
+	const getBorderStyleIcon = ( unitVar ) => {
+		switch ( getBorderStyle( unitVar ) ) {
+			case 'dashed':
+				return BorderStyleDashedIcon;
+			case 'dotted':
+				return BorderStyleDottedIcon;
+			case 'double':
+				return BorderStyleDoubleIcon;
+			default:
+				return BorderStyleSolidIcon;
+		}
+	};
+
 	const getSyncInterface = () => {
 		if ( ! isSync() ) {
 			return null;
@@ -315,64 +367,98 @@ const BorderResponsiveControl = ( props ) => {
 							/>
 						) }
 					/>
-					<Controller
-						name={ `${ deviceType }.top.borderStyle` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<>
-								<Button
-									className="dlx-photo-block__border-responsive-sync-interface-border-style"
-									hideLabelFromVision={ true }
-									label={ __( 'Border Style', 'photo-block' ) }
-									icon={ BorderStyleSolidIcon }
-									onClick={ () => {
-										setShowBorderStylePopoverSync( ! showBorderStylePopoverSync );
-									} }
-									ref={ setBorderSyncStyleButtonRef }
-								/>
-								{
-									showBorderStylePopoverSync && (
-										<Popover
-											position="bottom center"
-											onClose={ () => {
-												setShowBorderStylePopoverSync( false );
-											} }
-										>
-											<div className="dlx-photo-block__border-responsive-sync-interface-border-style-popover">
-												<ButtonGroup>
-													<Button
-														icon={ BorderStyleSolidIcon }
-														label={ __( 'Solid', 'photo-block' ) }
-													>
-														{ __( 'Solid', 'photo-block' ) }
-													</Button>
-													<Button
-														icon={ BorderStyleDashedIcon }
-														label={ __( 'Dashed', 'photo-block' ) }
-													>
-														{ __( 'Dashed', 'photo-block' ) }
-													</Button>
-													<Button
-														icon={ BorderStyleDottedIcon }
-														label={ __( 'Dotted', 'photo-block' ) }
-													>
-														{ __( 'Dotted', 'photo-block' ) }
-													</Button>
-													<Button
-														icon={ BorderStyleDoubleIcon }
-														label={ __( 'Double', 'photo-block' ) }
-													>
-														{ __( 'Double', 'photo-block' ) }
-													</Button>
-												</ButtonGroup>
-											</div>
-										</Popover>
-									)
-								}
-							</>
-						) }
-
+					<Button
+						className="dlx-photo-block__border-responsive-sync-interface-border-style"
+						hideLabelFromVision={ true }
+						label={ __( 'Border Style', 'photo-block' ) }
+						icon={ getBorderStyleIcon( 'top' ) }
+						onClick={ () => {
+							setShowBorderStylePopoverSync( ! showBorderStylePopoverSync );
+						} }
+						ref={ setBorderSyncStyleButtonRef }
 					/>
+					{
+						showBorderStylePopoverSync && (
+							<Popover
+								position="bottom center"
+								onClose={ () => {
+									setShowBorderStylePopoverSync( false );
+								} }
+							>
+								<div className="dlx-photo-block__border-responsive-sync-interface-border-style-popover">
+									<BaseControl>
+										<h3>{ __( 'Border Style', 'photo-block' ) }</h3>
+										<ButtonGroup className="dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons">
+											<Controller 
+												name={ `${ deviceType }.top.borderStyle` }
+												control={ control }
+												render={ ( { field: { onChange, value } } ) => (
+													<>
+														<Button
+															icon={ BorderStyleSolidIcon }
+															label={ __( 'Solid', 'photo-block' ) }
+															onClick={ () => {
+																onChange( 'solid' );
+																changeAllValues( 'solid', 'borderStyle' );
+
+																// Close the popover.
+																setShowBorderStylePopoverSync( false );
+															} }
+															isPressed={ 'solid' === getBorderStyle( 'top' ) }
+														>
+															{ __( 'Solid', 'photo-block' ) }
+														</Button>
+														<Button
+															icon={ BorderStyleDashedIcon }
+															label={ __( 'Dashed', 'photo-block' ) }
+															isPressed={ 'dashed' === getBorderStyle( 'top' ) }
+															onClick={ () => {
+																onChange( 'dashed' );
+																changeAllValues( 'dashed', 'borderStyle' );
+
+																// Close the popover.
+																setShowBorderStylePopoverSync( false );
+															} }
+														>
+															{ __( 'Dashed', 'photo-block' ) }
+														</Button>
+														<Button
+															icon={ BorderStyleDottedIcon }
+															label={ __( 'Dotted', 'photo-block' ) }
+															isPressed={ 'dotted' === getBorderStyle( 'top' ) }
+															onClick={ () => {
+																onChange( 'dotted' );
+																changeAllValues( 'dotted', 'borderStyle' );
+
+																// Close the popover.
+																setShowBorderStylePopoverSync( false );
+															} }
+														>
+															{ __( 'Dotted', 'photo-block' ) }
+														</Button>
+														<Button
+															icon={ BorderStyleDoubleIcon }
+															label={ __( 'Double', 'photo-block' ) }
+															isPressed={ 'double' === getBorderStyle( 'top' ) }
+															onClick={ () => {
+																onChange( 'double' );
+																changeAllValues( 'double', 'borderStyle' );
+
+																// Close the popover.
+																setShowBorderStylePopoverSync( false );
+															} }
+														>
+															{ __( 'Double', 'photo-block' ) }
+														</Button>
+													</>
+												) }
+											/>
+										</ButtonGroup>
+									</BaseControl>
+								</div>
+							</Popover>
+						)
+					}
 					<Controller
 						name={ `${ deviceType }.top.width` }
 						control={ control }

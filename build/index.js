@@ -685,22 +685,26 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         top: {
           width: props.values.mobile.top.width,
           unit: props.values.mobile.top.unit,
-          color: props.values.mobile.top.color
+          color: props.values.mobile.top.color,
+          borderStyle: props.values.mobile.top.borderStyle
         },
         right: {
           width: props.values.mobile.right.width,
           unit: props.values.mobile.right.unit,
-          color: props.values.mobile.right.color
+          color: props.values.mobile.right.color,
+          borderStyle: props.values.mobile.right.borderStyle
         },
         bottom: {
           width: props.values.mobile.bottom.width,
           unit: props.values.mobile.bottom.unit,
-          color: props.values.mobile.bottom.color
+          color: props.values.mobile.bottom.color,
+          borderStyle: props.values.mobile.bottom.borderStyle
         },
         left: {
           width: props.values.mobile.left.width,
           unit: props.values.mobile.left.unit,
-          color: props.values.mobile.left.color
+          color: props.values.mobile.left.color,
+          borderStyle: props.values.mobile.left.borderStyle
         },
         unitSync: props.values.mobile.unitSync
       },
@@ -708,22 +712,26 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         top: {
           width: props.values.tablet.top.width,
           unit: props.values.tablet.top.unit,
-          color: props.values.tablet.top.color
+          color: props.values.tablet.top.color,
+          borderStyle: props.values.tablet.top.borderStyle
         },
         right: {
           width: props.values.tablet.right.width,
           unit: props.values.tablet.right.unit,
-          color: props.values.tablet.right.color
+          color: props.values.tablet.right.color,
+          borderStyle: props.values.tablet.right.borderStyle
         },
         bottom: {
           width: props.values.tablet.bottom.width,
           unit: props.values.tablet.bottom.unit,
-          color: props.values.tablet.bottom.color
+          color: props.values.tablet.bottom.color,
+          borderStyle: props.values.tablet.bottom.borderStyle
         },
         left: {
           width: props.values.tablet.left.width,
           unit: props.values.tablet.left.unit,
-          color: props.values.tablet.left.color
+          color: props.values.tablet.left.color,
+          borderStyle: props.values.tablet.left.borderStyle
         },
         unitSync: props.values.tablet.unitSync
       },
@@ -731,22 +739,26 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         top: {
           width: props.values.desktop.top.width,
           unit: props.values.desktop.top.unit,
-          color: props.values.desktop.top.color
+          color: props.values.desktop.top.color,
+          borderStyle: props.values.desktop.top.borderStyle
         },
         right: {
           width: props.values.desktop.right.width,
           unit: props.values.desktop.right.unit,
-          color: props.values.desktop.right.color
+          color: props.values.desktop.right.color,
+          borderStyle: props.values.desktop.right.borderStyle
         },
         bottom: {
           width: props.values.desktop.bottom.width,
           unit: props.values.desktop.bottom.unit,
-          color: props.values.desktop.bottom.color
+          color: props.values.desktop.bottom.color,
+          borderStyle: props.values.desktop.bottom.borderStyle
         },
         left: {
           width: props.values.desktop.left.width,
           unit: props.values.desktop.left.unit,
-          color: props.values.desktop.left.color
+          color: props.values.desktop.left.color,
+          borderStyle: props.values.desktop.left.borderStyle
         },
         unitSync: props.values.desktop.unitSync
       }
@@ -892,6 +904,40 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }
     return step;
   };
+
+  /**
+   * Get the border style being used (solid, dashed, dotted, double).
+   *
+   * @param {string} unitVar Var used to check relative to device type (typically top, left, right, bottom).
+   * @return {string} border style (solid, dashed, dotted, double).
+   */
+  var getBorderStyle = function getBorderStyle(unitVar) {
+    // Get current unit.
+    var borderStyle = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues(deviceType)[unitVar].borderStyle, unitVar, 'borderStyle');
+    console.log(getValues());
+    console.log(borderStyle);
+    return borderStyle;
+  };
+
+  /**
+   * Get the border icon for the border style being used (solid, dashed, dotted, double).
+   *
+   * @param {string} unitVar Var used to check relative to device type (typically top, left, right, bottom).
+   *
+   * @return {Element} The border icon.
+   */
+  var getBorderStyleIcon = function getBorderStyleIcon(unitVar) {
+    switch (getBorderStyle(unitVar)) {
+      case 'dashed':
+        return _Icons_BorderStyleDashed__WEBPACK_IMPORTED_MODULE_10__["default"];
+      case 'dotted':
+        return _Icons_BorderStyleDotted__WEBPACK_IMPORTED_MODULE_11__["default"];
+      case 'double':
+        return _Icons_BorderStyleDouble__WEBPACK_IMPORTED_MODULE_12__["default"];
+      default:
+        return _Icons_BorderStyleSolid__WEBPACK_IMPORTED_MODULE_9__["default"];
+    }
+  };
   var getSyncInterface = function getSyncInterface() {
     if (!isSync()) {
       return null;
@@ -920,7 +966,25 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           hideLabelFromVision: true
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
+    }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style",
+      hideLabelFromVision: true,
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block'),
+      icon: getBorderStyleIcon('top'),
+      onClick: function onClick() {
+        setShowBorderStylePopoverSync(!showBorderStylePopoverSync);
+      },
+      ref: setBorderSyncStyleButtonRef
+    }), showBorderStylePopoverSync && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Popover, {
+      position: "bottom center",
+      onClose: function onClose() {
+        setShowBorderStylePopoverSync(false);
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover"
+    }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, null, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
+      className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons"
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.borderStyle"),
       control: control,
       render: function render(_ref2) {
@@ -928,36 +992,52 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           onChange = _ref2$field.onChange,
           value = _ref2$field.value;
         return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
-          className: "dlx-photo-block__border-responsive-sync-interface-border-style",
-          hideLabelFromVision: true,
-          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block'),
           icon: _Icons_BorderStyleSolid__WEBPACK_IMPORTED_MODULE_9__["default"],
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Solid', 'photo-block'),
           onClick: function onClick() {
-            setShowBorderStylePopoverSync(!showBorderStylePopoverSync);
-          },
-          ref: setBorderSyncStyleButtonRef
-        }), showBorderStylePopoverSync && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Popover, {
-          position: "bottom center",
-          onClose: function onClose() {
+            onChange('solid');
+            changeAllValues('solid', 'borderStyle');
+
+            // Close the popover.
             setShowBorderStylePopoverSync(false);
-          }
-        }, /*#__PURE__*/React.createElement("div", {
-          className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover"
-        }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
-          icon: _Icons_BorderStyleSolid__WEBPACK_IMPORTED_MODULE_9__["default"],
-          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Solid', 'photo-block')
+          },
+          isPressed: 'solid' === getBorderStyle('top')
         }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Solid', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
           icon: _Icons_BorderStyleDashed__WEBPACK_IMPORTED_MODULE_10__["default"],
-          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dashed', 'photo-block')
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dashed', 'photo-block'),
+          isPressed: 'dashed' === getBorderStyle('top'),
+          onClick: function onClick() {
+            onChange('dashed');
+            changeAllValues('dashed', 'borderStyle');
+
+            // Close the popover.
+            setShowBorderStylePopoverSync(false);
+          }
         }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dashed', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
           icon: _Icons_BorderStyleDotted__WEBPACK_IMPORTED_MODULE_11__["default"],
-          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dotted', 'photo-block')
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dotted', 'photo-block'),
+          isPressed: 'dotted' === getBorderStyle('top'),
+          onClick: function onClick() {
+            onChange('dotted');
+            changeAllValues('dotted', 'borderStyle');
+
+            // Close the popover.
+            setShowBorderStylePopoverSync(false);
+          }
         }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dotted', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
           icon: _Icons_BorderStyleDouble__WEBPACK_IMPORTED_MODULE_12__["default"],
-          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Double', 'photo-block')
-        }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Double', 'photo-block'))))));
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Double', 'photo-block'),
+          isPressed: 'double' === getBorderStyle('top'),
+          onClick: function onClick() {
+            onChange('double');
+            changeAllValues('double', 'borderStyle');
+
+            // Close the popover.
+            setShowBorderStylePopoverSync(false);
+          }
+        }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Double', 'photo-block')));
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
+    }))))), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
       name: "".concat(deviceType, ".top.width"),
       control: control,
       render: function render(_ref3) {

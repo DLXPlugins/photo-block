@@ -2768,6 +2768,31 @@ svg.lucide {
 .dlx-photo-block__border-responsive .photo-block-component-color-picker-palette {
   margin-right: 8px;
 }
+
+/**
+ * Popover border style.
+ */
+.dlx-photo-block__border-responsive-sync-interface-border-style-popover {
+  padding: 15px 20px;
+  min-width: 240px;
+  /* Give h3 same style as basecontrol styles */
+}
+.dlx-photo-block__border-responsive-sync-interface-border-style-popover h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+.dlx-photo-block__border-responsive-sync-interface-border-style-popover .dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 8px;
+}
+.dlx-photo-block__border-responsive-sync-interface-border-style-popover .dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons button {
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/PanelBody/editor.scss ***!
   \*********************************************************************************************************************************************************************************************************************************************************************************************/
