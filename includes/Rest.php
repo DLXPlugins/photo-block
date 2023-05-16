@@ -86,10 +86,86 @@ class Rest {
 				'callback'            => array( static::class, 'rest_get_pages' ),
 			)
 		);
+
+		// Register a route for searching within a post type by ID or search term.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/search/types',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'publish_posts' );
+				},
+				'callback'            => array( static::class, 'rest_get_results_by_type' ),
+			)
+		);
 	}
 
 	/**
-	 * Returns the 5 most recent posts for the user
+	 * Returns the 20 most recent posts for the user by post type.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 **/
+	public function rest_get_results_by_type( $request ) {
+		$search    = urldecode( $request->get_param( 'search' ) ); // could be int or string.
+		$post_type = sanitize_text_field( $request->get_param( 'postType' ) );
+
+		// If $search is numeric, try to get the post by ID and return JSON response.
+		if ( is_numeric( $search ) ) {
+			$post = get_post( $search );
+			if ( ! empty( $post ) ) {
+				$app_data   = array();
+				$app_data[] = array(
+					'value'     => $post->ID,
+					'label'     => html_entity_decode( get_the_title( $post ) ),
+					'permalink' => get_the_permalink( $post ),
+					'slug'      => get_post_field( 'post_name', $post ),
+					'type'      => get_post_type( $post ),
+				);
+				wp_send_json_success( $app_data );
+			}
+		}
+
+		// Sanitize search.
+		$search = sanitize_text_field( $search );
+
+		// Get search query.
+		$args = array(
+			'post_type'      => $post_type,
+			'post_status'    => 'publish',
+			'posts_per_page' => 20,
+			's'              => $search,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		);
+		if ( empty( $search ) ) {
+			$args['orderby'] = 'date';
+			$args['order']   = 'DESC';
+		}
+
+		// Perform Search Query.
+		$app_query = new \WP_Query( $args );
+
+		// Return array of found posts/pages.
+		$app_data = array();
+		if ( $app_query->have_posts() ) {
+			while ( $app_query->have_posts() ) {
+				$app_query->the_post();
+				$app_data[] = array(
+					'value'     => get_the_ID(),
+					'label'     => html_entity_decode( get_the_title() ),
+					'permalink' => get_the_permalink(),
+					'slug'      => get_post_field( 'post_name', get_the_ID() ),
+					'type'      => get_post_type(),
+				);
+			}
+		}
+
+		wp_send_json_success( $app_data );
+	}
+
+	/**
+	 * Returns the 20 most recent posts for the user
 	 *
 	 * @param WP_REST_Request $request The REST request object.
 	 **/

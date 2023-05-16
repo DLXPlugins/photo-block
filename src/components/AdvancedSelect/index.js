@@ -16,6 +16,7 @@ import {
 	Button,
 	Spinner,
 	TextControl,
+	BaseControl,
 } from '@wordpress/components';
 import { useInstanceId, useDebounce } from '@wordpress/compose';
 import { isURL, filterURLForDisplay } from '@wordpress/url';
@@ -23,11 +24,7 @@ import { isURL, filterURLForDisplay } from '@wordpress/url';
 import {
 	Search,
 	CornerDownLeft,
-	XCircle,
-	ExternalLink,
-	Link,
-	File,
-	FileText,
+	XCircle
 
 } from 'lucide-react';
 
@@ -38,9 +35,9 @@ import SendCommand from '../../utils/SendCommand';
  *
  * @param {Object} props Incoming props.
  *
- * @return {React.Component} PostSelectorControl component.
+ * @return {React.Component} AdvancedSelectControl component.
  */
-const PostSelectorControl = ( props ) => {
+const AdvancedSelectControl = ( props ) => {
 	/**
 	 * Create Refs for inputs.
 	 */
@@ -48,11 +45,14 @@ const PostSelectorControl = ( props ) => {
 
 	const restEndPoint = props.restEndpoint;
 	const restNonce = props.restNonce;
+	const children = props.children;
+	const params = props.params;
+	const currentSelectedSuggestion = props.currentSelectedSuggestion;
 
 	/**
 	 * Set Unique Instance ID.
 	 */
-	const generatedUniqueId = useInstanceId( PostSelectorControl, 'app' );
+	const generatedUniqueId = useInstanceId( AdvancedSelectControl, 'photo-block' );
 
 	/**
 	 * Set State.
@@ -72,6 +72,7 @@ const PostSelectorControl = ( props ) => {
 		`post-search-control-${ generatedUniqueId }`
 	);
 	const [ loading, setLoading ] = useState( false );
+	const [ dataType, setDataType ] = useState( 'post' ); // Can be post, custom.
 
 	/**
 	 * Debounceing for delay.
@@ -105,6 +106,18 @@ const PostSelectorControl = ( props ) => {
 	}, [ suggestionValue ] );
 
 	/**
+	 * Set up effect for getting the selected suggestion and displaying it.
+	 */
+	useEffect( () => {
+		console.log( currentSelectedSuggestion );
+		if ( false !== currentSelectedSuggestion ) {
+			
+			setCurrentSuggestion( currentSelectedSuggestion );
+			setShowSuggestions( false );
+		}
+	}, [ currentSelectedSuggestion ] );
+
+	/**
 	 * Set Focus to input.
 	 */
 	useEffect( () => {
@@ -116,10 +129,10 @@ const PostSelectorControl = ( props ) => {
 	/**
 	 * Set the current input.
 	 *
-	 * @param {event} event The onChange event.
+	 * @param {string} newValue The value of the input.
 	 */
-	const onChange = ( event ) => {
-		setSuggestionValue( event.target.value );
+	const onChange = ( newValue ) => {
+		setSuggestionValue( newValue );
 	};
 
 	/**
@@ -310,6 +323,7 @@ const PostSelectorControl = ( props ) => {
 					{
 						signal: abortController.signal,
 						search: encodeURIComponent( value ),
+						...params,
 					},
 					restEndPoint,
 					'POST'
@@ -328,171 +342,142 @@ const PostSelectorControl = ( props ) => {
 	};
 
 	return (
-		<div className="photo-block-url-input">
-			<div className="photo-block-pub-url-input__wrapper">
-				<div className="photo-block-pub-url-input__input-wrapper">
+		<div className="photo-block-advanced-select">
+			<div className="photo-block-pub-advanced-select__wrapper">
+				<div className="photo-block-pub-advanced-select__input-wrapper">
 					{ null !== currentSuggestion && (
-						<div className="photo-block-pub-url-input__suggestion">
-							<div className="photo-block-pub-url-input__suggestion-item">
-								<span className="photo-block-pub-url-input__suggestion-label">
-									<Button
-										variant="link"
-										icon={ <ExternalLink /> }
-										iconSize={ 18 }
-										iconPosition="right"
-										label={ __( 'Open in new tab', 'photo-block' ) }
-										href={ currentSuggestion.permalink }
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										{ filterURLForDisplay( currentSuggestion.permalink ) }
-									</Button>
-								</span>
-								<Button
-									variant="secondary"
-									icon={ <XCircle /> }
-									iconSize={ 18 }
-									label={ __( 'Remove Current Selection', 'photo-block' ) }
-									onClick={ () => {
-										setCurrentSuggestion( null );
-									} }
-								/>
+						<>
+							<div className="photo-block-pub-advanced-select__input-label-wrapper">
+								<label
+									htmlFor={ uniqueInstanceId }
+									className="photo-block-pub-advanced-select__input-label"
+								>
+									{ props.label }
+								</label>
 							</div>
-						</div>
+							<div className="photo-block-pub-advanced-select__suggestion-display-wrapper">
+								<div className="photo-block-pub-advanced-select__suggestion-display">
+									{ currentSuggestion }
+								</div>
+								<div className="photo-block-pub-advanced-select__suggestion-display-actions">
+									<Button
+										className="photo-block-pub-advanced-select__suggestion-display-action"
+										icon={ <XCircle /> }
+										label={ __( 'Clear', 'photo-block' ) }
+										onClick={ () => {
+											setCurrentSuggestion( null );
+											setSuggestionValue( '' );
+											setShowSuggestions( false );
+											setSelectedSuggestion( null );
+											setSelectedSuggestionIndex( null );
+											setSuggestions( [] );
+										} }
+									/>
+								</div>
+							</div>
+						</>
 					) }
 					{ null === currentSuggestion && (
-						<div className="photo-block-pub-url-search-wrapper">
-							<input
-								type="text"
-								placeholder={ __( 'Paste in URL or search', 'photo-block' ) }
-								id={ uniqueInstanceId }
-								className="photo-block-pub-url-input__input"
-								value={ suggestionValue }
-								onChange={ onChange }
-								onFocus={ onFocus }
-								onKeyDown={ onKeyDown }
-								aria-label={
-									props.label
-										? undefined
-										: __( 'Page', 'photo-block' )
+						<>
+							<div className="photo-block-pub-advanced-select__input-label-wrapper">
+								<label
+									htmlFor={ uniqueInstanceId }
+									className="photo-block-pub-advanced-select__input-label"
+								>
+									{ props.label }
+								</label>
+							</div>
+							<div className="photo-block-pub-advanced-select__input-search-wrapper">
+								<TextControl
+									id={ uniqueInstanceId }
+									type="text"
+									className="photo-block-pub-advanced-select__input"
+									placeholder={ props.placeholder }
+									value={ suggestionValue }
+									onChange={ onChange }
+									onFocus={ onFocus }
+									onKeyDown={ onKeyDown }
+									label={ props.label }
+									hideLabelFromVision={ true }
+									aria-autocomplete="list"
+									ref={ inputRef }
+								/>
+								{
+									( loading ) && (
+										<div className="photo-block-pub-advanced-select__loading">
+											<Spinner />
+										</div>
+									)
 								}
-								aria-autocomplete="list"
-								ref={ inputRef }
-							/>
-							{
-								loading && (
-									<div className="photo-block-pub-url-input__loading">
-										<Spinner />
-									</div>
-								)
-							}
-							{
-								( ! loading && ! isURL( suggestionValue ) ) && (
-									<>
-										<Button
-											className="photo-block-pub-url-input__search-button"
-											icon={ <Search /> }
-											iconSize={ 18 }
-											label={ __( 'Search for a Page', 'photo-block' ) }
-											onClick={ () => {
-												setShowSuggestions( true );
-											} }
-										/>
-									</>
-								)
-							}
-							{
-								( ! loading && isURL( suggestionValue ) ) && (
-									<>
-										<Button
-											className="photo-block-pub-url-input__apply-button"
-											icon={ <CornerDownLeft /> }
-											iconSize={ 18 }
-											label={ __( 'Apply Link', 'photo-block' ) }
-											onClick={ ( e ) => {
-												const newSuggestion = {
-													permalink: suggestionValue,
-													label: filterURLForDisplay( suggestionValue ),
-													slug: '',
-													value: '',
-												};
-												setCurrentSuggestion( newSuggestion );
-												props.onItemSelect( e, suggestionValue );
-											} }
-										/>
-									</>
-								)
-							}
-						</div>
+								<Button
+									className="photo-block-pub-advanced-select__search-button"
+									icon={ <Search /> }
+									iconSize={ 18 }
+									label={ props.label }
+									onClick={ () => {
+										setShowSuggestions( true );
+									} }
+								/>
+								{
+									( ! loading && isURL( suggestionValue ) ) && (
+										<>
+											<Button
+												className="photo-block-pub-advanced-select__apply-button"
+												icon={ <CornerDownLeft /> }
+												iconSize={ 18 }
+												label={ __( 'Apply Link', 'photo-block' ) }
+												onClick={ ( e ) => {
+													const newSuggestion = {
+														permalink: suggestionValue,
+														label: filterURLForDisplay( suggestionValue ),
+														slug: '',
+														value: '',
+													};
+													setCurrentSuggestion( newSuggestion );
+													props.onItemSelect( e, suggestionValue );
+												} }
+											/>
+										</>
+									)
+								}
+							</div>
+						</>
 					) }
-
 				</div>
 			</div>
-			{ showSuggestions && !! suggestions.length && (
-				<div
-					className="photo-block-suggestions-wrapper"
-				>
-					<div
-						role="listbox"
-						id={ suggestionListboxId }
-						className="photo-block-url-input__suggestions"
-					>
-						{ suggestions.map( ( suggestion, index ) => {
-							const suggestionId = `photo-block-suggested-value-${ suggestion.value }`;
-							const suggestionClass = classNames(
-								'photo-block-url-input__suggestion',
-								{
-									'is-selected': suggestion.value === selectedSuggestion,
-								}
-							);
-
-							return (
-								<Button
-									key={ suggestionId }
-									id={ suggestionId }
-									value={ suggestion.value }
-									role="option"
-									aria-selected={ suggestion.value === selectedSuggestion }
-									className={ suggestionClass }
-									onClick={ ( e ) => {
-										setSelectedSuggestion( parseInt( e.target.value ) );
-										setSelectedSuggestionIndex( index );
-										setCurrentSuggestion( suggestion );
-										setShowSuggestions( false );
-										props.onItemSelect( e, suggestion.permalink );
-									} }
-									icon={ 'post' === suggestion.type ? <FileText /> : <File /> }
-									iconSize={ 2 }
-									iconPosition="left"
-								>
-									<span className="photo-block-search-item">
-										<span className="photo-block-search-item-title">{ suggestion.label }</span>
-										<span className="photo-block-search-item-info">{ suggestion.permalink }</span>
-									</span>
-								</Button>
-							);
-						} ) }
-					</div>
-				</div>
-			) }
+			<div
+				className={
+					classNames(
+						{
+							'has-suggestions': showSuggestions && !! suggestions.length,
+						}
+					)
+				}
+			>
+				{ children( showSuggestions, suggestions, selectedSuggestion ) }
+			</div>
 		</div>
 	);
 };
 
-PostSelectorControl.defaultProps = {
-	label: __( 'Page', 'photo-block' ),
+AdvancedSelectControl.defaultProps = {
+	label: __( 'Search by ID or title', 'photo-block' ),
+	placeholder: __( 'Search by ID or title', 'photo-block' ),
 	onItemSelect: () => {},
+	children: () => ( <></> ),
 	hasInititialFocus: false,
 	itemIcon: <></>,
 };
 
-PostSelectorControl.propTypes = {
+AdvancedSelectControl.propTypes = {
 	restEndpoint: PropTypes.string.isRequired,
 	restNonce: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
+	placeholder: PropTypes.string.isRequired,
 	onItemSelect: PropTypes.func.isRequired,
+	children: PropTypes.func.isRequired,
 	hasInititialFocus: PropTypes.bool.isRequired,
 	itemIcon: PropTypes.element.isRequired,
 };
 
-export default PostSelectorControl;
+export default AdvancedSelectControl;

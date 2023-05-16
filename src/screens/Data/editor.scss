@@ -2,3 +2,68 @@
 	max-width: 500px;
 	margin: 0 auto;
 }
+.dlx-photo-block__post-suggestions {
+	width: 100%;
+	position: relative;
+	top: 100%;
+	left: 0;
+	max-height: 250px;
+	overflow-y: auto;
+	.photo-block__post-suggestion {
+		position: relative;
+		border: 1px solid #ddd;
+		border-radius: 0;
+		width: 100%;
+		height: auto;
+		background: #FFF;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		text-align: left;
+		padding: 5px 20px 5px 40px !important; /* override core style */
+		transition: all 0.4s ease-in-out;
+
+		svg {
+			position: absolute;
+			width: 24px;
+			height: 24px;
+			top: calc(50% - 8px);
+			left: 10px;
+			path {
+				fill: unset;
+			}
+		}
+
+		&:hover {
+			background: #f1f1f1;
+			border-color: var( --wp-admin-theme-color );
+		}
+
+		&.is-selected {
+			background: #f1f1f1;
+			border-color: var( --wp-admin-theme-color );
+		}
+
+		.photo-block-search-item {
+			display: block;
+			margin-right: 8px;
+			white-space: pre-wrap;
+			overflow-wrap: break-word;
+		}
+		.photo-block-search-item-title {
+			display: block;
+			margin-bottom: 0.2em;
+			font-weight: 500;
+			position: relative;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.photo-block-search-item-info {
+			word-break: break-all;
+			display: block;
+			color: #757575;
+			font-size: .9em;
+			line-height: 1.3;
+		}
+	}
+}

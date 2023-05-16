@@ -194,6 +194,10 @@
       "type": "string",
       "default": ""
     },
+    "dataPostTitle": {
+      "type": "string",
+      "default": ""
+    },
     "cssGramFilter": {
       "type": "string",
       "default": "none"

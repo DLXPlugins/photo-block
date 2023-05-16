@@ -1,19 +1,21 @@
 import './editor.scss';
 
 import { useContext, useState, useEffect, forwardRef } from '@wordpress/element';
-import { ToolbarGroup, ToolbarButton, SelectControl, ComboboxControl } from '@wordpress/components';
+import { ToolbarGroup, ToolbarButton, SelectControl, Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
-import { LogOut, Link2 } from 'lucide-react';
+import { LogOut, Link2, File, FileText } from 'lucide-react';
+import classNames from 'classnames';
 import UploaderContext from '../../contexts/UploaderContext';
-import PostSelectorControl from '../../components/PostSelector';
+import AdvancedSelectControl from '../../components/AdvancedSelect';
 
 const DataScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes } = props;
-	const { dataImageSource, dataPostType, dataPostId } = attributes;
+	const { dataImageSource, dataPostType, dataPostTitle } = attributes;
+
+	const [ currentPostTypePostSuggestion, setCurrentPostTypePostSuggestion ] = useState( dataPostTitle ? dataPostTitle : false );
 
 	const { screen, setScreen } = useContext( UploaderContext );
-
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
@@ -66,17 +68,64 @@ const DataScreen = forwardRef( ( props, ref ) => {
 					} }
 					options={ photoBlock.postTypes }
 				/>
-				<PostSelectorControl
+				<AdvancedSelectControl
 					restNonce={ photoBlock.restNonce }
-					restEndpoint={ photoBlock.restUrl + '/search/pages' }
+					restEndpoint={ photoBlock.restUrl + '/search/types' }
 					itemIcon={ <Link2 /> }
-					onItemSelect={ ( e, url ) => {
-						setAttributes( {
-							mediaLinkUrl: url,
-						} );
+					params={ {
+						postType: dataPostType,
 					} }
 					savedValue={ '' }
-				/>
+					placeholder={ __( 'Search by ID or title', 'photo-block' ) }
+					label={ __( 'Search by ID or title', 'photo-block' ) }
+					currentSelectedSuggestion={ currentPostTypePostSuggestion }
+				>
+					{ ( showSuggestions, suggestions, selectedSuggestion ) => {
+						if ( showSuggestions && suggestions.length > 0 ) {
+							// Render the suggestions as button items.
+							return (
+								<div className="dlx-photo-block__post-suggestions">
+									{ suggestions.map( ( suggestion, index ) => {
+										const isSelected = selectedSuggestion === index;
+										const suggestionClasses = classNames(
+											'photo-block__post-suggestion',
+											{
+												'is-selected': isSelected,
+											}
+										);
+										return (
+											<Button
+												key={ index }
+												value={ suggestion.value }
+												role="option"
+												aria-selected={ suggestion.value === selectedSuggestion }
+												className={ suggestionClasses }
+												onClick={ ( e ) => {
+													setCurrentPostTypePostSuggestion( suggestion.label );
+													setAttributes( {
+														dataPostId: suggestion.value,
+														dataPostTitle: suggestion.label,
+													} );
+												} }
+												icon={ 'post' === suggestion.type ? <FileText /> : <File /> }
+												iconSize={ 2 }
+												iconPosition="left"
+											>
+												<span className="photo-block-search-item">
+													<span className="photo-block-search-item-title">{ suggestion.label }</span>
+													<span className="photo-block-search-item-info">{ suggestion.permalink }</span>
+												</span>
+											</Button>
+										);
+									} ) }
+								</div>
+							);
+						}
+						return (
+							<></>
+						);
+					} }
+				</AdvancedSelectControl>
 			</div>
 		</>
 	);

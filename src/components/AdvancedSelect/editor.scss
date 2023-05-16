@@ -1,0 +1,79 @@
+@keyframes photo-block-advanced-select-spin {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.photo-block-post-search__input-wrapper ul {
+	margin: 0;
+	padding: 0;
+}
+
+/**
+ * Make search input label look like other WP components.
+ */
+.photo-block-pub-advanced-select__input-label {
+	color: #1e1e1e;
+	font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    display: block;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    max-width: 100%;
+	margin-bottom: 8px;
+    z-index: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/**
+ * Style search component, layering the loading animation, and search button over the input.
+ */
+.photo-block-pub-advanced-select__input-search-wrapper {
+	position: relative;
+
+	.photo-block-pub-advanced-select__input {
+		.components-base-control__field {
+			margin-bottom: 0;
+		}
+	}
+
+	.photo-block-pub-advanced-select__loading {
+		position: absolute;
+		right: 28px;
+		top: calc( 50% - 12px ); // Button SVG is 24.5px tall.
+		animation: photo-block-advanced-select-spin 1s linear infinite;
+	}
+
+	.photo-block-pub-advanced-select__search-button {
+		position: absolute;
+		right: 0;
+		top: calc( 50% - 18px ); // Button SVG is 18px tall.
+	}
+}
+
+/**
+ * Style the results view.
+ */
+.photo-block-pub-advanced-select__suggestion-display-wrapper {
+	position: relative;
+	border: 1px solid rgb(75, 79, 88);
+	border-radius: 3px;
+	padding: 8px;
+	font-size: 13px;
+
+	.photo-block-pub-advanced-select__suggestion-display {
+		padding-right: 20px;
+	}
+	.photo-block-pub-advanced-select__suggestion-display-actions {
+		position: absolute;
+		right: 0;
+		top: calc(50% - 18px); // Factor in SVG size and button padding.
+		svg {
+			color: rgb(75, 79, 88);
+		}
+	}
+}
