@@ -3094,6 +3094,17 @@ svg.lucide {
   margin: 0 auto;
 }
 
+.dlx-photo-block__data-row {
+  margin-bottom: 20px;
+}
+.dlx-photo-block__data-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.dlx-photo-block__screen-data-heading {
+  margin-bottom: 15px !important; /* override core style */
+}
+
 .dlx-photo-block__post-suggestions {
   width: 100%;
   position: relative;

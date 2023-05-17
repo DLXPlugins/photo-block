@@ -1,7 +1,8 @@
 import './editor.scss';
 
 import { useContext, useState, useEffect, forwardRef } from '@wordpress/element';
-import { ToolbarGroup, ToolbarButton, SelectControl, Button } from '@wordpress/components';
+// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+import { ToolbarGroup, ToolbarButton, SelectControl, Button, __experimentalHeading as Heading } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { LogOut, Link2, File, FileText, FileKey } from 'lucide-react';
@@ -77,6 +78,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 			return postId;
 		}
 		// If data type is post type, get the post ID from the attribute.
+		console.log( dataPostId );
 		if ( 'postType' === dataSource && '' !== dataPostId ) {
 			postId = dataPostId;
 			return postId;
@@ -84,171 +86,188 @@ const DataScreen = forwardRef( ( props, ref ) => {
 		return postId;
 	};
 
-
 	return (
 		<>
 			{ localToolbar }
 			{ localInspectorControls }
 			<div className="dlx-photo-block__screen-data">
-				<h2>{ __( 'Dynamic Image Data', 'photo-block' ) }</h2>
-				<SelectControl
-					label={ __( 'Data Source', 'photo-block' ) }
-					value={ dataSource }
-					onChange={ ( value ) => {
-						setAttributes( { dataSource: value } );
-					} }
-					options={ [
-						{ label: __( 'Current post', 'photo-block' ), value: 'currentPost' },
-						{ label: __( 'Post type', 'photo-block' ), value: 'postType' },
-					] }
-				/>
-				<SelectControl
-					label={ __( 'Select a Post Type', 'photo-block' ) }
-					value={ dataPostType }
-					onChange={ ( value ) => {
-						setAttributes( { dataPostType: value } );
-					} }
-					options={ photoBlock.postTypes }
-				/>
-				<AdvancedSelectControl
-					restNonce={ photoBlock.restNonce }
-					restEndpoint={ photoBlock.restUrl + '/search/types' }
-					itemIcon={ <Link2 /> }
-					params={ {
-						postType: dataPostType,
-					} }
-					savedValue={ '' }
-					placeholder={ __( 'Search by ID or title', 'photo-block' ) }
-					label={ sprintf(
-						/* Translators: %s: post type label. */
-						__( 'Select a %s', 'photo-block' ),
-						getPostTypeLabel( dataPostType )
-					)
-					}
-					currentSelectedSuggestion={ currentPostTypePostSuggestion }
-				>
-					{ ( showSuggestions, suggestions, selectedSuggestion ) => {
-						if ( showSuggestions && suggestions.length > 0 ) {
-							// Render the suggestions as button items.
-							return (
-								<div className="dlx-photo-block__post-suggestions">
-									{ suggestions.map( ( suggestion, index ) => {
-										const isSelected = selectedSuggestion === index;
-										const suggestionClasses = classNames(
-											'photo-block__post-suggestion',
-											{
-												'is-selected': isSelected,
-											}
-										);
+				<Heading className="dlx-photo-block__screen-data-heading">{ __( 'Dynamic Image Data', 'photo-block' ) }</Heading>
+				<div className="dlx-photo-block__data-row">
+					<SelectControl
+						label={ __( 'Data Source', 'photo-block' ) }
+						value={ dataSource }
+						onChange={ ( value ) => {
+							setAttributes( { dataSource: value } );
+						} }
+						options={ [
+							{ label: __( 'Current post', 'photo-block' ), value: 'currentPost' },
+							{ label: __( 'Post type', 'photo-block' ), value: 'postType' },
+						] }
+					/>
+				</div>
+				{ 'postType' === dataSource && (
+					<>
+						<div className="dlx-photo-block__data-row">
+							<SelectControl
+								label={ __( 'Select a Post Type', 'photo-block' ) }
+								value={ dataPostType }
+								onChange={ ( value ) => {
+									setAttributes( { dataPostType: value } );
+								} }
+								options={ photoBlock.postTypes }
+							/>
+						</div>
+						<div className="dlx-photo-block__data-row">
+							<AdvancedSelectControl
+								restNonce={ photoBlock.restNonce }
+								restEndpoint={ photoBlock.restUrl + '/search/types' }
+								itemIcon={ <Link2 /> }
+								params={ {
+									postType: dataPostType,
+								} }
+								savedValue={ '' }
+								placeholder={ __( 'Search by ID or title', 'photo-block' ) }
+								label={ sprintf(
+									/* Translators: %s: post type label. */
+									__( 'Select a %s', 'photo-block' ),
+									getPostTypeLabel( dataPostType )
+								)
+								}
+								currentSelectedSuggestion={ currentPostTypePostSuggestion }
+							>
+								{ ( showSuggestions, suggestions, selectedSuggestion ) => {
+									if ( showSuggestions && suggestions.length > 0 ) {
+										// Render the suggestions as button items.
 										return (
-											<Button
-												key={ index }
-												value={ suggestion.value }
-												role="option"
-												aria-selected={ suggestion.value === selectedSuggestion }
-												className={ suggestionClasses }
-												onClick={ ( e ) => {
-													setCurrentPostTypePostSuggestion( suggestion.label );
-													setAttributes( {
-														dataPostId: suggestion.value,
-														dataPostTitle: suggestion.label,
-													} );
-												} }
-												icon={ 'post' === suggestion.type ? <FileText /> : <File /> }
-												iconSize={ 2 }
-												iconPosition="left"
-											>
-												<span className="photo-block-search-item">
-													<span className="photo-block-search-item-title">{ suggestion.label }</span>
-													<span className="photo-block-search-item-info">{ suggestion.permalink }</span>
-												</span>
-											</Button>
+											<div className="dlx-photo-block__post-suggestions">
+												{ suggestions.map( ( suggestion, index ) => {
+													const isSelected = selectedSuggestion === index;
+													const suggestionClasses = classNames(
+														'photo-block__post-suggestion',
+														{
+															'is-selected': isSelected,
+														}
+													);
+													return (
+														<Button
+															key={ index }
+															value={ suggestion.value }
+															role="option"
+															aria-selected={ suggestion.value === selectedSuggestion }
+															className={ suggestionClasses }
+															onClick={ ( e ) => {
+																setCurrentPostTypePostSuggestion( suggestion.label );
+																setAttributes( {
+																	dataPostId: suggestion.value.toString(),
+																	dataPostTitle: suggestion.label,
+																} );
+															} }
+															icon={ 'post' === suggestion.type ? <FileText /> : <File /> }
+															iconSize={ 2 }
+															iconPosition="left"
+														>
+															<span className="photo-block-search-item">
+																<span className="photo-block-search-item-title">{ suggestion.label }</span>
+																<span className="photo-block-search-item-info">{ suggestion.permalink }</span>
+															</span>
+														</Button>
+													);
+												} ) }
+											</div>
 										);
-									} ) }
-								</div>
-							);
-						}
-						return (
-							<></>
-						);
-					} }
-				</AdvancedSelectControl>
-				<SelectControl
-					label={ __( 'Image Source', 'photo-block' ) }
-					value={ dataImageSource }
-					onChange={ ( value ) => {
-						setAttributes( { dataImageSource: value } );
-					} }
-				>
-					<optgroup label={ __( 'Post Options', 'photo-block' ) }>
-						<option value="featuredImage">{ __( 'Featured Image', 'photo-block' ) }</option>
-						<option value="postMeta">{ __( 'Post Meta', 'photo-block' ) }</option>
-					</optgroup>
-					<optgroup label={ __( 'Author', 'photo-block' ) }>
-						<option value="authorAvatar">{ __( 'Author Avatar', 'photo-block' ) }</option>
-					</optgroup>
-				</SelectControl>
-				<AdvancedSelectControl
-					restNonce={ photoBlock.restNonce }
-					restEndpoint={ photoBlock.restUrl + '/search/custom-fields' }
-					params={ {
-						postType: dataPostType,
-						postId: getPostId(),
+									}
+									return (
+										<></>
+									);
+								} }
+							</AdvancedSelectControl>
+						</div>
+					</>
+				) }
+				<div className="dlx-photo-block__data-row">
+					<SelectControl
+						label={ __( 'Image Source', 'photo-block' ) }
+						value={ dataImageSource }
+						onChange={ ( value ) => {
+							setAttributes( { dataImageSource: value } );
+						} }
+					>
+						<optgroup label={ __( 'Post Options', 'photo-block' ) }>
+							<option value="featuredImage">{ __( 'Featured Image', 'photo-block' ) }</option>
+							<option value="postMeta">{ __( 'Post Meta', 'photo-block' ) }</option>
+						</optgroup>
+						<optgroup label={ __( 'Author', 'photo-block' ) }>
+							<option value="authorAvatar">{ __( 'Author Avatar', 'photo-block' ) }</option>
+						</optgroup>
+					</SelectControl>
+				</div>
+				{ 'postMeta' === dataImageSource && (
+					<>
+						<div className="dlx-photo-block__data-row">
+							<AdvancedSelectControl
+								restNonce={ photoBlock.restNonce }
+								restEndpoint={ photoBlock.restUrl + '/search/custom-fields' }
+								params={ {
+									postType: dataPostType,
+									postId: getPostId(),
 
-					} }
-					savedValue={ '' }
-					onItemSelect={ ( event, suggestionValue ) => {
-						setAttributes( { dataImageSourceCustomField: suggestionValue } );
-					} }
-					placeholder={ __( 'Search for or enter a custom field', 'photo-block' ) }
-					label={ __( 'Select a Custom Field', 'photo-block' ) }
-					currentSelectedSuggestion={ currentCustomFieldSuggestion }
-					acceptDirectInput={ true }
-				>
-					{ ( showSuggestions, suggestions, selectedSuggestion ) => {
-						if ( showSuggestions && suggestions.length > 0 ) {
-							// Render the suggestions as button items.
-							return (
-								<div className="dlx-photo-block__post-suggestions">
-									{ suggestions.map( ( suggestion, index ) => {
-										const isSelected = selectedSuggestion === index;
-										const suggestionClasses = classNames(
-											'photo-block__post-suggestion',
-											{
-												'is-selected': isSelected,
-											}
-										);
+								} }
+								savedValue={ '' }
+								onItemSelect={ ( event, suggestionValue ) => {
+									setAttributes( { dataImageSourceCustomField: suggestionValue } );
+								} }
+								placeholder={ __( 'Search for or enter a custom field', 'photo-block' ) }
+								label={ __( 'Select a Custom Field', 'photo-block' ) }
+								currentSelectedSuggestion={ currentCustomFieldSuggestion }
+								acceptDirectInput={ true }
+							>
+								{ ( showSuggestions, suggestions, selectedSuggestion ) => {
+									if ( showSuggestions && suggestions.length > 0 ) {
+										// Render the suggestions as button items.
 										return (
-											<Button
-												key={ index }
-												value={ suggestion }
-												role="option"
-												aria-selected={ suggestion === selectedSuggestion }
-												className={ suggestionClasses }
-												onClick={ ( e ) => {
-													setCurrentCustomFieldSuggestion( suggestion );
-													setAttributes( {
-														dataImageSourceCustomField: suggestion,
-													} );
-												} }
-												icon={ <FileKey /> }
-												iconSize={ 2 }
-												iconPosition="left"
-											>
-												<span className="photo-block-search-item">
-													<span className="photo-block-search-item-title no-margin">{ suggestion }</span>
-												</span>
-											</Button>
+											<div className="dlx-photo-block__post-suggestions">
+												{ suggestions.map( ( suggestion, index ) => {
+													const isSelected = selectedSuggestion === index;
+													const suggestionClasses = classNames(
+														'photo-block__post-suggestion',
+														{
+															'is-selected': isSelected,
+														}
+													);
+													return (
+														<Button
+															key={ index }
+															value={ suggestion }
+															role="option"
+															aria-selected={ suggestion === selectedSuggestion }
+															className={ suggestionClasses }
+															onClick={ ( e ) => {
+																setCurrentCustomFieldSuggestion( suggestion );
+																setAttributes( {
+																	dataImageSourceCustomField: suggestion,
+																} );
+															} }
+															icon={ <FileKey /> }
+															iconSize={ 2 }
+															iconPosition="left"
+														>
+															<span className="photo-block-search-item">
+																<span className="photo-block-search-item-title no-margin">{ suggestion }</span>
+															</span>
+														</Button>
+													);
+												} ) }
+											</div>
 										);
-									} ) }
-								</div>
-							);
-						}
-						return (
-							<></>
-						);
-					} }
-				</AdvancedSelectControl>
+									}
+									return (
+										<></>
+									);
+								} }
+							</AdvancedSelectControl>
+						</div>
+					</>
+				) }
 			</div>
 		</>
 	);

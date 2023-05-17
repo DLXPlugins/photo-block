@@ -127,6 +127,15 @@ class Rest {
 		if ( $maybe_post_id && '' === $search ) {
 			$post_id       = absint( $maybe_post_id );
 			$custom_fields = get_post_custom_keys( $post_id );
+
+			// Unset the _edit_lock and _edit_last keys.
+			if ( is_array( $custom_fields ) ) {
+				$custom_fields = array_diff( $custom_fields, array( '_edit_lock', '_edit_last' ) );
+
+				// Reindex array.
+				$custom_fields = array_values( $custom_fields );
+			}
+
 			wp_send_json_success( $custom_fields );
 		}
 
@@ -143,6 +152,12 @@ class Rest {
 
 			// Format results for return (if any).
 			if ( ! empty( $custom_fields ) ) {
+				// Unset the _edit_lock and _edit_last keys.
+				if ( is_array( $custom_fields ) ) {
+					$custom_fields = array_diff( $custom_fields, array( '_edit_lock', '_edit_last' ) );
+					// Reindex array.
+					$custom_fields = array_values( $custom_fields );
+				}
 				wp_send_json_success( $custom_fields );
 			}
 		}

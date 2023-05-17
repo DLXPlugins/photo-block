@@ -5999,6 +5999,7 @@ function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefine
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
+// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 
 
 
@@ -6076,6 +6077,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       return postId;
     }
     // If data type is post type, get the post ID from the attribute.
+    console.log(dataPostId);
     if ('postType' === dataSource && '' !== dataPostId) {
       postId = dataPostId;
       return postId;
@@ -6084,7 +6086,11 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, localToolbar, localInspectorControls, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-data"
-  }, /*#__PURE__*/React.createElement("h2", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Dynamic Image Data', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalHeading, {
+    className: "dlx-photo-block__screen-data-heading"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Dynamic Image Data', 'photo-block')), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__data-row"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Data Source', 'photo-block'),
     value: dataSource,
     onChange: function onChange(value) {
@@ -6099,7 +6105,9 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Post type', 'photo-block'),
       value: 'postType'
     }]
-  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+  })), 'postType' === dataSource && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__data-row"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Select a Post Type', 'photo-block'),
     value: dataPostType,
     onChange: function onChange(value) {
@@ -6108,7 +6116,9 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       });
     },
     options: photoBlock.postTypes
-  }), /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__data-row"
+  }, /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
     restNonce: photoBlock.restNonce,
     restEndpoint: photoBlock.restUrl + '/search/types',
     itemIcon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null),
@@ -6139,7 +6149,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
           onClick: function onClick(e) {
             setCurrentPostTypePostSuggestion(suggestion.label);
             setAttributes({
-              dataPostId: suggestion.value,
+              dataPostId: suggestion.value.toString(),
               dataPostTitle: suggestion.label
             });
           },
@@ -6156,7 +6166,9 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       }));
     }
     return /*#__PURE__*/React.createElement(React.Fragment, null);
-  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__data-row"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Image Source', 'photo-block'),
     value: dataImageSource,
     onChange: function onChange(value) {
@@ -6174,7 +6186,9 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author', 'photo-block')
   }, /*#__PURE__*/React.createElement("option", {
     value: "authorAvatar"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author Avatar', 'photo-block')))), /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author Avatar', 'photo-block'))))), 'postMeta' === dataImageSource && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__data-row"
+  }, /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
     restNonce: photoBlock.restNonce,
     restEndpoint: photoBlock.restUrl + '/search/custom-fields',
     params: {
@@ -6224,7 +6238,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       }));
     }
     return /*#__PURE__*/React.createElement(React.Fragment, null);
-  })));
+  })))));
 });
 /* harmony default export */ __webpack_exports__["default"] = (DataScreen);
 
