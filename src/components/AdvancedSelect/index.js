@@ -199,8 +199,18 @@ const AdvancedSelectControl = ( props ) => {
 					if ( acceptDirectInput && '' !== suggestionValue ) {
 						setCurrentSuggestion( suggestionValue );
 						setShowSuggestions( false );
+						props.onItemSelect( event, suggestionValue );
 					} else {
 						debouncedRequest( event.target.value );
+					}
+					break;
+				}
+				case TAB: {
+					// If direct input is allowed, we should add the value as the current suggestion.
+					if ( acceptDirectInput && '' !== suggestionValue ) {
+						setCurrentSuggestion( suggestionValue );
+						setShowSuggestions( false );
+						props.onItemSelect( event, suggestionValue );
 					}
 					break;
 				}
@@ -357,6 +367,7 @@ const AdvancedSelectControl = ( props ) => {
 											setSelectedSuggestion( null );
 											setSelectedSuggestionIndex( null );
 											setSuggestions( [] );
+											props.onItemSelect( null, null );
 										} }
 									/>
 								</div>

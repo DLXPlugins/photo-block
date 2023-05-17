@@ -42,6 +42,7 @@ import InitialScreen from '../../screens/Initial';
 import EditScreen from '../../screens/Edit';
 import CropScreen from '../../screens/Crop';
 import DataScreen from '../../screens/Data';
+import DataEditScreen from '../../screens/DataEdit';
 import SendCommand from '../../utils/SendCommand';
 import CaptionAppender from '../../components/CaptionAppender';
 
@@ -98,6 +99,7 @@ const PhotoBlock = ( props ) => {
 		borderWidth,
 		borderRadiusSize,
 		typographyCaption,
+		dataScreen, /* can be `data`, `data-edit`. */
 		dataMode,
 	} = attributes;
 
@@ -151,9 +153,16 @@ const PhotoBlock = ( props ) => {
 	const getCurrentScreen = () => {
 		// If in data mode, show the data screen.
 		if ( dataMode ) {
-			return (
-				<DataScreen attributes={ attributes } setAttributes={ setAttributes } />
-			);
+			if ( 'data' === dataScreen ) {
+				return (
+					<DataScreen attributes={ attributes } setAttributes={ setAttributes } />
+				);
+			}
+			if ( 'data-edit' === dataScreen ) {
+				return (
+					<DataEditScreen attributes={ attributes } setAttributes={ setAttributes } />
+				);
+			}
 		}
 
 		// Otherwise get the screen based on the current screen.

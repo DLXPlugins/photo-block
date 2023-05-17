@@ -182,6 +182,10 @@
       "type": "boolean",
       "default": false
     },
+    "dataScreen": {
+      "type": "string",
+      "default": "data"
+    },
     "dataSource": {
       "type": "string",
       "default": "currentPost"
@@ -193,6 +197,24 @@
     "dataImageSourceCustomField": {
       "type": "string",
       "default": ""
+    },
+    "dataHasFallbackImage": {
+      "type": "boolean",
+      "default": false
+    },
+    "dataFallbackImageSize": {
+      "type": "string",
+      "default": "large"
+    },
+    "dataFallbackImage": {
+      "type": "object",
+      "default": {
+        "id": "",
+        "url": "",
+        "alt": "",
+        "full": "",
+        "attachment_link": ""
+      }
     },
     "dataPostType": {
       "type": "string",
