@@ -198,7 +198,6 @@ const DataScreen = forwardRef( ( props, ref ) => {
 					} }
 					savedValue={ '' }
 					onItemSelect={ ( event, suggestionValue ) => {
-						console.log( suggestionValue );
 						setAttributes( { dataImageSourceCustomField: suggestionValue } );
 					} }
 					placeholder={ __( 'Search for or enter a custom field', 'photo-block' ) }

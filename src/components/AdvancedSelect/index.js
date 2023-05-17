@@ -110,9 +110,7 @@ const AdvancedSelectControl = ( props ) => {
 	 * Set up effect for getting the selected suggestion and displaying it.
 	 */
 	useEffect( () => {
-		console.log( currentSelectedSuggestion );
 		if ( false !== currentSelectedSuggestion ) {
-			
 			setCurrentSuggestion( currentSelectedSuggestion );
 			setShowSuggestions( false );
 		}

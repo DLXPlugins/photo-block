@@ -930,7 +930,6 @@ var AdvancedSelectControl = function AdvancedSelectControl(props) {
    * Set up effect for getting the selected suggestion and displaying it.
    */
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    console.log(currentSelectedSuggestion);
     if (false !== currentSelectedSuggestion) {
       setCurrentSuggestion(currentSelectedSuggestion);
       setShowSuggestions(false);
@@ -6184,7 +6183,6 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     },
     savedValue: '',
     onItemSelect: function onItemSelect(event, suggestionValue) {
-      console.log(suggestionValue);
       setAttributes({
         dataImageSourceCustomField: suggestionValue
       });
