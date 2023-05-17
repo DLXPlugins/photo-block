@@ -1726,7 +1726,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           defaultColors: photoBlock.palette,
           defaultColor: '#FFFFFF',
           slug: 'border-color-sync',
-          hideLabelFromVision: true
+          hideLabelFromVision: true,
+          alpha: true
         });
       }
     }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {

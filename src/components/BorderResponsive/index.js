@@ -446,6 +446,7 @@ const BorderResponsiveControl = ( props ) => {
 								defaultColor={ '#FFFFFF' }
 								slug={ 'border-color-sync' }
 								hideLabelFromVision={ true }
+								alpha={ true }
 							/>
 						) }
 					/>
