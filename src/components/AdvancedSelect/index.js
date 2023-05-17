@@ -24,7 +24,7 @@ import { isURL, filterURLForDisplay } from '@wordpress/url';
 import {
 	Search,
 	CornerDownLeft,
-	XCircle
+	X,
 
 } from 'lucide-react';
 
@@ -47,6 +47,7 @@ const AdvancedSelectControl = ( props ) => {
 	const restNonce = props.restNonce;
 	const children = props.children;
 	const params = props.params;
+	const acceptDirectInput = props.acceptDirectInput;
 	const currentSelectedSuggestion = props.currentSelectedSuggestion;
 
 	/**
@@ -142,7 +143,7 @@ const AdvancedSelectControl = ( props ) => {
 	 */
 	const onFocus = ( event ) => {
 		event.preventDefault();
-		if ( null === selectedSuggestion && '' !== suggestionValue && ! isURL( suggestionValue ) ) {
+		if ( null === selectedSuggestion ) {
 			debouncedRequest( suggestionValue );
 		}
 	};
@@ -195,7 +196,14 @@ const AdvancedSelectControl = ( props ) => {
 				// Submitting while loading should trigger onSubmit.
 				case ENTER: {
 					event.preventDefault();
-					debouncedRequest( event.target.value );
+
+					// If direct input is allowed, we should add the value as the current suggestion.
+					if ( acceptDirectInput && '' !== suggestionValue ) {
+						setCurrentSuggestion( suggestionValue );
+						setShowSuggestions( false );
+					} else {
+						debouncedRequest( event.target.value );
+					}
 					break;
 				}
 			}
@@ -231,20 +239,21 @@ const AdvancedSelectControl = ( props ) => {
 				break;
 			}
 			case TAB: {
-				if ( selectedSuggestion !== null ) {
-					// Announce a link has been selected when tabbing away from the input field.
-					speak( __( 'Link selected.', 'photo-block' ) );
+				// If direct input is allowed, we should add the value as the current suggestion.
+				if ( acceptDirectInput && '' !== suggestionValue ) {
+					setCurrentSuggestion( suggestionValue );
+					setShowSuggestions( false );
+					props.onItemSelect( event, suggestionValue );
 				}
 				break;
 			}
 			case ENTER: {
 				event.preventDefault();
-				setShowSuggestions( false );
-				if ( selectedSuggestion !== null ) {
-					props.onItemSelect( event, getSuggestion( selectedSuggestion ) );
-					inputRef.current.focus();
+				if ( acceptDirectInput && '' !== suggestionValue ) {
+					setCurrentSuggestion( suggestionValue );
+					setShowSuggestions( false );
+					props.onItemSelect( event, suggestionValue );
 				}
-
 				break;
 			}
 		}
@@ -282,27 +291,6 @@ const AdvancedSelectControl = ( props ) => {
 		// Trim only now we've determined whether or not it originally had a "length"
 		// (even if that value was all whitespace).
 		value = value.trim();
-
-		// Return early if value is a URL.
-		if ( isURL( value ) ) {
-			setSuggestions( [] );
-			setShowSuggestions( false );
-			setLoading( false );
-			return;
-		}
-
-		// Allow a suggestions request if:
-		// - there are at least 2 characters in the search input (except manual searches where
-		//   search input length is not required to trigger a fetch)
-		// - this is a direct entry (eg: a URL)
-		if ( ! isInitialSuggestions && value.length < 2 ) {
-			// todo - cancel any pending requests
-			setSuggestions( [] );
-			setShowSuggestions( false );
-			setLoading( false );
-
-			return;
-		}
 
 		setIsUpdatingSuggestions( true );
 		setSelectedSuggestion( null );
@@ -362,7 +350,7 @@ const AdvancedSelectControl = ( props ) => {
 								<div className="photo-block-pub-advanced-select__suggestion-display-actions">
 									<Button
 										className="photo-block-pub-advanced-select__suggestion-display-action"
-										icon={ <XCircle /> }
+										icon={ <X /> }
 										label={ __( 'Clear', 'photo-block' ) }
 										onClick={ () => {
 											setCurrentSuggestion( null );
@@ -466,6 +454,7 @@ AdvancedSelectControl.defaultProps = {
 	onItemSelect: () => {},
 	children: () => ( <></> ),
 	hasInititialFocus: false,
+	acceptDirectInput: false,
 	itemIcon: <></>,
 };
 
@@ -477,6 +466,7 @@ AdvancedSelectControl.propTypes = {
 	onItemSelect: PropTypes.func.isRequired,
 	children: PropTypes.func.isRequired,
 	hasInititialFocus: PropTypes.bool.isRequired,
+	acceptDirectInput: PropTypes.bool,
 	itemIcon: PropTypes.element.isRequired,
 };
 

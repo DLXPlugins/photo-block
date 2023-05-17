@@ -104,14 +104,24 @@ class Blocks {
 			if ( in_array( $post_type, array( 'attachment', 'revision', 'nav_menu_item' ), true ) ) {
 				continue;
 			}
-			$post_type_label = $post_type;
-			$post_type_data  = get_post_type_object( $post_type );
+			$post_type_label          = $post_type;
+			$post_type_label_singular = $post_type;
+			$post_type_data           = get_post_type_object( $post_type );
 			if ( isset( $post_type_data->label ) && ! empty( $post_type_data->label ) ) {
 				$post_type_label = $post_type_data->label;
 			}
+			// Get singular label (if exists).
+			if ( isset( $post_type_data->labels->singular_name ) && ! empty( $post_type_data->labels->singular_name ) ) {
+				$post_type_label_singular = $post_type_data->labels->singular_name;
+			}
+			// If post type singular is still empty, get uppercase of post type slug.
+			if ( empty( $post_type_label_singular ) ) {
+				$post_type_label_singular = ucwords( str_replace( '_', ' ', $post_type ) );
+			}
 			$post_type_return[] = array(
-				'value' => $post_type,
-				'label' => $post_type_label,
+				'value'    => $post_type,
+				'label'    => $post_type_label,
+				'singular' => $post_type_label_singular,
 			);
 		}
 

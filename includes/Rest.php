@@ -99,6 +99,56 @@ class Rest {
 				'callback'            => array( static::class, 'rest_get_results_by_type' ),
 			)
 		);
+
+		// Register a route for searching within a post type by ID or search term.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/search/custom-fields',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'publish_posts' );
+				},
+				'callback'            => array( static::class, 'rest_get_custom_fields' ),
+			)
+		);
+	}
+
+	/**
+	 * Returns the 20 most recent custom fields by post type and/or post ID.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 **/
+	public function rest_get_custom_fields( $request ) {
+		$search        = sanitize_text_field( urldecode( $request->get_param( 'search' ) ) ); // should only be a string.
+		$maybe_post_id = absint( $request->get_param( 'postId' ) );
+
+		// If ID is set, then get the custom keys for that post and return them.
+		if ( $maybe_post_id && '' === $search ) {
+			$post_id       = absint( $maybe_post_id );
+			$custom_fields = get_post_custom_keys( $post_id );
+			wp_send_json_success( $custom_fields );
+		}
+
+		// Do a search for the custom fields for a post.
+		if ( $maybe_post_id && '' !== $search ) {
+			global $wpdb;
+			$custom_fields = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT meta_key FROM $wpdb->postmeta WHERE post_id = %d AND meta_key LIKE %s",
+					$maybe_post_id,
+					'%' . $wpdb->esc_like( $search ) . '%'
+				)
+			);
+
+			// Format results for return (if any).
+			if ( ! empty( $custom_fields ) ) {
+				wp_send_json_success( $custom_fields );
+			}
+		}
+
+		// No ID or search term, so let's return empty JSON.
+		wp_send_json_success( array() );
 	}
 
 	/**

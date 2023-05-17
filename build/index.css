@@ -3115,6 +3115,7 @@ svg.lucide {
   text-align: left;
   padding: 5px 20px 5px 40px !important; /* override core style */
   transition: all 0.4s ease-in-out;
+  min-height: 45px;
 }
 .dlx-photo-block__post-suggestions .photo-block__post-suggestion svg {
   position: absolute;
@@ -3148,6 +3149,9 @@ svg.lucide {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.dlx-photo-block__post-suggestions .photo-block__post-suggestion .photo-block-search-item-title.no-margin {
+  margin: 0;
+}
 .dlx-photo-block__post-suggestions .photo-block__post-suggestion .photo-block-search-item-info {
   word-break: break-all;
   display: block;
@@ -3166,6 +3170,10 @@ svg.lucide {
 .photo-block-post-search__input-wrapper ul {
   margin: 0;
   padding: 0;
+}
+
+.photo-block-advanced-select {
+  margin-bottom: 8px;
 }
 
 /**
@@ -3229,7 +3237,7 @@ svg.lucide {
   top: calc(50% - 18px);
 }
 .photo-block-pub-advanced-select__suggestion-display-wrapper .photo-block-pub-advanced-select__suggestion-display-actions svg {
-  color: rgb(75, 79, 88);
+  color: #AAA;
 }
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/CaptionAppender/editor.scss ***!

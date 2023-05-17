@@ -22,6 +22,7 @@
 		text-align: left;
 		padding: 5px 20px 5px 40px !important; /* override core style */
 		transition: all 0.4s ease-in-out;
+		min-height: 45px;
 
 		svg {
 			position: absolute;
@@ -57,6 +58,10 @@
 			position: relative;
 			overflow: hidden;
 			text-overflow: ellipsis;
+
+			&.no-margin {
+				margin: 0;
+			}
 		}
 		.photo-block-search-item-info {
 			word-break: break-all;

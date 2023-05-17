@@ -182,9 +182,17 @@
       "type": "boolean",
       "default": false
     },
-    "dataImageSource": {
+    "dataSource": {
       "type": "string",
       "default": "currentPost"
+    },
+    "dataImageSource": {
+      "type": "string",
+      "default": "featuredImage"
+    },
+    "dataImageSourceCustomField": {
+      "type": "string",
+      "default": ""
     },
     "dataPostType": {
       "type": "string",
