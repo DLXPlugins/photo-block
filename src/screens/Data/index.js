@@ -226,7 +226,6 @@ const DataScreen = forwardRef( ( props, ref ) => {
 				return true;
 			}
 		}
-		console.log( dataImageSource, dataImageSourceCustomField );
 		if ( 'postMeta' === dataImageSource ) {
 			if ( '' === dataImageSourceCustomField ) {
 				return true;

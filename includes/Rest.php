@@ -74,6 +74,19 @@ class Rest {
 			),
 		);
 
+		// Register a rest route for getting an image.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/get-image-by-data',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( static::class, 'rest_get_image_by_data' ),
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+			),
+		);
+
 		// Register a route for searching posts/pages.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
@@ -310,6 +323,95 @@ class Rest {
 
 		// Return the image URL and ID.
 		return $image_attachment;
+	}
+
+	/**
+	 * Callback function for getting an image by data.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 */
+	public static function rest_get_image_by_data( $request ) {
+		$data_source                    = sanitize_text_field( $request->get_param( 'dataSource' ) );
+		$data_current_post_id           = absint( $request->get_param( 'dataCurrentPostId' ) );
+		$data_image_size                = sanitize_text_field( $request->get_param( 'dataImageSize' ) );
+		$data_image_source              = sanitize_text_field( $request->get_param( 'dataImageSource' ) );
+		$data_image_source_custom_field = sanitize_text_field( $request->get_param( 'dataImageSourceCustomField' ) );
+		$data_post_type                 = sanitize_text_field( $request->get_param( 'dataPostType' ) );
+		$data_post_id                   = absint( $request->get_param( 'dataPostId' ) );
+		$data_fallback_image            = $request->get_param( 'dataFallbackImage' );
+		$data_has_fallback_image        = (bool) $request->get_param( 'dataHasFallbackImage' );
+		$data_fallback_image_size       = sanitize_text_field( $request->get_param( 'dataFallbackImageSize' ) );
+
+		// Placeholder for later.
+		$image = null;
+
+		// Check the data source. If current post, use the current post ID.
+		if ( 'currentPost' === $data_source ) {
+			if ( 'featuredImage' === $data_image_source && $data_current_post_id ) {
+				// Get the featured image ID from the current source ID.
+				$image_id = get_post_thumbnail_id( $data_current_post_id );
+				if ( $image_id ) {
+					$image = Functions::get_image_data( $image_id, $data_image_size );
+				}
+			} elseif ( 'customField' === $data_image_source && $data_current_post_id && $data_image_source_custom_field ) {
+				// Get the image ID from the custom field.
+				$maybe_image_id_or_url = Functions::get_post_image( $data_image_size, $data_image_source_custom_field, $data_current_post_id );
+				if ( $maybe_image_id_or_url ) {
+					if ( is_numeric( $maybe_image_id_or_url ) ) {
+						$image = Functions::get_image_data( $maybe_image_id_or_url, $data_image_size );
+					} else {
+						$image = esc_url( $maybe_image_id_or_url ); // A string was found.
+					}
+				}
+			} elseif ( 'authorAvatar' === $data_image_source ) {
+				// Get the author ID.
+				$author_id    = get_post_field( 'post_author', $data_current_post_id );
+				$maybe_avatar = get_avatar_url( $author_id, array( 'size' => $data_image_size ) );
+				if ( $maybe_avatar ) {
+					$image = esc_url( $maybe_avatar );
+				}
+			}
+		} elseif ( 'postType' === $data_source && $data_post_id ) {
+			if ( 'featuredImage' === $data_image_source && $data_post_id ) {
+				// Get the featured image ID from the current source ID.
+				$image_id = get_post_thumbnail_id( $data_post_id );
+				if ( $image_id ) {
+					$image = Functions::get_image_data( $image_id, $data_image_size );
+				}
+			} elseif ( 'customField' === $data_image_source && $data_current_post_id && $data_image_source_custom_field ) {
+				// Get the image ID from the custom field.
+				$maybe_image_id_or_url = Functions::get_post_image( $data_image_size, $data_image_source_custom_field, $data_post_id );
+				if ( $maybe_image_id_or_url ) {
+					if ( is_numeric( $maybe_image_id_or_url ) ) {
+						$image = Functions::get_image_data( $maybe_image_id_or_url, $data_image_size );
+					} else {
+						$image = esc_url( $maybe_image_id_or_url ); // A string was found.
+					}
+				}
+			} elseif ( 'authorAvatar' === $data_image_source ) {
+				// Get the author ID.
+				$author_id    = get_post_field( 'post_author', $data_post_id );
+				$maybe_avatar = get_avatar_url( $author_id, array( 'size' => $data_image_size ) );
+				if ( $maybe_avatar ) {
+					$image = esc_url( $maybe_avatar );
+				}
+			}
+		}
+
+		// Return early before trying for a fallback image.
+		if ( $image ) {
+			return $image;
+		}
+
+		// Image is still false, find the fallback.
+		if ( $data_has_fallback_image && $data_fallback_image ) {
+			$image = Functions::get_image_data( $data_fallback_image['id'], $data_fallback_image_size );
+			if ( $image ) {
+				return $image;
+			}
+		}
+
+		return '';
 	}
 
 	/**

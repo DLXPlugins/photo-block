@@ -267,6 +267,98 @@ class Functions {
 	}
 
 	/**
+	 * Retrieve an image ID from a custom field value.
+	 *
+	 * @param int|Object|Array $custom_field_value The custom field value.
+	 *
+	 * @return int|string|WP_Error The image ID or WP_Error if not found.
+	 */
+	public static function get_image_id_or_url_from_custom_field( $custom_field_value ) {
+		// Check for numeric.
+		if ( is_numeric( $custom_field_value ) ) {
+			return absint( $custom_field_value );
+		}
+
+		// Check for string value.
+		if ( is_string( $custom_field_value ) ) {
+			// Check for URL.
+			if ( filter_var( $custom_field_value, FILTER_VALIDATE_URL ) ) {
+				return $custom_field_value;
+			}
+		}
+
+		// Check for object.
+		if ( is_object( $custom_field_value ) ) {
+			if ( isset( $custom_field_value->ID ) ) {
+				return absint( $custom_field_value->ID );
+			}
+			if ( isset( $custom_field_value->id ) ) {
+				return absint( $custom_field_value->id );
+			}
+			if ( isset( $custom_field_value->url ) ) {
+				return absint( $custom_field_value->url );
+			}
+		}
+
+		// Check for array.
+		if ( is_array( $custom_field_value ) ) {
+			if ( isset( $custom_field_value['ID'] ) ) {
+				return absint( $custom_field_value['ID'] );
+			}
+			if ( isset( $custom_field_value['id'] ) ) {
+				return absint( $custom_field_value['id'] );
+			}
+			if ( isset( $custom_field_value['url'] ) ) {
+				return $custom_field_value['url'];
+			}
+		}
+
+		return new \WP_Error( 'invalid_custom_field_value', __( 'Invalid custom field value.', 'photo-block' ) );
+	}
+
+	/**
+	 * Get an image from post meta.
+	 *
+	 * @param string $size       The image size.
+	 * @param string $meta_field The meta field to query.
+	 * @param int    $post_id    The post to retrieve data for.
+	 *
+	 * @return string|boolean Image URL or false if not found.
+	 */
+	public static function get_post_image( $size = 'large', $meta_field = '', $post_id = 0 ) {
+
+		$image_id_or_url = false;
+		// Let's check regular post meta for the image first. This also includes Pods support.
+		$maybe_custom_field_result = get_post_meta( $post_id, $meta_field, true );
+		if ( $maybe_custom_field_result ) {
+			// Check if object, and if so, try to get image ID.
+			$maybe_image_id_or_url = self::get_image_id_or_url_from_custom_field( $maybe_custom_field_result );
+			if ( ! is_wp_error( $maybe_image_id_or_url ) ) {
+				$image_id_or_url = $maybe_image_id_or_url;
+			}
+		}
+
+		// If image id is still blank, try ACF.
+		if ( ! $image_id_or_url && function_exists( 'get_field' ) ) {
+			$acf_value = \get_field( $meta_field, $post_id );
+			if ( $acf_value ) {
+				$maybe_image_id_or_url = self::get_image_id_or_url_from_custom_field( $acf_value );
+				if ( ! is_wp_error( $maybe_image_id_or_url ) ) {
+					$image_id_or_url = $maybe_image_id_or_url;
+				}
+			}
+		}
+
+		// Now return the image if set.
+		if ( $image_id_or_url && is_numeric( $image_id_or_url ) ) {
+			return self::get_image_data( $image_id_or_url, $size );
+		} elseif ( $image_id_or_url && is_string( $image_id_or_url ) ) {
+			return $image_id_or_url;
+		}
+		return false;
+	}
+
+	/**
 	 * Retrieve a theme's color palette.
 	 *
 	 * @return array {

@@ -35,6 +35,8 @@ import {
 	Palette,
 	Wand2,
 	Maximize,
+	ArrowBigLeftDash,
+	Database,
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
@@ -74,6 +76,9 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	const [ a11yPopover, setA11yPopover ] = useState( null );
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
+	const [ imageLoading, setImageLoading ] = useState( true );
+	const [ hasImage, setHasImage ] = useState( false );
+	const [ previewImage, setPreviewImage ] = useState( null );
 	const {
 		uniqueId,
 		dataSource,
@@ -112,8 +117,79 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
-	
-	
+	/**
+	 * Get a post ID either from the block or attribute.
+	 *
+	 * @return {number} The post ID.
+	 */
+	const getPostId = () => {
+		let postId = 0;
+		// If data type is current post, get the current post ID.
+		if ( 'currentPost' === dataSource ) {
+			// Get post ID from block editor.
+			postId = wp.data.select( 'core/editor' ).getCurrentPostId();
+			return postId;
+		}
+		// If data type is post type, get the post ID from the attribute.
+		if ( 'postType' === dataSource && '' !== dataPostId ) {
+			postId = dataPostId;
+			return postId;
+		}
+		return postId;
+	};
+
+	/**
+	 * Set up effect for loading the image initially using data.
+	 */
+	useEffect( () => {
+		setImageLoading( true );
+		SendCommand(
+			photoBlock.restNonce,
+			{
+				dataSource,
+				dataCurrentPostId: getPostId(),
+				dataImageSize: imageSize,
+				dataImageSource,
+				dataImageSourceCustomField,
+				dataPostType,
+				dataPostId,
+				dataFallbackImage,
+				dataHasFallbackImage,
+				dataFallbackImageSize,
+			},
+			`${ photoBlock.restUrl + '/get-image-by-data' }`,
+			'POST'
+		)
+			.then( ( response ) => {
+				const { data } = response;
+
+				// Check if data is string or object.
+				if ( 'string' === typeof data ) {
+					if ( '' === data ) {
+						// No image.
+						setHasImage( false );
+						return;
+					}
+
+					// Image must be URL.
+					setHasImage( true );
+					setPreviewImage( data );
+					return;
+				}
+
+				// If object, set preview image.
+				if ( data.url ) {
+					setHasImage( true );
+					setPreviewImage( data );
+				}
+			} )
+			.catch( ( error ) => {
+				// todo: error checking/display.
+			} )
+			.then( () => {
+				setImageLoading( false );
+			} );
+	}, [ imageSize ] );
 
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
@@ -185,33 +261,14 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			<BlockControls>
 				<ToolbarGroup>
 					<ToolbarButton
-						icon={ <Crop /> }
-						label={ __( 'Crop', 'photo-block' ) }
+						icon={ <Database /> }
+						label={ __( 'Edit Data', 'photo-block' ) }
 						onClick={ () => {
-							setScreen( 'crop' );
+							setAttributes( { dataScreen: 'data' } );
+							setScreen( 'data' );
 						} }
 					>
-						{ __( 'Crop', 'photo-block' ) }
-					</ToolbarButton>
-					<ToolbarButton
-						icon={ <Stars /> }
-						label={ __( 'Effects', 'photo-block' ) }
-						onClick={ () => {
-							// setScreen( 'initial' );
-						} }
-					>
-						{ __( 'Effects', 'photo-block' ) }
-					</ToolbarButton>
-				</ToolbarGroup>
-				<ToolbarGroup>
-					<ToolbarButton
-						icon={ <Image /> }
-						label={ __( 'Replace Photo', 'photo-block' ) }
-						onClick={ () => {
-							setScreen( 'initial' );
-						} }
-					>
-						{ __( 'Replace', 'photo-block' ) }
+						{ __( 'Edit Data', 'photo-block' ) }
 					</ToolbarButton>
 				</ToolbarGroup>
 				<ToolbarGroup>
@@ -299,7 +356,42 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 						/>
 					) }
 					<div className="dlx-photo-block__screen-edit-image">
-						<></>
+						{
+							imageLoading && (
+								<Spinner />
+							)
+						}
+						{
+							( ! imageLoading && hasImage && typeof previewImage.url !== 'undefined' ) && (
+								<img
+									src={ previewImage.url }
+									className={ classnames( `photo-block-${ cssGramFilter }`, {
+										'has-css-gram': cssGramFilter !== 'none',
+									} ) }
+									width={ previewImage.width }
+									height={ previewImage.height }
+									alt=""
+								/>
+							)
+						}
+						{
+							( ! imageLoading && hasImage && typeof previewImage === 'string' ) && (
+								<img
+									src={ previewImage }
+									className={ classnames( `photo-block-${ cssGramFilter }`, {
+										'has-css-gram': cssGramFilter !== 'none',
+									} ) }
+									alt=""
+								/>
+							)
+						}
+						{
+							( ! imageLoading && ! hasImage ) && (
+								<>
+									Image not found.
+								</>
+							)
+						}
 					</div>
 					{ 'bottom' === captionPosition && (
 						<figcaption
