@@ -77,7 +77,7 @@ const PhotoBlock = ( props ) => {
 	const imageRef = useRef( null );
 	const [ captionInnerBlocksRef, setCaptionInnerBlocksRef ] = useState( null );
 
-	const { attributes, setAttributes, clientId } = props;
+	const { attributes, setAttributes, clientId, context } = props;
 
 	// Get a function that'll give us the innerblocks count for a custom inserter.
 	const { getBlockCount } = useSelect(
@@ -155,12 +155,12 @@ const PhotoBlock = ( props ) => {
 		if ( dataMode ) {
 			if ( 'data' === dataScreen ) {
 				return (
-					<DataScreen attributes={ attributes } setAttributes={ setAttributes } />
+					<DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />
 				);
 			}
 			if ( 'data-edit' === dataScreen ) {
 				return (
-					<DataEditScreen attributes={ attributes } setAttributes={ setAttributes } />
+					<DataEditScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />
 				);
 			}
 		}

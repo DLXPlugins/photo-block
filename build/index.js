@@ -84,7 +84,8 @@ var PhotoBlock = function PhotoBlock(props) {
     setCaptionInnerBlocksRef = _useState2[1];
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
-    clientId = props.clientId;
+    clientId = props.clientId,
+    context = props.context;
 
   // Get a function that'll give us the innerblocks count for a custom inserter.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
@@ -161,13 +162,15 @@ var PhotoBlock = function PhotoBlock(props) {
       if ('data' === dataScreen) {
         return /*#__PURE__*/React.createElement(_screens_Data__WEBPACK_IMPORTED_MODULE_12__["default"], {
           attributes: attributes,
-          setAttributes: setAttributes
+          setAttributes: setAttributes,
+          context: context
         });
       }
       if ('data-edit' === dataScreen) {
         return /*#__PURE__*/React.createElement(_screens_DataEdit__WEBPACK_IMPORTED_MODULE_13__["default"], {
           attributes: attributes,
-          setAttributes: setAttributes
+          setAttributes: setAttributes,
+          context: context
         });
       }
     }
@@ -407,6 +410,8 @@ var PhotoBlockIcon = /*#__PURE__*/React.createElement("svg", {
   save: function save() {
     return /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks.Content, null);
   },
+  usesContext: ['postId', 'postType', 'queryId', 'query'],
+  /* This is for detecting if in query loop */
   transforms: {
     from: [{
       type: 'enter',
@@ -6816,7 +6821,8 @@ for (var key in photoBlock.imageSizes) {
 var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(function (props, ref) {
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
-    innerBlockProps = props.innerBlockProps;
+    innerBlockProps = props.innerBlockProps,
+    context = props.context;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)('settings'),
     _useState2 = _slicedToArray(_useState, 2),
     inspectorTab = _useState2[0],
@@ -6884,6 +6890,10 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     screen = _useContext.screen,
     setScreen = _useContext.setScreen,
     captionPosition = _useContext.captionPosition;
+
+  // Get query loop vars.
+  var postId = context.postId,
+    postType = context.postType;
   var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_14__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 2),
     deviceType = _useDeviceType2[0],
@@ -6895,19 +6905,37 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
    * @return {number} The post ID.
    */
   var getPostId = function getPostId() {
-    var postId = 0;
+    var currentPostId = 0;
     // If data type is current post, get the current post ID.
     if ('currentPost' === dataSource) {
-      // Get post ID from block editor.
-      postId = wp.data.select('core/editor').getCurrentPostId();
-      return postId;
+      // Determine if we're in a query block.
+      if (inQueryLoop()) {
+        currentPostId = postId;
+      } else {
+        currentPostId = wp.data.select('core/editor').getCurrentPostId();
+      }
+      return currentPostId;
     }
     // If data type is post type, get the post ID from the attribute.
     if ('postType' === dataSource && '' !== dataPostId) {
-      postId = dataPostId;
-      return postId;
+      return dataPostId;
     }
-    return postId;
+    return currentPostId;
+  };
+
+  /**
+   * Determine if we're in a query loop or not.
+   *
+   * @return {boolean} Whether or not we're in a query block.
+   */
+  var inQueryLoop = function inQueryLoop() {
+    // Determine if we're in a query block.
+    var query = context.query,
+      queryId = context.queryId;
+    if (null !== query && null !== queryId) {
+      return true;
+    }
+    return false;
   };
 
   /**
@@ -6970,6 +6998,11 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     onChange: function onChange(size) {
       setAttributes({
         imageSize: size
+      });
+
+      // Also set fallback image size.
+      setAttributes({
+        dataFallbackImageSize: size
       });
     },
     options: imageSizeOptions

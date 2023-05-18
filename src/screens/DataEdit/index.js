@@ -69,7 +69,7 @@ for ( const key in photoBlock.imageSizes ) {
 }
 
 const DataEditScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps } = props;
+	const { attributes, setAttributes, innerBlockProps, context } = props;
 
 	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 	const [ a11yButton, setA11yButton ] = useState( null );
@@ -115,6 +115,9 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 
 	const { screen, setScreen, captionPosition } = useContext( UploaderContext );
 
+	// Get query loop vars.
+	const { postId, postType } = context;
+
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
 	/**
@@ -123,19 +126,36 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	 * @return {number} The post ID.
 	 */
 	const getPostId = () => {
-		let postId = 0;
+		let currentPostId = 0;
 		// If data type is current post, get the current post ID.
 		if ( 'currentPost' === dataSource ) {
-			// Get post ID from block editor.
-			postId = wp.data.select( 'core/editor' ).getCurrentPostId();
-			return postId;
+			// Determine if we're in a query block.
+			if ( inQueryLoop() ) {
+				currentPostId = postId;
+			} else {
+				currentPostId = wp.data.select( 'core/editor' ).getCurrentPostId();
+			}
+			return currentPostId;
 		}
 		// If data type is post type, get the post ID from the attribute.
 		if ( 'postType' === dataSource && '' !== dataPostId ) {
-			postId = dataPostId;
-			return postId;
+			return dataPostId;
 		}
-		return postId;
+		return currentPostId;
+	};
+
+	/**
+	 * Determine if we're in a query loop or not.
+	 *
+	 * @return {boolean} Whether or not we're in a query block.
+	 */
+	const inQueryLoop = () => {
+		// Determine if we're in a query block.
+		const { query, queryId } = context;
+		if ( null !== query && null !== queryId ) {
+			return true;
+		}
+		return false;
 	};
 
 	/**
@@ -209,6 +229,9 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 						value={ imageSize }
 						onChange={ ( size ) => {
 							setAttributes( { imageSize: size } );
+
+							// Also set fallback image size.
+							setAttributes( { dataFallbackImageSize: size } );
 						} }
 						options={ imageSizeOptions }
 					/>
