@@ -1624,7 +1624,7 @@ svg.lucide {
   margin: 0;
   margin-right: 8px;
 }
-.photo-block__inspector-panel .components-button {
+.photo-block__inspector-panel .components-panel__body-title > .components-button {
   justify-content: flex-end;
   flex-direction: row-reverse;
 }
@@ -2803,6 +2803,10 @@ svg.lucide {
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/PanelBody/editor.scss ***!
   \*********************************************************************************************************************************************************************************************************************************************************************************************/
 
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/SidebarImageInspectorControl/editor.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
+
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************/
@@ -3173,6 +3177,11 @@ svg.lucide {
 
 .dlx-photo-block__data-row.dlx-photo-block__data-button-apply {
   color: #FFF;
+}
+
+.dlx-photo-block__fallback-image-popover {
+  min-width: 350px;
+  padding: 15px;
 }
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AdvancedSelect/editor.scss ***!

@@ -452,7 +452,6 @@ const BorderResponsiveControl = ( props ) => {
 					/>
 					<Button
 						className="dlx-photo-block__border-responsive-sync-interface-border-style"
-						hideLabelFromVision={ true }
 						label={ __( 'Border Style', 'photo-block' ) }
 						icon={ getBorderStyleIcon( 'top' ) }
 						onClick={ () => {

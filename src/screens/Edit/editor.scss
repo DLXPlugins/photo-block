@@ -70,11 +70,13 @@
 			margin: 0;
 			margin-right: 8px;
 		}
+
+		& > .components-button {
+			justify-content: flex-end;
+			flex-direction: row-reverse;
+		}
 	}
-	.components-button {
-		justify-content: flex-end;
-		flex-direction: row-reverse;
-	}
+	
 }
 .dlx-photo-block__image-dimensions-row {
 	display: block;
