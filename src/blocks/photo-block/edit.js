@@ -160,7 +160,7 @@ const PhotoBlock = ( props ) => {
 			}
 			if ( 'data-edit' === dataScreen ) {
 				return (
-					<DataEditScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />
+					<DataEditScreen attributes={ attributes } setAttributes={ setAttributes } innerBlockProps={ captionInnerBlockProps } context={ context } />
 				);
 			}
 		}

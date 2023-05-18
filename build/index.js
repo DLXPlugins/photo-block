@@ -170,6 +170,7 @@ var PhotoBlock = function PhotoBlock(props) {
         return /*#__PURE__*/React.createElement(_screens_DataEdit__WEBPACK_IMPORTED_MODULE_13__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
+          innerBlockProps: captionInnerBlockProps,
           context: context
         });
       }
