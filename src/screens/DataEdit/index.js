@@ -31,12 +31,9 @@ import {
 	Settings,
 	Paintbrush,
 	Shrink,
-	Stars,
-	Palette,
-	Wand2,
-	Maximize,
-	ArrowBigLeftDash,
+	CaseSensitive,
 	Database,
+	FileKey
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
@@ -53,6 +50,7 @@ import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
+import AdvancedSelectControl from '../../components/AdvancedSelect';
 
 /**
  * Height units.
@@ -79,11 +77,13 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ hasImage, setHasImage ] = useState( false );
 	const [ previewImage, setPreviewImage ] = useState( null );
+	const [ currentDataAltTextTypePostCustomFieldSuggestion, setCurrentDataAltTextTypePostCustomFieldSuggestion ] = useState( attributes.dataAltTextTypePostCustomField );
 	const {
 		uniqueId,
 		dataSource,
 		dataImageSource,
 		dataImageSourceCustomField,
+		dataImageSourceAuthorMeta,
 		dataPostType,
 		dataPostTitle,
 		dataPostId,
@@ -100,20 +100,13 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		photoDropShadow,
 		photoBackgroundColor,
 		cssGramFilter,
-		photoMaximumWidth,
-		containerWidth,
-		containerHeight,
-		containerMaxWidth,
-		containerMaxHeight,
-		containerMinWidth,
-		containerMinHeight,
-		photoPaddingSize,
-		photoMarginSize,
-		photoBorderRadius,
-		photoBorder,
+		dataAltTextSource, /* can be none|currentImage|currentPost */
+		dataAltTextTypeImage, /* can be altText, caption, imageTitle, customField */
+		dataAltTextTypePost, /* can be title, postAuthorName, postExcerpt, customField */
+		dataAltTextTypePostCustomField,
 	} = attributes;
 
-	const { screen, setScreen, captionPosition } = useContext( UploaderContext );
+	const { screen, setScreen, captionPosition, inQueryLoop } = useContext( UploaderContext );
 
 	// Get query loop vars.
 	const { postId, postType } = context;
@@ -130,7 +123,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		// If data type is current post, get the current post ID.
 		if ( 'currentPost' === dataSource ) {
 			// Determine if we're in a query block.
-			if ( inQueryLoop() ) {
+			if ( inQueryLoop ) {
 				currentPostId = postId;
 			} else {
 				currentPostId = wp.data.select( 'core/editor' ).getCurrentPostId();
@@ -142,20 +135,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			return dataPostId;
 		}
 		return currentPostId;
-	};
-
-	/**
-	 * Determine if we're in a query loop or not.
-	 *
-	 * @return {boolean} Whether or not we're in a query block.
-	 */
-	const inQueryLoop = () => {
-		// Determine if we're in a query block.
-		const { query, queryId } = context;
-		if ( null !== query && null !== queryId ) {
-			return true;
-		}
-		return false;
 	};
 
 	/**
@@ -176,6 +155,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 				dataFallbackImage,
 				dataHasFallbackImage,
 				dataFallbackImageSize,
+				dataImageSourceAuthorMeta,
 			},
 			`${ photoBlock.restUrl + '/get-image-by-data' }`,
 			'POST'
@@ -297,11 +277,19 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <Accessibility /> }
-						label={ __( 'Set Accessibility Options', 'photo-block' ) }
+						label={ __( 'Set Alt Text Dynamic Data', 'photo-block' ) }
 						onClick={ () => {
 							setA11yPopover( ! a11yPopover );
 						} }
 						ref={ setA11yButton }
+					/>
+					<ToolbarButton
+						icon={ <CaseSensitive /> }
+						label={ __( 'Set Title Options', 'photo-block' ) }
+						onClick={ () => {
+							setMediaLinkPopover( ! mediaLinkPopover );
+						} }
+						ref={ setMediaLinkRef }
 					/>
 					<ToolbarButton
 						icon={ <Link /> }
@@ -332,7 +320,136 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 					anchor={ a11yButton }
 				>
 					<div className="dlx-photo-block__a11y-popover">
-						<h3>{ __( 'Accessibility Options', 'photo-block' ) }</h3>
+						<h3>{ __( 'Alt Text Dynamic Data', 'photo-block' ) }</h3>
+						<SelectControl
+							label={ __( 'Data Source', 'photo-block' ) }
+							value={ dataAltTextSource }
+							onChange={ ( source ) => {
+								setAttributes( { dataAltTextSource: source } );
+							} }
+							help={ __( 'Select where the alt text should come from.', 'photo-block' ) }
+						>
+							<option value="none">{ __( 'None', 'photo-block' ) }</option>
+							<option value="currentImage">{ __( 'Current Image', 'photo-block' ) }</option>
+							<option value="currentPost">{ __( 'Current Post', 'photo-block' ) }</option>
+						</SelectControl>
+						{
+							dataAltTextSource === 'currentImage' && (
+								<>
+									<SelectControl
+										label={ __( 'Image Data Type', 'photo-block' ) }
+										value={ dataAltTextTypeImage }
+										onChange={ ( type ) => {
+											setAttributes( { dataAltTextTypeImage: type } );
+										} }
+										help={ __( 'Select the type of data to use for the alt text.', 'photo-block' ) }
+										options={ [
+											{ label: __( 'Alt Text', 'photo-block' ), value: 'altText' },
+											{ label: __( 'Caption', 'photo-block' ), value: 'caption' },
+											{ label: __( 'Image Title', 'photo-block' ), value: 'imageTitle' },
+											{ label: __( 'Custom Field', 'photo-block' ), value: 'customField' },
+										] }
+									/>
+								</>
+							)
+						}
+						{
+							dataAltTextSource === 'currentPost' && (
+								<>
+									<SelectControl
+										label={ __( 'Post Data Type', 'photo-block' ) }
+										value={ dataAltTextTypePost }
+										onChange={ ( type ) => {
+											setAttributes( { dataAltTextTypePost: type } );
+										} }
+										help={ __( 'Select the type of data to use for the alt text.', 'photo-block' ) }
+										options={ [
+											/* can be title, postAuthorName, postExcerpt, customField
+											*/
+											{ label: __( 'Post Title', 'photo-block' ), value: 'title' },
+											{ label: __( 'Post Author Name', 'photo-block' ), value: 'postAuthorName' },
+											{ label: __( 'Post Excerpt', 'photo-block' ), value: 'postExcerpt' },
+											{ label: __( 'Custom Field', 'photo-block' ), value: 'customField' },
+										] }
+									/>
+									{
+										dataAltTextTypePost === 'customField' && (
+											<AdvancedSelectControl
+												restNonce={ photoBlock.restNonce }
+												restEndpoint={ photoBlock.restUrl + '/search/custom-fields' }
+												params={ {
+													postType: dataPostType,
+													postId: getPostId(),
+												} }
+												savedValue={ '' }
+												onItemSelect={ ( event, suggestionValue ) => {
+													if ( null === suggestionValue ) {
+														setAttributes( {
+															dataAltTextTypePostCustomField: '',
+														} );
+													} else {
+														setAttributes( {
+															dataAltTextTypePostCustomField: suggestionValue,
+														} );
+													}
+												} }
+												placeholder={ __(
+													'Search for or enter a custom field',
+													'photo-block'
+												) }
+												label={ __( 'Select a Custom Field', 'photo-block' ) }
+												currentSelectedSuggestion={ currentDataAltTextTypePostCustomFieldSuggestion }
+												acceptDirectInput={ true }
+											>
+												{ ( showSuggestions, suggestions, selectedSuggestion ) => {
+													if ( showSuggestions && suggestions.length > 0 ) {
+														// Render the suggestions as button items.
+														return (
+															<div className="dlx-photo-block__post-suggestions">
+																{ suggestions.map( ( suggestion, index ) => {
+																	const isSelected = selectedSuggestion === index;
+																	const suggestionClasses = classnames(
+																		'photo-block__post-suggestion',
+																		{
+																			'is-selected': isSelected,
+																		}
+																	);
+																	return (
+																		<Button
+																			key={ index }
+																			value={ suggestion }
+																			role="option"
+																			aria-selected={ suggestion === selectedSuggestion }
+																			className={ suggestionClasses }
+																			onClick={ ( e ) => {
+																				setCurrentDataAltTextTypePostCustomFieldSuggestion( suggestion );
+																				setAttributes( {
+																					dataAltTextTypePostCustomField: suggestion,
+																				} );
+																			} }
+																			icon={ <FileKey /> }
+																			iconSize={ 2 }
+																			iconPosition="left"
+																		>
+																			<span className="photo-block-search-item">
+																				<span className="photo-block-search-item-title no-margin">
+																					{ suggestion }
+																				</span>
+																			</span>
+																		</Button>
+																	);
+																} ) }
+															</div>
+														);
+													}
+													return <></>;
+												} }
+											</AdvancedSelectControl>
+										)
+									}
+								</>
+							)
+						}
 					</div>
 				</Popover>
 			) }

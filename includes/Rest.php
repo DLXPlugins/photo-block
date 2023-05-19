@@ -113,7 +113,7 @@ class Rest {
 			)
 		);
 
-		// Register a route for searching within a post type by ID or search term.
+		// Register a route for searching for custom fields in a post type.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
 			'/search/custom-fields',
@@ -125,6 +125,72 @@ class Rest {
 				'callback'            => array( static::class, 'rest_get_custom_fields' ),
 			)
 		);
+
+		// Register a route for searching for author meta fields.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/search/author-meta',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'publish_posts' );
+				},
+				'callback'            => array( static::class, 'rest_get_author_meta' ),
+			)
+		);
+	}
+
+	/**
+	 * Returns the 20 most recent author fields based on past post id.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 **/
+	public function rest_get_author_meta( $request ) {
+		$search        = sanitize_text_field( urldecode( $request->get_param( 'search' ) ) ); // should only be a string.
+		$maybe_post_id = absint( $request->get_param( 'postId' ) );
+
+		// Bail early if no post id or if zero.
+		if ( ! $maybe_post_id ) {
+			wp_send_json_error( 'No post ID provided.' );
+		}
+
+		// Get the post, validate, and get the author ID.
+		$post = get_post( $maybe_post_id );
+		if ( ! $post ) {
+			wp_send_json_error( 'No post found for ID provided.' );
+		}
+		$author_id = $post->post_author;
+
+		// Now get the author meta key labels for the author.
+		$author_meta = get_user_meta( $author_id );
+		$author_meta = array_keys( $author_meta );
+
+		// Format results for return (if any).
+		if ( ! empty( $author_meta ) ) {
+			// Unset the _edit_lock and _edit_last keys.
+			if ( is_array( $author_meta ) ) {
+				$author_meta = array_diff( $author_meta, array( '_edit_lock', '_edit_last' ) ); // not sure if this is needed, but eh.
+			}
+
+			// Filter the results based on the search term.
+			if ( '' !== $search ) {
+				$author_meta = array_filter(
+					$author_meta,
+					function ( $key ) use ( $search ) {
+						return false !== stripos( $key, $search );
+					}
+				);
+			}
+
+			// Sort the results.
+			sort( $author_meta );
+
+			// Return the results.
+			wp_send_json_success( $author_meta );
+		}
+
+		// No ID or search term, so let's return empty JSON.
+		wp_send_json_success( array() );
 	}
 
 	/**
@@ -341,6 +407,7 @@ class Rest {
 		$data_fallback_image            = $request->get_param( 'dataFallbackImage' );
 		$data_has_fallback_image        = (bool) $request->get_param( 'dataHasFallbackImage' );
 		$data_fallback_image_size       = sanitize_text_field( $request->get_param( 'dataFallbackImageSize' ) );
+		$data_image_source_author_meta  = sanitize_text_field( $request->get_param( 'dataImageSourceAuthorMeta' ) );
 
 		// Placeholder for later.
 		$image = null;
@@ -369,6 +436,19 @@ class Rest {
 				$maybe_avatar = get_avatar_url( $author_id, array( 'size' => $data_image_size ) );
 				if ( $maybe_avatar ) {
 					$image = esc_url( $maybe_avatar );
+				}
+			} elseif ( 'authorMeta' === $data_image_source ) {
+				// Get the author ID.
+				$author_id = get_post_field( 'post_author', $data_current_post_id );
+
+				// Get author image from user meta.
+				$maybe_author_image_id_or_url = Functions::get_author_image_from_meta( $data_image_size, $data_image_source_author_meta, $author_id );
+				if ( $maybe_author_image_id_or_url ) {
+					if ( is_array( $maybe_author_image_id_or_url ) ) {
+						$image = $maybe_author_image_id_or_url;
+					} else {
+						$image = esc_url( $maybe_author_image_id_or_url ); // A string was found.
+					}
 				}
 			}
 		} elseif ( 'postType' === $data_source && $data_post_id ) {

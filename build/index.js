@@ -278,6 +278,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+/**
+ * Determine if we're in a query loop or not.
+ *
+ * @param {Object} context The block context.
+ *
+ * @return {boolean} Whether or not we're in a query block.
+ */
+var isInQueryLoop = function isInQueryLoop(context) {
+  // Determine if we're in a query block.
+  var query = context.query,
+    queryId = context.queryId;
+  if (null !== query && null !== queryId) {
+    return true;
+  }
+  return false;
+};
 var PhotoBlock = function PhotoBlock(props) {
   var _props$attributes$pho, _props$attributes$cap;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)((_props$attributes$pho = props.attributes.photo) !== null && _props$attributes$pho !== void 0 ? _props$attributes$pho : null),
@@ -312,7 +329,9 @@ var PhotoBlock = function PhotoBlock(props) {
     _useState16 = _slicedToArray(_useState15, 2),
     captionPosition = _useState16[0],
     setCaptionPosition = _useState16[1]; // Can be top|bottom|overlay.
-
+  var _useState17 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(isInQueryLoop(props.context)),
+    _useState18 = _slicedToArray(_useState17, 1),
+    inQueryLoop = _useState18[0];
   return /*#__PURE__*/React.createElement(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_5__["default"].Provider, {
     value: {
       imageFile: imageFile,
@@ -330,7 +349,8 @@ var PhotoBlock = function PhotoBlock(props) {
       hasCaption: hasCaption,
       setHasCaption: setHasCaption,
       captionPosition: captionPosition,
-      setCaptionPosition: setCaptionPosition
+      setCaptionPosition: setCaptionPosition,
+      inQueryLoop: inQueryLoop
     }
   }, /*#__PURE__*/React.createElement(_edit__WEBPACK_IMPORTED_MODULE_6__["default"], props));
 };
@@ -1179,7 +1199,7 @@ var AdvancedSelectControl = function AdvancedSelectControl(props) {
     className: "photo-block-pub-advanced-select__wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-pub-advanced-select__input-wrapper"
-  }, null !== currentSuggestion && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+  }, null !== currentSuggestion && '' !== currentSuggestion && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-pub-advanced-select__input-label-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("label", {
     htmlFor: uniqueInstanceId,
@@ -1203,7 +1223,7 @@ var AdvancedSelectControl = function AdvancedSelectControl(props) {
       setSuggestions([]);
       props.onItemSelect(null, null);
     }
-  })))), null === currentSuggestion && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
+  })))), (null === currentSuggestion || '' === currentSuggestion) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-pub-advanced-select__input-label-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("label", {
     htmlFor: uniqueInstanceId,
@@ -6383,6 +6403,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   var dataSource = attributes.dataSource,
     dataImageSource = attributes.dataImageSource,
     dataImageSourceCustomField = attributes.dataImageSourceCustomField,
+    dataImageSourceAuthorMeta = attributes.dataImageSourceAuthorMeta,
     dataPostType = attributes.dataPostType,
     dataPostTitle = attributes.dataPostTitle,
     dataPostId = attributes.dataPostId,
@@ -6402,6 +6423,12 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     _useState4 = _slicedToArray(_useState3, 2),
     currentCustomFieldSuggestion = _useState4[0],
     setCurrentCustomFieldSuggestion = _useState4[1];
+
+  // Author meta suggestion for selecting an image source.
+  var _useState5 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(dataImageSourceAuthorMeta ? dataImageSourceAuthorMeta : false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    currentAuthorMetaSuggestion = _useState6[0],
+    setCurrentAuthorMetaSuggestion = _useState6[1];
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__["default"]),
     screen = _useContext.screen,
     setScreen = _useContext.setScreen;
@@ -6660,7 +6687,9 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author', 'photo-block')
   }, /*#__PURE__*/React.createElement("option", {
     value: "authorAvatar"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author Avatar', 'photo-block'))))), 'postMeta' === dataImageSource && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author Avatar', 'photo-block')), /*#__PURE__*/React.createElement("option", {
+    value: "authorMeta"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author Meta', 'photo-block'))))), 'postMeta' === dataImageSource && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__data-row"
   }, /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
     restNonce: photoBlock.restNonce,
@@ -6718,6 +6747,64 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       }));
     }
     return /*#__PURE__*/React.createElement(React.Fragment, null);
+  }))), 'authorMeta' === dataImageSource && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__data-row"
+  }, /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    restNonce: photoBlock.restNonce,
+    restEndpoint: photoBlock.restUrl + '/search/author-meta',
+    params: {
+      postType: dataPostType,
+      postId: getPostId()
+    },
+    savedValue: '',
+    onItemSelect: function onItemSelect(event, suggestionValue) {
+      if (null === suggestionValue) {
+        setAttributes({
+          dataImageSourceAuthorMeta: ''
+        });
+      } else {
+        setAttributes({
+          dataImageSourceAuthorMeta: suggestionValue
+        });
+      }
+    },
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Search for or enter an author meta field', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Select an author meta field', 'photo-block'),
+    currentSelectedSuggestion: currentAuthorMetaSuggestion,
+    acceptDirectInput: true
+  }, function (showSuggestions, suggestions, selectedSuggestion) {
+    if (showSuggestions && suggestions.length > 0) {
+      // Render the suggestions as button items.
+      return /*#__PURE__*/React.createElement("div", {
+        className: "dlx-photo-block__post-suggestions"
+      }, suggestions.map(function (suggestion, index) {
+        var isSelected = selectedSuggestion === index;
+        var suggestionClasses = classnames__WEBPACK_IMPORTED_MODULE_5___default()('photo-block__post-suggestion', {
+          'is-selected': isSelected
+        });
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+          key: index,
+          value: suggestion,
+          role: "option",
+          "aria-selected": suggestion === selectedSuggestion,
+          className: suggestionClasses,
+          onClick: function onClick(e) {
+            setCurrentAuthorMetaSuggestion(suggestion);
+            setAttributes({
+              dataImageSourceAuthorMeta: suggestion
+            });
+          },
+          icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_13__["default"], null),
+          iconSize: 2,
+          iconPosition: "left"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item-title no-margin"
+        }, suggestion)));
+      }));
+    }
+    return /*#__PURE__*/React.createElement(React.Fragment, null);
   })))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.CardFooter, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__data-row dlx-photo-block__data-button-apply"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
@@ -6753,12 +6840,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/settings.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/paintbrush.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/database.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/settings.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/paintbrush.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/database.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/case-sensitive.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file-key.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var hex_to_rgba__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! hex-to-rgba */ "./node_modules/hex-to-rgba/build/index.js");
@@ -6775,6 +6864,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_BorderResponsive__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../components/BorderResponsive */ "./src/components/BorderResponsive/index.js");
 /* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../components/PanelBody */ "./src/components/PanelBody/index.js");
 /* harmony import */ var _components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../components/SidebarImageInspectorControl */ "./src/components/SidebarImageInspectorControl/index.js");
+/* harmony import */ var _components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../components/AdvancedSelect */ "./src/components/AdvancedSelect/index.js");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6782,6 +6872,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -6856,10 +6947,15 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     _useState16 = _slicedToArray(_useState15, 2),
     previewImage = _useState16[0],
     setPreviewImage = _useState16[1];
+  var _useState17 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(attributes.dataAltTextTypePostCustomField),
+    _useState18 = _slicedToArray(_useState17, 2),
+    currentDataAltTextTypePostCustomFieldSuggestion = _useState18[0],
+    setCurrentDataAltTextTypePostCustomFieldSuggestion = _useState18[1];
   var uniqueId = attributes.uniqueId,
     dataSource = attributes.dataSource,
     dataImageSource = attributes.dataImageSource,
     dataImageSourceCustomField = attributes.dataImageSourceCustomField,
+    dataImageSourceAuthorMeta = attributes.dataImageSourceAuthorMeta,
     dataPostType = attributes.dataPostType,
     dataPostTitle = attributes.dataPostTitle,
     dataPostId = attributes.dataPostId,
@@ -6876,21 +6972,15 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     photoDropShadow = attributes.photoDropShadow,
     photoBackgroundColor = attributes.photoBackgroundColor,
     cssGramFilter = attributes.cssGramFilter,
-    photoMaximumWidth = attributes.photoMaximumWidth,
-    containerWidth = attributes.containerWidth,
-    containerHeight = attributes.containerHeight,
-    containerMaxWidth = attributes.containerMaxWidth,
-    containerMaxHeight = attributes.containerMaxHeight,
-    containerMinWidth = attributes.containerMinWidth,
-    containerMinHeight = attributes.containerMinHeight,
-    photoPaddingSize = attributes.photoPaddingSize,
-    photoMarginSize = attributes.photoMarginSize,
-    photoBorderRadius = attributes.photoBorderRadius,
-    photoBorder = attributes.photoBorder;
+    dataAltTextSource = attributes.dataAltTextSource,
+    dataAltTextTypeImage = attributes.dataAltTextTypeImage,
+    dataAltTextTypePost = attributes.dataAltTextTypePost,
+    dataAltTextTypePostCustomField = attributes.dataAltTextTypePostCustomField;
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_7__["default"]),
     screen = _useContext.screen,
     setScreen = _useContext.setScreen,
-    captionPosition = _useContext.captionPosition;
+    captionPosition = _useContext.captionPosition,
+    inQueryLoop = _useContext.inQueryLoop;
 
   // Get query loop vars.
   var postId = context.postId,
@@ -6910,7 +7000,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     // If data type is current post, get the current post ID.
     if ('currentPost' === dataSource) {
       // Determine if we're in a query block.
-      if (inQueryLoop()) {
+      if (inQueryLoop) {
         currentPostId = postId;
       } else {
         currentPostId = wp.data.select('core/editor').getCurrentPostId();
@@ -6922,21 +7012,6 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
       return dataPostId;
     }
     return currentPostId;
-  };
-
-  /**
-   * Determine if we're in a query loop or not.
-   *
-   * @return {boolean} Whether or not we're in a query block.
-   */
-  var inQueryLoop = function inQueryLoop() {
-    // Determine if we're in a query block.
-    var query = context.query,
-      queryId = context.queryId;
-    if (null !== query && null !== queryId) {
-      return true;
-    }
-    return false;
   };
 
   /**
@@ -6954,7 +7029,8 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
       dataPostId: dataPostId,
       dataFallbackImage: dataFallbackImage,
       dataHasFallbackImage: dataHasFallbackImage,
-      dataFallbackImageSize: dataFallbackImageSize
+      dataFallbackImageSize: dataFallbackImageSize,
+      dataImageSourceAuthorMeta: dataImageSourceAuthorMeta
     }, "".concat(photoBlock.restUrl + '/get-image-by-data'), 'POST').then(function (response) {
       var data = response.data;
 
@@ -6987,7 +7063,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
   // Set settings inspector Controls.
   var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_17__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Settings', 'photo-block'),
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-settings",
     uniqueId: uniqueId,
@@ -7021,12 +7097,12 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
       name: 'settings',
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Settings', 'photo-block'),
       className: 'dlx-photo-block__inspector-tab',
-      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null)
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null)
     }, {
       name: 'styles',
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Styles', 'photo-block'),
       className: 'dlx-photo-block__inspector-tab',
-      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null)
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null)
     }]
   }, function (tab) {
     switch (tab.name) {
@@ -7043,7 +7119,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, interfaceTabs);
   var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_23__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Edit Data', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -7052,14 +7128,21 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
       setScreen('data');
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Edit Data', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_23__["default"], null),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Accessibility Options', 'photo-block'),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_24__["default"], null),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Alt Text Dynamic Data', 'photo-block'),
     onClick: function onClick() {
       setA11yPopover(!a11yPopover);
     },
     ref: setA11yButton
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_24__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_25__["default"], null),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Title Options', 'photo-block'),
+    onClick: function onClick() {
+      setMediaLinkPopover(!mediaLinkPopover);
+    },
+    ref: setMediaLinkRef
+  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_26__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Link Options', 'photo-block'),
     onClick: function onClick() {
       setMediaLinkPopover(!mediaLinkPopover);
@@ -7080,7 +7163,125 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     anchor: a11yButton
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__a11y-popover"
-  }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Accessibility Options', 'photo-block')))));
+  }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Alt Text Dynamic Data', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Data Source', 'photo-block'),
+    value: dataAltTextSource,
+    onChange: function onChange(source) {
+      setAttributes({
+        dataAltTextSource: source
+      });
+    },
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select where the alt text should come from.', 'photo-block')
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "none"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('None', 'photo-block')), /*#__PURE__*/React.createElement("option", {
+    value: "currentImage"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Current Image', 'photo-block')), /*#__PURE__*/React.createElement("option", {
+    value: "currentPost"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Current Post', 'photo-block'))), dataAltTextSource === 'currentImage' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Image Data Type', 'photo-block'),
+    value: dataAltTextTypeImage,
+    onChange: function onChange(type) {
+      setAttributes({
+        dataAltTextTypeImage: type
+      });
+    },
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select the type of data to use for the alt text.', 'photo-block'),
+    options: [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Alt Text', 'photo-block'),
+      value: 'altText'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Caption', 'photo-block'),
+      value: 'caption'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Image Title', 'photo-block'),
+      value: 'imageTitle'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Custom Field', 'photo-block'),
+      value: 'customField'
+    }]
+  })), dataAltTextSource === 'currentPost' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Data Type', 'photo-block'),
+    value: dataAltTextTypePost,
+    onChange: function onChange(type) {
+      setAttributes({
+        dataAltTextTypePost: type
+      });
+    },
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select the type of data to use for the alt text.', 'photo-block'),
+    options: [
+    /* can be title, postAuthorName, postExcerpt, customField
+    */
+    {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Title', 'photo-block'),
+      value: 'title'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Author Name', 'photo-block'),
+      value: 'postAuthorName'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Excerpt', 'photo-block'),
+      value: 'postExcerpt'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Custom Field', 'photo-block'),
+      value: 'customField'
+    }]
+  }), dataAltTextTypePost === 'customField' && /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_19__["default"], {
+    restNonce: photoBlock.restNonce,
+    restEndpoint: photoBlock.restUrl + '/search/custom-fields',
+    params: {
+      postType: dataPostType,
+      postId: getPostId()
+    },
+    savedValue: '',
+    onItemSelect: function onItemSelect(event, suggestionValue) {
+      if (null === suggestionValue) {
+        setAttributes({
+          dataAltTextTypePostCustomField: ''
+        });
+      } else {
+        setAttributes({
+          dataAltTextTypePostCustomField: suggestionValue
+        });
+      }
+    },
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Search for or enter a custom field', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a Custom Field', 'photo-block'),
+    currentSelectedSuggestion: currentDataAltTextTypePostCustomFieldSuggestion,
+    acceptDirectInput: true
+  }, function (showSuggestions, suggestions, selectedSuggestion) {
+    if (showSuggestions && suggestions.length > 0) {
+      // Render the suggestions as button items.
+      return /*#__PURE__*/React.createElement("div", {
+        className: "dlx-photo-block__post-suggestions"
+      }, suggestions.map(function (suggestion, index) {
+        var isSelected = selectedSuggestion === index;
+        var suggestionClasses = classnames__WEBPACK_IMPORTED_MODULE_5___default()('photo-block__post-suggestion', {
+          'is-selected': isSelected
+        });
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+          key: index,
+          value: suggestion,
+          role: "option",
+          "aria-selected": suggestion === selectedSuggestion,
+          className: suggestionClasses,
+          onClick: function onClick(e) {
+            setCurrentDataAltTextTypePostCustomFieldSuggestion(suggestion);
+            setAttributes({
+              dataAltTextTypePostCustomField: suggestion
+            });
+          },
+          icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_27__["default"], null),
+          iconSize: 2,
+          iconPosition: "left"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item-title no-margin"
+        }, suggestion)));
+      }));
+    }
+    return /*#__PURE__*/React.createElement(React.Fragment, null);
+  })))));
   var styles = "\n\t\t#".concat(uniqueId, " .dlx-photo-block__screen-edit-image {\n\t\t\tbackground: ").concat(photoBackgroundColor, ";\n\t\t}\n\t\t#").concat(uniqueId, " img {\n\t\t\topacity: ").concat(photoOpacity, ";\n\t\t\t").concat(photoBlur ? "filter: blur(".concat(photoBlur, "px);") : '', "\n\t\t}\n\t");
   if (photoDropShadow.enabled) {
     styles += "\n\t\t\t#".concat(uniqueId, " img {\n\t\t\t\tbox-shadow: ").concat(photoDropShadow.inset ? 'inset ' : '').concat(photoDropShadow.horizontal, "px ").concat(photoDropShadow.vertical, "px ").concat(photoDropShadow.blur, "px ").concat(photoDropShadow.spread, "px ").concat(hex_to_rgba__WEBPACK_IMPORTED_MODULE_6___default()(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t\t-webkit-box-shadow: ").concat(photoDropShadow.inset ? 'inset ' : '').concat(photoDropShadow.horizontal, "px ").concat(photoDropShadow.vertical, "px ").concat(photoDropShadow.blur, "px ").concat(photoDropShadow.spread, "px ").concat(hex_to_rgba__WEBPACK_IMPORTED_MODULE_6___default()(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t}\n\t\t");
@@ -25933,6 +26134,37 @@ const ArrowBigLeftDash = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["d
 
 /***/ }),
 
+/***/ "./node_modules/lucide-react/dist/esm/icons/case-sensitive.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/lucide-react/dist/esm/icons/case-sensitive.js ***!
+  \********************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ CaseSensitive; }
+/* harmony export */ });
+/* harmony import */ var _createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createLucideIcon.js */ "./node_modules/lucide-react/dist/esm/createLucideIcon.js");
+/**
+ * lucide-react v0.182.0 - ISC
+ */
+
+
+
+const CaseSensitive = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])("CaseSensitive", [
+  ["polyline", { points: "3,15 7,7 11,15", key: "6kwx87" }],
+  ["line", { x1: "4", x2: "10", y1: "13", y2: "13", key: "f4ax0e" }],
+  ["circle", { cx: "18", cy: "12", r: "3", key: "1kchzo" }],
+  ["line", { x1: "21", x2: "21", y1: "9", y2: "15", key: "vcppzq" }]
+]);
+
+
+//# sourceMappingURL=case-sensitive.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/lucide-react/dist/esm/icons/check.js":
 /*!***********************************************************!*\
   !*** ./node_modules/lucide-react/dist/esm/icons/check.js ***!
@@ -37003,7 +37235,7 @@ function useForm(props = {}) {
 /***/ (function(module) {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"none"},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataMode":{"type":"boolean","default":false},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageDimensions":{"type":"object","default":{"width":"","height":""}},"imageSizePercentage":{"type":"string","default":"100"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}}},"supports":{"anchor":true,"align":true,"className":true,"alignWide":true,"defaultStylePicker":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"none"},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataMode":{"type":"boolean","default":false},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataImageSourceAuthorMeta":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"dataAltTextSource":{"type":"string","default":"currentImage"},"dataAltTextType":{"type":"string","default":"altText"},"dataAltTextTypePostCustomField":{"type":"string","default":""},"dataAltTextTypePost":{"type":"string","default":"title"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageDimensions":{"type":"object","default":{"width":"","height":""}},"imageSizePercentage":{"type":"string","default":"100"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}}},"supports":{"anchor":true,"align":true,"className":true,"alignWide":true,"defaultStylePicker":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 

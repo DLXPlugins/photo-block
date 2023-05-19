@@ -341,7 +341,7 @@ const AdvancedSelectControl = ( props ) => {
 		<div className="photo-block-advanced-select">
 			<div className="photo-block-pub-advanced-select__wrapper">
 				<div className="photo-block-pub-advanced-select__input-wrapper">
-					{ null !== currentSuggestion && (
+					{ ( null !== currentSuggestion && '' !== currentSuggestion ) && (
 						<>
 							<div className="photo-block-pub-advanced-select__input-label-wrapper">
 								<label
@@ -374,7 +374,7 @@ const AdvancedSelectControl = ( props ) => {
 							</div>
 						</>
 					) }
-					{ null === currentSuggestion && (
+					{ ( null === currentSuggestion || '' === currentSuggestion ) && (
 						<>
 							<div className="photo-block-pub-advanced-select__input-label-wrapper">
 								<label

@@ -47,6 +47,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 		dataSource,
 		dataImageSource,
 		dataImageSourceCustomField,
+		dataImageSourceAuthorMeta,
 		dataPostType,
 		dataPostTitle,
 		dataPostId,
@@ -63,6 +64,10 @@ const DataScreen = forwardRef( ( props, ref ) => {
 	// Custom field suggestion for selecting an image source.
 	const [ currentCustomFieldSuggestion, setCurrentCustomFieldSuggestion ] =
 		useState( dataImageSourceCustomField ? dataImageSourceCustomField : false );
+
+	// Author meta suggestion for selecting an image source.
+	const [ currentAuthorMetaSuggestion, setCurrentAuthorMetaSuggestion ] = useState(
+		dataImageSourceAuthorMeta ? dataImageSourceAuthorMeta : false );
 
 	const { screen, setScreen } = useContext( UploaderContext );
 
@@ -379,6 +384,9 @@ const DataScreen = forwardRef( ( props, ref ) => {
 									<option value="authorAvatar">
 										{ __( 'Author Avatar', 'photo-block' ) }
 									</option>
+									<option value="authorMeta">
+										{ __( 'Author Meta', 'photo-block' ) }
+									</option>
 								</optgroup>
 							</SelectControl>
 						</div>
@@ -436,6 +444,83 @@ const DataScreen = forwardRef( ( props, ref ) => {
 																		setCurrentCustomFieldSuggestion( suggestion );
 																		setAttributes( {
 																			dataImageSourceCustomField: suggestion,
+																		} );
+																	} }
+																	icon={ <FileKey /> }
+																	iconSize={ 2 }
+																	iconPosition="left"
+																>
+																	<span className="photo-block-search-item">
+																		<span className="photo-block-search-item-title no-margin">
+																			{ suggestion }
+																		</span>
+																	</span>
+																</Button>
+															);
+														} ) }
+													</div>
+												);
+											}
+											return <></>;
+										} }
+									</AdvancedSelectControl>
+								</div>
+							</>
+						) }
+						{ 'authorMeta' === dataImageSource && (
+							<>
+								<div className="dlx-photo-block__data-row">
+									<AdvancedSelectControl
+										restNonce={ photoBlock.restNonce }
+										restEndpoint={ photoBlock.restUrl + '/search/author-meta' }
+										params={ {
+											postType: dataPostType,
+											postId: getPostId(),
+										} }
+										savedValue={ '' }
+										onItemSelect={ ( event, suggestionValue ) => {
+											if ( null === suggestionValue ) {
+												setAttributes( {
+													dataImageSourceAuthorMeta: '',
+												} );
+											} else {
+												setAttributes( {
+													dataImageSourceAuthorMeta: suggestionValue,
+												} );
+											}
+										} }
+										placeholder={ __(
+											'Search for or enter an author meta field',
+											'photo-block'
+										) }
+										label={ __( 'Select an author meta field', 'photo-block' ) }
+										currentSelectedSuggestion={ currentAuthorMetaSuggestion }
+										acceptDirectInput={ true }
+									>
+										{ ( showSuggestions, suggestions, selectedSuggestion ) => {
+											if ( showSuggestions && suggestions.length > 0 ) {
+												// Render the suggestions as button items.
+												return (
+													<div className="dlx-photo-block__post-suggestions">
+														{ suggestions.map( ( suggestion, index ) => {
+															const isSelected = selectedSuggestion === index;
+															const suggestionClasses = classNames(
+																'photo-block__post-suggestion',
+																{
+																	'is-selected': isSelected,
+																}
+															);
+															return (
+																<Button
+																	key={ index }
+																	value={ suggestion }
+																	role="option"
+																	aria-selected={ suggestion === selectedSuggestion }
+																	className={ suggestionClasses }
+																	onClick={ ( e ) => {
+																		setCurrentAuthorMetaSuggestion( suggestion );
+																		setAttributes( {
+																			dataImageSourceAuthorMeta: suggestion,
 																		} );
 																	} }
 																	icon={ <FileKey /> }

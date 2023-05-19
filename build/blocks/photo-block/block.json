@@ -198,6 +198,10 @@
       "type": "string",
       "default": ""
     },
+    "dataImageSourceAuthorMeta": {
+      "type": "string",
+      "default": ""
+    },
     "dataHasFallbackImage": {
       "type": "boolean",
       "default": false
@@ -227,6 +231,22 @@
     "dataPostTitle": {
       "type": "string",
       "default": ""
+    },
+    "dataAltTextSource": {
+      "type": "string",
+      "default": "currentImage"
+    },
+    "dataAltTextType": {
+      "type": "string",
+      "default": "altText"
+    },
+    "dataAltTextTypePostCustomField": {
+      "type": "string",
+      "default": ""
+    },
+    "dataAltTextTypePost": {
+      "type": "string",
+      "default": "title"
     },
     "cssGramFilter": {
       "type": "string",

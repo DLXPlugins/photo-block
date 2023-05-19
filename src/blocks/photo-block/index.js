@@ -6,6 +6,22 @@ import { useState } from '@wordpress/element';
 import UploaderContext from '../../contexts/UploaderContext';
 import Edit from './edit';
 
+/**
+ * Determine if we're in a query loop or not.
+ *
+ * @param {Object} context The block context.
+ *
+ * @return {boolean} Whether or not we're in a query block.
+ */
+const isInQueryLoop = ( context ) => {
+	// Determine if we're in a query block.
+	const { query, queryId } = context;
+	if ( null !== query && null !== queryId ) {
+		return true;
+	}
+	return false;
+};
+
 const PhotoBlock = ( props ) => {
 	const [ imageFile, setImageFile ] = useState( props.attributes.photo ?? null );
 	const [ screen, setScreen ] = useState( props.attributes.screen ); // Can be initial, edit, crop, preview, data.
@@ -15,6 +31,7 @@ const PhotoBlock = ( props ) => {
 	const [ filepondInstance, setFilepondInstance ] = useState( null );
 	const [ hasCaption, setHasCaption ] = useState( props.attributes.caption ? true : false );
 	const [ captionPosition, setCaptionPosition ] = useState( props.attributes.captionPosition ?? 'bottom' ); // Can be top|bottom|overlay.
+	const [ inQueryLoop ] = useState( isInQueryLoop( props.context ) );
 
 	return (
 		<UploaderContext.Provider
@@ -35,6 +52,8 @@ const PhotoBlock = ( props ) => {
 				setHasCaption,
 				captionPosition,
 				setCaptionPosition,
+				inQueryLoop,
+
 			} }
 		>
 			<Edit { ...props } />

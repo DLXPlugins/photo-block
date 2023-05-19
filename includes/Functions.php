@@ -359,6 +359,37 @@ class Functions {
 	}
 
 	/**
+	 * Get an image from author meta.
+	 *
+	 * @param string $size       The image size.
+	 * @param string $meta_field The meta field to query.
+	 * @param int    $author_id  The author to retrieve data for.
+	 *
+	 * @return string|boolean Image URL or false if not found.
+	 */
+	public static function get_author_image_from_meta( $size = 'large', $meta_field = '', $author_id = 0 ) {
+
+		$image_id_or_url = false;
+		// Let's check regular post meta for the image first. This also includes Pods support.
+		$maybe_custom_field_result = get_user_meta( $author_id, $meta_field, true );
+		if ( $maybe_custom_field_result ) {
+			// Check if object, and if so, try to get image ID.
+			$maybe_image_id_or_url = self::get_image_id_or_url_from_custom_field( $maybe_custom_field_result );
+			if ( ! is_wp_error( $maybe_image_id_or_url ) ) {
+				$image_id_or_url = $maybe_image_id_or_url;
+			}
+		}
+
+		// Now return the image if set.
+		if ( $image_id_or_url && is_numeric( $image_id_or_url ) ) {
+			return self::get_image_data( $image_id_or_url, $size );
+		} elseif ( $image_id_or_url && is_string( $image_id_or_url ) ) {
+			return $image_id_or_url;
+		}
+		return false;
+	}
+
+	/**
 	 * Retrieve a theme's color palette.
 	 *
 	 * @return array {
