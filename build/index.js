@@ -6847,7 +6847,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/case-sensitive.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file-key.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link-2.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file-text.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file-key.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var hex_to_rgba__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! hex-to-rgba */ "./node_modules/hex-to-rgba/build/index.js");
@@ -6951,6 +6954,14 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     _useState18 = _slicedToArray(_useState17, 2),
     currentDataAltTextTypePostCustomFieldSuggestion = _useState18[0],
     setCurrentDataAltTextTypePostCustomFieldSuggestion = _useState18[1];
+  var _useState19 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(attributes.dataAltTextPostTypeCustomField),
+    _useState20 = _slicedToArray(_useState19, 2),
+    currentDataAltTextPostTypeCustomFieldSuggestion = _useState20[0],
+    setCurrentDataAltTextPostTypeCustomFieldSuggestion = _useState20[1];
+  var _useState21 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(attributes.dataAltTextPostTitle),
+    _useState22 = _slicedToArray(_useState21, 2),
+    currentAltTextPostTypePostSuggestion = _useState22[0],
+    setCurrentAltTextPostTypePostSuggestion = _useState22[1];
   var uniqueId = attributes.uniqueId,
     dataSource = attributes.dataSource,
     dataImageSource = attributes.dataImageSource,
@@ -6975,7 +6986,10 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     dataAltTextSource = attributes.dataAltTextSource,
     dataAltTextTypeImage = attributes.dataAltTextTypeImage,
     dataAltTextTypePost = attributes.dataAltTextTypePost,
-    dataAltTextTypePostCustomField = attributes.dataAltTextTypePostCustomField;
+    dataAltTextTypePostCustomField = attributes.dataAltTextTypePostCustomField,
+    dataAltTextPostType = attributes.dataAltTextPostType,
+    dataAltTextPostId = attributes.dataAltTextPostId,
+    dataAltTextPostTypeSource = attributes.dataAltTextPostTypeSource;
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_7__["default"]),
     screen = _useContext.screen,
     setScreen = _useContext.setScreen,
@@ -7118,6 +7132,23 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, interfaceTabs);
+
+  /**
+   * Get a post type label.
+   *
+   * @param {string} postTypeValue The post type.
+   * @return {string} The post type label.
+   */
+  var getPostTypeLabel = function getPostTypeLabel(postTypeValue) {
+    var postTypeLabel = '';
+    photoBlock.postTypes.forEach(function (postTypeOption) {
+      if (postTypeOption.value === postTypeValue) {
+        var _postTypeOption$singu;
+        postTypeLabel = (_postTypeOption$singu = postTypeOption === null || postTypeOption === void 0 ? void 0 : postTypeOption.singular) !== null && _postTypeOption$singu !== void 0 ? _postTypeOption$singu : postTypeOption.label;
+      }
+    });
+    return postTypeLabel;
+  };
   var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_23__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Edit Data', 'photo-block'),
@@ -7178,7 +7209,154 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     value: "currentImage"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Current Image', 'photo-block')), /*#__PURE__*/React.createElement("option", {
     value: "currentPost"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Current Post', 'photo-block'))), dataAltTextSource === 'currentImage' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Current Post', 'photo-block')), /*#__PURE__*/React.createElement("option", {
+    value: "postType"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Type', 'photo-block'))), dataAltTextSource === 'postType' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a Post Type', 'photo-block'),
+    value: dataAltTextPostType,
+    onChange: function onChange(value) {
+      setAttributes({
+        dataAltTextPostType: value
+      });
+    },
+    options: photoBlock.postTypes
+  }), /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_19__["default"], {
+    restNonce: photoBlock.restNonce,
+    restEndpoint: photoBlock.restUrl + '/search/types',
+    itemIcon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_27__["default"], null),
+    params: {
+      postType: dataPostType
+    },
+    savedValue: '',
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Search by ID or title', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.sprintf)( /* Translators: %s: post type label. */
+    (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a %s', 'photo-block'), getPostTypeLabel(dataPostType)),
+    currentSelectedSuggestion: currentAltTextPostTypePostSuggestion,
+    onItemSelect: function onItemSelect(event, suggestionValue) {
+      if (null === suggestionValue) {
+        setAttributes({
+          dataAltTextPostId: ''
+        });
+      }
+    }
+  }, function (showSuggestions, suggestions, selectedSuggestion) {
+    if (showSuggestions && suggestions.length > 0) {
+      // Render the suggestions as button items.
+      return /*#__PURE__*/React.createElement("div", {
+        className: "dlx-photo-block__post-suggestions"
+      }, suggestions.map(function (suggestion, index) {
+        var isSelected = selectedSuggestion === index;
+        var suggestionClasses = classnames__WEBPACK_IMPORTED_MODULE_5___default()('photo-block__post-suggestion', {
+          'is-selected': isSelected
+        });
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+          key: index,
+          value: suggestion.value,
+          role: "option",
+          "aria-selected": suggestion.value === selectedSuggestion,
+          className: suggestionClasses,
+          onClick: function onClick(e) {
+            setCurrentAltTextPostTypePostSuggestion(suggestion.label);
+            setAttributes({
+              dataAltTextPostId: suggestion.value.toString(),
+              dataAltTextPostTitle: suggestion.label
+            });
+          },
+          icon: 'post' === suggestion.type ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_28__["default"], null) : /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_29__["default"], null),
+          iconSize: 2,
+          iconPosition: "left"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item-title"
+        }, suggestion.label), /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item-info"
+        }, suggestion.permalink)));
+      }));
+    }
+    return /*#__PURE__*/React.createElement(React.Fragment, null);
+  }), dataAltTextPostId !== '' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Data Type', 'photo-block'),
+    value: dataAltTextPostTypeSource,
+    onChange: function onChange(type) {
+      setAttributes({
+        dataAltTextPostTypeSource: type
+      });
+    },
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select the type of data to use for the alt text.', 'photo-block'),
+    options: [
+    /* can be title, postAuthorName, postExcerpt, customField
+    */
+    {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Title', 'photo-block'),
+      value: 'title'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Author Name', 'photo-block'),
+      value: 'postAuthorName'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Excerpt', 'photo-block'),
+      value: 'postExcerpt'
+    }, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Custom Field', 'photo-block'),
+      value: 'customField'
+    }]
+  }), dataAltTextPostTypeSource === 'customField' && /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_19__["default"], {
+    restNonce: photoBlock.restNonce,
+    restEndpoint: photoBlock.restUrl + '/search/custom-fields',
+    params: {
+      postType: dataAltTextPostType,
+      postId: getPostId()
+    },
+    savedValue: '',
+    onItemSelect: function onItemSelect(event, suggestionValue) {
+      if (null === suggestionValue) {
+        setAttributes({
+          dataAltTextPostTypeCustomField: ''
+        });
+      } else {
+        setAttributes({
+          dataAltTextPostTypeCustomField: suggestionValue
+        });
+      }
+    },
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Search for or enter a custom field', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a Custom Field', 'photo-block'),
+    currentSelectedSuggestion: currentDataAltTextPostTypeCustomFieldSuggestion,
+    acceptDirectInput: true
+  }, function (showSuggestions, suggestions, selectedSuggestion) {
+    if (showSuggestions && suggestions.length > 0) {
+      // Render the suggestions as button items.
+      return /*#__PURE__*/React.createElement("div", {
+        className: "dlx-photo-block__post-suggestions"
+      }, suggestions.map(function (suggestion, index) {
+        var isSelected = selectedSuggestion === index;
+        var suggestionClasses = classnames__WEBPACK_IMPORTED_MODULE_5___default()('photo-block__post-suggestion', {
+          'is-selected': isSelected
+        });
+        return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+          key: index,
+          value: suggestion,
+          role: "option",
+          "aria-selected": suggestion === selectedSuggestion,
+          className: suggestionClasses,
+          onClick: function onClick(e) {
+            setCurrentDataAltTextPostTypeCustomFieldSuggestion(suggestion);
+            setAttributes({
+              dataAltTextPostTypeCustomField: suggestion
+            });
+          },
+          icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_30__["default"], null),
+          iconSize: 2,
+          iconPosition: "left"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "photo-block-search-item-title no-margin"
+        }, suggestion)));
+      }));
+    }
+    return /*#__PURE__*/React.createElement(React.Fragment, null);
+  }))), dataAltTextSource === 'currentImage' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Image Data Type', 'photo-block'),
     value: dataAltTextTypeImage,
     onChange: function onChange(type) {
@@ -7270,7 +7448,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
               dataAltTextTypePostCustomField: suggestion
             });
           },
-          icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_27__["default"], null),
+          icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_30__["default"], null),
           iconSize: 2,
           iconPosition: "left"
         }, /*#__PURE__*/React.createElement("span", {
@@ -37235,7 +37413,7 @@ function useForm(props = {}) {
 /***/ (function(module) {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"none"},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataMode":{"type":"boolean","default":false},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataImageSourceAuthorMeta":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"dataAltTextSource":{"type":"string","default":"currentImage"},"dataAltTextType":{"type":"string","default":"altText"},"dataAltTextTypePostCustomField":{"type":"string","default":""},"dataAltTextTypePost":{"type":"string","default":"title"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageDimensions":{"type":"object","default":{"width":"","height":""}},"imageSizePercentage":{"type":"string","default":"100"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}}},"supports":{"anchor":true,"align":true,"className":true,"alignWide":true,"defaultStylePicker":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":""},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"none"},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataMode":{"type":"boolean","default":false},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataImageSourceAuthorMeta":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"dataAltTextPostTitle":{"type":"string","default":""},"dataAltTextPostId":{"type":"string","default":""},"dataAltTextSource":{"type":"string","default":"currentImage"},"dataAltTextType":{"type":"string","default":"altText"},"dataAltTextTypePostCustomField":{"type":"string","default":""},"dataAltTextPostType":{"type":"string","default":"post"},"dataAltTextPostTypeCustomField":{"type":"string","default":""},"dataAltTextTypePost":{"type":"string","default":"title"},"dataAltTextPostTypeSource":{"type":"string","default":"title"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageDimensions":{"type":"object","default":{"width":"","height":""}},"imageSizePercentage":{"type":"string","default":"100"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}}},"supports":{"anchor":true,"align":true,"className":true,"alignWide":true,"defaultStylePicker":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 

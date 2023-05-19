@@ -22,7 +22,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	Crop,
 	Image,
@@ -33,7 +33,10 @@ import {
 	Shrink,
 	CaseSensitive,
 	Database,
-	FileKey
+	FileKey,
+	Link2,
+	FileText,
+	File,
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
@@ -78,6 +81,8 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	const [ hasImage, setHasImage ] = useState( false );
 	const [ previewImage, setPreviewImage ] = useState( null );
 	const [ currentDataAltTextTypePostCustomFieldSuggestion, setCurrentDataAltTextTypePostCustomFieldSuggestion ] = useState( attributes.dataAltTextTypePostCustomField );
+	const [ currentDataAltTextPostTypeCustomFieldSuggestion, setCurrentDataAltTextPostTypeCustomFieldSuggestion ] = useState( attributes.dataAltTextPostTypeCustomField );
+	const [ currentAltTextPostTypePostSuggestion, setCurrentAltTextPostTypePostSuggestion ] = useState( attributes.dataAltTextPostTitle );
 	const {
 		uniqueId,
 		dataSource,
@@ -104,6 +109,9 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		dataAltTextTypeImage, /* can be altText, caption, imageTitle, customField */
 		dataAltTextTypePost, /* can be title, postAuthorName, postExcerpt, customField */
 		dataAltTextTypePostCustomField,
+		dataAltTextPostType,
+		dataAltTextPostId,
+		dataAltTextPostTypeSource, /* can be title, postAuthorName, postExcerpt, customField */
 	} = attributes;
 
 	const { screen, setScreen, captionPosition, inQueryLoop } = useContext( UploaderContext );
@@ -259,6 +267,22 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
+	/**
+	 * Get a post type label.
+	 *
+	 * @param {string} postTypeValue The post type.
+	 * @return {string} The post type label.
+	 */
+	const getPostTypeLabel = ( postTypeValue ) => {
+		let postTypeLabel = '';
+		photoBlock.postTypes.forEach( ( postTypeOption ) => {
+			if ( postTypeOption.value === postTypeValue ) {
+				postTypeLabel = postTypeOption?.singular ?? postTypeOption.label;
+			}
+		} );
+		return postTypeLabel;
+	};
+
 	const localToolbar = (
 		<>
 			<BlockControls>
@@ -332,7 +356,200 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 							<option value="none">{ __( 'None', 'photo-block' ) }</option>
 							<option value="currentImage">{ __( 'Current Image', 'photo-block' ) }</option>
 							<option value="currentPost">{ __( 'Current Post', 'photo-block' ) }</option>
+							<option value="postType">{ __( 'Post Type', 'photo-block' ) }</option>
 						</SelectControl>
+						{
+							dataAltTextSource === 'postType' && (
+								<>
+									<SelectControl
+										label={ __( 'Select a Post Type', 'photo-block' ) }
+										value={ dataAltTextPostType }
+										onChange={ ( value ) => {
+											setAttributes( { dataAltTextPostType: value } );
+										} }
+										options={ photoBlock.postTypes }
+									/>
+									<AdvancedSelectControl
+										restNonce={ photoBlock.restNonce }
+										restEndpoint={ photoBlock.restUrl + '/search/types' }
+										itemIcon={ <Link2 /> }
+										params={ {
+											postType: dataPostType,
+										} }
+										savedValue={ '' }
+										placeholder={ __( 'Search by ID or title', 'photo-block' ) }
+										label={ sprintf(
+											/* Translators: %s: post type label. */
+											__( 'Select a %s', 'photo-block' ),
+											getPostTypeLabel( dataPostType )
+										) }
+										currentSelectedSuggestion={ currentAltTextPostTypePostSuggestion }
+										onItemSelect={ ( event, suggestionValue ) => {
+											if ( null === suggestionValue ) {
+												setAttributes( {
+													dataAltTextPostId: '',
+												} );
+											}
+										} }
+									>
+										{ ( showSuggestions, suggestions, selectedSuggestion ) => {
+											if ( showSuggestions && suggestions.length > 0 ) {
+												// Render the suggestions as button items.
+												return (
+													<div className="dlx-photo-block__post-suggestions">
+														{ suggestions.map( ( suggestion, index ) => {
+															const isSelected = selectedSuggestion === index;
+															const suggestionClasses = classnames(
+																'photo-block__post-suggestion',
+																{
+																	'is-selected': isSelected,
+																}
+															);
+															return (
+																<Button
+																	key={ index }
+																	value={ suggestion.value }
+																	role="option"
+																	aria-selected={
+																		suggestion.value === selectedSuggestion
+																	}
+																	className={ suggestionClasses }
+																	onClick={ ( e ) => {
+																		setCurrentAltTextPostTypePostSuggestion(
+																			suggestion.label
+																		);
+																		setAttributes( {
+																			dataAltTextPostId: suggestion.value.toString(),
+																			dataAltTextPostTitle: suggestion.label,
+																		} );
+																	} }
+																	icon={
+																		'post' === suggestion.type ? (
+																			<FileText />
+																		) : (
+																			<File />
+																		)
+																	}
+																	iconSize={ 2 }
+																	iconPosition="left"
+																>
+																	<span className="photo-block-search-item">
+																		<span className="photo-block-search-item-title">
+																			{ suggestion.label }
+																		</span>
+																		<span className="photo-block-search-item-info">
+																			{ suggestion.permalink }
+																		</span>
+																	</span>
+																</Button>
+															);
+														} ) }
+													</div>
+												);
+											}
+											return <></>;
+										} }
+									</AdvancedSelectControl>
+									{
+										dataAltTextPostId !== '' && (
+											<>
+												<SelectControl
+													label={ __( 'Post Data Type', 'photo-block' ) }
+													value={ dataAltTextPostTypeSource }
+													onChange={ ( type ) => {
+														setAttributes( { dataAltTextPostTypeSource: type } );
+													} }
+													help={ __( 'Select the type of data to use for the alt text.', 'photo-block' ) }
+													options={ [
+														/* can be title, postAuthorName, postExcerpt, customField
+														*/
+														{ label: __( 'Post Title', 'photo-block' ), value: 'title' },
+														{ label: __( 'Post Author Name', 'photo-block' ), value: 'postAuthorName' },
+														{ label: __( 'Post Excerpt', 'photo-block' ), value: 'postExcerpt' },
+														{ label: __( 'Custom Field', 'photo-block' ), value: 'customField' },
+													] }
+												/>
+												{
+													dataAltTextPostTypeSource === 'customField' && (
+														<AdvancedSelectControl
+															restNonce={ photoBlock.restNonce }
+															restEndpoint={ photoBlock.restUrl + '/search/custom-fields' }
+															params={ {
+																postType: dataAltTextPostType,
+																postId: getPostId(),
+															} }
+															savedValue={ '' }
+															onItemSelect={ ( event, suggestionValue ) => {
+																if ( null === suggestionValue ) {
+																	setAttributes( {
+																		dataAltTextPostTypeCustomField: '',
+																	} );
+																} else {
+																	setAttributes( {
+																		dataAltTextPostTypeCustomField: suggestionValue,
+																	} );
+																}
+															} }
+															placeholder={ __(
+																'Search for or enter a custom field',
+																'photo-block'
+															) }
+															label={ __( 'Select a Custom Field', 'photo-block' ) }
+															currentSelectedSuggestion={ currentDataAltTextPostTypeCustomFieldSuggestion }
+															acceptDirectInput={ true }
+														>
+															{ ( showSuggestions, suggestions, selectedSuggestion ) => {
+																if ( showSuggestions && suggestions.length > 0 ) {
+																	// Render the suggestions as button items.
+																	return (
+																		<div className="dlx-photo-block__post-suggestions">
+																			{ suggestions.map( ( suggestion, index ) => {
+																				const isSelected = selectedSuggestion === index;
+																				const suggestionClasses = classnames(
+																					'photo-block__post-suggestion',
+																					{
+																						'is-selected': isSelected,
+																					}
+																				);
+																				return (
+																					<Button
+																						key={ index }
+																						value={ suggestion }
+																						role="option"
+																						aria-selected={ suggestion === selectedSuggestion }
+																						className={ suggestionClasses }
+																						onClick={ ( e ) => {
+																							setCurrentDataAltTextPostTypeCustomFieldSuggestion( suggestion );
+																							setAttributes( {
+																								dataAltTextPostTypeCustomField: suggestion,
+																							} );
+																						} }
+																						icon={ <FileKey /> }
+																						iconSize={ 2 }
+																						iconPosition="left"
+																					>
+																						<span className="photo-block-search-item">
+																							<span className="photo-block-search-item-title no-margin">
+																								{ suggestion }
+																							</span>
+																						</span>
+																					</Button>
+																				);
+																			} ) }
+																		</div>
+																	);
+																}
+																return <></>;
+															} }
+														</AdvancedSelectControl>
+													)
+												}
+											</>
+										)
+									}
+								</>
+							)
+						}
 						{
 							dataAltTextSource === 'currentImage' && (
 								<>

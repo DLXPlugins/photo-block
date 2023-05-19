@@ -232,6 +232,14 @@
       "type": "string",
       "default": ""
     },
+    "dataAltTextPostTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "dataAltTextPostId": {
+      "type": "string",
+      "default": ""
+    },
     "dataAltTextSource": {
       "type": "string",
       "default": "currentImage"
@@ -244,7 +252,19 @@
       "type": "string",
       "default": ""
     },
+    "dataAltTextPostType": {
+      "type": "string",
+      "default": "post"
+    },
+    "dataAltTextPostTypeCustomField": {
+      "type": "string",
+      "default": ""
+    },
     "dataAltTextTypePost": {
+      "type": "string",
+      "default": "title"
+    },
+    "dataAltTextPostTypeSource": {
       "type": "string",
       "default": "title"
     },
