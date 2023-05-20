@@ -335,9 +335,9 @@ const DataSelect = ( props ) => {
 					<>
 						<SelectControl
 							label={ __( 'Image Data Type', 'photo-block' ) }
-							value={ getAttribute( 'TypeImage' ) }
+							value={ getAttribute( 'Type' ) }
 							onChange={ ( type ) => {
-								setAttributes( { [ `${ prefix }TypeImage` ]: type } );
+								setAttributes( { [ `${ prefix }Type` ]: type } );
 							} }
 							help={ __( 'Select the type of data to use for the alt text.', 'photo-block' ) }
 							options={ [
@@ -348,7 +348,7 @@ const DataSelect = ( props ) => {
 							] }
 						/>
 						{
-							( getAttribute( 'TypeImage' ) === 'customField' ) && (
+							( getAttribute( 'Type' ) === 'customField' ) && (
 								<MetaFieldControl
 									setAttributes={ setAttributes }
 									attributeName={ `${ prefix }ImageCustomField` }

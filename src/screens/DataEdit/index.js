@@ -71,85 +71,14 @@ for ( const key in photoBlock.imageSizes ) {
 	imageSizeOptions.push( { value: key, label: size.label } );
 }
 
-const MetaFieldControl = ( props ) => {
-	const { setAttributes, attributeName, endpoint, params, label, placeholder, currentSuggestion, acceptDirectInput } = props;
-
-	const [ currentMetaFieldSuggestion, setCurrentMetaFieldSuggestion ] = useState( currentSuggestion );
-
-	return (
-		<>
-			<AdvancedSelectControl
-				restNonce={ photoBlock.restNonce }
-				restEndpoint={ photoBlock.restUrl + endpoint } /* '/search/types' */
-				itemIcon={ <Link2 /> }
-				params={ params }
-				savedValue={ '' }
-				placeholder={ placeholder }
-				label={ label }
-				currentSelectedSuggestion={ currentMetaFieldSuggestion }
-				onItemSelect={ ( event, suggestionValue ) => {
-					if ( null === suggestionValue ) {
-						setAttributes( {
-							[ attributeName ]: '',
-						} );
-					}
-				} }
-				acceptDirectInput={ acceptDirectInput }
-			>
-				{ ( showSuggestions, suggestions, selectedSuggestion ) => {
-					if ( showSuggestions && suggestions.length > 0 ) {
-						// Render the suggestions as button items.
-						return (
-							<div className="dlx-photo-block__post-suggestions">
-								{ suggestions.map( ( suggestion, index ) => {
-									const isSelected = selectedSuggestion === index;
-									const suggestionClasses = classnames(
-										'photo-block__post-suggestion',
-										{
-											'is-selected': isSelected,
-										}
-									);
-									return (
-										<Button
-											key={ index }
-											value={ suggestion }
-											role="option"
-											aria-selected={ suggestion === selectedSuggestion }
-											className={ suggestionClasses }
-											onClick={ ( e ) => {
-												setCurrentMetaFieldSuggestion( suggestion );
-												setAttributes( {
-													[ attributeName ]: suggestion,
-												} );
-											} }
-											icon={ <FileKey /> }
-											iconSize={ 2 }
-											iconPosition="left"
-										>
-											<span className="photo-block-search-item">
-												<span className="photo-block-search-item-title no-margin">
-													{ suggestion }
-												</span>
-											</span>
-										</Button>
-									);
-								} ) }
-							</div>
-						);
-					}
-					return <></>;
-				} }
-			</AdvancedSelectControl>
-		</>
-	);
-};
-
 const DataEditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps, context } = props;
 
 	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
+	const [ titleButton, setTitleButton ] = useState( null );
+	const [ titlePopover, setTitlePopover ] = useState( null );
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
 	const [ imageLoading, setImageLoading ] = useState( true );
@@ -162,32 +91,16 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		dataImageSourceCustomField,
 		dataImageSourceAuthorMeta,
 		dataPostType,
-		dataPostTitle,
 		dataPostId,
 		dataFallbackImage,
 		dataHasFallbackImage,
 		dataFallbackImageSize,
-		dataScreen, /* can be `data` or `data-edit` */
 		imageSize,
-		imageDimensions,
-		imageSizePercentage,
 		photoOpacity,
 		photoBlur,
-		photoObjectFit,
 		photoDropShadow,
 		photoBackgroundColor,
 		cssGramFilter,
-		dataAltTextSource, /* can be none|currentImage|currentPost */
-		dataAltTextTypeImage, /* can be altText, caption, imageTitle, customField */
-		dataAltTextImageCustomField,
-		dataAltTextTypePost, /* can be title, postAuthorName, postExcerpt, customField */
-		dataAltTextPostTypeCustomField,
-		dataAltTextTypePostCustomField,
-		dataAltTextTypePostAuthorMeta,
-		dataAltTextPostTypeAuthorMeta,
-		dataAltTextPostType,
-		dataAltTextPostId,
-		dataAltTextPostTypeSource, /* can be title, postAuthorName, postExcerpt, customField */
 	} = attributes;
 
 	const { screen, setScreen, captionPosition, inQueryLoop } = useContext( UploaderContext );
@@ -387,9 +300,9 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 						icon={ <CaseSensitive /> }
 						label={ __( 'Set Title Options', 'photo-block' ) }
 						onClick={ () => {
-							setMediaLinkPopover( ! mediaLinkPopover );
+							setTitlePopover( ! titlePopover );
 						} }
-						ref={ setMediaLinkRef }
+						ref={ setTitleButton }
 					/>
 					<ToolbarButton
 						icon={ <Link /> }
@@ -423,9 +336,28 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 						<DataSelect
 							attributes={ attributes }
 							setAttributes={ setAttributes }
-							title={ __( 'Alt Text', 'photo-block' ) }
+							title={ __( 'Alt Text Data', 'photo-block' ) }
 							context={ context }
 							prefix="dataAltText"
+						/>
+					</div>
+				</Popover>
+			) }
+			{ titlePopover && (
+				<Popover
+					position="bottom center"
+					onClose={ () => {
+						setTitlePopover( false );
+					} }
+					anchor={ titleButton }
+				>
+					<div className="dlx-photo-block__a11y-popover">
+						<DataSelect
+							attributes={ attributes }
+							setAttributes={ setAttributes }
+							title={ __( 'Image Title Data', 'photo-block' ) }
+							context={ context }
+							prefix="dataImageTitle"
 						/>
 					</div>
 				</Popover>
@@ -522,19 +454,4 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	);
 } );
 
-MetaFieldControl.propTypes = {
-	setAttributes: PropTypes.func.isRequired,
-	label: PropTypes.string.isRequired,
-	placeholder: PropTypes.string,
-	acceptDirectInput: PropTypes.bool,
-	attributeName: PropTypes.string.isRequired,
-	endpoint: PropTypes.string,
-};
-
-MetaFieldControl.defaultProps = {
-	label: __( 'Select a Custom Field', 'photo-block' ),
-	placeholder: __( 'Search by ID or title', 'photo-block' ),
-	acceptDirectInput: true,
-	endpoint: '/search/custom-fields',
-};
 export default DataEditScreen;

@@ -280,6 +280,54 @@
       "type": "string",
       "default": ""
     },
+    "dataImageTitlePostTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "dataImageTitlePostId": {
+      "type": "string",
+      "default": ""
+    },
+    "dataImageTitleSource": {
+      "type": "string",
+      "default": "currentImage"
+    },
+    "dataImageTitleType": {
+      "type": "string",
+      "default": "imageTitle"
+    },
+    "dataImageTitleImageCustomField": {
+      "type": "string",
+      "default": ""
+    },
+    "dataImageTitleTypePostCustomField": {
+      "type": "string",
+      "default": ""
+    },
+    "dataImageTitlePostType": {
+      "type": "string",
+      "default": "post"
+    },
+    "dataImageTitlePostTypeCustomField": {
+      "type": "string",
+      "default": ""
+    },
+    "dataImageTitleTypePost": {
+      "type": "string",
+      "default": "title"
+    },
+    "dataImageTitleTypePostAuthorMeta": {
+      "type": "string",
+      "default": ""
+    },
+    "dataImageTitlePostTypeSource": {
+      "type": "string",
+      "default": "title"
+    },
+    "dataImageTitlePostTypeAuthorMeta": {
+      "type": "string",
+      "default": ""
+    },
     "cssGramFilter": {
       "type": "string",
       "default": "none"
