@@ -40,6 +40,7 @@ import {
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
+import PropTypes from 'prop-types';
 
 import UploaderContext from '../../contexts/UploaderContext';
 import SendCommand from '../../utils/SendCommand';
@@ -54,6 +55,7 @@ import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
+import DataSelect from '../../components/DataSelect';
 
 /**
  * Height units.
@@ -69,6 +71,79 @@ for ( const key in photoBlock.imageSizes ) {
 	imageSizeOptions.push( { value: key, label: size.label } );
 }
 
+const MetaFieldControl = ( props ) => {
+	const { setAttributes, attributeName, endpoint, params, label, placeholder, currentSuggestion, acceptDirectInput } = props;
+
+	const [ currentMetaFieldSuggestion, setCurrentMetaFieldSuggestion ] = useState( currentSuggestion );
+
+	return (
+		<>
+			<AdvancedSelectControl
+				restNonce={ photoBlock.restNonce }
+				restEndpoint={ photoBlock.restUrl + endpoint } /* '/search/types' */
+				itemIcon={ <Link2 /> }
+				params={ params }
+				savedValue={ '' }
+				placeholder={ placeholder }
+				label={ label }
+				currentSelectedSuggestion={ currentMetaFieldSuggestion }
+				onItemSelect={ ( event, suggestionValue ) => {
+					if ( null === suggestionValue ) {
+						setAttributes( {
+							[ attributeName ]: '',
+						} );
+					}
+				} }
+				acceptDirectInput={ acceptDirectInput }
+			>
+				{ ( showSuggestions, suggestions, selectedSuggestion ) => {
+					if ( showSuggestions && suggestions.length > 0 ) {
+						// Render the suggestions as button items.
+						return (
+							<div className="dlx-photo-block__post-suggestions">
+								{ suggestions.map( ( suggestion, index ) => {
+									const isSelected = selectedSuggestion === index;
+									const suggestionClasses = classnames(
+										'photo-block__post-suggestion',
+										{
+											'is-selected': isSelected,
+										}
+									);
+									return (
+										<Button
+											key={ index }
+											value={ suggestion }
+											role="option"
+											aria-selected={ suggestion === selectedSuggestion }
+											className={ suggestionClasses }
+											onClick={ ( e ) => {
+												setCurrentMetaFieldSuggestion( suggestion );
+												setAttributes( {
+													[ attributeName ]: suggestion,
+												} );
+											} }
+											icon={ <FileKey /> }
+											iconSize={ 2 }
+											iconPosition="left"
+										>
+											<span className="photo-block-search-item">
+												<span className="photo-block-search-item-title no-margin">
+													{ suggestion }
+												</span>
+											</span>
+										</Button>
+									);
+								} ) }
+							</div>
+						);
+					}
+					return <></>;
+				} }
+			</AdvancedSelectControl>
+		</>
+	);
+};
+
 const DataEditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps, context } = props;
 
@@ -80,9 +155,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ hasImage, setHasImage ] = useState( false );
 	const [ previewImage, setPreviewImage ] = useState( null );
-	const [ currentDataAltTextTypePostCustomFieldSuggestion, setCurrentDataAltTextTypePostCustomFieldSuggestion ] = useState( attributes.dataAltTextTypePostCustomField );
-	const [ currentDataAltTextPostTypeCustomFieldSuggestion, setCurrentDataAltTextPostTypeCustomFieldSuggestion ] = useState( attributes.dataAltTextPostTypeCustomField );
-	const [ currentAltTextPostTypePostSuggestion, setCurrentAltTextPostTypePostSuggestion ] = useState( attributes.dataAltTextPostTitle );
 	const {
 		uniqueId,
 		dataSource,
@@ -107,8 +179,12 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		cssGramFilter,
 		dataAltTextSource, /* can be none|currentImage|currentPost */
 		dataAltTextTypeImage, /* can be altText, caption, imageTitle, customField */
+		dataAltTextImageCustomField,
 		dataAltTextTypePost, /* can be title, postAuthorName, postExcerpt, customField */
+		dataAltTextPostTypeCustomField,
 		dataAltTextTypePostCustomField,
+		dataAltTextTypePostAuthorMeta,
+		dataAltTextPostTypeAuthorMeta,
 		dataAltTextPostType,
 		dataAltTextPostId,
 		dataAltTextPostTypeSource, /* can be title, postAuthorName, postExcerpt, customField */
@@ -344,329 +420,13 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 					anchor={ a11yButton }
 				>
 					<div className="dlx-photo-block__a11y-popover">
-						<h3>{ __( 'Alt Text Dynamic Data', 'photo-block' ) }</h3>
-						<SelectControl
-							label={ __( 'Data Source', 'photo-block' ) }
-							value={ dataAltTextSource }
-							onChange={ ( source ) => {
-								setAttributes( { dataAltTextSource: source } );
-							} }
-							help={ __( 'Select where the alt text should come from.', 'photo-block' ) }
-						>
-							<option value="none">{ __( 'None', 'photo-block' ) }</option>
-							<option value="currentImage">{ __( 'Current Image', 'photo-block' ) }</option>
-							<option value="currentPost">{ __( 'Current Post', 'photo-block' ) }</option>
-							<option value="postType">{ __( 'Post Type', 'photo-block' ) }</option>
-						</SelectControl>
-						{
-							dataAltTextSource === 'postType' && (
-								<>
-									<SelectControl
-										label={ __( 'Select a Post Type', 'photo-block' ) }
-										value={ dataAltTextPostType }
-										onChange={ ( value ) => {
-											setAttributes( { dataAltTextPostType: value } );
-										} }
-										options={ photoBlock.postTypes }
-									/>
-									<AdvancedSelectControl
-										restNonce={ photoBlock.restNonce }
-										restEndpoint={ photoBlock.restUrl + '/search/types' }
-										itemIcon={ <Link2 /> }
-										params={ {
-											postType: dataPostType,
-										} }
-										savedValue={ '' }
-										placeholder={ __( 'Search by ID or title', 'photo-block' ) }
-										label={ sprintf(
-											/* Translators: %s: post type label. */
-											__( 'Select a %s', 'photo-block' ),
-											getPostTypeLabel( dataPostType )
-										) }
-										currentSelectedSuggestion={ currentAltTextPostTypePostSuggestion }
-										onItemSelect={ ( event, suggestionValue ) => {
-											if ( null === suggestionValue ) {
-												setAttributes( {
-													dataAltTextPostId: '',
-												} );
-											}
-										} }
-									>
-										{ ( showSuggestions, suggestions, selectedSuggestion ) => {
-											if ( showSuggestions && suggestions.length > 0 ) {
-												// Render the suggestions as button items.
-												return (
-													<div className="dlx-photo-block__post-suggestions">
-														{ suggestions.map( ( suggestion, index ) => {
-															const isSelected = selectedSuggestion === index;
-															const suggestionClasses = classnames(
-																'photo-block__post-suggestion',
-																{
-																	'is-selected': isSelected,
-																}
-															);
-															return (
-																<Button
-																	key={ index }
-																	value={ suggestion.value }
-																	role="option"
-																	aria-selected={
-																		suggestion.value === selectedSuggestion
-																	}
-																	className={ suggestionClasses }
-																	onClick={ ( e ) => {
-																		setCurrentAltTextPostTypePostSuggestion(
-																			suggestion.label
-																		);
-																		setAttributes( {
-																			dataAltTextPostId: suggestion.value.toString(),
-																			dataAltTextPostTitle: suggestion.label,
-																		} );
-																	} }
-																	icon={
-																		'post' === suggestion.type ? (
-																			<FileText />
-																		) : (
-																			<File />
-																		)
-																	}
-																	iconSize={ 2 }
-																	iconPosition="left"
-																>
-																	<span className="photo-block-search-item">
-																		<span className="photo-block-search-item-title">
-																			{ suggestion.label }
-																		</span>
-																		<span className="photo-block-search-item-info">
-																			{ suggestion.permalink }
-																		</span>
-																	</span>
-																</Button>
-															);
-														} ) }
-													</div>
-												);
-											}
-											return <></>;
-										} }
-									</AdvancedSelectControl>
-									{
-										dataAltTextPostId !== '' && (
-											<>
-												<SelectControl
-													label={ __( 'Post Data Type', 'photo-block' ) }
-													value={ dataAltTextPostTypeSource }
-													onChange={ ( type ) => {
-														setAttributes( { dataAltTextPostTypeSource: type } );
-													} }
-													help={ __( 'Select the type of data to use for the alt text.', 'photo-block' ) }
-													options={ [
-														/* can be title, postAuthorName, postExcerpt, customField
-														*/
-														{ label: __( 'Post Title', 'photo-block' ), value: 'title' },
-														{ label: __( 'Post Author Name', 'photo-block' ), value: 'postAuthorName' },
-														{ label: __( 'Post Excerpt', 'photo-block' ), value: 'postExcerpt' },
-														{ label: __( 'Custom Field', 'photo-block' ), value: 'customField' },
-													] }
-												/>
-												{
-													dataAltTextPostTypeSource === 'customField' && (
-														<AdvancedSelectControl
-															restNonce={ photoBlock.restNonce }
-															restEndpoint={ photoBlock.restUrl + '/search/custom-fields' }
-															params={ {
-																postType: dataAltTextPostType,
-																postId: getPostId(),
-															} }
-															savedValue={ '' }
-															onItemSelect={ ( event, suggestionValue ) => {
-																if ( null === suggestionValue ) {
-																	setAttributes( {
-																		dataAltTextPostTypeCustomField: '',
-																	} );
-																} else {
-																	setAttributes( {
-																		dataAltTextPostTypeCustomField: suggestionValue,
-																	} );
-																}
-															} }
-															placeholder={ __(
-																'Search for or enter a custom field',
-																'photo-block'
-															) }
-															label={ __( 'Select a Custom Field', 'photo-block' ) }
-															currentSelectedSuggestion={ currentDataAltTextPostTypeCustomFieldSuggestion }
-															acceptDirectInput={ true }
-														>
-															{ ( showSuggestions, suggestions, selectedSuggestion ) => {
-																if ( showSuggestions && suggestions.length > 0 ) {
-																	// Render the suggestions as button items.
-																	return (
-																		<div className="dlx-photo-block__post-suggestions">
-																			{ suggestions.map( ( suggestion, index ) => {
-																				const isSelected = selectedSuggestion === index;
-																				const suggestionClasses = classnames(
-																					'photo-block__post-suggestion',
-																					{
-																						'is-selected': isSelected,
-																					}
-																				);
-																				return (
-																					<Button
-																						key={ index }
-																						value={ suggestion }
-																						role="option"
-																						aria-selected={ suggestion === selectedSuggestion }
-																						className={ suggestionClasses }
-																						onClick={ ( e ) => {
-																							setCurrentDataAltTextPostTypeCustomFieldSuggestion( suggestion );
-																							setAttributes( {
-																								dataAltTextPostTypeCustomField: suggestion,
-																							} );
-																						} }
-																						icon={ <FileKey /> }
-																						iconSize={ 2 }
-																						iconPosition="left"
-																					>
-																						<span className="photo-block-search-item">
-																							<span className="photo-block-search-item-title no-margin">
-																								{ suggestion }
-																							</span>
-																						</span>
-																					</Button>
-																				);
-																			} ) }
-																		</div>
-																	);
-																}
-																return <></>;
-															} }
-														</AdvancedSelectControl>
-													)
-												}
-											</>
-										)
-									}
-								</>
-							)
-						}
-						{
-							dataAltTextSource === 'currentImage' && (
-								<>
-									<SelectControl
-										label={ __( 'Image Data Type', 'photo-block' ) }
-										value={ dataAltTextTypeImage }
-										onChange={ ( type ) => {
-											setAttributes( { dataAltTextTypeImage: type } );
-										} }
-										help={ __( 'Select the type of data to use for the alt text.', 'photo-block' ) }
-										options={ [
-											{ label: __( 'Alt Text', 'photo-block' ), value: 'altText' },
-											{ label: __( 'Caption', 'photo-block' ), value: 'caption' },
-											{ label: __( 'Image Title', 'photo-block' ), value: 'imageTitle' },
-											{ label: __( 'Custom Field', 'photo-block' ), value: 'customField' },
-										] }
-									/>
-								</>
-							)
-						}
-						{
-							dataAltTextSource === 'currentPost' && (
-								<>
-									<SelectControl
-										label={ __( 'Post Data Type', 'photo-block' ) }
-										value={ dataAltTextTypePost }
-										onChange={ ( type ) => {
-											setAttributes( { dataAltTextTypePost: type } );
-										} }
-										help={ __( 'Select the type of data to use for the alt text.', 'photo-block' ) }
-										options={ [
-											/* can be title, postAuthorName, postExcerpt, customField
-											*/
-											{ label: __( 'Post Title', 'photo-block' ), value: 'title' },
-											{ label: __( 'Post Author Name', 'photo-block' ), value: 'postAuthorName' },
-											{ label: __( 'Post Excerpt', 'photo-block' ), value: 'postExcerpt' },
-											{ label: __( 'Custom Field', 'photo-block' ), value: 'customField' },
-										] }
-									/>
-									{
-										dataAltTextTypePost === 'customField' && (
-											<AdvancedSelectControl
-												restNonce={ photoBlock.restNonce }
-												restEndpoint={ photoBlock.restUrl + '/search/custom-fields' }
-												params={ {
-													postType: dataPostType,
-													postId: getPostId(),
-												} }
-												savedValue={ '' }
-												onItemSelect={ ( event, suggestionValue ) => {
-													if ( null === suggestionValue ) {
-														setAttributes( {
-															dataAltTextTypePostCustomField: '',
-														} );
-													} else {
-														setAttributes( {
-															dataAltTextTypePostCustomField: suggestionValue,
-														} );
-													}
-												} }
-												placeholder={ __(
-													'Search for or enter a custom field',
-													'photo-block'
-												) }
-												label={ __( 'Select a Custom Field', 'photo-block' ) }
-												currentSelectedSuggestion={ currentDataAltTextTypePostCustomFieldSuggestion }
-												acceptDirectInput={ true }
-											>
-												{ ( showSuggestions, suggestions, selectedSuggestion ) => {
-													if ( showSuggestions && suggestions.length > 0 ) {
-														// Render the suggestions as button items.
-														return (
-															<div className="dlx-photo-block__post-suggestions">
-																{ suggestions.map( ( suggestion, index ) => {
-																	const isSelected = selectedSuggestion === index;
-																	const suggestionClasses = classnames(
-																		'photo-block__post-suggestion',
-																		{
-																			'is-selected': isSelected,
-																		}
-																	);
-																	return (
-																		<Button
-																			key={ index }
-																			value={ suggestion }
-																			role="option"
-																			aria-selected={ suggestion === selectedSuggestion }
-																			className={ suggestionClasses }
-																			onClick={ ( e ) => {
-																				setCurrentDataAltTextTypePostCustomFieldSuggestion( suggestion );
-																				setAttributes( {
-																					dataAltTextTypePostCustomField: suggestion,
-																				} );
-																			} }
-																			icon={ <FileKey /> }
-																			iconSize={ 2 }
-																			iconPosition="left"
-																		>
-																			<span className="photo-block-search-item">
-																				<span className="photo-block-search-item-title no-margin">
-																					{ suggestion }
-																				</span>
-																			</span>
-																		</Button>
-																	);
-																} ) }
-															</div>
-														);
-													}
-													return <></>;
-												} }
-											</AdvancedSelectControl>
-										)
-									}
-								</>
-							)
-						}
+						<DataSelect
+							attributes={ attributes }
+							setAttributes={ setAttributes }
+							title={ __( 'Alt Text', 'photo-block' ) }
+							context={ context }
+							prefix="dataAltText"
+						/>
 					</div>
 				</Popover>
 			) }
@@ -761,4 +521,20 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 } );
+
+MetaFieldControl.propTypes = {
+	setAttributes: PropTypes.func.isRequired,
+	label: PropTypes.string.isRequired,
+	placeholder: PropTypes.string,
+	acceptDirectInput: PropTypes.bool,
+	attributeName: PropTypes.string.isRequired,
+	endpoint: PropTypes.string,
+};
+
+MetaFieldControl.defaultProps = {
+	label: __( 'Select a Custom Field', 'photo-block' ),
+	placeholder: __( 'Search by ID or title', 'photo-block' ),
+	acceptDirectInput: true,
+	endpoint: '/search/custom-fields',
+};
 export default DataEditScreen;
