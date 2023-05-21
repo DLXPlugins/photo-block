@@ -21,6 +21,7 @@ import {
 	Popover,
 	PlaceHolder,
 	MenuGroup,
+	Spinner,
 	MenuItem,
 } from '@wordpress/components';
 
@@ -42,16 +43,21 @@ import {
 	SeparatorHorizontal,
 	Check,
 	Shrink,
+	FormInput,
 	Maximize,
 } from 'lucide-react';
 
 import { useInstanceId } from '@wordpress/compose';
+const HtmlToReactParser = require( 'html-to-react' ).Parser;
 
 import UploaderContext from '../../contexts/UploaderContext';
 import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
+import { DataSelect } from '../../components/DataSelect';
+import SendCommand from '../../utils/SendCommand';
+
 /**
  * Height units.
  */
@@ -61,15 +67,21 @@ const PhotoCaptionBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoCaptionBlock, 'photo-caption-block' );
 	// Read in context values.
 	const {
+		dataMode,
+		imageFile,
 		hasCaption,
 		setHasCaption,
 		captionPosition,
 		setCaptionPosition,
+		inQueryLoop,
 	} = useContext( UploaderContext );
 
+	const [ caption, setCaption ] = useState( '' ); // Only applicable if in daa mode.
+	const [ captionLoading, setCaptionLoading ] = useState( false ); // Only applicable if in data mode.
 	const [ captionPositionPopoverVisible, setCaptionPositionPopoverVisible ] = useState( false );
 	const [ captionPopoverRef, setCaptionPopoverRef ] = useState( null );
-	const [ removeCaptionModalVisible, setRemoveCaptionModalVisible ] = useState( false );
+	const [ removeCaptionModalVisible, setRemoveCaptionModalVisible ] = useState( false ); // only applicable if in data mode.
+	const [ dataModalVisible, setDataModalVisible ] = useState( false ); // only applicable if in data mode.
 
 	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
@@ -97,7 +109,10 @@ const PhotoCaptionBlock = ( props ) => {
 		),
 	} );
 
-	const { attributes, setAttributes, clientId } = props;
+	const { attributes, setAttributes, clientId, context } = props;
+
+	// Get query loop vars.
+	const { postId } = context;
 
 	const {
 		uniqueId,
@@ -110,7 +125,89 @@ const PhotoCaptionBlock = ( props ) => {
 		containerMinWidth,
 		containerMaxHeight,
 		containerMinHeight,
+		dataCaptionPostTitle,
+		dataCaptionPostId,
+		dataCaptionSource,
+		dataCaptionType,
+		dataCaptionImageCustomField,
+		dataCaptionTypePostCustomField,
+		dataCaptionPostType,
+		dataCaptionPostTypeCustomField,
+		dataCaptionTypePost,
+		dataCaptionTypePostAuthorMeta,
+		dataCaptionPostTypeSource,
+		dataCaptionPostTypeAuthorMeta,
 	} = attributes;
+
+	/**
+	 * Get a post ID either from the block or attribute.
+	 *
+	 * @return {number} The post ID.
+	 */
+	const getPostId = () => {
+		let currentPostId = 0;
+		// If data type is current post, get the current post ID.
+		if ( 'currentPost' === dataCaptionSource ) {
+			// Determine if we're in a query block.
+			if ( inQueryLoop ) {
+				currentPostId = postId;
+			} else {
+				currentPostId = wp.data.select( 'core/editor' ).getCurrentPostId();
+			}
+			return currentPostId;
+		}
+		// If data type is post type, get the post ID from the attribute.
+		if ( 'postType' === dataCaptionSource && '' !== dataCaptionPostId ) {
+			return dataCaptionPostId;
+		}
+		return currentPostId;
+	};
+
+	/**
+	 * Retrieve a caption from data.
+	 */
+	const getCaptionFromData = () => {
+		setCaptionLoading( true );
+		SendCommand(
+			photoBlock.restNonce,
+			{
+				dataCaptionPostTitle,
+				dataCaptionPostId,
+				dataCaptionSource,
+				dataCaptionType,
+				dataCaptionImageCustomField,
+				dataCaptionTypePostCustomField,
+				dataCaptionPostType,
+				dataCaptionPostTypeCustomField,
+				dataCaptionTypePost,
+				dataCaptionTypePostAuthorMeta,
+				dataCaptionPostTypeSource,
+				dataCaptionPostTypeAuthorMeta,
+				imageId: imageFile.id,
+				postId: getPostId(),
+			},
+			`${ photoBlock.restUrl + '/get-caption-by-data' }`,
+			'POST'
+		)
+			.then( ( response ) => {
+				const { data } = response;
+				setCaption( data );
+			} )
+			.catch( ( error ) => {
+				// todo: error checking/display.
+			} )
+			.then( () => {
+				setCaptionLoading( false );
+			} );
+	};
+
+
+	// Do REST request to get dynamic caption if needed.
+	useEffect( () => {
+		if ( dataMode ) {
+			getCaptionFromData();
+		}
+	}, [] );
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
@@ -254,9 +351,61 @@ const PhotoCaptionBlock = ( props ) => {
 					{ __( 'Remove Caption', 'photo-block' ) }
 				</ToolbarButton>
 			</ToolbarGroup>
+			{
+				dataMode && (
+					<ToolbarGroup>
+						<ToolbarButton
+							icon={ <FormInput /> }
+							label={ __( 'Caption Data', 'photo-block' ) }
+							onClick={ () => {
+								setDataModalVisible( true );
+							} }
+						>
+							{ __( 'Caption Data', 'photo-block' ) }
+						</ToolbarButton>
+					</ToolbarGroup>
+				)
+			}
+			{ dataModalVisible && (
+				<Modal
+					title={ __( 'Caption Data', 'photo-block' ) }
+					onRequestClose={ () => {
+						setDataModalVisible( false );
+					} }
+					className="photo-block__remove-caption-modal"
+				>
+					<div className="dlx-photo-block__a11y-popover">
+						<DataSelect
+							attributes={ attributes }
+							setAttributes={ setAttributes }
+							context={ context }
+							prefix="dataCaption"
+						/>
+						<ButtonGroup>
+							<Button
+								variant="primary"
+								onClick={ () => {
+									getCaptionFromData();
+									setDataModalVisible( false );
+								} }
+							>
+								{ __( 'Refresh Caption', 'photo-block' ) }
+							</Button>
+							<Button
+								variant="secondary"
+								onClick={ () => {
+									setDataModalVisible( false );
+								} }
+							>
+								{ __( 'Close', 'photo-block' ) }
+							</Button>
+						</ButtonGroup>
+					</div>
+				</Modal>
+			) }
 			{ captionPositionPopoverVisible && (
 				<Popover
-					position="bottom center"
+					placement="bottom"
 					onClose={ () => {
 						setCaptionPositionPopoverVisible( false );
 					} }
@@ -335,11 +484,35 @@ const PhotoCaptionBlock = ( props ) => {
 		setAttributes( { uniqueId: generatedUniqueId } );
 	}, [] );
 
+	const htmlToReactParser = new HtmlToReactParser();
+
+	/**
+	 * Get the caption for display.
+	 *
+	 * @returns {JSX.Element} The caption.
+	 */
+	const getCaption = () => {
+		if ( dataMode ) {
+			if ( captionLoading ) {
+				return (
+					<>
+						{ __( 'Loading…', 'photo-block' ) }
+						<Spinner />
+					</>
+				);
+			} else if ( '' !== caption ) {
+				return htmlToReactParser.parse( caption );
+			}
+			return __( 'No caption', 'photo-block' );
+		}
+		return <div { ...innerBlockProps } />;
+	};
+
 	const block = (
 		<>
 			{ localInspectorControls }
 			{ localToolbar }
-			<div { ...innerBlockProps } />
+			{ getCaption() }
 		</>
 	);
 

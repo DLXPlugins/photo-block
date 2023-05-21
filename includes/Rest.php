@@ -87,6 +87,19 @@ class Rest {
 			),
 		);
 
+		// Register a rest route for getting a caption.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/get-caption-by-data',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( static::class, 'rest_get_caption_by_data' ),
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+			),
+		);
+
 		// Register a route for searching posts/pages.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
@@ -389,6 +402,128 @@ class Rest {
 
 		// Return the image URL and ID.
 		return $image_attachment;
+	}
+
+	/**
+	 * Callback function for getting an image by size.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 *
+	 * @return string The caption, empty string if none.
+	 */
+	public static function rest_get_caption_by_data( $request ) {
+		$data_source             = sanitize_text_field( $request->get_param( 'dataCaptionSource' ) ); // Can be currentImage, currentPost, none, postType.
+		$image_data_type         = sanitize_text_field( $request->get_param( 'dataCaptionType' ) ); // Ca be altText, caption, imageTitle, customField
+		$image_data_custom_field = sanitize_text_field( $request->get_param( 'dataCaptionImageCustomField' ) ); // Can be any custom field.
+		$post_data_type          = sanitize_text_field( $request->get_param( 'dataCaptionTypePost' ) ); // Can be title, postAuthorName, postAuthorMeta, postExcerpt, customField.
+		$post_data_author_meta   = sanitize_text_field( $request->get_param( 'dataCaptionTypePostAuthorMeta' ) ); // Can be any author meta.
+		$post_type_data_source   = sanitize_text_field( $request->get_param( 'dataCaptionPostTypeSource' ) ); // title, postAuthorName, postAuthorMeta, postExcerpt, customField.
+		$post_data_custom_field  = sanitize_text_field( $request->get_param( 'dataCaptionTypePostCustomField' ) ); // Can be any custom field.
+		$post_type               = sanitize_text_field( $request->get_param( 'dataCaptionPostType' ) ); // Can be any post type.
+		$post_type_custom_field  = sanitize_text_field( $request->get_param( 'dataCaptionPostTypeCustomField' ) ); // Can be any custom field.
+		$post_type_author_meta   = sanitize_text_field( $request->get_param( 'dataCaptionPostTypeAuthorMeta' ) ); // Can be any author meta.
+		$post_type_post_id       = sanitize_text_field( $request->get_param( 'dataCaptionPostId' ) ); // Can be any post ID.
+		$image_id                = sanitize_text_field( $request->get_param( 'imageId' ) ); // Can be any image ID.
+		$current_post_id         = sanitize_text_field( $request->get_param( 'postId' ) ); // Can be any post ID.
+
+		// Return early if none selected.
+		if ( 'none' === $data_source ) {
+			return '';
+		}
+
+		// If current image is selected, get the image ID.
+		if ( 'currentImage' === $data_source ) {
+			switch ( $image_data_type ) {
+				case 'altText':
+					$image_data = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+					break;
+				case 'caption':
+					$image_data = get_post_field( 'post_excerpt', $image_id );
+					break;
+				case 'imageTitle':
+					$image_data = get_post_field( 'post_title', $image_id );
+					break;
+				case 'customField':
+					$image_data = get_post_meta( $image_id, $image_data_custom_field, true );
+					break;
+				default:
+					$image_data = '';
+			}
+			if ( is_string( $image_data ) ) {
+				return wp_kses_post( $image_data );
+			}
+			return '';
+		}
+
+		// If current post is selected, get the post ID.
+		if ( 'currentPost' === $data_source ) {
+			$post_id = $current_post_id;
+
+			switch ( $post_data_type ) {
+				case 'title':
+					$post_data = get_the_title( $post_id );
+					break;
+				case 'postAuthorName':
+					// Get the author ID.
+					$author_id = get_post_field( 'post_author', $post_id );
+					$post_data = get_the_author_meta( 'display_name', $author_id );
+					break;
+				case 'postAuthorMeta':
+					$author_id = get_post_field( 'post_author', $post_id );
+					$post_data = get_the_author_meta( $post_data_author_meta, $author_id );
+					break;
+				case 'postExcerpt':
+					$post_data = get_the_excerpt( $post_id );
+					break;
+				case 'customField':
+					$post_data = get_post_meta( $post_id, $post_data_custom_field, true );
+					break;
+				default:
+					$post_data = '';
+			}
+			if ( is_string( $post_data ) ) {
+				return wp_kses_post( $post_data );
+			}
+		}
+
+		// If post type is selected, get the selected post id.
+		if ( 'postType' === $data_source ) {
+			$post_id = $post_type_post_id;
+
+			// Get post. If nothing, bail.
+			$post = get_post( $post_id );
+			if ( ! $post ) {
+				return '';
+			}
+
+			// Post type data type.
+			switch ( $post_type_data_source ) {
+				case 'title':
+					$post_data = get_the_title( $post_id );
+					break;
+				case 'postAuthorName':
+					// Get the author ID.
+					$author_id = get_post_field( 'post_author', $post_id );
+					$post_data = get_the_author_meta( 'display_name', $author_id );
+					break;
+				case 'postAuthorMeta':
+					$author_id = get_post_field( 'post_author', $post_id );
+					$post_data = get_the_author_meta( $post_type_author_meta, $author_id );
+					break;
+				case 'postExcerpt':
+					$post_data = get_the_excerpt( $post_id );
+					break;
+				case 'customField':
+					$post_data = get_post_meta( $post_id, $post_type_custom_field, true );
+					break;
+				default:
+					$post_data = '';
+			}
+			if ( is_string( $post_data ) ) {
+				return wp_kses_post( $post_data );
+			}
+		}
+		return '';
 	}
 
 	/**

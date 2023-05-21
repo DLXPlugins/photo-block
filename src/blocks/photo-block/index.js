@@ -32,6 +32,7 @@ const PhotoBlock = ( props ) => {
 	const [ hasCaption, setHasCaption ] = useState( props.attributes.caption ? true : false );
 	const [ captionPosition, setCaptionPosition ] = useState( props.attributes.captionPosition ?? 'bottom' ); // Can be top|bottom|overlay.
 	const [ inQueryLoop ] = useState( isInQueryLoop( props.context ) );
+	const [ dataMode, setDataMode ] = useState( props.attributes.dataMode ?? false );
 
 	return (
 		<UploaderContext.Provider
@@ -53,6 +54,8 @@ const PhotoBlock = ( props ) => {
 				captionPosition,
 				setCaptionPosition,
 				inQueryLoop,
+				dataMode,
+				setDataMode,
 
 			} }
 		>

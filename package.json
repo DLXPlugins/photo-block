@@ -35,6 +35,7 @@
 		"grunt": "^1.5.3",
 		"grunt-contrib-compress": "^2.0.0",
 		"hex-to-rgba": "^2.0.1",
+		"html-to-react": "^1.5.1",
 		"mini-css-extract-plugin": "^2.6.1",
 		"node-sass": "^8.0.0",
 		"prettier": "^2.7.1",

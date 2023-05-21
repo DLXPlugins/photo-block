@@ -13,4 +13,5 @@ registerBlockType( metadata, {
 	save() {
 		return <InnerBlocks.Content />;
 	},
+	usesContext: [ 'postId', 'postType', 'queryId', 'query' ], /* This is for detecting if in query loop */
 } );

@@ -166,7 +166,11 @@ export const DataSelect = ( props ) => {
 
 	return (
 		<>
-			<h3>{ title }</h3>
+			{
+				'' !== title && (
+					<h3>{ title }</h3>
+				)
+			}
 			<SelectControl
 				label={ __( 'Data Source', 'photo-block' ) }
 				value={ getAttribute( 'Source' ) }

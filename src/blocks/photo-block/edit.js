@@ -62,6 +62,8 @@ const PhotoBlock = ( props ) => {
 		isUploadError,
 		hasCaption,
 		setHasCaption,
+		dataMode,
+		setDataMode,
 	} = useContext( UploaderContext );
 
 	const blockProps = useBlockProps( {
@@ -100,7 +102,6 @@ const PhotoBlock = ( props ) => {
 		borderRadiusSize,
 		typographyCaption,
 		dataScreen, /* can be `data`, `data-edit`. */
-		dataMode,
 	} = attributes;
 
 	const captionInnerBlockProps = useInnerBlocksProps(
