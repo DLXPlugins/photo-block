@@ -20,7 +20,7 @@ import classnames from 'classnames';
 import UploaderContext from '../../contexts/UploaderContext';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
 
-const MetaFieldControl = ( props ) => {
+export const MetaFieldControl = ( props ) => {
 	const { setAttributes, attributeName, endpoint, params, label, placeholder, currentSuggestion, acceptDirectInput } = props;
 
 	const [ currentMetaFieldSuggestion, setCurrentMetaFieldSuggestion ] = useState( currentSuggestion );
@@ -93,7 +93,7 @@ const MetaFieldControl = ( props ) => {
 	);
 };
 
-const DataSelect = ( props ) => {
+export const DataSelect = ( props ) => {
 	const { attributes, setAttributes, context, title, prefix } = props;
 
 	const [ postTypeSuggestion, setPostTypeSuggestion ] = useState( attributes[ `${ prefix }PostTitle` ] );
@@ -437,5 +437,3 @@ MetaFieldControl.defaultProps = {
 	acceptDirectInput: true,
 	endpoint: '/search/custom-fields',
 };
-
-export default DataSelect;

@@ -55,7 +55,7 @@ import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
-import DataSelect from '../../components/DataSelect';
+import { DataSelect, MetaFieldControl } from '../../components/DataSelect';
 
 /**
  * Height units.
@@ -95,6 +95,10 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		dataFallbackImage,
 		dataHasFallbackImage,
 		dataFallbackImageSize,
+		dataMediaLinkSource,
+		dataMediaLinkPostMeta,
+		dataMediaLinkImageCustomField,
+		dataMediaLinkAuthorMeta,
 		imageSize,
 		photoOpacity,
 		photoBlur,
@@ -315,18 +319,89 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 				</ToolbarGroup>
 			</BlockControls>
 			{ mediaLinkPopover && (
-				<MediaLink
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-					anchorRef={ mediaLinkRef }
+				<Popover
+					placement="top-start"
 					onClose={ () => {
 						setMediaLinkPopover( false );
 					} }
-				/>
+					anchor={ mediaLinkRef }
+				>
+					<div className="dlx-photo-block__a11y-popover">
+						<h3>{ __( 'Select a Link Source', 'photo-block' ) }</h3>
+						<SelectControl
+							label={ __( 'Link To', 'photo-block' ) }
+							value={ dataMediaLinkSource }
+							onChange={ ( value ) => {
+								setAttributes( { dataMediaLinkSource: value } );
+							} }
+						>
+							<option value="none">{ __( 'None', 'photo-block' ) }</option>
+							<optgroup label={ __( 'Media', 'photo-block' ) }>
+								<option value="imageFile">{ __( 'Image File', 'photo-block' ) }</option>
+								<option value="imageAttachmentPage">{ __( 'Image Attachment Page', 'photo-block' ) }</option>
+								<option value="imageMeta">{ __( 'Image Meta', 'photo-block' ) }</option>
+							</optgroup>
+							<optgroup label={ __( 'Post', 'photo-block' ) }>
+								<option value="postPermalink">{ __( 'Post Permalink', 'photo-block' ) }</option>
+								<option value="postMeta">{ __( 'Post Meta', 'photo-block' ) }</option>
+							</optgroup>
+							<optgroup label={ __( 'Author', 'photo-block' ) }>
+								<option value="authorPermalink">{ __( 'Author Permalink', 'photo-block' ) }</option>
+								<option value="authorArchive">{ __( 'Author Archive', 'photo-block' ) }</option>
+								<option value="authorMeta">{ __( 'Author Meta', 'photo-block' ) }</option>
+							</optgroup>
+						</SelectControl>
+						{ dataMediaLinkSource === 'postMeta' && (
+							<MetaFieldControl
+								setAttributes={ setAttributes }
+								attributeName={ 'dataMediaLinkPostMeta' }
+								endpoint={ '/search/custom-fields' }
+								params={ {
+									postType: dataPostType,
+									postId: getPostId(),
+								} }
+								label={ __( 'Select a custom field', 'photo-block' ) }
+								placeholder={ __(
+									'Search for or enter a custom field name',
+									'photo-block'
+								) }
+								currentSuggestion={ dataMediaLinkPostMeta }
+							/>
+						) }
+						{ dataMediaLinkSource === 'imageMeta' && (
+							<MetaFieldControl
+								setAttributes={ setAttributes }
+								attributeName={ 'dataMediaLinkImageCustomField' }
+								params={ {
+									postType: 'attachment',
+									postId: 0,
+								} }
+								currentSuggestion={ dataMediaLinkImageCustomField }
+							/>
+						) }
+						{ dataMediaLinkSource === 'authorMeta' && (
+							<MetaFieldControl
+								setAttributes={ setAttributes }
+								attributeName={ 'dataMediaLinkAuthorMeta' }
+								endpoint={ '/search/author-meta' }
+								params={ {
+									postType: dataPostType,
+									postId: getPostId(),
+								} }
+								label={ __( 'Select an author meta field', 'photo-block' ) }
+								placeholder={ __(
+									'Search for or enter an author meta field',
+									'photo-block'
+								) }
+								currentSuggestion={ dataMediaLinkAuthorMeta }
+							/>
+						) }
+					</div>
+				</Popover>
 			) }
 			{ a11yPopover && (
 				<Popover
-					position="bottom center"
+					placement="top-start"
 					onClose={ () => {
 						setA11yPopover( false );
 					} }
@@ -345,7 +420,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			) }
 			{ titlePopover && (
 				<Popover
-					position="bottom center"
+					placement="top-start"
 					onClose={ () => {
 						setTitlePopover( false );
 					} }

@@ -328,6 +328,18 @@
 			"type": "string",
 			"default": ""
 		},
+		"dataMediaLinkSource": {
+			"type": "string",
+			"default": "none"
+		},
+		"dataMediaLinkPostMeta": {
+			"type": "string",
+			"default": ""
+		},
+		"dataMediaLinkImageCustomField": {
+			"type": "string",
+			"default": ""
+		},
 		"cssGramFilter": {
 			"type": "string",
 			"default": "none"
