@@ -2,27 +2,12 @@
  * Uploading including showing Cancel and Retry buttons.
  */
 import './editor.scss';
-import { useEffect } from 'react';
 import {
-	PanelBody,
-	PanelRow,
-	RangeControl,
 	TextControl,
-	TextareaControl,
-	ButtonGroup,
 	Button,
-	ToggleControl,
-	Toolbar,
-	ToolbarButton,
-	ToolbarGroup,
-	ToolbarDropdownMenu,
-	Modal,
-	PlaceHolder,
-	MenuGroup,
-	MenuItem,
 } from '@wordpress/components';
 
-import { XCircle, Redo2, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 import { useContext, forwardRef, useState } from '@wordpress/element';
 
@@ -31,7 +16,6 @@ import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 import classnames from 'classnames';
 
 import { __ } from '@wordpress/i18n';
-import UploaderContext from '../../contexts/UploaderContext';
 import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFromPixels';
 import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
 import ColonIcon from '../Icons/ColonIcon';
@@ -43,17 +27,6 @@ import ColonIcon from '../Icons/ColonIcon';
  */
 const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes } = props;
-	// Read in context values.
-	const {
-		imageFile,
-		setIsUploading,
-		setIsProcessingUpload,
-		isUploadError,
-		setIsUploadError,
-	} = useContext( UploaderContext );
-
-	const [ isModalOpen, setIsModalOpen ] = useState( false );
-	const [ modalRef, setModalRef ] = useState( null );
 
 	const getDefaultValues = () => {
 		return {
@@ -66,15 +39,10 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 	};
 
 	const {
-		register,
 		control,
 		handleSubmit,
 		setValue,
 		getValues,
-		reset,
-		trigger,
-		setError,
-		clearErrors,
 	} = useForm( {
 		defaultValues: getDefaultValues(),
 	} );

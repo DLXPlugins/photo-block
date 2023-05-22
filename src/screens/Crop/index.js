@@ -1,5 +1,5 @@
 import './editor.scss';
-import 'react-image-crop/src/ReactCrop.scss'
+import 'react-image-crop/src/ReactCrop.scss';
 
 import { useContext, useState, forwardRef } from '@wordpress/element';
 import {
@@ -24,25 +24,28 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
-import { ZoomIn, Check, RotateCcw, RotateCw, Save, X } from 'lucide-react';
-import ReactCrop from 'react-image-crop';
+import { ZoomIn, Check, RotateCcw, RotateCw, Save, X, Lock, Unlock } from 'lucide-react';
+import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
 import UploaderContext from '../../contexts/UploaderContext';
 import { useEffect } from 'react';
 import SendCommand from '../../utils/SendCommand';
 import AspectRatioIcon from '../../components/Icons/AspectRatio';
 import ToolbarAspectRatio from '../../components/ToolbarAspectRatio';
+import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFromPixels';
+import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
 
 const CropScreen = ( props ) => {
 	const { screen, setScreen } =
 		useContext( UploaderContext );
 	const { attributes, setAttributes } = props;
-	
+
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
 	const [ shouldFetchImage, setShouldFetchImage ] = useState( true );
 	const [ fullsizePhoto, setFullsizePhoto ] = useState( {} );
 	const [ modifiedPhoto, setModifiedPhoto ] = useState( null );
 	const [ rotateDegrees, setRotateDegrees ] = useState( 0 );
 	const [ crop, setCrop ] = useState( null );
+	const [ lockCrop, setLockCrop ] = useState( true );
 
 	const {
 		photo,
@@ -118,6 +121,29 @@ const CropScreen = ( props ) => {
 		return newDegrees;
 	};
 
+	/**
+	 * Create new crop object when aspect ratio changes.
+	 *
+	 * @param {number} newAspectRatioWidth  The aspect ratio width.
+	 * @param {number} newAspectRatioHeight The aspect ratio height.
+	 */
+	const handleAspectRatioChange = ( newAspectRatioWidth, newAspectRatioHeight ) => {
+		const newCrop = centerCrop(
+			makeAspectCrop(
+				{
+					unit: '%',
+					width: 90,
+				},
+				newAspectRatioWidth / newAspectRatioHeight,
+				fullsizePhoto?.width,
+				fullsizePhoto?.height
+			),
+			fullsizePhoto?.width,
+			fullsizePhoto?.height
+		);
+		setCrop( newCrop );
+	};
+
 	// Set the local inspector controls.
 	const localInspectorControls = (
 		<InspectorControls>
@@ -147,6 +173,7 @@ const CropScreen = ( props ) => {
 									isSelected={ 'original' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: 'original' } );
+										handleAspectRatioChange( fullsizePhoto?.width, fullsizePhoto?.height );
 										onClose();
 									} }
 								>
@@ -157,6 +184,7 @@ const CropScreen = ( props ) => {
 									isSelected={ 'square' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: 'square' } );
+										handleAspectRatioChange( 1, 1 );
 										onClose();
 									} }
 								>
@@ -182,6 +210,7 @@ const CropScreen = ( props ) => {
 									isSelected={ '16:10' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: '16:10' } );
+										handleAspectRatioChange( 16, 10 );
 										onClose();
 									} }
 								>
@@ -192,6 +221,7 @@ const CropScreen = ( props ) => {
 									isSelected={ '16:9' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: '16:9' } );
+										handleAspectRatioChange( 16, 9 );
 										onClose();
 									} }
 								>
@@ -202,6 +232,7 @@ const CropScreen = ( props ) => {
 									isSelected={ '4:3' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: '4:3' } );
+										handleAspectRatioChange( 4, 3 );
 										onClose();
 									} }
 								>
@@ -212,6 +243,7 @@ const CropScreen = ( props ) => {
 									isSelected={ '3:2' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: '3:2' } );
+										handleAspectRatioChange( 3, 2 );
 										onClose();
 									} }
 								>
@@ -227,6 +259,7 @@ const CropScreen = ( props ) => {
 									isSelected={ '10:16' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: '10:16' } );
+										handleAspectRatioChange( 10, 16 );
 										onClose();
 									} }
 								>
@@ -237,6 +270,7 @@ const CropScreen = ( props ) => {
 									isSelected={ '9:16' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: '9:16' } );
+										handleAspectRatioChange( 9, 16 );
 										onClose();
 									} }
 								>
@@ -247,6 +281,7 @@ const CropScreen = ( props ) => {
 									isSelected={ '3:4' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: '3:4' } );
+										handleAspectRatioChange( 3, 4 );
 										onClose();
 									} }
 								>
@@ -257,6 +292,7 @@ const CropScreen = ( props ) => {
 									isSelected={ '2:3' === aspectRatio }
 									onClick={ () => {
 										setAttributes( { aspectRatio: '2:3' } );
+										handleAspectRatioChange( 2, 3 );
 										onClose();
 									} }
 								>
@@ -266,6 +302,15 @@ const CropScreen = ( props ) => {
 						</>
 					) }
 				</ToolbarDropdownMenu>
+				<ToolbarButton
+					className="dlx-photo-block__lock-crop-button"
+					icon={ <Lock /> }
+					label={ lockCrop ? __( 'UnLock Aspect Ratio', 'photo-block' ) : __( 'UnLock Aspect Ratio', 'photo-block' ) }
+					isActive={ lockCrop }
+					onClick={ () => {
+						setLockCrop( ! lockCrop );
+					} }
+				/>
 				<ToolbarButton
 					icon={ <RotateCcw /> }
 					label={ __( 'Rotate Left', 'photo-block' ) }
@@ -299,8 +344,17 @@ const CropScreen = ( props ) => {
 							aspectRatioHeight: values.aspectRatioHeight,
 							aspectRatioWidthPixels: values.aspectRatioWidthPixels,
 							aspectRatioHeightPixels: values.aspectRatioHeightPixels,
-						})
-					  } }/> ) ) } />
+						} );
+						if ( 'pixels' === aspectRatioUnit ) {
+							const humanImageRatio = CalculateAspectRatioFromPixels(
+								aspectRatioWidthPixels,
+								aspectRatioHeightPixels
+							);
+							handleAspectRatioChange( humanImageRatio.width, humanImageRatio.height );
+						} else {
+							handleAspectRatioChange( values.aspectRatioWidth, values.aspectRatioHeight );
+						}
+					  } } /> ) ) } />
 				</ToolbarGroup>
 			) }
 			<ToolbarGroup>
@@ -339,7 +393,33 @@ const CropScreen = ( props ) => {
 			);
 			const { data } = response;
 			setFullsizePhoto( data );
+
+			let newAspectRatio = aspectRatioWidth / aspectRatioHeight;
+			if ( 'pixels' === aspectRatioUnit ) {
+				const humanImageRatio = CalculateAspectRatioFromPixels(
+					aspectRatioWidthPixels,
+					aspectRatioHeightPixels
+				);
+				newAspectRatio = humanImageRatio.width / humanImageRatio.height;
+			}
+
+			const newCrop = centerCrop(
+				makeAspectCrop(
+					{
+						unit: '%',
+						width: 90,
+						height: 90,
+					},
+					newAspectRatio,
+					data?.width,
+					data?.height
+				),
+				data?.width,
+				data?.height
+			);
+
 			setShouldShowLoading( false );
+			setCrop( newCrop );
 		}
 		fetchImage();
 	}, [ shouldFetchImage ] );
@@ -366,10 +446,11 @@ const CropScreen = ( props ) => {
 					<>
 						<ReactCrop
 							crop={ crop }
-							aspect={ ( aspectRatioWidth / aspectRatioHeight ) }
 							onChange={ ( newCrop ) => {
 								setCrop( newCrop );
 							} }
+							locked={ lockCrop }
+							ruleOfThirds={ true }
 						>
 							<img
 								src={ fullsizePhoto?.url ?? '' }
