@@ -2,7 +2,7 @@
  * Uploading including showing Cancel and Retry buttons.
  */
 import './editor.scss';
-
+import { useEffect } from 'react';
 import {
 	PanelBody,
 	PanelRow,
@@ -34,8 +34,7 @@ import { __ } from '@wordpress/i18n';
 import UploaderContext from '../../contexts/UploaderContext';
 import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFromPixels';
 import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
-import { useEffect } from 'react';
-
+import ColonIcon from '../Icons/ColonIcon';
 /**
  * Upload Status component.
  *
@@ -80,138 +79,177 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 		defaultValues: getDefaultValues(),
 	} );
 
-	const { errors } = useFormState( {
+	const { isDirty } = useFormState( {
 		control,
 	} );
 	const formValues = useWatch( { control } );
-	
-	// Broadcast when values are changed.
-	useEffect( () => {
-		props.onChange( { ...formValues } );
-	}, [ formValues ] );
 
+	/**
+	 * Swap from pixels to aspect ratio and back.
+	 */
+	const swapAspectRatio = () => {
+		const aspectRatioWidthPixels = getValues( 'aspectRatioWidthPixels' );
+		const aspectRatioHeightPixels = getValues( 'aspectRatioHeightPixels' );
+		const aspectRatioWidth = getValues( 'aspectRatioWidth' );
+		const aspectRatioHeight = getValues( 'aspectRatioHeight' );
+		if ( getValues( 'aspectRatioUnit' ) === 'pixels' ) {
+			// Convert aspect width / height to ratio for display.
+			const humanImageRatio = CalculateAspectRatioFromPixels(
+				aspectRatioWidthPixels,
+				aspectRatioHeightPixels
+			);
+			setValue( 'aspectRatioWidth', humanImageRatio.width );
+			setValue( 'aspectRatioHeight', humanImageRatio.height );
+		} else {
+			const pixelsWidthHeight = CalculateDimensionsFromAspectRatio( `${ aspectRatioWidth }:${ aspectRatioHeight }`, getValues( 'aspectRatioWidthPixels' ) );
+			setValue( 'aspectRatioWidthPixels', pixelsWidthHeight.width );
+			setValue( 'aspectRatioHeightPixels', pixelsWidthHeight.height );
+		}
+	};
+
+	/**
+	 * The form has been submitted.
+	 *
+	 * @param {Object} formData form data.
+	 */
+	const onSubmit = ( formData ) => {
+		props.onChange( { ...formData } );
+	};
 	return (
 		<>
-			<div
-				className={ classnames( 'dlx-photo-block__component-aspect-ratio', {
-					'dlx-photo-block__component-aspect-ratio--active':
+			<form onSubmit={ handleSubmit( onSubmit ) }>
+				<div
+					className={ classnames( 'dlx-photo-block__component-aspect-ratio', {
+						'dlx-photo-block__component-aspect-ratio--active':
 						'ratio' === getValues( 'aspectRatioUnit' ),
-					'dlx-photo-block__component-pixels--active':
+						'dlx-photo-block__component-pixels--active':
 						'pixels' === getValues( 'aspectRatioUnit' ),
-				} ) }
-			>
-				{ getValues( 'aspectRatioUnit' ) === 'ratio' && (
-					<>
-						<Controller
-							name="aspectRatioWidth"
-							control={ control }
-							render={ ( { field: { onChange, value } } ) => (
-								<TextControl
-									label={ __( 'Aspect Ratio Width', 'photo-block' ) }
-									value={ value }
-									onChange={ ( newValue ) => {
-										onChange( newValue );
-									} }
-									type="number"
-									placeholder={ 16 }
-								/>
-							) }
-						/>
-						<span className="dlx-photo-block__component-aspect-ratio-splitter">
-							<X />
-						</span>
-						<Controller
-							name="aspectRatioHeight"
-							control={ control }
-							render={ ( { field: { onChange, value } } ) => (
-								<TextControl
-									label={ __( 'Aspect Ratio Height', 'photo-block' ) }
-									value={ value }
-									onChange={ ( newValue ) => {
-										onChange( newValue );
-									} }
-									type="number"
-									placeholder={ 9 }
-								/>
-							) }
-						/>
-					</>
-				) }
-				{ getValues( 'aspectRatioUnit' ) === 'pixels' && (
-					<>
-						<Controller
-							name="aspectRatioWidthPixels"
-							control={ control }
-							render={ ( { field: { onChange, value } } ) => (
-								<TextControl
-									label={ __( 'Pixel Width', 'photo-block' ) }
-									value={ value }
-									onChange={ ( newValue ) => {
-										onChange( newValue );
-									} }
-									type="number"
-									placeholder={ 16 }
-								/>
-							) }
-						/>
-						<span className="dlx-photo-block__component-aspect-ratio-splitter">
-							<X />
-						</span>
-						<Controller
-							name="aspectRatioHeightPixels"
-							control={ control }
-							render={ ( { field: { onChange, value } } ) => (
-								<TextControl
-									label={ __( 'Pixel Height', 'photo-block' ) }
-									value={ value }
-									onChange={ ( newValue ) => {
-										onChange( newValue );
-									} }
-									type="number"
-									placeholder={ 9 }
-								/>
-							) }
-						/>
-					</>
-				) }
-				<Button
-					variant="secondary"
-					className="dlx-photo-block__component-aspect-ratio-switch"
-					label={ __(
-						'Switch modes from Aspect Ratio to Width and Height (pixels)',
-						'photo-block'
-					) }
-					onClick={ () => {
-						const aspectRatioWidthPixels = getValues( 'aspectRatioWidthPixels' );
-						const aspectRatioHeightPixels = getValues( 'aspectRatioHeightPixels' );
-						const aspectRatioWidth = getValues( 'aspectRatioWidth' );
-						const aspectRatioHeight = getValues( 'aspectRatioHeight' );
-						if ( getValues( 'aspectRatioUnit' ) === 'pixels' ) {
-							// Convert aspect width / height to ratio for display.
-							const humanImageRatio = CalculateAspectRatioFromPixels(
-								aspectRatioWidthPixels,
-								aspectRatioHeightPixels
-							);
-							setValue( 'aspectRatioWidth', humanImageRatio.width );
-							setValue( 'aspectRatioHeight', humanImageRatio.height );
-							setValue( 'aspectRatioUnit', 'ratio' );
-						} else {
-							const pixelsWidthHeight = CalculateDimensionsFromAspectRatio( `${ aspectRatioWidth }:${ aspectRatioHeight }`, getValues( 'aspectRatioWidthPixels' ) );
-							setValue( 'aspectRatioWidthPixels', pixelsWidthHeight.width );
-							setValue( 'aspectRatioHeightPixels', pixelsWidthHeight.height );
-							setValue( 'aspectRatioUnit', 'pixels' );
-						}
-					} }
-					tooltip={ __(
-						'Switch modes from Aspect Ratio to Width and Height (pixels)',
-						'photo-block'
-					) }
+					} ) }
 				>
-					{ 'ratio' === getValues( 'aspectRatioUnit' )
-						? __( 'Aspect Ratio', 'photo-block' )
-						: __( 'Pixels', 'photo-block' ) }
-				</Button>
-			</div>
+
+					{ getValues( 'aspectRatioUnit' ) === 'ratio' && (
+						<>
+							<Controller
+								name="aspectRatioWidth"
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ __( 'Aspect Ratio Width', 'photo-block' ) }
+										value={ value }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										type="number"
+										placeholder={ 16 }
+									/>
+								) }
+							/>
+							<span className="dlx-photo-block__component-aspect-ratio-splitter">
+								<Button
+									variant="secondary"
+									className="dlx-photo-block__component-aspect-ratio-splitter-button"
+									label={ __(
+										'Change between aspect ratio and pixels', 'photo-block'
+									) }
+									onClick={ () => {
+										swapAspectRatio();
+										if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
+											setValue( 'aspectRatioUnit', 'ratio' );
+										} else {
+											setValue( 'aspectRatioUnit', 'pixels' );
+										}
+									} }
+									icon={ 'pixels' === getValues( 'aspectRatioUnit' ) ? <X /> : <ColonIcon /> }
+								/>
+							</span>
+							<Controller
+								name="aspectRatioHeight"
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ __( 'Aspect Ratio Height', 'photo-block' ) }
+										value={ value }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										type="number"
+										placeholder={ 9 }
+									/>
+								) }
+							/>
+						</>
+					) }
+					{ getValues( 'aspectRatioUnit' ) === 'pixels' && (
+						<>
+							<Controller
+								name="aspectRatioWidthPixels"
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ __( 'Pixel Width', 'photo-block' ) }
+										value={ value }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										type="number"
+										placeholder={ 16 }
+									/>
+								) }
+							/>
+							<span className="dlx-photo-block__component-aspect-ratio-splitter">
+								<Button
+									variant="secondary"
+									className="dlx-photo-block__component-aspect-ratio-splitter-button"
+									label={ __(
+										'Change between aspect ratio and pixels', 'photo-block'
+									) }
+									onClick={ () => {
+										swapAspectRatio();
+										if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
+											setValue( 'aspectRatioUnit', 'ratio' );
+										} else {
+											setValue( 'aspectRatioUnit', 'pixels' );
+										}
+									} }
+									icon={ 'pixels' === getValues( 'aspectRatioUnit' ) ? <X width={ 16 } height={ 16 } /> : <ColonIcon width={ 16 } height={ 16 } /> }
+								/>
+							</span>
+							<Controller
+								name="aspectRatioHeightPixels"
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ __( 'Pixel Height', 'photo-block' ) }
+										value={ value }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										type="number"
+										placeholder={ 9 }
+									/>
+								) }
+							/>
+						</>
+					) }
+					<Button
+						variant={ isDirty ? 'primary' : 'secondary' }
+						type="submit"
+						className="dlx-photo-block__component-aspect-ratio-apply"
+						label={ __(
+							'Apply the Aspect Ratio',
+							'photo-block'
+						) }
+						tooltip={ __(
+							'Switch modes from Aspect Ratio to Width and Height (pixels)',
+							'photo-block'
+						) }
+						disabled={ ! isDirty }
+					>
+						{ __( 'Apply', 'photo-block' ) }
+					</Button>
+
+				</div>
+			</form>
 		</>
 	);
 } );

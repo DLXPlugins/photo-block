@@ -32,4 +32,17 @@
 		padding-left: 15px;
 		padding-right: 15px;
 	}
+	.dlx-photo-block__component-aspect-ratio-splitter {
+		button {
+			min-width: unset;
+			height: 30px;
+			margin-left: 4px;
+			margin-right: 4px;
+		}
+	}
+	button.dlx-photo-block__component-aspect-ratio-apply.components-button {
+		color: #FFFFFF;
+		margin-left: 8px;
+		max-height: 30px;
+	}
 }

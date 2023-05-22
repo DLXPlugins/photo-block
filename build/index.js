@@ -4308,6 +4308,32 @@ var BorderStyleSolidIcon = function BorderStyleSolidIcon() {
 
 /***/ }),
 
+/***/ "./src/components/Icons/ColonIcon.js":
+/*!*******************************************!*\
+  !*** ./src/components/Icons/ColonIcon.js ***!
+  \*******************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var ColonIcon = function ColonIcon() {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 192 512",
+    width: 24,
+    height: 24
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
+    fill: "currentColor",
+    d: "M96 192a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm0 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128z"
+  }));
+};
+/* harmony default export */ __webpack_exports__["default"] = (ColonIcon);
+
+/***/ }),
+
 /***/ "./src/components/MediaLink/index.js":
 /*!*******************************************!*\
   !*** ./src/components/MediaLink/index.js ***!
@@ -5173,21 +5199,22 @@ var SizeResponsiveControl = function SizeResponsiveControl(props) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/ToolbarAspectRatio/editor.scss");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
-/* harmony import */ var _utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/CalculateAspectRatioFromPixels */ "./src/utils/CalculateAspectRatioFromPixels.js");
-/* harmony import */ var _utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/CalculateDimensionsFromAspectRatio */ "./src/utils/CalculateDimensionsFromAspectRatio.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
+/* harmony import */ var _utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/CalculateAspectRatioFromPixels */ "./src/utils/CalculateAspectRatioFromPixels.js");
+/* harmony import */ var _utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utils/CalculateDimensionsFromAspectRatio */ "./src/utils/CalculateDimensionsFromAspectRatio.js");
+/* harmony import */ var _Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Icons/ColonIcon */ "./src/components/Icons/ColonIcon.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -5221,21 +5248,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  * @param {Object} props - Component props.
  * @return {Object} JSX markup for the component.
  */
-var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef)(function (props, ref) {
+var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.forwardRef)(function (props, ref) {
   var attributes = props.attributes,
     setAttributes = props.setAttributes;
   // Read in context values.
-  var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_5__["default"]),
+  var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__["default"]),
     imageFile = _useContext.imageFile,
     setIsUploading = _useContext.setIsUploading,
     setIsProcessingUpload = _useContext.setIsProcessingUpload,
     isUploadError = _useContext.isUploadError,
     setIsUploadError = _useContext.setIsUploadError;
-  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
+  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     isModalOpen = _useState2[0],
     setIsModalOpen = _useState2[1];
-  var _useState3 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+  var _useState3 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(null),
     _useState4 = _slicedToArray(_useState3, 2),
     modalRef = _useState4[0],
     setModalRef = _useState4[1];
@@ -5248,7 +5275,7 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
       aspectRatioUnit: attributes.aspectRatioUnit
     };
   };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useForm)({
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useForm)({
       defaultValues: getDefaultValues()
     }),
     register = _useForm.register,
@@ -5260,32 +5287,58 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
     trigger = _useForm.trigger,
     setError = _useForm.setError,
     clearErrors = _useForm.clearErrors;
-  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useFormState)({
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useFormState)({
       control: control
     }),
-    errors = _useFormState.errors;
-  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useWatch)({
+    isDirty = _useFormState.isDirty;
+  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useWatch)({
     control: control
   });
 
-  // Broadcast when values are changed.
-  (0,react__WEBPACK_IMPORTED_MODULE_8__.useEffect)(function () {
-    props.onChange(_objectSpread({}, formValues));
-  }, [formValues]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_3___default()('dlx-photo-block__component-aspect-ratio', {
+  /**
+   * Swap from pixels to aspect ratio and back.
+   */
+  var swapAspectRatio = function swapAspectRatio() {
+    var aspectRatioWidthPixels = getValues('aspectRatioWidthPixels');
+    var aspectRatioHeightPixels = getValues('aspectRatioHeightPixels');
+    var aspectRatioWidth = getValues('aspectRatioWidth');
+    var aspectRatioHeight = getValues('aspectRatioHeight');
+    if (getValues('aspectRatioUnit') === 'pixels') {
+      // Convert aspect width / height to ratio for display.
+      var humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_7__["default"])(aspectRatioWidthPixels, aspectRatioHeightPixels);
+      setValue('aspectRatioWidth', humanImageRatio.width);
+      setValue('aspectRatioHeight', humanImageRatio.height);
+    } else {
+      var pixelsWidthHeight = (0,_utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_8__["default"])("".concat(aspectRatioWidth, ":").concat(aspectRatioHeight), getValues('aspectRatioWidthPixels'));
+      setValue('aspectRatioWidthPixels', pixelsWidthHeight.width);
+      setValue('aspectRatioHeightPixels', pixelsWidthHeight.height);
+    }
+  };
+
+  /**
+   * The form has been submitted.
+   *
+   * @param {Object} formData form data.
+   */
+  var onSubmit = function onSubmit(formData) {
+    props.onChange(_objectSpread({}, formData));
+  };
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSubmit(onSubmit)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: classnames__WEBPACK_IMPORTED_MODULE_4___default()('dlx-photo-block__component-aspect-ratio', {
       'dlx-photo-block__component-aspect-ratio--active': 'ratio' === getValues('aspectRatioUnit'),
       'dlx-photo-block__component-pixels--active': 'pixels' === getValues('aspectRatioUnit')
     })
-  }, getValues('aspectRatioUnit') === 'ratio' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+  }, getValues('aspectRatioUnit') === 'ratio' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
     name: "aspectRatioWidth",
     control: control,
     render: function render(_ref) {
       var _ref$field = _ref.field,
         _onChange = _ref$field.onChange,
         value = _ref$field.value;
-      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio Width', 'photo-block'),
+      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Aspect Ratio Width', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
           _onChange(newValue);
@@ -5296,15 +5349,28 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
     }
   }), /*#__PURE__*/React.createElement("span", {
     className: "dlx-photo-block__component-aspect-ratio-splitter"
-  }, /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    variant: "secondary",
+    className: "dlx-photo-block__component-aspect-ratio-splitter-button",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Change between aspect ratio and pixels', 'photo-block'),
+    onClick: function onClick() {
+      swapAspectRatio();
+      if ('pixels' === getValues('aspectRatioUnit')) {
+        setValue('aspectRatioUnit', 'ratio');
+      } else {
+        setValue('aspectRatioUnit', 'pixels');
+      }
+    },
+    icon: 'pixels' === getValues('aspectRatioUnit') ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null) : /*#__PURE__*/React.createElement(_Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_9__["default"], null)
+  })), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
     name: "aspectRatioHeight",
     control: control,
     render: function render(_ref2) {
       var _ref2$field = _ref2.field,
         _onChange2 = _ref2$field.onChange,
         value = _ref2$field.value;
-      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio Height', 'photo-block'),
+      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Aspect Ratio Height', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
           _onChange2(newValue);
@@ -5313,15 +5379,15 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
         placeholder: 9
       });
     }
-  })), getValues('aspectRatioUnit') === 'pixels' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+  })), getValues('aspectRatioUnit') === 'pixels' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
     name: "aspectRatioWidthPixels",
     control: control,
     render: function render(_ref3) {
       var _ref3$field = _ref3.field,
         _onChange3 = _ref3$field.onChange,
         value = _ref3$field.value;
-      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Pixel Width', 'photo-block'),
+      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Pixel Width', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
           _onChange3(newValue);
@@ -5332,15 +5398,34 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
     }
   }), /*#__PURE__*/React.createElement("span", {
     className: "dlx-photo-block__component-aspect-ratio-splitter"
-  }, /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    variant: "secondary",
+    className: "dlx-photo-block__component-aspect-ratio-splitter-button",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Change between aspect ratio and pixels', 'photo-block'),
+    onClick: function onClick() {
+      swapAspectRatio();
+      if ('pixels' === getValues('aspectRatioUnit')) {
+        setValue('aspectRatioUnit', 'ratio');
+      } else {
+        setValue('aspectRatioUnit', 'pixels');
+      }
+    },
+    icon: 'pixels' === getValues('aspectRatioUnit') ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      width: 16,
+      height: 16
+    }) : /*#__PURE__*/React.createElement(_Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      width: 16,
+      height: 16
+    })
+  })), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
     name: "aspectRatioHeightPixels",
     control: control,
     render: function render(_ref4) {
       var _ref4$field = _ref4.field,
         _onChange4 = _ref4$field.onChange,
         value = _ref4$field.value;
-      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Pixel Height', 'photo-block'),
+      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Pixel Height', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
           _onChange4(newValue);
@@ -5349,30 +5434,14 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
         placeholder: 9
       });
     }
-  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: "secondary",
-    className: "dlx-photo-block__component-aspect-ratio-switch",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Switch modes from Aspect Ratio to Width and Height (pixels)', 'photo-block'),
-    onClick: function onClick() {
-      var aspectRatioWidthPixels = getValues('aspectRatioWidthPixels');
-      var aspectRatioHeightPixels = getValues('aspectRatioHeightPixels');
-      var aspectRatioWidth = getValues('aspectRatioWidth');
-      var aspectRatioHeight = getValues('aspectRatioHeight');
-      if (getValues('aspectRatioUnit') === 'pixels') {
-        // Convert aspect width / height to ratio for display.
-        var humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_6__["default"])(aspectRatioWidthPixels, aspectRatioHeightPixels);
-        setValue('aspectRatioWidth', humanImageRatio.width);
-        setValue('aspectRatioHeight', humanImageRatio.height);
-        setValue('aspectRatioUnit', 'ratio');
-      } else {
-        var pixelsWidthHeight = (0,_utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_7__["default"])("".concat(aspectRatioWidth, ":").concat(aspectRatioHeight), getValues('aspectRatioWidthPixels'));
-        setValue('aspectRatioWidthPixels', pixelsWidthHeight.width);
-        setValue('aspectRatioHeightPixels', pixelsWidthHeight.height);
-        setValue('aspectRatioUnit', 'pixels');
-      }
-    },
-    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Switch modes from Aspect Ratio to Width and Height (pixels)', 'photo-block')
-  }, 'ratio' === getValues('aspectRatioUnit') ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Pixels', 'photo-block'))));
+  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    variant: isDirty ? 'primary' : 'secondary',
+    type: "submit",
+    className: "dlx-photo-block__component-aspect-ratio-apply",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Apply the Aspect Ratio', 'photo-block'),
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Switch modes from Aspect Ratio to Width and Height (pixels)', 'photo-block'),
+    disabled: !isDirty
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Apply', 'photo-block')))));
 });
 /* harmony default export */ __webpack_exports__["default"] = (ToolbarAspectRatio);
 
