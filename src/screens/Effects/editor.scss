@@ -1,0 +1,22 @@
+.dlx-photo-block__save-button.is-saving {
+	svg {
+		animation: photo-block-pub-spin;
+		animation-duration: 1.5s;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+	}
+}
+
+.dlx-photo-block__effects-popover {
+	.components-popover__content {
+		min-width: 250px;
+		padding: 15px;
+	}
+
+	.dlx-photo-block__effects-popover-button-group {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-gap: 10px;
+		row-gap: 10px;
+	}
+}

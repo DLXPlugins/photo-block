@@ -445,7 +445,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						icon={ <Stars /> }
 						label={ __( 'Effects', 'photo-block' ) }
 						onClick={ () => {
-							// setScreen( 'initial' );
+							setScreen( 'effects' );
 						} }
 					>
 						{ __( 'Effects', 'photo-block' ) }

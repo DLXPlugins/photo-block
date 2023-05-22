@@ -43,7 +43,7 @@ import EditScreen from '../../screens/Edit';
 import CropScreen from '../../screens/Crop';
 import DataScreen from '../../screens/Data';
 import DataEditScreen from '../../screens/DataEdit';
-import SendCommand from '../../utils/SendCommand';
+import EffectsScreen from '../../screens/Effects';
 import CaptionAppender from '../../components/CaptionAppender';
 
 const PhotoBlock = ( props ) => {
@@ -187,12 +187,10 @@ const PhotoBlock = ( props ) => {
 				return (
 					<DataScreen attributes={ attributes } setAttributes={ setAttributes } />
 				);
-			// case 'edit':
-			// 	return getEditScreen();
-			// case 'crop':
-			// 	return getCropScreen();
-			// case 'preview':
-			// 	return getPreviewScreen();
+			case 'effects':
+				return (
+					<EffectsScreen attributes={ attributes } setAttributes={ setAttributes } />
+				);
 		}
 		return null;
 	};
