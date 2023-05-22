@@ -109,7 +109,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		cssGramFilter,
 	} = attributes;
 
-	const { screen, setScreen, captionPosition, inQueryLoop } = useContext( UploaderContext );
+	const { screen, setScreen, captionPosition, inQueryLoop, setImageFile } = useContext( UploaderContext );
 
 	// Get query loop vars.
 	const { postId, postType } = context;
@@ -183,6 +183,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 				// If object, set preview image.
 				if ( data.url ) {
 					setHasImage( true );
+					setImageFile( data );
 					setPreviewImage( data );
 				}
 			} )

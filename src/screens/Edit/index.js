@@ -92,7 +92,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
 
-	const { screen, setScreen, captionPosition } = useContext( UploaderContext );
+	const { screen, setScreen, captionPosition, setImageFile } = useContext( UploaderContext );
 
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
@@ -104,6 +104,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					...photo,
 				},
 			} );
+		}
+		if ( photo.url ) {
+			setImageFile( photo );
 		}
 	}, [] );
 

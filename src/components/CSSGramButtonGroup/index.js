@@ -82,6 +82,7 @@ const CSSGramButtonGroup = ( props ) => {
 
 	// Get context.
 	const {
+		imageFile,
 	} = useContext( UploaderContext );
 
 	const [ currentFilter, setCurrentFilter ] = useState( 'none' );
@@ -105,7 +106,7 @@ const CSSGramButtonGroup = ( props ) => {
 									} }
 									label={ option.label }
 									filter={ option.value }
-									fullUrl={ photo.full }
+									fullUrl={ imageFile.url }
 									imageDimensions={ imageDimensions }
 								/>
 							);
