@@ -24,6 +24,7 @@ const isInQueryLoop = ( context ) => {
 
 const PhotoBlock = ( props ) => {
 	const [ imageFile, setImageFile ] = useState( props.attributes.photo ?? null );
+	const [ originalImageFile ] = useState( props.attributes.photo ?? null ); // For reverting crops/image adjustments.
 	const [ screen, setScreen ] = useState( props.attributes.screen ); // Can be initial, edit, crop, preview, data.
 	const [ isUploading, setIsUploading ] = useState( false );
 	const [ isProcessingUpload, setIsProcessingUpload ] = useState( false );
@@ -56,6 +57,7 @@ const PhotoBlock = ( props ) => {
 				inQueryLoop,
 				dataMode,
 				setDataMode,
+				originalImageFile,
 
 			} }
 		>

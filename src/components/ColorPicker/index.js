@@ -7,6 +7,7 @@ import './editor.scss';
 import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
+import rgb2hex from 'rgb2hex';
 import { __ } from '@wordpress/i18n';
 
 import {
@@ -23,16 +24,15 @@ const ColorPickerControl = ( props ) => {
 	const [ colorKey, setColorKey ] = useState( props.slug );
 	const [ isVisible, setIsVisible ] = useState( false );
 	const [ color, setColor ] = useState( props.value );
+	const [ opacity, setOpacity ] = useState( 1 );
 
 	const {
 		defaultColor,
 		defaultColors,
 		value,
 		onChange,
-		onOpacityChange,
 		label,
 		alpha = false,
-		valueOpacity,
 		slug,
 		hideLabelFromVision = false,
 	} = props;
@@ -40,6 +40,31 @@ const ColorPickerControl = ( props ) => {
 	useEffect( () => {
 		setColor( value );
 	}, [ value ] );
+
+	/**
+	 * Return a color based on passed alpha value.
+	 *
+	 * @param {string} colorValue   hex, rgb, rgba, or CSS var.
+	 * @param {number} opacityValue The opacity (from 0 - 1).
+	 * @return {string} The color in hex, rgba, or CSS var format.
+	 */
+	const getColor = ( colorValue, opacityValue = 1 ) => {
+		// Test for CSS var values in color value.
+		if ( colorValue.indexOf( 'var(' ) === 0 ) {
+			return colorValue;
+		}
+
+		// Test for RGB at the beginning, and return hex if found.
+		if ( colorValue.indexOf( 'rgb' ) === 0 ) {
+			return rgb2hex( colorValue ).hex;
+		}
+
+		if ( alpha ) {
+			return hexToRgba( colorValue, opacityValue );
+		}
+
+		return colorValue;
+	};
 
 	// Retrieve colors while avoiding duplicates.
 	const getDefaultColors = () => {
@@ -110,9 +135,7 @@ const ColorPickerControl = ( props ) => {
 											'photo-block'
 										) }
 										style={ {
-											background: color
-												? hexToRgba( color, valueOpacity )
-												: 'transparent',
+											background: getColor( color, opacity ),
 										} }
 									>
 										<span className="components-color-palette__custom-color-gradient" />
@@ -141,9 +164,7 @@ const ColorPickerControl = ( props ) => {
 										'photo-block'
 									) }
 									style={ {
-										background: color
-											? hexToRgba( color, valueOpacity )
-											: 'transparent',
+										background: getColor( color, opacity ),
 									} }
 								>
 									<span className="components-color-palette__custom-color-gradient" />
@@ -163,8 +184,10 @@ const ColorPickerControl = ( props ) => {
 									key={ colorKey }
 									color={ color }
 									onChangeComplete={ ( newColor ) => {
-										setColor( newColor.hex );
-										onChange( slug, newColor.hex );
+										const maybeNewColor = getColor( newColor.hex, opacity );
+										setColor( maybeNewColor );
+										setColorKey( maybeNewColor );
+										onChange( slug, maybeNewColor );
 									} }
 									disableAlpha
 									defaultValue={ defaultColor }
@@ -178,8 +201,14 @@ const ColorPickerControl = ( props ) => {
 									</Tooltip>
 
 									<RangeControl
-										value={ valueOpacity ? valueOpacity : 0 }
-										onChange={ ( opacityValue ) => onOpacityChange( opacityValue ) }
+										value={ opacity ? opacity : 1 }
+										onChange={ ( opacityValue ) => {
+											const newColor = getColor( color, opacityValue );
+											setOpacity( opacityValue );
+											setColor( newColor );
+											setColorKey( newColor );
+											onChange( slug, getColor( color, opacityValue ) );
+										} }
 										min={ 0 }
 										max={ 1 }
 										step={ 0.01 }
@@ -192,9 +221,10 @@ const ColorPickerControl = ( props ) => {
 									colors={ getDefaultColors() }
 									value={ color }
 									onChange={ ( newColor ) => {
-										onChange( slug, newColor );
-										setColor( newColor );
-										setColorKey( newColor );
+										const maybeNewColor = getColor( newColor );
+										onChange( slug, maybeNewColor );
+										setColor( maybeNewColor );
+										setColorKey( maybeNewColor );
 									} }
 									disableCustomColors={ true }
 									clearable={ false }

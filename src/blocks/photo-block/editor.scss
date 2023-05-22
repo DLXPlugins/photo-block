@@ -7,9 +7,7 @@ svg.lucide {
 	color: currentColor;
 }
 .dlx-photo-block__container {
-	border: 1px solid #000;
-	padding: 15px;
-
+	
 	.PinturaRootWrapper {
 		height: 100vh;
 		max-height: 650px;
@@ -33,5 +31,14 @@ svg.lucide {
 	}
 	.PinturaUtilMain > div {
 		width: 100%;
+	}
+}
+
+.dlx-screen-initial {
+
+	.dlx-photo-block__container {
+		border: 1px solid #000;
+		padding: 15px;
+		padding-right: 25px;
 	}
 }

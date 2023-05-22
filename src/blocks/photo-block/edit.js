@@ -197,17 +197,6 @@ const PhotoBlock = ( props ) => {
 		return null;
 	};
 
-	/**
-	 * Returns a caption placeholder or caption if available.
-	 *
-	 * @return {Element} The caption placeholder or caption if available.
-	 */
-	const getCaption = () => {
-		return (
-			<div { ...captionInnerBlockProps } />
-		);
-	};
-
 	const block = (
 		<>
 			<section className="dlx-photo-block__container" id={ uniqueId }>

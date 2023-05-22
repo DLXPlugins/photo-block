@@ -237,6 +237,7 @@ class Functions {
 	 * @param string $size          The image size.
 	 *
 	 * @return array {
+	 *    @type int    $id  The attachment ID.
 	 *    @type string $url The image URL.
 	 *    @type int $width The image width.
 	 *    @type int $height The image height.
@@ -255,6 +256,7 @@ class Functions {
 		$full_image_attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
 
 		$return = array(
+			'id'              => $attachment_id,
 			'url'             => $image_attachment[0],
 			'width'           => $image_attachment[1],
 			'height'          => $image_attachment[2],

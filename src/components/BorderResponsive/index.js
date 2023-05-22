@@ -687,12 +687,12 @@ const BorderResponsiveControl = ( props ) => {
 										defaultColor={ '#000000' }
 										slug={ 'border-color-top' }
 										hideLabelFromVision={ true }
+										alpha={ true }
 									/>
 								) }
 							/>
 							<Button
 								className="dlx-photo-block__border-responsive-sync-interface-border-style"
-								hideLabelFromVision={ true }
 								label={ __( 'Border Style', 'photo-block' ) }
 								icon={ getBorderStyleIcon( 'top' ) }
 								onClick={ () => {
@@ -782,12 +782,12 @@ const BorderResponsiveControl = ( props ) => {
 										defaultColor={ '#000000' }
 										slug={ 'border-color-right' }
 										hideLabelFromVision={ true }
+										alpha={ true }
 									/>
 								) }
 							/>
 							<Button
 								className="dlx-photo-block__border-responsive-sync-interface-border-style"
-								hideLabelFromVision={ true }
 								label={ __( 'Border Style', 'photo-block' ) }
 								icon={ getBorderStyleIcon( 'right' ) }
 								onClick={ () => {
@@ -877,12 +877,12 @@ const BorderResponsiveControl = ( props ) => {
 										defaultColor={ '#000000' }
 										slug={ 'border-color-bottom' }
 										hideLabelFromVision={ true }
+										alpha={ true }
 									/>
 								) }
 							/>
 							<Button
 								className="dlx-photo-block__border-responsive-sync-interface-border-style"
-								hideLabelFromVision={ true }
 								label={ __( 'Border Style', 'photo-block' ) }
 								icon={ getBorderStyleIcon( 'bottom' ) }
 								onClick={ () => {
@@ -974,12 +974,12 @@ const BorderResponsiveControl = ( props ) => {
 										defaultColor={ '#000000' }
 										slug={ 'border-color-left' }
 										hideLabelFromVision={ true }
+										alpha={ true }
 									/>
 								) }
 							/>
 							<Button
 								className="dlx-photo-block__border-responsive-sync-interface-border-style"
-								hideLabelFromVision={ true }
 								label={ __( 'Border Style', 'photo-block' ) }
 								icon={ getBorderStyleIcon( 'left' ) }
 								onClick={ () => {

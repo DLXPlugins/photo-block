@@ -1081,10 +1081,6 @@ svg.lucide {
   color: currentColor;
 }
 
-.dlx-photo-block__container {
-  border: 1px solid #000;
-  padding: 15px;
-}
 .dlx-photo-block__container .PinturaRootWrapper {
   height: 100vh;
   max-height: 650px;
@@ -1108,6 +1104,12 @@ svg.lucide {
 }
 .dlx-photo-block__container .PinturaUtilMain > div {
   width: 100%;
+}
+
+.dlx-screen-initial .dlx-photo-block__container {
+  border: 1px solid #000;
+  padding: 15px;
+  padding-right: 25px;
 }
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/UploadTypes/editor.scss ***!
@@ -2816,6 +2818,18 @@ svg.lucide {
 
 .dlx-photo-block__lock-crop-button.is-pressed svg {
   color: #FFFFFF;
+}
+
+.dlx-photo-block__zoom-popover .components-popover__content {
+  min-width: 250px;
+  padding: 15px;
+}
+
+.dlx-photo-block__save-button.is-saving svg {
+  animation: photo-block-pub-spin;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./node_modules/react-image-crop/src/ReactCrop.scss ***!

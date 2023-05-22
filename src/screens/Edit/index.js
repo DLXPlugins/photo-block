@@ -30,11 +30,8 @@ import {
 	Link,
 	Settings,
 	Paintbrush,
-	Shrink,
+	Undo2,
 	Stars,
-	Palette,
-	Wand2,
-	Maximize,
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
@@ -92,7 +89,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
 
-	const { screen, setScreen, captionPosition, setImageFile } = useContext( UploaderContext );
+	const { screen, setScreen, captionPosition, setImageFile, imageFile, originalImageFile } = useContext( UploaderContext );
 
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
@@ -139,6 +136,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			.then( () => {
 				setImageSizeLoading( false );
 			} );
+	};
+
+	/**
+	 * Whether to show the undo button.
+	 *
+	 * @return {boolean} Whether to show the undo button.
+	 */
+	const canShowUndo = () => {
+		const originalImageUrl = originalImageFile?.url;
+		const newImageUrl = photo?.url;
+
+		return originalImageUrl && newImageUrl && originalImageUrl !== newImageUrl;
 	};
 
 	// Take a width/height and calculate the width based on the aspect ratio.
@@ -452,6 +461,25 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					>
 						{ __( 'Replace', 'photo-block' ) }
 					</ToolbarButton>
+					{ canShowUndo() && (
+						<ToolbarButton
+							icon={ <Undo2 /> }
+							label={ __( 'Undo', 'photo-block' ) }
+							onClick={ () => {
+								// Change back to original image.
+								setAttributes( {
+									photo: originalImageFile,
+									imageDimensions: {
+										width: originalImageFile.width,
+										height: originalImageFile.height,
+									}
+								} );
+								setImageFile( originalImageFile );
+							} }
+						>
+							{ __( 'Undo', 'photo-block' ) }
+						</ToolbarButton>
+					) }
 				</ToolbarGroup>
 				<ToolbarGroup>
 					<ToolbarButton

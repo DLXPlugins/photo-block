@@ -151,6 +151,126 @@ class Rest {
 				'callback'            => array( static::class, 'rest_get_author_meta' ),
 			)
 		);
+
+		// Register a route for cropping an image.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/image/crop',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'publish_posts' );
+				},
+				'callback'            => array( static::class, 'rest_crop_image' ),
+			)
+		);
+	}
+
+	/**
+	 * Returns a cropped image object if cropped successfully.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 **/
+	public function rest_crop_image( $request ) {
+		$crop_x      = absint( $request->get_param( 'cropX' ) );
+		$crop_y      = absint( $request->get_param( 'cropY' ) );
+		$crop_width  = absint( $request->get_param( 'cropWidth' ) );
+		$crop_height = absint( $request->get_param( 'cropHeight' ) );
+		$zoom        = (float) $request->get_param( 'zoom' );
+		$rotate      = intval( $request->get_param( 'rotateDegrees' ) );
+		$image_id    = absint( $request->get_param( 'imageId' ) );
+
+		// Bail early if no image id or if zero.
+		if ( ! $image_id ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No image ID provided.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get the image file.
+		$image_file = get_attached_file( $image_id, true );
+		if ( ! $image_file ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No image file found for ID provided.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get image to edit.
+		$image = wp_get_image_editor( $image_file );
+		if ( is_wp_error( $image ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Error getting image editor for image.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Rotate the image if necessary.
+		if ( $rotate !== 0 ) {
+			$image->rotate( - $rotate ); // Negative because rotation is backwards for some reason.
+		}
+
+		// Zoom the image if necessary.
+		if ( $zoom !== 1 ) {
+			$image->resize( $image->get_size()['width'] * $zoom, $image->get_size()['height'] * $zoom );
+		}
+
+		// Crop the image.
+		$image->crop( $crop_x, $crop_y, $crop_width, $crop_height );
+
+		// Save the image as a copy.
+		$saved_image = $image->save( $image->generate_filename( 'cropped' ) );
+
+		// Bail early if error saving image.
+		if ( is_wp_error( $saved_image ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Error saving image.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Save the image to the media library.
+		if ( ! function_exists( 'media_handle_sideload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+		}
+
+		// Convert to file array.
+		$file_array = array(
+			'name'     => basename( $saved_image['file'] ),
+			'tmp_name' => $saved_image['path'],
+		);
+
+		// Upload new file.
+		$uploaded_file = media_handle_sideload( $file_array );
+
+		// Check uploaded file for errors.
+		if ( is_wp_error( $uploaded_file ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Error saving image to media library.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get the attachment ID.
+		$attachment_id = $uploaded_file;
+
+		// Get the Image URL.
+		$attachment_data = Functions::get_image_data( $attachment_id, 'full' );
+
+		wp_send_json_success(
+			array(
+				'message'    => __( 'Image cropped successfully.', 'photo-block' ),
+				'attachment' => $attachment_data,
+			)
+		);
 	}
 
 	/**

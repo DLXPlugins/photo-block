@@ -6,3 +6,17 @@
 .dlx-photo-block__lock-crop-button.is-pressed svg {
 	color: #FFFFFF;
 }
+
+.dlx-photo-block__zoom-popover .components-popover__content {
+	min-width: 250px;
+	padding: 15px;
+}
+
+.dlx-photo-block__save-button.is-saving {
+	svg {
+		animation: photo-block-pub-spin;
+		animation-duration: 1.5s;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+	}
+}

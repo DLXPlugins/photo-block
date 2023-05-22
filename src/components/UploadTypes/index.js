@@ -202,6 +202,7 @@ const UploadTypes = ( props ) => {
 							icon={ <ArrowBigLeftDash /> }
 							className="dlx-photo-block__upload-types__back"
 							onClick={ () => {
+								setAttributes( { screen: 'edit' } );
 								setScreen( 'edit' );
 							} }
 						>
@@ -246,6 +247,11 @@ const UploadTypes = ( props ) => {
 							};
 							setAttributes( {
 								photo: selectedMedia,
+								imageDimensions: {
+									width: selectedMedia.width,
+									height: selectedMedia.height,
+								},
+								screen: 'edit',
 							} );
 							setImageFile( selectedMedia );
 							setScreen( 'edit' );
