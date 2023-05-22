@@ -28,6 +28,73 @@
       "type": "string",
       "default": "bottom"
     },
+    "captionAlign": {
+      "type": "string",
+      "default": "center"
+    },
+    "captionBackgroundColor": {
+      "type": "string",
+      "default": "transparent"
+    },
+    "captionTextColor": {
+      "type": "string",
+      "default": "transparent"
+    },
+    "captionLinkColor": {
+      "type": "string",
+      "default": "transparent"
+    },
+    "captionLinkHoverColor": {
+      "type": "string",
+      "default": "transparent"
+    },
+    "captionTypography": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "fontFamily": "",
+          "fontFamilySlug": "",
+          "fontSize": "",
+          "fontSizeUnit": "px",
+          "fontWeight": "",
+          "lineHeight": "",
+          "lineHeightUnit": "em",
+          "textTransform": "",
+          "letterSpacing": "",
+          "letterSpacingUnit": "px",
+          "fontFallback": "",
+          "fontType": "web"
+        },
+        "tablet": {
+          "fontFamily": "",
+          "fontFamilySlug": "",
+          "fontSize": "",
+          "fontSizeUnit": "px",
+          "fontWeight": "",
+          "lineHeight": "",
+          "lineHeightUnit": "em",
+          "textTransform": "",
+          "letterSpacing": "",
+          "letterSpacingUnit": "px",
+          "fontFallback": "",
+          "fontType": "web"
+        },
+        "desktop": {
+          "fontFamily": "Arial",
+          "fontFamilySlug": "arial",
+          "fontSize": "24",
+          "fontSizeUnit": "px",
+          "fontWeight": "normal",
+          "lineHeight": "1.3",
+          "lineHeightUnit": "em",
+          "textTransform": "none",
+          "letterSpacing": "0",
+          "letterSpacingUnit": "px",
+          "fontFallback": "serif",
+          "fontType": "web"
+        }
+      }
+    },
     "captionPaddingSize": {
       "type": "object",
       "default": {

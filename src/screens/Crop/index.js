@@ -454,7 +454,7 @@ const CropScreen = ( props ) => {
 								aspectRatioWidth: humanImageRatio.width,
 								aspectRatioHeight: humanImageRatio.height,
 							} );
-							handleAspectRatioChange( humanImageRatio.width, humanImageRatio.height );
+							setCenterCrop( values.aspectRatioWidthPixels, values.aspectRatioHeightPixels, humanImageRatio.width, humanImageRatio.height );
 						} else {
 							setAttributes( {
 								aspectRatioWidth: values.aspectRatioWidth,

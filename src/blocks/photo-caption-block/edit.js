@@ -20,6 +20,7 @@ import {
 	Modal,
 	Popover,
 	PlaceHolder,
+	TabPanel,
 	MenuGroup,
 	Spinner,
 	MenuItem,
@@ -45,6 +46,11 @@ import {
 	Shrink,
 	FormInput,
 	Maximize,
+	Settings,
+	Paintbrush,
+	AlignLeft,
+	AlignCenter,
+	AlignRight,
 } from 'lucide-react';
 
 import { useInstanceId } from '@wordpress/compose';
@@ -57,6 +63,8 @@ import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
 import { DataSelect } from '../../components/DataSelect';
 import SendCommand from '../../utils/SendCommand';
+import TypographyControl from '../../components/Typography';
+import ColorPickerControl from '../../components/ColorPicker';
 
 /**
  * Height units.
@@ -82,6 +90,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const [ captionPopoverRef, setCaptionPopoverRef ] = useState( null );
 	const [ removeCaptionModalVisible, setRemoveCaptionModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ dataModalVisible, setDataModalVisible ] = useState( false ); // only applicable if in data mode.
+	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 
 	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
@@ -91,7 +100,7 @@ const PhotoCaptionBlock = ( props ) => {
 		},
 		{
 			allowedBlocks: photoBlock.captionInnerBlocks,
-			template: [ [ 'core/paragraph', { placeholder: __( 'Enter your caption here.', 'photo-block' ) } ] ],
+			template: [ [ 'core/paragraph', { fontSize: 'medium', align: 'center', placeholder: __( 'Enter your caption here.', 'photo-block' ) } ] ],
 			templateInsertUpdatesSelection: true,
 			templateLock: false,
 			renderAppender: InnerBlocks.DefaultBlockAppender,
@@ -117,10 +126,18 @@ const PhotoCaptionBlock = ( props ) => {
 	const {
 		uniqueId,
 		captionPosition: blockCaptionPosition,
+		captionBackgroundColor,
+		captionTextColor,
+		captionLinkColor,
+		captionLinkHoverColor,
+		captionAlign,
 		captionPaddingSize,
 		captionMarginSize,
+		captionTypography,
 		captionBorder,
 		captionBorderRadius,
+		containerWidth,
+		containerHeight,
 		containerMaxWidth,
 		containerMinWidth,
 		containerMaxHeight,
@@ -209,9 +226,75 @@ const PhotoCaptionBlock = ( props ) => {
 		}
 	}, [] );
 
+	const settingsInspectorControls = (
+		<>
+			<PanelBody
+				title={ __( 'Caption Settings', 'photo-block' ) }
+				initialOpen={ true }
+			>
+				<PanelRow className="has-typography-panel-row">
+					<TypographyControl
+						values={ captionTypography }
+						screenSize={ deviceType }
+						onValuesChange={ ( formValues ) => {
+							setAttributes( {
+								captionTypography: formValues,
+							} );
+						} }
+						label={ __( 'Caption Typography', 'photo-block' ) }
+					/>
+				</PanelRow>
+				<ColorPickerControl
+					value={ captionBackgroundColor }
+					key={ 'background-color-caption' }
+					onChange={ ( slug, newValue ) => {
+						setAttributes( { captionBackgroundColor: newValue } );
+					} }
+					label={ __( 'Background Color', 'photo-block' ) }
+					defaultColors={ photoBlock.palette }
+					defaultColor={ 'transparent' }
+					slug={ 'background-color-caption' }
+				/>
+				<ColorPickerControl
+					value={ captionTextColor }
+					key={ 'text-color-caption' }
+					onChange={ ( slug, newValue ) => {
+						setAttributes( { captionTextColor: newValue } );
+					} }
+					label={ __( 'Text Color', 'photo-block' ) }
+					defaultColors={ photoBlock.palette }
+					defaultColor={ 'transparent' }
+					slug={ 'text-color-caption' }
+				/>
+				<ColorPickerControl
+					value={ captionLinkColor }
+					key={ 'link-color-caption' }
+					onChange={ ( slug, newValue ) => {
+						setAttributes( { captionTextColor: newValue } );
+					} }
+					label={ __( 'Link Color', 'photo-block' ) }
+					defaultColors={ photoBlock.palette }
+					defaultColor={ 'transparent' }
+					slug={ 'link-color-caption' }
+				/>
+				<ColorPickerControl
+					value={ captionLinkHoverColor }
+					key={ 'link-hover-color-caption' }
+					onChange={ ( slug, newValue ) => {
+						setAttributes( { captionLinkHoverColor: newValue } );
+					} }
+					label={ __( 'Link Color (Hover)', 'photo-block' ) }
+					defaultColors={ photoBlock.palette }
+					defaultColor={ 'transparent' }
+					slug={ 'link-hover-color-caption' }
+				/>
+			</PanelBody>
+		</>
+	);
+
 	// Set the local inspector controls.
-	const localInspectorControls = (
-		<InspectorControls>
+	const styleInspectorControls = (
+		<>
 			<PanelBody
 				title={ __( 'Padding, Margin, and Border', 'photo-block' ) }
 				initialOpen={ false }
@@ -282,6 +365,27 @@ const PhotoCaptionBlock = ( props ) => {
 				uniqueId={ uniqueId }
 				scrollAfterOpen={ false }
 			>
+				<div className="dlx-photo-block__container-width">
+					<SizeResponsiveControl
+						label={ __( 'Width', 'photo-block' ) }
+						values={ containerWidth }
+						screenSize={ deviceType }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerWidth: newValues } );
+						} }
+					/>
+				</div>
+				<div className="dlx-photo-block__container-height">
+					<SizeResponsiveControl
+						label={ __( 'Height', 'photo-block' ) }
+						values={ containerHeight }
+						screenSize={ deviceType }
+						units={ heightUnits }
+						onValuesChange={ ( newValues ) => {
+							setAttributes( { containerHeight: newValues } );
+						} }
+					/>
+				</div>
 				<div className="dlx-photo-block__container-min-width">
 					<SizeResponsiveControl
 						label={ __( 'Min Width', 'photo-block' ) }
@@ -325,11 +429,75 @@ const PhotoCaptionBlock = ( props ) => {
 					/>
 				</div>
 			</PanelBody>
-		</InspectorControls>
+		</>
+	);
+
+	const interfaceTabs = (
+		<TabPanel
+			className="dlx-photo-block__inspector-tabs"
+			activeClass="active-tab"
+			onSelect={ ( tab ) => {
+				setInspectorTab( tab );
+			} }
+			children={ () => <></> }
+			tabs={ [
+				{
+					name: 'settings',
+					title: __( 'Settings', 'photo-block' ),
+					className: 'dlx-photo-block__inspector-tab',
+					icon: <Settings />,
+				},
+				{
+					name: 'styles',
+					title: __( 'Styles', 'photo-block' ),
+					className: 'dlx-photo-block__inspector-tab',
+					icon: <Paintbrush />,
+				},
+			] }
+		>
+			{ ( tab ) => {
+				switch ( tab.name ) {
+					case 'settings':
+						return settingsInspectorControls;
+					case 'styles':
+						return styleInspectorControls;
+				}
+			} }
+		</TabPanel>
 	);
 
 	const localToolbar = (
 		<BlockControls>
+			{
+				dataMode && (
+					<ToolbarGroup className="dlx-photo-block__caption-align-toolbar-buttons">
+						<ToolbarButton
+							icon={ <AlignLeft /> }
+							label={ __( 'Align Left', 'photo-block' ) }
+							onClick={ () => {
+								setAttributes( { captionAlign: 'left' } );
+							} }
+							isActive={ captionAlign === 'left' }
+						/>
+						<ToolbarButton
+							icon={ <AlignCenter /> }
+							label={ __( 'Align Center', 'photo-block' ) }
+							onClick={ () => {
+								setAttributes( { captionAlign: 'center' } );
+							} }
+							isActive={ captionAlign === 'center' }
+						/>
+						<ToolbarButton
+							icon={ <AlignRight /> }
+							label={ __( 'Align Right', 'photo-block' ) }
+							onClick={ () => {
+								setAttributes( { captionAlign: 'right' } );
+							} }
+							isActive={ captionAlign === 'right' }
+						/>
+					</ToolbarGroup>
+				)
+			}
 			<ToolbarGroup>
 				<ToolbarButton
 					icon={ <SeparatorHorizontal /> }
@@ -508,11 +676,18 @@ const PhotoCaptionBlock = ( props ) => {
 		return <div { ...innerBlockProps } />;
 	};
 
+	// Set the local inspector controls.
+	const localInspectorControls = (
+		<InspectorControls>{ interfaceTabs }</InspectorControls>
+	);
+
 	const block = (
 		<>
 			{ localInspectorControls }
 			{ localToolbar }
-			{ getCaption() }
+			<div className="dlx-photo-block__caption-wrapper">
+				{ getCaption() }
+			</div>
 		</>
 	);
 
