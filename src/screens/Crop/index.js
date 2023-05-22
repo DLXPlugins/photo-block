@@ -442,18 +442,24 @@ const CropScreen = ( props ) => {
 				<ToolbarGroup>
 					<ToolbarItem as={ forwardRef( ( args, ref ) => ( <ToolbarAspectRatio attributes={ attributes } setAttributes={ setAttributes } forwardRef={ ref } onChange={ ( values ) => {
 						setAttributes( {
-							aspectRatioWidth: values.aspectRatioWidth,
-							aspectRatioHeight: values.aspectRatioHeight,
 							aspectRatioWidthPixels: values.aspectRatioWidthPixels,
 							aspectRatioHeightPixels: values.aspectRatioHeightPixels,
 						} );
-						if ( 'pixels' === aspectRatioUnit ) {
+						if ( 'pixels' === values.aspectRatioUnit ) {
 							const humanImageRatio = CalculateAspectRatioFromPixels(
-								aspectRatioWidthPixels,
-								aspectRatioHeightPixels
+								values.aspectRatioWidthPixels,
+								values.aspectRatioHeightPixels
 							);
+							setAttributes( {
+								aspectRatioWidth: humanImageRatio.width,
+								aspectRatioHeight: humanImageRatio.height,
+							} );
 							handleAspectRatioChange( humanImageRatio.width, humanImageRatio.height );
 						} else {
+							setAttributes( {
+								aspectRatioWidth: values.aspectRatioWidth,
+								aspectRatioHeight: values.aspectRatioHeight,
+							} );
 							handleAspectRatioChange( values.aspectRatioWidth, values.aspectRatioHeight );
 						}
 					} } /> ) ) } />

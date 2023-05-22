@@ -123,8 +123,10 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 										swapAspectRatio();
 										if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
 											setValue( 'aspectRatioUnit', 'ratio' );
+											setAttributes( { aspectRatioUnit: 'ratio' } );
 										} else {
 											setValue( 'aspectRatioUnit', 'pixels' );
+											setAttributes( { aspectRatioUnit: 'pixels' } );
 										}
 									} }
 									icon={ 'pixels' === getValues( 'aspectRatioUnit' ) ? <X /> : <ColonIcon /> }
@@ -175,8 +177,10 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 										swapAspectRatio();
 										if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
 											setValue( 'aspectRatioUnit', 'ratio' );
+											setAttributes( { aspectRatioUnit: 'ratio' } );
 										} else {
 											setValue( 'aspectRatioUnit', 'pixels' );
+											setAttributes( { aspectRatioUnit: 'pixels' } );
 										}
 									} }
 									icon={ 'pixels' === getValues( 'aspectRatioUnit' ) ? <X width={ 16 } height={ 16 } /> : <ColonIcon width={ 16 } height={ 16 } /> }

@@ -5357,8 +5357,14 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
       swapAspectRatio();
       if ('pixels' === getValues('aspectRatioUnit')) {
         setValue('aspectRatioUnit', 'ratio');
+        setAttributes({
+          aspectRatioUnit: 'ratio'
+        });
       } else {
         setValue('aspectRatioUnit', 'pixels');
+        setAttributes({
+          aspectRatioUnit: 'pixels'
+        });
       }
     },
     icon: 'pixels' === getValues('aspectRatioUnit') ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null) : /*#__PURE__*/React.createElement(_Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_7__["default"], null)
@@ -5406,8 +5412,14 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
       swapAspectRatio();
       if ('pixels' === getValues('aspectRatioUnit')) {
         setValue('aspectRatioUnit', 'ratio');
+        setAttributes({
+          aspectRatioUnit: 'ratio'
+        });
       } else {
         setValue('aspectRatioUnit', 'pixels');
+        setAttributes({
+          aspectRatioUnit: 'pixels'
+        });
       }
     },
     icon: 'pixels' === getValues('aspectRatioUnit') ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], {
@@ -7080,15 +7092,21 @@ var CropScreen = function CropScreen(props) {
         forwardRef: ref,
         onChange: function onChange(values) {
           setAttributes({
-            aspectRatioWidth: values.aspectRatioWidth,
-            aspectRatioHeight: values.aspectRatioHeight,
             aspectRatioWidthPixels: values.aspectRatioWidthPixels,
             aspectRatioHeightPixels: values.aspectRatioHeightPixels
           });
-          if ('pixels' === aspectRatioUnit) {
-            var humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_13__["default"])(aspectRatioWidthPixels, aspectRatioHeightPixels);
+          if ('pixels' === values.aspectRatioUnit) {
+            var humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_13__["default"])(values.aspectRatioWidthPixels, values.aspectRatioHeightPixels);
+            setAttributes({
+              aspectRatioWidth: humanImageRatio.width,
+              aspectRatioHeight: humanImageRatio.height
+            });
             handleAspectRatioChange(humanImageRatio.width, humanImageRatio.height);
           } else {
+            setAttributes({
+              aspectRatioWidth: values.aspectRatioWidth,
+              aspectRatioHeight: values.aspectRatioHeight
+            });
             handleAspectRatioChange(values.aspectRatioWidth, values.aspectRatioHeight);
           }
         }
