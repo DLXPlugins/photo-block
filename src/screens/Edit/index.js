@@ -48,6 +48,7 @@ import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
+import CustomAttributesControl from '../../components/CustomAttributes';
 
 /**
  * Height units.
@@ -428,7 +429,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
-	const { imageCSSClasses, figureCSSClasses, htmlAnchor } = attributes;
+	const { imageCSSClasses, figureCSSClasses, htmlAnchor, hideOnMobile, hideOnTablet, hideOnDesktop } = attributes;
 	const advancedInspectorControls = (
 		<>
 			<PanelRow>
@@ -459,6 +460,42 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						setAttributes( { imageCSSClasses: value } );
 					} }
 					help={ __( 'Add CSS class(es) directly to the image tag.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<CustomAttributesControl
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					label={ __( 'Hide on Mobile', 'photo-block' ) }
+					checked={ hideOnMobile }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnMobile: value } );
+					} }
+					help={ __( 'Hide this photo on mobile devices.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					label={ __( 'Hide on Tablet', 'photo-block' ) }
+					checked={ hideOnTablet }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnTablet: value } );
+					} }
+					help={ __( 'Hide this photo on tablet devices.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					label={ __( 'Hide on Desktop', 'photo-block' ) }
+					checked={ hideOnDesktop }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnDesktop: value } );
+					} }
+					help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
 				/>
 			</PanelRow>
 		</>

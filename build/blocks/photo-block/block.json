@@ -674,6 +674,22 @@
           "unitSync": true
         }
       }
+    },
+    "hideOnMobile": {
+      "type": "boolean",
+      "default": false
+    },
+    "hideOnTablet": {
+      "type": "boolean",
+      "default": false
+    },
+    "hideOnDesktop": {
+      "type": "boolean",
+      "default": false
+    },
+    "customAttributes": {
+      "type": "array",
+      "default": []
     }
   },
   "supports": {
