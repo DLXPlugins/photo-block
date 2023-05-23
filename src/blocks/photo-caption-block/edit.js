@@ -28,6 +28,7 @@ import {
 
 import {
 	InspectorControls,
+	InspectorAdvancedControls,
 	useBlockProps,
 	BlockControls,
 	useInnerBlocksProps,

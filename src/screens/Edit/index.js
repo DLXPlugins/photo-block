@@ -21,7 +21,7 @@ import {
 	RangeControl,
 	Button,
 } from '@wordpress/components';
-import { InspectorControls, BlockControls } from '@wordpress/block-editor';
+import { InspectorControls, BlockControls, InspectorAdvancedControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import {
 	Crop,
@@ -428,6 +428,42 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
+	const { imageCSSClasses, figureCSSClasses, htmlAnchor } = attributes;
+	const advancedInspectorControls = (
+		<>
+			<PanelRow>
+				<TextControl
+					label={ __( 'HTML Anchor', 'photo-block' ) }
+					value={ htmlAnchor }
+					onChange={ ( value ) => {
+						setAttributes( { htmlAnchor: value } );
+					} }
+					help={ __( 'Enter a word or two — without spaces — to make a unique web address just for this photo, called an "anchor." Then, you\'ll be able to link directly to this photo on your page.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<TextControl
+					label={ __( 'Figure CSS Class(es)', 'photo-block' ) }
+					value={ figureCSSClasses }
+					onChange={ ( value ) => {
+						setAttributes( { figureCSSClasses: value } );
+					} }
+					help={ __( 'Add CSS class(es) directly to the figure tag, which wraps the image.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<TextControl
+					label={ __( 'Image CSS Class(es)', 'photo-block' ) }
+					value={ imageCSSClasses }
+					onChange={ ( value ) => {
+						setAttributes( { imageCSSClasses: value } );
+					} }
+					help={ __( 'Add CSS class(es) directly to the image tag.', 'photo-block' ) }
+				/>
+			</PanelRow>
+		</>
+	)
+
 	const localToolbar = (
 		<>
 			<BlockControls>
@@ -583,6 +619,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		<>
 			{ localInspectorControls }
 			{ localToolbar }
+			{ <InspectorAdvancedControls>{ advancedInspectorControls }</InspectorAdvancedControls> }
 			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
 				{ imageLoading && (

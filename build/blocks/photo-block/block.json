@@ -677,11 +677,13 @@
     }
   },
   "supports": {
-    "anchor": true,
+    "anchor": false,
     "align": true,
     "className": true,
+    "customClassName": false,
     "alignWide": true,
-    "defaultStylePicker": false
+    "defaultStylePicker": false,
+    "html": false
   },
   "example": {
     "attributes": {}
