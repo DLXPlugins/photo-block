@@ -66,6 +66,7 @@ import { DataSelect } from '../../components/DataSelect';
 import SendCommand from '../../utils/SendCommand';
 import TypographyControl from '../../components/Typography';
 import ColorPickerControl from '../../components/ColorPicker';
+import { getValueWithUnit, buildBorderCSS, buildDimensionsCSS } from '../../utils/TypographyHelper';
 
 /**
  * Height units.
@@ -96,7 +97,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
 		{
-			className: 'has-click-to-share-text has-click-to-share__share-text',
+			className: 'dlx-photo-caption-block__inner-blocks',
 			ref: innerBlocksRef,
 		},
 		{
@@ -321,7 +322,7 @@ const PhotoCaptionBlock = ( props ) => {
 					label={ __( 'Caption Margin', 'photo-block' ) }
 					values={ captionMarginSize }
 					onValuesChange={ ( values ) => {
-						setAttributes( { photoMarginSize: values } );
+						setAttributes( { captionMarginSize: values } );
 					} }
 					labelTop={ __( 'Top Margin', 'photo-block' ) }
 					labelRight={ __( 'Right Margin', 'photo-block' ) }
@@ -670,11 +671,11 @@ const PhotoCaptionBlock = ( props ) => {
 					</>
 				);
 			} else if ( '' !== caption ) {
-				return htmlToReactParser.parse( caption );
+				return ( <figcaption id={ uniqueId }>{ htmlToReactParser.parse( caption ) }</figcaption> );
 			}
 			return __( 'No caption', 'photo-block' );
 		}
-		return <div { ...innerBlockProps } />;
+		return <figcaption id={ uniqueId } { ...innerBlockProps } />;
 	};
 
 	// Set the local inspector controls.
@@ -682,8 +683,27 @@ const PhotoCaptionBlock = ( props ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
+	let styles = `
+		figcaption#${ uniqueId } {
+			background: ${ captionBackgroundColor };
+			${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
+			${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
+			${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
+			${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
+			${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
+			${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
+		}
+		figcaption#${ uniqueId } {
+			padding: ${ buildDimensionsCSS( captionPaddingSize, deviceType ) };
+			margin: ${ buildDimensionsCSS( captionMarginSize, deviceType ) };
+			border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
+			${ buildBorderCSS( captionBorder, deviceType ) }
+		}
+	`;
+
 	const block = (
 		<>
+			<style>{ styles }</style>
 			{ localInspectorControls }
 			{ localToolbar }
 			<div className="dlx-photo-block__caption-wrapper">

@@ -655,6 +655,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	if ( photoDropShadow.enabled ) {
 		styles += `
 			#${ uniqueId } img {
+				box-sizing: border-box;
 				box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${
 	photoDropShadow.horizontal
 }px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${
@@ -691,7 +692,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				) }
 				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">
 					{ 'top' === captionPosition && (
-						<figcaption
+						<div
 							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
 							{ ...innerBlockProps }
 						/>
@@ -712,7 +713,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						/>
 					</div>
 					{ 'bottom' === captionPosition && (
-						<figcaption
+						<div
 							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
 							{ ...innerBlockProps }
 						/>
