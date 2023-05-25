@@ -690,7 +690,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Settings', 'photo-block'),
     initialOpen: true
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, {
+  }, dataMode && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, {
     className: "has-typography-panel-row"
   }, /*#__PURE__*/React.createElement(_components_Typography__WEBPACK_IMPORTED_MODULE_15__["default"], {
     values: captionTypography,
@@ -713,7 +713,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     defaultColors: photoBlock.palette,
     defaultColor: 'transparent',
     slug: 'background-color-caption'
-  }), /*#__PURE__*/React.createElement(_components_ColorPicker__WEBPACK_IMPORTED_MODULE_16__["default"], {
+  }), dataMode && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_ColorPicker__WEBPACK_IMPORTED_MODULE_16__["default"], {
     value: captionTextColor,
     key: 'text-color-caption',
     onChange: function onChange(slug, newValue) {
@@ -749,7 +749,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     defaultColors: photoBlock.palette,
     defaultColor: 'transparent',
     slug: 'link-hover-color-caption'
-  })));
+  }))));
 
   // Set the local inspector controls.
   var styleInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
@@ -1050,7 +1050,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   /**
    * Get the caption for display.
    *
-   * @returns {JSX.Element} The caption.
+   * @return {JSX.Element} The caption.
    */
   var getCaption = function getCaption() {
     if (dataMode) {

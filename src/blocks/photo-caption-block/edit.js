@@ -37,7 +37,7 @@ import {
 } from '@wordpress/block-editor';
 
 import {
-	useDispatch
+	useDispatch,
 } from '@wordpress/data';
 
 import {
@@ -220,7 +220,6 @@ const PhotoCaptionBlock = ( props ) => {
 			} );
 	};
 
-
 	// Do REST request to get dynamic caption if needed.
 	useEffect( () => {
 		if ( dataMode ) {
@@ -234,18 +233,20 @@ const PhotoCaptionBlock = ( props ) => {
 				title={ __( 'Caption Settings', 'photo-block' ) }
 				initialOpen={ true }
 			>
-				<PanelRow className="has-typography-panel-row">
-					<TypographyControl
-						values={ captionTypography }
-						screenSize={ deviceType }
-						onValuesChange={ ( formValues ) => {
-							setAttributes( {
-								captionTypography: formValues,
-							} );
-						} }
-						label={ __( 'Caption Typography', 'photo-block' ) }
-					/>
-				</PanelRow>
+				{ dataMode && (
+					<PanelRow className="has-typography-panel-row">
+						<TypographyControl
+							values={ captionTypography }
+							screenSize={ deviceType }
+							onValuesChange={ ( formValues ) => {
+								setAttributes( {
+									captionTypography: formValues,
+								} );
+							} }
+							label={ __( 'Caption Typography', 'photo-block' ) }
+						/>
+					</PanelRow>
+				) }
 				<ColorPickerControl
 					value={ captionBackgroundColor }
 					key={ 'background-color-caption' }
@@ -257,39 +258,43 @@ const PhotoCaptionBlock = ( props ) => {
 					defaultColor={ 'transparent' }
 					slug={ 'background-color-caption' }
 				/>
-				<ColorPickerControl
-					value={ captionTextColor }
-					key={ 'text-color-caption' }
-					onChange={ ( slug, newValue ) => {
-						setAttributes( { captionTextColor: newValue } );
-					} }
-					label={ __( 'Text Color', 'photo-block' ) }
-					defaultColors={ photoBlock.palette }
-					defaultColor={ 'transparent' }
-					slug={ 'text-color-caption' }
-				/>
-				<ColorPickerControl
-					value={ captionLinkColor }
-					key={ 'link-color-caption' }
-					onChange={ ( slug, newValue ) => {
-						setAttributes( { captionTextColor: newValue } );
-					} }
-					label={ __( 'Link Color', 'photo-block' ) }
-					defaultColors={ photoBlock.palette }
-					defaultColor={ 'transparent' }
-					slug={ 'link-color-caption' }
-				/>
-				<ColorPickerControl
-					value={ captionLinkHoverColor }
-					key={ 'link-hover-color-caption' }
-					onChange={ ( slug, newValue ) => {
-						setAttributes( { captionLinkHoverColor: newValue } );
-					} }
-					label={ __( 'Link Color (Hover)', 'photo-block' ) }
-					defaultColors={ photoBlock.palette }
-					defaultColor={ 'transparent' }
-					slug={ 'link-hover-color-caption' }
-				/>
+				{ dataMode && (
+					<>
+						<ColorPickerControl
+							value={ captionTextColor }
+							key={ 'text-color-caption' }
+							onChange={ ( slug, newValue ) => {
+								setAttributes( { captionTextColor: newValue } );
+							} }
+							label={ __( 'Text Color', 'photo-block' ) }
+							defaultColors={ photoBlock.palette }
+							defaultColor={ 'transparent' }
+							slug={ 'text-color-caption' }
+						/>
+						<ColorPickerControl
+							value={ captionLinkColor }
+							key={ 'link-color-caption' }
+							onChange={ ( slug, newValue ) => {
+								setAttributes( { captionTextColor: newValue } );
+							} }
+							label={ __( 'Link Color', 'photo-block' ) }
+							defaultColors={ photoBlock.palette }
+							defaultColor={ 'transparent' }
+							slug={ 'link-color-caption' }
+						/>
+						<ColorPickerControl
+							value={ captionLinkHoverColor }
+							key={ 'link-hover-color-caption' }
+							onChange={ ( slug, newValue ) => {
+								setAttributes( { captionLinkHoverColor: newValue } );
+							} }
+							label={ __( 'Link Color (Hover)', 'photo-block' ) }
+							defaultColors={ photoBlock.palette }
+							defaultColor={ 'transparent' }
+							slug={ 'link-hover-color-caption' }
+						/>
+					</>
+				) }
 			</PanelBody>
 		</>
 	);
@@ -659,7 +664,7 @@ const PhotoCaptionBlock = ( props ) => {
 	/**
 	 * Get the caption for display.
 	 *
-	 * @returns {JSX.Element} The caption.
+	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = () => {
 		if ( dataMode ) {
@@ -683,7 +688,7 @@ const PhotoCaptionBlock = ( props ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
-	let styles = `
+	const styles = `
 		figcaption#${ uniqueId } {
 			background: ${ captionBackgroundColor };
 			${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
