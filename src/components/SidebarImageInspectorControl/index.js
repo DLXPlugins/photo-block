@@ -4,6 +4,7 @@ import {
 	SelectControl,
 	RangeControl,
 	PanelRow,
+	TextControl,
 } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
@@ -36,6 +37,8 @@ const SidebarImageInspectorControl = ( props ) => {
 		photoOpacity,
 		photoBlur,
 		photoObjectFit,
+		photoObjectPosition,
+		photoObjectPositionCustom,
 		photoDropShadow,
 		photoBackgroundColor,
 		containerHeight,
@@ -71,7 +74,7 @@ const SidebarImageInspectorControl = ( props ) => {
 					} }
 					label={ __( 'Background Color', 'highlight-and-share' ) }
 					defaultColors={ photoBlock.palette }
-					defaultColor={ '#FFFFFF' }
+					defaultColor={ 'transparent' }
 					slug={ 'background-color-photo' }
 				/>
 				<RangeControl
@@ -219,6 +222,46 @@ const SidebarImageInspectorControl = ( props ) => {
 						) }
 					/>
 				</PanelRow>
+				{ 'none' !== photoObjectFit && (
+					<PanelRow>
+						<SelectControl
+							label={ __( 'Object Position', 'photo-block' ) }
+							value={ photoObjectPosition }
+							options={ [
+								{ label: __( 'None', 'photo-block' ), value: 'none' },
+								{ label: __( 'Top', 'photo-block' ), value: 'top' },
+								{ label: __( 'Right', 'photo-block' ), value: 'right' },
+								{ label: __( 'Bottom', 'photo-block' ), value: 'bottom' },
+								{ label: __( 'Left', 'photo-block' ), value: 'left' },
+								{ label: __( 'Custom', 'photo-block' ), value: 'custom' },
+							] }
+							onChange={ ( newObjectPosition ) => {
+								setAttributes( { photoObjectPosition: newObjectPosition } );
+							} }
+							help={ __(
+								'How the image should be positioned inside the container.',
+								'photo-block'
+							) }
+						/>
+					</PanelRow>
+				) }
+				{ ( 'none' !== photoObjectFit && 'custom' === photoObjectPosition ) && (
+					<PanelRow>
+						<TextControl
+							label={ __( 'Custom Object Position', 'photo-block' ) }
+							value={ photoObjectPositionCustom }
+							onChange={ ( newObjectPositionCustom ) => {
+								setAttributes( {
+									photoObjectPositionCustom: newObjectPositionCustom,
+								} );
+							} }
+							help={ __(
+								'Enter a custom object position in CSS format.',
+								'photo-block'
+							) }
+						/>
+					</PanelRow>
+				) }
 				<div className="dlx-photo-block__container-width">
 					<SizeResponsiveControl
 						label={ __( 'Width', 'photo-block' ) }

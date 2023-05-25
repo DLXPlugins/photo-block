@@ -49,6 +49,7 @@ import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import CustomAttributesControl from '../../components/CustomAttributes';
+import { buildDimensionsCSS, getValueWithUnit, buildBorderCSS } from '../../utils/TypographyHelper';
 
 /**
  * Height units.
@@ -66,6 +67,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		photoOpacity,
 		photoBlur,
 		photoObjectFit,
+		photoObjectPosition,
+		photoObjectPositionCustom,
 		photoDropShadow,
 		photoBackgroundColor,
 		cssGramFilter,
@@ -627,12 +630,26 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	);
 
 	let styles = `
-		#${ uniqueId } .dlx-photo-block__screen-edit-image {
+		#${ uniqueId } .dlx-photo-block__image-wrapper {
 			background: ${ photoBackgroundColor };
+			${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
+			${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
+			${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
+			${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
+			${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
+			${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
 		}
 		#${ uniqueId } img {
 			opacity: ${ photoOpacity };
 			${ photoBlur ? `filter: blur(${ photoBlur }px);` : '' }
+			object-fit: ${ photoObjectFit };
+			${ 'none' !== photoObjectFit ? 'height: 100%; width: 100%;' : '' }
+			${ ( 'none' !== photoObjectFit && 'custom' !== photoObjectPosition ) ? 'object-position:' + photoObjectPosition + ';' : '' }
+			${ ( 'none' !== photoObjectFit && 'custom' === photoObjectPosition && '' !== photoObjectPositionCustom ) ? 'object-position:' + photoObjectPositionCustom + ';' : '' }
+			padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
+			margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
+			border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
+			${ buildBorderCSS( photoBorder, deviceType ) }
 		}
 	`;
 	if ( photoDropShadow.enabled ) {
@@ -672,17 +689,17 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<Spinner />
 					</div>
 				) }
-				<figure className="dlx-photo-block__screen-edit-image-wrapper">
+				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">
 					{ 'top' === captionPosition && (
 						<figcaption
-							className="dlx-photo-block__screen-edit-caption"
+							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
 							{ ...innerBlockProps }
 						/>
 					) }
-					<div className="dlx-photo-block__screen-edit-image">
+					<div className="dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper">
 						<img
 							src={ url }
-							className={ classnames( `photo-block-${ cssGramFilter }`, {
+							className={ classnames( `photo-block-${ cssGramFilter } dlx-photo-block__image`, {
 								'has-css-gram': cssGramFilter !== 'none',
 							} ) }
 							width={ imageDimensions.width }
@@ -696,7 +713,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					</div>
 					{ 'bottom' === captionPosition && (
 						<figcaption
-							className="dlx-photo-block__screen-edit-caption"
+							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
 							{ ...innerBlockProps }
 						/>
 					) }

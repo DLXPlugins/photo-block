@@ -42,6 +42,14 @@
       "type": "string",
       "default": "none"
     },
+    "photoObjectPosition": {
+      "type": "string",
+      "default": "none"
+    },
+    "photoObjectPositionCustom": {
+      "type": "string",
+      "default": ""
+    },
     "photoDropShadow": {
       "type": "object",
       "default": {
