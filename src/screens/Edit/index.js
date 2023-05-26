@@ -660,12 +660,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	photoDropShadow.horizontal
 }px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${
 	photoDropShadow.spread
-}px ${ hexToRgba( photoDropShadow.color, photoDropShadow.opacity ) };
+}px ${ photoDropShadow.color };
 				-webkit-box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${
 	photoDropShadow.horizontal
 }px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${
 	photoDropShadow.spread
-}px ${ hexToRgba( photoDropShadow.color, photoDropShadow.opacity ) };
+}px ${ photoDropShadow.color };
 			}
 		`;
 	}

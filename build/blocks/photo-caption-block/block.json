@@ -24,6 +24,14 @@
       "type": "string",
       "default": ""
     },
+    "captionManual": {
+      "type": "string",
+      "default": ""
+    },
+    "mode": {
+      "type": "string",
+      "default": "easy"
+    },
     "captionPosition": {
       "type": "string",
       "default": "bottom"

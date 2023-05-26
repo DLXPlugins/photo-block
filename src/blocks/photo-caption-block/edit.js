@@ -29,6 +29,7 @@ import {
 import {
 	InspectorControls,
 	InspectorAdvancedControls,
+	RichText,
 	useBlockProps,
 	BlockControls,
 	useInnerBlocksProps,
@@ -45,6 +46,7 @@ import {
 	SeparatorHorizontal,
 	Check,
 	Shrink,
+	Database,
 	FormInput,
 	Maximize,
 	Settings,
@@ -86,12 +88,13 @@ const PhotoCaptionBlock = ( props ) => {
 		inQueryLoop,
 	} = useContext( UploaderContext );
 
-	const [ caption, setCaption ] = useState( '' ); // Only applicable if in daa mode.
+	const [ caption, setCaption ] = useState( '' ); // Only applicable if in data mode.
 	const [ captionLoading, setCaptionLoading ] = useState( false ); // Only applicable if in data mode.
 	const [ captionPositionPopoverVisible, setCaptionPositionPopoverVisible ] = useState( false );
 	const [ captionPopoverRef, setCaptionPopoverRef ] = useState( null );
 	const [ removeCaptionModalVisible, setRemoveCaptionModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ dataModalVisible, setDataModalVisible ] = useState( false ); // only applicable if in data mode.
+	const [ switchModeModalVisible, setSwitchModeModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 
 	const innerBlocksRef = useRef( null );
@@ -127,6 +130,8 @@ const PhotoCaptionBlock = ( props ) => {
 
 	const {
 		uniqueId,
+		mode,
+		captionManual,
 		captionPosition: blockCaptionPosition,
 		captionBackgroundColor,
 		captionTextColor,
@@ -233,7 +238,7 @@ const PhotoCaptionBlock = ( props ) => {
 				title={ __( 'Caption Settings', 'photo-block' ) }
 				initialOpen={ true }
 			>
-				{ dataMode && (
+				{ ( dataMode || 'easy' === mode ) && (
 					<PanelRow className="has-typography-panel-row">
 						<TypographyControl
 							values={ captionTypography }
@@ -258,7 +263,7 @@ const PhotoCaptionBlock = ( props ) => {
 					defaultColor={ 'transparent' }
 					slug={ 'background-color-caption' }
 				/>
-				{ dataMode && (
+				{ ( dataMode || 'easy' === mode ) && (
 					<>
 						<ColorPickerControl
 							value={ captionTextColor }
@@ -516,21 +521,31 @@ const PhotoCaptionBlock = ( props ) => {
 				>
 					{ __( 'Caption Position', 'photo-block' ) }
 				</ToolbarButton>
+				{ ! dataMode && (
+					<ToolbarButton
+						icon={ <FormInput /> }
+						label={ __( 'Caption Mode', 'photo-block' ) }
+						onClick={ () => {
+							setSwitchModeModalVisible( true );
+						} }
+						ref={ setCaptionPopoverRef }
+					>
+						{ __( 'Caption Mode', 'photo-block' ) }
+					</ToolbarButton>
+				) }
 				<ToolbarButton
 					icon={ <Trash2 /> }
 					label={ __( 'Remove Caption', 'photo-block' ) }
 					onClick={ () => {
 						setRemoveCaptionModalVisible( true );
 					} }
-				>
-					{ __( 'Remove Caption', 'photo-block' ) }
-				</ToolbarButton>
+				/>
 			</ToolbarGroup>
 			{
 				dataMode && (
 					<ToolbarGroup>
 						<ToolbarButton
-							icon={ <FormInput /> }
+							icon={ <Database /> }
 							label={ __( 'Caption Data', 'photo-block' ) }
 							onClick={ () => {
 								setDataModalVisible( true );
@@ -573,6 +588,54 @@ const PhotoCaptionBlock = ( props ) => {
 								} }
 							>
 								{ __( 'Close', 'photo-block' ) }
+							</Button>
+						</ButtonGroup>
+					</div>
+				</Modal>
+			) }
+			{ switchModeModalVisible && (
+				<Modal
+					title={ 'easy' === mode ? __( 'Switch to Advanced Mode', 'photo-block' ) : __( 'Switch to Easy Mode', 'photo-block' ) }
+					onRequestClose={ () => {
+						setSwitchModeModalVisible( false );
+					} }
+					className="photo-block__remove-caption-modal"
+				>
+					<div className="dlx-photo-block__a11y-popover">
+						{
+							'easy' === mode && (
+								<>
+									<h3>{ __( 'Switch to Advanced Mode', 'photo-block' ) }</h3>
+									<p>
+										{ __( 'Switch to advanced mode to have multi-line captions made out of different blocks.', 'photo-block' ) }
+									</p>
+								</>
+							) }
+						{ 'advanced' === mode && (
+							<>
+								<h3>{ __( 'Switch to Easy Mode', 'photo-block' ) }</h3>
+								<p>
+									{ __( 'Switch to a single-line caption format.', 'photo-block' ) }
+								</p>
+							</>
+						)	}
+						<ButtonGroup>
+							<Button
+								variant="primary"
+								onClick={ () => {
+									setAttributes( { mode: 'easy' === mode ? 'advanced' : 'easy' } )
+									setSwitchModeModalVisible( false );
+								} }
+							>
+								{ 'easy' === mode ? __( 'Switch to Advanced Mode', 'photo-block' ) : __( 'Switch to Easy Mode', 'photo-block' ) }
+							</Button>
+							<Button
+								variant="secondary"
+								onClick={ () => {
+									setSwitchModeModalVisible( false );
+								} }
+							>
+								{ __( 'Cancel', 'photo-block' ) }
 							</Button>
 						</ButtonGroup>
 					</div>
@@ -679,6 +742,20 @@ const PhotoCaptionBlock = ( props ) => {
 				return ( <figcaption id={ uniqueId }>{ htmlToReactParser.parse( caption ) }</figcaption> );
 			}
 			return __( 'No caption', 'photo-block' );
+		}
+		if ( 'easy' === mode ) {
+			return (
+				<figcaption id={ uniqueId }>
+					<RichText
+						tagName="div"
+						placeholder={ __( 'Write caption…', 'photo-block' ) }
+						value={ captionManual }
+						onChange={ ( value ) => {
+							setAttributes( { captionManual: value } );
+						} }
+					/>
+				</figcaption>
+			);
 		}
 		return <figcaption id={ uniqueId } { ...innerBlockProps } />;
 	};

@@ -54,6 +54,11 @@ const ColorPickerControl = ( props ) => {
 			return colorValue;
 		}
 
+		// Test for RGBA at the beginning, and return value.
+		if ( colorValue.indexOf( 'rgba' ) === 0 ) {
+			return colorValue;
+		}
+
 		// Test for RGB at the beginning, and return hex if found.
 		if ( colorValue.indexOf( 'rgb' ) === 0 ) {
 			return rgb2hex( colorValue ).hex;
@@ -186,7 +191,6 @@ const ColorPickerControl = ( props ) => {
 									onChangeComplete={ ( newColor ) => {
 										const maybeNewColor = getColor( newColor.hex, opacity );
 										setColor( maybeNewColor );
-										setColorKey( maybeNewColor );
 										onChange( slug, maybeNewColor );
 									} }
 									disableAlpha
@@ -206,7 +210,6 @@ const ColorPickerControl = ( props ) => {
 											const newColor = getColor( color, opacityValue );
 											setOpacity( opacityValue );
 											setColor( newColor );
-											setColorKey( newColor );
 											onChange( slug, getColor( color, opacityValue ) );
 										} }
 										min={ 0 }
@@ -224,7 +227,6 @@ const ColorPickerControl = ( props ) => {
 										const maybeNewColor = getColor( newColor );
 										onChange( slug, maybeNewColor );
 										setColor( maybeNewColor );
-										setColorKey( maybeNewColor );
 									} }
 									disableCustomColors={ true }
 									clearable={ false }
@@ -234,7 +236,6 @@ const ColorPickerControl = ( props ) => {
 								<Button
 									onClick={ () => {
 										onChange( slug, defaultColor );
-										setColorKey( defaultColor );
 										setColor( defaultColor );
 									} }
 								>
