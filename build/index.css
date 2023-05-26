@@ -1220,6 +1220,9 @@ figcaption.dlx-photo-block__caption.has-smart-styles h6 {
   margin-top: 0;
   margin-bottom: 0.8em;
 }
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button {
+  font-size: var(--dlx-photo-block__caption-font-size);
+}
 figcaption.dlx-photo-block__caption.has-smart-styles button,
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button .wp-element-button {
   font-family: var(--dlx-photo-block__caption-font-family);

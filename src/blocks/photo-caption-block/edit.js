@@ -232,7 +232,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
 		{
-			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && ! dataMode ) } ),
+			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && ! dataMode && enableSmartStyles ) } ),
 			ref: innerBlocksRef,
 		},
 		{

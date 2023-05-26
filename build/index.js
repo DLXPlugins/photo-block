@@ -704,7 +704,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var innerBlocksRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
   var innerBlockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.useInnerBlocksProps)({
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()('dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', {
-      'has-smart-styles': 'advanced' === mode && !dataMode
+      'has-smart-styles': 'advanced' === mode && !dataMode && enableSmartStyles
     }),
     ref: innerBlocksRef
   }, {
