@@ -4,3 +4,167 @@
 		transform: rotate(360deg);
 	}
 }
+
+/**
+ * Base Figure styles.
+ */
+.dlx-photo-block__figure,
+.dlx-photo-block__screen-edit-image-wrapper {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.dlx-photo-block__figure > .dlx-photo-block__caption {
+	width: 100%;
+}
+figcaption.dlx-photo-block__caption {
+	box-sizing: border-box;
+}
+/**
+ * Smart Styles.
+ */
+figcaption.dlx-photo-block__caption.has-smart-styles {
+	font-size: var( --dlx-photo-block__caption-font-size );
+	/* Strip Margin and padding from first and last elements */
+	& > :first-child {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	& > :last-child {
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	/* Set color for common elements */
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	blockquote,
+	cite,
+	ul,
+	li,
+	.wp-block-verse {
+		color: var( --dlx-photo-block__caption-text-color );
+		
+		a {
+			color: var( --dlx-photo-block__caption-accent-color );
+			&:hover {
+				color: var( --dlx-photo-block__caption-accent-color );
+			}
+		}
+	}
+
+	/* Set font family / size for common elements.*/
+	p,
+	li,
+	.wp-block-verse {
+		font-family: var( --dlx-photo-block__caption-font-family );
+		font-size: 1.25em;
+		line-height: 1.35;
+	}
+	blockquote {
+		font-size: var( --dlx-photo-block__caption-font-size );
+		p {
+			font-family: var( --dlx-photo-block__caption-font-family );
+			font-size: 1.3em;
+			line-height: 1.35;
+		}
+		cite {
+			font-family: var( --dlx-photo-block__caption-font-family );
+			font-size: 1.5em;
+			line-height: 1.4;
+		}
+	}
+
+	/* Add a little bit of margin left to the list items.
+	 * This is to make the list items look like they are
+	 * indented. */
+	li {
+		margin-left: 1.5em;
+	}
+
+	/* Set font family / size for heading elements.*/
+	h1 {
+		font-family: var( --dlx-photo-block__caption-headings-font-family );
+		font-size: 2.5em;
+		line-height: 1.2;
+	}
+	h2 {
+		font-family: var( --dlx-photo-block__caption-headings-font-family );
+		font-size: 2em;
+		line-height: 1.25;
+	}
+	h3 {
+		font-family: var( --dlx-photo-block__caption-headings-font-family );
+		font-size: 1.75em;
+		line-height: 1.3;
+	}
+	h4 {
+		font-family: var( --dlx-photo-block__caption-headings-font-family );
+		font-size: 1.5em;
+		line-height: 1.35;
+	}
+	h5 {
+		font-family: var( --dlx-photo-block__caption-headings-font-family );
+		font-size: 1.25em;
+		line-height: 1.4;
+	}
+	h6 {
+		font-family: var( --dlx-photo-block__caption-headings-font-family );
+		font-size: 1.1em;
+		line-height: 1.45;
+	}
+
+	/* Set margins for common elements */
+	p,
+	li {
+		margin-top: 0;
+		margin-bottom: 0.6em;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin-top: 0;
+		margin-bottom: 0.8em;
+	}
+
+	/* Set Button Styles */
+	button,
+	.wp-block-button .wp-element-button {
+		font-family: var( --dlx-photo-block__caption-font-family );
+		font-size: 1.25em;
+		line-height: 1.35;
+		background: var( --dlx-photo-block__caption-accent-color );
+		color: var( --dlx-photo-block__caption-secondary-color );
+		transition: all 0.3s ease-in-out;
+
+		&:hover {
+			background: var( --dlx-photo-block__caption-accent-color );
+			color: var( --dlx-photo-block__caption-secondary-color );
+		}
+	}
+	button,
+	.wp-block-button {
+		margin-bottom: 0.6em;
+	}
+	/* Get child block that might have text alignment */
+	.wp-block-button:has( .has-text-align-center ) {
+		margin: 0 auto;
+	}
+	.wp-block-button:has( .has-text-align-right ) {
+		margin-left: auto;
+	}
+	.wp-block-button:has( .has-text-align-left ) {
+		margin-right: auto;
+	}
+	
+
+}

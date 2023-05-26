@@ -177,11 +177,11 @@ const TypographyControl = ( props ) => {
 	// Retrieve the list all available fonts.
 	const getFonts = () => {
 		const fonts = [];
-		
+
 		fontFamilies.forEach( ( fontFamily ) => {
-			fonts.push( { label: fontFamily.name, value: fontFamily.slug } );
+			fonts.push( { label: fontFamily.name, value: fontFamily.slug, family: fontFamily.family, fallback: fontFamily.fallback, type: fontFamily.type } );
 		} );
-		
+
 		// Add placeholder.
 		fonts.unshift( { label: __( 'Custom', 'photo-block' ), value: 'custom' } );
 		fonts.unshift( { label: __( 'Select a Font', 'photo-block' ), value: '' } );
@@ -205,8 +205,9 @@ const TypographyControl = ( props ) => {
 
 								// Get font family name for CSS.
 								fonts.forEach( ( font ) => {
-									if ( font.slug === newValue ) {
+									if ( font.value === newValue ) {
 										setValue( `${ screenSize }.fontFamily`, font.family );
+										setValue( `${ screenSize }.fontFamilySlug`, font.value );
 										setValue( `${ screenSize }.fontFallback`, font.fallback );
 										setValue( `${ screenSize }.fontType`, font.type );
 									}

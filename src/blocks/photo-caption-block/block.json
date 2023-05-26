@@ -28,7 +28,28 @@
 		},
 		"mode": {
 			"type": "string",
-			"default": "easy"
+			"default": "single"
+		},
+		"enableSmartStyles": {
+			"type": "boolean",
+			"default": true
+		},
+		"captionBaseFontSize": {
+			"type": "object",
+			"default": {
+				"mobile": {
+					"value": "14",
+					"unit": "px"
+				},
+				"tablet": {
+					"value": "14",
+					"unit": "px"
+				},
+				"desktop": {
+					"value": "16",
+					"unit": "px"
+				}
+			}
 		},
 		"captionPosition": {
 			"type": "string",
@@ -44,15 +65,31 @@
 		},
 		"captionTextColor": {
 			"type": "string",
-			"default": "transparent"
+			"default": "#333"
+		},
+		"captionAccentColor": {
+			"type": "string",
+			"default": "#e17713"
+		},
+		"captionSecondaryColor": {
+			"type": "string",
+			"default": "#FFFFFF"
 		},
 		"captionLinkColor": {
 			"type": "string",
-			"default": "transparent"
+			"default": "#e17713"
 		},
 		"captionLinkHoverColor": {
 			"type": "string",
-			"default": "transparent"
+			"default": "#f58f2f"
+		},
+		"captionTextFontFamily": {
+			"type": "string",
+			"default": "Arial"
+		},
+		"captionHeadingsFontFamily": {
+			"type": "string",
+			"default": "Arial"
 		},
 		"captionTypography": {
 			"type": "object",
@@ -88,10 +125,10 @@
 				"desktop": {
 					"fontFamily": "Arial",
 					"fontFamilySlug": "arial",
-					"fontSize": "24",
+					"fontSize": "18",
 					"fontSizeUnit": "px",
 					"fontWeight": "normal",
-					"lineHeight": "1.3",
+					"lineHeight": "1.2",
 					"lineHeightUnit": "em",
 					"textTransform": "none",
 					"letterSpacing": "0",
@@ -127,15 +164,15 @@
 					"unitSync": true
 				},
 				"desktop": {
-					"top": "0",
-					"right": "0",
-					"bottom": "0",
-					"left": "0",
+					"top": "15",
+					"right": "20",
+					"bottom": "15",
+					"left": "20",
 					"topUnit": "px",
 					"rightUnit": "px",
 					"bottomUnit": "px",
 					"leftUnit": "px",
-					"unitSync": true
+					"unitSync": false
 				}
 			}
 		},

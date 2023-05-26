@@ -1068,6 +1068,185 @@
     transform: rotate(360deg);
   }
 }
+/**
+ * Base Figure styles.
+ */
+.dlx-photo-block__figure,
+.dlx-photo-block__screen-edit-image-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dlx-photo-block__figure > .dlx-photo-block__caption {
+  width: 100%;
+}
+
+figcaption.dlx-photo-block__caption {
+  box-sizing: border-box;
+}
+
+/**
+ * Smart Styles.
+ */
+figcaption.dlx-photo-block__caption.has-smart-styles {
+  font-size: var(--dlx-photo-block__caption-font-size);
+  /* Strip Margin and padding from first and last elements */
+  /* Set color for common elements */
+  /* Set font family / size for common elements.*/
+  /* Add a little bit of margin left to the list items.
+   * This is to make the list items look like they are
+   * indented. */
+  /* Set font family / size for heading elements.*/
+  /* Set margins for common elements */
+  /* Set Button Styles */
+  /* Get child block that might have text alignment */
+}
+figcaption.dlx-photo-block__caption.has-smart-styles > :first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles > :last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles p,
+figcaption.dlx-photo-block__caption.has-smart-styles h1,
+figcaption.dlx-photo-block__caption.has-smart-styles h2,
+figcaption.dlx-photo-block__caption.has-smart-styles h3,
+figcaption.dlx-photo-block__caption.has-smart-styles h4,
+figcaption.dlx-photo-block__caption.has-smart-styles h5,
+figcaption.dlx-photo-block__caption.has-smart-styles h6,
+figcaption.dlx-photo-block__caption.has-smart-styles blockquote,
+figcaption.dlx-photo-block__caption.has-smart-styles cite,
+figcaption.dlx-photo-block__caption.has-smart-styles ul,
+figcaption.dlx-photo-block__caption.has-smart-styles li,
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-verse {
+  color: var(--dlx-photo-block__caption-text-color);
+}
+figcaption.dlx-photo-block__caption.has-smart-styles p a,
+figcaption.dlx-photo-block__caption.has-smart-styles h1 a,
+figcaption.dlx-photo-block__caption.has-smart-styles h2 a,
+figcaption.dlx-photo-block__caption.has-smart-styles h3 a,
+figcaption.dlx-photo-block__caption.has-smart-styles h4 a,
+figcaption.dlx-photo-block__caption.has-smart-styles h5 a,
+figcaption.dlx-photo-block__caption.has-smart-styles h6 a,
+figcaption.dlx-photo-block__caption.has-smart-styles blockquote a,
+figcaption.dlx-photo-block__caption.has-smart-styles cite a,
+figcaption.dlx-photo-block__caption.has-smart-styles ul a,
+figcaption.dlx-photo-block__caption.has-smart-styles li a,
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-verse a {
+  color: var(--dlx-photo-block__caption-accent-color);
+}
+figcaption.dlx-photo-block__caption.has-smart-styles p a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles h1 a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles h2 a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles h3 a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles h4 a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles h5 a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles h6 a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles blockquote a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles cite a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles ul a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles li a:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-verse a:hover {
+  color: var(--dlx-photo-block__caption-accent-color);
+}
+figcaption.dlx-photo-block__caption.has-smart-styles p,
+figcaption.dlx-photo-block__caption.has-smart-styles li,
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-verse {
+  font-family: var(--dlx-photo-block__caption-font-family);
+  font-size: 1.25em;
+  line-height: 1.35;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles blockquote {
+  font-size: var(--dlx-photo-block__caption-font-size);
+}
+figcaption.dlx-photo-block__caption.has-smart-styles blockquote p {
+  font-family: var(--dlx-photo-block__caption-font-family);
+  font-size: 1.3em;
+  line-height: 1.35;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles blockquote cite {
+  font-family: var(--dlx-photo-block__caption-font-family);
+  font-size: 1.5em;
+  line-height: 1.4;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles li {
+  margin-left: 1.5em;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles h1 {
+  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-size: 2.5em;
+  line-height: 1.2;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles h2 {
+  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-size: 2em;
+  line-height: 1.25;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles h3 {
+  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-size: 1.75em;
+  line-height: 1.3;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles h4 {
+  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-size: 1.5em;
+  line-height: 1.35;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles h5 {
+  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-size: 1.25em;
+  line-height: 1.4;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles h6 {
+  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-size: 1.1em;
+  line-height: 1.45;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles p,
+figcaption.dlx-photo-block__caption.has-smart-styles li {
+  margin-top: 0;
+  margin-bottom: 0.6em;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles h1,
+figcaption.dlx-photo-block__caption.has-smart-styles h2,
+figcaption.dlx-photo-block__caption.has-smart-styles h3,
+figcaption.dlx-photo-block__caption.has-smart-styles h4,
+figcaption.dlx-photo-block__caption.has-smart-styles h5,
+figcaption.dlx-photo-block__caption.has-smart-styles h6 {
+  margin-top: 0;
+  margin-bottom: 0.8em;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles button,
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button .wp-element-button {
+  font-family: var(--dlx-photo-block__caption-font-family);
+  font-size: 1.25em;
+  line-height: 1.35;
+  background: var(--dlx-photo-block__caption-accent-color);
+  color: var(--dlx-photo-block__caption-secondary-color);
+  transition: all 0.3s ease-in-out;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles button:hover,
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button .wp-element-button:hover {
+  background: var(--dlx-photo-block__caption-accent-color);
+  color: var(--dlx-photo-block__caption-secondary-color);
+}
+figcaption.dlx-photo-block__caption.has-smart-styles button,
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button {
+  margin-bottom: 0.6em;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-text-align-center) {
+  margin: 0 auto;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-text-align-right) {
+  margin-left: auto;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-text-align-left) {
+  margin-right: auto;
+}
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/photo-block/editor.scss ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************/
@@ -1587,11 +1766,6 @@ svg.lucide {
   min-width: 325px;
   padding: 15px;
   padding-top: 0;
-}
-
-.dlx-photo-block__screen-edit-image-wrapper {
-  position: relative;
-  display: block;
 }
 
 .dlx-photo-block__inspector-tabs button.components-tab-panel__tabs-item {
@@ -3464,6 +3638,13 @@ svg.lucide {
 }
 .photo-block-component-typography-popup .components-popover__content {
   width: unset;
+}
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/RangeResponsive/editor.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__image-max-width {
+  margin: 0;
+  margin-bottom: 16px;
 }
 
 /*# sourceMappingURL=index.css.map*/

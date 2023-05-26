@@ -7,19 +7,14 @@ import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
 	PanelRow,
-	RangeControl,
-	TextControl,
-	TextareaControl,
+	SelectControl,
 	ButtonGroup,
 	Button,
 	ToggleControl,
-	Toolbar,
 	ToolbarButton,
 	ToolbarGroup,
-	ToolbarDropdownMenu,
 	Modal,
 	Popover,
-	PlaceHolder,
 	TabPanel,
 	MenuGroup,
 	Spinner,
@@ -68,12 +63,90 @@ import { DataSelect } from '../../components/DataSelect';
 import SendCommand from '../../utils/SendCommand';
 import TypographyControl from '../../components/Typography';
 import ColorPickerControl from '../../components/ColorPicker';
-import { getValueWithUnit, buildBorderCSS, buildDimensionsCSS } from '../../utils/TypographyHelper';
+import RangeResponsiveControl from '../../components/RangeResponsive';
+import { getValueWithUnit, buildBorderCSS, buildDimensionsCSS, geHierarchicalPlaceholderValue, getHierarchicalValueUnit } from '../../utils/TypographyHelper';
 
 /**
  * Height units.
  */
 const heightUnits = [ 'px', 'em', 'rem', '%', 'vh' ];
+
+const fontFamilies = [
+	{
+		name: 'Arial',
+		family: 'Arial, sans-serif',
+		slug: 'arial',
+		fallback: 'sans-serif',
+		type: 'web',
+	},
+	{
+		name: 'Courier New',
+		family: 'Courier New, monospace',
+		slug: 'courier-new',
+		fallback: 'monospace',
+		type: 'web',
+	},
+	{
+		name: 'Garamond',
+		family: 'Garamond, serif',
+		slug: 'garamond',
+		fallback: 'serif',
+		type: 'web',
+	},
+	{
+		name: 'Georgia',
+		family: 'Georgia, serif',
+		slug: 'georgia',
+		fallback: 'serif',
+		type: 'web',
+	},
+	{
+		name: 'Helvetica',
+		family: 'Helvetica, sans-serif',
+		slug: 'helvetica',
+		fallback: 'sans-serif',
+		type: 'web',
+	},
+	{
+		name: 'Lucida Console',
+		family: 'Lucida Console, monospace',
+		slug: 'lucida-console',
+		fallback: 'monospace',
+		type: 'web',
+	},
+	{
+		name: 'Tahoma',
+		family: 'Tahoma, sans-serif',
+		slug: 'tahoma',
+		fallback: 'sans-serif',
+		type: 'web',
+	},
+	{
+		name: 'Times New Roman',
+		family: 'Times New Roman, serif',
+		slug: 'times-new-roman',
+		fallback: 'serif',
+		type: 'web',
+	},
+	{
+		name: 'Trebuchet MS',
+		family: 'Trebuchet MS, sans-serif',
+		slug: 'trebuchet-ms',
+		fallback: 'sans-serif',
+		type: 'web',
+	},
+	{
+		name: 'Verdana',
+		family: 'Verdana, sans-serif',
+		slug: 'verdana',
+		fallback: 'sans-serif',
+		type: 'web',
+	},
+];
+const fontFamiliesSelect = fontFamilies.map( ( font ) => ( {
+	label: font.name,
+	value: font.family,
+} ) );
 
 const PhotoCaptionBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoCaptionBlock, 'photo-caption-block' );
@@ -92,25 +165,12 @@ const PhotoCaptionBlock = ( props ) => {
 	const [ captionLoading, setCaptionLoading ] = useState( false ); // Only applicable if in data mode.
 	const [ captionPositionPopoverVisible, setCaptionPositionPopoverVisible ] = useState( false );
 	const [ captionPopoverRef, setCaptionPopoverRef ] = useState( null );
+	const [ modePopoverRef, setModePopoverRef ] = useState( null );
+	const [ modePopoverVisible, setModePopoverVisible ] = useState( false );
 	const [ removeCaptionModalVisible, setRemoveCaptionModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ dataModalVisible, setDataModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ switchModeModalVisible, setSwitchModeModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
-
-	const innerBlocksRef = useRef( null );
-	const innerBlockProps = useInnerBlocksProps(
-		{
-			className: 'dlx-photo-caption-block__inner-blocks',
-			ref: innerBlocksRef,
-		},
-		{
-			allowedBlocks: photoBlock.captionInnerBlocks,
-			template: [ [ 'core/paragraph', { fontSize: 'medium', align: 'center', placeholder: __( 'Enter your caption here.', 'photo-block' ) } ] ],
-			templateInsertUpdatesSelection: true,
-			templateLock: false,
-			renderAppender: InnerBlocks.DefaultBlockAppender,
-		}
-	);
 
 	const { removeBlocks } = useDispatch( store );
 
@@ -132,14 +192,20 @@ const PhotoCaptionBlock = ( props ) => {
 		uniqueId,
 		mode,
 		captionManual,
+		enableSmartStyles,
+		captionBaseFontSize,
 		captionPosition: blockCaptionPosition,
 		captionBackgroundColor,
 		captionTextColor,
+		captionAccentColor,
+		captionSecondaryColor,
 		captionLinkColor,
 		captionLinkHoverColor,
 		captionAlign,
 		captionPaddingSize,
 		captionMarginSize,
+		captionTextFontFamily,
+		captionHeadingsFontFamily,
 		captionTypography,
 		captionBorder,
 		captionBorderRadius,
@@ -163,6 +229,20 @@ const PhotoCaptionBlock = ( props ) => {
 		dataCaptionPostTypeAuthorMeta,
 	} = attributes;
 
+	const innerBlocksRef = useRef( null );
+	const innerBlockProps = useInnerBlocksProps(
+		{
+			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && ! dataMode ) } ),
+			ref: innerBlocksRef,
+		},
+		{
+			allowedBlocks: photoBlock.captionInnerBlocks,
+			template: [ [ 'core/paragraph', { align: 'center', placeholder: __( 'Enter your caption here.', 'photo-block' ) } ] ],
+			templateInsertUpdatesSelection: true,
+			templateLock: false,
+			renderAppender: InnerBlocks.DefaultBlockAppender,
+		}
+	);
 	/**
 	 * Get a post ID either from the block or attribute.
 	 *
@@ -238,7 +318,7 @@ const PhotoCaptionBlock = ( props ) => {
 				title={ __( 'Caption Settings', 'photo-block' ) }
 				initialOpen={ true }
 			>
-				{ ( dataMode || 'easy' === mode ) && (
+				{ ( dataMode || 'single' === mode ) && (
 					<PanelRow className="has-typography-panel-row">
 						<TypographyControl
 							values={ captionTypography }
@@ -252,19 +332,112 @@ const PhotoCaptionBlock = ( props ) => {
 						/>
 					</PanelRow>
 				) }
-				<ColorPickerControl
-					value={ captionBackgroundColor }
-					key={ 'background-color-caption' }
-					onChange={ ( slug, newValue ) => {
-						setAttributes( { captionBackgroundColor: newValue } );
-					} }
-					label={ __( 'Background Color', 'photo-block' ) }
-					defaultColors={ photoBlock.palette }
-					defaultColor={ 'transparent' }
-					slug={ 'background-color-caption' }
-				/>
-				{ ( dataMode || 'easy' === mode ) && (
+				{ 'advanced' === mode && (
 					<>
+						<PanelRow>
+							<ToggleControl
+								label={ __( 'Enable Smart Styles', 'photo-block' ) }
+								checked={ enableSmartStyles }
+								onChange={ ( newValue ) => {
+									setAttributes( { enableSmartStyles: newValue } );
+								} }
+								help={ __( 'Enable smart styles to style the individual elements of the caption.', 'photo-block' ) }
+							/>
+						</PanelRow>
+						{ enableSmartStyles && (
+							<>
+								<SelectControl
+									label={ __( 'Text Font Family', 'photo-block' ) }
+									value={ captionTextFontFamily }
+									onChange={ ( newValue ) => {
+										setAttributes( { captionTextFontFamily: newValue } );
+									} }
+									options={ fontFamiliesSelect }
+									help={ __( 'Set the font family for common elements such as paragraphs and quotes.', 'photo-block' ) }
+								/>
+								<SelectControl
+									label={ __( 'Headings Font Family', 'photo-block' ) }
+									value={ captionHeadingsFontFamily }
+									onChange={ ( newValue ) => {
+										setAttributes( { captionHeadingsFontFamily: newValue } );
+									} }
+									options={ fontFamiliesSelect }
+									help={ __( 'Set the font family for heading elements.', 'photo-block' ) }
+								/>
+								<RangeResponsiveControl
+									label={ __( 'Base Font Size', 'photo-block' ) }
+									help={ __( 'Set the base font size for the caption that all elements are based off of.', 'photo-block' ) }
+									values={ captionBaseFontSize }
+									screenSize={ deviceType }
+									onValuesChange={ ( newValues ) => {
+										setAttributes( { captionBaseFontSize: newValues } );
+									} }
+									min={ 0 }
+									max={ 36 }
+									step={ 1 }
+									units={ [ 'px' ] }
+								/>
+								<ColorPickerControl
+									value={ captionBackgroundColor }
+									key={ 'background-color-caption' }
+									onChange={ ( slug, newValue ) => {
+										setAttributes( { captionBackgroundColor: newValue } );
+									} }
+									label={ __( 'Background Color', 'photo-block' ) }
+									defaultColors={ photoBlock.palette }
+									defaultColor={ 'transparent' }
+									slug={ 'background-color-caption' }
+								/>
+								<ColorPickerControl
+									value={ captionTextColor }
+									key={ 'text-color-caption' }
+									onChange={ ( slug, newValue ) => {
+										setAttributes( { captionTextColor: newValue } );
+									} }
+									label={ __( 'Text Color', 'photo-block' ) }
+									defaultColors={ photoBlock.palette }
+									defaultColor={ 'transparent' }
+									slug={ 'text-color-caption' }
+								/>
+								<ColorPickerControl
+									value={ captionAccentColor }
+									key={ 'accent-color-caption' }
+									onChange={ ( slug, newValue ) => {
+										setAttributes( { captionAccentColor: newValue } );
+									} }
+									label={ __( 'Accent Color', 'photo-block' ) }
+									defaultColors={ photoBlock.palette }
+									defaultColor={ 'transparent' }
+									slug={ 'accent-color-caption' }
+								/>
+								<ColorPickerControl
+									value={ captionSecondaryColor }
+									key={ 'secondary-color-caption' }
+									onChange={ ( slug, newValue ) => {
+										setAttributes( { captionSecondaryColor: newValue } );
+									} }
+									label={ __( 'Secondary Color', 'photo-block' ) }
+									defaultColors={ photoBlock.palette }
+									defaultColor={ 'transparent' }
+									slug={ 'secondary-color-caption' }
+								/>
+							</>
+						) }
+					</>
+				) }
+				{ ( dataMode || 'single' === mode ) && (
+					<>
+						<ColorPickerControl
+							value={ captionBackgroundColor }
+							key={ 'background-color-caption' }
+							onChange={ ( slug, newValue ) => {
+								setAttributes( { captionBackgroundColor: newValue } );
+							} }
+							label={ __( 'Background Color', 'photo-block' ) }
+							defaultColors={ photoBlock.palette }
+							defaultColor={ 'transparent' }
+							slug={ 'background-color-caption' }
+						/>
 						<ColorPickerControl
 							value={ captionTextColor }
 							key={ 'text-color-caption' }
@@ -481,7 +654,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const localToolbar = (
 		<BlockControls>
 			{
-				dataMode && (
+				( dataMode || 'single' === mode ) && (
 					<ToolbarGroup className="dlx-photo-block__caption-align-toolbar-buttons">
 						<ToolbarButton
 							icon={ <AlignLeft /> }
@@ -519,27 +692,33 @@ const PhotoCaptionBlock = ( props ) => {
 					} }
 					ref={ setCaptionPopoverRef }
 				>
-					{ __( 'Caption Position', 'photo-block' ) }
+					{ __( 'Position', 'photo-block' ) }
 				</ToolbarButton>
-				{ ! dataMode && (
+			</ToolbarGroup>
+			{ ! dataMode && (
+				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <FormInput /> }
 						label={ __( 'Caption Mode', 'photo-block' ) }
 						onClick={ () => {
-							setSwitchModeModalVisible( true );
+							setModePopoverVisible( true );
 						} }
-						ref={ setCaptionPopoverRef }
+						ref={ setModePopoverRef }
 					>
-						{ __( 'Caption Mode', 'photo-block' ) }
+						{ __( 'Mode', 'photo-block' ) }
 					</ToolbarButton>
-				) }
+				</ToolbarGroup>
+			) }
+			<ToolbarGroup>
 				<ToolbarButton
 					icon={ <Trash2 /> }
 					label={ __( 'Remove Caption', 'photo-block' ) }
 					onClick={ () => {
 						setRemoveCaptionModalVisible( true );
 					} }
-				/>
+				>
+					{ __( 'Remove', 'photo-block' ) }
+				</ToolbarButton>
 			</ToolbarGroup>
 			{
 				dataMode && (
@@ -595,7 +774,7 @@ const PhotoCaptionBlock = ( props ) => {
 			) }
 			{ switchModeModalVisible && (
 				<Modal
-					title={ 'easy' === mode ? __( 'Switch to Advanced Mode', 'photo-block' ) : __( 'Switch to Easy Mode', 'photo-block' ) }
+					title={ 'single' === mode ? __( 'Switch to Multi-Line Mode', 'photo-block' ) : __( 'Switch to Single-Line Mode', 'photo-block' ) }
 					onRequestClose={ () => {
 						setSwitchModeModalVisible( false );
 					} }
@@ -603,17 +782,15 @@ const PhotoCaptionBlock = ( props ) => {
 				>
 					<div className="dlx-photo-block__a11y-popover">
 						{
-							'easy' === mode && (
+							'single' === mode && (
 								<>
-									<h3>{ __( 'Switch to Advanced Mode', 'photo-block' ) }</h3>
 									<p>
-										{ __( 'Switch to advanced mode to have multi-line captions made out of different blocks.', 'photo-block' ) }
+										{ __( 'Switch to multi-line to enable a more freeform caption.', 'photo-block' ) }
 									</p>
 								</>
 							) }
 						{ 'advanced' === mode && (
 							<>
-								<h3>{ __( 'Switch to Easy Mode', 'photo-block' ) }</h3>
 								<p>
 									{ __( 'Switch to a single-line caption format.', 'photo-block' ) }
 								</p>
@@ -623,11 +800,11 @@ const PhotoCaptionBlock = ( props ) => {
 							<Button
 								variant="primary"
 								onClick={ () => {
-									setAttributes( { mode: 'easy' === mode ? 'advanced' : 'easy' } )
+									setAttributes( { mode: 'single' === mode ? 'advanced' : 'single' } );
 									setSwitchModeModalVisible( false );
 								} }
 							>
-								{ 'easy' === mode ? __( 'Switch to Advanced Mode', 'photo-block' ) : __( 'Switch to Easy Mode', 'photo-block' ) }
+								{ 'single' === mode ? __( 'Switch to Multi-Line', 'photo-block' ) : __( 'Switch to Single-Line', 'photo-block' ) }
 							</Button>
 							<Button
 								variant="secondary"
@@ -641,9 +818,46 @@ const PhotoCaptionBlock = ( props ) => {
 					</div>
 				</Modal>
 			) }
+			{ modePopoverVisible && (
+				<Popover
+					placement="bottom-start"
+					onClose={ () => {
+						setModePopoverVisible( false );
+					} }
+					anchor={ modePopoverRef }
+					className="photo-block__caption-position-popover"
+				>
+					<MenuGroup>
+						<MenuItem
+							icon={ 'single' === mode ? <Check /> : null }
+							onClick={ () => {
+								if ( 'single' === mode ) {
+									return;
+								}
+								setModePopoverVisible( false );
+								setSwitchModeModalVisible( true );
+							} }
+						>
+							{ __( 'Single Line', 'photo-block' ) }
+						</MenuItem>
+						<MenuItem
+							icon={ 'advanced' === mode ? <Check /> : null }
+							onClick={ () => {
+								if ( 'advanced' === mode ) {
+									return;
+								}
+								setModePopoverVisible( false );
+								setSwitchModeModalVisible( true );
+							} }
+						>
+							{ __( 'Multiple Lines', 'photo-block' ) }
+						</MenuItem>
+					</MenuGroup>
+				</Popover>
+			) }
 			{ captionPositionPopoverVisible && (
 				<Popover
-					placement="bottom"
+					placement="bottom-start"
 					onClose={ () => {
 						setCaptionPositionPopoverVisible( false );
 					} }
@@ -730,6 +944,8 @@ const PhotoCaptionBlock = ( props ) => {
 	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = () => {
+		const figClasses = classnames( 'dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && ! dataMode ) } );
+
 		if ( dataMode ) {
 			if ( captionLoading ) {
 				return (
@@ -739,13 +955,13 @@ const PhotoCaptionBlock = ( props ) => {
 					</>
 				);
 			} else if ( '' !== caption ) {
-				return ( <figcaption id={ uniqueId }>{ htmlToReactParser.parse( caption ) }</figcaption> );
+				return ( <figcaption className={ figClasses } id={ uniqueId }>{ htmlToReactParser.parse( caption ) }</figcaption> );
 			}
 			return __( 'No caption', 'photo-block' );
 		}
-		if ( 'easy' === mode ) {
+		if ( 'single' === mode ) {
 			return (
-				<figcaption id={ uniqueId }>
+				<figcaption className={ figClasses } id={ uniqueId }>
 					<RichText
 						tagName="div"
 						placeholder={ __( 'Write caption…', 'photo-block' ) }
@@ -765,7 +981,7 @@ const PhotoCaptionBlock = ( props ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
-	const styles = `
+	let styles = `
 		figcaption#${ uniqueId } {
 			background: ${ captionBackgroundColor };
 			${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
@@ -783,12 +999,48 @@ const PhotoCaptionBlock = ( props ) => {
 		}
 	`;
 
+	// Set colors and typography for single caption mode and data mode.
+	if ( 'single' === mode || dataMode ) {
+		styles += `
+			figcaption#${ uniqueId } {
+				color: ${ captionTextColor };
+				font-family: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontFamily, 'fontFamily' ) };
+				font-size: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontSize, 'fontSize' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].fontSizeUnit, 'fontSizeUnit' ) };
+				font-weight: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontWeight, 'fontWeight' ) };
+				line-height: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].lineHeight, 'lineHeight' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].lineHeightUnit, 'lineHeightUnit' ) };
+				text-transform: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].textTransform, 'textTransform' ) };
+				letter-spacing: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].letterSpacing, 'letterSpacing' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].letterSpacingUnit, 'letterSpacingUnit' ) };
+				text-align: ${ captionAlign };
+			}
+			figcaption#${ uniqueId } a {
+				color: ${ captionLinkColor };
+			}
+			figcaption#${ uniqueId } a:hover {
+				color: ${ captionLinkHoverColor };
+			}
+		`;
+	}
+
+	// Set colors and typography for advanced caption mode.
+	if ( 'advanced' === mode && ! dataMode ) {
+		styles += `
+			figcaption#${ uniqueId } {
+				--dlx-photo-block__caption-text-color: ${ captionTextColor };
+				--dlx-photo-block__caption-accent-color: ${ captionAccentColor };
+				--dlx-photo-block__caption-secondary-color: ${ captionSecondaryColor };
+				--dlx-photo-block__caption-font-family: ${ captionTextFontFamily };
+				--dlx-photo-block__caption-headings-font-family: ${ captionHeadingsFontFamily };
+				--dlx-photo-block__caption-font-size: ${ geHierarchicalPlaceholderValue( captionBaseFontSize, deviceType, captionBaseFontSize[ deviceType ].value, 'value' ) }${ getHierarchicalValueUnit( captionBaseFontSize, deviceType, captionBaseFontSize[ deviceType ].unit, 'unit' ) };
+			}
+		`;
+	}
+
 	const block = (
 		<>
 			<style>{ styles }</style>
 			{ localInspectorControls }
 			{ localToolbar }
-			<div className="dlx-photo-block__caption-wrapper">
+			<div className={ classnames( 'dlx-photo-block__caption-wrapper' ) }>
 				{ getCaption() }
 			</div>
 		</>
