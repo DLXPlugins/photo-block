@@ -3756,5 +3756,54 @@ svg.lucide {
   margin: 0;
   margin-bottom: 16px;
 }
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/BackgroundSelector/editor.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Background Image Uploader/Selector */
+.photo-block-background-selector-upload-row {
+  display: grid;
+  grid-template-columns: 1fr 30px;
+  align-items: end;
+  -moz-column-gap: 15px;
+       column-gap: 15px;
+}
+.photo-block-background-selector-upload-row .photo-block-background-selector-upload-button button {
+  max-height: 30px;
+  max-width: 30px;
+}
+.photo-block-background-selector-upload-row .components-base-control__field,
+.photo-block-background-selector-upload-row .components-base-control {
+  margin-bottom: 0 !important;
+}
+
+.photo-block-component-background-settings-popup .components-popover__content {
+  width: 250px;
+  padding: 10px;
+}
+
+.photo-block-background-selector__row_item {
+  margin-bottom: 20px;
+}
+.photo-block-background-selector__row_item.photo-block-background-selector__row_item-2 {
+  display: grid;
+  grid-template-columns: 1fr 30px;
+  align-items: center;
+  -moz-column-gap: 15px;
+       column-gap: 15px;
+}
+.photo-block-background-selector__row_item.photo-block-background-selector__row_item-2 h3 {
+  margin-bottom: 0;
+}
+.photo-block-background-selector__row_item.photo-block-background-selector__row_item-2 button {
+  max-height: 30px;
+  max-width: 30px;
+}
+
+.photo-block-background-selector-image-button-error {
+  color: #bc2b2c !important;
+  background: #f5e5e4 !important;
+  border-color: #bc2b2c !important;
+  box-shadow: inset 0 0 0 1px #bc2b2c !important;
+}
 
 /*# sourceMappingURL=index.css.map*/

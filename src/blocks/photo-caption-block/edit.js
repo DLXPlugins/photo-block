@@ -3,6 +3,7 @@ import './editor.scss';
 import classnames from 'classnames';
 import { useEffect, useState, useRef, useContext } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { escapeEditableHTML } from '@wordpress/escape-html';
 
 import {
 	BaseControl,
@@ -38,6 +39,8 @@ import {
 	useDispatch,
 } from '@wordpress/data';
 
+import { isURL } from '@wordpress/url';
+
 import {
 	Trash2,
 	SeparatorHorizontal,
@@ -69,6 +72,7 @@ import ColorPickerControl from '../../components/ColorPicker';
 import GradientPickerControl from '../../components/GradientPicker';
 import getRandomGradient from '../../utils/GetRandomGradient';
 import RangeResponsiveControl from '../../components/RangeResponsive';
+import BackgroundSelectorControl from '../../components/BackgroundSelector';
 import { getValueWithUnit, buildBorderCSS, buildDimensionsCSS, geHierarchicalPlaceholderValue, getHierarchicalValueUnit } from '../../utils/TypographyHelper';
 
 /**
@@ -251,6 +255,7 @@ const PhotoCaptionBlock = ( props ) => {
 		overlayBackgroundGradient,
 		overlayBackgroundGradientOpacity,
 		overlayBackgroundGradientOpacityHover,
+		overlayBackgroundImage,
 	} = attributes;
 
 	const innerBlocksRef = useRef( null );
@@ -494,6 +499,17 @@ const PhotoCaptionBlock = ( props ) => {
 								step={ 0.01 }
 							/>
 						</>
+					) }
+					{ 'image' === overlayBackgroundType && (
+						<PanelRow>
+							<BackgroundSelectorControl
+								label={ __( 'Overlay Background Image', 'photo-block' ) }
+								values={ overlayBackgroundImage }
+								onValuesChange={ ( newValue ) => {
+									setAttributes( { overlayBackgroundImage: newValue } );
+								} }
+							/>
+						</PanelRow>
 					) }
 					<BorderResponsiveControl
 						label={ __( 'Overlay Border', 'photo-block' ) }
@@ -1320,6 +1336,41 @@ const PhotoCaptionBlock = ( props ) => {
 			}
 			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
 				opacity: ${ overlayBackgroundGradientOpacityHover };
+			}
+		`;
+
+		// The overlay background container needs to match overlay border radius in order to simulate masking.
+		styles += `
+			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+				border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
+			}
+		`;
+	}
+
+	// Set overlay background color if background image.
+	if ( 'overlay' === captionPosition && 'image' === overlayBackgroundType && isURL( overlayBackgroundImage.url ) ) {
+		styles += `
+			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+				transition: opacity 0.35s ease-in-out;
+				display: block;
+				content: '';
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: ${ overlayBackgroundImage.backgroundColor };
+				background-image: url('${ decodeURIComponent( encodeURIComponent( overlayBackgroundImage.url ) ) } ');
+				background-position: ${ escapeEditableHTML( overlayBackgroundImage.backgroundPosition ) };
+				background-repeat: ${ escapeEditableHTML( overlayBackgroundImage.backgroundRepeat ) };
+				background-size: ${ escapeEditableHTML( overlayBackgroundImage.backgroundSize ) };
+				opacity: ${ parseFloat( overlayBackgroundImage.backgroundOpacity ) };
+				z-index: 1;
+			}
+			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
+				opacity: ${ parseFloat( overlayBackgroundImage.backgroundOpacityHover ) };
 			}
 		`;
 

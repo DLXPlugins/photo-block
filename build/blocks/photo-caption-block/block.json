@@ -653,6 +653,19 @@
     "overlayBackgroundGradientOpacityHover": {
       "type": "number",
       "default": 0.65
+    },
+    "overlayBackgroundImage": {
+      "type": "object",
+      "default": {
+        "url": "",
+        "id": 0,
+        "backgroundColor": "transparent",
+        "backgroundSize": "cover",
+        "backgroundPosition": "center center",
+        "backgroundRepeat": "no-repeat",
+        "backgroundOpacity": 0.4,
+        "backgroundOpacityHover": 0.65
+      }
     }
   },
   "supports": {
