@@ -243,11 +243,14 @@ const PhotoCaptionBlock = ( props ) => {
 		overlayCaptionHorizontalPosition,
 		overlayBackgroundType,
 		overlayBackgroundColor,
+		overlayBackgroundColorHover,
 		overlayBackgroundColorOpacity,
+		overlayBackgroundColorOpacityHover,
 		overlayBorder,
 		overlayBorderRadius,
 		overlayBackgroundGradient,
 		overlayBackgroundGradientOpacity,
+		overlayBackgroundGradientOpacityHover,
 	} = attributes;
 
 	const innerBlocksRef = useRef( null );
@@ -413,22 +416,40 @@ const PhotoCaptionBlock = ( props ) => {
 						</ButtonGroup>
 					</BaseControl>
 					{ 'solid' === overlayBackgroundType && (
-						<ColorPickerControl
-							value={ overlayBackgroundColor }
-							key={ 'overlay-background-color' }
-							onChange={ ( slug, newValue ) => {
-								setAttributes( { overlayBackgroundColor: newValue } );
-							} }
-							onOpacityChange={ ( newOpacity ) => {
-								setAttributes( { overlayBackgroundColorOpacity: newOpacity } );
-							} }
-							label={ __( 'Overlay Color', 'highlight-and-share' ) }
-							defaultColors={ photoBlock.palette }
-							defaultColor={ 'rgba(0,0,0,0.5)' }
-							slug={ 'overlay-background-color' }
-							alpha={ true }
-							opacity={ overlayBackgroundColorOpacity }
-						/>
+						<>
+							<ColorPickerControl
+								value={ overlayBackgroundColor }
+								key={ 'overlay-background-color' }
+								onChange={ ( slug, newValue ) => {
+									setAttributes( { overlayBackgroundColor: newValue } );
+								} }
+								onOpacityChange={ ( newOpacity ) => {
+									setAttributes( { overlayBackgroundColorOpacity: newOpacity } );
+								} }
+								label={ __( 'Overlay Color', 'highlight-and-share' ) }
+								defaultColors={ photoBlock.palette }
+								defaultColor={ 'rgba(0,0,0,0.5)' }
+								slug={ 'overlay-background-color' }
+								alpha={ true }
+								opacity={ overlayBackgroundColorOpacity }
+							/>
+							<ColorPickerControl
+								value={ overlayBackgroundColorHover }
+								key={ 'overlay-background-color-hover' }
+								onChange={ ( slug, newValue ) => {
+									setAttributes( { overlayBackgroundColorHover: newValue } );
+								} }
+								onOpacityChange={ ( newOpacity ) => {
+									setAttributes( { overlayBackgroundColorOpacityHover: newOpacity } );
+								} }
+								label={ __( 'Overlay Color (on Hover)', 'highlight-and-share' ) }
+								defaultColors={ photoBlock.palette }
+								defaultColor={ 'rgba(0,0,0,0.5)' }
+								slug={ 'overlay-background-color-hover' }
+								alpha={ true }
+								opacity={ overlayBackgroundColorOpacityHover }
+							/>
+						</>
 					) }
 					{ 'gradient' === overlayBackgroundType && (
 						<>
@@ -457,6 +478,16 @@ const PhotoCaptionBlock = ( props ) => {
 								value={ overlayBackgroundGradientOpacity }
 								onChange={ ( newValue ) => {
 									setAttributes( { overlayBackgroundGradientOpacity: newValue } );
+								} }
+								min={ 0 }
+								max={ 1 }
+								step={ 0.01 }
+							/>
+							<RangeControl
+								label={ __( 'Gradient Opacity on Hover', 'photo-block' ) }
+								value={ overlayBackgroundGradientOpacityHover }
+								onChange={ ( newValue ) => {
+									setAttributes( { overlayBackgroundGradientOpacityHover: newValue } );
 								} }
 								min={ 0 }
 								max={ 1 }
@@ -1228,10 +1259,43 @@ const PhotoCaptionBlock = ( props ) => {
 	}
 
 	// Set overlay background color if solid.
+	// if ( 'overlay' === captionPosition && 'solid' === overlayBackgroundType ) {
+	// 	styles += `
+	// 		#${ uniqueId }.dlx-photo-block__caption-overlay {
+	// 			transition: background 0.35s ease-in-out;
+	// 			background: ${ overlayBackgroundColor };
+	// 		}
+	// 		#${ uniqueId }.dlx-photo-block__caption-overlay:hover {
+	// 			background: ${ overlayBackgroundColorHover };
+	// 	`;
+	// }
+
+	// Set overlay background color if gradient.
 	if ( 'overlay' === captionPosition && 'solid' === overlayBackgroundType ) {
 		styles += `
-			#${ uniqueId }.dlx-photo-block__caption-overlay {
+			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+				transition: background 0.35s ease-in-out;
+				display: block;
+				content: '';
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
 				background: ${ overlayBackgroundColor };
+				z-index: 1;
+			}
+			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
+				background: ${ overlayBackgroundColorHover };
+			}
+		`;
+
+		// The overlay background container needs to match overlay border radius in order to simulate masking.
+		styles += `
+			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+				border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
 			}
 		`;
 	}
@@ -1240,6 +1304,7 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'overlay' === captionPosition && 'gradient' === overlayBackgroundType ) {
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+				transition: opacity 0.35s ease-in-out;
 				display: block;
 				content: '';
 				position: absolute;
@@ -1252,6 +1317,9 @@ const PhotoCaptionBlock = ( props ) => {
 				background-image: ${ overlayBackgroundGradient };
 				opacity: ${ overlayBackgroundGradientOpacity };
 				z-index: 1;
+			}
+			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
+				opacity: ${ overlayBackgroundGradientOpacityHover };
 			}
 		`;
 

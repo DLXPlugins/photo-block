@@ -510,6 +510,14 @@
       "type": "number",
       "default": 0.5
     },
+    "overlayBackgroundColorHover": {
+      "type": "string",
+      "default": "rgba(0,0,0,0.40)"
+    },
+    "overlayBackgroundColorOpacityHover": {
+      "type": "number",
+      "default": 0.4
+    },
     "overlayBorder": {
       "type": "object",
       "default": {
@@ -641,6 +649,10 @@
     "overlayBackgroundGradientOpacity": {
       "type": "number",
       "default": 0.5
+    },
+    "overlayBackgroundGradientOpacityHover": {
+      "type": "number",
+      "default": 0.65
     }
   },
   "supports": {
