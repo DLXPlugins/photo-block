@@ -62,6 +62,7 @@ const PhotoBlock = ( props ) => {
 		isUploadError,
 		hasCaption,
 		setHasCaption,
+		captionPosition,
 		dataMode,
 		setDataMode,
 	} = useContext( UploaderContext );
@@ -70,9 +71,17 @@ const PhotoBlock = ( props ) => {
 		className: classnames(
 			`dlx-photo-block`,
 			`align${ align }`,
-			`dlx-screen-${ screen }`
+			`dlx-screen-${ screen }`,
+			`dlx-caption-position-${ captionPosition }`,
 		),
 	} );
+
+	// Set caption position attribute as captionPosition context is updated so the parent knows the caption position.
+	useEffect( () => {
+		if ( props.attributes.captionPosition !== captionPosition ) {
+			props.setAttributes( { captionPosition } );
+		}
+	}, [ captionPosition ] );
 
 	// Store the filepond upload ref.
 	const filepondRef = useRef( null );
@@ -104,9 +113,15 @@ const PhotoBlock = ( props ) => {
 		dataScreen, /* can be `data`, `data-edit`. */
 	} = attributes;
 
+	// Set caption innerblocks classes.
+	const captionInnerBlocksClasses = classnames(
+		'dlx-photo-block__caption', {
+			'dlx-photo-block__caption--has-overlay': 'overlay' === captionPosition,
+		}
+	);
 	const captionInnerBlockProps = useInnerBlocksProps(
 		{
-			className: 'dlx-photo-block__caption',
+			className: captionInnerBlocksClasses,
 			ref: setCaptionInnerBlocksRef,
 		},
 		{

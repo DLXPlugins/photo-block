@@ -711,6 +711,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							} }
 							ref={ ref }
 						/>
+						{ 'overlay' === captionPosition && (
+							<div
+								className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
+								{ ...innerBlockProps }
+							/>
+						) }
 					</div>
 					{ 'bottom' === captionPosition && (
 						<div

@@ -15,10 +15,15 @@
 	flex-direction: column;
 	align-items: center;
 }
+.dlx-photo-block__image {
+	box-sizing: border-box;
+}
 .dlx-photo-block__figure > .dlx-photo-block__caption {
 	width: 100%;
 }
 figcaption.dlx-photo-block__caption {
+	position: relative;
+	z-index: 2; /* this is to make sure the caption is on top of the overlay */
 	box-sizing: border-box;
 }
 /**
@@ -170,4 +175,61 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 	}
 	
 
+}
+
+/**
+ * Caption Overlay Styles.
+ */
+.dlx-photo-block__image-wrapper,
+.dlx-photo-block__caption-wrapper {
+	position: relative;
+}
+.dlx-photo-block__caption--has-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	.dlx-photo-caption-block {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.dlx-photo-block__caption-wrapper {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+}
+.dlx-photo-block__caption-overlay {
+	display: flex;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	transition: all 0.3s ease-in-out;
+
+	&.caption-vertical-middle {
+		align-items: center;
+	}
+	&.caption-vertical-top {
+		align-items: flex-start;
+	}
+	&.caption-vertical-bottom {
+		align-items: flex-end;
+	}
+	&.caption-horizontal-center {
+		justify-content: center;
+	}
+	&.caption-horizontal-left {
+		justify-content: flex-start;
+	}
+	&.caption-horizontal-right {
+		justify-content: flex-end;
+	}
 }

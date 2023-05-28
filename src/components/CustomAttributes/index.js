@@ -4,41 +4,21 @@
 import './editor.scss';
 
 import {
-	PanelBody,
-	PanelRow,
 	TextControl,
-	TextareaControl,
-	ButtonGroup,
 	Button,
-	ToggleControl,
-	Toolbar,
-	ToolbarButton,
-	Popover,
-	Tooltip,
-	PlaceHolder,
 	BaseControl,
-	RangeControl,
 } from '@wordpress/components';
 
-import { isURL, filterURLForDisplay } from '@wordpress/url';
-
 import {
-	Link2Off,
-	Link2,
-	Image,
-	FileImage,
-	ExternalLink,
 	X,
 
 } from 'lucide-react';
 
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
+import { useContext } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
-import classnames from 'classnames';
 
 import UploaderContext from '../../contexts/UploaderContext';
-import ColorPickerControl from '../ColorPicker';
 /**
  * DropShadow component.
  *

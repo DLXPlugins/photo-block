@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
 import rgb2hex from 'rgb2hex';
 import { __ } from '@wordpress/i18n';
+import PropTypes from 'prop-types';
 
 import {
 	Tooltip,
@@ -24,13 +25,14 @@ const ColorPickerControl = ( props ) => {
 	const [ colorKey, setColorKey ] = useState( props.slug );
 	const [ isVisible, setIsVisible ] = useState( false );
 	const [ color, setColor ] = useState( props.value );
-	const [ opacity, setOpacity ] = useState( 1 );
+	const [ opacity, setOpacity ] = useState( props.opacity );
 
 	const {
 		defaultColor,
 		defaultColors,
 		value,
 		onChange,
+		onOpacityChange,
 		label,
 		alpha = false,
 		slug,
@@ -56,12 +58,14 @@ const ColorPickerControl = ( props ) => {
 
 		// Test for RGBA at the beginning, and return value.
 		if ( colorValue.indexOf( 'rgba' ) === 0 ) {
-			return colorValue;
+			// Calculate hex value from rgba.
+			const hex = rgb2hex( colorValue ).hex;
+			return hexToRgba( hex, opacityValue );
 		}
 
 		// Test for RGB at the beginning, and return hex if found.
 		if ( colorValue.indexOf( 'rgb' ) === 0 ) {
-			return rgb2hex( colorValue ).hex;
+			return hexToRgba( rgb2hex( colorValue ).hex, opacityValue );
 		}
 
 		if ( alpha ) {
@@ -205,12 +209,13 @@ const ColorPickerControl = ( props ) => {
 									</Tooltip>
 
 									<RangeControl
-										value={ opacity ? opacity : 1 }
+										value={ opacity }
 										onChange={ ( opacityValue ) => {
 											const newColor = getColor( color, opacityValue );
 											setOpacity( opacityValue );
 											setColor( newColor );
-											onChange( slug, getColor( color, opacityValue ) );
+											onChange( slug, newColor );
+											onOpacityChange( opacityValue );
 										} }
 										min={ 0 }
 										max={ 1 }
@@ -248,6 +253,26 @@ const ColorPickerControl = ( props ) => {
 			</div>
 		</BaseControl>
 	);
+};
+
+ColorPickerControl.propTypes = {
+	label: PropTypes.string,
+	onChange: PropTypes.func.isRequired,
+	onOpacityChange: PropTypes.func,
+	value: PropTypes.string,
+	defaultColor: PropTypes.string,
+	alpha: PropTypes.bool,
+	hideLabelFromVision: PropTypes.bool,
+	defaultColors: PropTypes.array.isRequired,
+};
+
+ColorPickerControl.defaultProps = {
+	label: __( 'Color', 'photo-block' ),
+	value: '',
+	defaultColor: 'transparent',
+	alpha: false,
+	hideLabelFromVision: false,
+	onOpacityChange: () => {},
 };
 
 export default ColorPickerControl;

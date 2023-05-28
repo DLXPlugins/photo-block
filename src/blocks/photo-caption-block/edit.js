@@ -5,6 +5,7 @@ import { useEffect, useState, useRef, useContext } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import {
+	BaseControl,
 	PanelBody,
 	PanelRow,
 	SelectControl,
@@ -18,6 +19,7 @@ import {
 	TabPanel,
 	MenuGroup,
 	Spinner,
+	RangeControl,
 	MenuItem,
 } from '@wordpress/components';
 
@@ -49,6 +51,7 @@ import {
 	AlignLeft,
 	AlignCenter,
 	AlignRight,
+	Shuffle,
 } from 'lucide-react';
 
 import { useInstanceId } from '@wordpress/compose';
@@ -63,6 +66,8 @@ import { DataSelect } from '../../components/DataSelect';
 import SendCommand from '../../utils/SendCommand';
 import TypographyControl from '../../components/Typography';
 import ColorPickerControl from '../../components/ColorPicker';
+import GradientPickerControl from '../../components/GradientPicker';
+import getRandomGradient from '../../utils/GetRandomGradient';
 import RangeResponsiveControl from '../../components/RangeResponsive';
 import { getValueWithUnit, buildBorderCSS, buildDimensionsCSS, geHierarchicalPlaceholderValue, getHierarchicalValueUnit } from '../../utils/TypographyHelper';
 
@@ -171,6 +176,13 @@ const PhotoCaptionBlock = ( props ) => {
 	const [ dataModalVisible, setDataModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ switchModeModalVisible, setSwitchModeModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
+	const [ isCaptionVisible, setIsCaptionVisible ] = useState( false ); // Make sure caption is positioned correctly before visible render.
+
+	// Set caption position context based on captionPosition attribute. After setting, show the caption.
+	useEffect( () => {
+		setCaptionPosition( props.attributes.captionPosition ); // Caption position can be top|bottom|overlay
+		setIsCaptionVisible( true );
+	}, [ props.attributes.captionPosition ] );
 
 	const { removeBlocks } = useDispatch( store );
 
@@ -194,8 +206,8 @@ const PhotoCaptionBlock = ( props ) => {
 		captionManual,
 		enableSmartStyles,
 		captionBaseFontSize,
-		captionPosition: blockCaptionPosition,
 		captionBackgroundColor,
+		captionBackgroundColorOpacity,
 		captionTextColor,
 		captionAccentColor,
 		captionSecondaryColor,
@@ -227,6 +239,15 @@ const PhotoCaptionBlock = ( props ) => {
 		dataCaptionTypePostAuthorMeta,
 		dataCaptionPostTypeSource,
 		dataCaptionPostTypeAuthorMeta,
+		overlayCaptionVerticalPosition,
+		overlayCaptionHorizontalPosition,
+		overlayBackgroundType,
+		overlayBackgroundColor,
+		overlayBackgroundColorOpacity,
+		overlayBorder,
+		overlayBorderRadius,
+		overlayBackgroundGradient,
+		overlayBackgroundGradientOpacity,
 	} = attributes;
 
 	const innerBlocksRef = useRef( null );
@@ -314,6 +335,162 @@ const PhotoCaptionBlock = ( props ) => {
 
 	const settingsInspectorControls = (
 		<>
+			{ 'overlay' === captionPosition && (
+				<PanelBody
+					title={ __( 'Overlay Settings', 'photo-block' ) }
+					initialOpen={ true }
+				>
+					<SelectControl
+						label={ __( 'Caption Vertical Position', 'photo-block' ) }
+						value={ overlayCaptionVerticalPosition }
+						options={ [
+							{ label: __( 'Top', 'photo-block' ), value: 'top' },
+							{ label: __( 'Middle', 'photo-block' ), value: 'middle' },
+							{ label: __( 'Bottom', 'photo-block' ), value: 'bottom' },
+						] }
+						onChange={ ( value ) => {
+							setAttributes( {
+								overlayCaptionVerticalPosition: value,
+							} );
+						} }
+					/>
+					<SelectControl
+						label={ __( 'Caption Horizontal Position', 'photo-block' ) }
+						value={ overlayCaptionHorizontalPosition }
+						options={ [
+							{ label: __( 'Left', 'photo-block' ), value: 'left' },
+							{ label: __( 'Center', 'photo-block' ), value: 'center' },
+							{ label: __( 'Right', 'photo-block' ), value: 'right' },
+						] }
+						onChange={ ( value ) => {
+							setAttributes( {
+								overlayCaptionHorizontalPosition: value,
+							} );
+						} }
+					/>
+					<BaseControl id="dlx-photo-block__overlay-background-type" label={ __( 'Background Type', 'photo-block' ) }>
+						<ButtonGroup className="dlx-photo-block__overlay-background-type">
+							<Button
+								variant={ 'none' === overlayBackgroundType ? 'primary' : 'secondary' }
+								onClick={ () => {
+									setAttributes( {
+										overlayBackgroundType: 'none',
+									} );
+								} }
+							>
+								{ __( 'None', 'photo-block' ) }
+							</Button>
+							<Button
+								variant={ 'solid' === overlayBackgroundType ? 'primary' : 'secondary' }
+								onClick={ () => {
+									setAttributes( {
+										overlayBackgroundType: 'solid',
+									} );
+								} }
+							>
+								{ __( 'Solid', 'photo-block' ) }
+							</Button>
+							<Button
+								variant={ 'gradient' === overlayBackgroundType ? 'primary' : 'secondary' }
+								onClick={ () => {
+									setAttributes( {
+										overlayBackgroundType: 'gradient',
+									} );
+								} }
+							>
+								{ __( 'Gradient', 'photo-block' ) }
+							</Button>
+							<Button
+								variant={ 'image' === overlayBackgroundType ? 'primary' : 'secondary' }
+								onClick={ () => {
+									setAttributes( {
+										overlayBackgroundType: 'image',
+									} );
+								} }
+							>
+								{ __( 'Image', 'photo-block' ) }
+							</Button>
+						</ButtonGroup>
+					</BaseControl>
+					{ 'solid' === overlayBackgroundType && (
+						<ColorPickerControl
+							value={ overlayBackgroundColor }
+							key={ 'overlay-background-color' }
+							onChange={ ( slug, newValue ) => {
+								setAttributes( { overlayBackgroundColor: newValue } );
+							} }
+							onOpacityChange={ ( newOpacity ) => {
+								setAttributes( { overlayBackgroundColorOpacity: newOpacity } );
+							} }
+							label={ __( 'Overlay Color', 'highlight-and-share' ) }
+							defaultColors={ photoBlock.palette }
+							defaultColor={ 'rgba(0,0,0,0.5)' }
+							slug={ 'overlay-background-color' }
+							alpha={ true }
+							opacity={ overlayBackgroundColorOpacity }
+						/>
+					) }
+					{ 'gradient' === overlayBackgroundType && (
+						<>
+							<Button
+								variant="secondary"
+								className="dlx-photo-block__overlay-background-gradient-randomize"
+								label={ __( 'Generate Random Gradient', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( {
+										overlayBackgroundGradient: getRandomGradient(),
+									} );
+								} }
+								icon={ <Shuffle /> }
+							>
+								{ __( 'Generate Random Gradient', 'photo-block' ) }
+							</Button>
+							<GradientPickerControl
+								value={ overlayBackgroundGradient }
+								onChange={ ( newValue ) => {
+									setAttributes( { overlayBackgroundGradient: newValue } );
+								} }
+								label={ __( 'Overlay Gradient', 'photo-block' ) }
+							/>
+							<RangeControl
+								label={ __( 'Gradient Opacity', 'photo-block' ) }
+								value={ overlayBackgroundGradientOpacity }
+								onChange={ ( newValue ) => {
+									setAttributes( { overlayBackgroundGradientOpacity: newValue } );
+								} }
+								min={ 0 }
+								max={ 1 }
+								step={ 0.01 }
+							/>
+						</>
+					) }
+					<BorderResponsiveControl
+						label={ __( 'Overlay Border', 'photo-block' ) }
+						values={ overlayBorder }
+						onValuesChange={ ( values ) => {
+							setAttributes( { overlayBorder: values } );
+						} }
+						labelTop={ __( 'Top Border', 'photo-block' ) }
+						labelRight={ __( 'Right Border', 'photo-block' ) }
+						labelBottom={ __( 'Bottom Border', 'photo-block' ) }
+						labelLeft={ __( 'Left Border', 'photo-block' ) }
+						labelAll={ __( 'Change Border', 'photo-block' ) }
+					/>
+					<DimensionsResponsiveControl
+						label={ __( 'Overlay Border Radius', 'photo-block' ) }
+						values={ overlayBorderRadius }
+						onValuesChange={ ( values ) => {
+							setAttributes( { overlayBorderRadius: values } );
+						} }
+						labelTop={ __( 'Top-left Radius', 'photo-block' ) }
+						labelRight={ __( 'Top-right Radius', 'photo-block' ) }
+						labelBottom={ __( 'Bottom-right Radius', 'photo-block' ) }
+						labelLeft={ __( 'Bottom-left Radius', 'photo-block' ) }
+						labelAll={ __( 'Change Border Radius', 'photo-block' ) }
+						isBorderRadius={ true }
+					/>
+				</PanelBody>
+			) }
 			<PanelBody
 				title={ __( 'Caption Settings', 'photo-block' ) }
 				initialOpen={ true }
@@ -383,10 +560,15 @@ const PhotoCaptionBlock = ( props ) => {
 									onChange={ ( slug, newValue ) => {
 										setAttributes( { captionBackgroundColor: newValue } );
 									} }
+									onOpacityChange={ ( newOpacity ) => {
+										setAttributes( { captionBackgroundColorOpacity: newOpacity } );
+									} }
 									label={ __( 'Background Color', 'photo-block' ) }
 									defaultColors={ photoBlock.palette }
 									defaultColor={ 'transparent' }
 									slug={ 'background-color-caption' }
+									alpha={ true }
+									opacity={ captionBackgroundColorOpacity }
 								/>
 								<ColorPickerControl
 									value={ captionTextColor }
@@ -433,10 +615,15 @@ const PhotoCaptionBlock = ( props ) => {
 							onChange={ ( slug, newValue ) => {
 								setAttributes( { captionBackgroundColor: newValue } );
 							} }
+							onOpacityChange={ ( newOpacity ) => {
+								setAttributes( { captionBackgroundColorOpacity: newOpacity } );
+							} }
 							label={ __( 'Background Color', 'photo-block' ) }
 							defaultColors={ photoBlock.palette }
 							defaultColor={ 'transparent' }
 							slug={ 'background-color-caption' }
+							alpha={ true }
+							opacity={ captionBackgroundColorOpacity }
 						/>
 						<ColorPickerControl
 							value={ captionTextColor }
@@ -869,6 +1056,7 @@ const PhotoCaptionBlock = ( props ) => {
 							icon={ 'top' === captionPosition ? <Check /> : null }
 							onClick={ () => {
 								setCaptionPosition( 'top' );
+								setAttributes( { captionPosition: 'top' } );
 								setCaptionPositionPopoverVisible( false );
 							} }
 						>
@@ -878,6 +1066,7 @@ const PhotoCaptionBlock = ( props ) => {
 							icon={ 'overlay' === captionPosition ? <Check /> : null }
 							onClick={ () => {
 								setCaptionPosition( 'overlay' );
+								setAttributes( { captionPosition: 'overlay' } );
 								setCaptionPositionPopoverVisible( false );
 							} }
 						>
@@ -887,6 +1076,7 @@ const PhotoCaptionBlock = ( props ) => {
 							icon={ 'bottom' === captionPosition ? <Check /> : null }
 							onClick={ () => {
 								setCaptionPosition( 'bottom' );
+								setAttributes( { captionPosition: 'bottom' } );
 								setCaptionPositionPopoverVisible( false );
 							} }
 						>
@@ -944,7 +1134,9 @@ const PhotoCaptionBlock = ( props ) => {
 	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = () => {
-		const figClasses = classnames( 'dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && ! dataMode ) } );
+		const figClasses = classnames( 'dlx-photo-block__caption', {
+			'has-smart-styles': ( 'advanced' === mode && ! dataMode ),
+		} );
 
 		if ( dataMode ) {
 			if ( captionLoading ) {
@@ -1035,16 +1227,96 @@ const PhotoCaptionBlock = ( props ) => {
 		`;
 	}
 
+	// Set overlay background color if solid.
+	if ( 'overlay' === captionPosition && 'solid' === overlayBackgroundType ) {
+		styles += `
+			#${ uniqueId }.dlx-photo-block__caption-overlay {
+				background: ${ overlayBackgroundColor };
+			}
+		`;
+	}
+
+	// Set overlay background color if gradient.
+	if ( 'overlay' === captionPosition && 'gradient' === overlayBackgroundType ) {
+		styles += `
+			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+				display: block;
+				content: '';
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-image: ${ overlayBackgroundGradient };
+				opacity: ${ overlayBackgroundGradientOpacity };
+				z-index: 1;
+			}
+		`;
+
+		// The overlay background container needs to match overlay border radius in order to simulate masking.
+		styles += `
+			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+				border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
+			}
+		`;
+	}
+
+	// Set overlay padding, border, and border radius.
+	if ( 'overlay' === captionPosition ) {
+		styles += `
+			#${ uniqueId }.dlx-photo-block__caption-overlay {
+				border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
+				${ buildBorderCSS( overlayBorder, deviceType ) }
+			}
+		`;
+	}
+
+	/**
+	 * Get overlay container classes.
+	 */
+	const overlayStyles = classnames(
+		'dlx-photo-block__caption-overlay',
+		{
+			'is-overlay': 'overlay' === captionPosition,
+			'caption-vertical-bottom': 'bottom' === overlayCaptionVerticalPosition,
+			'caption-vertical-middle': 'middle' === overlayCaptionVerticalPosition,
+			'caption-vertical-top': 'top' === overlayCaptionVerticalPosition,
+			'caption-horizontal-left': 'left' === overlayCaptionHorizontalPosition,
+			'caption-horizontal-center': 'center' === overlayCaptionHorizontalPosition,
+			'caption-horizontal-right': 'right' === overlayCaptionHorizontalPosition,
+		}
+	);
+
 	const block = (
 		<>
 			<style>{ styles }</style>
 			{ localInspectorControls }
 			{ localToolbar }
 			<div className={ classnames( 'dlx-photo-block__caption-wrapper' ) }>
-				{ getCaption() }
+				{ 'overlay' === captionPosition && (
+					<>
+						<div className={ overlayStyles } id={ uniqueId }>
+							{ getCaption() }
+						</div>
+					</>
+				)
+				}
+				{ 'overlay' !== captionPosition && (
+					<>
+						{ getCaption() }
+					</>
+				) }
+
 			</div>
 		</>
 	);
+
+	// Return empty if caption isn't visible.
+	if ( ! isCaptionVisible ) {
+		return null;
+	}
 
 	return (
 		<>

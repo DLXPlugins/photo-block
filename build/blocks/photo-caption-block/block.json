@@ -489,6 +489,158 @@
     "dataCaptionPostTypeAuthorMeta": {
       "type": "string",
       "default": ""
+    },
+    "overlayCaptionVerticalPosition": {
+      "type": "string",
+      "default": "middle"
+    },
+    "overlayCaptionHorizontalPosition": {
+      "type": "string",
+      "default": "center"
+    },
+    "overlayBackgroundType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "overlayBackgroundColor": {
+      "type": "string",
+      "default": "rgba(0,0,0,0.5)"
+    },
+    "overlayBackgroundColorOpacity": {
+      "type": "number",
+      "default": 0.5
+    },
+    "overlayBorder": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "top": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "right": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "bottom": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "left": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "unitSync": true
+        },
+        "tablet": {
+          "top": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "right": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "bottom": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "left": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "unitSync": true
+        },
+        "desktop": {
+          "top": {
+            "width": "0",
+            "unit": "px",
+            "color": "#000000",
+            "borderStyle": "solid"
+          },
+          "right": {
+            "width": "0",
+            "unit": "px",
+            "color": "#000000",
+            "borderStyle": "solid"
+          },
+          "bottom": {
+            "width": "0",
+            "unit": "px",
+            "color": "#000000",
+            "borderStyle": "solid"
+          },
+          "left": {
+            "width": "0",
+            "unit": "px",
+            "color": "#000000",
+            "borderStyle": "solid"
+          },
+          "unitSync": true
+        }
+      }
+    },
+    "overlayBorderRadius": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "topUnit": null,
+          "rightUnit": null,
+          "bottomUnit": null,
+          "leftUnit": null,
+          "unitSync": true
+        },
+        "tablet": {
+          "top": "",
+          "right": "",
+          "bottom": "",
+          "left": "",
+          "topUnit": null,
+          "rightUnit": null,
+          "bottomUnit": null,
+          "leftUnit": null,
+          "unitSync": true
+        },
+        "desktop": {
+          "top": "0",
+          "right": "0",
+          "bottom": "0",
+          "left": "0",
+          "topUnit": "px",
+          "rightUnit": "px",
+          "bottomUnit": "px",
+          "leftUnit": "px",
+          "unitSync": true
+        }
+      }
+    },
+    "overlayBackgroundGradient": {
+      "type": "string",
+      "default": ""
+    },
+    "overlayBackgroundGradientOpacity": {
+      "type": "number",
+      "default": 0.5
     }
   },
   "supports": {
