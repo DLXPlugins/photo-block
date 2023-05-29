@@ -379,16 +379,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									</Button>
 								</ButtonGroup>
 							</div>
-							<div className="dlx-photo-block__image-max-width">
-								<SizeResponsiveControl
-									label={ __( 'Image Max Width', 'photo-block' ) }
-									values={ photoMaximumWidth }
-									screenSize={ deviceType }
-									onValuesChange={ ( newValues ) => {
-										setAttributes( { photoMaximumWidth: newValues } );
-									} }
-								/>
-							</div>
 						</>
 					) }
 				</PanelRow>
@@ -585,7 +575,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 			${ buildBorderCSS( photoBorder, deviceType ) }
 		}
-	`;
+	`; /**	 */
 	if ( photoDropShadow.enabled ) {
 		styles += `
 			#${ uniqueId } img {
@@ -644,6 +634,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								setImageLoading( false );
 							} }
 							ref={ ref }
+							style={ {
+								maxWidth: `${ imageDimensions.width }px`,
+								height: 'auto',
+							} }
 						/>
 						{ 'overlay' === captionPosition && (
 							<div

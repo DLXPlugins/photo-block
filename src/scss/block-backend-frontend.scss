@@ -184,6 +184,10 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 .dlx-photo-block__caption-wrapper {
 	position: relative;
 }
+.dlx-photo-block__image-wrapper {
+	display: flex;
+	justify-content: center;
+}
 .dlx-photo-block__caption--has-overlay {
 	position: absolute;
 	top: 0;

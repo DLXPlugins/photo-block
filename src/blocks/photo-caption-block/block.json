@@ -664,18 +664,43 @@
 				"backgroundOpacity": 0.4,
 				"backgroundOpacityHover": 0.65
 			}
+		},
+		"htmlAnchor": {
+			"type": "string",
+			"default": ""
+		},
+		"captionCSSClasses": {
+			"type": "string",
+			"default": ""
+		},
+		"customAttributes": {
+			"type": "array",
+			"default": []
+		},
+		"hideOnMobile": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideOnTablet": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideOnDesktop": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {
 		"anchor": false,
 		"align": false,
-		"className": true,
+		"className": false,
 		"alignWide": false,
 		"defaultStylePicker": false,
 		"spacing": {
 			"padding": false,
 			"margin": false
-		}
+		},
+		"html": false
 	},
 	"example": {
 		"attributes": {}

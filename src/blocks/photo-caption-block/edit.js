@@ -22,6 +22,7 @@ import {
 	Spinner,
 	RangeControl,
 	MenuItem,
+	TextControl,
 } from '@wordpress/components';
 
 import {
@@ -74,6 +75,7 @@ import getRandomGradient from '../../utils/GetRandomGradient';
 import RangeResponsiveControl from '../../components/RangeResponsive';
 import BackgroundSelectorControl from '../../components/BackgroundSelector';
 import { getValueWithUnit, buildBorderCSS, buildDimensionsCSS, geHierarchicalPlaceholderValue, getHierarchicalValueUnit } from '../../utils/TypographyHelper';
+import CustomAttributesControl from '../../components/CustomAttributes';
 
 /**
  * Height units.
@@ -256,6 +258,11 @@ const PhotoCaptionBlock = ( props ) => {
 		overlayBackgroundGradientOpacity,
 		overlayBackgroundGradientOpacityHover,
 		overlayBackgroundImage,
+		htmlAnchor,
+		captionCSSClasses,
+		hideOnMobile,
+		hideOnTablet,
+		hideOnDesktop,
 	} = attributes;
 
 	const innerBlocksRef = useRef( null );
@@ -708,6 +715,67 @@ const PhotoCaptionBlock = ( props ) => {
 					</>
 				) }
 			</PanelBody>
+		</>
+	);
+
+	const advancedInspectorControls = (
+		<>
+			<PanelRow>
+				<TextControl
+					label={ __( 'HTML Anchor', 'photo-block' ) }
+					value={ htmlAnchor }
+					onChange={ ( value ) => {
+						setAttributes( { htmlAnchor: value } );
+					} }
+					help={ __( 'Enter a word or two — without spaces — to make a unique web address just for this caption, called an "anchor." Then, you\'ll be able to link directly to this caption on your page.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<TextControl
+					label={ __( 'Caption CSS Class(es)', 'photo-block' ) }
+					value={ captionCSSClasses }
+					onChange={ ( value ) => {
+						setAttributes( { imageCSSClasses: value } );
+					} }
+					help={ __( 'Add CSS class(es) directly to the figcaption tag.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<CustomAttributesControl
+					attributes={ attributes }
+					setAttributes={ setAttributes }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					label={ __( 'Hide on Mobile', 'photo-block' ) }
+					checked={ hideOnMobile }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnMobile: value } );
+					} }
+					help={ __( 'Hide this photo on mobile devices.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					label={ __( 'Hide on Tablet', 'photo-block' ) }
+					checked={ hideOnTablet }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnTablet: value } );
+					} }
+					help={ __( 'Hide this photo on tablet devices.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					label={ __( 'Hide on Desktop', 'photo-block' ) }
+					checked={ hideOnDesktop }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnDesktop: value } );
+					} }
+					help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
+				/>
+			</PanelRow>
 		</>
 	);
 
@@ -1412,6 +1480,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const block = (
 		<>
 			<style>{ styles }</style>
+			<InspectorAdvancedControls>{ advancedInspectorControls }</InspectorAdvancedControls>
 			{ localInspectorControls }
 			{ localToolbar }
 			<div className={ classnames( 'dlx-photo-block__caption-wrapper' ) }>
