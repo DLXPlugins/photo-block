@@ -9997,6 +9997,7 @@ for (var key in photoBlock.imageSizes) {
   });
 }
 var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(function (props, ref) {
+  var _previewImage$width, _previewImage$height;
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
     innerBlockProps = props.innerBlockProps,
@@ -10514,11 +10515,19 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     className: "dlx-photo-block__screen-edit"
   }, /*#__PURE__*/React.createElement("figure", {
     className: "dlx-photo-block__screen-edit-image-wrapper"
-  }, 'top' === captionPosition && /*#__PURE__*/React.createElement("figcaption", _extends({
-    className: "dlx-photo-block__screen-edit-caption"
+  }, 'top' === captionPosition && /*#__PURE__*/React.createElement("div", _extends({
+    className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
   }, innerBlockProps)), /*#__PURE__*/React.createElement("div", {
-    className: "dlx-photo-block__screen-edit-image"
-  }, imageLoading && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), !imageLoading && hasImage && typeof previewImage.url !== 'undefined' && /*#__PURE__*/React.createElement("img", {
+    className: "dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper"
+  }, imageLoading && /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__screen-edit-spinner",
+    style: {
+      minWidth: (_previewImage$width = previewImage === null || previewImage === void 0 ? void 0 : previewImage.width) !== null && _previewImage$width !== void 0 ? _previewImage$width : 500,
+      minHeight: (_previewImage$height = previewImage === null || previewImage === void 0 ? void 0 : previewImage.height) !== null && _previewImage$height !== void 0 ? _previewImage$height : 500,
+      maxWidth: '100%',
+      maxHeight: '100%'
+    }
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null)), !imageLoading && hasImage && typeof previewImage.url !== 'undefined' && /*#__PURE__*/React.createElement("img", {
     src: previewImage.url,
     className: classnames__WEBPACK_IMPORTED_MODULE_5___default()("photo-block-".concat(cssGramFilter), {
       'has-css-gram': cssGramFilter !== 'none'
@@ -10532,8 +10541,10 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
       'has-css-gram': cssGramFilter !== 'none'
     }),
     alt: ""
-  }), !imageLoading && !hasImage && /*#__PURE__*/React.createElement(React.Fragment, null, "Image not found.")), 'bottom' === captionPosition && /*#__PURE__*/React.createElement("figcaption", _extends({
-    className: "dlx-photo-block__screen-edit-caption"
+  }), 'overlay' === captionPosition && !imageLoading && hasImage && /*#__PURE__*/React.createElement("div", _extends({
+    className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
+  }, innerBlockProps)), !imageLoading && !hasImage && /*#__PURE__*/React.createElement(React.Fragment, null, "Image not found.")), 'bottom' === captionPosition && /*#__PURE__*/React.createElement("div", _extends({
+    className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
   }, innerBlockProps)))));
 });
 /* harmony default export */ __webpack_exports__["default"] = (DataEditScreen);

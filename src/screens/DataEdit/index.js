@@ -664,15 +664,25 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			<div className="dlx-photo-block__screen-edit">
 				<figure className="dlx-photo-block__screen-edit-image-wrapper">
 					{ 'top' === captionPosition && (
-						<figcaption
-							className="dlx-photo-block__screen-edit-caption"
+						<div
+							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
 							{ ...innerBlockProps }
 						/>
 					) }
-					<div className="dlx-photo-block__screen-edit-image">
+					<div className="dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper">
 						{
 							imageLoading && (
-								<Spinner />
+								<div
+									className="dlx-photo-block__screen-edit-spinner"
+									style={ {
+										minWidth: previewImage?.width ?? 500,
+										minHeight: previewImage?.height ?? 500,
+										maxWidth: '100%',
+										maxHeight: '100%',
+									} }
+								>
+									<Spinner />
+								</div>
 							)
 						}
 						{
@@ -699,6 +709,12 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 								/>
 							)
 						}
+						{ ( 'overlay' === captionPosition && ! imageLoading && hasImage ) && (
+							<div
+								className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
+								{ ...innerBlockProps }
+							/>
+						) }
 						{
 							( ! imageLoading && ! hasImage ) && (
 								<>
@@ -708,8 +724,8 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 						}
 					</div>
 					{ 'bottom' === captionPosition && (
-						<figcaption
-							className="dlx-photo-block__screen-edit-caption"
+						<div
+							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
 							{ ...innerBlockProps }
 						/>
 					) }
