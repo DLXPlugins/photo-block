@@ -71,95 +71,6 @@ const DataScreen = forwardRef( ( props, ref ) => {
 
 	const { screen, setScreen, setDataMode } = useContext( UploaderContext );
 
-	// Set the local inspector controls.
-	const localInspectorControls = (
-		<InspectorControls>
-			<PanelBody
-				icon={ <Image /> }
-				title={ __( 'Fallback Image', 'photo-block' ) }
-				initialOpen={ true }
-				className="photo-block__inspector-panel"
-			>
-				<div className="dlx-photo-block__data-row">
-					<ToggleControl
-						label={ __( 'Enable a Fallback Image', 'photo-block' ) }
-						checked={ dataHasFallbackImage }
-						onChange={ ( value ) => {
-							setAttributes( { dataHasFallbackImage: value } );
-						} }
-					/>
-				</div>
-				{ dataHasFallbackImage && (
-					<>
-						<div className="dlx-photo-block__data-row">
-							<SelectControl
-								label={ __( 'Select the Fallback Image Size', 'photo-block' ) }
-								value={ dataFallbackImageSize }
-								onChange={ ( size ) => {
-									setAttributes( { dataFallbackImageSize: size } );
-								} }
-								options={ imageSizeOptions }
-							/>
-						</div>
-						<div className="dlx-photo-block__data-row">
-							<MediaUploadCheck>
-								<MediaUpload
-									allowedTypes="image"
-									mode="browse"
-									multiple={ false }
-									title={ __( 'Please select a Fallback Image', 'photo-block' ) }
-									render={ ( { open } ) => (
-										<Button
-											variant="secondary"
-											icon={ <Image /> }
-											onClick={ () => {
-												open();
-											} }
-										>
-											{ __( 'Set Fallback Image', 'photo-block' ) }
-										</Button>
-									) }
-									onSelect={ ( media ) => {
-										const selectedMedia = {
-											id: media.id,
-											url: media.sizes?.large?.url ?? media.sizes.full.url,
-											width:
-												media.sizes?.large?.width ?? media.sizes.full.width,
-											height:
-												media.sizes?.large?.height ?? media.sizes.full.height,
-											alt: media.alt,
-											caption: media.caption,
-										};
-										setAttributes( {
-											dataFallbackImage: selectedMedia,
-										} );
-									} }
-								/>
-							</MediaUploadCheck>
-						</div>
-						{ dataFallbackImage?.url && (
-							<>
-								<div className="dlx-photo-block__data-row">
-									<img
-										src={ dataFallbackImage.url }
-										alt={ dataFallbackImage.alt }
-										width={ dataFallbackImage.width }
-										height={ dataFallbackImage.height }
-										style={ {
-											maxWidth: '175px',
-											height: 'auto',
-											border: '1px solid #ddd',
-										} }
-									/>
-								</div>
-							</>
-						) }
-					</>
-				) }
-			</PanelBody>
-		</InspectorControls>
-	);
-
 	const localToolbar = (
 		<>
 			<BlockControls>
@@ -243,7 +154,6 @@ const DataScreen = forwardRef( ( props, ref ) => {
 	return (
 		<>
 			{ localToolbar }
-			{ localInspectorControls }
 			<div className="dlx-photo-block__screen-data">
 				<Card>
 					<CardHeader

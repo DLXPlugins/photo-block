@@ -48,6 +48,7 @@ import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
+import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
 import CustomAttributesControl from '../../components/CustomAttributes';
 import { buildDimensionsCSS, getValueWithUnit, buildBorderCSS } from '../../utils/TypographyHelper';
 
@@ -434,97 +435,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
-	const { imageCSSClasses, figureCSSClasses, htmlAnchor, hideOnMobile, hideOnTablet, hideOnDesktop } = attributes;
-	const advancedInspectorControls = (
-		<>
-			<PanelRow>
-				<TextControl
-					label={ __( 'HTML Anchor', 'photo-block' ) }
-					value={ htmlAnchor }
-					onChange={ ( value ) => {
-						setAttributes( { htmlAnchor: value } );
-					} }
-					help={ __( 'Enter a word or two — without spaces — to make a unique web address just for this photo, called an "anchor." Then, you\'ll be able to link directly to this photo on your page.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<TextControl
-					label={ __( 'Figure CSS Class(es)', 'photo-block' ) }
-					value={ figureCSSClasses }
-					onChange={ ( value ) => {
-						setAttributes( { figureCSSClasses: value } );
-					} }
-					help={ __( 'Add CSS class(es) directly to the figure tag, which wraps the image.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<TextControl
-					label={ __( 'Image CSS Class(es)', 'photo-block' ) }
-					value={ imageCSSClasses }
-					onChange={ ( value ) => {
-						setAttributes( { imageCSSClasses: value } );
-					} }
-					help={ __( 'Add CSS class(es) directly to the image tag.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<CustomAttributesControl
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<ToggleControl
-					label={ __( 'Skip Lazy Loading', 'photo-block' ) }
-					checked={ skipLazyLoading }
-					onChange={ ( value ) => {
-						setAttributes( { skipLazyLoading: value } );
-					} }
-					help={ __( 'Set a flag which will signal that the image should not be lazy loaded.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<ToggleControl
-					label={ __( 'Enable Image Protection', 'photo-block' ) }
-					checked={ imageProtectionEnabled }
-					onChange={ ( value ) => {
-						setAttributes( { imageProtectionEnabled: value } );
-					} }
-					help={ __( 'Prevent this photo from being downloaded by using the right+click button.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<ToggleControl
-					label={ __( 'Hide on Mobile', 'photo-block' ) }
-					checked={ hideOnMobile }
-					onChange={ ( value ) => {
-						setAttributes( { hideOnMobile: value } );
-					} }
-					help={ __( 'Hide this photo on mobile devices.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<ToggleControl
-					label={ __( 'Hide on Tablet', 'photo-block' ) }
-					checked={ hideOnTablet }
-					onChange={ ( value ) => {
-						setAttributes( { hideOnTablet: value } );
-					} }
-					help={ __( 'Hide this photo on tablet devices.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<ToggleControl
-					label={ __( 'Hide on Desktop', 'photo-block' ) }
-					checked={ hideOnDesktop }
-					onChange={ ( value ) => {
-						setAttributes( { hideOnDesktop: value } );
-					} }
-					help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
-				/>
-			</PanelRow>
-		</>
-	)
+	// Set the advanced inspector controls.
+	const advancedInspectorControls = ( <SidebarImageAdvancedInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> );
 
 	const localToolbar = (
 		<>

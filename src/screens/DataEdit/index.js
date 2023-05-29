@@ -22,7 +22,7 @@ import {
 	RangeControl,
 	Button,
 } from '@wordpress/components';
-import { InspectorControls, BlockControls } from '@wordpress/block-editor';
+import { InspectorControls, InspectorAdvancedControls, BlockControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	Crop,
@@ -55,6 +55,7 @@ import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
+import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
 import { DataSelect, MetaFieldControl } from '../../components/DataSelect';
 
@@ -107,6 +108,8 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		photoDropShadow,
 		photoBackgroundColor,
 		cssGramFilter,
+		lightboxEnabled,
+		lightboxShowCaption,
 	} = attributes;
 
 	const { screen, setScreen, captionPosition, inQueryLoop, setImageFile } = useContext( UploaderContext );
@@ -221,6 +224,89 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 					/>
 				</PanelRow>
 			</PanelBodyControl>
+			<PanelBody
+				icon={ <Image /> }
+				title={ __( 'Fallback Image', 'photo-block' ) }
+				initialOpen={ true }
+				className="photo-block__inspector-panel"
+			>
+				<div className="dlx-photo-block__data-row">
+					<ToggleControl
+						label={ __( 'Enable a Fallback Image', 'photo-block' ) }
+						checked={ dataHasFallbackImage }
+						onChange={ ( value ) => {
+							setAttributes( { dataHasFallbackImage: value } );
+						} }
+					/>
+				</div>
+				{ dataHasFallbackImage && (
+					<>
+						<div className="dlx-photo-block__data-row">
+							<SelectControl
+								label={ __( 'Select the Fallback Image Size', 'photo-block' ) }
+								value={ dataFallbackImageSize }
+								onChange={ ( size ) => {
+									setAttributes( { dataFallbackImageSize: size } );
+								} }
+								options={ imageSizeOptions }
+							/>
+						</div>
+						<div className="dlx-photo-block__data-row">
+							<MediaUploadCheck>
+								<MediaUpload
+									allowedTypes="image"
+									mode="browse"
+									multiple={ false }
+									title={ __( 'Please select a Fallback Image', 'photo-block' ) }
+									render={ ( { open } ) => (
+										<Button
+											variant="secondary"
+											icon={ <Image /> }
+											onClick={ () => {
+												open();
+											} }
+										>
+											{ __( 'Set Fallback Image', 'photo-block' ) }
+										</Button>
+									) }
+									onSelect={ ( media ) => {
+										const selectedMedia = {
+											id: media.id,
+											url: media.sizes?.large?.url ?? media.sizes.full.url,
+											width:
+												media.sizes?.large?.width ?? media.sizes.full.width,
+											height:
+												media.sizes?.large?.height ?? media.sizes.full.height,
+											alt: media.alt,
+											caption: media.caption,
+										};
+										setAttributes( {
+											dataFallbackImage: selectedMedia,
+										} );
+									} }
+								/>
+							</MediaUploadCheck>
+						</div>
+						{ dataFallbackImage?.url && (
+							<>
+								<div className="dlx-photo-block__data-row">
+									<img
+										src={ dataFallbackImage.url }
+										alt={ dataFallbackImage.alt }
+										width={ dataFallbackImage.width }
+										height={ dataFallbackImage.height }
+										style={ {
+											maxWidth: '175px',
+											height: 'auto',
+											border: '1px solid #ddd',
+										} }
+									/>
+								</div>
+							</>
+						) }
+					</>
+				) }
+			</PanelBody>
 		</>
 	);
 
@@ -262,6 +348,9 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	const localInspectorControls = (
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
+
+	// Set the advanced inspector controls.
+	const advancedInspectorControls = ( <SidebarImageAdvancedInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> );
 
 	/**
 	 * Get a post type label.
@@ -398,6 +487,38 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 								) }
 								currentSuggestion={ dataMediaLinkAuthorMeta }
 							/>
+						) }
+						{ 'imageFile' === dataMediaLinkSource && (
+							<>
+								<PanelBody
+									title={ __( 'Lightbox', 'photo-block' ) }
+									initialOpen={ false }
+								>
+									<PanelRow>
+										<ToggleControl
+											label={ __( 'Enable lightbox', 'photo-block' ) }
+											checked={ lightboxEnabled }
+											onChange={ ( value ) => {
+												setAttributes( { lightboxEnabled: value } );
+											} }
+											help={ __( 'Popup the full size photo in a lightbox when clicked.', 'photo-block' ) }
+										/>
+									</PanelRow>
+									{ lightboxEnabled && (
+										<>
+											<PanelRow>
+												<ToggleControl
+													label={ __( 'Show caption', 'photo-block' ) }
+													checked={ lightboxShowCaption }
+													onChange={ ( value ) => {
+														setAttributes( { lightboxShowCaption: value } );
+													} }
+												/>
+											</PanelRow>
+										</>
+									) }
+								</PanelBody>
+							</>
 						) }
 						{ 'none' !== dataMediaLinkSource && (
 							<PanelBody
@@ -537,6 +658,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	return (
 		<>
 			{ localInspectorControls }
+			{ <InspectorAdvancedControls>{ advancedInspectorControls }</InspectorAdvancedControls> }
 			{ localToolbar }
 			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
