@@ -10514,7 +10514,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
   return /*#__PURE__*/React.createElement(React.Fragment, null, localInspectorControls, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorAdvancedControls, null, advancedInspectorControls), localToolbar, /*#__PURE__*/React.createElement("style", null, styles), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit"
   }, /*#__PURE__*/React.createElement("figure", {
-    className: "dlx-photo-block__screen-edit-image-wrapper"
+    className: "dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure"
   }, 'top' === captionPosition && /*#__PURE__*/React.createElement("div", _extends({
     className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
   }, innerBlockProps)), /*#__PURE__*/React.createElement("div", {

@@ -662,7 +662,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			{ localToolbar }
 			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
-				<figure className="dlx-photo-block__screen-edit-image-wrapper">
+				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">
 					{ 'top' === captionPosition && (
 						<div
 							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
