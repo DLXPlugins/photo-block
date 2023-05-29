@@ -38,7 +38,7 @@ import UploaderContext from '../../contexts/UploaderContext';
 import URLPicker from '../URLPicker';
 
 /**
- * UploadTypes component.
+ * MediaLink component.
  *
  * @param {Object} props - Component props.
  * @return {Function} Component.
@@ -50,7 +50,7 @@ const MediaLink = ( props ) => {
 	const {
 	} = useContext( UploaderContext );
 
-	const { mediaLinkType, mediaLinkTitle, mediaLinkUrl } = attributes;
+	const { mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption } = attributes;
 
 	return (
 		<>
@@ -166,6 +166,50 @@ const MediaLink = ( props ) => {
 									{ __( 'Attachment Page', 'photo-block' ) }
 								</Button>
 							</div>
+						</>
+					) }
+					{ 'image' === mediaLinkType && (
+						<>
+							<PanelBody
+								title={ __( 'Lightbox', 'photo-block' ) }
+								initialOpen={ false }
+							>
+								<PanelRow>
+									<ToggleControl
+										label={ __( 'Enable lightbox', 'photo-block' ) }
+										checked={ lightboxEnabled }
+										onChange={ ( value ) => {
+											setAttributes( { lightboxEnabled: value } );
+										} }
+										help={ __( 'Popup the full size photo in a lightbox when clicked.', 'photo-block' ) }
+									/>
+								</PanelRow>
+								{ lightboxEnabled && (
+									<>
+										<PanelRow>
+											<ToggleControl
+												label={ __( 'Show caption', 'photo-block' ) }
+												checked={ lightboxShowCaption }
+												onChange={ ( value ) => {
+													setAttributes( { lightboxShowCaption: value } );
+												} }
+											/>
+										</PanelRow>
+										{ lightboxShowCaption && (
+											<PanelRow>
+												<TextControl
+													label={ __( 'Custom Caption (optional)', 'photo-block' ) }
+													value={ lightboxCaption }
+													onChange={ ( value ) => {
+														setAttributes( { lightboxCaption: value } );
+													} }
+													help={ __( 'Leave blank to use the photo\'s caption.', 'photo-block' ) }
+												/>
+											</PanelRow>
+										) }
+									</>
+								) }
+							</PanelBody>
 						</>
 					) }
 					{ 'none' !== mediaLinkType && (

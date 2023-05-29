@@ -698,6 +698,26 @@
     "customAttributes": {
       "type": "array",
       "default": []
+    },
+    "skipLazyLoading": {
+      "type": "boolean",
+      "default": false
+    },
+    "lightboxEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "lightboxShowCaption": {
+      "type": "boolean",
+      "default": false
+    },
+    "lightboxCaption": {
+      "type": "string",
+      "default": ""
+    },
+    "imageProtectionEnabled": {
+      "type": "boolean",
+      "default": false
     }
   },
   "supports": {

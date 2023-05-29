@@ -176,7 +176,6 @@ class Rest {
 		$crop_y      = absint( $request->get_param( 'cropY' ) );
 		$crop_width  = absint( $request->get_param( 'cropWidth' ) );
 		$crop_height = absint( $request->get_param( 'cropHeight' ) );
-		$zoom        = (float) $request->get_param( 'zoom' );
 		$rotate      = intval( $request->get_param( 'rotateDegrees' ) );
 		$image_id    = absint( $request->get_param( 'imageId' ) );
 
@@ -210,13 +209,8 @@ class Rest {
 		}
 
 		// Rotate the image if necessary.
-		if ( $rotate !== 0 ) {
+		if ( 0 !== $rotate ) {
 			$image->rotate( - $rotate ); // Negative because rotation is backwards for some reason.
-		}
-
-		// Zoom the image if necessary.
-		if ( $zoom !== 1 ) {
-			$image->resize( $image->get_size()['width'] * $zoom, $image->get_size()['height'] * $zoom );
 		}
 
 		// Crop the image.

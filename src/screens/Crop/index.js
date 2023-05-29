@@ -24,7 +24,7 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
-import { ZoomIn, Check, RotateCcw, RotateCw, Save, X, Lock, Loader2 } from 'lucide-react';
+import { Check, RotateCcw, RotateCw, Save, X, Lock, Loader2 } from 'lucide-react';
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
 import UploaderContext from '../../contexts/UploaderContext';
@@ -47,10 +47,10 @@ const CropScreen = ( props ) => {
 	const [ rotateDegrees, setRotateDegrees ] = useState( 0 );
 	const [ crop, setCrop ] = useState( null );
 	const [ lockCrop, setLockCrop ] = useState( true );
-	const [ zoomButtonRef, setZoomButtonRef ] = useState( null );
-	const [ zoomPopover, setZoomPopover ] = useState( false );
-	const [ zoom, setZoom ] = useState( 1 );
 	const [ isSaving, setIsSaving ] = useState( false );
+	const [ cropAspectRatio, setCropAspectRatio ] = useState( undefined );
+	const [ cropMaxWidth, setCropMaxWidth ] = useState( null ); // Used for setting the max crop size when selecting pixel values for aspect ratio.
+	const [ cropMaxHeight, setCropMaxHeight ] = useState( null ); // Used for setting the max crop size when selecting pixel values for aspect ratio.
 
 	const {
 		photo,
@@ -133,11 +133,10 @@ const CropScreen = ( props ) => {
 	 * @param {Object} cropObject React crop object.
 	 * @param {number} imageId    The image ID.
 	 * @param {number} rotate     Image rotation in degrees.
-	 * @param {number} zoomLevel  The zoom level (1-3).
 	 *
 	 * @return {Promise} The REST API promise.
 	 */
-	const cropImage = async( cropObject, imageId, rotate, zoomLevel ) => {
+	const cropImage = async( cropObject, imageId, rotate ) => {
 		return await SendCommand(
 			photoBlock.restNonce,
 			{
@@ -147,7 +146,6 @@ const CropScreen = ( props ) => {
 				cropHeight: cropObject.height,
 				imageId,
 				rotateDegrees: rotate,
-				zoom: zoomLevel,
 			},
 			`${ photoBlock.restUrl + '/image/crop' }`,
 			'POST'
@@ -160,8 +158,10 @@ const CropScreen = ( props ) => {
 	 * @param {number} imageWidth     The image width in pixels.
 	 * @param {number} imageHeight    The image height in pixels.
 	 * @param {number} newAspectRatio The aspect ratio.
+	 * @param {number} maximumWidth   The maximum width in pixels.
+	 * @param {number} maximumHeight  The maximum height in pixels.
 	 */
-	const setCenterCrop = ( imageWidth, imageHeight, newAspectRatio ) => {
+	const setCenterCrop = ( imageWidth, imageHeight, newAspectRatio, maximumWidth = null, maximumHeight = null ) => {
 		const initialCropRatio = 1;
 
 		// Get the initial crop size.
@@ -176,6 +176,10 @@ const CropScreen = ( props ) => {
 		} else {
 			cropHeight = initialCropSize;
 			cropWidth = cropHeight * newAspectRatio;
+		}
+		if ( maximumWidth && maximumHeight ) {
+			cropWidth = maximumWidth;
+			cropHeight = maximumHeight;
 		}
 
 		// Check if crop width/height exceed image dimensions.
@@ -194,12 +198,17 @@ const CropScreen = ( props ) => {
 
 		// Set crop object.
 		const newCrop = {
+			aspect: cropWidth / cropHeight,
 			unit: 'px',
 			x,
 			y,
 			width: cropWidth,
 			height: cropHeight,
 		};
+		if ( maximumWidth && maximumHeight ) {
+			newCrop.maxWidth = maximumWidth;
+			newCrop.maxHeight = maximumHeight;
+		}
 		setCrop( newCrop );
 	};
 
@@ -229,6 +238,7 @@ const CropScreen = ( props ) => {
 			// Set crop value.
 			setShouldShowLoading( false );
 			setCenterCrop( data?.width, data?.height, newAspectRatio );
+			setCropAspectRatio( newAspectRatio );
 		}
 		fetchImage();
 	}, [ shouldFetchImage ] );
@@ -238,9 +248,22 @@ const CropScreen = ( props ) => {
 	 *
 	 * @param {number} newAspectRatioWidth  The aspect ratio width.
 	 * @param {number} newAspectRatioHeight The aspect ratio height.
+	 * @param {number} maximumWidth         The maximum width in pixels.
+	 * @param {number} maximumHeight        The maximum height in pixels.
 	 */
-	const handleAspectRatioChange = ( newAspectRatioWidth, newAspectRatioHeight ) => {
-		setCenterCrop( fullsizePhoto?.width, fullsizePhoto?.height, newAspectRatioWidth / newAspectRatioHeight );
+	const handleAspectRatioChange = ( newAspectRatioWidth, newAspectRatioHeight, maximumWidth = null, maximumHeight = null ) => {
+		// Aspect ratio.
+		let newAspectRatio = newAspectRatioWidth / newAspectRatioHeight;
+		if ( null !== maximumWidth && null !== maximumHeight ) {
+			newAspectRatio = maximumWidth / maximumHeight;
+			setCropMaxWidth( maximumWidth );
+			setCropMaxHeight( maximumHeight );
+		} else {
+			setCropMaxWidth( null );
+			setCropMaxHeight( null );
+		}
+		setCropAspectRatio( newAspectRatio );
+		setCenterCrop( fullsizePhoto?.width, fullsizePhoto?.height, newAspectRatio, maximumWidth, maximumHeight );
 	};
 
 	// Set the local inspector controls.
@@ -255,14 +278,6 @@ const CropScreen = ( props ) => {
 	const localToolbar = (
 		<BlockControls>
 			<ToolbarGroup>
-				<ToolbarButton
-					icon={ <ZoomIn /> }
-					label={ __( 'Zoom In', 'photo-block' ) }
-					onClick={ ( e ) => {
-						setZoomPopover( ! zoomPopover );
-					} }
-					ref={ setZoomButtonRef }
-				/>
 				<ToolbarDropdownMenu
 					icon={ <AspectRatioIcon /> }
 					label={ __( 'Aspect Ratio', 'photo-block' ) }
@@ -454,7 +469,7 @@ const CropScreen = ( props ) => {
 								aspectRatioWidth: humanImageRatio.width,
 								aspectRatioHeight: humanImageRatio.height,
 							} );
-							setCenterCrop( values.aspectRatioWidthPixels, values.aspectRatioHeightPixels, humanImageRatio.width, humanImageRatio.height );
+							handleAspectRatioChange( humanImageRatio.width, humanImageRatio.height, values.aspectRatioWidthPixels, values.aspectRatioHeightPixels );
 						} else {
 							setAttributes( {
 								aspectRatioWidth: values.aspectRatioWidth,
@@ -476,7 +491,7 @@ const CropScreen = ( props ) => {
 							return;
 						}
 						setIsSaving( true );
-						const croppedImage = cropImage( crop, photo.id, rotateDegrees, zoom );
+						const croppedImage = cropImage( crop, photo.id, rotateDegrees );
 						croppedImage.then( ( imageResponse ) => {
 							const { data } = imageResponse;
 							if ( data.success ) {
@@ -515,40 +530,10 @@ const CropScreen = ( props ) => {
 		</BlockControls>
 	);
 
-
-	/**
-	 * Begin styles.
-	 */
-	const styles = `
-		#${ uniqueId } img {
-			scale: ${ zoom };
-		}`;
 	return (
 		<>
-			{ zoomPopover && (
-				<Popover
-					placement="bottom"
-					className="dlx-photo-block__zoom-popover"
-					onClose={ () => {
-						setZoomPopover( false );
-					} }
-					anchor={ zoomButtonRef }
-				>
-					<RangeControl
-						label={ __( 'Set Zoom', 'photo-block' ) }
-						value={ zoom }
-						onChange={ ( value ) => {
-							setZoom( value );
-						} }
-						min={ 1 }
-						max={ 3 }
-						step={ 0.01 }
-					/>
-				</Popover>
-			) }
 			{ localInspectorControls }
 			{ localToolbar }
-			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
 				{ shouldShowLoading && (
 					<div
@@ -567,12 +552,14 @@ const CropScreen = ( props ) => {
 				{ ! shouldShowLoading && (
 					<>
 						<ReactCrop
+							aspect={ lockCrop ? cropAspectRatio : null }
 							crop={ crop }
 							onChange={ ( newCrop ) => {
 								setCrop( newCrop );
 							} }
-							locked={ lockCrop }
 							ruleOfThirds={ true }
+							maxWidth={ cropMaxWidth ?? undefined }
+							maxHeight={ cropMaxHeight ?? undefined }
 						>
 							<img
 								src={ fullsizePhoto?.url ?? '' }

@@ -83,6 +83,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		photoMarginSize,
 		photoBorderRadius,
 		photoBorder,
+		skipLazyLoading,
+		imageProtectionEnabled,
 	} = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
@@ -473,6 +475,26 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			</PanelRow>
 			<PanelRow>
 				<ToggleControl
+					label={ __( 'Skip Lazy Loading', 'photo-block' ) }
+					checked={ skipLazyLoading }
+					onChange={ ( value ) => {
+						setAttributes( { skipLazyLoading: value } );
+					} }
+					help={ __( 'Set a flag which will signal that the image should not be lazy loaded.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					label={ __( 'Enable Image Protection', 'photo-block' ) }
+					checked={ imageProtectionEnabled }
+					onChange={ ( value ) => {
+						setAttributes( { imageProtectionEnabled: value } );
+					} }
+					help={ __( 'Prevent this photo from being downloaded by using the right+click button.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
 					label={ __( 'Hide on Mobile', 'photo-block' ) }
 					checked={ hideOnMobile }
 					onChange={ ( value ) => {
@@ -517,7 +539,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					>
 						{ __( 'Crop', 'photo-block' ) }
 					</ToolbarButton>
-					<ToolbarButton
+					{ /* <ToolbarButton
 						icon={ <Stars /> }
 						label={ __( 'Effects', 'photo-block' ) }
 						onClick={ () => {
@@ -525,7 +547,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						} }
 					>
 						{ __( 'Effects', 'photo-block' ) }
-					</ToolbarButton>
+					</ToolbarButton> */ }
 				</ToolbarGroup>
 				<ToolbarGroup>
 					<ToolbarButton

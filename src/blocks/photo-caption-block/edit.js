@@ -888,7 +888,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const localToolbar = (
 		<BlockControls>
 			{
-				( dataMode || 'single' === mode ) && (
+				( ( dataMode || 'single' === mode ) && 'overlay' !== captionPosition ) && (
 					<ToolbarGroup className="dlx-photo-block__caption-align-toolbar-buttons">
 						<ToolbarButton
 							icon={ <AlignLeft /> }
@@ -1146,6 +1146,7 @@ const PhotoCaptionBlock = ( props ) => {
 							variant="primary"
 							onClick={ () => {
 								removeBlocks( clientId );
+								setCaptionPosition( 'bottom' );
 								setRemoveCaptionModalVisible( false );
 							} }
 						>

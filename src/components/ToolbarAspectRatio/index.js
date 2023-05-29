@@ -120,7 +120,6 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 										'Change between aspect ratio and pixels', 'photo-block'
 									) }
 									onClick={ () => {
-										swapAspectRatio();
 										if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
 											setValue( 'aspectRatioUnit', 'ratio' );
 											setAttributes( { aspectRatioUnit: 'ratio' } );
@@ -174,7 +173,6 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 										'Change between aspect ratio and pixels', 'photo-block'
 									) }
 									onClick={ () => {
-										swapAspectRatio();
 										if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
 											setValue( 'aspectRatioUnit', 'ratio' );
 											setAttributes( { aspectRatioUnit: 'ratio' } );
@@ -204,7 +202,7 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 						</>
 					) }
 					<Button
-						variant={ isDirty ? 'primary' : 'secondary' }
+						variant={ 'primary' }
 						type="submit"
 						className="dlx-photo-block__component-aspect-ratio-apply"
 						label={ __(
@@ -215,7 +213,6 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 							'Switch modes from Aspect Ratio to Width and Height (pixels)',
 							'photo-block'
 						) }
-						disabled={ ! isDirty }
 					>
 						{ __( 'Apply', 'photo-block' ) }
 					</Button>
