@@ -707,7 +707,7 @@
   "example": {
     "attributes": {}
   },
-  "editorScript": "dlx-photo-block-editor",
-  "editorStyle": "dlx-photo-block-editor-css",
+  "editorScript": "dlx-photo-caption-block-editor",
+  "editorStyle": "dlx-photo-caption-block-editor-css",
   "style": "dlx-photo-block-frontend-and-editor"
 }

@@ -1,7 +1,7 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useState, useRef, useContext } from '@wordpress/element';
+import { useEffect, useState, useRef, useContext, lazy, Suspense } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import {
@@ -39,13 +39,59 @@ import { useInstanceId } from '@wordpress/compose';
 
 import UploaderContext from '../../contexts/UploaderContext';
 import InitialScreen from '../../screens/Initial';
-import EditScreen from '../../screens/Edit';
-import CropScreen from '../../screens/Crop';
-import DataScreen from '../../screens/Data';
-import DataEditScreen from '../../screens/DataEdit';
 //import EffectsScreen from '../../screens/Effects';
 import CaptionAppender from '../../components/CaptionAppender';
 
+const initialScreen = lazy( () =>
+	import( /* webpackChunkName: "InitialScreen.0.0.1" */ '../../screens/Initial' )
+);
+const getInitialScreen = ( props ) => {
+	return (
+		<Suspense fallback={ <div>Loading...</div> }>
+			<InitialScreen { ...props }/>
+		</Suspense>
+	);
+};
+const EditScreen = lazy( () =>
+	import( /* webpackChunkName: "EditScreen.0.0.1" */ '../../screens/Edit' )
+);
+const getEditScreen = ( props ) => {
+	return (
+		<Suspense fallback={ <div>Loading...</div> }>
+			<EditScreen { ...props }/>
+		</Suspense>
+	);
+};
+const CropScreen = lazy( () =>
+	import( /* webpackChunkName: "CropScreen.0.0.1" */ '../../screens/Crop' )
+);
+const getCropScreen = ( props ) => {
+	return (
+		<Suspense fallback={ <div>Loading...</div> }>
+			<CropScreen { ...props }/>
+		</Suspense>
+	);
+};
+const DataScreen = lazy( () =>
+	import( /* webpackChunkName: "DataScreen.0.0.1" */ '../../screens/Data' )
+);
+const getDataScreen = ( props ) => {
+	return (
+		<Suspense fallback={ <div>Loading...</div> }>
+			<DataScreen { ...props }/>
+		</Suspense>
+	);
+};
+const DataEditScreen = lazy( () =>
+	import( /* webpackChunkName: "DataEditScreen.0.0.1" */ '../../screens/DataEdit' )
+);
+const getDataEditScreen = ( props ) => {
+	return (
+		<Suspense fallback={ <div>Loading...</div> }>
+			<DataEditScreen { ...props }/>
+		</Suspense>
+	);
+};
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
 
@@ -170,38 +216,47 @@ const PhotoBlock = ( props ) => {
 		// If in data mode, show the data screen.
 		if ( dataMode ) {
 			if ( 'data' === dataScreen ) {
-				return (
-					<DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />
-				);
+				return getDataScreen( {
+					attributes,
+					setAttributes,
+					context,
+				} );
 			}
 			if ( 'data-edit' === dataScreen ) {
-				return (
-					<DataEditScreen attributes={ attributes } setAttributes={ setAttributes } innerBlockProps={ captionInnerBlockProps } context={ context } />
-				);
+				return getDataEditScreen( {
+					attributes,
+					setAttributes,
+					innerBlockProps: captionInnerBlockProps,
+					context,
+				} );
 			}
 		}
 
 		// Otherwise get the screen based on the current screen.
 		switch ( screen ) {
 			case 'initial':
-				return (
-					<InitialScreen
-						attributes={ attributes }
-						setAttributes={ setAttributes }
-					/>
-				);
+				return getInitialScreen( {
+					attributes,
+					setAttributes,
+				} );
 			case 'edit':
-				return (
-					<EditScreen ref={ imageRef } attributes={ attributes } setAttributes={ setAttributes } innerBlockProps={ captionInnerBlockProps } />
-				);
+				return getEditScreen( {
+					ref: imageRef,
+					attributes,
+					setAttributes,
+					innerBlockProps: captionInnerBlockProps,
+				} );
 			case 'crop':
-				return (
-					<CropScreen attributes={ attributes } setAttributes={ setAttributes } />
-				);
+				return getCropScreen( {
+					attributes,
+					setAttributes,
+				} );
 			case 'data':
-				return (
-					<DataScreen attributes={ attributes } setAttributes={ setAttributes } />
-				);
+				return getDataScreen( {
+					attributes,
+					setAttributes,
+					context,
+				} );
 			case 'effects':
 				return null;
 				// return (

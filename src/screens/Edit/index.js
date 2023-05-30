@@ -10,15 +10,14 @@ import {
 	Spinner,
 	ToolbarGroup,
 	ToolbarButton,
-	ToggleControl,
 	Popover,
 	TabPanel,
+	PanelBody,
 	TextControl,
 	TextareaControl,
 	PanelRow,
 	SelectControl,
 	ButtonGroup,
-	RangeControl,
 	Button,
 } from '@wordpress/components';
 import { InspectorControls, BlockControls, InspectorAdvancedControls } from '@wordpress/block-editor';
@@ -31,31 +30,18 @@ import {
 	Settings,
 	Paintbrush,
 	Undo2,
-	Stars,
 } from 'lucide-react';
 import classnames from 'classnames';
-import hexToRgba from 'hex-to-rgba';
 
 import UploaderContext from '../../contexts/UploaderContext';
 import SendCommand from '../../utils/SendCommand';
 import MediaLink from '../../components/MediaLink';
-import ColorPickerControl from '../../components/ColorPicker';
-import DropShadowControl from '../../components/DropShadow';
-import CSSGramButtonGroup from '../../components/CSSGramButtonGroup';
-import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
-import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
-import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
-import CustomAttributesControl from '../../components/CustomAttributes';
+//import CustomPresets from '../../components/CustomPresets';
 import { buildDimensionsCSS, getValueWithUnit, buildBorderCSS } from '../../utils/TypographyHelper';
-
-/**
- * Height units.
- */
-const heightUnits = [ 'px', 'em', 'rem', '%', 'vh' ];
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps } = props;
@@ -180,6 +166,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
+			<PanelBody title={ __( 'Presets', 'photo-block' ) } initialOpen={ true }>
+				{ /* <CustomPresets { ...props } /> */ }
+			</PanelBody>
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }
 				icon={ <Image /> }
