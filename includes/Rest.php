@@ -803,7 +803,7 @@ class Rest {
 		}
 
 		// Get the Image data.
-		$attachment_data = Functions::get_image_data( $id, 'large' );
+		$attachment_data = Functions::get_image_data( $id, 'full' );
 
 		// Check image URL.
 		if ( empty( $attachment_data ) ) {

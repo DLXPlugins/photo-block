@@ -1,7 +1,7 @@
 import './editor.scss';
 import 'react-image-crop/src/ReactCrop.scss';
 
-import { useContext, useState, forwardRef } from '@wordpress/element';
+import { useContext, useState, forwardRef, useRef } from '@wordpress/element';
 import {
 	Spinner,
 	PanelBody,
@@ -36,7 +36,7 @@ import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFrom
 import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
 
 const CropScreen = ( props ) => {
-	const { screen, setScreen, setImageFile } =
+	const { screen, imageFile, setScreen, setImageFile } =
 		useContext( UploaderContext );
 	const { attributes, setAttributes } = props;
 
@@ -51,6 +51,7 @@ const CropScreen = ( props ) => {
 	const [ cropAspectRatio, setCropAspectRatio ] = useState( undefined );
 	const [ cropMaxWidth, setCropMaxWidth ] = useState( null ); // Used for setting the max crop size when selecting pixel values for aspect ratio.
 	const [ cropMaxHeight, setCropMaxHeight ] = useState( null ); // Used for setting the max crop size when selecting pixel values for aspect ratio.
+	const [ reactCropImageRef, setReactCropImageRef ] = useState( null );
 
 	const {
 		photo,
@@ -137,13 +138,32 @@ const CropScreen = ( props ) => {
 	 * @return {Promise} The REST API promise.
 	 */
 	const cropImage = async( cropObject, imageId, rotate ) => {
+		// Get image dimensions relative to viewport.
+		const displayDimensionsWidth = reactCropImageRef.offsetWidth;
+		const displayDimensionsHeight = reactCropImageRef.offsetHeight;
+		const originalDimensionsWidth = reactCropImageRef.naturalWidth;
+		const originalDimensionsHeight = reactCropImageRef.naturalHeight;
+
+		console.log( imageFile );
+		console.log( displayDimensionsWidth, displayDimensionsHeight );
+		console.log( originalDimensionsWidth, originalDimensionsHeight );
+
+		// Get crop dimensions to send to server.
+		const scaleX = originalDimensionsWidth / displayDimensionsWidth;
+		const scaleY = originalDimensionsHeight / displayDimensionsHeight;
+
+		// Scale crop coordinates
+		const scaledCropX = cropObject.x * scaleX;
+		const scaledCropY = cropObject.y * scaleY;
+		const scaledCropWidth = cropObject.width * scaleX;
+		const scaledCropHeight = cropObject.height * scaleY;
 		return await SendCommand(
 			photoBlock.restNonce,
 			{
-				cropX: cropObject.x,
-				cropY: cropObject.y,
-				cropWidth: cropObject.width,
-				cropHeight: cropObject.height,
+				cropX: scaledCropX,
+				cropY: scaledCropY,
+				cropWidth: scaledCropWidth,
+				cropHeight: scaledCropHeight,
 				imageId,
 				rotateDegrees: rotate,
 			},
@@ -163,6 +183,8 @@ const CropScreen = ( props ) => {
 	 */
 	const setCenterCrop = ( imageWidth, imageHeight, newAspectRatio, maximumWidth = null, maximumHeight = null ) => {
 		const initialCropRatio = 1;
+
+		
 
 		// Get the initial crop size.
 		const minDimension = Math.min( imageWidth, imageHeight );
@@ -237,11 +259,17 @@ const CropScreen = ( props ) => {
 
 			// Set crop value.
 			setShouldShowLoading( false );
-			setCenterCrop( data?.width, data?.height, newAspectRatio );
 			setCropAspectRatio( newAspectRatio );
 		}
 		fetchImage();
 	}, [ shouldFetchImage ] );
+
+	/* Set Center Crop when image has finished loading */
+	useEffect( () => {
+		if ( reactCropImageRef ) {
+			setCenterCrop( reactCropImageRef.offsetWidth, reactCropImageRef.offsetHeight, cropAspectRatio );
+		}
+	}, [ reactCropImageRef ] );
 
 	/**
 	 * Create new crop object when aspect ratio changes.
@@ -263,7 +291,7 @@ const CropScreen = ( props ) => {
 			setCropMaxHeight( null );
 		}
 		setCropAspectRatio( newAspectRatio );
-		setCenterCrop( fullsizePhoto?.width, fullsizePhoto?.height, newAspectRatio, maximumWidth, maximumHeight );
+		setCenterCrop( reactCropImageRef.offsetWidth, reactCropImageRef?.offsetHeight, newAspectRatio, maximumWidth, maximumHeight );
 	};
 
 	// Set the local inspector controls.
@@ -491,6 +519,7 @@ const CropScreen = ( props ) => {
 							return;
 						}
 						setIsSaving( true );
+
 						const croppedImage = cropImage( crop, photo.id, rotateDegrees );
 						croppedImage.then( ( imageResponse ) => {
 							const { data } = imageResponse;
@@ -565,7 +594,12 @@ const CropScreen = ( props ) => {
 								src={ fullsizePhoto?.url ?? '' }
 								width={ fullsizePhoto?.width }
 								height={ fullsizePhoto?.height }
+								style={ {
+									maxWidth: '100%',
+									height: 'auto',
+								} }
 								alt=""
+								ref={ setReactCropImageRef }
 							/>
 						</ReactCrop>
 					</>

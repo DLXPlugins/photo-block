@@ -624,7 +624,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							} }
 							ref={ ref }
 							style={ {
-								maxWidth: `${ imageDimensions.width }px`,
+								maxWidth: `100%`,
 								height: 'auto',
 							} }
 						/>
