@@ -235,7 +235,8 @@ var PhotoBlock = function PhotoBlock(props) {
           ref: imageRef,
           attributes: attributes,
           setAttributes: setAttributes,
-          innerBlockProps: captionInnerBlockProps
+          innerBlockProps: captionInnerBlockProps,
+          clientId: clientId
         });
       case 'crop':
         return getCropScreen({

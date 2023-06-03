@@ -40,7 +40,7 @@ import useDeviceType from '../../hooks/useDeviceType';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
-//import CustomPresets from '../../components/CustomPresets';
+import CustomPresets from '../../components/CustomPresets';
 import { buildDimensionsCSS, getValueWithUnit, buildBorderCSS } from '../../utils/TypographyHelper';
 
 const EditScreen = forwardRef( ( props, ref ) => {
@@ -167,7 +167,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const settingsInspectorControls = (
 		<>
 			<PanelBody title={ __( 'Presets', 'photo-block' ) } initialOpen={ true }>
-				{ /* <CustomPresets { ...props } /> */ }
+				{ <CustomPresets { ...props } /> }
 			</PanelBody>
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }

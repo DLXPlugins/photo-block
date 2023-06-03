@@ -125,17 +125,26 @@ class Blocks {
 			);
 		}
 
+		// Get localised vars to return for JS parsing.
+		$localized_vars = array(
+			'restUrl'            => rest_url( 'dlxplugins/photo-block/v1' ),
+			'restNonce'          => wp_create_nonce( 'wp_rest' ),
+			'captionInnerBlocks' => $caption_innerblocks_supported,
+			'imageSizes'         => Functions::get_all_image_sizes(),
+			'palette'            => functions::get_theme_color_palette(),
+			'postTypes'          => $post_type_return,
+		);
+		/**
+		 * Filter the localized variables for the Photo Block.
+		 *
+		 * @param array $localized_vars Array of localized variables.
+		 */
+		$localized_vars = apply_filters( 'photo_block_localized_vars', $localized_vars );
+
 		wp_localize_script(
 			'dlx-photo-block-editor',
 			'photoBlock',
-			array(
-				'restUrl'            => rest_url( 'dlxplugins/photo-block/v1' ),
-				'restNonce'          => wp_create_nonce( 'wp_rest' ),
-				'captionInnerBlocks' => $caption_innerblocks_supported,
-				'imageSizes'         => Functions::get_all_image_sizes(),
-				'palette'            => functions::get_theme_color_palette(),
-				'postTypes'          => $post_type_return,
-			)
+			$localized_vars
 		);
 
 		wp_register_style(

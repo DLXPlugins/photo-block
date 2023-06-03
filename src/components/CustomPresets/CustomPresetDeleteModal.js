@@ -32,7 +32,7 @@ const CustomPresetDeleteModal = ( props ) => {
 		setIsDeleting( true );
 		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
 		const data = new FormData();
-		data.append( 'action', 'has_delete_preset' );
+		data.append( 'action', 'dlx_photo_block_delete_preset' );
 		data.append( 'nonce', deleteNonce );
 		data.append( 'editId', formData.editId );
 		fetch( ajaxUrl, {
@@ -62,9 +62,9 @@ const CustomPresetDeleteModal = ( props ) => {
 
 	return (
 		<Modal
-			title={ __( 'Delete Preset', 'highlight-and-share' ) }
+			title={ __( 'Delete Preset', 'photo-block' ) }
 			onRequestClose={ () => setShowDeleteModal( false ) }
-			className="has-preset-modal"
+			className="photo-block-preset-modal"
 			shouldCloseOnClickOutside={ false }
 		>
 			<form onSubmit={ handleSubmit( onSubmit ) }>
@@ -76,12 +76,12 @@ const CustomPresetDeleteModal = ( props ) => {
 				<Button
 					type="submit"
 					variant="primary"
-					className="has-preset-modal-apply-button"
+					className="photo-block-preset-modal-apply-button"
 					disabled={ isDeleting }
 				>
 					{ isDeleting
-						? __( 'Deleting…', 'highlight-and-share' )
-						: __( 'Delete Preset', 'highlight-and-share' ) }
+						? __( 'Deleting…', 'photo-block' )
+						: __( 'Delete Preset', 'photo-block' ) }
 				</Button>
 				{ ! isDeleting && (
 					<Button
@@ -90,7 +90,7 @@ const CustomPresetDeleteModal = ( props ) => {
 							setShowDeleteModal( false );
 						} }
 					>
-						{ __( 'Cancel', 'highlight-and-share' ) }
+						{ __( 'Cancel', 'photo-block' ) }
 					</Button>
 				) }
 			</form>

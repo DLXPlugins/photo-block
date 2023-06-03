@@ -245,6 +245,7 @@ const PhotoBlock = ( props ) => {
 					attributes,
 					setAttributes,
 					innerBlockProps: captionInnerBlockProps,
+					clientId,
 				} );
 			case 'crop':
 				return getCropScreen( {

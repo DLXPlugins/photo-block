@@ -1,3 +1,4 @@
+import './editor.scss';
 import React, { useState } from 'react';
 import CustomPresetsContext from './context';
 import CustomPresetContainer from './CustomPresetContainer';
@@ -8,6 +9,7 @@ const CustomPresets = ( props ) => {
 	const [ editPresets, setEditPresets ] = useState( false );
 	const [ showEditModal, setShowEditModal ] = useState( false );
 	const [ showDeleteModal, setShowDeleteModal ] = useState( false );
+	const [ defaultPreset, setDefaultPreset ] = useState( null );
 
 	return (
 		<CustomPresetsContext.Provider
@@ -22,6 +24,8 @@ const CustomPresets = ( props ) => {
 				setShowEditModal,
 				showDeleteModal,
 				setShowDeleteModal,
+				defaultPreset,
+				setDefaultPreset,
 			} }
 		>
 			<CustomPresetContainer { ...props } />

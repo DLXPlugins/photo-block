@@ -1,21 +1,25 @@
 import React, { useRef, useEffect, useState, useContext } from 'react';
 import {
-	Spinner,
 	Button,
 	Modal,
 	RadioControl,
 	TextControl,
+	ToggleControl,
 } from '@wordpress/components';
+import classnames from 'classnames';
 import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
+import { useSelect, select } from '@wordpress/data';
+import { AlertCircle, Save } from 'lucide-react';
 import CustomPresetsContext from './context';
-import CircularExclamationIcon from '../../../../react/Components/Icons/CircularExplanation';
-import Notice from '../../../../react/Components/Notice';
+import Notice from '../Notice';
 
 const CustomPresetSaveModal = ( props ) => {
 	const [ presetSaveType, setPresetSaveType ] = useState( 'new' );
 	const [ isSaving, setIsSaving ] = useState( false );
 	const { title, attributes, setAttributes, clientId } = props;
+
+	console.log( props );
 
 	const { savedPresets, setSavedPresets, savingPreset, setSavingPreset } =
 		useContext( CustomPresetsContext );
@@ -24,6 +28,7 @@ const CustomPresetSaveModal = ( props ) => {
 		return {
 			presetTitle: '',
 			selectedPreset: null,
+			defaultPreset: false,
 		};
 	};
 	const { control, handleSubmit, setValue } = useForm( {
@@ -33,6 +38,28 @@ const CustomPresetSaveModal = ( props ) => {
 	const { errors } = useFormState( {
 		control,
 	} );
+
+	/**
+	 * Retrieve a list of parent and child attributes for the current block.
+	 *
+	 * @return {Object} Object of attributes with keys photoAttributes, captionAttributes..
+	 */
+	const getCurrentAttributes = () => {
+		// Get the caption block attributes, if any.
+		const children = select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]?.innerBlocks || [];
+		const captionBlock = children.find( ( block ) => 'dlxplugins/photo-caption-block' === block.name );
+		const captionAttributes = captionBlock ? captionBlock.attributes : {};
+
+		// Get the parent block attributes.
+		const parentAttributes = select( 'core/block-editor' ).getBlockAttributes( clientId );
+
+		// Merge the parent and child attributes.
+		const allAttributes = {
+			photoAttributes: parentAttributes,
+			captionAttributes,
+		};
+		return allAttributes;
+	};
 
 	const onSubmit = ( formData ) => {
 		if ( 'new' === presetSaveType ) {
@@ -51,9 +78,9 @@ const CustomPresetSaveModal = ( props ) => {
 		setIsSaving( true );
 		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
 		const data = new FormData();
-		data.append( 'action', 'has_save_presets' );
-		data.append( 'nonce', has_gutenberg.blockPresetsNonceSave );
-		data.append( 'attributes', JSON.stringify( attributes ) );
+		data.append( 'action', 'dlx_photo_block_save_presets' );
+		data.append( 'nonce', photoBlock.presetSaveNewNonce );
+		data.append( 'attributes', JSON.stringify( getCurrentAttributes() ) );
 		data.append( 'formData', JSON.stringify( formData ) );
 		fetch( ajaxUrl, {
 			method: 'POST',
@@ -84,10 +111,11 @@ const CustomPresetSaveModal = ( props ) => {
 		setIsSaving( true );
 		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
 		const data = new FormData();
-		data.append( 'action', 'has_override_preset' );
-		data.append( 'nonce', has_gutenberg.blockPresetsNonceSave );
-		data.append( 'attributes', JSON.stringify( attributes ) );
+		data.append( 'action', 'dlx_photo_block_override_preset' );
+		data.append( 'nonce', photoBlock.presetSaveNewNonce );
+		data.append( 'attributes', JSON.stringify( getCurrentAttributes() ) );
 		data.append( 'editId', formData.selectedPreset );
+		data.append( 'isDefault', formData.defaultPreset );
 		fetch( ajaxUrl, {
 			method: 'POST',
 			body: data,
@@ -126,18 +154,18 @@ const CustomPresetSaveModal = ( props ) => {
 
 	let radioOptions = [
 		{
-			label: __( 'Save Preset', 'highlight-and-share' ),
+			label: __( 'Save Preset', 'photo-block' ),
 			value: 'new',
 		},
 		{
-			label: __( 'Override Preset', 'highlight-and-share' ),
+			label: __( 'Override Preset', 'photo-block' ),
 			value: 'override',
 		},
 	];
 	if ( savedPresets.length === 0 ) {
 		radioOptions = [
 			{
-				label: __( 'Save Preset', 'highlight-and-share' ),
+				label: __( 'Save Preset', 'photo-block' ),
 				value: 'new',
 			},
 		];
@@ -145,19 +173,19 @@ const CustomPresetSaveModal = ( props ) => {
 
 
 	return (
-		<div className="has-custom-preset-modal">
+		<div className="photo-block-custom-preset-modal">
 			<Modal
 				title={ title }
 				onRequestClose={ () => setSavingPreset( false ) }
-				className="has-preset-modal"
+				className="photo-block-preset-modal"
 				shouldCloseOnClickOutside={ false }
 			>
 				<RadioControl
 					label={ __(
 						'Save a new preset or override an existing one.',
-						'highlight-and-share'
+						'photo-block'
 					) }
-					className="has-preset-modal-radio-control"
+					className="photo-block-preset-modal-radio-control"
 					selected={ presetSaveType }
 					options={ radioOptions }
 					onChange={ ( value ) => {
@@ -167,7 +195,7 @@ const CustomPresetSaveModal = ( props ) => {
 				<form onSubmit={ handleSubmit( onSubmit ) }>
 					{ 'new' === presetSaveType && (
 						<>
-							<div className="has-preset-modal-new-preset">
+							<div className="photo-block-preset-modal-new-preset">
 								<Controller
 									name="presetTitle"
 									control={ control }
@@ -178,25 +206,28 @@ const CustomPresetSaveModal = ( props ) => {
 									render={ ( { field } ) => (
 										<TextControl
 											{ ...field }
-											label={ __( 'Preset Name', 'highlight-and-share' ) }
-											className="is-required"
+											label={ __( 'Preset Name', 'photo-block' ) }
+											className={ classnames( 'photo-block-admin__text-control', {
+												'is-required': true,
+												'has-error': 'required' === errors.presetTitle?.type,
+											} ) }
 										/>
 									) }
 								/>
 								{ 'required' === errors.presetTitle?.type && (
 									<Notice
-										message={ __( 'This field is required.' ) }
+										message={ __( 'The Preset Name field is required.' ) }
 										status="error"
 										politeness="assertive"
-										icon={ CircularExclamationIcon }
+										icon={ AlertCircle }
 									/>
 								) }
 								{ 'pattern' === errors.presetTitle?.type && (
 									<Notice
-										message={ __( 'This field contains invalid characters.' ) }
+										message={ __( 'This Preset Name field contains invalid characters.' ) }
 										status="error"
 										politeness="assertive"
-										icon={ CircularExclamationIcon }
+										icon={ AlertCircle }
 									/>
 								) }
 							</div>
@@ -205,7 +236,7 @@ const CustomPresetSaveModal = ( props ) => {
 					{ 'override' === presetSaveType && (
 						<>
 							{ savedPresets.length > 0 && (
-								<div className="has-preset-modal-override-preset">
+								<div className="photo-block-preset-modal-override-preset">
 									<Controller
 										name="selectedPreset"
 										control={ control }
@@ -216,7 +247,7 @@ const CustomPresetSaveModal = ( props ) => {
 											<RadioControl
 												label={ __(
 													'Select a preset to override',
-													'highlight-and-share'
+													'photo-block'
 												) }
 												className="is-required"
 												selected={ value }
@@ -230,33 +261,49 @@ const CustomPresetSaveModal = ( props ) => {
 											message={ __( 'This field is required.' ) }
 											status="error"
 											politeness="assertive"
-											icon={ CircularExclamationIcon }
+											icon={ AlertCircle }
 										/>
 									) }
 								</div>
 							) }
 						</>
 					) }
-					<div className="has-preset-modal-button-group">
+					<Controller
+						name="defaultPreset"
+						control={ control }
+						render={ ( { field: { onChange, value } } ) => (
+							<ToggleControl
+								label={ __( 'Make This Preset the Default', 'photo-block' ) }
+								checked={ value }
+								onChange={ ( newValue ) => onChange( newValue ) }
+								help={ __(
+									'If this preset is selected as the default, it will be applied to all new photo blocks.',
+									'photo-block'
+								) }
+							/>
+						) }
+					/>
+					<div className="photo-block-preset-modal-button-group">
 						<Button
 							type="submit"
 							variant="primary"
-							className="has-preset-modal-apply-button"
+							className="photo-block-preset-modal-apply-button"
 							disabled={ isSaving }
+							icon={ <Save /> }
 						>
 							{ isSaving
-								? __( 'Saving…', 'highlight-and-share' )
-								: __( 'Save Preset', 'highlight-and-share' ) }
+								? __( 'Saving…', 'photo-block' )
+								: __( 'Save Preset', 'photo-block' ) }
 						</Button>
 						<Button
 							variant="secondary"
 							onClick={ () => {
 								setSavingPreset( false );
 							} }
-							className="has-preset-modal-cancel-button"
+							className="photo-block-preset-modal-cancel-button"
 							disabled={ isSaving }
 						>
-							{ __( 'Cancel', 'highlight-and-share' ) }
+							{ __( 'Cancel', 'photo-block' ) }
 						</Button>
 					</div>
 				</form>

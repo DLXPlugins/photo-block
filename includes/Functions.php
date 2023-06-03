@@ -202,30 +202,42 @@ class Functions {
 		$sanitized_data = array();
 		foreach ( $data as $key => $value ) {
 			if ( '0' === $value ) {
-				$value = 0;
+				$sanitized_data[ $key ] = 0;
+				continue;
 			}
 			if ( 'true' === $value ) {
-				$value = true;
+				$sanitized_data[ $key ] = true;
+				continue;
 			} elseif ( 'false' === $value ) {
-				$value = false;
+				$sanitized_data[ $key ] = false;
+				continue;
 			}
 			if ( is_array( $value ) ) {
 				$value                  = self::sanitize_array_recursive( $value );
 				$sanitized_data[ $key ] = $value;
 				continue;
 			}
-			if ( is_bool( $value ) ) {
-				$sanitized_data[ $key ] = (bool) $value;
+			if ( is_null( $value ) ) {
+				$sanitized_data[ $key ] = null;
 				continue;
 			}
-			if ( is_int( $value ) ) {
-				$sanitized_data[ $key ] = (int) $value;
+			if ( is_bool( $value ) ) {
+				$sanitized_data[ $key ] = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+				continue;
+			}
+			if ( is_float( $value ) ) {
+				$sanitized_data[ $key ] = filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+				continue;
+			}
+			if ( is_numeric( $value ) ) {
+				$sanitized_data[ $key ] = absint( $value );
 				continue;
 			}
 			if ( is_string( $value ) ) {
 				$sanitized_data[ $key ] = sanitize_text_field( $value );
 				continue;
 			}
+			$sanitized_data[ $key ] = sanitize_text_field( $value );
 		}
 		return $sanitized_data;
 	}

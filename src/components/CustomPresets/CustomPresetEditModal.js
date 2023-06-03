@@ -3,27 +3,29 @@ import {
 	Button,
 	Modal,
 	TextControl,
+	ToggleControl,
 } from '@wordpress/components';
 import { useForm, Controller, useFormState } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
-import CircularExclamationIcon from '../../../../react/Components/Icons/CircularExplanation';
-import Notice from '../../../../react/Components/Notice';
+import { AlertCircle } from 'lucide-react';
+import Notice from '../Notice';
 import CustomPresetsContext from './context';
 
 const CustomPresetEditModal = ( props ) => {
 	const { title, editId, saveNonce } = props;
 	const [ isSaving, setIsSaving ] = useState( false );
 
-	const { setSavedPresets, showEditModal, setShowEditModal } =
+	const { setSavedPresets, showEditModal, setShowEditModal, defaultPreset, setDefaultPreset } =
 		useContext( CustomPresetsContext );
 
 	const getDefaultValues = () => {
 		return {
 			title,
 			editId,
+			isDefault: defaultPreset?.id === editId ? true : false,
 		};
 	};
-	const { control, handleSubmit } = useForm( {
+	const { control, handleSubmit, getValues } = useForm( {
 		defaultValues: getDefaultValues(),
 	} );
 
@@ -35,10 +37,11 @@ const CustomPresetEditModal = ( props ) => {
 		setIsSaving( true );
 		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
 		const data = new FormData();
-		data.append( 'action', 'has_save_preset' );
+		data.append( 'action', 'dlx_photo_block_save_preset' );
 		data.append( 'nonce', saveNonce );
 		data.append( 'editId', formData.editId );
 		data.append( 'title', formData.title );
+		data.append( 'isDefault', formData.isDefault ? true : false );
 		fetch( ajaxUrl, {
 			method: 'POST',
 			body: data,
@@ -52,6 +55,20 @@ const CustomPresetEditModal = ( props ) => {
 				const { presets } = json.data;
 				setSavedPresets( presets );
 				setIsSaving( false );
+
+				// Loop through presets and assign default if needed.
+				presets.forEach( ( preset ) => {
+					if ( preset.is_default ) {
+						setDefaultPreset( preset );
+					}
+
+					// If none are default, clear default presets.
+					if ( ! presets.some( ( presetValue ) => presetValue.is_default ) ) {
+						setDefaultPreset( null );
+					}
+				} );
+
+				// Close the modal.
 				setShowEditModal( false );
 			} )
 			.catch( ( error ) => {
@@ -66,9 +83,9 @@ const CustomPresetEditModal = ( props ) => {
 
 	return (
 		<Modal
-			title={ __( 'Update Preset', 'highlight-and-share' ) }
+			title={ __( 'Update Preset', 'photo-block' ) }
 			onRequestClose={ () => setShowEditModal( false ) }
-			className="has-preset-modal"
+			className="photo-block-preset-modal"
 			shouldCloseOnClickOutside={ false }
 		>
 			<form onSubmit={ handleSubmit( onSubmit ) }>
@@ -82,7 +99,7 @@ const CustomPresetEditModal = ( props ) => {
 					render={ ( { field } ) => (
 						<TextControl
 							{ ...field }
-							label={ __( 'Preset Name', 'highlight-and-share' ) }
+							label={ __( 'Preset Name', 'photo-block' ) }
 							className="is-required"
 						/>
 					) }
@@ -92,7 +109,7 @@ const CustomPresetEditModal = ( props ) => {
 						message={ __( 'This field is required.' ) }
 						status="error"
 						politeness="assertive"
-						icon={ CircularExclamationIcon }
+						icon={ <AlertCircle /> }
 					/>
 				) }
 				{ 'pattern' === errors.title?.type && (
@@ -100,9 +117,23 @@ const CustomPresetEditModal = ( props ) => {
 						message={ __( 'This field contains invalid characters.' ) }
 						status="error"
 						politeness="assertive"
-						icon={ CircularExclamationIcon }
+						icon={ <AlertCircle /> }
 					/>
 				) }
+				<Controller
+					name="isDefault"
+					control={ control }
+					render={ ( { field: { onChange, value } } ) => (
+						<ToggleControl
+							label={ __( 'Set Default Preset', 'photo-block' ) }
+							checked={ value }
+							onChange={ ( newValue ) => onChange( newValue ) }
+							help={
+								__( 'This preset will be applied to all new Photo Blocks.', 'photo-block' )
+							}
+						/>
+					) }
+				/>
 				<Controller
 					name="editId"
 					control={ control }
@@ -111,12 +142,12 @@ const CustomPresetEditModal = ( props ) => {
 				<Button
 					type="submit"
 					variant="primary"
-					className="has-preset-modal-apply-button"
+					className="photo-block-preset-modal-apply-button"
 					disabled={ isSaving }
 				>
 					{ isSaving
-						? __( 'Saving…', 'highlight-and-share' )
-						: __( 'Apply Changes', 'highlight-and-share' ) }
+						? __( 'Saving…', 'photo-block' )
+						: __( 'Apply Changes', 'photo-block' ) }
 				</Button>
 				{ ! isSaving && (
 					<Button
@@ -125,7 +156,7 @@ const CustomPresetEditModal = ( props ) => {
 							setShowEditModal( false );
 						} }
 					>
-						{ __( 'Cancel', 'highlight-and-share' ) }
+						{ __( 'Cancel', 'photo-block' ) }
 					</Button>
 				) }
 			</form>

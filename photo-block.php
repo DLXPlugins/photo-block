@@ -71,6 +71,7 @@ class PhotoBlock {
 	 */
 	public function plugins_loaded() {
 		Blocks::run();
+		Presets::run();
 		Rest::run();
 	}
 }
