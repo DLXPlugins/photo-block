@@ -126,6 +126,19 @@ class Presets {
 			if ( 0 === strpos( $key, 'data' ) ) {
 				continue;
 			}
+			$caption_keys_to_ignore = array(
+				'captionManual',
+			);
+			/**
+			 * Filter the caption keys to ignore when saving presets.
+			 * This prevents attribute overrides.
+			 *
+			 * @param array $caption_keys_to_ignore Array of keys to ignore.
+			 */
+			$caption_keys_to_ignore = apply_filters( 'dlx_photo_block_caption_keys_to_ignore', $caption_keys_to_ignore );
+			if ( in_array( $key, $caption_keys_to_ignore, true ) ) {
+				continue;
+			}
 			$caption_attributes[ $key ] = $value;
 		}
 		$caption_attributes = Functions::sanitize_array_recursive( $caption_attributes );
@@ -225,6 +238,19 @@ class Presets {
 		foreach ( $attributes['captionAttributes'] as $key => $value ) {
 			// If data makes up the first part of the key, then we want to strip it out.
 			if ( 0 === strpos( $key, 'data' ) ) {
+				continue;
+			}
+			$caption_keys_to_ignore = array(
+				'captionManual',
+			);
+			/**
+			 * Filter the caption keys to ignore when saving presets.
+			 * This prevents attribute overrides.
+			 *
+			 * @param array $caption_keys_to_ignore Array of keys to ignore.
+			 */
+			$caption_keys_to_ignore = apply_filters( 'dlx_photo_block_caption_keys_to_ignore', $caption_keys_to_ignore );
+			if ( in_array( $key, $caption_keys_to_ignore, true ) ) {
 				continue;
 			}
 			$caption_attributes[ $key ] = $value;

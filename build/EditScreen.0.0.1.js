@@ -1063,14 +1063,18 @@ var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -1083,6 +1087,8 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -1102,6 +1108,9 @@ var PresetButton = function PresetButton(props) {
     _useState2 = _slicedToArray(_useState, 2),
     showModal = _useState2[0],
     setShowModal = _useState2[1];
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store),
+    insertBlock = _useDispatch.insertBlock,
+    updateBlockAttributes = _useDispatch.updateBlockAttributes;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: 'secondary',
     onClick: function onClick(e) {
@@ -1128,9 +1137,6 @@ var PresetButton = function PresetButton(props) {
       var captionBlock = children.find(function (block) {
         return 'dlxplugins/photo-caption-block' === block.name;
       });
-      var existingCaptionAttributes = captionBlock ? captionBlock.attributes : {};
-      var captionUniqueId = (existingCaptionAttributes === null || existingCaptionAttributes === void 0 ? void 0 : existingCaptionAttributes.uniqueId) || null;
-      var captionClientId = (existingCaptionAttributes === null || existingCaptionAttributes === void 0 ? void 0 : existingCaptionAttributes.clientId) || null;
 
       // Get unique ID for the photo block.
       var uniqueIdAttribute = {
@@ -1141,13 +1147,16 @@ var PresetButton = function PresetButton(props) {
       // Apply attributes for photo block.
       setAttributes(photoBlockAttributes);
 
-      // Apply attributes for caption block.
-      if (captionUniqueId && captionClientId) {
-        var captuinUniqueAttrs = {
-          uniqueId: captionUniqueId
-        };
-        var captionBlockAttributes = _objectSpread(_objectSpread({}, captionAttributes), captuinUniqueAttrs);
-        (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)('core/editor').updateBlockAttributes(captionClientId, captionBlockAttributes);
+      // If there is no caption block, but there are attributes to apply, create one.
+      if (!captionBlock && captionAttributes) {
+        var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__.createBlock)('dlxplugins/photo-caption-block', captionAttributes);
+        insertBlock(newBlocks, undefined, clientId);
+      }
+
+      // If there is a caption block and attributes to apply, apply them.
+      if (captionBlock && captionAttributes) {
+        var captionBlockAttributes = _objectSpread(_objectSpread({}, captionAttributes), uniqueIdAttribute);
+        updateBlockAttributes(captionBlock.clientId, captionBlockAttributes);
       }
       setShowModal(false);
     },
@@ -1160,9 +1169,9 @@ var PresetButton = function PresetButton(props) {
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Cancel', 'photo-block')))));
 };
 PresetButton.propTypes = {
-  setAttributes: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().func.isRequired),
-  label: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().string.isRequired),
-  presetData: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().object.isRequired)
+  setAttributes: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().func.isRequired),
+  label: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().string.isRequired),
+  presetData: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().object.isRequired)
 };
 PresetButton.defaultProps = {
   label: 'Purple',

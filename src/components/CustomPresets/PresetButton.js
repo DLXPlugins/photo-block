@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import Proptypes from 'prop-types';
 import { Button, Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
+import { select, useDispatch } from '@wordpress/data';
+import { store } from '@wordpress/block-editor';
+import { createBlock } from '@wordpress/blocks';
 
 const PresetButton = ( props ) => {
 	const { setAttributes, label, photoAttributes, captionAttributes, uniqueId, clientId } = props;
 
 	// Define state for modal options.
 	const [ showModal, setShowModal ] = useState( false );
+
+	const { insertBlock, updateBlockAttributes  } = useDispatch( store );
 
 	return (
 		<>
@@ -40,9 +44,6 @@ const PresetButton = ( props ) => {
 								// Get unique ID for the caption block.
 								const children = select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]?.innerBlocks || [];
 								const captionBlock = children.find( ( block ) => 'dlxplugins/photo-caption-block' === block.name );
-								const existingCaptionAttributes = captionBlock ? captionBlock.attributes : {};
-								const captionUniqueId = existingCaptionAttributes?.uniqueId || null;
-								const captionClientId = existingCaptionAttributes?.clientId || null;
 
 								// Get unique ID for the photo block.
 								const uniqueIdAttribute = { uniqueId };
@@ -51,12 +52,18 @@ const PresetButton = ( props ) => {
 								// Apply attributes for photo block.
 								setAttributes( photoBlockAttributes );
 
-								// Apply attributes for caption block.
-								if ( captionUniqueId && captionClientId ) {
-									const captuinUniqueAttrs = { uniqueId: captionUniqueId };
-									const captionBlockAttributes = { ...captionAttributes, ...captuinUniqueAttrs };
-									select( 'core/editor' ).updateBlockAttributes( captionClientId, captionBlockAttributes );
+								// If there is no caption block, but there are attributes to apply, create one.
+								if ( ! captionBlock && captionAttributes ) {
+									const newBlocks = createBlock( 'dlxplugins/photo-caption-block', captionAttributes );
+									insertBlock( newBlocks, undefined, clientId );
 								}
+
+								// If there is a caption block and attributes to apply, apply them.
+								if ( captionBlock && captionAttributes ) {
+									const captionBlockAttributes = { ...captionAttributes, ...uniqueIdAttribute };
+									updateBlockAttributes( captionBlock.clientId, captionBlockAttributes );
+								}
+
 								setShowModal( false );
 							} }
 							className="photo-block-preset-modal-apply-button"
