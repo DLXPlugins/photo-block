@@ -169,8 +169,8 @@ class Presets {
 
 		// Check if preset should be default.
 		$is_default = false;
-		if ( isset( $form_data['isDefault'] ) ) {
-			$is_default = filter_var( $form_data['isDefault'], FILTER_VALIDATE_BOOLEAN );
+		if ( isset( $form_data['defaultPreset'] ) ) {
+			$is_default = filter_var( $form_data['defaultPreset'], FILTER_VALIDATE_BOOLEAN );
 		}
 		if ( $is_default ) {
 			// Remove default from all other presets.
@@ -212,7 +212,7 @@ class Presets {
 		$preset_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_presets' ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_preset' ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error( array() );
 		}
 

@@ -19,9 +19,7 @@ const CustomPresetSaveModal = ( props ) => {
 	const [ isSaving, setIsSaving ] = useState( false );
 	const { title, attributes, setAttributes, clientId } = props;
 
-	console.log( props );
-
-	const { savedPresets, setSavedPresets, savingPreset, setSavingPreset } =
+	const { savedPresets, setSavedPresets, savingPreset, setSavingPreset, defaultPreset, setDefaultPreset } =
 		useContext( CustomPresetsContext );
 
 	const getDefaultValues = () => {
@@ -70,6 +68,25 @@ const CustomPresetSaveModal = ( props ) => {
 	};
 
 	/**
+	 * Set a default preset if any are set to default. null if no presets are defaults.
+	 *
+	 * @param {Array} presets Presets array.
+	 */
+	const setDefaultFromPresets = ( presets ) => {
+		// Loop through presets and assign default if needed.
+		presets.forEach( ( preset ) => {
+			if ( preset.is_default ) {
+				setDefaultPreset( preset );
+			}
+
+			// If none are default, clear default presets.
+			if ( ! presets.some( ( presetValue ) => presetValue.is_default ) ) {
+				setDefaultPreset( null );
+			}
+		} );
+	};
+
+	/**
 	 * Save a new preset via Ajax.
 	 *
 	 * @param {Array} formData Form data array.
@@ -96,6 +113,7 @@ const CustomPresetSaveModal = ( props ) => {
 				setIsSaving( false );
 				setSavingPreset( false );
 				setSavedPresets( presets );
+				setDefaultFromPresets( presets );
 			} )
 			.catch( ( error ) => {
 				setSavingPreset( false );
@@ -130,6 +148,7 @@ const CustomPresetSaveModal = ( props ) => {
 				setIsSaving( false );
 				setSavingPreset( false );
 				setSavedPresets( presets );
+				setDefaultFromPresets( presets );
 			} )
 			.catch( ( error ) => {
 				setSavingPreset( false );
@@ -170,7 +189,6 @@ const CustomPresetSaveModal = ( props ) => {
 			},
 		];
 	}
-
 
 	return (
 		<div className="photo-block-custom-preset-modal">

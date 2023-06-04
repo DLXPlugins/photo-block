@@ -229,8 +229,12 @@ class Functions {
 				$sanitized_data[ $key ] = filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 				continue;
 			}
+			if ( is_int( $value ) ) {
+				$sanitized_data[ $key ] = filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+				continue;
+			}
 			if ( is_numeric( $value ) ) {
-				$sanitized_data[ $key ] = absint( $value );
+				$sanitized_data[ $key ] = (float) filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 				continue;
 			}
 			if ( is_string( $value ) ) {

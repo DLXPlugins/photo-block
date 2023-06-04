@@ -792,12 +792,13 @@ var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
     attributes = props.attributes,
     setAttributes = props.setAttributes,
     clientId = props.clientId;
-  console.log(props);
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_5__["default"]),
     savedPresets = _useContext.savedPresets,
     setSavedPresets = _useContext.setSavedPresets,
     savingPreset = _useContext.savingPreset,
-    setSavingPreset = _useContext.setSavingPreset;
+    setSavingPreset = _useContext.setSavingPreset,
+    defaultPreset = _useContext.defaultPreset,
+    setDefaultPreset = _useContext.setDefaultPreset;
   var getDefaultValues = function getDefaultValues() {
     return {
       presetTitle: '',
@@ -849,6 +850,27 @@ var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
   };
 
   /**
+   * Set a default preset if any are set to default. null if no presets are defaults.
+   *
+   * @param {Array} presets Presets array.
+   */
+  var setDefaultFromPresets = function setDefaultFromPresets(presets) {
+    // Loop through presets and assign default if needed.
+    presets.forEach(function (preset) {
+      if (preset.is_default) {
+        setDefaultPreset(preset);
+      }
+
+      // If none are default, clear default presets.
+      if (!presets.some(function (presetValue) {
+        return presetValue.is_default;
+      })) {
+        setDefaultPreset(null);
+      }
+    });
+  };
+
+  /**
    * Save a new preset via Ajax.
    *
    * @param {Array} formData Form data array.
@@ -875,6 +897,7 @@ var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
       setIsSaving(false);
       setSavingPreset(false);
       setSavedPresets(presets);
+      setDefaultFromPresets(presets);
     })["catch"](function (error) {
       setSavingPreset(false);
     });
@@ -908,6 +931,7 @@ var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
       setIsSaving(false);
       setSavingPreset(false);
       setSavedPresets(presets);
+      setDefaultFromPresets(presets);
     })["catch"](function (error) {
       setSavingPreset(false);
     });
