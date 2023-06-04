@@ -41,6 +41,36 @@ class Presets {
 		$vars['presetLoadNonce']    = wp_create_nonce( 'dlx_photo_block_load_presets' );
 		$vars['presetSaveNewNonce'] = wp_create_nonce( 'dlx_photo_block_save_new_preset' );
 		$vars['presetCanEditor']    = current_user_can( 'edit_others_posts' );
+
+		// Get the default preset (if any), and return it as localized variable.
+		$default_preset = wp_cache_get( 'dlx_pb_default_preset' ); // can be false (empty) or array.
+		if ( ! empty( $default_preset ) ) {
+			$vars['defaultPreset'] = Functions::sanitize_array_recursive( $default_preset );
+		}
+		if ( false === $default_preset ) {
+			$post_args = array(
+				'post_type'      => 'dlx_pb_presets',
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'meta_query'     => array(
+					array(
+						'key'   => '_dlx_pb_is_default',
+						'value' => true,
+					),
+				),
+			);
+			$posts     = get_posts( $post_args );
+			$preset    = array();
+			if ( $posts ) {
+				$preset  = $posts[0];
+				$content = json_decode( $preset->post_content, true ); // Decode JSON here, then $content will be re-encoded in the return array.
+				$content = Functions::sanitize_array_recursive( $content );
+				wp_cache_set( 'dlx_pb_default_preset', $content ); // Content would be attributes with key values `photoAttributes` and `captionAttributes`.
+				$vars['defaultPreset'] = $content;
+			} else {
+				wp_cache_set( 'dlx_pb_default_preset', array() );
+			}
+		}
 		return $vars;
 	}
 
@@ -113,6 +143,21 @@ class Presets {
 		foreach ( $attributes['photoAttributes'] as $key => $value ) {
 			// If data makes up the first part of the key, then we want to strip it out.
 			if ( 0 === strpos( $key, 'data' ) ) {
+				continue;
+			}
+			$photo_keys_to_ignore = array(
+				'uniqueId',
+				'photo',
+				'screen',
+			);
+			/**
+			 * Filter the photo keys to ignore when saving presets.
+			 * This prevents attribute overrides.
+			 *
+			 * @param array $photo_keys_to_ignore Array of keys to ignore.
+			 */
+			$photo_keys_to_ignore = apply_filters( 'dlx_photo_block_photo_keys_to_ignore', $photo_keys_to_ignore );
+			if ( in_array( $key, $photo_keys_to_ignore, true ) ) {
 				continue;
 			}
 			$photo_attributes[ $key ] = $value;
@@ -227,6 +272,21 @@ class Presets {
 		foreach ( $attributes['photoAttributes'] as $key => $value ) {
 			// If data makes up the first part of the key, then we want to strip it out.
 			if ( 0 === strpos( $key, 'data' ) ) {
+				continue;
+			}
+			$photo_keys_to_ignore = array(
+				'uniqueId',
+				'photo',
+				'screen',
+			);
+			/**
+			 * Filter the photo keys to ignore when saving presets.
+			 * This prevents attribute overrides.
+			 *
+			 * @param array $photo_keys_to_ignore Array of keys to ignore.
+			 */
+			$photo_keys_to_ignore = apply_filters( 'dlx_photo_block_photo_keys_to_ignore', $photo_keys_to_ignore );
+			if ( in_array( $key, $photo_keys_to_ignore, true ) ) {
 				continue;
 			}
 			$photo_attributes[ $key ] = $value;

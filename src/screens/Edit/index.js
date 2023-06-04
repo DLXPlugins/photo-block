@@ -20,8 +20,10 @@ import {
 	ButtonGroup,
 	Button,
 } from '@wordpress/components';
-import { InspectorControls, BlockControls, InspectorAdvancedControls } from '@wordpress/block-editor';
+import { InspectorControls, BlockControls, InspectorAdvancedControls, store } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import { useDispatch, select } from '@wordpress/data';
+import { createBlock } from '@wordpress/blocks';
 import {
 	Crop,
 	Image,
@@ -44,7 +46,7 @@ import CustomPresets from '../../components/CustomPresets';
 import { buildDimensionsCSS, getValueWithUnit, buildBorderCSS } from '../../utils/TypographyHelper';
 
 const EditScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps } = props;
+	const { attributes, setAttributes, innerBlockProps, clientId } = props;
 	const {
 		uniqueId,
 		photo,
@@ -84,6 +86,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	const { screen, setScreen, captionPosition, setImageFile, imageFile, originalImageFile } = useContext( UploaderContext );
 
+	const { insertBlock, updateBlockAttributes } = useDispatch( store ); // For setting the preset defaults.
+
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
 	// Setup useEffect to update image dimensions if empty.
@@ -99,6 +103,45 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			setImageFile( photo );
 		}
 	}, [] );
+
+	// Set the default preset when first loading in (if not already set).
+	useEffect( () => {
+		if ( false !== imageLoading ) {
+			return;
+		}
+		if ( false !== attributes.defaultsApplied ) {
+			return;
+		}
+		const defaultPreset = photoBlock?.defaultPreset?.attributes ?? false;
+		if ( ! defaultPreset ) {
+			return;
+		}
+
+		// Get innerblocks of parent photo block.
+		const children = select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]?.innerBlocks || [];
+		const captionBlock = children.find( ( block ) => 'dlxplugins/photo-caption-block' === block.name );
+
+		// Get unique ID for the photo block.
+		const photoBlockAttributes = { ...defaultPreset.photoAttributes };
+
+		// Apply attributes for photo block.
+		setAttributes( photoBlockAttributes );
+
+		// If there is no caption block, but there are attributes to apply, create one.
+		if ( ! captionBlock && defaultPreset?.captionAttributes ) {
+			const newBlocks = createBlock( 'dlxplugins/photo-caption-block', defaultPreset?.captionAttributes );
+			insertBlock( newBlocks, undefined, clientId );
+		}
+
+		// If there is a caption block and attributes to apply, apply them.
+		if ( captionBlock && defaultPreset?.captionAttributes ) {
+			const captionBlockAttributes = { ...defaultPreset?.captionAttributes };
+			updateBlockAttributes( captionBlock.clientId, captionBlockAttributes );
+		}
+
+		// Set having applied defaults to true.
+		setAttributes( { defaultsApplied: true } );
+	}, [ imageLoading ] );
 
 	/**
 	 * Retrieve an image based on size from REST API.

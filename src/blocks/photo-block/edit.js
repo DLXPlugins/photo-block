@@ -95,6 +95,8 @@ const getDataEditScreen = ( props ) => {
 const PhotoBlock = ( props ) => {
 	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
 
+	
+
 	// Read in context values.
 	const {
 		imageFile,
