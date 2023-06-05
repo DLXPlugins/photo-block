@@ -20,7 +20,12 @@ import {
 	ButtonGroup,
 	Button,
 } from '@wordpress/components';
-import { InspectorControls, BlockControls, InspectorAdvancedControls, store } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	BlockControls,
+	InspectorAdvancedControls,
+	store,
+} from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
@@ -31,6 +36,7 @@ import {
 	Link,
 	Settings,
 	Paintbrush,
+	Layers,
 	Undo2,
 } from 'lucide-react';
 import classnames from 'classnames';
@@ -43,7 +49,11 @@ import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
 import CustomPresets from '../../components/CustomPresets';
-import { buildDimensionsCSS, getValueWithUnit, buildBorderCSS } from '../../utils/TypographyHelper';
+import {
+	buildDimensionsCSS,
+	getValueWithUnit,
+	buildBorderCSS,
+} from '../../utils/TypographyHelper';
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps, clientId } = props;
@@ -84,7 +94,14 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
 
-	const { screen, setScreen, captionPosition, setImageFile, imageFile, originalImageFile } = useContext( UploaderContext );
+	const {
+		screen,
+		setScreen,
+		captionPosition,
+		setImageFile,
+		imageFile,
+		originalImageFile,
+	} = useContext( UploaderContext );
 
 	const { insertBlock, updateBlockAttributes } = useDispatch( store ); // For setting the preset defaults.
 
@@ -118,8 +135,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		}
 
 		// Get innerblocks of parent photo block.
-		const children = select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]?.innerBlocks || [];
-		const captionBlock = children.find( ( block ) => 'dlxplugins/photo-caption-block' === block.name );
+		const children =
+			select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]
+				?.innerBlocks || [];
+		const captionBlock = children.find(
+			( block ) => 'dlxplugins/photo-caption-block' === block.name
+		);
 
 		// Get unique ID for the photo block.
 		const photoBlockAttributes = { ...defaultPreset.photoAttributes };
@@ -129,7 +150,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 		// If there is no caption block, but there are attributes to apply, create one.
 		if ( ! captionBlock && defaultPreset?.captionAttributes ) {
-			const newBlocks = createBlock( 'dlxplugins/photo-caption-block', defaultPreset?.captionAttributes );
+			const newBlocks = createBlock(
+				'dlxplugins/photo-caption-block',
+				defaultPreset?.captionAttributes
+			);
 			insertBlock( newBlocks, undefined, clientId );
 		}
 
@@ -209,7 +233,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
-			<PanelBody title={ __( 'Presets', 'photo-block' ) } initialOpen={ true }>
+			<PanelBody
+				title={ __( 'Presets', 'photo-block' ) }
+				initialOpen={ false }
+				icon={ <Layers /> }
+				className="photo-block__inspector-panel"
+			>
 				{ <CustomPresets { ...props } /> }
 			</PanelBody>
 			<PanelBodyControl
@@ -446,7 +475,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					case 'settings':
 						return settingsInspectorControls;
 					case 'styles':
-						return ( <SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> );
+						return (
+							<SidebarImageInspectorControl
+								attributes={ attributes }
+								setAttributes={ setAttributes }
+							/>
+						);
 				}
 			} }
 		</TabPanel>
@@ -458,7 +492,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	);
 
 	// Set the advanced inspector controls.
-	const advancedInspectorControls = ( <SidebarImageAdvancedInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> );
+	const advancedInspectorControls = (
+		<SidebarImageAdvancedInspectorControl
+			attributes={ attributes }
+			setAttributes={ setAttributes }
+		/>
+	);
 
 	const localToolbar = (
 		<>
@@ -504,7 +543,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									imageDimensions: {
 										width: originalImageFile.width,
 										height: originalImageFile.height,
-									}
+									},
 								} );
 								setImageFile( originalImageFile );
 							} }
@@ -600,8 +639,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			${ photoBlur ? `filter: blur(${ photoBlur }px);` : '' }
 			object-fit: ${ photoObjectFit };
 			${ 'none' !== photoObjectFit ? 'height: 100%; width: 100%;' : '' }
-			${ ( 'none' !== photoObjectFit && 'custom' !== photoObjectPosition ) ? 'object-position:' + photoObjectPosition + ';' : '' }
-			${ ( 'none' !== photoObjectFit && 'custom' === photoObjectPosition && '' !== photoObjectPositionCustom ) ? 'object-position:' + photoObjectPositionCustom + ';' : '' }
+			${
+	'none' !== photoObjectFit && 'custom' !== photoObjectPosition
+		? 'object-position:' + photoObjectPosition + ';'
+		: ''
+}
+			${
+	'none' !== photoObjectFit &&
+				'custom' === photoObjectPosition &&
+				'' !== photoObjectPositionCustom
+		? 'object-position:' + photoObjectPositionCustom + ';'
+		: ''
+}
 			padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
 			margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
 			border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
@@ -630,7 +679,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		<>
 			{ localInspectorControls }
 			{ localToolbar }
-			{ <InspectorAdvancedControls>{ advancedInspectorControls }</InspectorAdvancedControls> }
+			{
+				<InspectorAdvancedControls>
+					{ advancedInspectorControls }
+				</InspectorAdvancedControls>
+			}
 			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
 				{ imageLoading && (
@@ -656,9 +709,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					<div className="dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper">
 						<img
 							src={ url }
-							className={ classnames( `photo-block-${ cssGramFilter } dlx-photo-block__image`, {
-								'has-css-gram': cssGramFilter !== 'none',
-							} ) }
+							className={ classnames(
+								`photo-block-${ cssGramFilter } dlx-photo-block__image`,
+								{
+									'has-css-gram': cssGramFilter !== 'none',
+								}
+							) }
 							width={ imageDimensions.width }
 							height={ imageDimensions.height }
 							alt=""

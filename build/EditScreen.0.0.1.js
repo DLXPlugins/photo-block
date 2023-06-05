@@ -2932,13 +2932,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/settings.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/paintbrush.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/crop.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/undo-2.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/layers.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/settings.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/paintbrush.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/crop.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/undo-2.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
@@ -3194,10 +3195,12 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   // Set settings inspector Controls.
   var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Presets', 'photo-block'),
-    initialOpen: true
+    initialOpen: false,
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
+    className: "photo-block__inspector-panel"
   }, /*#__PURE__*/React.createElement(_components_CustomPresets__WEBPACK_IMPORTED_MODULE_15__["default"], props)), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_12__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Settings', 'photo-block'),
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-settings",
     uniqueId: uniqueId,
@@ -3359,12 +3362,12 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       name: 'settings',
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Settings', 'photo-block'),
       className: 'dlx-photo-block__inspector-tab',
-      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null)
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null)
     }, {
       name: 'styles',
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Styles', 'photo-block'),
       className: 'dlx-photo-block__inspector-tab',
-      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null)
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null)
     }]
   }, function (tab) {
     switch (tab.name) {
@@ -3387,19 +3390,19 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     setAttributes: setAttributes
   });
   var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Crop', 'photo-block'),
     onClick: function onClick() {
       setScreen('crop');
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Crop', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Replace Photo', 'photo-block'),
     onClick: function onClick() {
       setScreen('initial');
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Replace', 'photo-block')), canShowUndo() && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Undo', 'photo-block'),
     onClick: function onClick() {
       // Change back to original image.
@@ -3413,14 +3416,14 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setImageFile(originalImageFile);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Undo', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_23__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Accessibility Options', 'photo-block'),
     onClick: function onClick() {
       setA11yPopover(!a11yPopover);
     },
     ref: setA11yButton
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_23__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_24__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Link Options', 'photo-block'),
     onClick: function onClick() {
       setMediaLinkPopover(!mediaLinkPopover);
@@ -3672,6 +3675,35 @@ const FileImage = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"
 
 
 //# sourceMappingURL=file-image.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/lucide-react/dist/esm/icons/layers.js":
+/*!************************************************************!*\
+  !*** ./node_modules/lucide-react/dist/esm/icons/layers.js ***!
+  \************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ Layers; }
+/* harmony export */ });
+/* harmony import */ var _createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createLucideIcon.js */ "./node_modules/lucide-react/dist/esm/createLucideIcon.js");
+/**
+ * lucide-react v0.182.0 - ISC
+ */
+
+
+
+const Layers = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])("Layers", [
+  ["polygon", { points: "12 2 2 7 12 12 22 7 12 2", key: "1b0ttc" }],
+  ["polyline", { points: "2 17 12 22 22 17", key: "imjtdl" }],
+  ["polyline", { points: "2 12 12 17 22 12", key: "5dexcv" }]
+]);
+
+
+//# sourceMappingURL=layers.js.map
 
 
 /***/ }),
