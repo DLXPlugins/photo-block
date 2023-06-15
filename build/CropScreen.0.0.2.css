@@ -1,0 +1,312 @@
+/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__aspect-ratio-group svg {
+  fill: none;
+}
+
+.dlx-photo-block__lock-crop-button.is-pressed svg {
+  color: #FFFFFF;
+}
+
+.dlx-photo-block__zoom-popover .components-popover__content {
+  min-width: 250px;
+  padding: 15px;
+}
+
+.dlx-photo-block__save-button.is-saving svg {
+  animation: photo-block-pub-spin;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./node_modules/react-image-crop/src/ReactCrop.scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************/
+.ReactCrop {
+  position: relative;
+  display: inline-block;
+  cursor: crosshair;
+  overflow: hidden;
+  max-width: 100%;
+}
+.ReactCrop *, .ReactCrop *::before, .ReactCrop *::after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.ReactCrop--disabled, .ReactCrop--locked {
+  cursor: inherit;
+}
+.ReactCrop__child-wrapper {
+  max-height: inherit;
+}
+.ReactCrop__child-wrapper > img, .ReactCrop__child-wrapper > video {
+  display: block;
+  max-width: 100%;
+  max-height: inherit;
+}
+.ReactCrop:not(.ReactCrop--disabled) .ReactCrop__child-wrapper > img, .ReactCrop:not(.ReactCrop--disabled) .ReactCrop__child-wrapper > video {
+  -ms-touch-action: none;
+      touch-action: none;
+}
+.ReactCrop:not(.ReactCrop--disabled) .ReactCrop__crop-selection {
+  -ms-touch-action: none;
+      touch-action: none;
+}
+.ReactCrop__crop-selection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  cursor: move;
+  -webkit-box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.5);
+          box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.5);
+  border: 1px dashed white;
+}
+.ReactCrop--disabled .ReactCrop__crop-selection {
+  cursor: inherit;
+}
+.ReactCrop--circular-crop .ReactCrop__crop-selection {
+  border-radius: 50%;
+  -webkit-box-shadow: 0px 0px 1px 1px white, 0 0 0 9999em rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 0px 1px 1px white, 0 0 0 9999em rgba(0, 0, 0, 0.5);
+}
+.ReactCrop__crop-selection:focus {
+  outline: none;
+  border-color: blue;
+  border-style: solid;
+}
+.ReactCrop--invisible-crop .ReactCrop__crop-selection {
+  display: none;
+}
+.ReactCrop__rule-of-thirds-vt::before, .ReactCrop__rule-of-thirds-vt::after, .ReactCrop__rule-of-thirds-hz::before, .ReactCrop__rule-of-thirds-hz::after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.ReactCrop__rule-of-thirds-vt::before, .ReactCrop__rule-of-thirds-vt::after {
+  width: 1px;
+  height: 100%;
+}
+.ReactCrop__rule-of-thirds-vt::before {
+  left: 33.3333%;
+  left: 33.3333333333%;
+}
+.ReactCrop__rule-of-thirds-vt::after {
+  left: 66.6666%;
+  left: 66.6666666667%;
+}
+.ReactCrop__rule-of-thirds-hz::before, .ReactCrop__rule-of-thirds-hz::after {
+  width: 100%;
+  height: 1px;
+}
+.ReactCrop__rule-of-thirds-hz::before {
+  top: 33.3333%;
+  top: 33.3333333333%;
+}
+.ReactCrop__rule-of-thirds-hz::after {
+  top: 66.6666%;
+  top: 66.6666666667%;
+}
+.ReactCrop__drag-handle {
+  position: absolute;
+}
+.ReactCrop__drag-handle::after {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  outline: 1px solid transparent;
+}
+.ReactCrop__drag-handle:focus::after {
+  border-color: blue;
+  background: #2dbfff;
+}
+.ReactCrop .ord-nw {
+  top: 0;
+  left: 0;
+  margin-top: -5px;
+  margin-left: -5px;
+  cursor: nw-resize;
+}
+.ReactCrop .ord-nw::after {
+  top: 0;
+  left: 0;
+}
+.ReactCrop .ord-n {
+  top: 0;
+  left: 50%;
+  margin-top: -5px;
+  margin-left: -5px;
+  cursor: n-resize;
+}
+.ReactCrop .ord-n::after {
+  top: 0;
+}
+.ReactCrop .ord-ne {
+  top: 0;
+  right: 0;
+  margin-top: -5px;
+  margin-right: -5px;
+  cursor: ne-resize;
+}
+.ReactCrop .ord-ne::after {
+  top: 0;
+  right: 0;
+}
+.ReactCrop .ord-e {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  margin-right: -5px;
+  cursor: e-resize;
+}
+.ReactCrop .ord-e::after {
+  right: 0;
+}
+.ReactCrop .ord-se {
+  bottom: 0;
+  right: 0;
+  margin-bottom: -5px;
+  margin-right: -5px;
+  cursor: se-resize;
+}
+.ReactCrop .ord-se::after {
+  bottom: 0;
+  right: 0;
+}
+.ReactCrop .ord-s {
+  bottom: 0;
+  left: 50%;
+  margin-bottom: -5px;
+  margin-left: -5px;
+  cursor: s-resize;
+}
+.ReactCrop .ord-s::after {
+  bottom: 0;
+}
+.ReactCrop .ord-sw {
+  bottom: 0;
+  left: 0;
+  margin-bottom: -5px;
+  margin-left: -5px;
+  cursor: sw-resize;
+}
+.ReactCrop .ord-sw::after {
+  bottom: 0;
+  left: 0;
+}
+.ReactCrop .ord-w {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  margin-left: -5px;
+  cursor: w-resize;
+}
+.ReactCrop .ord-w::after {
+  left: 0;
+}
+.ReactCrop__disabled .ReactCrop__drag-handle {
+  cursor: inherit;
+}
+.ReactCrop__drag-bar {
+  position: absolute;
+}
+.ReactCrop__drag-bar.ord-n {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  margin-top: -3px;
+}
+.ReactCrop__drag-bar.ord-e {
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  margin-right: -3px;
+}
+.ReactCrop__drag-bar.ord-s {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  margin-bottom: -3px;
+}
+.ReactCrop__drag-bar.ord-w {
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  margin-left: -3px;
+}
+.ReactCrop--new-crop .ReactCrop__drag-bar, .ReactCrop--new-crop .ReactCrop__drag-handle, .ReactCrop--fixed-aspect .ReactCrop__drag-bar {
+  display: none;
+}
+.ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-n, .ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-e, .ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-s, .ReactCrop--fixed-aspect .ReactCrop__drag-handle.ord-w {
+  display: none;
+}
+@media (pointer: coarse) {
+  .ReactCrop .ord-n,
+  .ReactCrop .ord-e,
+  .ReactCrop .ord-s,
+  .ReactCrop .ord-w {
+    display: none;
+  }
+  .ReactCrop__drag-handle {
+    width: 24px;
+    height: 24px;
+  }
+}
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/ToolbarAspectRatio/editor.scss ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__component-aspect-ratio {
+  display: flex;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 8px;
+  box-sizing: border-box;
+  text-align: center;
+}
+.dlx-photo-block__component-aspect-ratio .components-base-control__field {
+  margin: 0;
+}
+.dlx-photo-block__component-aspect-ratio .components-text-control__input {
+  display: inline-block;
+  max-width: 72px;
+}
+.dlx-photo-block__component-aspect-ratio.dlx-photo-block__component-aspect-ratio--active .components-text-control__input {
+  max-width: 48px;
+}
+.dlx-photo-block__component-aspect-ratio label {
+  position: absolute;
+  left: -9999px;
+  clip: rect(0 0 0 0);
+}
+.dlx-photo-block__component-aspect-ratio button.dlx-photo-block__component-aspect-ratio-switch {
+  min-width: unset;
+  height: 30px;
+  margin-left: 4px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.dlx-photo-block__component-aspect-ratio .dlx-photo-block__component-aspect-ratio-splitter button {
+  min-width: unset;
+  height: 30px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+.dlx-photo-block__component-aspect-ratio button.dlx-photo-block__component-aspect-ratio-apply.components-button {
+  color: #FFFFFF;
+  margin-left: 8px;
+  max-height: 30px;
+}
+
+/*# sourceMappingURL=CropScreen.0.0.2.css.map*/

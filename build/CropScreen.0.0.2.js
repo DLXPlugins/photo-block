@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkphoto_block"] = self["webpackChunkphoto_block"] || []).push([["CropScreen.0.0.1"],{
+(self["webpackChunkphoto_block"] = self["webpackChunkphoto_block"] || []).push([["CropScreen.0.0.2"],{
 
 /***/ "./src/components/Icons/AspectRatio.js":
 /*!*********************************************!*\
@@ -1025,4 +1025,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=CropScreen.0.0.1.js.map
+//# sourceMappingURL=CropScreen.0.0.2.js.map
