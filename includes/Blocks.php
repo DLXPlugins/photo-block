@@ -31,6 +31,7 @@ class Blocks {
 			Functions::get_plugin_dir( 'build/blocks/photo-block/block.json' ),
 			array(
 				'render_callback' => array( static::class, 'block_frontend' ),
+				'uses_context'    => array( 'postType', 'postId' ), /* for determining if we're in a query loop */
 			)
 		);
 	}
@@ -159,9 +160,78 @@ class Blocks {
 	/**
 	 * Output Photo block on the front-end.
 	 *
-	 * @param array $attributes Array of attributes for the Gutenberg block.
+	 * @param array    $attributes          Array of attributes for the Gutenberg block.
+	 * @param string   $innerblocks_content The inner blocks content.
+	 * @param WP_Block $block               The photo block content and attributes.
 	 */
-	public static function block_frontend( $attributes ) {
+	public static function block_frontend( $attributes, $innerblocks_content, $block ) {
+
+		// Let's sanitize the attributes.
+		$attributes = Functions::sanitize_array_recursive( $attributes );
+
+		// First, let's determine if we're in a query loop.
+		$is_in_query_loop    = false;
+		$current_post_id     = get_queried_object_id();
+		$maybe_query_post_id = $block->context['postId'] ?? 0;
+		if ( $current_post_id === $maybe_query_post_id && 0 !== $maybe_query_post_id ) {
+			$is_in_query_loop = true;
+		}
+
+		// Next, let's determine if we're in data mode.
+		$is_in_data_mode = false;
+		if ( true === $attributes['dataMode'] ) {
+			$is_in_data_mode = true;
+		}
+
+		// Let's get the image information.
+		$image_markup = '';
+		if ( $is_in_data_mode ) {
+
+		} else {
+			// Get the image size.
+			$image_size = $attributes['imageSize'] ?? 'full';
+
+			// Get the image ID.
+			$image_id = $attributes['imageDimensions']['id'] ?? 0;
+
+			// Get any image classes.
+			$image_classes = $attributes['imageCSSClasses'] ?? '';
+
+			// Determine if lazy loading is on.
+			$skip_lazy_loading = $attributes['skipLazyLoading'] ?? false;
+
+			// Get alt and title attributes.
+			$image_alt   = $attributes['photo']['alt'] ?? '';
+			$image_title = $attributes['photo']['title'] ?? '';
+
+			// Get data attributes.
+			$image_data_attributes = array();
+			if ( ! empty( $attributes['customAttributes'] ) ) {
+				foreach ( $attributes['customAttributes'] as $attribute ) {
+					$image_data_attributes[ sanitize_key( $attribute['name'] ) ] = esc_attr( $attribute['value'] );
+				}
+			}
+
+			// Get the image markup.
+			$image_markup = wp_get_attachment_image(
+				$image_id,
+				$image_size,
+				false,
+				array_merge(
+					array(
+						'class'   => 'dlx-photo-block__image ' . $image_classes,
+						'loading' => $skip_lazy_loading ? false : 'lazy',
+						'alt'     => $image_alt,
+						'title'   => $image_title,
+					),
+					$image_data_attributes
+				)
+			);
+		}
+
+		ob_start();
+		echo '<pre>' . print_r( $image_markup, true ) . '</pre>';
+		return ob_get_clean();
 		return 'hello PhotoBlock frontend';
 	}
 

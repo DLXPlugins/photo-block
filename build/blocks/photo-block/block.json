@@ -722,6 +722,18 @@
     "imageProtectionEnabled": {
       "type": "boolean",
       "default": false
+    },
+    "htmlAnchor": {
+      "type": "string",
+      "default": ""
+    },
+    "figureCSSClasses": {
+      "type": "string",
+      "default": ""
+    },
+    "imageCSSClasses": {
+      "type": "string",
+      "default": ""
     }
   },
   "supports": {
