@@ -171,7 +171,7 @@ class Rest {
 	 *
 	 * @param WP_REST_Request $request The REST request object.
 	 **/
-	public function rest_crop_image( $request ) {
+	public static function rest_crop_image( $request ) {
 		$crop_x      = absint( $request->get_param( 'cropX' ) );
 		$crop_y      = absint( $request->get_param( 'cropY' ) );
 		$crop_width  = absint( $request->get_param( 'cropWidth' ) );
@@ -272,7 +272,7 @@ class Rest {
 	 *
 	 * @param WP_REST_Request $request The REST request object.
 	 **/
-	public function rest_get_author_meta( $request ) {
+	public static function rest_get_author_meta( $request ) {
 		$search        = sanitize_text_field( urldecode( $request->get_param( 'search' ) ) ); // should only be a string.
 		$maybe_post_id = absint( $request->get_param( 'postId' ) );
 
@@ -325,7 +325,7 @@ class Rest {
 	 *
 	 * @param WP_REST_Request $request The REST request object.
 	 **/
-	public function rest_get_custom_fields( $request ) {
+	public static function rest_get_custom_fields( $request ) {
 		$search        = sanitize_text_field( urldecode( $request->get_param( 'search' ) ) ); // should only be a string.
 		$maybe_post_id = absint( $request->get_param( 'postId' ) );
 
@@ -377,7 +377,7 @@ class Rest {
 	 *
 	 * @param WP_REST_Request $request The REST request object.
 	 **/
-	public function rest_get_results_by_type( $request ) {
+	public static function rest_get_results_by_type( $request ) {
 		$search    = urldecode( $request->get_param( 'search' ) ); // could be int or string.
 		$post_type = sanitize_text_field( $request->get_param( 'postType' ) );
 
@@ -440,7 +440,7 @@ class Rest {
 	 *
 	 * @param WP_REST_Request $request The REST request object.
 	 **/
-	public function rest_get_pages( $request ) {
+	public static function rest_get_pages( $request ) {
 		$search = sanitize_text_field( urldecode( $request->get_param( 'search' ) ) );
 
 		$post_types_to_search = array(

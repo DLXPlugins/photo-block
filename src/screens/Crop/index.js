@@ -144,10 +144,6 @@ const CropScreen = ( props ) => {
 		const originalDimensionsWidth = reactCropImageRef.naturalWidth;
 		const originalDimensionsHeight = reactCropImageRef.naturalHeight;
 
-		console.log( imageFile );
-		console.log( displayDimensionsWidth, displayDimensionsHeight );
-		console.log( originalDimensionsWidth, originalDimensionsHeight );
-
 		// Get crop dimensions to send to server.
 		const scaleX = originalDimensionsWidth / displayDimensionsWidth;
 		const scaleY = originalDimensionsHeight / displayDimensionsHeight;

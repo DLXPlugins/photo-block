@@ -43,7 +43,7 @@ import InitialScreen from '../../screens/Initial';
 import CaptionAppender from '../../components/CaptionAppender';
 
 const initialScreen = lazy( () =>
-	import( /* webpackChunkName: "InitialScreen.0.0.1" */ '../../screens/Initial' )
+	import( /* webpackChunkName: "InitialScreen.0.0.2" */ '../../screens/Initial' )
 );
 const getInitialScreen = ( props ) => {
 	return (
@@ -53,7 +53,7 @@ const getInitialScreen = ( props ) => {
 	);
 };
 const EditScreen = lazy( () =>
-	import( /* webpackChunkName: "EditScreen.0.0.1" */ '../../screens/Edit' )
+	import( /* webpackChunkName: "EditScreen.0.0.2" */ '../../screens/Edit' )
 );
 const getEditScreen = ( props ) => {
 	return (
@@ -63,7 +63,7 @@ const getEditScreen = ( props ) => {
 	);
 };
 const CropScreen = lazy( () =>
-	import( /* webpackChunkName: "CropScreen.0.0.1" */ '../../screens/Crop' )
+	import( /* webpackChunkName: "CropScreen.0.0.2" */ '../../screens/Crop' )
 );
 const getCropScreen = ( props ) => {
 	return (
@@ -73,7 +73,7 @@ const getCropScreen = ( props ) => {
 	);
 };
 const DataScreen = lazy( () =>
-	import( /* webpackChunkName: "DataScreen.0.0.1" */ '../../screens/Data' )
+	import( /* webpackChunkName: "DataScreen.0.0.2" */ '../../screens/Data' )
 );
 const getDataScreen = ( props ) => {
 	return (
@@ -83,7 +83,7 @@ const getDataScreen = ( props ) => {
 	);
 };
 const DataEditScreen = lazy( () =>
-	import( /* webpackChunkName: "DataEditScreen.0.0.1" */ '../../screens/DataEdit' )
+	import( /* webpackChunkName: "DataEditScreen.0.0.2" */ '../../screens/DataEdit' )
 );
 const getDataEditScreen = ( props ) => {
 	return (
