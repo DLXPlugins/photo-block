@@ -20,6 +20,9 @@ class Blocks {
 		add_action( 'init', array( static::class, 'register_block' ) );
 		add_action( 'enqueue_block_editor_assets', array( static::class, 'register_block_assets' ) );
 		add_action( 'enqueue_block_assets', array( static::class, 'enqueue_frontend_assets' ) );
+
+		// Enqueue any frontend assets.
+		add_action( 'wp_print_footer_scripts', array( static::class, 'enqueue_footer_assets' ), 1, 999 );
 	}
 
 	/**
@@ -227,6 +230,102 @@ class Blocks {
 					$image_data_attributes
 				)
 			);
+
+			// Get the image link type.
+			$media_link_type = $attributes['mediaLinkType'] ?? 'none';
+			$media_link_url  = '';
+			$media_link_atts = array();
+
+			// If full, get the full link URL.
+			if ( 'image' === $media_link_type ) {
+				$media_link_img_src = wp_get_attachment_image_src( $image_id, 'full' );
+				if ( $media_link_img_src ) {
+					$media_link_url = $media_link_img_src[0];
+
+					// Get lightbox attributes.
+					$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
+					if ( $lightbox_enabled ) {
+						$media_link_atts['data-fancybox'] = 'true';
+
+						// Register the lightbox script/style. Check wp_footer.
+						wp_register_script(
+							'dlx-photo-block-fancybox-js',
+							Functions::get_plugin_url( 'assets/fancybox/fancybox.js' ),
+							array(),
+							Functions::get_plugin_version(),
+							true
+						);
+						wp_register_style(
+							'dlx-photo-block-fancybox-css',
+							Functions::get_plugin_url( 'assets/fancybox/fancybox.css' ),
+							array(),
+							Functions::get_plugin_version(),
+							'all'
+						);
+
+						// Get caption.
+						$caption_enabled = (bool) $attributes['lightboxShowCaption'] ?? false;
+						$caption_custom  = $attributes['lightboxCaption'] ?? '';
+						if ( $caption_enabled && ! empty( $caption_custom ) ) {
+							// todo - need to get regular single-line caption if available.
+							$media_link_atts['data-caption'] = $caption_custom;
+						}
+					}
+				}
+			} elseif ( 'page' === $media_link_type ) {
+				$media_link_url = wp_get_attachment_link( $image_id, 'full', true, false, false );
+			} elseif ( 'custom' === $media_link_type ) {
+				$media_link_url = $attributes['mediaLinkUrl'] ?? '';
+			}
+
+			// Fill in the link attributes.
+			if ( 'none' !== $media_link_type ) {
+				// Set new tab attribute.
+				$open_new_tab = (bool) $attributes['mediaLinkNewTab'] ?? false;
+				if ( $open_new_tab ) {
+					$media_link_atts['target'] = '_blank';
+				}
+
+				// Set title attribute.
+				$title_attr = $attributes['mediaLinkTitle'] ?? '';
+				if ( ! empty( $title_attr ) ) {
+					$media_link_atts['title'] = $title_attr;
+				}
+
+				// Set the rel attribute.
+				$rel_attr = $attributes['mediaLinkRel'] ?? '';
+				if ( ! empty( $rel_attr ) ) {
+					$media_link_atts['rel'] = $rel_attr;
+				}
+
+				// Set the class attribute.
+				$class_attr = $attributes['mediaLinkClass'] ?? '';
+				if ( ! empty( $class_attr ) ) {
+					$media_link_atts['class'] = $class_attr;
+				}
+
+				// Set the anchor ID attribute.
+				$anchor_id_attr = $attributes['mediaLinkAnchorId'] ?? '';
+				if ( ! empty( $anchor_id_attr ) ) {
+					$media_link_atts['id'] = $anchor_id_attr;
+				}
+
+				// Output the link HTML around the image.
+				$image_markup = sprintf(
+					'<a data-fancybox href="%1$s" %2$s>%3$s</a>',
+					esc_url( $media_link_url ),
+					implode(
+						' ',
+						array_map(
+							function( $v, $k ) {
+								return sprintf( '%s="%s"', sanitize_key( $k ), esc_attr( $v ) ); },
+							$media_link_atts,
+							array_keys( $media_link_atts )
+						)
+					),
+					$image_markup
+				);
+			}
 		}
 
 		ob_start();
@@ -451,5 +550,25 @@ class Blocks {
 
 		$output = $top . $right . $bottom . $left;
 		return trim( $output );
+	}
+
+	/**
+	 * Output any scripts/styles needed in the footer.
+	 */
+	public static function enqueue_footer_assets() {
+		// If we've already enqueued fancybox, we don't need to do it again.
+		// Compatible with other fancybox jquery plugins.
+		if ( wp_script_is( 'fancybox', 'enqueued' ) || wp_script_is( 'jquery-fancybox', 'enqueued' ) ) {
+			return;
+		}
+
+		// Output our version of Fancybox.
+		wp_add_inline_script( 'dlx-photo-block-fancybox-js', 'document.addEventListener("DOMContentLoaded", function() { alert("yo"); Fancybox.bind("[data-fancybox]", {
+			// Your custom options
+		  }); });' );
+		wp_print_scripts( array( 'dlx-photo-block-fancybox-js' ) );
+		// Add vanilla JS inline script init fancybox (no jquery).
+		
+		wp_print_styles( array( 'dlx-photo-block-fancybox-css' ) );
 	}
 }
