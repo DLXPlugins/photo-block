@@ -721,6 +721,10 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     _useState22 = _slicedToArray(_useState21, 2),
     isCaptionVisible = _useState22[0],
     setIsCaptionVisible = _useState22[1]; // Make sure caption is positioned correctly before visible render.
+  var _useState23 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+    _useState24 = _slicedToArray(_useState23, 2),
+    captionInputRef = _useState24[0],
+    setCaptionInputRef = _useState24[1];
 
   // Set caption position context based on captionPosition attribute. After setting, show the caption.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
@@ -741,7 +745,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
     clientId = props.clientId,
-    context = props.context;
+    context = props.context,
+    isSelected = props.isSelected;
 
   // Get query loop vars.
   var postId = context.postId;
@@ -877,6 +882,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       getCaptionFromData();
     }
   }, []);
+
+  // Select the richtext input and focus on it if block is selected and mode is single line.
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    if ('single' === mode && isSelected && null !== captionInputRef) {
+      captionInputRef.focus();
+    }
+  }, [isSelected, captionInputRef]);
   var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, 'overlay' === captionPosition && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay Settings', 'photo-block'),
     initialOpen: true
@@ -1671,7 +1683,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
           setAttributes({
             captionManual: value
           });
-        }
+        },
+        ref: setCaptionInputRef
       }));
     }
     return /*#__PURE__*/React.createElement("figcaption", _extends({

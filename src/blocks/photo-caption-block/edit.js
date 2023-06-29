@@ -183,6 +183,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const [ switchModeModalVisible, setSwitchModeModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 	const [ isCaptionVisible, setIsCaptionVisible ] = useState( false ); // Make sure caption is positioned correctly before visible render.
+	const [ captionInputRef, setCaptionInputRef ] = useState( null );
 
 	// Set caption position context based on captionPosition attribute. After setting, show the caption.
 	useEffect( () => {
@@ -201,7 +202,7 @@ const PhotoCaptionBlock = ( props ) => {
 		),
 	} );
 
-	const { attributes, setAttributes, clientId, context } = props;
+	const { attributes, setAttributes, clientId, context, isSelected } = props;
 
 	// Get query loop vars.
 	const { postId } = context;
@@ -347,6 +348,13 @@ const PhotoCaptionBlock = ( props ) => {
 			getCaptionFromData();
 		}
 	}, [] );
+
+	// Select the richtext input and focus on it if block is selected and mode is single line.
+	useEffect( () => {
+		if ( 'single' === mode && isSelected && null !== captionInputRef ) {
+			captionInputRef.focus();
+		}
+	}, [ isSelected, captionInputRef ] );
 
 	const settingsInspectorControls = (
 		<>
@@ -1277,6 +1285,7 @@ const PhotoCaptionBlock = ( props ) => {
 						onChange={ ( value ) => {
 							setAttributes( { captionManual: value } );
 						} }
+						ref={ setCaptionInputRef }
 					/>
 				</figcaption>
 			);
