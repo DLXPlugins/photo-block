@@ -131,6 +131,14 @@ const PhotoBlock = ( props ) => {
 		}
 	}, [ captionPosition ] );
 
+	// Set whether there's a caption or not.
+	useEffect( () => {
+		if ( props.attributes.hasCaption !== hasCaption ) {
+			props.setAttributes( { hasCaption } );
+		}
+	}, [ hasCaption ] );
+
+
 	// Store the filepond upload ref.
 	const filepondRef = useRef( null );
 	const imageRef = useRef( null );

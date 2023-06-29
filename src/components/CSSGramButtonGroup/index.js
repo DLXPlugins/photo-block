@@ -4,40 +4,15 @@
 import './editor.scss';
 
 import {
-	PanelBody,
-	PanelRow,
-	TextControl,
-	TextareaControl,
 	ButtonGroup,
-	Button,
-	ToggleControl,
-	Toolbar,
-	ToolbarButton,
-	Popover,
-	Tooltip,
-	PlaceHolder,
 	BaseControl,
-	RangeControl,
 } from '@wordpress/components';
 
-import { isURL, filterURLForDisplay } from '@wordpress/url';
-
-import {
-	Link2Off,
-	Link2,
-	Image,
-	FileImage,
-	ExternalLink,
-
-} from 'lucide-react';
-
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
+import { useContext, useState } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
-import classnames from 'classnames';
 
 import UploaderContext from '../../contexts/UploaderContext';
-import ColorPickerControl from '../ColorPicker';
 import CSSGramButtonPreview from '../CSSGramButtonPreview';
 
 const cssGramOptions = [
@@ -78,14 +53,14 @@ const cssGramOptions = [
 const CSSGramButtonGroup = ( props ) => {
 	const { attributes, setAttributes } = props;
 
-	const { photo, imageDimensions } = attributes;
+	const { cssGramFilter, imageDimensions } = attributes;
 
 	// Get context.
 	const {
 		imageFile,
 	} = useContext( UploaderContext );
 
-	const [ currentFilter, setCurrentFilter ] = useState( 'none' );
+	const [ currentFilter, setCurrentFilter ] = useState( cssGramFilter );
 
 	return (
 		<>

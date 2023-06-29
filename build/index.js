@@ -118,6 +118,15 @@ var PhotoBlock = function PhotoBlock(props) {
     }
   }, [captionPosition]);
 
+  // Set whether there's a caption or not.
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    if (props.attributes.hasCaption !== hasCaption) {
+      props.setAttributes({
+        hasCaption: hasCaption
+      });
+    }
+  }, [hasCaption]);
+
   // Store the filepond upload ref.
   var filepondRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
   var imageRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
@@ -3603,8 +3612,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/subtitles.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/subtitles.js");
+/* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
 // eslint-disable-next-line no-unused-vars
+
 
 
 
@@ -3618,6 +3629,8 @@ var CaptionAppender = function CaptionAppender(_ref) {
     clientId = _ref.clientId;
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store),
     insertBlock = _useDispatch.insertBlock;
+  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_7__["default"]),
+    setHasCaption = _useContext.setHasCaption;
 
   /**
    * Add a caption block to the main block.
@@ -3638,9 +3651,10 @@ var CaptionAppender = function CaptionAppender(_ref) {
     className: "dlx-photo-block__add-caption",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Add Caption', 'photo-block'),
     onClick: function onClick() {
+      setHasCaption(true);
       appendBlock();
     },
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], null)
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], null)
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Add Caption', 'photo-block')));
 };
 /* harmony default export */ __webpack_exports__["default"] = (CaptionAppender);

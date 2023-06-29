@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import './editor.scss';
-import React from 'react';
+import React, { useContext } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
 import { store } from '@wordpress/block-editor';
@@ -8,12 +8,14 @@ import { createBlock } from '@wordpress/blocks';
 
 import { useDispatch } from '@wordpress/data';
 import { Subtitles } from 'lucide-react';
+import UploaderContext from '../../contexts/UploaderContext';
 
 const CaptionAppender = ( {
 	numBlocks,
 	clientId,
 } ) => {
 	const { insertBlock } = useDispatch( store );
+	const { setHasCaption } = useContext( UploaderContext );
 
 	/**
 	 * Add a caption block to the main block.
@@ -35,6 +37,7 @@ const CaptionAppender = ( {
 				className="dlx-photo-block__add-caption"
 				label={ __( 'Add Caption', 'photo-block' ) }
 				onClick={ () => {
+					setHasCaption( true );
 					appendBlock();
 				} }
 				icon={ <Subtitles /> }

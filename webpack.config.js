@@ -16,6 +16,7 @@ module.exports = ( env ) => {
 		{
 			entry: {
 				'dlx-photo-block-style': [ './src/scss/block-backend-frontend.scss' ],
+				'dlx-css-gram': [ './src/scss/cssgram/cssgram.scss' ],
 			},
 			mode: env.mode,
 			devtool: 'production' === env.mode ? false : 'source-map',

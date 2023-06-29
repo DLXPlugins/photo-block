@@ -168,9 +168,30 @@ class Blocks {
 	 * @param WP_Block $block               The photo block content and attributes.
 	 */
 	public static function block_frontend( $attributes, $innerblocks_content, $block ) {
+		// Determine if we want to execute this markup. Ignore for REST and admin requests.
+		$can_output = true;
+		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {
+			$can_output = false;
+		}
+
+		/**
+		 * Filter whether the Photo block can output. Attempt not to load in admin.
+		 *
+		 * @param bool $can_output Whether the Photo block can output.
+		 */
+		$can_output = apply_filters( 'dlx_photo_block_can_output', $can_output );
+		if ( ! $can_output ) {
+			return;
+		}
 
 		// Let's sanitize the attributes.
 		$attributes = Functions::sanitize_array_recursive( $attributes );
+
+		// Get the unique ID for the image.
+		$unique_id = $attributes['uniqueId'];
+
+		// Begin buffer.
+		ob_start();
 
 		// First, let's determine if we're in a query loop.
 		$is_in_query_loop    = false;
@@ -198,7 +219,7 @@ class Blocks {
 			$image_id = $attributes['imageDimensions']['id'] ?? 0;
 
 			// Get any image classes.
-			$image_classes = $attributes['imageCSSClasses'] ?? '';
+			$image_classes = explode( ' ', $attributes['imageCSSClasses'] ) ?? array();
 
 			// Determine if lazy loading is on.
 			$skip_lazy_loading = $attributes['skipLazyLoading'] ?? false;
@@ -215,6 +236,29 @@ class Blocks {
 				}
 			}
 
+			// Get whether a CSS Gram filter is enabled.
+			$css_gram_filter = $attributes['cssGramFilter'] ?? 'none';
+			if ( 'none' !== $css_gram_filter ) {
+				$image_classes[] = 'has-css-gram';
+				$image_classes[] = 'photo-block-' . $css_gram_filter;
+
+				// Register CSS Gram stylesheet.
+				if ( ! wp_style_is( 'dlx-css-gram', 'registered' ) ) {
+					wp_register_style(
+						'dlx-css-gram',
+						Functions::get_plugin_url( 'dist/dlx-css-gram.css' ),
+						array(),
+						Functions::get_plugin_version(),
+						'all'
+					);
+				}
+
+				// Print out the CSS Gram stylesheet.
+				if ( ! wp_style_is( 'dlx-css-gram', 'done' ) ) {
+					wp_print_styles( 'dlx-css-gram' );
+				}
+			}
+
 			// Get the image markup.
 			$image_markup = wp_get_attachment_image(
 				$image_id,
@@ -222,7 +266,7 @@ class Blocks {
 				false,
 				array_merge(
 					array(
-						'class'   => 'dlx-photo-block__image ' . $image_classes,
+						'class'   => 'dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ),
 						'loading' => $skip_lazy_loading ? false : 'lazy',
 						'alt'     => $image_alt,
 						'title'   => $image_title,
@@ -255,12 +299,22 @@ class Blocks {
 							Functions::get_plugin_version(),
 							true
 						);
+						wp_add_inline_script(
+							'dlx-photo-block-fancybox-js',
+							'document.addEventListener("DOMContentLoaded", function() { Fancybox.bind("[data-fancybox]", {
+								mainClass: "has-css-gram photo-block-' . $css_gram_filter . '",
+							}); });'
+						);
 						wp_register_style(
 							'dlx-photo-block-fancybox-css',
 							Functions::get_plugin_url( 'assets/fancybox/fancybox.css' ),
 							array(),
 							Functions::get_plugin_version(),
 							'all'
+						);
+						wp_add_inline_style(
+							'dlx-photo-block-fancybox-css',
+							'.fancybox__container{z-index:99999;}'
 						);
 
 						// Get caption.
@@ -309,26 +363,101 @@ class Blocks {
 				if ( ! empty( $anchor_id_attr ) ) {
 					$media_link_atts['id'] = $anchor_id_attr;
 				}
+			}
 
-				// Output the link HTML around the image.
-				$image_markup = sprintf(
-					'<a data-fancybox href="%1$s" %2$s>%3$s</a>',
-					esc_url( $media_link_url ),
-					implode(
-						' ',
-						array_map(
-							function( $v, $k ) {
-								return sprintf( '%s="%s"', sanitize_key( $k ), esc_attr( $v ) ); },
-							$media_link_atts,
-							array_keys( $media_link_atts )
-						)
-					),
-					$image_markup
+			// Determine if there's a caption.
+			$has_caption    = (bool) $attributes['hasCaption'] ?? false;
+			$caption_markup = '';
+
+			// Determine the caption position.
+			$caption_position = $attributes['captionPosition'] ?? 'below';
+
+			// Build caption markup if there's a caption.
+			if ( $has_caption && ! empty( $innerblocks_content ) ) {
+
+				$caption_classes = array(
+					'dlx-photo-block__caption',
+					'dlx-photo-block__caption--' . esc_attr( $caption_position ),
+				);
+
+				$caption_markup = sprintf(
+					'<figcaption class="%2$s">%1$s</figcaption>',
+					wp_kses_post( $innerblocks_content ),
+					esc_attr( implode( ' ', $caption_classes ) )
 				);
 			}
+
+			// If overlay, include at same level of image.
+			if ( $has_caption && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
+				$image_markup = $image_markup . $caption_markup;
+			}
+
+			// Output the link HTML around the image.
+			$image_markup = sprintf(
+				'<a data-fancybox href="%1$s" %2$s>%3$s</a>',
+				esc_url( $media_link_url ),
+				implode(
+					' ',
+					array_map(
+						function( $v, $k ) {
+							return sprintf( '%s="%s"', sanitize_key( $k ), esc_attr( $v ) ); },
+						$media_link_atts,
+						array_keys( $media_link_atts )
+					)
+				),
+				$image_markup
+			);
+
+			// Add image wrapper.
+			$image_markup = sprintf(
+				'<div class="dlx-photo-block__image-wrapper">%2$s</div>',
+				esc_attr( $unique_id ),
+				$image_markup
+			);
+
+			// If caption and top or bottom position, add in caption markup.
+			if ( $has_caption && ! empty( $caption_markup ) && 'top' === $caption_position ) {
+				$image_markup = $caption_markup . $image_markup;
+			} elseif ( $has_caption && ! empty( $caption_markup ) && 'bottom' === $caption_position ) {
+				$image_markup = $image_markup . $caption_markup;
+			}
+
+			// Get figure CSS advanced classes.
+			$figure_css_classes   = explode( ' ', $attributes['figureCSSClasses'] ?? '' );
+			$figure_css_classes[] = 'dlx-photo-block__figure';
+
+			// Output figure markup.
+			$image_markup = sprintf(
+				'<figure class="%2$s">%1$s</figure>',
+				$image_markup,
+				esc_attr( implode( ' ', $figure_css_classes ) )
+			);
 		}
 
-		ob_start();
+		// Wrap figure in section tag, gather classes from block props.
+		$image_markup = sprintf(
+			'<section id="%1$s" class="dlx-photo-block__container">%2$s</section>',
+			$unique_id,
+			$image_markup
+		);
+
+		// Determine if right+click protection is enabled.
+		$right_click_protection_enabled = (bool) $attributes['imageProtectionEnabled'] ?? false;
+
+		// If right+click protection is enabled, register dummy script and add inline image protection script.
+		if ( $right_click_protection_enabled ) {
+			wp_register_script(
+				'dlx-photo-block-image-protection-js',
+				null,
+				array(),
+				Functions::get_plugin_version(),
+				true
+			);
+			wp_add_inline_script(
+				'dlx-photo-block-image-protection-js',
+				'document.getElementById("' . esc_js( $unique_id ) . '").addEventListener("contextmenu",function(e){e.preventDefault()},!1);'
+			);
+		}
 		echo '<pre>' . print_r( $image_markup, true ) . '</pre>';
 		return ob_get_clean();
 		return 'hello PhotoBlock frontend';
@@ -562,13 +691,20 @@ class Blocks {
 			return;
 		}
 
-		// Output our version of Fancybox.
-		wp_add_inline_script( 'dlx-photo-block-fancybox-js', 'document.addEventListener("DOMContentLoaded", function() { alert("yo"); Fancybox.bind("[data-fancybox]", {
-			// Your custom options
-		  }); });' );
-		wp_print_scripts( array( 'dlx-photo-block-fancybox-js' ) );
-		// Add vanilla JS inline script init fancybox (no jquery).
-		
-		wp_print_styles( array( 'dlx-photo-block-fancybox-css' ) );
+		// Make sure our fancybox scripts are registered.
+		if ( wp_script_is( 'dlx-photo-block-fancybox-js', 'registered' ) ) {
+			// Output our version of Fancybox.
+			wp_print_scripts( array( 'dlx-photo-block-fancybox-js' ) );
+		}
+
+		// Make sure our fancybox styles are registered.
+		if ( wp_style_is( 'dlx-photo-block-fancybox-css', 'registered' ) ) {
+			wp_print_styles( array( 'dlx-photo-block-fancybox-css' ) );
+		}
+
+		// Print right+click protection script, if registered.
+		if ( wp_script_is( 'dlx-photo-block-image-protection-js', 'registered' ) ) {
+			wp_print_scripts( array( 'dlx-photo-block-image-protection-js' ) );
+		}
 	}
 }
