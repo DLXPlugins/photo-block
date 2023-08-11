@@ -468,6 +468,18 @@ class Functions {
 	}
 
 	/**
+	 * Take a camelcase field and converts it a dash case.
+	 *
+	 * @param string $field Field to convert to dash case.
+	 *
+	 * @return string $field Field name in camelCase.
+	 */
+	public static function to_dashes( string $field ) {
+		$field = strtolower( preg_replace( '/([a-z])([A-Z])/', '$1-$2', $field ) );
+		return $field;
+	}
+
+	/**
 	 * Return the plugin slug.
 	 *
 	 * @return string plugin slug.
@@ -734,6 +746,17 @@ class Functions {
 	}
 
 	/**
+	 * Shortcut for retrieving the screen sizes.
+	 */
+	public static function get_screen_sizes() {
+		return array(
+			'mobile',
+			'tablet',
+			'desktop',
+		);
+	}
+
+	/**
 	 * Gets the highest priority for a filter.
 	 *
 	 * @param int $subtract The amount to subtract from the high priority.
@@ -749,6 +772,123 @@ class Functions {
 			$highest_priority = absint( $highest_priority - $subtract );
 		}
 		return $highest_priority;
+	}
+
+	/**
+	 * Adds a unit value into CSS helper.
+	 *
+	 * @param CSS_Helper $css_helper    CSS Helper object.
+	 * @param object     $props         Props object.
+	 * @param string     $css_property  CSS property to add (font-family, font-size, etc).
+	 * @param string     $type          The type of array key to look for in $props.
+	 * @param string     $sub_type      Unit to retrieve data for (optional).
+	 */
+	public static function add_hierarchical_unit( $css_helper, $props, $css_property, $type = 'width', $sub_type = '' ) {
+		// Gather screen sizes.
+		$screen_sizes = self::get_screen_sizes();
+
+		foreach ( $screen_sizes as $screen_size ) {
+			$current_value = $props[ $screen_size ][ $type ];
+			$css_value     = self::get_hierarchical_placeholder_value( $props, $screen_size, $current_value, self::to_dashes( $type ), $sub_type );
+
+			// Start getting the unit.
+			$css_unit = '';
+			if ( 'mobile' === $screen_size ) {
+				if ( $sub_type && $props['tablet']['unit'][ $sub_type ] !== null ) {
+					$css_unit = $props['tablet']['unit'][ $sub_type ];
+				} elseif ( $sub_type && $props['desktop']['unit'][ $sub_type ] !== null ) {
+					$css_unit = $props['desktop']['unit'][ $sub_type ];
+				} elseif ( $props['tablet']['unit'] !== null ) {
+					$css_unit = $props['tablet']['unit'];
+				} elseif ( $props['desktop']['unit'] !== null ) {
+					$css_unit = $props['desktop']['unit'];
+				}
+			}
+
+			// Get tablet.
+			if ( 'tablet' === $screen_size ) {
+				if ( $sub_type && $props['desktop']['unit'][ $sub_type ] !== null ) {
+					$css_unit = $props['desktop']['unit'][ $sub_type ];
+				} elseif ( $props['desktop']['unit'] !== null ) {
+					$css_unit = $props['desktop']['unit'];
+				}
+			}
+
+			// Make sure we have a unit.
+			if ( '' === $css_unit ) {
+				$css_unit = 'px';
+			}
+
+			// Add to CSS Helper.
+			if ( ( '' === $css_value || '0' === $css_value ) || '' === $css_unit ) {
+				continue;
+			}
+			// Build CSS.
+			$css_to_return = sprintf(
+				'%s: %s%s;',
+				$css_property,
+				$css_value,
+				$css_unit
+			);
+			$css_helper->add_css( $css_to_return, $screen_size );
+		}
+	}
+
+	/**
+	 * Adds a CSS Property and value that doesn't need a screen size.
+	 *
+	 * @param CSS_Helper $css_helper    CSS Helper object.
+	 * @param string     $css_property  CSS property to add (font-family, font-size, etc).
+	 * @param string     $css_value     CSS value to add.
+	 */
+	public static function add_css_property( $css_helper, $css_property, $css_value ) {
+		$css_helper->add_css( sprintf( '%s: %s;', $css_property, $css_value ) );
+	}
+
+	/**
+	 * Get a value from a hierarchy.
+	 *
+	 * @param object $props         Props object.
+	 * @param string $screen_size   Screen size (desktop|tablet|mobile).
+	 * @param string $current_value The current value as a fallback.
+	 * @param string $type          Type of value to look for in props (width, height, border, etc.).
+	 * @param string $sub_type      Unit to retrieve data for.
+	 *
+	 * @return string CSS unit value.
+	 */
+	public static function get_hierarchical_placeholder_value( $props, $screen_size, $current_value, $type, $sub_type ) {
+		// Check mobile screen size.
+		if ( 'mobile' === $screen_size && '' === $current_value ) {
+			// Check tablet.
+			if ( ! empty( $sub_type ) && $props['tablet'][ $type ][ $sub_type ] ) {
+				return $props['tablet'][ $type ][ $sub_type ];
+			} elseif ( ! empty( $sub_type ) && '' !== $props['desktop'][ $type ][ $sub_type ] ) {
+				// Check desktop.
+				return $props['desktop'][ $type ][ $sub_type ];
+			} elseif ( ! empty( $sub_type ) && '' !== $props['tablet'][ $type ] ) {
+				return $props['tablet'][ $type ];
+			} elseif ( empty( $sub_type ) && '' !== $props['desktop'][ $type ] ) {
+				return $props['desktop'][ $type ];
+			}
+		}
+
+		// Get the tablet screen size properties.
+		if ( 'tablet' === $screen_size && '' === $current_value ) {
+			// Check desktop.
+			if ( ! empty( $sub_type ) && '' !== $props['desktop'][ $type ][ $sub_type ] ) {
+				return $props['desktop'][ $type ][ $sub_type ];
+			} elseif ( empty( $sub_type ) && '' !== $props['desktop'][ $type ] ) {
+				return $props['desktop'][ $type ];
+			}
+		}
+
+		// Get fallback value if no matches by this point.
+		if ( ! empty( $current_value ) ) {
+			return $current_value;
+		}
+
+		// Nothing found, return empty value.
+		return '';
 	}
 }
 

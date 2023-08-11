@@ -1,7 +1,7 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useState, useRef, useContext, lazy, Suspense } from '@wordpress/element';
+import { useEffect, useState, useRef, useContext } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import {
@@ -29,11 +29,9 @@ import {
 	useInnerBlocksProps,
 	store,
 } from '@wordpress/block-editor';
+import { generateUniqueId } from '../../utils/Functions';
 
-import { useDispatch, useSelect } from '@wordpress/data';
-
-
-import { Crop, Image, Accessibility, Link, ZoomIn, RectangleHorizontal, RotateCcw, RotateCw, Save, X } from 'lucide-react';
+import { useSelect } from '@wordpress/data';
 
 import { useInstanceId } from '@wordpress/compose';
 
@@ -41,62 +39,14 @@ import UploaderContext from '../../contexts/UploaderContext';
 import InitialScreen from '../../screens/Initial';
 //import EffectsScreen from '../../screens/Effects';
 import CaptionAppender from '../../components/CaptionAppender';
+import EditScreen from '../../screens/Edit';
+import CropScreen from '../../screens/Crop';
+import DataScreen from '../../screens/Data';
+import DataEditScreen from '../../screens/DataEdit';
 
-const initialScreen = lazy( () =>
-	import( /* webpackChunkName: "InitialScreen.0.0.2" */ '../../screens/Initial' )
-);
-const getInitialScreen = ( props ) => {
-	return (
-		<Suspense fallback={ <div>Loading...</div> }>
-			<InitialScreen { ...props }/>
-		</Suspense>
-	);
-};
-const EditScreen = lazy( () =>
-	import( /* webpackChunkName: "EditScreen.0.0.2" */ '../../screens/Edit' )
-);
-const getEditScreen = ( props ) => {
-	return (
-		<Suspense fallback={ <div>Loading...</div> }>
-			<EditScreen { ...props }/>
-		</Suspense>
-	);
-};
-const CropScreen = lazy( () =>
-	import( /* webpackChunkName: "CropScreen.0.0.2" */ '../../screens/Crop' )
-);
-const getCropScreen = ( props ) => {
-	return (
-		<Suspense fallback={ <div>Loading...</div> }>
-			<CropScreen { ...props }/>
-		</Suspense>
-	);
-};
-const DataScreen = lazy( () =>
-	import( /* webpackChunkName: "DataScreen.0.0.2" */ '../../screens/Data' )
-);
-const getDataScreen = ( props ) => {
-	return (
-		<Suspense fallback={ <div>Loading...</div> }>
-			<DataScreen { ...props }/>
-		</Suspense>
-	);
-};
-const DataEditScreen = lazy( () =>
-	import( /* webpackChunkName: "DataEditScreen.0.0.2" */ '../../screens/DataEdit' )
-);
-const getDataEditScreen = ( props ) => {
-	return (
-		<Suspense fallback={ <div>Loading...</div> }>
-			<DataEditScreen { ...props }/>
-		</Suspense>
-	);
-};
+const uniqueIds = [];
+
 const PhotoBlock = ( props ) => {
-	const generatedUniqueId = useInstanceId( PhotoBlock, 'photo-block' );
-
-	
-
 	// Read in context values.
 	const {
 		imageFile,
@@ -138,7 +88,6 @@ const PhotoBlock = ( props ) => {
 		}
 	}, [ hasCaption ] );
 
-
 	// Store the filepond upload ref.
 	const filepondRef = useRef( null );
 	const imageRef = useRef( null );
@@ -148,9 +97,9 @@ const PhotoBlock = ( props ) => {
 
 	// Get a function that'll give us the innerblocks count for a custom inserter.
 	const { getBlockCount } = useSelect(
-        ( select ) => select( store ),
-        []
-    );
+		( select ) => select( store ),
+		[]
+	);
 	const innerBlocksCount = getBlockCount( clientId );
 
 	const {
@@ -189,6 +138,8 @@ const PhotoBlock = ( props ) => {
 
 	/**
 	 * Detect when innerblock has changed.
+	 *
+	 * @param value
 	 */
 	// useEffect( () => {
 	// 	console.log( innerBlocksCount );
@@ -213,8 +164,12 @@ const PhotoBlock = ( props ) => {
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
 	useEffect( () => {
-		// Set unique ID for block (for styling).
-		setAttributes( { uniqueId: generatedUniqueId } );
+		// Set unique ID for block (for styling). This handles duplicates.
+		if ( '' === uniqueId || uniqueIds.includes( uniqueId ) ) {
+			const newUniqueId = 'photo-block-' + generateUniqueId( clientId );
+			setAttributes( { uniqueId: newUniqueId } );
+			uniqueIds.push( newUniqueId );
+		}
 	}, [] );
 
 	/**
@@ -226,48 +181,23 @@ const PhotoBlock = ( props ) => {
 		// If in data mode, show the data screen.
 		if ( dataMode ) {
 			if ( 'data' === dataScreen ) {
-				return getDataScreen( {
-					attributes,
-					setAttributes,
-					context,
-				} );
+				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />;
 			}
 			if ( 'data-edit' === dataScreen ) {
-				return getDataEditScreen( {
-					attributes,
-					setAttributes,
-					innerBlockProps: captionInnerBlockProps,
-					context,
-				} );
+				return <DataEditScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } />;
 			}
 		}
 
 		// Otherwise get the screen based on the current screen.
 		switch ( screen ) {
 			case 'initial':
-				return getInitialScreen( {
-					attributes,
-					setAttributes,
-				} );
+				return <InitialScreen attributes={ attributes } setAttributes={ setAttributes } />;
 			case 'edit':
-				return getEditScreen( {
-					ref: imageRef,
-					attributes,
-					setAttributes,
-					innerBlockProps: captionInnerBlockProps,
-					clientId,
-				} );
+				return <EditScreen attributes={ attributes } setAttributes={ setAttributes } ref={ imageRef } innerBlockProps={ captionInnerBlockProps } clientId={ clientId } />;
 			case 'crop':
-				return getCropScreen( {
-					attributes,
-					setAttributes,
-				} );
+				return <CropScreen attributes={ attributes } setAttributes={ setAttributes } />;
 			case 'data':
-				return getDataScreen( {
-					attributes,
-					setAttributes,
-					context,
-				} );
+				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />;
 			case 'effects':
 				return null;
 				// return (

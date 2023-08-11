@@ -58,6 +58,7 @@ import {
 	Shuffle,
 } from 'lucide-react';
 
+import { generateUniqueId } from '../../utils/Functions';
 import { useInstanceId } from '@wordpress/compose';
 const HtmlToReactParser = require( 'html-to-react' ).Parser;
 
@@ -159,8 +160,9 @@ const fontFamiliesSelect = fontFamilies.map( ( font ) => ( {
 	value: font.family,
 } ) );
 
+const uniqueIds = [];
+
 const PhotoCaptionBlock = ( props ) => {
-	const generatedUniqueId = useInstanceId( PhotoCaptionBlock, 'photo-caption-block' );
 	// Read in context values.
 	const {
 		dataMode,
@@ -1246,8 +1248,12 @@ const PhotoCaptionBlock = ( props ) => {
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
 	useEffect( () => {
-		// Set unique ID for block (for styling).
-		setAttributes( { uniqueId: generatedUniqueId } );
+		// Set unique ID for block (for styling). This handles duplicates.
+		if ( '' === uniqueId || uniqueIds.includes( uniqueId ) ) {
+			const newUniqueId = 'photo-block-caption-' + generateUniqueId( clientId );
+			setAttributes( { uniqueId: newUniqueId } );
+			uniqueIds.push( newUniqueId );
+		}
 	}, [] );
 
 	const htmlToReactParser = new HtmlToReactParser();

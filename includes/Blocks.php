@@ -22,7 +22,10 @@ class Blocks {
 		add_action( 'enqueue_block_assets', array( static::class, 'enqueue_frontend_assets' ) );
 
 		// Enqueue any frontend assets.
-		add_action( 'wp_print_footer_scripts', array( static::class, 'enqueue_footer_assets' ), 1, 999 );
+		add_action( 'wp_footer', array( static::class, 'enqueue_footer_assets' ), 999 ); // Load late so other scripts have a chance to be enqueued.
+
+		// Add inline styles to fancybox.
+		add_action( 'wp_enqueue_scripts', array( static::class, 'add_fancybox_inline_styles' ), 999 );
 	}
 
 	/**
@@ -301,20 +304,7 @@ class Blocks {
 						);
 						wp_add_inline_script(
 							'dlx-photo-block-fancybox-js',
-							'document.addEventListener("DOMContentLoaded", function() { Fancybox.bind("[data-fancybox]", {
-								mainClass: "has-css-gram photo-block-' . $css_gram_filter . '",
-							}); });'
-						);
-						wp_register_style(
-							'dlx-photo-block-fancybox-css',
-							Functions::get_plugin_url( 'assets/fancybox/fancybox.css' ),
-							array(),
-							Functions::get_plugin_version(),
-							'all'
-						);
-						wp_add_inline_style(
-							'dlx-photo-block-fancybox-css',
-							'.fancybox__container{z-index:99999;}'
+							'document.addEventListener("DOMContentLoaded", function() { if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . $unique_id . '[data-fancybox]"); });} if ( typeof jQuery.fancybox !== "undefined" ) { jQuery.fancybox.bind("#' . $unique_id . '[data-fancybox]"); }")'
 						);
 
 						// Get caption.
@@ -393,20 +383,22 @@ class Blocks {
 			}
 
 			// Output the link HTML around the image.
-			$image_markup = sprintf(
-				'<a data-fancybox href="%1$s" %2$s>%3$s</a>',
-				esc_url( $media_link_url ),
-				implode(
-					' ',
-					array_map(
-						function( $v, $k ) {
-							return sprintf( '%s="%s"', sanitize_key( $k ), esc_attr( $v ) ); },
-						$media_link_atts,
-						array_keys( $media_link_atts )
-					)
-				),
-				$image_markup
-			);
+			if ( '' !== $media_link_url ) {
+				$image_markup = sprintf(
+					'<a data-fancybox href="%1$s" %2$s>%3$s</a>',
+					esc_url( $media_link_url ),
+					implode(
+						' ',
+						array_map(
+							function( $v, $k ) {
+								return sprintf( '%s="%s"', sanitize_key( $k ), esc_attr( $v ) ); },
+							$media_link_atts,
+							array_keys( $media_link_atts )
+						)
+					),
+					$image_markup
+				);
+			}
 
 			// Add image wrapper.
 			$image_markup = sprintf(
@@ -441,6 +433,21 @@ class Blocks {
 			$image_markup
 		);
 
+		// Begin frontend styles.
+		$css_output = '';
+		$css_helper = new CSS_Helper(
+			$unique_id,
+			'.dlx-photo-block__image-wrapper'
+		);
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxWidth'], 'max-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinWidth'], 'min-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerHeight'], 'height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height' );
+		Functions::add_css_property( $css_helper, 'background-color', $attributes['photoBackgroundColor'] );
+		$css_output .= $css_helper->get_css();
+
 		// Determine if right+click protection is enabled.
 		$right_click_protection_enabled = (bool) $attributes['imageProtectionEnabled'] ?? false;
 
@@ -458,9 +465,40 @@ class Blocks {
 				'document.getElementById("' . esc_js( $unique_id ) . '").addEventListener("contextmenu",function(e){e.preventDefault()},!1);'
 			);
 		}
-		echo '<pre>' . print_r( $image_markup, true ) . '</pre>';
+		?>
+			<style type="text/css">
+				<?php echo esc_html( $css_output ); ?>
+			</style>
+		<?php
+		// Output image markup.
+		echo wp_kses( $image_markup, Functions::get_kses_allowed_html() );
 		return ob_get_clean();
-		return 'hello PhotoBlock frontend';
+	}
+
+	/**
+	 * Add inline styles to Fancybox to override admin bar z-index.
+	 */
+	public static function add_fancybox_inline_styles() {
+		// Register Fancybox for later if needed.
+		wp_register_style(
+			'dlx-photo-block-fancybox-css',
+			Functions::get_plugin_url( 'assets/fancybox/fancybox.css' ),
+			array(),
+			Functions::get_plugin_version(),
+			'all'
+		);
+		// Add CSS to override admin bar z-index.
+		$fancybox_css_handles = array(
+			'dlx-photo-block-fancybox-css', /* photo block */
+			'jquery-fancybox', /* Easy Fancybox, jQuery Fancybox */
+			'fancybox', /* Fancybox for WordPress */
+		);
+		foreach ( $fancybox_css_handles as $fancybox_css_handle ) {
+			wp_add_inline_style(
+				$fancybox_css_handle,
+				'.fancybox__container{z-index:99999;}.fancybox-container{z-index:99999;}'
+			);
+		}
 	}
 
 	/**
@@ -687,7 +725,7 @@ class Blocks {
 	public static function enqueue_footer_assets() {
 		// If we've already enqueued fancybox, we don't need to do it again.
 		// Compatible with other fancybox jquery plugins.
-		if ( wp_script_is( 'fancybox', 'enqueued' ) || wp_script_is( 'jquery-fancybox', 'enqueued' ) ) {
+		if ( wp_script_is( 'fancybox', 'enqueued' ) || wp_script_is( 'jquery-fancybox', 'enqueued' ) || wp_script_is( 'has-fancybox-js', 'registered' ) ) {
 			return;
 		}
 
