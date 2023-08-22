@@ -448,6 +448,28 @@ class Blocks {
 		Functions::add_css_property( $css_helper, 'background-color', $attributes['photoBackgroundColor'] );
 		$css_output .= $css_helper->get_css();
 
+		// Output image styles.
+		$image_css_helper = new CSS_Helper(
+			$unique_id,
+			'img'
+		);
+		Functions::add_css_property( $image_css_helper, 'opacity', (float) round( ( $attributes['photoOpacity'] / 100 ), 2 ) );
+		if ( $attributes['photoBlur'] ) {
+			Functions::add_css_property( $image_css_helper, 'filter', 'blur(' . (int) $attributes['photoBlur'] . 'px)' );
+		}
+		if ( 'none' !== $attributes['photoObjectFit'] ) {
+			Functions::add_css_property( $image_css_helper, 'object-fit', $attributes['photoObjectFit'] );
+			Functions::add_css_property( $image_css_helper, 'width', '100%' );
+			Functions::add_css_property( $image_css_helper, 'height', '100%' );
+		}
+		if ( 'none' !== $attributes['photoObjectFit'] && 'none' !== $attributes['photoObjectPosition'] ) {
+			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPosition'] );
+		}
+		if ( 'none' !== $attributes['photoObjectFit'] && 'custom' === $attributes['photoObjectPosition'] && '' !== $attributes['photoObjectPositionCustom'] ) {
+			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPositionCustom'] );
+		}
+		$css_output .= $image_css_helper->get_css();
+
 		// Determine if right+click protection is enabled.
 		$right_click_protection_enabled = (bool) $attributes['imageProtectionEnabled'] ?? false;
 

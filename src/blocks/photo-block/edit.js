@@ -44,6 +44,7 @@ import CropScreen from '../../screens/Crop';
 import DataScreen from '../../screens/Data';
 import DataEditScreen from '../../screens/DataEdit';
 
+// For storing unique IDs.
 const uniqueIds = [];
 
 const PhotoBlock = ( props ) => {
@@ -164,11 +165,12 @@ const PhotoBlock = ( props ) => {
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
 	useEffect( () => {
-		// Set unique ID for block (for styling). This handles duplicates.
-		if ( '' === uniqueId || uniqueIds.includes( uniqueId ) ) {
-			const newUniqueId = 'photo-block-' + generateUniqueId( clientId );
+		if ( null === uniqueId || uniqueIds.includes( uniqueId ) ) {
+			const newUniqueId = 'photo-block-' + clientId.substr( 2, 9 ).replace( '-', '' );
 			setAttributes( { uniqueId: newUniqueId } );
 			uniqueIds.push( newUniqueId );
+		} else {
+			uniqueIds.push( uniqueId );
 		}
 	}, [] );
 
