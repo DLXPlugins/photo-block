@@ -40,6 +40,13 @@ class Blocks {
 				'uses_context'    => array( 'postType', 'postId' ), /* for determining if we're in a query loop */
 			)
 		);
+		register_block_type(
+			Functions::get_plugin_dir( 'build/blocks/photo-caption-block/block.json' ),
+			array(
+				'render_callback' => array( static::class, 'caption_frontend' ),
+				'uses_context'    => array( 'postType', 'postId' ), /* for determining if we're in a query loop */
+			)
+		);
 	}
 
 	/**
@@ -161,6 +168,23 @@ class Blocks {
 			Functions::get_plugin_version(),
 			'all'
 		);
+	}
+
+	/**
+	 * Output Photo caption block on the front-end.
+	 *
+	 * @param array    $attributes          Array of attributes for the Gutenberg block.
+	 * @param string   $innerblocks_content The inner blocks content.
+	 * @param WP_Block $block               The caption block content and attributes.
+	 */
+	public static function caption_frontend( $attributes, $innerblocks_content, $block ) {
+		$mode = $attributes['mode'];
+
+		if ( 'single' === $mode ) {
+			return $attributes['captionManual'];
+		} else {
+			return $innerblocks_content;
+		}
 	}
 
 	/**

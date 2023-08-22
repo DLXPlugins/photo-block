@@ -30,7 +30,7 @@ const PhotoBlock = ( props ) => {
 	const [ isProcessingUpload, setIsProcessingUpload ] = useState( false );
 	const [ isUploadError, setIsUploadError ] = useState( false );
 	const [ filepondInstance, setFilepondInstance ] = useState( null );
-	const [ hasCaption, setHasCaption ] = useState( props.attributes.caption ? true : false );
+	const [ hasCaption, setHasCaption ] = useState( props.attributes.hasCaption ? true : false );
 	const [ captionPosition, setCaptionPosition ] = useState( 'bottom' );
 	const [ inQueryLoop ] = useState( isInQueryLoop( props.context ) );
 	const [ dataMode, setDataMode ] = useState( props.attributes.dataMode ?? false );
