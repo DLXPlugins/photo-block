@@ -206,13 +206,11 @@ class Blocks {
 			<?php echo wp_kses_post( trim( $caption ) ); ?>
 		</figcaption>
 		<?php
-		$caption = ob_get_clean();
 
 		// Begin styles.
-		// Begin frontend styles.
 		$css_output = '';
 		$css_helper = new CSS_Helper(
-			$context['dlxplugins/photo-block/uniqueId'],
+			$attributes['uniqueId'],
 			'figcaption'
 		);
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width' );
@@ -226,6 +224,16 @@ class Blocks {
 		Functions::build_dimension_css( $css_helper, $attributes['captionPadding'], 'padding' );
 		Functions::build_dimension_css( $css_helper, $attributes['captionMargin'], 'margin' );
 
+		if ( 'single' === $mode && ! (bool) $attributes['dataMode'] ) {
+			Functions::add_css_property( $css_helper, 'color', $attributes['captionTextColor'] );
+			Functions::build_typography_css( $css_helper, $attributes['captionTypography'] );
+		}
+		$css_output = $css_helper->get_css( $css_output );
+
+		?>
+		<style type="text/css"><?php echo esc_html( $css_output ); ?></style>
+		<?php
+		$caption = ob_get_clean();
 		return $caption;
 	}
 
@@ -436,11 +444,7 @@ class Blocks {
 					'dlx-photo-block__caption--' . esc_attr( $caption_position ),
 				);
 
-				$caption_markup = sprintf(
-					'<figcaption class="%2$s">%1$s</figcaption>',
-					wp_kses_post( $innerblocks_content ),
-					esc_attr( implode( ' ', $caption_classes ) )
-				);
+				$caption_markup = wp_kses( $innerblocks_content, Functions::get_kses_allowed_html() );
 			}
 
 			// If overlay, include at same level of image.

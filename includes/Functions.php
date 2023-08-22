@@ -589,6 +589,9 @@ class Functions {
 			'data-type' => array(),
 		);
 
+		// Add figure style classes.
+		$allowed_tags['style'] = array();
+
 		// Add select field.
 		$allowed_tags['select'] = array(
 			'class' => array(),
@@ -966,7 +969,7 @@ class Functions {
 			} elseif ( 'tablet' === $screen_size || 'mobile' === $screen_size ) {
 				if ( true === self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['unitSync'], $dimension_type, 'unitSync' ) ) {
 					$top_value = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['top'], 'top' );
-					$top_unit = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['topUnit'], 'topUnit' );
+					$top_unit  = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['topUnit'], 'topUnit' );
 
 					// Build CSS.
 					$css = sprintf(
@@ -989,6 +992,45 @@ class Functions {
 						'%s: %s;',
 						$dimension_type,
 						self::build_shorthand_css_units( $top, $top_unit, $right, $right_unit, $bottom, $bottom_unit, $left, $left_unit )
+					);
+					$css_helper->add_css( $css, $screen_size );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Build dimension CSS from a CSS helper and dimensions object.
+	 *
+	 * @param CSS_Helper $css_helper CSS helper object.
+	 * @param array      $typography Typography array.
+	 */
+	public static function build_typography_css( $css_helper, $typography ) {
+		$screen_sizes = self::get_screen_sizes();
+
+		$font_family_keys = array(
+			'fontFamily'    => 'font-family',
+			'fontSize'      => 'font-size',
+			'fontWeight'    => 'font-weight',
+			'lineHeight'    => 'line-height',
+			'textTransform' => 'text-transform',
+			'letterSpacing' => 'letter-spacing',
+			'textAlign'     => 'text-align',
+		);
+
+		foreach ( $screen_sizes as $screen_size ) {
+			foreach ( $font_family_keys as $key => $value ) {
+				$default_value      = ! empty( $typography[ $screen_size ][ $key ] ) ? $typography[ $screen_size ][ $key ] : $typography['desktop'][ $key ];
+				$hierarchical_value = self::get_hierarchical_placeholder_value( $typography, $screen_size, $default_value, $key );
+				$hierarchical_unit  = '';
+				if ( isset( $typography[ $screen_size ][ $key . 'Unit' ] ) ) {
+					$hierarchical_unit .= self::get_hierarchical_placeholder_value( $typography, $screen_size, $typography[ $screen_size ][ $key . 'Unit' ], $key . 'Unit' );
+				}
+				if ( ! empty( $hierarchical_value ) ) {
+					$css = sprintf(
+						'%s: %s;',
+						$value,
+						$hierarchical_value . $hierarchical_unit
 					);
 					$css_helper->add_css( $css, $screen_size );
 				}
