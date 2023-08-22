@@ -221,14 +221,31 @@ class Blocks {
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height' );
 		Functions::add_css_property( $css_helper, 'background-color', $attributes['captionBackgroundColor'] );
 		Functions::build_dimension_css( $css_helper, $attributes['captionBorderRadius'], 'border-radius' );
-		Functions::build_dimension_css( $css_helper, $attributes['captionPadding'], 'padding' );
-		Functions::build_dimension_css( $css_helper, $attributes['captionMargin'], 'margin' );
+		Functions::build_dimension_css( $css_helper, $attributes['captionPaddingSize'], 'padding' );
+		Functions::build_dimension_css( $css_helper, $attributes['captionMarginSize'], 'margin' );
 
 		if ( 'single' === $mode && ! (bool) $attributes['dataMode'] ) {
 			Functions::add_css_property( $css_helper, 'color', $attributes['captionTextColor'] );
 			Functions::build_typography_css( $css_helper, $attributes['captionTypography'] );
+			Functions::add_css_property( $css_helper, 'text-align', $attributes['captionAlign'] );
+
+			// Fill in anchor CSS.
+			$figcaption_anchor = new CSS_Helper(
+				$attributes['uniqueId'],
+				'figcaption a'
+			);
+			Functions::add_css_property( $figcaption_anchor, 'color', $attributes['captionLinkColor'] );
+			$css_output .= $figcaption_anchor->get_css( $css_output );
+
+			// Get anchor hover state.
+			$figcaption_anchor_hover = new CSS_Helper(
+				$attributes['uniqueId'],
+				'figcaption a:hover'
+			);
+			Functions::add_css_property( $figcaption_anchor_hover, 'color', $attributes['captionLinkHoverColor'] );
+			$css_output .= $figcaption_anchor_hover->get_css( $css_output );
 		}
-		$css_output = $css_helper->get_css( $css_output );
+		$css_output .= $css_helper->get_css( $css_output );
 
 		?>
 		<style type="text/css"><?php echo esc_html( $css_output ); ?></style>
