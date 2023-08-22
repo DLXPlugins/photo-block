@@ -846,6 +846,157 @@ class Functions {
 	}
 
 	/**
+	 * Build shorthand CSS for a dimension property.
+	 *
+	 * @param float  $top Top value.
+	 * @param float  $right Right value.
+	 * @param float  $bottom Bottom value.
+	 * @param float  $left Left value.
+	 * @param string $unit Unit to use.
+	 *
+	 * @return string Shorthand CSS.
+	 */
+	public static function build_shorthand_css( $top, $right, $bottom, $left, $unit ) {
+		/* Credits: Forked from GenerateBlocks */
+		if ( '' === $top && '' === $right && '' === $bottom && '' === $left ) {
+			return;
+		}
+
+		$top    = ( floatval( $top ) !== 0 && '' !== $top ) ? floatval( $top ) . $unit . ' ' : '0 ';
+		$right  = ( floatval( $right ) !== 0 && '' !== $right ) ? floatval( $right ) . $unit . ' ' : '0 ';
+		$bottom = ( floatval( $bottom ) !== 0 && '' !== $bottom ) ? floatval( $bottom ) . $unit . ' ' : '0 ';
+		$left   = ( floatval( $left ) !== 0 && '' !== $left ) ? floatval( $left ) . $unit . ' ' : '0 ';
+
+		if ( $right === $left ) {
+			$left = '';
+
+			if ( $top === $bottom ) {
+				$bottom = '';
+
+				if ( $top === $right ) {
+					$right = '';
+				}
+			}
+		}
+
+		$output = $top . $right . $bottom . $left;
+
+		return trim( $output );
+
+	}
+
+	/**
+	 * Build shorthand CSS for a dimension property.
+	 *
+	 * @param float  $top Top value.
+	 * @param string $top_unit Top unit.
+	 * @param float  $right Right value.
+	 * @param string $right_unit Right unit.
+	 * @param float  $bottom Bottom value.
+	 * @param string $bottom_unit Bottom unit.
+	 * @param float  $left Left value.
+	 * @param string $left_unit Left unit.
+	 *
+	 * @return string Shorthand CSS.
+	 */
+	public static function build_shorthand_css_units( $top, $top_unit, $right, $right_unit, $bottom, $bottom_unit, $left, $left_unit ) {
+		if ( '' === $top && '' === $right && '' === $bottom && '' === $left ) {
+			return;
+		}
+
+		$top    = ( floatval( $top ) !== 0 && '' !== $top ) ? floatval( $top ) . $top_unit . ' ' : '0 ';
+		$right  = ( floatval( $right ) !== 0 && '' !== $right ) ? floatval( $right ) . $right_unit . ' ' : '0 ';
+		$bottom = ( floatval( $bottom ) !== 0 && '' !== $bottom ) ? floatval( $bottom ) . $bottom_unit . ' ' : '0 ';
+		$left   = ( floatval( $left ) !== 0 && '' !== $left ) ? floatval( $left ) . $left_unit . ' ' : '0 ';
+
+		if ( $right === $left ) {
+			$left = '';
+
+			if ( $top === $bottom ) {
+				$bottom = '';
+
+				if ( $top === $right ) {
+					$right = '';
+				}
+			}
+		}
+
+		$output = $top . $right . $bottom . $left;
+
+		return trim( $output );
+	}
+
+	/**
+	 * Build dimension CSS from a CSS helper and dimensions object.
+	 *
+	 * @param CSS_Helper $css_helper CSS helper object.
+	 * @param array      $dimensions Dimensions array.
+	 * @param string     $dimension_type Dimension type (margin, padding, etc).
+	 */
+	public static function build_dimension_css( $css_helper, $dimensions, $dimension_type ) {
+		$screen_sizes = self::get_screen_sizes();
+
+		foreach ( $screen_sizes as $screen_size ) {
+			// Check unit sync.
+			if ( 'desktop' === $screen_size ) {
+				if ( $dimensions[ $screen_size ]['unitSync'] ) {
+					$css = sprintf(
+						'%s: %s;',
+						$dimension_type,
+						self::build_shorthand_css( $dimensions[ $screen_size ]['top'], $dimensions[ $screen_size ]['top'], $dimensions[ $screen_size ]['top'], $dimensions[ $screen_size ]['top'], $dimensions[ $screen_size ]['topUnit'] )
+					);
+					$css_helper->add_css( $css, $screen_size );
+					continue;
+				} else {
+					$css = sprintf(
+						'%s: %s;',
+						$dimension_type,
+						self::build_shorthand_css_units(
+							$dimensions[ $screen_size ]['top'],
+							$dimensions[ $screen_size ]['topUnit'],
+							$dimensions[ $screen_size ]['right'],
+							$dimensions[ $screen_size ]['rightUnit'],
+							$dimensions[ $screen_size ]['bottom'],
+							$dimensions[ $screen_size ]['bottomUnit'],
+							$dimensions[ $screen_size ]['left'],
+							$dimensions[ $screen_size ]['leftUnit']
+						)
+					);
+				}
+			} elseif ( 'tablet' === $screen_size || 'mobile' === $screen_size ) {
+				if ( true === self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['unitSync'], $dimension_type, 'unitSync' ) ) {
+					$top_value = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['top'], 'top' );
+					$top_unit = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['topUnit'], 'topUnit' );
+
+					// Build CSS.
+					$css = sprintf(
+						'%s: %s;',
+						$dimension_type,
+						self::build_shorthand_css( $top_value, $top_value, $top_value, $top_value, $top_unit )
+					);
+					$css_helper->add_css( $css, $screen_size );
+				} else {
+					$top         = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['top'], $dimension_type );
+					$top_unit    = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['topUnit'], $dimension_type );
+					$right       = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['right'], $dimension_type );
+					$right_unit  = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['rightUnit'], $dimension_type );
+					$bottom      = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['bottom'], $dimension_type );
+					$bottom_unit = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['bottomUnit'], $dimension_type );
+					$left        = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['left'], $dimension_type );
+					$left_unit   = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['leftUnit'], $dimension_type );
+
+					$css = sprintf(
+						'%s: %s;',
+						$dimension_type,
+						self::build_shorthand_css_units( $top, $top_unit, $right, $right_unit, $bottom, $bottom_unit, $left, $left_unit )
+					);
+					$css_helper->add_css( $css, $screen_size );
+				}
+			}
+		}
+	}
+
+	/**
 	 * Get a value from a hierarchy.
 	 *
 	 * @param object $props         Props object.
@@ -856,7 +1007,10 @@ class Functions {
 	 *
 	 * @return string CSS unit value.
 	 */
-	public static function get_hierarchical_placeholder_value( $props, $screen_size, $current_value, $type, $sub_type ) {
+	public static function get_hierarchical_placeholder_value( $props, $screen_size, $current_value, $type, $sub_type = '' ) {
+		if ( null === $current_value ) {
+			$current_value = '';
+		}
 		// Check mobile screen size.
 		if ( 'mobile' === $screen_size && '' === $current_value ) {
 			// Check tablet.

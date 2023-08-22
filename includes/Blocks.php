@@ -446,6 +446,7 @@ class Blocks {
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height' );
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height' );
 		Functions::add_css_property( $css_helper, 'background-color', $attributes['photoBackgroundColor'] );
+		Functions::build_dimension_css( $css_helper, $attributes['photoBorderRadius'], 'border-radius' );
 		$css_output .= $css_helper->get_css();
 
 		// Output image styles.
@@ -468,7 +469,28 @@ class Blocks {
 		if ( 'none' !== $attributes['photoObjectFit'] && 'custom' === $attributes['photoObjectPosition'] && '' !== $attributes['photoObjectPositionCustom'] ) {
 			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPositionCustom'] );
 		}
+		Functions::build_dimension_css( $image_css_helper, $attributes['photoPaddingSize'], 'padding' );
+		Functions::build_dimension_css( $image_css_helper, $attributes['photoMarginSize'], 'margin' );
+		Functions::build_dimension_css( $image_css_helper, $attributes['photoBorderRadius'], 'border-radius' );
 		$css_output .= $image_css_helper->get_css();
+
+		// Add photo drop shadow.
+		if ( (bool) $attributes['photoDropShadow']['enabled'] ) {
+			$css_output .= sprintf(
+				'#%1$s img {
+					box-sizing: border-box;
+					box-shadow: %2$s %3$spx %4$spx %5$spx %6$spx %7$s;
+					-webkit-box-shadow: %2$s %3$spx %4$spx %5$spx %6$spx %7$s;
+				}',
+				$unique_id,
+				( (bool) $attributes['photoDropShadow']['inset'] ? 'inset' : '' ),
+				$attributes['photoDropShadow']['horizontal'],
+				$attributes['photoDropShadow']['vertical'],
+				$attributes['photoDropShadow']['blur'],
+				$attributes['photoDropShadow']['spread'],
+				$attributes['photoDropShadow']['color']
+			);
+		}
 
 		// Determine if right+click protection is enabled.
 		$right_click_protection_enabled = (bool) $attributes['imageProtectionEnabled'] ?? false;
