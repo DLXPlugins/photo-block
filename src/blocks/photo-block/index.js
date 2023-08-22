@@ -34,6 +34,7 @@ const PhotoBlock = ( props ) => {
 	const [ captionPosition, setCaptionPosition ] = useState( 'bottom' );
 	const [ inQueryLoop ] = useState( isInQueryLoop( props.context ) );
 	const [ dataMode, setDataMode ] = useState( props.attributes.dataMode ?? false );
+	const [ blockUniqueId, setBlockUniqueId ] = useState( props.attributes.uniqueId );
 
 	return (
 		<UploaderContext.Provider
@@ -58,6 +59,8 @@ const PhotoBlock = ( props ) => {
 				dataMode,
 				setDataMode,
 				originalImageFile,
+				blockUniqueId,
+				setBlockUniqueId,
 
 			} }
 		>
@@ -155,6 +158,9 @@ registerBlockType( metadata, {
 	// Render via PHP
 	save() {
 		return <InnerBlocks.Content />;
+	},
+	providesContext: {
+		'dlx-photo-block/uniqueId': 'uniqueId',
 	},
 	usesContext: [ 'postId', 'postType', 'queryId', 'query' ], /* This is for detecting if in query loop */
 	transforms: {

@@ -172,6 +172,7 @@ const PhotoCaptionBlock = ( props ) => {
 		captionPosition,
 		setCaptionPosition,
 		inQueryLoop,
+		blockUniqueId,
 	} = useContext( UploaderContext );
 
 	const [ caption, setCaption ] = useState( '' ); // Only applicable if in data mode.
@@ -209,8 +210,9 @@ const PhotoCaptionBlock = ( props ) => {
 	// Get query loop vars.
 	const { postId } = context;
 
+	const uniqueId = blockUniqueId;
+
 	const {
-		uniqueId,
 		mode,
 		captionManual,
 		enableSmartStyles,
@@ -1248,13 +1250,10 @@ const PhotoCaptionBlock = ( props ) => {
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
 	useEffect( () => {
-		// Set unique ID for block (for styling). This handles duplicates.
-		if ( '' === uniqueId || uniqueIds.includes( uniqueId ) ) {
-			const newUniqueId = 'photo-block-caption-' + generateUniqueId( clientId );
-			setAttributes( { uniqueId: newUniqueId } );
-			uniqueIds.push( newUniqueId );
+		if ( attributes.uniqueId !== uniqueId ) {
+			setAttributes( { uniqueId } );
 		}
-	}, [] );
+	}, [ blockUniqueId ] );
 
 	const htmlToReactParser = new HtmlToReactParser();
 

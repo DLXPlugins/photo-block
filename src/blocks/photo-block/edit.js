@@ -64,6 +64,7 @@ const PhotoBlock = ( props ) => {
 		captionPosition,
 		dataMode,
 		setDataMode,
+		setBlockUniqueId,
 	} = useContext( UploaderContext );
 
 	const blockProps = useBlockProps( {
@@ -167,7 +168,9 @@ const PhotoBlock = ( props ) => {
 	useEffect( () => {
 		if ( null === uniqueId || uniqueIds.includes( uniqueId ) ) {
 			const newUniqueId = 'photo-block-' + clientId.substr( 2, 9 ).replace( '-', '' );
+
 			setAttributes( { uniqueId: newUniqueId } );
+			setBlockUniqueId( newUniqueId );
 			uniqueIds.push( newUniqueId );
 		} else {
 			uniqueIds.push( uniqueId );

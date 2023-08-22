@@ -74,7 +74,8 @@ var PhotoBlock = function PhotoBlock(props) {
     setHasCaption = _useContext.setHasCaption,
     captionPosition = _useContext.captionPosition,
     dataMode = _useContext.dataMode,
-    setDataMode = _useContext.setDataMode;
+    setDataMode = _useContext.setDataMode,
+    setBlockUniqueId = _useContext.setBlockUniqueId;
   var blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.useBlockProps)({
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block", "align".concat(align), "dlx-screen-".concat(screen), "dlx-caption-position-".concat(captionPosition))
   });
@@ -178,6 +179,7 @@ var PhotoBlock = function PhotoBlock(props) {
       setAttributes({
         uniqueId: newUniqueId
       });
+      setBlockUniqueId(newUniqueId);
       uniqueIds.push(newUniqueId);
     } else {
       uniqueIds.push(uniqueId);
@@ -364,6 +366,10 @@ var PhotoBlock = function PhotoBlock(props) {
     _useState22 = _slicedToArray(_useState21, 2),
     dataMode = _useState22[0],
     setDataMode = _useState22[1];
+  var _useState23 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(props.attributes.uniqueId),
+    _useState24 = _slicedToArray(_useState23, 2),
+    blockUniqueId = _useState24[0],
+    setBlockUniqueId = _useState24[1];
   return /*#__PURE__*/React.createElement(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_5__["default"].Provider, {
     value: {
       imageFile: imageFile,
@@ -385,7 +391,9 @@ var PhotoBlock = function PhotoBlock(props) {
       inQueryLoop: inQueryLoop,
       dataMode: dataMode,
       setDataMode: setDataMode,
-      originalImageFile: originalImageFile
+      originalImageFile: originalImageFile,
+      blockUniqueId: blockUniqueId,
+      setBlockUniqueId: setBlockUniqueId
     }
   }, /*#__PURE__*/React.createElement(_edit__WEBPACK_IMPORTED_MODULE_6__["default"], props));
 };
@@ -465,6 +473,9 @@ var PhotoBlockIcon = /*#__PURE__*/React.createElement("svg", {
   // Render via PHP
   save: function save() {
     return /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks.Content, null);
+  },
+  providesContext: {
+    'dlx-photo-block/uniqueId': 'uniqueId'
   },
   usesContext: ['postId', 'postType', 'queryId', 'query'],
   /* This is for detecting if in query loop */
@@ -655,7 +666,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     setHasCaption = _useContext.setHasCaption,
     captionPosition = _useContext.captionPosition,
     setCaptionPosition = _useContext.setCaptionPosition,
-    inQueryLoop = _useContext.inQueryLoop;
+    inQueryLoop = _useContext.inQueryLoop,
+    blockUniqueId = _useContext.blockUniqueId;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
     caption = _useState2[0],
@@ -729,8 +741,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
 
   // Get query loop vars.
   var postId = context.postId;
-  var uniqueId = attributes.uniqueId,
-    mode = attributes.mode,
+  var uniqueId = blockUniqueId;
+  var mode = attributes.mode,
     captionManual = attributes.captionManual,
     enableSmartStyles = attributes.enableSmartStyles,
     captionBaseFontSize = attributes.captionBaseFontSize,
@@ -1623,15 +1635,12 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
    * Get a unique ID for the block for inline styling if necessary.
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    // Set unique ID for block (for styling). This handles duplicates.
-    if ('' === uniqueId || uniqueIds.includes(uniqueId)) {
-      var newUniqueId = 'photo-block-caption-' + (0,_utils_Functions__WEBPACK_IMPORTED_MODULE_9__.generateUniqueId)(clientId);
+    if (attributes.uniqueId !== uniqueId) {
       setAttributes({
-        uniqueId: newUniqueId
+        uniqueId: uniqueId
       });
-      uniqueIds.push(newUniqueId);
     }
-  }, []);
+  }, [blockUniqueId]);
   var htmlToReactParser = new HtmlToReactParser();
 
   /**

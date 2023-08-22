@@ -178,13 +178,55 @@ class Blocks {
 	 * @param WP_Block $block               The caption block content and attributes.
 	 */
 	public static function caption_frontend( $attributes, $innerblocks_content, $block ) {
+		// Get context.
+		$context = $block->context;
+
+		// Get caption mode.
 		$mode = $attributes['mode'];
 
-		if ( 'single' === $mode ) {
-			return $attributes['captionManual'];
-		} else {
-			return $innerblocks_content;
+		// Begin caption classes.
+		$caption_classes = array(
+			'dlx-photo-block__caption',
+		);
+		// See if smart styles are enabled.
+		if ( 'advanced' === $mode && ! (bool) $attributes['dataMode'] ) {
+			$caption_classes[] = 'has-smart-styles';
 		}
+
+		$caption = '';
+		if ( 'single' === $mode ) {
+			$caption = $attributes['captionManual'];
+		} else {
+			$caption = $innerblocks_content;
+		}
+
+		ob_start();
+		?>
+		<figcaption class="<?php echo esc_attr( implode( ' ', $caption_classes ) ); ?>">
+			<?php echo wp_kses_post( trim( $caption ) ); ?>
+		</figcaption>
+		<?php
+		$caption = ob_get_clean();
+
+		// Begin styles.
+		// Begin frontend styles.
+		$css_output = '';
+		$css_helper = new CSS_Helper(
+			$context['dlxplugins/photo-block/uniqueId'],
+			'figcaption'
+		);
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxWidth'], 'max-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinWidth'], 'min-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerHeight'], 'height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height' );
+		Functions::add_css_property( $css_helper, 'background-color', $attributes['captionBackgroundColor'] );
+		Functions::build_dimension_css( $css_helper, $attributes['captionBorderRadius'], 'border-radius' );
+		Functions::build_dimension_css( $css_helper, $attributes['captionPadding'], 'padding' );
+		Functions::build_dimension_css( $css_helper, $attributes['captionMargin'], 'margin' );
+
+		return $caption;
 	}
 
 	/**
