@@ -41,28 +41,15 @@ import {
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
-import PropTypes from 'prop-types';
 
 import UploaderContext from '../../contexts/UploaderContext';
 import SendCommand from '../../utils/SendCommand';
-import MediaLink from '../../components/MediaLink';
-import ColorPickerControl from '../../components/ColorPicker';
-import DropShadowControl from '../../components/DropShadow';
-import CSSGramButtonGroup from '../../components/CSSGramButtonGroup';
-import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
-import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
-import BorderResponsiveControl from '../../components/BorderResponsive';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
-import AdvancedSelectControl from '../../components/AdvancedSelect';
 import { DataSelect, MetaFieldControl } from '../../components/DataSelect';
-
-/**
- * Height units.
- */
-const heightUnits = [ 'px', 'em', 'rem', '%', 'vh' ];
+import getStyles from '../../blocks/photo-block/block-styles';
 
 /**
  * Image size.
@@ -654,13 +641,13 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			}
 		`;
 	}
-
+	const imageStyles = getStyles( attributes, deviceType, uniqueId );
 	return (
 		<>
 			{ localInspectorControls }
 			{ <InspectorAdvancedControls>{ advancedInspectorControls }</InspectorAdvancedControls> }
 			{ localToolbar }
-			<style>{ styles }</style>
+			<style>{ styles }{ imageStyles }</style>
 			<div className="dlx-photo-block__screen-edit">
 				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">
 					{ 'top' === captionPosition && (

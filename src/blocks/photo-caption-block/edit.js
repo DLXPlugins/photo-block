@@ -1469,8 +1469,9 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'overlay' === captionPosition ) {
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay {
-				border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
+				border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
 				${ buildBorderCSS( overlayBorder, deviceType ) }
+				overflow: hidden;
 			}
 		`;
 	}

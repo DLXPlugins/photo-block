@@ -1099,6 +1099,7 @@ figcaption.dlx-photo-block__caption {
 figcaption.dlx-photo-block__caption.has-smart-styles {
   font-size: var(--dlx-photo-block__caption-font-size);
   /* Strip Margin and padding from first and last elements */
+  /* if first and only paragraph child */
   /* Set color for common elements */
   /* Set font family / size for common elements.*/
   /* Add a little bit of margin left to the list items.
@@ -1114,6 +1115,12 @@ figcaption.dlx-photo-block__caption.has-smart-styles > :first-child {
   padding-top: 0;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles > :last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+figcaption.dlx-photo-block__caption.has-smart-styles > p:nth-child(1) {
+  margin-top: 0;
+  padding-top: 0;
   margin-bottom: 0;
   padding-bottom: 0;
 }
@@ -1299,22 +1306,25 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
   height: 100%;
   transition: all 0.3s ease-in-out;
 }
-.dlx-photo-block__caption-overlay.caption-vertical-middle {
+.dlx-photo-block__caption-overlay figcaption {
+  display: flex;
+}
+.dlx-photo-block__caption-overlay.caption-vertical-middle figcaption {
   align-items: center;
 }
-.dlx-photo-block__caption-overlay.caption-vertical-top {
+.dlx-photo-block__caption-overlay.caption-vertical-top figcaption {
   align-items: flex-start;
 }
-.dlx-photo-block__caption-overlay.caption-vertical-bottom {
+.dlx-photo-block__caption-overlay.caption-vertical-bottom figcaption {
   align-items: flex-end;
 }
-.dlx-photo-block__caption-overlay.caption-horizontal-center {
+.dlx-photo-block__caption-overlay.caption-horizontal-center figcaption {
   justify-content: center;
 }
-.dlx-photo-block__caption-overlay.caption-horizontal-left {
+.dlx-photo-block__caption-overlay.caption-horizontal-left figcaption {
   justify-content: flex-start;
 }
-.dlx-photo-block__caption-overlay.caption-horizontal-right {
+.dlx-photo-block__caption-overlay.caption-horizontal-right figcaption {
   justify-content: flex-end;
 }
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\

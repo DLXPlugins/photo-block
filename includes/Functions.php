@@ -817,6 +817,13 @@ class Functions {
 				}
 			}
 
+			// Get desktop.
+			if ( 'desktop' === $screen_size ) {
+				if ( $props['desktop']['unit'] !== null ) {
+					$css_unit = $props['desktop']['unit'];
+				}
+			}
+
 			// Make sure we have a unit.
 			if ( '' === $css_unit ) {
 				$css_unit = 'px';
@@ -845,6 +852,11 @@ class Functions {
 	 * @param string     $css_value     CSS value to add.
 	 */
 	public static function add_css_property( $css_helper, $css_property, $css_value ) {
+		// Special case for content.
+		if ( 'content' === $css_property ) {
+			$css_helper->add_css( sprintf( '%s: "%s";', $css_property, $css_value ) );
+			return;
+		}
 		$css_helper->add_css( sprintf( '%s: %s;', $css_property, $css_value ) );
 	}
 
@@ -1034,6 +1046,31 @@ class Functions {
 					);
 					$css_helper->add_css( $css, $screen_size );
 				}
+			}
+		}
+	}
+
+	/**
+	 * Build dimension CSS from a CSS helper and dimensions object.
+	 *
+	 * @param CSS_Helper $css_helper CSS helper object.
+	 * @param array      $font_size_array [device][value], [device][unit].
+	 * @param string     $css_property CSS property to use.
+	 */
+	public static function build_font_size_css( $css_helper, $font_size_array, $css_property = '--dlx-photo-block__caption-font-size' ) {
+		$screen_sizes = self::get_screen_sizes();
+
+		foreach ( $screen_sizes as $screen_size ) {
+			$font_size = self::get_hierarchical_placeholder_value( $font_size_array, $screen_size, $font_size_array[ $screen_size ]['value'], 'value' );
+			$unit      = self::get_hierarchical_placeholder_value( $font_size_array, $screen_size, $font_size_array[ $screen_size ]['unit'], 'unit' );
+
+			if ( ! empty( $font_size ) ) {
+				$css = sprintf(
+					'%s: %s;',
+					$css_property,
+					$font_size . $unit
+				);
+				$css_helper->add_css( $css, $screen_size );
 			}
 		}
 	}

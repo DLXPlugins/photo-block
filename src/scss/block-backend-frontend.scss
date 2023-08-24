@@ -41,6 +41,14 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 		padding-bottom: 0;
 	}
 
+	/* if first and only paragraph child */
+	& > p:nth-child(1) {
+		margin-top: 0;
+		padding-top: 0;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+
 	/* Set color for common elements */
 	p,
 	h1,
@@ -218,22 +226,26 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 	height: 100%;
 	transition: all 0.3s ease-in-out;
 
-	&.caption-vertical-middle {
+	figcaption {
+		display: flex;
+	}
+
+	&.caption-vertical-middle figcaption {
 		align-items: center;
 	}
-	&.caption-vertical-top {
+	&.caption-vertical-top  figcaption {
 		align-items: flex-start;
 	}
-	&.caption-vertical-bottom {
+	&.caption-vertical-bottom  figcaption {
 		align-items: flex-end;
 	}
-	&.caption-horizontal-center {
+	&.caption-horizontal-center  figcaption {
 		justify-content: center;
 	}
-	&.caption-horizontal-left {
+	&.caption-horizontal-left  figcaption {
 		justify-content: flex-start;
 	}
-	&.caption-horizontal-right {
+	&.caption-horizontal-right  figcaption {
 		justify-content: flex-end;
 	}
 }
