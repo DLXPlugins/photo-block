@@ -693,6 +693,9 @@ class Rest {
 				// Get author image from user meta.
 				$maybe_author_image_id_or_url = Functions::get_author_image_from_meta( $data_image_size, $data_image_source_author_meta, $author_id );
 				if ( $maybe_author_image_id_or_url ) {
+					if ( is_numeric( $maybe_author_image_id_or_url ) ) {
+						$maybe_author_image_id_or_url = Functions::get_image_data( $maybe_author_image_id_or_url, $data_image_size );
+					}
 					if ( is_array( $maybe_author_image_id_or_url ) ) {
 						$image = $maybe_author_image_id_or_url;
 					} else {

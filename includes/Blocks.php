@@ -431,6 +431,13 @@ class Blocks {
 		$maybe_query_post_id = $block->context['postId'] ?? 0;
 		if ( $current_post_id === $maybe_query_post_id && 0 !== $maybe_query_post_id ) {
 			$is_in_query_loop = true;
+			$current_post_id  = $maybe_query_post_id;
+		}
+
+		// Get the post author for later (if applicable).
+		$post_author_id = 0;
+		if ( $is_in_query_loop && $current_post_id ) {
+			$post_author_id = get_post_field( 'post_author', $current_post_id );
 		}
 
 		// Next, let's determine if we're in data mode.
@@ -439,13 +446,89 @@ class Blocks {
 			$is_in_data_mode = true;
 		}
 
-		// Let's get the image information.
-		$image_markup = '';
+		// Get the image size.
+		$image_size = $attributes['imageSize'] ?? 'full';
+
+		// Placeholder to tell if image is avatar (no image ID).
+		$is_avatar = false;
+
+		// Let's get image data and modify the attributes if in query loop or data mode.
 		if ( $is_in_data_mode ) {
 
+			// Get the image data.
+			$image_data_source = $attributes['dataSource'] ?? 'currentPost'; /* can be currentPost, postType */
+			$image_source      = $attributes['dataImageSource'] ?? 'featuredImage'; /* can be featuredImage, postMeta, authorAvatar, authorMeta */
+
+			// Placeholdr for image ID and src.
+			$image_id        = 0;
+			$maybe_image_src = false;
+
+			// Get the image ID if current post.
+			if ( 'currentPost' === $image_data_source ) {
+
+				switch ( $image_source ) {
+					case 'featuredImage':
+						$image_id = get_post_thumbnail_id( $current_post_id );
+						break;
+					case 'postMeta':
+						// We need to get the post meta.
+						$data_post_meta_key = $attributes['dataImageSourceCustomField'] ?? '';
+						$image_id           = Functions::get_image_id_or_url_from_custom_field( $current_post_id, $data_post_meta_key );
+						break;
+					case 'authorAvatar':
+						$image_id = 0;
+						break;
+					case 'authorMeta':
+						$author_meta_field = $attributes['dataImageSourceAuthorMeta'] ?? 'avatar';
+						$image_id          = Functions::get_author_image_from_meta( $image_size, $author_meta_field, $post_author_id );
+						break;
+				}
+			}
+
+			// Build image data.
+			$image_data = false;
+			// Check for avatar.
+			if ( 'authorAvatar' === $image_source && 0 === $image_id ) {
+				$avatar = get_avatar_url( $post_author_id, array( 'size' => $image_size ) );
+				if ( $avatar ) {
+					$image_data = array(
+						'id'              => 0,
+						'url'             => $avatar,
+						'alt'             => '',
+						'full'            => $avatar,
+						'attachment_link' => '',
+					);
+					$is_avatar  = true;
+				}
+			} else {
+				$image_data = Functions::get_image_data( $image_id, $image_size );
+			}
+
+			// Get the image URL.
+			if ( false === $image_data ) {
+				$has_fallback_image = $attributes['dataHasFallbackImage'] ?? false;
+				if ( $has_fallback_image ) {
+					$image_data               = $attributes['dataFallbackImage'] ?? array();
+					$data_fallback_image_size = $attributes['dataFallbackImageSize'] ?? 'large';
+					$maybe_data_image_id      = $attributes['dataFallbackImage']['id'] ?? 0;
+					if ( $maybe_data_image_id ) {
+						$image_data = Functions::get_image_data( $maybe_data_image_id, $data_fallback_image_size );
+					}
+				}
+			}
+
+			// Overwrite attributes so we can use the same output code.
+			if ( false !== $image_data ) {
+				$attributes['imageDimensions'] = $image_data;
+				$attributes['photo']           = $image_data;
+			}
+		}
+
+		// Let's get the image information.
+		$image_markup = '';
+		if ( ! $image_data ) {
+			return;
 		} else {
-			// Get the image size.
-			$image_size = $attributes['imageSize'] ?? 'full';
 
 			// Get the image ID.
 			$image_id = $attributes['imageDimensions']['id'] ?? 0;
@@ -492,20 +575,33 @@ class Blocks {
 			}
 
 			// Get the image markup.
-			$image_markup = wp_get_attachment_image(
-				$image_id,
-				$image_size,
-				false,
-				array_merge(
+			if ( ! $is_avatar ) {
+				$image_markup = wp_get_attachment_image(
+					$image_id,
+					$image_size,
+					false,
+					array_merge(
+						array(
+							'class'   => 'dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ),
+							'loading' => $skip_lazy_loading ? false : 'lazy',
+							'alt'     => $image_alt,
+							'title'   => $image_title,
+						),
+						$image_data_attributes
+					)
+				);
+			} else {
+				$image_markup = get_avatar(
+					$post_author_id,
+					$image_size,
+					'',
+					$image_alt,
 					array(
 						'class'   => 'dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ),
 						'loading' => $skip_lazy_loading ? false : 'lazy',
-						'alt'     => $image_alt,
-						'title'   => $image_title,
-					),
-					$image_data_attributes
-				)
-			);
+					)
+				);
+			}
 
 			// Get the image link type.
 			$media_link_type = $attributes['mediaLinkType'] ?? 'none';
@@ -615,7 +711,7 @@ class Blocks {
 					implode(
 						' ',
 						array_map(
-							function( $v, $k ) {
+							function ( $v, $k ) {
 								return sprintf( '%s="%s"', sanitize_key( $k ), esc_attr( $v ) ); },
 							$media_link_atts,
 							array_keys( $media_link_atts )
@@ -653,9 +749,10 @@ class Blocks {
 
 		// Wrap figure in section tag, gather classes from block props.
 		$image_markup = sprintf(
-			'<section id="%1$s" class="dlx-photo-block__container">%2$s</section>',
+			'<section id="%1$s" class="dlx-photo-block__container align%3$s">%2$s</section>',
 			$unique_id,
-			$image_markup
+			$image_markup,
+			esc_attr( $attributes['align'] )
 		);
 
 		// Begin frontend styles.
@@ -679,7 +776,7 @@ class Blocks {
 			$unique_id,
 			'img'
 		);
-		Functions::add_css_property( $image_css_helper, 'opacity', (float) round( ( $attributes['photoOpacity'] / 100 ), 2 ) );
+		Functions::add_css_property( $image_css_helper, 'opacity', (float) $attributes['photoOpacity'] );
 		if ( $attributes['photoBlur'] ) {
 			Functions::add_css_property( $image_css_helper, 'filter', 'blur(' . (int) $attributes['photoBlur'] . 'px)' );
 		}

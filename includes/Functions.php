@@ -252,7 +252,7 @@ class Functions {
 	 * @param int    $attachment_id The attachment ID.
 	 * @param string $size          The image size.
 	 *
-	 * @return array {
+	 * @return false|array {
 	 *    @type int    $id  The attachment ID.
 	 *    @type string $url The image URL.
 	 *    @type int $width The image width.
@@ -267,7 +267,7 @@ class Functions {
 		// Get requested size.
 		$image_attachment = wp_get_attachment_image_src( $attachment_id, $size );
 		if ( ! $image_attachment ) {
-			return array();
+			return false;
 		}
 		$full_image_attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
 
@@ -288,10 +288,18 @@ class Functions {
 	 * Retrieve an image ID from a custom field value.
 	 *
 	 * @param int|Object|Array $custom_field_value The custom field value.
+	 * @param string           $meta_key           The meta key to query.
 	 *
 	 * @return int|string|WP_Error The image ID or WP_Error if not found.
 	 */
-	public static function get_image_id_or_url_from_custom_field( $custom_field_value ) {
+	public static function get_image_id_or_url_from_custom_field( $custom_field_value, $meta_key = '' ) {
+		// Check for ACF `field_` prefix. If so, we need to grab the field via `get_field`.
+		if ( function_exists( 'get_field' ) && ! is_array( $custom_field_value ) && ! is_object( $custom_field_value ) ) {
+			if ( strpos( $custom_field_value, 'field_' ) !== false ) {
+				$custom_field_value = \get_field( $custom_field_value );
+			}
+		}
+
 		// Check for numeric.
 		if ( is_numeric( $custom_field_value ) ) {
 			return absint( $custom_field_value );
@@ -377,6 +385,42 @@ class Functions {
 	}
 
 	/**
+	 * Builds an image baseed on Post ID and Image Source.
+	 *
+	 * @param int    $post_id      The post ID.
+	 * @param string $image_source The image source.
+	 * @param string $image_size   The image size.
+	 * @param bool   $use_fallback Whether to use the fallback image.
+	 *
+	 * @return array {
+	 *   @type int    $id  The attachment ID.
+	 *   @type string $url The image URL.
+	 *   @type string $alt The image alt text.
+	 *   @type string $full The link to the full image.
+	 *   @type string $attachment_link The link to the attachment page.
+	 * }
+	 */
+	public static function get_dynamic_image_array( $post_id, $image_source = 'featuredImage', $image_size, $use_fallback = true ) {
+		//Functions::get_image_data
+		$maybe_image_src = false;
+		switch ( $image_source ) {
+			case 'featuredImage':
+				$image_id = get_post_thumbnail_id( $post_id );
+				$maybe_image_src = wp_get_attachment_image_src( $image_id, $image_size );
+				break;
+			case 'postMeta':
+				$maybe_image_src = self::get_post_image( $image_size, 'photo_block_image', $post_id );
+				break;
+			case 'authorMeta':
+				$maybe_image_src = self::get_author_image_from_meta( $image_size, 'photo_block_image', $post_id );
+				break;
+
+		}
+	
+
+	}
+
+	/**
 	 * Get an image from author meta.
 	 *
 	 * @param string $size       The image size.
@@ -390,9 +434,16 @@ class Functions {
 		$image_id_or_url = false;
 		// Let's check regular post meta for the image first. This also includes Pods support.
 		$maybe_custom_field_result = get_user_meta( $author_id, $meta_field, true );
+
+		if ( function_exists( 'get_field' ) && ! is_array( $maybe_custom_field_result ) && ! is_object( $maybe_custom_field_result ) ) {
+			if ( strpos( $maybe_custom_field_result, 'field_' ) !== false ) {
+				$maybe_custom_field_result = \get_field( $maybe_custom_field_result, 'user_' . $author_id );
+			}
+		}
+
 		if ( $maybe_custom_field_result ) {
 			// Check if object, and if so, try to get image ID.
-			$maybe_image_id_or_url = self::get_image_id_or_url_from_custom_field( $maybe_custom_field_result );
+			$maybe_image_id_or_url = self::get_image_id_or_url_from_custom_field( $maybe_custom_field_result, $meta_field );
 			if ( ! is_wp_error( $maybe_image_id_or_url ) ) {
 				$image_id_or_url = $maybe_image_id_or_url;
 			}
@@ -400,7 +451,7 @@ class Functions {
 
 		// Now return the image if set.
 		if ( $image_id_or_url && is_numeric( $image_id_or_url ) ) {
-			return self::get_image_data( $image_id_or_url, $size );
+			return $image_id_or_url;
 		} elseif ( $image_id_or_url && is_string( $image_id_or_url ) ) {
 			return $image_id_or_url;
 		}
