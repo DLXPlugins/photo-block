@@ -183,7 +183,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			.then( () => {
 				setImageLoading( false );
 			} );
-	}, [ imageSize ] );
+	}, [ imageSize, dataFallbackImage, dataFallbackImageSize, dataHasFallbackImage ] );
 
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
@@ -422,7 +422,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 							</optgroup>
 							<optgroup label={ __( 'Post', 'photo-block' ) }>
 								<option value="postPermalink">{ __( 'Post Permalink', 'photo-block' ) }</option>
-								<option value="postMeta">{ __( 'Post Meta', 'photo-block' ) }</option>
+								<option value="customField">{ __( 'Post Meta', 'photo-block' ) }</option>
 							</optgroup>
 							<optgroup label={ __( 'Author', 'photo-block' ) }>
 								<option value="authorPermalink">{ __( 'Author Permalink', 'photo-block' ) }</option>
@@ -430,7 +430,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 								<option value="authorMeta">{ __( 'Author Meta', 'photo-block' ) }</option>
 							</optgroup>
 						</SelectControl>
-						{ dataMediaLinkSource === 'postMeta' && (
+						{ dataMediaLinkSource === 'customField' && (
 							<MetaFieldControl
 								setAttributes={ setAttributes }
 								attributeName={ 'dataMediaLinkPostMeta' }

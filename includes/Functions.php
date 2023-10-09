@@ -408,7 +408,7 @@ class Functions {
 				$image_id = get_post_thumbnail_id( $post_id );
 				$maybe_image_src = wp_get_attachment_image_src( $image_id, $image_size );
 				break;
-			case 'postMeta':
+			case 'customField':
 				$maybe_image_src = self::get_post_image( $image_size, 'photo_block_image', $post_id );
 				break;
 			case 'authorMeta':

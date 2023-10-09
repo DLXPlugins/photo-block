@@ -675,6 +675,8 @@ class Rest {
 				if ( $maybe_image_id_or_url ) {
 					if ( is_numeric( $maybe_image_id_or_url ) ) {
 						$image = Functions::get_image_data( $maybe_image_id_or_url, $data_image_size );
+					} elseif ( is_array( $maybe_image_id_or_url ) ) {
+						$image = $maybe_image_id_or_url;
 					} else {
 						$image = esc_url( $maybe_image_id_or_url ); // A string was found.
 					}
@@ -704,28 +706,46 @@ class Rest {
 				}
 			}
 		} elseif ( 'postType' === $data_source && $data_post_id ) {
-			if ( 'featuredImage' === $data_image_source && $data_post_id ) {
+			if ( 'featuredImage' === $data_image_source && $data_current_post_id ) {
 				// Get the featured image ID from the current source ID.
-				$image_id = get_post_thumbnail_id( $data_post_id );
+				$image_id = get_post_thumbnail_id( $data_current_post_id );
 				if ( $image_id ) {
 					$image = Functions::get_image_data( $image_id, $data_image_size );
 				}
 			} elseif ( 'customField' === $data_image_source && $data_current_post_id && $data_image_source_custom_field ) {
 				// Get the image ID from the custom field.
-				$maybe_image_id_or_url = Functions::get_post_image( $data_image_size, $data_image_source_custom_field, $data_post_id );
+				$maybe_image_id_or_url = Functions::get_post_image( $data_image_size, $data_image_source_custom_field, $data_current_post_id );
 				if ( $maybe_image_id_or_url ) {
 					if ( is_numeric( $maybe_image_id_or_url ) ) {
 						$image = Functions::get_image_data( $maybe_image_id_or_url, $data_image_size );
+					} elseif ( is_array( $maybe_image_id_or_url ) ) {
+						$image = $maybe_image_id_or_url;
 					} else {
 						$image = esc_url( $maybe_image_id_or_url ); // A string was found.
 					}
 				}
 			} elseif ( 'authorAvatar' === $data_image_source ) {
 				// Get the author ID.
-				$author_id    = get_post_field( 'post_author', $data_post_id );
+				$author_id    = get_post_field( 'post_author', $data_current_post_id );
 				$maybe_avatar = get_avatar_url( $author_id, array( 'size' => $data_image_size ) );
 				if ( $maybe_avatar ) {
 					$image = esc_url( $maybe_avatar );
+				}
+			} elseif ( 'authorMeta' === $data_image_source ) {
+				// Get the author ID.
+				$author_id = get_post_field( 'post_author', $data_current_post_id );
+
+				// Get author image from user meta.
+				$maybe_author_image_id_or_url = Functions::get_author_image_from_meta( $data_image_size, $data_image_source_author_meta, $author_id );
+				if ( $maybe_author_image_id_or_url ) {
+					if ( is_numeric( $maybe_author_image_id_or_url ) ) {
+						$maybe_author_image_id_or_url = Functions::get_image_data( $maybe_author_image_id_or_url, $data_image_size );
+					}
+					if ( is_array( $maybe_author_image_id_or_url ) ) {
+						$image = $maybe_author_image_id_or_url;
+					} else {
+						$image = esc_url( $maybe_author_image_id_or_url ); // A string was found.
+					}
 				}
 			}
 		}

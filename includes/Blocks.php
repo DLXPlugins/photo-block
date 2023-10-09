@@ -457,23 +457,35 @@ class Blocks {
 
 			// Get the image data.
 			$image_data_source = $attributes['dataSource'] ?? 'currentPost'; /* can be currentPost, postType */
-			$image_source      = $attributes['dataImageSource'] ?? 'featuredImage'; /* can be featuredImage, postMeta, authorAvatar, authorMeta */
+			$image_source      = $attributes['dataImageSource'] ?? 'featuredImage'; /* can be featuredImage, customField, authorAvatar, authorMeta */
 
 			// Placeholdr for image ID and src.
 			$image_id        = 0;
 			$maybe_image_src = false;
 
 			// Get the image ID if current post.
-			if ( 'currentPost' === $image_data_source ) {
+			if ( 'currentPost' === $image_data_source || 'postType' === $image_data_source ) {
+
+				// If post type, get the post ID.
+				if ( 'postType' === $image_data_source ) {
+					$post_type = $attributes['dataPostType'] ?? 'post';
+					$post_type_id = $attributes['dataPostId'] ?? 0;
+					$post_type_post = get_post( $post_type_id );
+					if ( $post_type_post ) {
+						$current_post_id = $post_type_post->ID;
+						$post_author_id = $post_type_post->post_author;
+					}
+				}
 
 				switch ( $image_source ) {
 					case 'featuredImage':
 						$image_id = get_post_thumbnail_id( $current_post_id );
 						break;
-					case 'postMeta':
+					case 'customField':
 						// We need to get the post meta.
 						$data_post_meta_key = $attributes['dataImageSourceCustomField'] ?? '';
-						$image_id           = Functions::get_image_id_or_url_from_custom_field( $current_post_id, $data_post_meta_key );
+						$custom_field_value = get_post_meta( $current_post_id, $data_post_meta_key, true );
+						$image_id           = Functions::get_image_id_or_url_from_custom_field( $custom_field_value, $data_post_meta_key );
 						break;
 					case 'authorAvatar':
 						$image_id = 0;

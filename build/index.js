@@ -10969,7 +10969,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
         return true;
       }
     }
-    if ('postMeta' === dataImageSource) {
+    if ('customField' === dataImageSource) {
       if ('' === dataImageSourceCustomField) {
         return true;
       }
@@ -11082,14 +11082,14 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }, /*#__PURE__*/React.createElement("option", {
     value: "featuredImage"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Featured Image', 'photo-block')), /*#__PURE__*/React.createElement("option", {
-    value: "postMeta"
+    value: "customField"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Post Meta', 'photo-block'))), /*#__PURE__*/React.createElement("optgroup", {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author', 'photo-block')
   }, /*#__PURE__*/React.createElement("option", {
     value: "authorAvatar"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author Avatar', 'photo-block')), /*#__PURE__*/React.createElement("option", {
     value: "authorMeta"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author Meta', 'photo-block'))))), 'postMeta' === dataImageSource && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Author Meta', 'photo-block'))))), 'customField' === dataImageSource && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__data-row"
   }, /*#__PURE__*/React.createElement(_components_AdvancedSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
     restNonce: photoBlock.restNonce,
@@ -11448,7 +11448,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     }).then(function () {
       setImageLoading(false);
     });
-  }, [imageSize]);
+  }, [imageSize, dataFallbackImage, dataFallbackImageSize, dataHasFallbackImage]);
 
   // Set settings inspector Controls.
   var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_10__["default"], {
@@ -11661,7 +11661,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
   }, /*#__PURE__*/React.createElement("option", {
     value: "postPermalink"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Permalink', 'photo-block')), /*#__PURE__*/React.createElement("option", {
-    value: "postMeta"
+    value: "customField"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Meta', 'photo-block'))), /*#__PURE__*/React.createElement("optgroup", {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Author', 'photo-block')
   }, /*#__PURE__*/React.createElement("option", {
@@ -11670,7 +11670,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     value: "authorArchive"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Author Archive', 'photo-block')), /*#__PURE__*/React.createElement("option", {
     value: "authorMeta"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Author Meta', 'photo-block')))), dataMediaLinkSource === 'postMeta' && /*#__PURE__*/React.createElement(_components_DataSelect__WEBPACK_IMPORTED_MODULE_13__.MetaFieldControl, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Author Meta', 'photo-block')))), dataMediaLinkSource === 'customField' && /*#__PURE__*/React.createElement(_components_DataSelect__WEBPACK_IMPORTED_MODULE_13__.MetaFieldControl, {
     setAttributes: setAttributes,
     attributeName: 'dataMediaLinkPostMeta',
     endpoint: '/search/custom-fields',

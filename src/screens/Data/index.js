@@ -143,7 +143,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 				return true;
 			}
 		}
-		if ( 'postMeta' === dataImageSource ) {
+		if ( 'customField' === dataImageSource ) {
 			if ( '' === dataImageSourceCustomField ) {
 				return true;
 			}
@@ -289,7 +289,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 									<option value="featuredImage">
 										{ __( 'Featured Image', 'photo-block' ) }
 									</option>
-									<option value="postMeta">{ __( 'Post Meta', 'photo-block' ) }</option>
+									<option value="customField">{ __( 'Post Meta', 'photo-block' ) }</option>
 								</optgroup>
 								<optgroup label={ __( 'Author', 'photo-block' ) }>
 									<option value="authorAvatar">
@@ -301,7 +301,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 								</optgroup>
 							</SelectControl>
 						</div>
-						{ 'postMeta' === dataImageSource && (
+						{ 'customField' === dataImageSource && (
 							<>
 								<div className="dlx-photo-block__data-row">
 									<AdvancedSelectControl
