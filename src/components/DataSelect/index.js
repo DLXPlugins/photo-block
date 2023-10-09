@@ -41,6 +41,10 @@ export const MetaFieldControl = ( props ) => {
 						setAttributes( {
 							[ attributeName ]: '',
 						} );
+					} else {
+						setAttributes( {
+							[ attributeName ]: suggestionValue,
+						} );
 					}
 				} }
 				acceptDirectInput={ acceptDirectInput }

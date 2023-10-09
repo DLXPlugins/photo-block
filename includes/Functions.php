@@ -385,39 +385,100 @@ class Functions {
 	}
 
 	/**
-	 * Builds an image baseed on Post ID and Image Source.
+	 * Get an image from a dynamic source.
 	 *
-	 * @param int    $post_id      The post ID.
-	 * @param string $image_source The image source.
-	 * @param string $image_size   The image size.
-	 * @param bool   $use_fallback Whether to use the fallback image.
-	 *
-	 * @return array {
-	 *   @type int    $id  The attachment ID.
-	 *   @type string $url The image URL.
-	 *   @type string $alt The image alt text.
-	 *   @type string $full The link to the full image.
-	 *   @type string $attachment_link The link to the attachment page.
-	 * }
+	 * @param array $attributes       The block attributes.
+	 * @param int   $post_id          The post to retrieve data for.
+	 * @param array $default_alt_text The alt text to use if none (default).
 	 */
-	public static function get_dynamic_image_array( $post_id, $image_source = 'featuredImage', $image_size, $use_fallback = true ) {
-		//Functions::get_image_data
-		$maybe_image_src = false;
-		switch ( $image_source ) {
-			case 'featuredImage':
-				$image_id = get_post_thumbnail_id( $post_id );
-				$maybe_image_src = wp_get_attachment_image_src( $image_id, $image_size );
-				break;
-			case 'customField':
-				$maybe_image_src = self::get_post_image( $image_size, 'photo_block_image', $post_id );
-				break;
-			case 'authorMeta':
-				$maybe_image_src = self::get_author_image_from_meta( $image_size, 'photo_block_image', $post_id );
-				break;
-
+	public static function get_alt_text_from_source( $attributes, $post_id, $default_alt_text = '' ) {
+		$alt_source = $attributes['dataAltTextSource'] ?? 'currentImage'; /* can be currentImage, currentPost, postType, none */
+		if ( 'none' === $alt_source ) {
+			return $default_alt_text;
 		}
-	
 
+		$alt_text = '';
+		switch ( $alt_source ) {
+			case 'currentImage':
+				// Get image ID from attributes.
+				$image_id = $attributes['imageDimensions']['id'] ?? 0;
+
+				// Determine data type.
+				$alt_type = $attributes['dataAltTextType']; // Can be altText, caption, title, customField.
+
+				switch ( $alt_type ) {
+					case 'altText':
+						if ( ! empty( $default_alt_text ) ) {
+							$alt_text = $default_alt_text;
+						} else {
+							$alt_text = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+						}
+						break;
+					case 'caption':
+						$alt_text = wp_get_attachment_caption( $image_id );
+						break;
+					case 'imageTitle':
+						$alt_text = get_the_title( $image_id );
+						break;
+					case 'customField':
+						// Get the custom field name.
+						$custom_field_name = $attributes['dataAltTextImageCustomField'] ?? '';
+
+						// Retrieve custom field data.
+						$custom_field_data = get_post_meta( $image_id, $custom_field_name, true );
+						if ( ! $custom_field_data || ! is_string( $custom_field_data ) ) {
+							$alt_text = $default_alt_text;
+						} else {
+							$alt_text = $custom_field_data;
+						}
+						break;
+				}
+				break;
+			case 'currentPost':
+			case 'postType':
+				$alt_type = $attributes['dataAltTextTypePost'] ?? 'title'; // Can be title, postExcerpt, postAuthorName, postAuthorMeta, customField.
+
+				if ( 'postType' === $alt_source ) {
+					$post_id  = $attributes['dataAltTextPostId'] ?? 0;
+					$alt_type = $attributes['dataAltTextPostTypeSource'] ?? 'title'; // Can be title, postExcerpt, postAuthorName, postAuthorMeta, customField.
+				}
+
+				switch ( $alt_type ) {
+					case 'title':
+						$alt_text = get_the_title( $post_id );
+						break;
+					case 'postExcerpt':
+						$alt_text = get_the_excerpt( $post_id );
+						break;
+					case 'postAuthorName':
+						$alt_text = get_the_author_meta( 'display_name', $post_id );
+						break;
+					case 'postAuthorMeta':
+						// Get the current uathor ID.
+						$author_id      = get_post_field( 'post_author', $post_id );
+						$maybe_alt_text = get_the_author_meta( $attributes['dataAltTextTypePostAuthorMeta'], $author_id );
+						if ( $maybe_alt_text && is_string( $maybe_alt_text ) ) {
+							$alt_text = $maybe_alt_text;
+						} else {
+							$alt_text = $default_alt_text;
+						}
+						break;
+					case 'customField':
+						// Get the custom field name.
+						$custom_field_name = $attributes['dataAltTextTypePostCustomField'] ?? '';
+
+						// Retrieve custom field data.
+						$custom_field_data = get_post_meta( $post_id, $custom_field_name, true );
+						if ( ! $custom_field_data || ! is_string( $custom_field_data ) ) {
+							$alt_text = $default_alt_text;
+						} else {
+							$alt_text = $custom_field_data;
+						}
+						break;
+				}
+				break;
+		}
+		return ! empty( $alt_text ) ? $alt_text : $default_alt_text;
 	}
 
 	/**
@@ -948,7 +1009,6 @@ class Functions {
 		$output = $top . $right . $bottom . $left;
 
 		return trim( $output );
-
 	}
 
 	/**
@@ -1175,4 +1235,3 @@ class Functions {
 		return '';
 	}
 }
-

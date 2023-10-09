@@ -536,6 +536,15 @@ class Blocks {
 			}
 		}
 
+		// Get alt/title attributes.
+		$image_alt   = $attributes['photo']['alt'] ?? '';
+		$image_title = $attributes['photo']['title'] ?? '';
+
+		// Replace image alt with data (if needed).
+		if ( $is_in_data_mode ) {
+			$image_alt = Functions::get_alt_text_from_source( $attributes, $current_post_id, $image_alt );
+		}
+
 		// Let's get the image information.
 		$image_markup = '';
 		if ( ! $image_data ) {
@@ -551,9 +560,7 @@ class Blocks {
 			// Determine if lazy loading is on.
 			$skip_lazy_loading = $attributes['skipLazyLoading'] ?? false;
 
-			// Get alt and title attributes.
-			$image_alt   = $attributes['photo']['alt'] ?? '';
-			$image_title = $attributes['photo']['title'] ?? '';
+			
 
 			// Get data attributes.
 			$image_data_attributes = array();

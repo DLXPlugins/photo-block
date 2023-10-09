@@ -5555,6 +5555,8 @@ var MetaFieldControl = function MetaFieldControl(props) {
     onItemSelect: function onItemSelect(event, suggestionValue) {
       if (null === suggestionValue) {
         setAttributes(_defineProperty({}, attributeName, ''));
+      } else {
+        setAttributes(_defineProperty({}, attributeName, suggestionValue));
       }
     },
     acceptDirectInput: acceptDirectInput
@@ -5722,9 +5724,9 @@ var DataSelect = function DataSelect(props) {
           "aria-selected": suggestion.value === selectedSuggestion,
           className: suggestionClasses,
           onClick: function onClick(e) {
-            var _setAttributes6;
+            var _setAttributes7;
             setPostTypeSuggestion(suggestion.label);
-            setAttributes((_setAttributes6 = {}, _defineProperty(_setAttributes6, "".concat(prefix, "PostId"), suggestion.value.toString()), _defineProperty(_setAttributes6, "".concat(prefix, "PostTitle"), suggestion.label), _setAttributes6));
+            setAttributes((_setAttributes7 = {}, _defineProperty(_setAttributes7, "".concat(prefix, "PostId"), suggestion.value.toString()), _defineProperty(_setAttributes7, "".concat(prefix, "PostTitle"), suggestion.label), _setAttributes7));
           },
           icon: 'post' === suggestion.type ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null) : /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null),
           iconSize: 2,
