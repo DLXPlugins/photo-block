@@ -88,7 +88,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		dataMediaLinkPostMeta,
 		dataMediaLinkImageCustomField,
 		dataMediaLinkAuthorMeta,
-		dataMediaLinkTitle,
 		imageSize,
 		photoOpacity,
 		photoBlur,
@@ -529,16 +528,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 								</PanelRow>
 								<PanelRow>
 									<TextControl
-										label={ __( 'Link Title', 'photo-block' ) }
-										value={ dataMediaLinkTitle }
-										onChange={ ( value ) => {
-											setAttributes( { dataMediaLinkTitle: value } );
-										} }
-										help={ __( 'The link title attribute is for SEO and accessibility purposes. It is used to describe the link.', 'photo-block' ) }
-									/>
-								</PanelRow>
-								<PanelRow>
-									<TextControl
 										label={ __( 'Link Rel', 'photo-block' ) }
 										value={ attributes.dataMediaLinkRel }
 										onChange={ ( value ) => {
@@ -556,17 +545,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 											setAttributes( { dataMediaLinkClass: value } );
 										} }
 										help={ __( 'Add a CSS class to the link for styling purposes.', 'photo-block' ) }
-
-									/>
-								</PanelRow>
-								<PanelRow>
-									<TextControl
-										label={ __( 'Link Anchor ID', 'photo-block' ) }
-										value={ attributes.dataMediaLinkAnchorId }
-										onChange={ ( value ) => {
-											setAttributes( { dataMediaLinkAnchorId: value } );
-										} }
-										help={ __( 'This is the ID for the link, which you can use to link to the photo with an anchor. The ID for each link should be unique.', 'photo-block' ) }
 
 									/>
 								</PanelRow>

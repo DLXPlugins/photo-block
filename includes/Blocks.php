@@ -246,6 +246,7 @@ class Blocks {
 		Functions::build_dimension_css( $css_helper, $attributes['captionPaddingSize'], 'padding' );
 		Functions::build_dimension_css( $css_helper, $attributes['captionMarginSize'], 'margin' );
 
+		$attributes['dataMode'] = false;
 		if ( 'single' === $mode && ! (bool) $attributes['dataMode'] ) {
 			Functions::add_css_property( $css_helper, 'color', $attributes['captionTextColor'] );
 			Functions::build_typography_css( $css_helper, $attributes['captionTypography'] );
@@ -543,6 +544,7 @@ class Blocks {
 		// Replace image alt with data (if needed).
 		if ( $is_in_data_mode ) {
 			$image_alt = Functions::get_alt_text_from_source( $attributes, $current_post_id, $image_alt );
+			$image_title = Functions::get_title_text_from_source( $attributes, $current_post_id, $image_title );
 		}
 
 		// Let's get the image information.

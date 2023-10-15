@@ -37,6 +37,7 @@ export const MetaFieldControl = ( props ) => {
 				label={ label }
 				currentSelectedSuggestion={ currentMetaFieldSuggestion }
 				onItemSelect={ ( event, suggestionValue ) => {
+					console.log( suggestionValue );
 					if ( null === suggestionValue ) {
 						setAttributes( {
 							[ attributeName ]: '',
@@ -70,6 +71,7 @@ export const MetaFieldControl = ( props ) => {
 											aria-selected={ suggestion === selectedSuggestion }
 											className={ suggestionClasses }
 											onClick={ ( e ) => {
+												console.log( attributeName );
 												setCurrentMetaFieldSuggestion( suggestion );
 												setAttributes( {
 													[ attributeName ]: suggestion,

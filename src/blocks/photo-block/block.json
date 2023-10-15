@@ -412,19 +412,11 @@
 			"type": "string",
 			"default": ""
 		},
-		"dataMediaLinkAnchorId": {
-			"type": "string",
-			"default": ""
-		},
 		"dataMediaLinkUrl": {
 			"type": "string",
 			"default": ""
 		},
 		"dataMediaLinkClass": {
-			"type": "string",
-			"default": ""
-		},
-		"dataMediaLinkTitle": {
 			"type": "string",
 			"default": ""
 		},

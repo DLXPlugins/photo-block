@@ -451,14 +451,20 @@ class Functions {
 						$alt_text = get_the_excerpt( $post_id );
 						break;
 					case 'postAuthorName':
-						$alt_text = get_the_author_meta( 'display_name', $post_id );
+						$author_id = get_post_field( 'post_author', $post_id );
+						$alt_text  = get_the_author_meta( 'display_name', $author_id );
 						break;
 					case 'postAuthorMeta':
 						// Get the current uathor ID.
-						$author_id      = get_post_field( 'post_author', $post_id );
-						$maybe_alt_text = get_the_author_meta( $attributes['dataAltTextTypePostAuthorMeta'], $author_id );
-						if ( $maybe_alt_text && is_string( $maybe_alt_text ) ) {
-							$alt_text = $maybe_alt_text;
+						$author_id = get_post_field( 'post_author', $post_id );
+
+						if ( 'postType' === $alt_source ) {
+							$maybe_alt_text = get_the_author_meta( $attributes['dataAltTextPostTypeAuthorMeta'], $author_id );
+						} else {
+							$maybe_alt_text = get_the_author_meta( $attributes['dataAltTextTypePostAuthorMeta'], $author_id );
+						}
+						if ( $maybe_alt_text ) {
+							$alt_text = sanitize_text_field( $maybe_alt_text );
 						} else {
 							$alt_text = $default_alt_text;
 						}
@@ -466,6 +472,12 @@ class Functions {
 					case 'customField':
 						// Get the custom field name.
 						$custom_field_name = $attributes['dataAltTextTypePostCustomField'] ?? '';
+
+						if ( 'postType' === $alt_source ) {
+							$custom_field_name = $attributes['dataAltTextPostTypeCustomField'] ?? '';
+						} else {
+							$custom_field_name = $attributes['dataAltTextTypePostCustomField'] ?? '';
+						}
 
 						// Retrieve custom field data.
 						$custom_field_data = get_post_meta( $post_id, $custom_field_name, true );
@@ -479,6 +491,114 @@ class Functions {
 				break;
 		}
 		return ! empty( $alt_text ) ? $alt_text : $default_alt_text;
+	}
+
+	/**
+	 * Get an image from a dynamic source.
+	 *
+	 * @param array $attributes         The block attributes.
+	 * @param int   $post_id            The post to retrieve data for.
+	 * @param array $default_title_text The alt text to use if none (default).
+	 */
+	public static function get_title_text_from_source( $attributes, $post_id, $default_title_text = '' ) {
+		$title_source = $attributes['dataImageTitleSource'] ?? 'currentImage'; /* can be currentImage, currentPost, postType, none */
+		if ( 'none' === $title_source ) {
+			return $default_title_text;
+		}
+
+		$title_text = '';
+		switch ( $title_source ) {
+			case 'currentImage':
+				// Get image ID from attributes.
+				$image_id = $attributes['imageDimensions']['id'] ?? 0;
+
+				// Determine data type.
+				$title_type = $attributes['dataImageTitleType']; // Can be altText, caption, title, customField.
+
+				switch ( $title_type ) {
+					case 'altText':
+						if ( ! empty( $default_title_text ) ) {
+							$title_text = $default_title_text;
+						} else {
+							$title_text = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+						}
+						break;
+					case 'caption':
+						$title_text = wp_get_attachment_caption( $image_id );
+						break;
+					case 'imageTitle':
+						$title_text = get_the_title( $image_id );
+						break;
+					case 'customField':
+						// Get the custom field name.
+						$custom_field_name = $attributes['dataImageTitleImageCustomField'] ?? '';
+
+						// Retrieve custom field data.
+						$custom_field_data = get_post_meta( $image_id, $custom_field_name, true );
+						if ( ! $custom_field_data || ! is_string( $custom_field_data ) ) {
+							$title_text = $default_title_text;
+						} else {
+							$title_text = $custom_field_data;
+						}
+						break;
+				}
+				break;
+			case 'currentPost':
+			case 'postType':
+				$title_type = $attributes['dataImageTitleTypePost'] ?? 'title'; // Can be title, postExcerpt, postAuthorName, postAuthorMeta, customField.
+
+				if ( 'postType' === $title_source ) {
+					$post_id    = $attributes['dataImageTitlePostId'] ?? 0;
+					$title_type = $attributes['dataImageTitlePostTypeSource'] ?? 'title'; // Can be title, postExcerpt, postAuthorName, postAuthorMeta, customField.
+				}
+
+				switch ( $title_type ) {
+					case 'title':
+						$title_text = get_the_title( $post_id );
+						break;
+					case 'postExcerpt':
+						$title_text = get_the_excerpt( $post_id );
+						break;
+					case 'postAuthorName':
+						$author_id  = get_post_field( 'post_author', $post_id );
+						$title_text = get_the_author_meta( 'display_name', $author_id );
+						break;
+					case 'postAuthorMeta':
+						// Get the current uathor ID.
+						$author_id = get_post_field( 'post_author', $post_id );
+						if ( 'postType' === $title_source ) {
+							$maybe_alt_text = get_the_author_meta( $attributes['dataImageTitlePostTypeAuthorMeta'], $author_id );
+						} else {
+							$maybe_alt_text = get_the_author_meta( $attributes['dataImageTitleTypePostAuthorMeta'], $author_id );
+						}
+
+						if ( $maybe_alt_text && is_string( $maybe_alt_text ) ) {
+							$title_text = $maybe_alt_text;
+						} else {
+							$title_text = $default_title_text;
+						}
+						break;
+					case 'customField':
+						// Get the custom field name.
+						if ( 'postType' === $title_source ) {
+							$custom_field_name = $attributes['dataImageTitlePostTypeCustomField'] ?? '';
+						} else {
+							$custom_field_name = $attributes['dataImageTitleTypePostCustomField'] ?? '';
+						}
+
+						// Retrieve custom field data.
+						$custom_field_data = get_post_meta( $post_id, $custom_field_name, true );
+						if ( ! $custom_field_data ) {
+							$title_text = $default_title_text;
+						} else {
+							$title_text = $custom_field_data;
+						}
+						break;
+				}
+				break;
+		}
+		$title_text = sanitize_text_field( $title_text );
+		return ! empty( $title_text ) ? $title_text : $default_title_text;
 	}
 
 	/**
@@ -1138,7 +1258,6 @@ class Functions {
 			'lineHeight'    => 'line-height',
 			'textTransform' => 'text-transform',
 			'letterSpacing' => 'letter-spacing',
-			'textAlign'     => 'text-align',
 		);
 
 		foreach ( $screen_sizes as $screen_size ) {
