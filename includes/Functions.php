@@ -385,6 +385,107 @@ class Functions {
 	}
 
 	/**
+	 * Get an image caption from a dynamic source.
+	 *
+	 * @param array $attributes The block attributes.
+	 * @param int   $post_id    The post to retrieve data for.
+	 */
+	public static function get_caption_from_source( $attributes, $post_id ) {
+		$caption        = '';
+		$caption_source = $attributes['dataCaptionSource'] ?? 'currentImage'; /* can be currentImage, currentPost, postType, none */
+		if ( 'none' === $caption_source ) {
+			return $caption;
+		}
+
+		switch ( $caption_source ) {
+			case 'currentImage':
+				// Get image ID from attributes.
+				$image_id = $attributes['imageDimensions']['id'] ?? 0;
+
+				// Determine data type.
+				$caption_type = $attributes['dataCaptionType']; // Can be altText, caption, title, customField.
+
+				switch ( $caption_type ) {
+					case 'altText':
+						$caption = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+						break;
+					case 'caption':
+						$caption = wp_get_attachment_caption( $image_id );
+						break;
+					case 'imageTitle':
+						$caption = get_the_title( $image_id );
+						break;
+					case 'customField':
+						// Get the custom field name.
+						$custom_field_name = $attributes['dataCaptionImageCustomField'] ?? '';
+
+						// Retrieve custom field data.
+						$custom_field_data = get_post_meta( $image_id, $custom_field_name, true );
+						if ( ! $custom_field_data || ! is_string( $custom_field_data ) ) {
+							$caption = '';
+						} else {
+							$caption = $custom_field_data;
+						}
+						break;
+				}
+				break;
+			case 'currentPost':
+			case 'postType':
+				if ( 'postType' === $caption_source ) {
+					$caption_type = $attributes['dataCaptionPostTypeSource'] ?? 'title'; // Can be title, postExcerpt, postAuthorName, postAuthorMeta, customField.
+					$post_id      = $attributes['dataCaptionPostId'] ?? 0;
+				} else {
+					$caption_type = $attributes['dataCaptionTypePost'] ?? 'title'; // Can be title, postExcerpt, postAuthorName, postAuthorMeta, customField.
+				}
+
+				switch ( $caption_type ) {
+					case 'title':
+						$caption = get_the_title( $post_id );
+						break;
+					case 'postExcerpt':
+						$caption = get_the_excerpt( $post_id );
+						break;
+					case 'postAuthorName':
+						$author_id = get_post_field( 'post_author', $post_id );
+						$caption   = get_the_author_meta( 'display_name', $author_id );
+						break;
+					case 'postAuthorMeta':
+						// Get the current uathor ID.
+						$author_id = get_post_field( 'post_author', $post_id );
+						if ( 'postType' === $caption_source ) {
+							$maybe_caption = get_the_author_meta( $attributes['dataCaptionPostTypeAuthorMeta'], $author_id );
+						} else {
+							$maybe_caption = get_the_author_meta( $attributes['dataCaptionTypePostAuthorMeta'], $author_id );
+						}
+						if ( $maybe_caption ) {
+							$caption = sanitize_text_field( $maybe_caption );
+						} else {
+							$caption = '';
+						}
+						break;
+					case 'customField':
+						// Get the custom field name.
+						if ( 'postType' === $caption_source ) {
+							$custom_field_name = $attributes['dataCaptionPostTypeCustomField'] ?? '';
+						} else {
+							$custom_field_name = $attributes['dataCaptionTypePostCustomField'] ?? '';
+						}
+
+						// Retrieve custom field data.
+						$custom_field_data = get_post_meta( $post_id, $custom_field_name, true );
+						if ( ! $custom_field_data || ! is_string( $custom_field_data ) ) {
+							$caption = '';
+						} else {
+							$caption = $custom_field_data;
+						}
+						break;
+				}
+				break;
+		}
+		return $caption;
+	}
+
+	/**
 	 * Get an image from a dynamic source.
 	 *
 	 * @param array $attributes       The block attributes.

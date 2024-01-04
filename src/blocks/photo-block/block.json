@@ -352,6 +352,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"dataMediaLinkAuthorMeta": {
+			"type": "string",
+			"default": ""
+		},
 		"cssGramFilter": {
 			"type": "string",
 			"default": "none"

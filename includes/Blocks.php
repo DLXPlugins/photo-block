@@ -181,6 +181,15 @@ class Blocks {
 		// Let's sanitize the attributes.
 		$attributes = Functions::sanitize_array_recursive( $attributes );
 
+		// First, let's determine if we're in a query loop.
+		$is_in_query_loop    = false;
+		$current_post_id     = get_queried_object_id();
+		$maybe_query_post_id = $block->context['postId'] ?? 0;
+		if ( $current_post_id === $maybe_query_post_id && 0 !== $maybe_query_post_id ) {
+			$is_in_query_loop = true;
+			$current_post_id  = $maybe_query_post_id;
+		}
+
 		// Get caption mode.
 		$mode = $attributes['mode'];
 
@@ -194,11 +203,16 @@ class Blocks {
 		}
 
 		$caption = '';
-		if ( 'single' === $mode ) {
-			$caption = $attributes['captionManual'];
+		if ( $is_in_query_loop ) {
+			$caption = Functions::get_caption_from_source( $attributes, $current_post_id );
 		} else {
-			$caption = $innerblocks_content;
+			if ( 'single' === $mode ) {
+				$caption = $attributes['captionManual'];
+			} else {
+				$caption = $innerblocks_content;
+			}
 		}
+		
 
 		// Begin caption overlay classes.
 		$caption_overlay_styles   = array( 'dlx-photo-block__caption-overlay' );
@@ -469,12 +483,12 @@ class Blocks {
 
 				// If post type, get the post ID.
 				if ( 'postType' === $image_data_source ) {
-					$post_type = $attributes['dataPostType'] ?? 'post';
-					$post_type_id = $attributes['dataPostId'] ?? 0;
+					$post_type      = $attributes['dataPostType'] ?? 'post';
+					$post_type_id   = $attributes['dataPostId'] ?? 0;
 					$post_type_post = get_post( $post_type_id );
 					if ( $post_type_post ) {
 						$current_post_id = $post_type_post->ID;
-						$post_author_id = $post_type_post->post_author;
+						$post_author_id  = $post_type_post->post_author;
 					}
 				}
 
@@ -543,7 +557,7 @@ class Blocks {
 
 		// Replace image alt with data (if needed).
 		if ( $is_in_data_mode ) {
-			$image_alt = Functions::get_alt_text_from_source( $attributes, $current_post_id, $image_alt );
+			$image_alt   = Functions::get_alt_text_from_source( $attributes, $current_post_id, $image_alt );
 			$image_title = Functions::get_title_text_from_source( $attributes, $current_post_id, $image_title );
 		}
 
@@ -561,8 +575,6 @@ class Blocks {
 
 			// Determine if lazy loading is on.
 			$skip_lazy_loading = $attributes['skipLazyLoading'] ?? false;
-
-			
 
 			// Get data attributes.
 			$image_data_attributes = array();
@@ -628,44 +640,80 @@ class Blocks {
 			$media_link_type = $attributes['mediaLinkType'] ?? 'none';
 			$media_link_url  = '';
 			$media_link_atts = array();
+			if ( $is_in_data_mode ) {
+				$media_link_type = $attributes['dataMediaLinkSource'] ?? 'none';
+			}
 
-			// If full, get the full link URL.
-			if ( 'image' === $media_link_type ) {
-				$media_link_img_src = wp_get_attachment_image_src( $image_id, 'full' );
-				if ( $media_link_img_src ) {
-					$media_link_url = $media_link_img_src[0];
+			switch ( $media_link_type ) {
+				case 'none':
+					$media_link_url = '';
+					break;
+				case 'image':
+				case 'imageFile':
+					$media_link_img_src = wp_get_attachment_image_src( $image_id, 'full' );
+					if ( $media_link_img_src ) {
+						$media_link_url = $media_link_img_src[0];
 
-					// Get lightbox attributes.
-					$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
-					if ( $lightbox_enabled ) {
-						$media_link_atts['data-fancybox'] = 'true';
+						// Get lightbox attributes.
+						$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
+						if ( $lightbox_enabled ) {
+							$media_link_atts['data-fancybox'] = 'true';
 
-						// Register the lightbox script/style. Check wp_footer.
-						wp_register_script(
-							'dlx-photo-block-fancybox-js',
-							Functions::get_plugin_url( 'assets/fancybox/fancybox.js' ),
-							array(),
-							Functions::get_plugin_version(),
-							true
-						);
-						wp_add_inline_script(
-							'dlx-photo-block-fancybox-js',
-							'document.addEventListener("DOMContentLoaded", function() { if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . $unique_id . '[data-fancybox]"); });} if ( typeof jQuery.fancybox !== "undefined" ) { jQuery.fancybox.bind("#' . $unique_id . '[data-fancybox]"); }")'
-						);
+							// Register the lightbox script/style. Check wp_footer.
+							wp_register_script(
+								'dlx-photo-block-fancybox-js',
+								Functions::get_plugin_url( 'assets/fancybox/fancybox.js' ),
+								array(),
+								Functions::get_plugin_version(),
+								true
+							);
+							wp_add_inline_script(
+								'dlx-photo-block-fancybox-js',
+								'document.addEventListener("DOMContentLoaded", function() { if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . $unique_id . ' [data-fancybox]"); }; if ( typeof jQuery.fancybox !== "undefined" ) { jQuery.fancybox.bind("#' . $unique_id . '[data-fancybox]"); } });'
+							);
 
-						// Get caption.
-						$caption_enabled = (bool) $attributes['lightboxShowCaption'] ?? false;
-						$caption_custom  = $attributes['lightboxCaption'] ?? '';
-						if ( $caption_enabled && ! empty( $caption_custom ) ) {
-							// todo - need to get regular single-line caption if available.
-							$media_link_atts['data-caption'] = $caption_custom;
+							// Get caption.
+							$caption_enabled = (bool) $attributes['lightboxShowCaption'] ?? false;
+							$caption_custom  = $attributes['lightboxCaption'] ?? '';
+							if ( $caption_enabled && ! empty( $caption_custom ) ) {
+								// todo - need to get regular single-line caption if available.
+								$media_link_atts['data-caption'] = $caption_custom;
+							}
 						}
 					}
-				}
-			} elseif ( 'page' === $media_link_type ) {
-				$media_link_url = wp_get_attachment_link( $image_id, 'full', true, false, false );
-			} elseif ( 'custom' === $media_link_type ) {
-				$media_link_url = $attributes['mediaLinkUrl'] ?? '';
+					break;
+				case 'authorMeta':
+					$media_link_author_meta_field = $attributes['dataMediaLinkAuthorMeta'] ?? '';
+					$media_link_author_meta_field = sanitize_key( $media_link_author_meta_field );
+					$media_link_value             = sanitize_text_field( get_the_author_meta( $media_link_author_meta_field, $post_author_id ) );
+					$media_link_url               = esc_url( $media_link_value );
+					break;
+				case 'authorArchive':
+				case 'authorPermalink':
+					$media_link_url = get_author_posts_url( $post_author_id );
+					break;
+				case 'customField':
+					$media_link_custom_field = $attributes['dataMediaLinkPostMeta'] ?? '';
+					$media_link_custom_field = sanitize_key( $media_link_custom_field );
+					$media_link_value        = sanitize_text_field( get_post_meta( $current_post_id, $media_link_custom_field, true ) );
+					$media_link_url          = esc_url( $media_link_value );
+					break;
+				case 'postPermalink':
+					$media_link_url = get_permalink( $current_post_id );
+					break;
+				case 'imageMeta':
+					$image_meta_custom_field = $attributes['dataMediaLinkImageCustomField'] ?? '';
+					$image_meta_custom_field = sanitize_key( $image_meta_custom_field );
+					$image_meta_value        = sanitize_text_field( get_post_meta( $current_post_id, $image_meta_custom_field, true ) );
+					$media_link_url          = esc_url( $image_meta_value );
+					break;
+				case 'page':
+				case 'imageAttachmentPage':
+					$media_link_url = wp_get_attachment_url( $image_id );
+					break;
+				case 'custom':
+					$media_link_url = $attributes['mediaLinkUrl'] ?? '';
+					break;
 			}
 
 			// Fill in the link attributes.
