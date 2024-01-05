@@ -75,6 +75,7 @@ const CSSGramButtonPreview = ( props ) => {
 								) }
 								width={ imageDimensions.width }
 								height={ imageDimensions.height }
+								style={ { maxWidth: '100%', height: 'auto' } }
 								alt=""
 							/>
 						</div>

@@ -351,7 +351,10 @@ const PhotoCaptionBlock = ( props ) => {
 		if ( dataMode ) {
 			getCaptionFromData();
 		}
-	}, [] );
+		setAttributes( {
+			dataMode,
+		} );
+	}, [ dataMode ] );
 
 	// Select the richtext input and focus on it if block is selected and mode is single line.
 	useEffect( () => {

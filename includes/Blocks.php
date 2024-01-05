@@ -467,6 +467,9 @@ class Blocks {
 		// Placeholder to tell if image is avatar (no image ID).
 		$is_avatar = false;
 
+		// Build image data. (only applicable if in data mode).
+		$image_data = false;
+
 		// Let's get image data and modify the attributes if in query loop or data mode.
 		if ( $is_in_data_mode ) {
 
@@ -512,8 +515,6 @@ class Blocks {
 				}
 			}
 
-			// Build image data.
-			$image_data = false;
 			// Check for avatar.
 			if ( 'authorAvatar' === $image_source && 0 === $image_id ) {
 				$avatar = get_avatar_url( $post_author_id, array( 'size' => $image_size ) );
@@ -563,12 +564,13 @@ class Blocks {
 
 		// Let's get the image information.
 		$image_markup = '';
-		if ( ! $image_data ) {
+		if ( ! $image_data && $is_in_data_mode ) {
+			// Bail if no image data and in data mode.
 			return;
 		} else {
 
 			// Get the image ID.
-			$image_id = $attributes['imageDimensions']['id'] ?? 0;
+			$image_id = $attributes['photo']['id'] ?? 0;
 
 			// Get any image classes.
 			$image_classes = explode( ' ', $attributes['imageCSSClasses'] ) ?? array();

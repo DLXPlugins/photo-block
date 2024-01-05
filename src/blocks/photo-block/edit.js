@@ -177,6 +177,13 @@ const PhotoBlock = ( props ) => {
 		}
 	}, [] );
 
+	// Set data mode when setting or exiting data mode.
+	useEffect( () => {
+		setAttributes( {
+			dataMode,
+		} );
+	}, [ dataMode ] );
+
 	/**
 	 * Get the screen to display.
 	 *

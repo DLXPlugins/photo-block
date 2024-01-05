@@ -20,6 +20,10 @@
   "version": "1.0.0",
   "textdomain": "photo-block",
   "attributes": {
+    "dataMode": {
+      "type": "boolean",
+      "default": false
+    },
     "uniqueId": {
       "type": "string",
       "default": ""
