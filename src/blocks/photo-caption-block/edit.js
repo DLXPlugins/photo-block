@@ -1290,6 +1290,8 @@ const PhotoCaptionBlock = ( props ) => {
 						onChange={ ( value ) => {
 							setAttributes( { captionManual: value } );
 						} }
+						id="search-dlx-caption"
+						name="search-dlx-caption"
 						ref={ setCaptionInputRef }
 					/>
 				</figcaption>

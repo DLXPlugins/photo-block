@@ -1714,6 +1714,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
             captionManual: value
           });
         },
+        id: "search-dlx-caption",
+        name: "search-dlx-caption",
         ref: setCaptionInputRef
       }));
     }
