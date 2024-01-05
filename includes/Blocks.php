@@ -190,6 +190,12 @@ class Blocks {
 			$current_post_id  = $maybe_query_post_id;
 		}
 
+		// Override with data mode attribute.
+		$is_in_data_mode = false;
+		if ( true === (bool) $attributes['dataMode'] ) {
+			$is_in_data_mode = true;
+		}
+
 		// Get caption mode.
 		$mode = $attributes['mode'];
 
@@ -203,7 +209,7 @@ class Blocks {
 		}
 
 		$caption = '';
-		if ( $is_in_query_loop ) {
+		if ( $is_in_query_loop && $is_in_data_mode ) {
 			$caption = Functions::get_caption_from_source( $attributes, $current_post_id );
 		} else {
 			if ( 'single' === $mode ) {
