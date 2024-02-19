@@ -19,6 +19,7 @@ import {
 	getHierarchicalValueUnit,
 	geHierarchicalPlaceholderValue,
 } from '../../utils/TypographyHelper';
+import unitList from '../../utils/UnitsList';
 
 const DimensionsResponsiveControl = ( props ) => {
 	const {
@@ -296,7 +297,7 @@ const DimensionsResponsiveControl = ( props ) => {
 									value,
 									'top'
 								) }
-								type="number"
+								type="text"
 								min={ 0 }
 								step={ 1 }
 								max="Infinity"
@@ -419,7 +420,7 @@ const DimensionsResponsiveControl = ( props ) => {
 									value,
 									'top'
 								) }
-								type="number"
+								type="text"
 								min={ 0 }
 								step={ 1 }
 								max="Infinity"
@@ -469,7 +470,7 @@ const DimensionsResponsiveControl = ( props ) => {
 									value,
 									'right'
 								) }
-								type="number"
+								type="text"
 								min={ 0 }
 								step={ 1 }
 								max="Infinity"
@@ -519,7 +520,7 @@ const DimensionsResponsiveControl = ( props ) => {
 									value,
 									'bottom'
 								) }
-								type="number"
+								type="text"
 								min={ 0 }
 								step={ 1 }
 								max="Infinity"
@@ -569,7 +570,7 @@ const DimensionsResponsiveControl = ( props ) => {
 									value,
 									'left'
 								) }
-								type="number"
+								type="text"
 								min={ 0 }
 								step={ 1 }
 								max="Infinity"

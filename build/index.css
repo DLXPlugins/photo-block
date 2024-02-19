@@ -2430,8 +2430,8 @@ svg.lucide {
   display: none;
 }
 
-.dlx-photo-block__dimensions-responsive-sync-interface input[type=number],
-.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=number] {
+.dlx-photo-block__dimensions-responsive-sync-interface input[type=text],
+.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text] {
   max-width: 28px;
   height: 40px;
   border: none;
@@ -2444,9 +2444,9 @@ svg.lucide {
   margin: 0;
   background: none;
 }
-.dlx-photo-block__dimensions-responsive-sync-interface input[type=number]::-webkit-outer-spin-button, .dlx-photo-block__dimensions-responsive-sync-interface input[type=number]::-webkit-inner-spin-button,
-.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=number]::-webkit-outer-spin-button,
-.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=number]::-webkit-inner-spin-button {
+.dlx-photo-block__dimensions-responsive-sync-interface input[type=text]::-webkit-outer-spin-button, .dlx-photo-block__dimensions-responsive-sync-interface input[type=text]::-webkit-inner-spin-button,
+.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text]::-webkit-outer-spin-button,
+.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
