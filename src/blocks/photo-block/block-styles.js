@@ -54,7 +54,9 @@ const getStyles = (attributes, deviceType, uniqueId ) => {
 			border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 			${ buildBorderCSS( photoBorder, deviceType ) }
 		}
-	`; /**	 */
+	`;
+	// Apply outer margin to container.
+	styles += `#${ uniqueId } .dlx-photo-block__figure { margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
 	if ( photoDropShadow.enabled ) {
 		styles += `
 			#${ uniqueId } img {

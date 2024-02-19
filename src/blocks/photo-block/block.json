@@ -452,17 +452,6 @@
 			"type": "string",
 			"default": "large"
 		},
-		"imageDimensions": {
-			"type": "object",
-			"default": {
-				"width": "",
-				"height": ""
-			}
-		},
-		"imageSizePercentage": {
-			"type": "string",
-			"default": "100"
-		},
 		"altText": {
 			"type": "string",
 			"default": ""

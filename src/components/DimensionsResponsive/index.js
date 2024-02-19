@@ -27,6 +27,29 @@ const getNumericValue = ( values ) => values.length > 0 ? values[ 0 ].trim() : '
 const defaultUnitValue = 'px';
 const getUnitValue = ( values ) => values.length > 1 ? values[ 1 ] : defaultUnitValue;
 
+/**
+ * Handle when a unit value changes.
+ *
+ * @param {string}   newValue The value to get the numeric value from.
+ * @param {Function} onChange The onChange function.
+ * @param {Function} setValue The setValue function.
+ * @param {string}   device   The device type.
+ * @param {string}   unitSlug The unit slug.
+ * @return {void}
+ */
+const onUnitChange = ( newValue, onChange, setValue, device, unitSlug ) => {
+	if ( startsWithNumber( newValue ) ) {
+		const newValuesSplit = splitValues( newValue );
+		const numericValue = getNumericValue( newValuesSplit );
+		setValue( `${ device }.${ unitSlug }`, getUnitValue( newValuesSplit ) );
+		onChange( numericValue );
+	} else {
+		// Starts with a string, hide the unit.
+		setValue( `${ device }.${ unitSlug }`, '' );
+		onChange( newValue );
+	}
+};
+
 const splitValues = ( values ) => {
 	const unitRegex = unitList.join( '|' );
 	const splitRegex = new RegExp( `(${ unitRegex })` );
@@ -114,12 +137,29 @@ const DimensionsResponsiveControl = ( props ) => {
 	 * @param {number} value Value to change to.
 	 */
 	const changeAllValues = ( value ) => {
-		const oldValues = getValues( deviceType );
-		oldValues.top = value;
-		oldValues.right = value;
-		oldValues.bottom = value;
-		oldValues.left = value;
-		setValue( deviceType, oldValues );
+		if ( startsWithNumber( value ) ) {
+			const newValuesSplit = splitValues( value );
+			const numericValue = getNumericValue( newValuesSplit );
+			const unitValue = getUnitValue( newValuesSplit );
+			const oldValues = getValues( deviceType );
+			oldValues.top = numericValue;
+			oldValues.right = numericValue;
+			oldValues.bottom = numericValue;
+			oldValues.left = numericValue;
+			oldValues.topUnit = unitValue;
+			oldValues.rightUnit = unitValue;
+			oldValues.bottomUnit = unitValue;
+			oldValues.leftUnit = unitValue;
+			setValue( deviceType, oldValues );
+		} else {
+			const oldValues = getValues( deviceType );
+			oldValues.top = value;
+			oldValues.right = value;
+			oldValues.bottom = value;
+			oldValues.left = value;
+			setValue( deviceType, oldValues );
+			syncUnits( getHierarchicalValueUnit( props.values, deviceType, value, 'top' ) );
+		}
 	};
 
 	/**
@@ -440,16 +480,7 @@ const DimensionsResponsiveControl = ( props ) => {
 								step={ 1 }
 								max="Infinity"
 								onChange={ ( newValue ) => {
-									if ( startsWithNumber( newValue ) ) {
-										const newValuesSplit = splitValues( newValue );
-										const numericValue = getNumericValue( newValuesSplit );
-										setValue( `${ deviceType }.topUnit`, getUnitValue( newValuesSplit ) );
-										onChange( numericValue );
-									} else {
-										// Starts with a string, hide the unit.
-										setValue( `${ deviceType }.topUnit`, '' );
-										onChange( newValue );
-									}
+									onUnitChange( newValue, onChange, setValue, deviceType, 'topUnit' );
 								} }
 								hideLabelFromVision={ true }
 								inputMode="numeric"
@@ -503,7 +534,7 @@ const DimensionsResponsiveControl = ( props ) => {
 								step={ 1 }
 								max="Infinity"
 								onChange={ ( newValue ) => {
-									onChange( newValue );
+									onUnitChange( newValue, onChange, setValue, deviceType, 'rightUnit' );
 								} }
 								hideLabelFromVision={ true }
 								inputMode="numeric"
@@ -511,27 +542,31 @@ const DimensionsResponsiveControl = ( props ) => {
 							/>
 						) }
 					/>
-					<Controller
-						name={ `${ deviceType }.rightUnit` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<SelectControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
-								label={ __( 'Unit', 'photo-block' ) }
-								value={ getHierarchicalValueUnit(
-									props.values,
-									deviceType,
-									value,
-									'rightUnit'
+					{
+						getValues( `${ deviceType }.rightUnit` ) && (
+							<Controller
+								name={ `${ deviceType }.rightUnit` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<SelectControl
+										className="dlx-photo-block__dimensions-responsive-sync-interface-select"
+										label={ __( 'Unit', 'photo-block' ) }
+										value={ getHierarchicalValueUnit(
+											props.values,
+											deviceType,
+											value,
+											'rightUnit'
+										) }
+										options={ units }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+									/>
 								) }
-								options={ units }
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
 							/>
-						) }
-					/>
+						)
+					}
 				</div>
 				<div className="dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-bottom">
 					<Controller
@@ -553,7 +588,7 @@ const DimensionsResponsiveControl = ( props ) => {
 								step={ 1 }
 								max="Infinity"
 								onChange={ ( newValue ) => {
-									onChange( newValue );
+									onUnitChange( newValue, onChange, setValue, deviceType, 'bottomUnit' );
 								} }
 								hideLabelFromVision={ true }
 								inputMode="numeric"
@@ -561,27 +596,31 @@ const DimensionsResponsiveControl = ( props ) => {
 							/>
 						) }
 					/>
-					<Controller
-						name={ `${ deviceType }.bottomUnit` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<SelectControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
-								label={ __( 'Unit', 'photo-block' ) }
-								value={ getHierarchicalValueUnit(
-									props.values,
-									deviceType,
-									value,
-									'bottomUnit'
+					{
+						getValues( `${ deviceType }.bottomUnit` ) && (
+							<Controller
+								name={ `${ deviceType }.bottomUnit` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<SelectControl
+										className="dlx-photo-block__dimensions-responsive-sync-interface-select"
+										label={ __( 'Unit', 'photo-block' ) }
+										value={ getHierarchicalValueUnit(
+											props.values,
+											deviceType,
+											value,
+											'bottomUnit'
+										) }
+										options={ units }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+									/>
 								) }
-								options={ units }
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
 							/>
-						) }
-					/>
+						)
+					}
 				</div>
 				<div className="dlx-photo-block__dimensions-responsive-manual-interface-item dlx-photo-block__dimensions-responsive-manual-interface-item-left">
 					<Controller
@@ -603,7 +642,7 @@ const DimensionsResponsiveControl = ( props ) => {
 								step={ 1 }
 								max="Infinity"
 								onChange={ ( newValue ) => {
-									onChange( newValue );
+									onUnitChange( newValue, onChange, setValue, deviceType, 'leftUnit' );
 								} }
 								hideLabelFromVision={ true }
 								inputMode="numeric"
@@ -611,27 +650,31 @@ const DimensionsResponsiveControl = ( props ) => {
 							/>
 						) }
 					/>
-					<Controller
-						name={ `${ deviceType }.leftUnit` }
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<SelectControl
-								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
-								label={ __( 'Unit', 'photo-block' ) }
-								value={ getHierarchicalValueUnit(
-									props.values,
-									deviceType,
-									value,
-									'leftUnit'
+					{
+						getValues( `${ deviceType }.leftUnit` ) && (
+							<Controller
+								name={ `${ deviceType }.leftUnit` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<SelectControl
+										className="dlx-photo-block__dimensions-responsive-sync-interface-select"
+										label={ __( 'Unit', 'photo-block' ) }
+										value={ getHierarchicalValueUnit(
+											props.values,
+											deviceType,
+											value,
+											'leftUnit'
+										) }
+										options={ units }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										hideLabelFromVision={ true }
+									/>
 								) }
-								options={ units }
-								onChange={ ( newValue ) => {
-									onChange( newValue );
-								} }
-								hideLabelFromVision={ true }
 							/>
-						) }
-					/>
+						)
+					}
 				</div>
 				<Button
 					variant="secondary"

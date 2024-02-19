@@ -6,10 +6,27 @@ const shorthandCSSUnits = ( top, topUnit, right, rightUnit, bottom, bottomUnit, 
 		return;
 	}
 
-	top = ( parseFloat( top ) != 0 && '' !== top ) ? parseFloat( top ) + topUnit + ' ' : '0 '; // eslint-disable-line eqeqeq
-	right = ( parseFloat( right ) != 0 && '' !== right ) ? parseFloat( right ) + rightUnit + ' ' : '0 '; // eslint-disable-line eqeqeq
-	bottom = ( parseFloat( bottom ) != 0 && '' !== bottom ) ? parseFloat( bottom ) + bottomUnit + ' ' : '0 '; // eslint-disable-line eqeqeq
-	left = ( parseFloat( left ) != 0 && '' !== left ) ? parseFloat( left ) + leftUnit + ' ' : '0 '; // eslint-disable-line eqeqeq
+	// Check if top, right, bottom, left are the strings.
+	if ( 'string' !== typeof top ) {
+		top = ( parseFloat( top ) != 0 && '' !== top ) ? parseFloat( top ) + topUnit + ' ' : '0 '; // eslint-disable-line eqeqeq
+	} else {
+		top = `${ top }${ topUnit } `;
+	}
+	if ( 'string' !== typeof right ) {
+		right = ( parseFloat( right ) != 0 && '' !== right ) ? parseFloat( right ) + rightUnit + ' ' : '0 '; // eslint-disable-line eqeqeq
+	} else {
+		right = `${ right }${ rightUnit } `;
+	}
+	if ( 'string' !== typeof bottom ) {
+		bottom = ( parseFloat( bottom ) != 0 && '' !== bottom ) ? parseFloat( bottom ) + bottomUnit + ' ' : '0 '; // eslint-disable-line eqeqeq
+	} else {
+		bottom = `${ bottom }${ bottomUnit } `;
+	}
+	if ( 'string' !== typeof left ) {
+		left = ( parseFloat( left ) != 0 && '' !== left ) ? parseFloat( left ) + leftUnit + ' ' : '0 '; // eslint-disable-line eqeqeq
+	} else {
+		left = `${ left }${ leftUnit } `;
+	}
 
 	if ( right === left ) {
 		left = '';

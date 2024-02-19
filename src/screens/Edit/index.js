@@ -57,29 +57,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		uniqueId,
 		photo,
 		imageSize,
-		imageDimensions,
-		imageSizePercentage,
-		photoOpacity,
-		photoBlur,
-		photoObjectFit,
-		photoObjectPosition,
-		photoObjectPositionCustom,
-		photoDropShadow,
-		photoBackgroundColor,
 		cssGramFilter,
-		photoMaximumWidth,
-		containerWidth,
-		containerHeight,
-		containerMaxWidth,
-		containerMaxHeight,
-		containerMinWidth,
-		containerMinHeight,
-		photoPaddingSize,
-		photoMarginSize,
-		photoBorderRadius,
-		photoBorder,
-		skipLazyLoading,
-		imageProtectionEnabled,
 	} = attributes;
 	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
@@ -105,13 +83,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	// Setup useEffect to update image dimensions if empty.
 	useEffect( () => {
-		if ( ! imageDimensions.width || ! imageDimensions.height ) {
-			setAttributes( {
-				imageDimensions: {
-					...photo,
-				},
-			} );
-		}
 		if ( photo.url ) {
 			setImageFile( photo );
 		}
@@ -180,10 +151,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		)
 			.then( ( response ) => {
 				setAttributes( { photo: { ...photo, ...response.data } } );
-				setAttributes( {
-					imageDimensions: { ...imageDimensions, ...response.data },
-				} );
-				setAttributes( { imageSizePercentage: '100' } );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
@@ -284,161 +251,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						options={ imageSizeOptions }
 					/>
 				</PanelRow>
-				<PanelRow className="dlx-photo-block__image-dimensions-row">
-					<h3>{ __( 'Image Dimensions', 'photo-block' ) }</h3>
-					{ imageSizeLoading && <Spinner /> }
-					{ ! imageSizeLoading && (
-						<>
-							<div className="dlx-photo-block__image-dimensions">
-								<TextControl
-									label={ __( 'Width', 'photo-block' ) }
-									value={ imageDimensions.width ? imageDimensions.width : width }
-									onChange={ ( newWidth ) => {
-										// Get new height based on new width.
-										const calcHeight = calculateHeight(
-											photo.width,
-											photo.height,
-											newWidth
-										);
-										const newDimensions = {
-											width: newWidth,
-											height: calcHeight,
-										};
-										setAttributes( {
-											imageDimensions: { ...imageDimensions, ...newDimensions },
-										} );
-									} }
-									type="number"
-								/>
-								<TextControl
-									label={ __( 'Height', 'photo-block' ) }
-									value={
-										imageDimensions.height ? imageDimensions.height : height
-									}
-									onChange={ ( newHeight ) => {
-										const calcWidth = calculateWidth(
-											photo.width,
-											photo.height,
-											newHeight
-										);
-										const newDimensions = {
-											width: calcWidth,
-											height: newHeight,
-										};
-										setAttributes( {
-											imageDimensions: { ...imageDimensions, ...newDimensions },
-										} );
-									} }
-									type="number"
-								/>
-							</div>
-							<div className="dlx-photo-block__image-dimensions-buttons">
-								<ButtonGroup className="dlx-photo-block__image-dimensions-buttons-group">
-									<Button
-										isSmall
-										variant="secondary"
-										className={ classnames(
-											'dlx-photo-block__image-dimensions-buttons-group-button',
-											{
-												'is-pressed': imageSizePercentage === '25',
-											}
-										) }
-										onClick={ () => {
-											// Calc width/height based on percentage.
-											const calcWidth = Math.round( photo.width * 0.25 );
-											const calcHeight = Math.round( photo.height * 0.25 );
-											setAttributes( {
-												imageSizePercentage: '25',
-												imageDimensions: {
-													...imageDimensions,
-													width: calcWidth,
-													height: calcHeight,
-												},
-											} );
-										} }
-									>
-										{ __( '25%', 'photo-block' ) }
-									</Button>
-									<Button
-										isSmall
-										className={ classnames(
-											'dlx-photo-block__image-dimensions-buttons-group-button',
-											{
-												'is-pressed': imageSizePercentage === '50',
-											}
-										) }
-										variant="secondary"
-										onClick={ () => {
-											// Calc width/height based on percentage.
-											const calcWidth = Math.round( photo.width * 0.5 );
-											const calcHeight = Math.round( photo.height * 0.5 );
-											setAttributes( {
-												imageSizePercentage: '50',
-												imageDimensions: {
-													...imageDimensions,
-													width: calcWidth,
-													height: calcHeight,
-												},
-											} );
-										} }
-									>
-										{ __( '50%', 'photo-block' ) }
-									</Button>
-									<Button
-										isSmall
-										variant="secondary"
-										className={ classnames(
-											'dlx-photo-block__image-dimensions-buttons-group-button',
-											{
-												'is-pressed': imageSizePercentage === '75',
-											}
-										) }
-										onClick={ () => {
-											// Calc width/height based on percentage.
-											const calcWidth = Math.round( photo.width * 0.75 );
-											const calcHeight = Math.round( photo.height * 0.75 );
-											setAttributes( {
-												imageSizePercentage: '75',
-												imageDimensions: {
-													...imageDimensions,
-													width: calcWidth,
-													height: calcHeight,
-												},
-											} );
-										} }
-									>
-										{ __( '75%', 'photo-block' ) }
-									</Button>
-									<Button
-										isSmall
-										variant="secondary"
-										className={ classnames(
-											'dlx-photo-block__image-dimensions-buttons-group-button',
-											{
-												'is-pressed': imageSizePercentage === '100',
-											}
-										) }
-										onClick={ () => {
-											// Calc width/height based on percentage.
-											const calcWidth = Math.round( photo.width );
-											const calcHeight = Math.round( photo.height );
-											setAttributes( {
-												imageSizePercentage: '100',
-												imageDimensions: {
-													...imageDimensions,
-													width: calcWidth,
-													height: calcHeight,
-												},
-											} );
-										} }
-									>
-										{ __( '100%', 'photo-block' ) }
-									</Button>
-								</ButtonGroup>
-							</div>
-						</>
-					) }
-				</PanelRow>
 			</PanelBodyControl>
 		</>
 	);
@@ -536,10 +348,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								// Change back to original image.
 								setAttributes( {
 									photo: originalImageFile,
-									imageDimensions: {
-										width: originalImageFile.width,
-										height: originalImageFile.height,
-									},
 								} );
 								setImageFile( originalImageFile );
 							} }
@@ -662,8 +470,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									'has-css-gram': cssGramFilter !== 'none',
 								}
 							) }
-							width={ imageDimensions.width }
-							height={ imageDimensions.height }
 							alt=""
 							onLoad={ () => {
 								setImageLoading( false );
