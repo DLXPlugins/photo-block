@@ -5996,6 +5996,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+// Test if the value starts with a number, decimal or a single dash. Single dash is for negative numbers.
+var startsWithNumber = function startsWithNumber(number) {
+  return /^([-]?\d|[-]?\.)/.test(number);
+};
+var getNumericValue = function getNumericValue(values) {
+  return values.length > 0 ? values[0].trim() : '';
+};
+var defaultUnitValue = 'px';
+var getUnitValue = function getUnitValue(values) {
+  return values.length > 1 ? values[1] : defaultUnitValue;
+};
+var splitValues = function splitValues(values) {
+  var unitRegex = _utils_UnitsList__WEBPACK_IMPORTED_MODULE_8__["default"].join('|');
+  var splitRegex = new RegExp("(".concat(unitRegex, ")"));
+  return values ? values.toString().toLowerCase().split(splitRegex).filter(function (singleValue) {
+    return '' !== singleValue;
+  }) : [];
+};
 var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
   var label = props.label,
     onValuesChange = props.onValuesChange,
@@ -6356,14 +6375,23 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           step: 1,
           max: "Infinity",
           onChange: function onChange(newValue) {
-            _onChange4(newValue);
+            if (startsWithNumber(newValue)) {
+              var newValuesSplit = splitValues(newValue);
+              var numericValue = getNumericValue(newValuesSplit);
+              setValue("".concat(deviceType, ".topUnit"), getUnitValue(newValuesSplit));
+              _onChange4(numericValue);
+            } else {
+              // Starts with a string, hide the unit.
+              setValue("".concat(deviceType, ".topUnit"), '');
+              _onChange4(newValue);
+            }
           },
           hideLabelFromVision: true,
           inputMode: "numeric",
           autoComplete: "off"
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+    }), getValues("".concat(deviceType, ".topUnit")) && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
       name: "".concat(deviceType, ".topUnit"),
       control: control,
       render: function render(_ref5) {
