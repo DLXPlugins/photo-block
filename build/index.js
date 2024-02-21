@@ -5980,7 +5980,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
 /* harmony import */ var _HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../HeadingIconResponsive */ "./src/components/HeadingIconResponsive/index.js");
 /* harmony import */ var _utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/TypographyHelper */ "./src/utils/TypographyHelper.js");
-/* harmony import */ var _utils_UnitsList__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utils/UnitsList */ "./src/utils/UnitsList.js");
+/* harmony import */ var _hooks_useUnits__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../hooks/useUnits */ "./src/hooks/useUnits.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -5998,48 +5998,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
-// Test if the value starts with a number, decimal or a single dash. Single dash is for negative numbers.
-var startsWithNumber = function startsWithNumber(number) {
-  return /^([-]?\d|[-]?\.)/.test(number);
-};
-var getNumericValue = function getNumericValue(values) {
-  return values.length > 0 ? values[0].trim() : '';
-};
-var defaultUnitValue = 'px';
-var getUnitValue = function getUnitValue(values) {
-  return values.length > 1 ? values[1] : defaultUnitValue;
-};
-
-/**
- * Handle when a unit value changes.
- *
- * @param {string}   newValue The value to get the numeric value from.
- * @param {Function} onChange The onChange function.
- * @param {Function} setValue The setValue function.
- * @param {string}   device   The device type.
- * @param {string}   unitSlug The unit slug.
- * @return {void}
- */
-var onUnitChange = function onUnitChange(newValue, onChange, setValue, device, unitSlug) {
-  if (startsWithNumber(newValue)) {
-    var newValuesSplit = splitValues(newValue);
-    var numericValue = getNumericValue(newValuesSplit);
-    setValue("".concat(device, ".").concat(unitSlug), getUnitValue(newValuesSplit));
-    onChange(numericValue);
-  } else {
-    // Starts with a string, hide the unit.
-    setValue("".concat(device, ".").concat(unitSlug), '');
-    onChange(newValue);
-  }
-};
-var splitValues = function splitValues(values) {
-  var unitRegex = _utils_UnitsList__WEBPACK_IMPORTED_MODULE_8__["default"].join('|');
-  var splitRegex = new RegExp("(".concat(unitRegex, ")"));
-  return values ? values.toString().toLowerCase().split(splitRegex).filter(function (singleValue) {
-    return '' !== singleValue;
-  }) : [];
-};
 var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
   var label = props.label,
     onValuesChange = props.onValuesChange,
@@ -6056,6 +6014,12 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
   var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_5__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 1),
     deviceType = _useDeviceType2[0];
+  var _useUnits = (0,_hooks_useUnits__WEBPACK_IMPORTED_MODULE_8__["default"])(),
+    onUnitChange = _useUnits.onUnitChange,
+    splitValues = _useUnits.splitValues,
+    getNumericValue = _useUnits.getNumericValue,
+    getUnitValue = _useUnits.getUnitValue,
+    startsWithNumber = _useUnits.startsWithNumber;
   var units = props !== null && props !== void 0 && props.units ? props.units : [{
     label: 'PX',
     value: 'px'
@@ -10394,6 +10358,73 @@ __webpack_require__.r(__webpack_exports__);
   };
   return [deviceType, setDeviceType];
 });
+
+/***/ }),
+
+/***/ "./src/hooks/useUnits.js":
+/*!*******************************!*\
+  !*** ./src/hooks/useUnits.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_UnitsList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/UnitsList */ "./src/utils/UnitsList.js");
+
+var useUnits = function useUnits() {
+  // Test if the value starts with a number, decimal or a single dash. Single dash is for negative numbers.
+  var startsWithNumber = function startsWithNumber(number) {
+    return /^([-]?\d|[-]?\.)/.test(number);
+  };
+  var getNumericValue = function getNumericValue(values) {
+    return values.length > 0 ? values[0].trim() : '';
+  };
+  var defaultUnitValue = 'px';
+  var getUnitValue = function getUnitValue(values) {
+    return values.length > 1 ? values[1] : defaultUnitValue;
+  };
+
+  /**
+   * Handle when a unit value changes.
+   *
+   * @param {string}   newValue The value to get the numeric value from.
+   * @param {Function} onChange The onChange function.
+   * @param {Function} setValue The setValue function.
+   * @param {string}   device   The device type.
+   * @param {string}   unitSlug The unit slug.
+   * @return {void}
+   */
+  var onUnitChange = function onUnitChange(newValue, onChange, setValue, device, unitSlug) {
+    if (startsWithNumber(newValue)) {
+      var newValuesSplit = splitValues(newValue);
+      var numericValue = getNumericValue(newValuesSplit);
+      setValue("".concat(device, ".").concat(unitSlug), getUnitValue(newValuesSplit));
+      onChange(numericValue);
+    } else {
+      // Starts with a string, hide the unit.
+      setValue("".concat(device, ".").concat(unitSlug), '');
+      onChange(newValue);
+    }
+  };
+  var splitValues = function splitValues(values) {
+    var unitRegex = _utils_UnitsList__WEBPACK_IMPORTED_MODULE_0__["default"].join('|');
+    var splitRegex = new RegExp("(".concat(unitRegex, ")"));
+    return values ? values.toString().toLowerCase().split(splitRegex).filter(function (singleValue) {
+      return '' !== singleValue;
+    }) : [];
+  };
+  return {
+    onUnitChange: onUnitChange,
+    splitValues: splitValues,
+    getNumericValue: getNumericValue,
+    getUnitValue: getUnitValue,
+    startsWithNumber: startsWithNumber
+  };
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useUnits);
 
 /***/ }),
 
