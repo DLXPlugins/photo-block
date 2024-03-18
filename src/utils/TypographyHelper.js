@@ -58,11 +58,17 @@ export const getValueWithUnit = ( screenSize, valueObject, cssValue = 'width' ) 
 	const width = geHierarchicalPlaceholderValue( valueObject, screenSize, valueObject[ screenSize ].width, 'width' ); // Width is misleading as it can also be height.
 	const unit = getHierarchicalValueUnit( valueObject, screenSize, valueObject[ screenSize ].unit, 'unit' );
 
-	if ( ( '' === width || '0' === width ) || '' === unit ) {
+	// Get RegEx to check for numbers only. IF not a match, then unit should be empty.
+	const numberOnly = width.match( /^(-)?[0-9]+$/ );
+	if ( numberOnly ) {
+		return `${ cssValue }: ${ width }${ unit };`;
+	}
+
+	if ( ( '' === width || '0' === width ) ) {
 		return '';
 	}
 	// Build CSS.
-	return `${ cssValue }: ${ width }${ unit };`;
+	return `${ cssValue }: ${ width };`;
 };
 
 /**

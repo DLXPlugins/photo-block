@@ -26,6 +26,7 @@ import BorderStyleSolidIcon from '../Icons/BorderStyleSolid';
 import BorderStyleDashedIcon from '../Icons/BorderStyleDashed';
 import BorderStyleDottedIcon from '../Icons/BorderStyleDotted';
 import BorderStyleDoubleIcon from '../Icons/BorderStyleDouble';
+import useUnits from '../../hooks/useUnits';
 
 const BorderResponsiveControl = ( props ) => {
 	const {
@@ -39,6 +40,15 @@ const BorderResponsiveControl = ( props ) => {
 		labelAll,
 	} = props;
 	const [ deviceType ] = useDeviceType( 'Desktop' );
+
+	const {
+		onUnitChange,
+		splitValues,
+		getNumericValue,
+		getUnitValue,
+		startsWithNumber,
+	} = useUnits();
+
 	const [ showBorderStylePopoverSync, setShowBorderStylePopoverSync ] =
 		useState( false );
 	const [ showBorderStylePopoverTop, setShowBorderStylePopoverTop ] =
@@ -168,12 +178,26 @@ const BorderResponsiveControl = ( props ) => {
 	 * @param {string} key   The key to change.
 	 */
 	const changeAllValues = ( value, key ) => {
-		const oldValues = getValues( deviceType );
-		oldValues.top[ key ] = value;
-		oldValues.right[ key ] = value;
-		oldValues.bottom[ key ] = value;
-		oldValues.left[ key ] = value;
-		setValue( deviceType, oldValues );
+		if ( startsWithNumber( value ) ) {
+			const newValuesSplit = splitValues( value );
+			const numericValue = getNumericValue( newValuesSplit );
+			const unitValue = getUnitValue( newValuesSplit );
+			const oldValues = getValues( deviceType );
+			oldValues.top[ key ] = numericValue;
+			oldValues.right[ key ] = numericValue;
+			oldValues.bottom[ key ] = numericValue;
+			oldValues.left[ key ] = numericValue;
+			setValue( deviceType, oldValues );
+			syncUnits( unitValue );
+		} else {
+			const oldValues = getValues( deviceType );
+			oldValues.top[ key ] = value;
+			oldValues.right[ key ] = value;
+			oldValues.bottom[ key ] = value;
+			oldValues.left[ key ] = value;
+			setValue( deviceType, oldValues );
+			syncUnits( value );
+		}
 	};
 
 	/**
@@ -556,7 +580,7 @@ const BorderResponsiveControl = ( props ) => {
 									'top',
 									'width'
 								) }
-								type="number"
+								type="text"
 								min={ 0 }
 								step={ 1 }
 								max="Infinity"
@@ -727,10 +751,10 @@ const BorderResponsiveControl = ( props ) => {
 											'top',
 											'width'
 										) }
-										type="number"
+										type="text"
 										min={ 0 }
 										onChange={ ( newValue ) => {
-											onChange( newValue );
+											onUnitChange( newValue, onChange, setValue, deviceType, 'top.unit' );
 										} }
 										hideLabelFromVision={ true }
 										inputMode="numeric"
@@ -822,10 +846,10 @@ const BorderResponsiveControl = ( props ) => {
 											'right',
 											'width'
 										) }
-										type="number"
+										type="text"
 										min={ 0 }
 										onChange={ ( newValue ) => {
-											onChange( newValue );
+											onUnitChange( newValue, onChange, setValue, deviceType, 'right.unit' );
 										} }
 										hideLabelFromVision={ true }
 										inputMode="numeric"
@@ -917,12 +941,12 @@ const BorderResponsiveControl = ( props ) => {
 											'bottom',
 											'width'
 										) }
-										type="number"
+										type="text"
 										min={ 0 }
 										step={ 1 }
 										max="Infinity"
 										onChange={ ( newValue ) => {
-											onChange( newValue );
+											onUnitChange( newValue, onChange, setValue, deviceType, 'bottom.unit' );
 										} }
 										hideLabelFromVision={ true }
 										inputMode="numeric"
@@ -1014,12 +1038,12 @@ const BorderResponsiveControl = ( props ) => {
 											'left',
 											'width'
 										) }
-										type="number"
+										type="text"
 										min={ 0 }
 										step={ 1 }
 										max="Infinity"
 										onChange={ ( newValue ) => {
-											onChange( newValue );
+											onUnitChange( newValue, onChange, setValue, deviceType, 'left.unit' );
 										} }
 										hideLabelFromVision={ true }
 										inputMode="numeric"

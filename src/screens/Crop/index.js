@@ -523,10 +523,6 @@ const CropScreen = ( props ) => {
 								setImageFile( data.data.attachment );
 								setAttributes( {
 									photo: data.data.attachment,
-									imageDimensions: {
-										width: data.data.width,
-										height: data.data.height,
-									},
 								} );
 								setScreen( 'edit' );
 							} else {

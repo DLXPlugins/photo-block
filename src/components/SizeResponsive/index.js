@@ -40,6 +40,8 @@ import UploaderContext from '../../contexts/UploaderContext';
 import UnitPicker from '../UnitPicker';
 import { getHierarchicalValueUnit, geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
 import HeadingIconResponsive from '../HeadingIconResponsive';
+import useUnits from '../../hooks/useUnits';
+
 const SizeResponsiveControl = ( props ) => {
 	const [ screenSize, setScreenSize ] = useState( 'desktop' );
 	const getDefaultValues = () => {
@@ -58,6 +60,13 @@ const SizeResponsiveControl = ( props ) => {
 			},
 		};
 	};
+
+	const {
+		startsWithNumber,
+		splitValues,
+		getNumericValue,
+		getUnitValue,
+	} = useUnits();
 
 	const { control, setValue, getValues } = useForm( {
 		defaultValues: getDefaultValues(),
@@ -107,10 +116,20 @@ const SizeResponsiveControl = ( props ) => {
 					name={ `${ screenSize }.width` }
 					render={ ( { field: { onChange, value } } ) => (
 						<TextControl
-							type={ 'number' }
+							type={ 'text' }
 							value={ getValues( screenSize ).width }
 							onChange={ ( newValue ) => {
-								onChange( newValue );
+								if ( ! startsWithNumber( newValue ) ) {
+									// Unit should be blank here.
+									setValue( `${ screenSize }.unit`, '' );
+									onChange( newValue );
+								} else {
+									const newValuesSplit = splitValues( newValue );
+									const numericValue = getNumericValue( newValuesSplit );
+									const unitValue = getUnitValue( newValuesSplit );
+									setValue( `${ screenSize }.unit`, unitValue );
+									onChange( numericValue );
+								}
 							} }
 							placeholder={ geHierarchicalPlaceholderValue(
 								props.values,

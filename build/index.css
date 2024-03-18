@@ -2431,7 +2431,8 @@ svg.lucide {
 }
 
 .dlx-photo-block__dimensions-responsive-sync-interface input[type=text],
-.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text] {
+.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text],
+.dlx-photo-block__border-responsive-sync-interface-input input[type=text] {
   max-width: 28px;
   height: 40px;
   border: none;
@@ -2446,12 +2447,15 @@ svg.lucide {
 }
 .dlx-photo-block__dimensions-responsive-sync-interface input[type=text]::-webkit-outer-spin-button, .dlx-photo-block__dimensions-responsive-sync-interface input[type=text]::-webkit-inner-spin-button,
 .dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text]::-webkit-outer-spin-button,
-.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text]::-webkit-inner-spin-button {
+.dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text]::-webkit-inner-spin-button,
+.dlx-photo-block__border-responsive-sync-interface-input input[type=text]::-webkit-outer-spin-button,
+.dlx-photo-block__border-responsive-sync-interface-input input[type=text]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 .dlx-photo-block__dimensions-responsive-sync-interface select,
-.dlx-photo-block__dimensions-responsive-manual-interface-item select {
+.dlx-photo-block__dimensions-responsive-manual-interface-item select,
+.dlx-photo-block__border-responsive-sync-interface-input select {
   color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba)) !important;
   -o-appearance: none;
   -webkit-appearance: none;
@@ -2479,14 +2483,17 @@ svg.lucide {
   box-sizing: border-box;
 }
 .dlx-photo-block__dimensions-responsive-sync-interface select:hover,
-.dlx-photo-block__dimensions-responsive-manual-interface-item select:hover {
+.dlx-photo-block__dimensions-responsive-manual-interface-item select:hover,
+.dlx-photo-block__border-responsive-sync-interface-input select:hover {
   cursor: pointer;
   border: 1px solid var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba)) !important;
 }
 .dlx-photo-block__dimensions-responsive-sync-interface .components-input-control__suffix,
 .dlx-photo-block__dimensions-responsive-sync-interface .components-input-control__backdrop,
 .dlx-photo-block__dimensions-responsive-manual-interface-item .components-input-control__suffix,
-.dlx-photo-block__dimensions-responsive-manual-interface-item .components-input-control__backdrop {
+.dlx-photo-block__dimensions-responsive-manual-interface-item .components-input-control__backdrop,
+.dlx-photo-block__border-responsive-sync-interface-input .components-input-control__suffix,
+.dlx-photo-block__border-responsive-sync-interface-input .components-input-control__backdrop {
   display: none;
 }
 

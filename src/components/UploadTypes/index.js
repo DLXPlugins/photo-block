@@ -247,10 +247,6 @@ const UploadTypes = ( props ) => {
 							};
 							setAttributes( {
 								photo: selectedMedia,
-								imageDimensions: {
-									width: selectedMedia.width,
-									height: selectedMedia.height,
-								},
 								screen: 'edit',
 							} );
 							setImageFile( selectedMedia );

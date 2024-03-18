@@ -21,7 +21,7 @@ import UploaderContext from '../../contexts/UploaderContext';
  * @return {Function} Component.
  */
 const CSSGramButtonPreview = ( props ) => {
-	const { filter, label, isSelected, fullUrl, imageDimensions } = props;
+	const { filter, label, isSelected, fullUrl, photo } = props;
 
 	// Get context.
 	const {
@@ -73,8 +73,8 @@ const CSSGramButtonPreview = ( props ) => {
 										'has-css-gram': filter !== 'none',
 									}
 								) }
-								width={ imageDimensions.width }
-								height={ imageDimensions.height }
+								width={ photo.width }
+								height={ photo.height }
 								style={ { maxWidth: '100%', height: 'auto' } }
 								alt=""
 							/>

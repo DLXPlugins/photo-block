@@ -53,7 +53,7 @@ const cssGramOptions = [
 const CSSGramButtonGroup = ( props ) => {
 	const { attributes, setAttributes } = props;
 
-	const { cssGramFilter, imageDimensions } = attributes;
+	const { cssGramFilter, photo } = attributes;
 
 	// Get context.
 	const {
@@ -82,7 +82,7 @@ const CSSGramButtonGroup = ( props ) => {
 									label={ option.label }
 									filter={ option.value }
 									fullUrl={ imageFile.url }
-									imageDimensions={ imageDimensions }
+									photo={ photo }
 								/>
 							);
 						} )
