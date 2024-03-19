@@ -109,7 +109,7 @@ const DimensionsResponsiveControl = ( props ) => {
 	const changeAllValues = ( value ) => {
 		if ( startsWithNumber( value ) ) {
 			const newValuesSplit = splitValues( value );
-			const numericValue = getNumericValue( newValuesSplit );
+			const numericValue = parseFloat( getNumericValue( newValuesSplit ) );
 			const unitValue = getUnitValue( newValuesSplit );
 			const oldValues = getValues( deviceType );
 			oldValues.top = numericValue;

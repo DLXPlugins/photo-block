@@ -230,6 +230,7 @@ const PhotoCaptionBlock = ( props ) => {
 		captionTextFontFamily,
 		captionHeadingsFontFamily,
 		captionTypography,
+		captionCustomTypography,
 		captionBorder,
 		captionBorderRadius,
 		containerWidth,

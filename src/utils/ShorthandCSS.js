@@ -3,6 +3,9 @@ export default function shorthandCSS( top, right, bottom, left, unit ) {
 	if ( '' === top && '' === right && '' === bottom && '' === left ) {
 		return;
 	}
+	if ( null === unit ) {
+		unit = 'px';
+	}
 
 	top = ( parseFloat( top ) != 0 && '' !== top ) ? parseFloat( top ) + unit + ' ' : '0 '; // eslint-disable-line eqeqeq
 	right = ( parseFloat( right ) != 0 && '' !== right ) ? parseFloat( right ) + unit + ' ' : '0 '; // eslint-disable-line eqeqeq
@@ -20,8 +23,7 @@ export default function shorthandCSS( top, right, bottom, left, unit ) {
 			}
 		}
 	}
-
-	const output = top + right + bottom + left;
+	const output = top + '' + right + '' + bottom + '' + left + '';
 
 	return output.trim();
 }

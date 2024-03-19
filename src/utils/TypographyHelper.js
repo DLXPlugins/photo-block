@@ -103,7 +103,7 @@ export function buildDimensionsCSS( props, screenSize ) {
 	if ( 'tablet' === screenSize || 'mobile' === screenSize ) {
 		if ( true === getHierarchicalValueUnit( props, screenSize, dimensions.unitSync ) ) {
 			const topValue = geHierarchicalPlaceholderValue( props, screenSize, dimensions.top, 'top' );
-			const topUnit = geHierarchicalPlaceholderValue( props, screenSize, dimensions.top, 'topUnit' );
+			const topUnit = geHierarchicalPlaceholderValue( props, screenSize, dimensions.topUnit, 'topUnit' );
 			return shorthandCSS( topValue, topValue, topValue, topValue, topUnit );
 		}
 		const top = geHierarchicalPlaceholderValue( props, screenSize, dimensions.top, 'top' );
@@ -243,7 +243,7 @@ export function getHierarchicalValueUnit( props, screenSize, value, type, subTyp
 		}
 	}
 
-	if ( null === value ) {
+	if ( null === value || typeof value === 'undefined' ) {
 		return 'px';
 	}
 

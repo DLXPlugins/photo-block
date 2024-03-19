@@ -142,6 +142,10 @@
 				}
 			}
 		},
+		"captionCustomTypography": {
+			"type" : "string",
+			"default" : ""
+		},
 		"captionPaddingSize": {
 			"type": "object",
 			"default": {

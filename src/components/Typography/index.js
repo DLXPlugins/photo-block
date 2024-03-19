@@ -633,33 +633,7 @@ const TypographyControl = ( props ) => {
 				<HeadingIconResponsive heading={ label } screenSize={ screenSize } />
 			</div>
 			<div className="photo-block-typography-component-settings">
-				<Button
-					variant="secondary"
-					label={ __( 'Font Settings', 'photo-block' ) }
-					onClick={ () => {
-						if ( isToggled ) {
-							setIsToggled( false );
-						} else {
-							setIsVisible( ! isVisible );
-						}
-					} }
-					icon={ <Type /> }
-					ref={ setFontSettingsPopoverAnchor }
-				>
-					{ __( 'Font Settings', 'photo-block' ) }
-				</Button>
-				{ true === isVisible && (
-					<Popover
-						className="photo-block-component-typography-popup"
-						noArrow={ false }
-						anchor={ fontSettingsPopoverAnchor }
-						placement="left"
-						offset={ 10 }
-						onClose={ toggleClose }
-					>
-						{ getPopoverContent() }
-					</Popover>
-				) }
+				{ getPopoverContent() }
 			</div>
 		</BaseControl>
 	);
