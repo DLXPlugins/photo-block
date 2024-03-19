@@ -8627,17 +8627,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/type.js");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/type.js");
 /* harmony import */ var _utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/TypographyHelper */ "./src/utils/TypographyHelper.js");
 /* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
 /* harmony import */ var _HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../HeadingIconResponsive */ "./src/components/HeadingIconResponsive/index.js");
+/* harmony import */ var _hooks_useUnits__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../hooks/useUnits */ "./src/hooks/useUnits.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -8752,6 +8754,12 @@ var TypographyControl = function TypographyControl(props) {
     isToggled = _useState20[0],
     setIsToggled = _useState20[1]; // for the main typography settings popup.
 
+  var _useUnits = (0,_hooks_useUnits__WEBPACK_IMPORTED_MODULE_7__["default"])(),
+    onUnitChange = _useUnits.onUnitChange,
+    splitValues = _useUnits.splitValues,
+    getNumericValue = _useUnits.getNumericValue,
+    getUnitValue = _useUnits.getUnitValue,
+    startsWithNumber = _useUnits.startsWithNumber;
   var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_5__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 1),
     screenSize = _useDeviceType2[0];
@@ -8801,13 +8809,13 @@ var TypographyControl = function TypographyControl(props) {
       }
     };
   };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useForm)({
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_8__.useForm)({
       defaultValues: getDefaultValues()
     }),
     control = _useForm.control,
     setValue = _useForm.setValue,
     getValues = _useForm.getValues;
-  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useWatch)({
+  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_8__.useWatch)({
     control: control
   });
   var label = props.label;
@@ -8856,7 +8864,7 @@ var TypographyControl = function TypographyControl(props) {
     if ('desktop' !== screenSize) {
       return null;
     }
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontFamilySlug"),
       control: control,
       render: function render(_ref) {
@@ -8882,7 +8890,7 @@ var TypographyControl = function TypographyControl(props) {
           }
         });
       }
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontFamily"),
       control: control,
       render: function render(_ref2) {
@@ -8892,7 +8900,7 @@ var TypographyControl = function TypographyControl(props) {
           value: getValues(screenSize).fontFamily
         });
       }
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontFallback"),
       control: control,
       render: function render(_ref3) {
@@ -8918,7 +8926,7 @@ var TypographyControl = function TypographyControl(props) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Capitalize', 'photo-block'),
       value: 'capitalize'
     }];
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".textTransform"),
       control: control,
       render: function render(_ref4) {
@@ -8937,7 +8945,7 @@ var TypographyControl = function TypographyControl(props) {
     });
   };
   var getFontSize = function getFontSize() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontSize"),
       control: control,
       render: function render(_ref5) {
@@ -8947,12 +8955,23 @@ var TypographyControl = function TypographyControl(props) {
           value: getValues(screenSize).fontSize,
           onChange: function onChange(newValue) {
             _onChange3(newValue);
+            if (startsWithNumber(newValue)) {
+              var newValuesSplit = splitValues(newValue);
+              var numericValue = getNumericValue(newValuesSplit);
+              var unitValue = getUnitValue(newValuesSplit);
+              setValue("".concat(screenSize, ".fontSize"), numericValue);
+              setValue("".concat(screenSize, ".fontSizeUnit"), unitValue);
+            } else {
+              // Starts with a string, hide the unit.
+              setValue("".concat(screenSize, ".fontSize"), newValue);
+              setValue("".concat(screenSize, ".fontSizeUnit"), '');
+            }
           },
-          type: "number",
+          type: "text",
           placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).fontSize, 'fontSize')
         });
       }
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontSizeUnit"),
       control: control,
       render: function render(_ref6) {
@@ -9022,7 +9041,7 @@ var TypographyControl = function TypographyControl(props) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('900', 'photo-block'),
       value: '900'
     }];
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontWeight"),
       control: control,
       render: function render(_ref7) {
@@ -9041,7 +9060,7 @@ var TypographyControl = function TypographyControl(props) {
     });
   };
   var getLineHeight = function getLineHeight() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".lineHeight"),
       control: control,
       render: function render(_ref8) {
@@ -9053,12 +9072,23 @@ var TypographyControl = function TypographyControl(props) {
           value: getValues(screenSize).lineHeight,
           onChange: function onChange(newValue) {
             _onChange5(newValue);
+            if (startsWithNumber(newValue)) {
+              var newValuesSplit = splitValues(newValue);
+              var numericValue = getNumericValue(newValuesSplit);
+              var unitValue = getUnitValue(newValuesSplit);
+              setValue("".concat(screenSize, ".lineHeight"), numericValue);
+              setValue("".concat(screenSize, ".lineHeightUnit"), unitValue);
+            } else {
+              // Starts with a string, hide the unit.
+              setValue("".concat(screenSize, ".lineHeight"), newValue);
+              setValue("".concat(screenSize, ".lineHeightUnit"), '');
+            }
           },
-          type: "number",
+          type: "text",
           placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).lineHeight, 'lineHeight')
         });
       }
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".lineHeightUnit"),
       control: control,
       render: function render(_ref9) {
@@ -9100,7 +9130,7 @@ var TypographyControl = function TypographyControl(props) {
     }, "rem"))));
   };
   var getFontType = function getFontType() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontType"),
       control: control,
       render: function render(_ref10) {
@@ -9113,7 +9143,7 @@ var TypographyControl = function TypographyControl(props) {
     });
   };
   var getFontFallback = function getFontFallback() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontFallback"),
       control: control,
       render: function render(_ref11) {
@@ -9126,7 +9156,7 @@ var TypographyControl = function TypographyControl(props) {
     });
   };
   var getLetterSpacing = function getLetterSpacing() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".letterSpacing"),
       control: control,
       render: function render(_ref12) {
@@ -9138,12 +9168,23 @@ var TypographyControl = function TypographyControl(props) {
           value: getValues(screenSize).letterSpacing,
           onChange: function onChange(newValue) {
             _onChange6(newValue);
+            if (startsWithNumber(newValue)) {
+              var newValuesSplit = splitValues(newValue);
+              var numericValue = getNumericValue(newValuesSplit);
+              var unitValue = getUnitValue(newValuesSplit);
+              setValue("".concat(screenSize, ".letterSpacing"), numericValue);
+              setValue("".concat(screenSize, ".letterSpacingUnit"), unitValue);
+            } else {
+              // Starts with a string, hide the unit.
+              setValue("".concat(screenSize, ".letterSpacing"), newValue);
+              setValue("".concat(screenSize, ".letterSpacingUnit"), '');
+            }
           },
-          type: "number",
+          type: "text",
           placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).letterSpacing, 'letterSpacing')
         });
       }
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".letterSpacingUnit"),
       control: control,
       render: function render(_ref13) {
@@ -9228,7 +9269,7 @@ var TypographyControl = function TypographyControl(props) {
         setIsVisible(!isVisible);
       }
     },
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], null),
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null),
     ref: setFontSettingsPopoverAnchor
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Settings', 'photo-block')), true === isVisible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Popover, {
     className: "photo-block-component-typography-popup",

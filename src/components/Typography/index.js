@@ -7,6 +7,7 @@ import { Type } from 'lucide-react';
 import { geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
 import useDeviceType from '../../hooks/useDeviceType';
 import HeadingIconResponsive from '../HeadingIconResponsive';
+import useUnits from '../../hooks/useUnits';
 
 // Webfonts.
 const fontFamilies = [
@@ -93,6 +94,14 @@ const TypographyControl = ( props ) => {
 	const [ fontSettingsPopoverAnchor, setFontSettingsPopoverAnchor ] = useState( null );
 	const [ isVisible, setIsVisible ] = useState( false ); // for the main typography settings popup.
 	const [ isToggled, setIsToggled ] = useState( false ); // for the main typography settings popup.
+
+	const {
+		onUnitChange,
+		splitValues,
+		getNumericValue,
+		getUnitValue,
+		startsWithNumber,
+	} = useUnits();
 
 	const [ screenSize ] = useDeviceType( 'Desktop' );
 
@@ -277,8 +286,19 @@ const TypographyControl = ( props ) => {
 							value={ getValues( screenSize ).fontSize }
 							onChange={ ( newValue ) => {
 								onChange( newValue );
+								if ( startsWithNumber( newValue ) ) {
+									const newValuesSplit = splitValues( newValue );
+									const numericValue = getNumericValue( newValuesSplit );
+									const unitValue = getUnitValue( newValuesSplit );
+									setValue( `${ screenSize }.fontSize`, numericValue );
+									setValue( `${ screenSize }.fontSizeUnit`, unitValue );
+								} else {
+									// Starts with a string, hide the unit.
+									setValue( `${ screenSize }.fontSize`, newValue );
+									setValue( `${ screenSize }.fontSizeUnit`, '' );
+								}
 							} }
-							type="number"
+							type="text"
 							placeholder={ geHierarchicalPlaceholderValue( props.values, screenSize, getValues( screenSize ).fontSize, 'fontSize' ) }
 						/>
 					) }
@@ -382,8 +402,19 @@ const TypographyControl = ( props ) => {
 							value={ getValues( screenSize ).lineHeight }
 							onChange={ ( newValue ) => {
 								onChange( newValue );
+								if ( startsWithNumber( newValue ) ) {
+									const newValuesSplit = splitValues( newValue );
+									const numericValue = getNumericValue( newValuesSplit );
+									const unitValue = getUnitValue( newValuesSplit );
+									setValue( `${ screenSize }.lineHeight`, numericValue );
+									setValue( `${ screenSize }.lineHeightUnit`, unitValue );
+								} else {
+									// Starts with a string, hide the unit.
+									setValue( `${ screenSize }.lineHeight`, newValue );
+									setValue( `${ screenSize }.lineHeightUnit`, '' );
+								}
 							} }
-							type="number"
+							type="text"
 							placeholder={ geHierarchicalPlaceholderValue( props.values, screenSize, getValues( screenSize ).lineHeight, 'lineHeight' ) }
 						/>
 					) }
@@ -487,8 +518,19 @@ const TypographyControl = ( props ) => {
 							value={ getValues( screenSize ).letterSpacing }
 							onChange={ ( newValue ) => {
 								onChange( newValue );
+								if ( startsWithNumber( newValue ) ) {
+									const newValuesSplit = splitValues( newValue );
+									const numericValue = getNumericValue( newValuesSplit );
+									const unitValue = getUnitValue( newValuesSplit );
+									setValue( `${ screenSize }.letterSpacing`, numericValue );
+									setValue( `${ screenSize }.letterSpacingUnit`, unitValue );
+								} else {
+									// Starts with a string, hide the unit.
+									setValue( `${ screenSize }.letterSpacing`, newValue );
+									setValue( `${ screenSize }.letterSpacingUnit`, '' );
+								}
 							} }
-							type="number"
+							type="text"
 							placeholder={ geHierarchicalPlaceholderValue( props.values, screenSize, getValues( screenSize ).letterSpacing, 'letterSpacing' ) }
 						/>
 					) }

@@ -1157,13 +1157,8 @@ class Functions {
 				}
 			}
 
-			// Make sure we have a unit.
-			if ( '' === $css_unit ) {
-				$css_unit = 'px';
-			}
-
 			// Add to CSS Helper.
-			if ( ( '' === $css_value || '0' === $css_value ) || '' === $css_unit ) {
+			if ( ( '' === $css_value || '0' === $css_value ) ) {
 				continue;
 			}
 			// Build CSS.
@@ -1309,6 +1304,7 @@ class Functions {
 							$dimensions[ $screen_size ]['leftUnit']
 						)
 					);
+					$css_helper->add_css( $css, $screen_size );
 				}
 			} elseif ( 'tablet' === $screen_size || 'mobile' === $screen_size ) {
 				if ( true === self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['unitSync'], $dimension_type, 'unitSync' ) ) {
