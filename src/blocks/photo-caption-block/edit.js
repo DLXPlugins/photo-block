@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { useEffect, useState, useRef, useContext } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { escapeEditableHTML } from '@wordpress/escape-html';
+import { useSettings } from '@wordpress/block-editor';
 
 import {
 	BaseControl,
@@ -85,70 +86,70 @@ const heightUnits = [ 'px', 'em', 'rem', '%', 'vh' ];
 
 const fontFamilies = [
 	{
-		name: 'Arial',
+		label: 'Arial',
 		family: 'Arial, sans-serif',
 		slug: 'arial',
 		fallback: 'sans-serif',
 		type: 'web',
 	},
 	{
-		name: 'Courier New',
+		label: 'Courier New',
 		family: 'Courier New, monospace',
 		slug: 'courier-new',
 		fallback: 'monospace',
 		type: 'web',
 	},
 	{
-		name: 'Garamond',
+		label: 'Garamond',
 		family: 'Garamond, serif',
 		slug: 'garamond',
 		fallback: 'serif',
 		type: 'web',
 	},
 	{
-		name: 'Georgia',
+		label: 'Georgia',
 		family: 'Georgia, serif',
 		slug: 'georgia',
 		fallback: 'serif',
 		type: 'web',
 	},
 	{
-		name: 'Helvetica',
+		label: 'Helvetica',
 		family: 'Helvetica, sans-serif',
 		slug: 'helvetica',
 		fallback: 'sans-serif',
 		type: 'web',
 	},
 	{
-		name: 'Lucida Console',
+		label: 'Lucida Console',
 		family: 'Lucida Console, monospace',
 		slug: 'lucida-console',
 		fallback: 'monospace',
 		type: 'web',
 	},
 	{
-		name: 'Tahoma',
+		label: 'Tahoma',
 		family: 'Tahoma, sans-serif',
 		slug: 'tahoma',
 		fallback: 'sans-serif',
 		type: 'web',
 	},
 	{
-		name: 'Times New Roman',
+		label: 'Times New Roman',
 		family: 'Times New Roman, serif',
 		slug: 'times-new-roman',
 		fallback: 'serif',
 		type: 'web',
 	},
 	{
-		name: 'Trebuchet MS',
+		label: 'Trebuchet MS',
 		family: 'Trebuchet MS, sans-serif',
 		slug: 'trebuchet-ms',
 		fallback: 'sans-serif',
 		type: 'web',
 	},
 	{
-		name: 'Verdana',
+		label: 'Verdana',
 		family: 'Verdana, sans-serif',
 		slug: 'verdana',
 		fallback: 'sans-serif',
@@ -156,7 +157,7 @@ const fontFamilies = [
 	},
 ];
 const fontFamiliesSelect = fontFamilies.map( ( font ) => ( {
-	label: font.name,
+	label: font.label,
 	value: font.family,
 } ) );
 
@@ -363,6 +364,26 @@ const PhotoCaptionBlock = ( props ) => {
 			captionInputRef.focus();
 		}
 	}, [ isSelected, captionInputRef ] );
+
+	const [ blockFontFamilies, setBlockFamilies ] = useState( fontFamilies );
+
+	const [ blockLevelFontFamilies ] = useSettings( 'typography.fontFamilies' );
+
+	useEffect( () => {
+		if ( blockLevelFontFamilies ) {
+			const themeFontFamilies = [];
+			const { theme } = blockLevelFontFamilies;
+			theme.forEach( ( font ) => {
+				themeFontFamilies.push( {
+					label: font.name,
+					value: font.fontFamily,
+				} );
+			} );
+			const mergedFontFamilies = blockFontFamilies.concat( themeFontFamilies );
+			setBlockFamilies( mergedFontFamilies );
+		}
+	}, [ blockLevelFontFamilies ] );
+
 
 	const settingsInspectorControls = (
 		<>
@@ -599,7 +620,7 @@ const PhotoCaptionBlock = ( props ) => {
 									onChange={ ( newValue ) => {
 										setAttributes( { captionTextFontFamily: newValue } );
 									} }
-									options={ fontFamiliesSelect }
+									options={ blockFontFamilies }
 									help={ __( 'Set the font family for common elements such as paragraphs and quotes.', 'photo-block' ) }
 								/>
 								<SelectControl
@@ -608,7 +629,7 @@ const PhotoCaptionBlock = ( props ) => {
 									onChange={ ( newValue ) => {
 										setAttributes( { captionHeadingsFontFamily: newValue } );
 									} }
-									options={ fontFamiliesSelect }
+									options={ blockFontFamilies }
 									help={ __( 'Set the font family for heading elements.', 'photo-block' ) }
 								/>
 								<RangeResponsiveControl

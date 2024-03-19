@@ -655,6 +655,13 @@ class Blocks {
 				);
 			}
 
+			// Get the caption.
+			if ( $attributes['lightboxCaption'] ) {
+				$caption = $attributes['lightboxCaption'];
+			} else {
+				$caption = wp_strip_all_tags( $innerblocks_content );
+			}
+
 			// Get the image link type.
 			$media_link_type = $attributes['mediaLinkType'] ?? 'none';
 			$media_link_url  = '';
@@ -677,6 +684,7 @@ class Blocks {
 						$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
 						if ( $lightbox_enabled ) {
 							$media_link_atts['data-fancybox'] = 'true';
+							$media_link_atts['data-caption']  = esc_attr( $caption );
 
 							// Register the lightbox script/style. Check wp_footer.
 							wp_register_script(
@@ -798,7 +806,7 @@ class Blocks {
 			// Output the link HTML around the image.
 			if ( '' !== $media_link_url ) {
 				$image_markup = sprintf(
-					'<a data-fancybox href="%1$s" %2$s>%3$s</a>',
+					'<a data-fancybox data-caption-"%4$s" href="%1$s" %2$s>%3$s</a>',
 					esc_url( $media_link_url ),
 					implode(
 						' ',
@@ -809,7 +817,9 @@ class Blocks {
 							array_keys( $media_link_atts )
 						)
 					),
-					$image_markup
+					$image_markup,
+					esc_attr( $caption )
+					
 				);
 			}
 
