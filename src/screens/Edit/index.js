@@ -256,42 +256,13 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	);
 
 	const interfaceTabs = (
-		<TabPanel
-			className="dlx-photo-block__inspector-tabs"
-			activeClass="active-tab"
-			onSelect={ ( tab ) => {
-				setInspectorTab( tab );
-			} }
-			children={ () => <></> }
-			tabs={ [
-				{
-					name: 'settings',
-					title: __( 'Settings', 'photo-block' ),
-					className: 'dlx-photo-block__inspector-tab',
-					icon: <Settings />,
-				},
-				{
-					name: 'styles',
-					title: __( 'Styles', 'photo-block' ),
-					className: 'dlx-photo-block__inspector-tab',
-					icon: <Paintbrush />,
-				},
-			] }
-		>
-			{ ( tab ) => {
-				switch ( tab.name ) {
-					case 'settings':
-						return settingsInspectorControls;
-					case 'styles':
-						return (
-							<SidebarImageInspectorControl
-								attributes={ attributes }
-								setAttributes={ setAttributes }
-							/>
-						);
-				}
-			} }
-		</TabPanel>
+		<>
+			{ settingsInspectorControls }
+			<SidebarImageInspectorControl
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
+		</>
 	);
 
 	// Set the local inspector controls.

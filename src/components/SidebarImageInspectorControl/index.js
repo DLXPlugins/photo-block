@@ -329,9 +329,9 @@ const SidebarImageInspectorControl = ( props ) => {
 		</>
 	);
 	return (
-		<InspectorControls>
+		<>
 			{ stylesInspectorControls }
-		</InspectorControls>
+		</>
 	);
 };
 
