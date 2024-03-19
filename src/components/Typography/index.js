@@ -2,6 +2,7 @@ import './editor.scss';
 import React, { useState, useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { ButtonGroup, Button, Tooltip, SelectControl, BaseControl, TextControl, Popover, PanelRow } from '@wordpress/components';
+import { useSettings } from '@wordpress/block-editor';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { Type } from 'lucide-react';
 import { geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
@@ -153,6 +154,8 @@ const TypographyControl = ( props ) => {
 		};
 	};
 
+	const [ blockLevelFontFamilies ] = useSettings( 'typography.fontFamilies' );
+	
 	const {
 		control,
 		setValue,
@@ -187,10 +190,17 @@ const TypographyControl = ( props ) => {
 	// Retrieve the list all available fonts.
 	const getFonts = () => {
 		const fonts = [];
+		const { theme } = blockLevelFontFamilies;
 
 		fontFamilies.forEach( ( fontFamily ) => {
 			fonts.push( { label: fontFamily.name, value: fontFamily.slug, family: fontFamily.family, fallback: fontFamily.fallback, type: fontFamily.type } );
 		} );
+
+		if ( theme ) {
+			theme.forEach( ( fontFamily ) => {
+				fonts.push( { label: fontFamily.name, value: fontFamily.slug, family: fontFamily.fontFamily, fallback: fontFamily.fallback, type: 'web' } );
+			} );
+		}
 
 		// Add placeholder.
 		fonts.unshift( { label: __( 'Custom', 'photo-block' ), value: 'custom' } );
