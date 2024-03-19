@@ -686,8 +686,12 @@ class Blocks {
 								Functions::get_plugin_version(),
 								true
 							);
+							wp_register_script(
+								'dlx-photo-block-fancybox-js-inline',
+								false
+							);
 							wp_add_inline_script(
-								'dlx-photo-block-fancybox-js',
+								'dlx-photo-block-fancybox-js-inline',
 								'document.addEventListener("DOMContentLoaded", function() { if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . $unique_id . ' [data-fancybox]"); }; if ( typeof jQuery.fancybox !== "undefined" ) { jQuery.fancybox.bind("#' . $unique_id . '[data-fancybox]"); } });'
 							);
 
@@ -1180,6 +1184,11 @@ class Blocks {
 		// If we've already enqueued fancybox, we don't need to do it again.
 		// Compatible with other fancybox jquery plugins.
 		if ( wp_script_is( 'fancybox', 'enqueued' ) || wp_script_is( 'jquery-fancybox', 'enqueued' ) || wp_script_is( 'has-fancybox-js', 'registered' ) ) {
+			if ( wp_script_is( 'dlx-photo-block-fancybox-js', 'registered' ) ) {
+				wp_register_script( 'dlx-photo-block-fancybox-js-inline', false );
+				
+				wp_print_scripts( 'dlx-photo-block-fancybox-js-inline' );
+			}
 			return;
 		}
 

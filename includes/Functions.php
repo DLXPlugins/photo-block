@@ -1359,7 +1359,7 @@ class Functions {
 
 		foreach ( $screen_sizes as $screen_size ) {
 			foreach ( $font_family_keys as $key => $value ) {
-				$default_value      = ! empty( $typography[ $screen_size ][ $key ] ) ? $typography[ $screen_size ][ $key ] : $typography['desktop'][ $key ];
+				$default_value      = ( isset( $typography[ $screen_size ][ $key ] ) && ! empty( $typography[ $screen_size ][ $key ] ) ) ? $typography[ $screen_size ][ $key ] : $typography['desktop'][ $key ] ?? '';
 				$hierarchical_value = self::get_hierarchical_placeholder_value( $typography, $screen_size, $default_value, $key );
 				$hierarchical_unit  = '';
 				if ( isset( $typography[ $screen_size ][ $key . 'Unit' ] ) ) {
@@ -1420,14 +1420,14 @@ class Functions {
 		// Check mobile screen size.
 		if ( 'mobile' === $screen_size && '' === $current_value ) {
 			// Check tablet.
-			if ( ! empty( $sub_type ) && $props['tablet'][ $type ][ $sub_type ] ) {
+			if ( ! empty( $sub_type ) && isset( $props['tablet'][ $type ][ $sub_type ] ) && $props['tablet'][ $type ][ $sub_type ] ) {
 				return $props['tablet'][ $type ][ $sub_type ];
-			} elseif ( ! empty( $sub_type ) && '' !== $props['desktop'][ $type ][ $sub_type ] ) {
+			} elseif ( ! empty( $sub_type ) && isset( $props['desktop'][ $type ][ $sub_type ] ) && '' !== $props['desktop'][ $type ][ $sub_type ] ) {
 				// Check desktop.
 				return $props['desktop'][ $type ][ $sub_type ];
-			} elseif ( ! empty( $sub_type ) && '' !== $props['tablet'][ $type ] ) {
+			} elseif ( ! empty( $sub_type ) && isset( $props['tablet'][ $type ] ) && '' !== $props['tablet'][ $type ] ) {
 				return $props['tablet'][ $type ];
-			} elseif ( empty( $sub_type ) && '' !== $props['desktop'][ $type ] ) {
+			} elseif ( empty( $sub_type ) && isset( $props['desktop'][ $type ] ) && '' !== $props['desktop'][ $type ] ) {
 				return $props['desktop'][ $type ];
 			}
 		}
@@ -1435,9 +1435,9 @@ class Functions {
 		// Get the tablet screen size properties.
 		if ( 'tablet' === $screen_size && '' === $current_value ) {
 			// Check desktop.
-			if ( ! empty( $sub_type ) && '' !== $props['desktop'][ $type ][ $sub_type ] ) {
+			if ( ! empty( $sub_type ) && isset( $props['desktop'][ $type ][ $sub_type ] ) && '' !== $props['desktop'][ $type ][ $sub_type ] ) {
 				return $props['desktop'][ $type ][ $sub_type ];
-			} elseif ( empty( $sub_type ) && '' !== $props['desktop'][ $type ] ) {
+			} elseif ( empty( $sub_type ) && isset( $props['desktop'][ $type ]  ) && '' !== $props['desktop'][ $type ] ) {
 				return $props['desktop'][ $type ];
 			}
 		}
