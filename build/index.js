@@ -31,7 +31,8 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
     photoObjectPositionCustom = attributes.photoObjectPositionCustom,
     photoBorder = attributes.photoBorder,
     photoBlur = attributes.photoBlur,
-    photoObjectFit = attributes.photoObjectFit;
+    photoObjectFit = attributes.photoObjectFit,
+    captionCustomTypography = attributes.captionCustomTypography;
   var styles = "\n\t\t#".concat(uniqueId, " .dlx-photo-block__image-wrapper {\n\t\t\tbackground: ").concat(photoBackgroundColor, ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxHeight, 'max-height'), "\n\t\t\tborder-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t\t#").concat(uniqueId, " img {\n\t\t\topacity: ").concat(photoOpacity, ";\n\t\t\t").concat(photoBlur ? "filter: blur(".concat(photoBlur, "px);") : '', "\n\t\t\tobject-fit: ").concat(photoObjectFit, ";\n\t\t\t").concat('none' !== photoObjectFit ? 'height: 100%; width: 100%;' : '', "\n\t\t\t").concat('none' !== photoObjectFit && 'custom' !== photoObjectPosition ? 'object-position:' + photoObjectPosition + ';' : '', "\n\t\t\t").concat('none' !== photoObjectFit && 'custom' === photoObjectPosition && '' !== photoObjectPositionCustom ? 'object-position:' + photoObjectPositionCustom + ';' : '', "\n\t\t\tpadding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoPaddingSize, deviceType), ";\n\t\t\tmargin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), ";\n\t\t\tborder-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(photoBorder, deviceType), "\n\t\t}\n\t");
   // Apply outer margin to container.
   styles += "#".concat(uniqueId, " .dlx-photo-block__figure { margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), "; }");
@@ -1752,6 +1753,10 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   // Set colors and typography for single caption mode and data mode.
   if ('single' === mode || dataMode) {
     styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\tcolor: ").concat(captionTextColor, ";\n\t\t\t\tfont-family: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontFamily, 'fontFamily'), ";\n\t\t\t\tfont-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontSize, 'fontSize')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].fontSizeUnit, 'fontSizeUnit'), ";\n\t\t\t\tfont-weight: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontWeight, 'fontWeight'), ";\n\t\t\t\tline-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].lineHeight, 'lineHeight')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].lineHeightUnit, 'lineHeightUnit'), ";\n\t\t\t\ttext-transform: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].textTransform, 'textTransform'), ";\n\t\t\t\tletter-spacing: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].letterSpacing, 'letterSpacing')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].letterSpacingUnit, 'letterSpacingUnit'), ";\n\t\t\t\ttext-align: ").concat(captionAlign, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a {\n\t\t\t\tcolor: ").concat(captionLinkColor, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a:hover {\n\t\t\t\tcolor: ").concat(captionLinkHoverColor, ";\n\t\t\t}\n\t\t");
+  }
+  // Add custom caption.
+  if ('custom' === captionTypography[deviceType].fontFamilySlug) {
+    styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\tfont-family: ").concat(captionTypography === null || captionTypography === void 0 ? void 0 : captionTypography.captionCustomTypography, ";\n\t\t\t}\n\t\t");
   }
 
   // Set colors and typography for advanced caption mode.
@@ -8806,7 +8811,8 @@ var TypographyControl = function TypographyControl(props) {
         letterSpacingUnit: props.values.desktop.letterSpacingUnit,
         fontType: props.values.desktop.fontType,
         fontFallback: props.values.desktop.fontFallback
-      }
+      },
+      captionCustomTypography: props.values.captionCustomTypography
     };
   };
   var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_8__.useForm)({
@@ -8890,11 +8896,27 @@ var TypographyControl = function TypographyControl(props) {
           }
         });
       }
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
-      name: "".concat(screenSize, ".fontFamily"),
+    }), 'custom' === getValues("".concat(screenSize, ".fontFamilySlug")) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "captionCustomTypography",
       control: control,
       render: function render(_ref2) {
-        var value = _ref2.field.value;
+        var _ref2$field = _ref2.field,
+          _onChange2 = _ref2$field.onChange,
+          value = _ref2$field.value;
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Family', 'photo-block'),
+          value: getValues('captionCustomTypography'),
+          onChange: function onChange(newValue) {
+            _onChange2(newValue);
+          },
+          type: "text"
+        });
+      }
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "".concat(screenSize, ".fontFamily"),
+      control: control,
+      render: function render(_ref3) {
+        var newValue = _ref3.field.newValue;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           type: "hidden",
           value: getValues(screenSize).fontFamily
@@ -8903,11 +8925,21 @@ var TypographyControl = function TypographyControl(props) {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontFallback"),
       control: control,
-      render: function render(_ref3) {
-        var value = _ref3.field.value;
+      render: function render(_ref4) {
+        var value = _ref4.field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           type: "hidden",
           value: getValues(screenSize).fontFallback
+        });
+      }
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+      name: "captionCustomTypography",
+      control: control,
+      render: function render(_ref5) {
+        var value = _ref5.field.value;
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+          type: "hidden",
+          value: getValues('captionCustomTypography')
         });
       }
     }));
@@ -8929,16 +8961,16 @@ var TypographyControl = function TypographyControl(props) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".textTransform"),
       control: control,
-      render: function render(_ref4) {
-        var _ref4$field = _ref4.field,
-          _onChange2 = _ref4$field.onChange,
-          value = _ref4$field.value;
+      render: function render(_ref6) {
+        var _ref6$field = _ref6.field,
+          _onChange3 = _ref6$field.onChange,
+          value = _ref6$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Text Transform', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).textTransform, 'textTransform'),
           options: textTransform,
           onChange: function onChange(newValue) {
-            _onChange2(newValue);
+            _onChange3(newValue);
           }
         });
       }
@@ -8948,13 +8980,13 @@ var TypographyControl = function TypographyControl(props) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontSize"),
       control: control,
-      render: function render(_ref5) {
-        var _onChange3 = _ref5.field.onChange;
+      render: function render(_ref7) {
+        var _onChange4 = _ref7.field.onChange;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Size', 'photo-block'),
           value: getValues(screenSize).fontSize,
           onChange: function onChange(newValue) {
-            _onChange3(newValue);
+            _onChange4(newValue);
             if (startsWithNumber(newValue)) {
               var newValuesSplit = splitValues(newValue);
               var numericValue = getNumericValue(newValuesSplit);
@@ -8974,8 +9006,8 @@ var TypographyControl = function TypographyControl(props) {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontSizeUnit"),
       control: control,
-      render: function render(_ref6) {
-        var value = _ref6.field.value;
+      render: function render(_ref8) {
+        var value = _ref8.field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           type: "hidden",
           value: getValues(screenSize).fontSizeUnit
@@ -9044,16 +9076,16 @@ var TypographyControl = function TypographyControl(props) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontWeight"),
       control: control,
-      render: function render(_ref7) {
-        var _ref7$field = _ref7.field,
-          _onChange4 = _ref7$field.onChange,
-          value = _ref7$field.value;
+      render: function render(_ref9) {
+        var _ref9$field = _ref9.field,
+          _onChange5 = _ref9$field.onChange,
+          value = _ref9$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Weight', 'photo-block'),
           value: getValues(screenSize).fontWeight,
           options: fontWeights,
           onChange: function onChange(newValue) {
-            _onChange4(newValue);
+            _onChange5(newValue);
           }
         });
       }
@@ -9063,15 +9095,15 @@ var TypographyControl = function TypographyControl(props) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".lineHeight"),
       control: control,
-      render: function render(_ref8) {
-        var _ref8$field = _ref8.field,
-          _onChange5 = _ref8$field.onChange,
-          value = _ref8$field.value;
+      render: function render(_ref10) {
+        var _ref10$field = _ref10.field,
+          _onChange6 = _ref10$field.onChange,
+          value = _ref10$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Line Height', 'photo-block'),
           value: getValues(screenSize).lineHeight,
           onChange: function onChange(newValue) {
-            _onChange5(newValue);
+            _onChange6(newValue);
             if (startsWithNumber(newValue)) {
               var newValuesSplit = splitValues(newValue);
               var numericValue = getNumericValue(newValuesSplit);
@@ -9091,8 +9123,8 @@ var TypographyControl = function TypographyControl(props) {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".lineHeightUnit"),
       control: control,
-      render: function render(_ref9) {
-        var value = _ref9.field.value;
+      render: function render(_ref11) {
+        var value = _ref11.field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           type: "hidden",
           value: getValues(screenSize).lineHeightUnit
@@ -9133,8 +9165,8 @@ var TypographyControl = function TypographyControl(props) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontType"),
       control: control,
-      render: function render(_ref10) {
-        var value = _ref10.field.value;
+      render: function render(_ref12) {
+        var value = _ref12.field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           type: "hidden",
           value: getValues(screenSize).fontType
@@ -9146,8 +9178,8 @@ var TypographyControl = function TypographyControl(props) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".fontFallback"),
       control: control,
-      render: function render(_ref11) {
-        var value = _ref11.field.value;
+      render: function render(_ref13) {
+        var value = _ref13.field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           type: "hidden",
           value: getValues(screenSize).fontFallback
@@ -9159,15 +9191,15 @@ var TypographyControl = function TypographyControl(props) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".letterSpacing"),
       control: control,
-      render: function render(_ref12) {
-        var _ref12$field = _ref12.field,
-          _onChange6 = _ref12$field.onChange,
-          value = _ref12$field.value;
+      render: function render(_ref14) {
+        var _ref14$field = _ref14.field,
+          _onChange7 = _ref14$field.onChange,
+          value = _ref14$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Letter Spacing', 'photo-block'),
           value: getValues(screenSize).letterSpacing,
           onChange: function onChange(newValue) {
-            _onChange6(newValue);
+            _onChange7(newValue);
             if (startsWithNumber(newValue)) {
               var newValuesSplit = splitValues(newValue);
               var numericValue = getNumericValue(newValuesSplit);
@@ -9187,8 +9219,8 @@ var TypographyControl = function TypographyControl(props) {
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
       name: "".concat(screenSize, ".letterSpacingUnit"),
       control: control,
-      render: function render(_ref13) {
-        var value = _ref13.field.value;
+      render: function render(_ref15) {
+        var value = _ref15.field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           type: "hidden",
           value: getValues(screenSize).letterSpacingUnit

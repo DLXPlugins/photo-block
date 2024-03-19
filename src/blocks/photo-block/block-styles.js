@@ -19,6 +19,7 @@ const getStyles = (attributes, deviceType, uniqueId ) => {
 		photoBorder,
 		photoBlur,
 		photoObjectFit,
+		captionCustomTypography,
 
 	} = attributes;
 	let styles = `

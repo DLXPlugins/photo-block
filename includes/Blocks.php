@@ -272,6 +272,17 @@ class Blocks {
 			Functions::build_typography_css( $css_helper, $attributes['captionTypography'] );
 			Functions::add_css_property( $css_helper, 'text-align', $attributes['captionAlign'] );
 
+			if ( 'custom' === $attributes['captionTypography']['desktop']['fontFamilySlug'] ) {
+				// Fill in anchor CSS.
+				$custom_caption_font = new CSS_Helper(
+					$attributes['uniqueId'],
+					'figcaption'
+				);
+				$custom_font_family = $attributes['captionTypography']['captionCustomTypography'] ?? null;
+				Functions::add_css_property( $custom_caption_font, 'font-family', $custom_font_family );
+				$css_output .= $custom_caption_font->get_css();
+			}
+
 			// Fill in anchor CSS.
 			$figcaption_anchor = new CSS_Helper(
 				$attributes['uniqueId'],

@@ -1,7 +1,7 @@
 import './editor.scss';
 import React, { useState, useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
-import { ButtonGroup, Button, Tooltip, SelectControl, BaseControl, TextControl, Popover } from '@wordpress/components';
+import { ButtonGroup, Button, Tooltip, SelectControl, BaseControl, TextControl, Popover, PanelRow } from '@wordpress/components';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { Type } from 'lucide-react';
 import { geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
@@ -149,6 +149,7 @@ const TypographyControl = ( props ) => {
 				fontType: props.values.desktop.fontType,
 				fontFallback: props.values.desktop.fontFallback,
 			},
+			captionCustomTypography: props.values.captionCustomTypography,
 		};
 	};
 
@@ -225,10 +226,30 @@ const TypographyControl = ( props ) => {
 						/>
 					) }
 				/>
+				{ 'custom' === getValues( `${ screenSize }.fontFamilySlug` ) && (
+					<>
+						<PanelRow>
+							<Controller
+								name={ `captionCustomTypography` }
+								control={ control }
+								render={ ( { field: { onChange, value } } ) => (
+									<TextControl
+										label={ __( 'Font Family', 'photo-block' ) }
+										value={ getValues( 'captionCustomTypography' ) }
+										onChange={ ( newValue ) => {
+											onChange( newValue );
+										} }
+										type="text"
+									/>
+								) }
+							/>
+						</PanelRow>
+					</>
+				) }
 				<Controller
 					name={ `${ screenSize }.fontFamily` }
 					control={ control }
-					render={ ( { field: { value } } ) => (
+					render={ ( { field: { newValue } } ) => (
 						<TextControl
 							type="hidden"
 							value={ getValues( screenSize ).fontFamily }
@@ -242,6 +263,16 @@ const TypographyControl = ( props ) => {
 						<TextControl
 							type="hidden"
 							value={ getValues( screenSize ).fontFallback }
+						/>
+					) }
+				/>
+				<Controller
+					name={ `captionCustomTypography` }
+					control={ control }
+					render={ ( { field: { value } } ) => (
+						<TextControl
+							type="hidden"
+							value={ getValues( 'captionCustomTypography' ) }
 						/>
 					) }
 				/>

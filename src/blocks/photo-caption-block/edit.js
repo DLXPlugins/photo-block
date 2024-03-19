@@ -1348,6 +1348,14 @@ const PhotoCaptionBlock = ( props ) => {
 			}
 		`;
 	}
+	// Add custom caption.
+	if ( 'custom' === captionTypography[ deviceType ].fontFamilySlug ) {
+		styles += `
+			figcaption#${ uniqueId } {
+				font-family: ${ captionTypography?.captionCustomTypography };
+			}
+		`;
+	}
 
 	// Set colors and typography for advanced caption mode.
 	if ( 'advanced' === mode && ! dataMode ) {
