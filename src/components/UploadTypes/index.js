@@ -4,18 +4,9 @@
 import './editor.scss';
 
 import {
-	PanelBody,
-	PanelRow,
-	RangeControl,
+	CheckboxControl,
 	TextControl,
-	TextareaControl,
-	ButtonGroup,
 	Button,
-	ToggleControl,
-	Toolbar,
-	ToolbarButton,
-	Popover,
-	PlaceHolder,
 } from '@wordpress/components';
 
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
@@ -25,7 +16,9 @@ import {
 	Link,
 	Image,
 	Upload,
+	Download,
 	AlertCircle,
+	Save,
 	Loader2,
 	XCircle,
 	ArrowBigLeftDash,
@@ -64,6 +57,7 @@ const UploadTypes = ( props ) => {
 	const [ urlInput, setUrlInput ] = useState( null );
 	const [ isUrlValidationError, setIsUrlValidationError ] = useState( false );
 	const [ isUrlSaving, setIsUrlSaving ] = useState( false );
+	const [ isManualMode, setIsManualMode ] = useState( false );
 	const [ urlValidationErrorMessage, setUrlValidationErrorMessage ] = useState( '' );
 
 	/**
@@ -74,6 +68,16 @@ const UploadTypes = ( props ) => {
 			urlInput.focus();
 		}
 	}, [ urlInput ] );
+
+	const getUrlIcon = () => {
+		if ( isUrlSaving ) {
+			return <Loader2 />;
+		}
+		if ( isManualMode ) {
+			return <Save />;
+		}
+		return <Download />;
+	};
 
 	/**
 	 * Check for a valid URL before submitting via Ajax.
@@ -89,7 +93,7 @@ const UploadTypes = ( props ) => {
 		}
 
 		// Test the file extension.
-		const validExtensions = [ 'jpg', 'jpeg', 'png', 'gif', 'webp' ];
+		const validExtensions = [ 'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif' ];
 		const parseUrl = new URL( testUrl );
 		const path = parseUrl.pathname.toLowerCase();
 
@@ -99,6 +103,15 @@ const UploadTypes = ( props ) => {
 	if ( isUrlSelected ) {
 		return (
 			<>
+				<div className="dlx-photo-block__upload-types-checkbox__container">
+					<CheckboxControl
+						label={ __( 'Save image URL manually.', 'photo-block' ) }
+						checked={ isManualMode }
+						onChange={ ( newValue ) => {
+							setIsManualMode( newValue );
+						} }
+					/>
+				</div>
 				<div className="dlx-photo-block__upload-types-url__container">
 					<TextControl
 						type="url"
@@ -120,7 +133,7 @@ const UploadTypes = ( props ) => {
 					/>
 					<Button
 						variant="primary"
-						icon={ isUrlSaving ? <Loader2 /> : <Upload /> }
+						icon={ getUrlIcon() }
 						disabled={ isUrlSaving || isUrlValidationError }
 						className={ classnames( 'dlx-photo-block__upload-types-url__upload', {
 							'is-url-saving': isUrlSaving,
@@ -138,27 +151,34 @@ const UploadTypes = ( props ) => {
 							setUrlValidationErrorMessage( '' );
 							setIsUrlSaving( true );
 							setIsUrlValidationError( false );
-							SendCommand(
-								photoBlock.restNonce,
-								{ url },
-								photoBlock.restUrl + '/add-image-from-url',
-								'POST'
-							).then( ( response ) => {
-								// Successful response.
-								const maybeUrl = response.data?.url ?? false; // Double-checking.
-								if ( maybeUrl ) {
-									setAttributes( { photo: response.data } );
-									setImageFile( response.data );
-									setScreen( 'edit' );
-								}
-							} ).catch( ( error ) => {
-								const errorMessage = error?.response?.data?.message ?? __( 'An unknown error occurred', 'photo-block' );
-								setUrlValidationErrorMessage( errorMessage );
-								setIsUrlValidationError( true );
-								urlInput.focus();
-							} ).then( () => {
-								setIsUrlSaving( false );
-							} );
+
+							if ( ! isManualMode ) {
+								SendCommand(
+									photoBlock.restNonce,
+									{ url },
+									photoBlock.restUrl + '/add-image-from-url',
+									'POST'
+								).then( ( response ) => {
+									// Successful response.
+									const maybeUrl = response.data?.url ?? false; // Double-checking.
+									if ( maybeUrl ) {
+										setAttributes( { photo: response.data } );
+										setImageFile( response.data );
+										setScreen( 'edit' );
+									}
+								} ).catch( ( error ) => {
+									const errorMessage = error?.response?.data?.message ?? __( 'An unknown error occurred', 'photo-block' );
+									setUrlValidationErrorMessage( errorMessage );
+									setIsUrlValidationError( true );
+									urlInput.focus();
+								} ).then( () => {
+									setIsUrlSaving( false );
+								} );
+							} else {
+								setAttributes( { photo: { id: 0, url }, screen: 'edit' } );
+								setImageFile( { id: 0, url } );
+								setScreen( 'edit' );
+							}
 						} }
 						label={ __( 'Upload', 'photo-block' ) }
 					/>

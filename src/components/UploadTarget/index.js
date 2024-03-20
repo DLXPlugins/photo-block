@@ -91,7 +91,6 @@ const UploadTarget = ( props ) => {
 										error( 'oh no' );
 									}
 								};
-								console.log( formData );
 								request.send( formData );
 								return {
 									abort: () => {
@@ -143,7 +142,7 @@ const UploadTarget = ( props ) => {
 							<Upload />
 						</div>
 						<div className="dlx-photo-block__upload-target__label-text">
-							{ __( 'Drag Photo Here or Upload', 'photo-block' ) }
+							{ __( 'Drag Photo Here or Click to Upload', 'photo-block' ) }
 						</div>
 					</div>
 				) }

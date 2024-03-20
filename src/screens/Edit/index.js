@@ -83,6 +83,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	// Setup useEffect to update image dimensions if empty.
 	useEffect( () => {
+		console.log( photo );
 		if ( photo.url ) {
 			setImageFile( photo );
 		}

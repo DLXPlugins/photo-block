@@ -587,7 +587,7 @@ class Blocks {
 		} else {
 
 			// Get the image ID.
-			$image_id = $attributes['photo']['id'] ?? 0;
+			$image_id = absint( $attributes['photo']['id'] ?? 0 );
 
 			// Get any image classes.
 			$image_classes = explode( ' ', $attributes['imageCSSClasses'] ) ?? array();
@@ -628,21 +628,27 @@ class Blocks {
 
 			// Get the image markup.
 			if ( ! $is_avatar ) {
-				$image_markup = wp_get_attachment_image(
-					$image_id,
-					$image_size,
-					false,
-					array_merge(
-						array(
-							'class'   => 'dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ),
-							'loading' => $skip_lazy_loading ? false : 'lazy',
-							'alt'     => $image_alt,
-							'title'   => $image_title,
-						),
-						$image_data_attributes
-					)
-				);
+				if ( 0 === $image_id && ! empty( $attributes['photo']['url'] ) ) {
+					// Manual URL entry.
+					$image_markup = '<img src="' . esc_url( $attributes['photo']['url'] ) . '" alt="' . esc_attr( $image_alt ) . '" class="dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ) . '" loading="' . ( $skip_lazy_loading ? 'auto' : 'lazy' ) . '">';
+				} elseif ( $image_id ) {
+					$image_markup = wp_get_attachment_image(
+						$image_id,
+						$image_size,
+						false,
+						array_merge(
+							array(
+								'class'   => 'dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ),
+								'loading' => $skip_lazy_loading ? false : 'lazy',
+								'alt'     => $image_alt,
+								'title'   => $image_title,
+							),
+							$image_data_attributes
+						)
+					);
+				}
 			} else {
+				
 				$image_markup = get_avatar(
 					$post_author_id,
 					$image_size,
@@ -676,9 +682,12 @@ class Blocks {
 					break;
 				case 'image':
 				case 'imageFile':
-					$media_link_img_src = wp_get_attachment_image_src( $image_id, 'full' );
-					if ( $media_link_img_src ) {
-						$media_link_url = $media_link_img_src[0];
+					if ( 0 === $image_id ) {
+						$media_link_url = $attributes['photo']['url'] ?? '';
+					} else {
+						$media_link_url = wp_get_attachment_url( $image_id );
+					}
+					if ( $media_link_url ) {
 
 						// Get lightbox attributes.
 						$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;

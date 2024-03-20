@@ -180,6 +180,7 @@ class Functions {
 			'gif',
 			'png',
 			'webp',
+			'avif',
 		);
 		/**
 		 * Filter the valid file extensions for the photo block.
