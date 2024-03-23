@@ -498,11 +498,19 @@
       "type": "string",
       "default": ""
     },
+    "overlayVerticalPosition": {
+      "type": "string",
+      "default": "middle"
+    },
     "overlayCaptionVerticalPosition": {
       "type": "string",
       "default": "middle"
     },
     "overlayCaptionHorizontalPosition": {
+      "type": "string",
+      "default": "center"
+    },
+    "overlayHorizontalPosition": {
       "type": "string",
       "default": "center"
     },

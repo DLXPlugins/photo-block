@@ -252,7 +252,9 @@ const PhotoCaptionBlock = ( props ) => {
 		dataCaptionTypePostAuthorMeta,
 		dataCaptionPostTypeSource,
 		dataCaptionPostTypeAuthorMeta,
+		overlayVerticalPosition,
 		overlayCaptionVerticalPosition,
+		overlayHorizontalPosition,
 		overlayCaptionHorizontalPosition,
 		overlayBackgroundType,
 		overlayBackgroundColor,
@@ -392,6 +394,34 @@ const PhotoCaptionBlock = ( props ) => {
 					title={ __( 'Overlay Settings', 'photo-block' ) }
 					initialOpen={ true }
 				>
+					<SelectControl
+						label={ __( 'Overlay Vertical Position' ) }
+						value={ overlayVerticalPosition }
+						options={ [
+							{ label: __( 'Top', 'photo-block' ), value: 'top' },
+							{ label: __( 'Middle', 'photo-block' ), value: 'middle' },
+							{ label: __( 'Bottom', 'photo-block' ), value: 'bottom' },
+						] }
+						onChange={ ( value ) => {
+							setAttributes( {
+								overlayVerticalPosition: value,
+							} );
+						} }
+					/>
+					<SelectControl
+						label={ __( 'Overlay Horizontal Position', 'photo-block' ) }
+						value={ overlayHorizontalPosition }
+						options={ [
+							{ label: __( 'Left', 'photo-block' ), value: 'left' },
+							{ label: __( 'Center', 'photo-block' ), value: 'center' },
+							{ label: __( 'Right', 'photo-block' ), value: 'right' },
+						] }
+						onChange={ ( value ) => {
+							setAttributes( {
+								overlayHorizontalPosition: value,
+							} );
+						} }
+					/>
 					<SelectControl
 						label={ __( 'Caption Vertical Position', 'photo-block' ) }
 						value={ overlayCaptionVerticalPosition }
@@ -1491,6 +1521,12 @@ const PhotoCaptionBlock = ( props ) => {
 		'dlx-photo-block__caption-overlay',
 		{
 			'is-overlay': 'overlay' === captionPosition,
+			'overlay-vertical-bottom': 'bottom' === overlayVerticalPosition,
+			'overlay-vertical-middle': 'middle' === overlayVerticalPosition,
+			'overlay-vertical-top': 'top' === overlayVerticalPosition,
+			'overlay-horizontal-left': 'left' === overlayHorizontalPosition,
+			'overlay-horizontal-center': 'center' === overlayHorizontalPosition,
+			'overlay-horizontal-right': 'right' === overlayHorizontalPosition,
 			'caption-vertical-bottom': 'bottom' === overlayCaptionVerticalPosition,
 			'caption-vertical-middle': 'middle' === overlayCaptionVerticalPosition,
 			'caption-vertical-top': 'top' === overlayCaptionVerticalPosition,

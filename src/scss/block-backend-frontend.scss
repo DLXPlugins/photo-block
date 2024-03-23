@@ -228,8 +228,28 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 
 	figcaption {
 		display: flex;
+		width: 100%;
+		height: 100%;
 	}
 
+	&.overlay-vertical-middle {
+		align-items: center;
+	}
+	&.overlay-vertical-top {
+		align-items: flex-start;
+	}
+	&.overlay-vertical-bottom {
+		align-items: flex-end;
+	}
+	&.overlay-horizontal-center {
+		justify-content: center;
+	}
+	&.overlay-horizontal-left {
+		justify-content: flex-start;
+	}
+	&.overlay-horizontal-right {
+		justify-content: flex-end;
+	}
 	&.caption-vertical-middle figcaption {
 		align-items: center;
 	}

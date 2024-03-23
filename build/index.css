@@ -1308,6 +1308,26 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
 }
 .dlx-photo-block__caption-overlay figcaption {
   display: flex;
+  width: 100%;
+  height: 100%;
+}
+.dlx-photo-block__caption-overlay.overlay-vertical-middle {
+  align-items: center;
+}
+.dlx-photo-block__caption-overlay.overlay-vertical-top {
+  align-items: flex-start;
+}
+.dlx-photo-block__caption-overlay.overlay-vertical-bottom {
+  align-items: flex-end;
+}
+.dlx-photo-block__caption-overlay.overlay-horizontal-center {
+  justify-content: center;
+}
+.dlx-photo-block__caption-overlay.overlay-horizontal-left {
+  justify-content: flex-start;
+}
+.dlx-photo-block__caption-overlay.overlay-horizontal-right {
+  justify-content: flex-end;
 }
 .dlx-photo-block__caption-overlay.caption-vertical-middle figcaption {
   align-items: center;

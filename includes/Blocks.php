@@ -229,6 +229,12 @@ class Blocks {
 		$caption_overlay_styles[] = 'left' === $attributes['overlayCaptionHorizontalPosition'] ? 'caption-horizontal-left' : '';
 		$caption_overlay_styles[] = 'center' === $attributes['overlayCaptionHorizontalPosition'] ? 'caption-horizontal-center' : '';
 		$caption_overlay_styles[] = 'right' === $attributes['overlayCaptionHorizontalPosition'] ? 'caption-horizontal-right' : '';
+		$caption_overlay_styles[] = 'bottom' === $attributes['overlayVerticalPosition'] ? 'overlay-vertical-bottom' : '';
+		$caption_overlay_styles[] = 'middle' === $attributes['overlayVerticalPosition'] ? 'overlay-vertical-middle' : '';
+		$caption_overlay_styles[] = 'top' === $attributes['overlayVerticalPosition'] ? 'overlay-vertical-top' : '';
+		$caption_overlay_styles[] = 'left' === $attributes['overlayHorizontalPosition'] ? 'overlay-horizontal-left' : '';
+		$caption_overlay_styles[] = 'center' === $attributes['overlayHorizontalPosition'] ? 'overlay-horizontal-center' : '';
+		$caption_overlay_styles[] = 'right' === $attributes['overlayHorizontalPosition'] ? 'overlay-horizontal-right' : '';
 
 		ob_start();
 		?>
