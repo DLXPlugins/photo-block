@@ -121,6 +121,8 @@ const DimensionsResponsiveControl = ( props ) => {
 			oldValues.bottomUnit = unitValue;
 			oldValues.leftUnit = unitValue;
 			setValue( deviceType, oldValues );
+			syncUnits( getHierarchicalValueUnit( props.values, deviceType, unitValue, 'top' ) );
+			onUnitChange
 		} else {
 			const oldValues = getValues( deviceType );
 			oldValues.top = value;
@@ -148,7 +150,11 @@ const DimensionsResponsiveControl = ( props ) => {
 	};
 
 	const onDimensionChange = ( value ) => {
-		changeAllValues( value );
+		const newValue = parseFloat( value );
+		if ( isNaN( newValue ) ) {
+			return;
+		}
+		changeAllValues( newValue );
 	};
 
 	/**
@@ -315,7 +321,7 @@ const DimensionsResponsiveControl = ( props ) => {
 							<TextControl
 								label={ labelAll }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
-								value={ value }
+								value={ ! isNaN( value ) ? value : 0 }
 								placeholder={ geHierarchicalPlaceholderValue(
 									values,
 									deviceType,
@@ -323,12 +329,9 @@ const DimensionsResponsiveControl = ( props ) => {
 									'top'
 								) }
 								type="text"
-								min={ 0 }
-								step={ 1 }
-								max="Infinity"
 								onChange={ ( newValue ) => {
-									onChange( newValue );
 									onDimensionChange( newValue );
+									onUnitChange( newValue, onChange, setValue, deviceType, 'topUnit' );
 								} }
 								hideLabelFromVision={ true }
 								inputMode="numeric"
@@ -371,11 +374,11 @@ const DimensionsResponsiveControl = ( props ) => {
 									geHierarchicalPlaceholderValue(
 										values,
 										deviceType,
-										value,
+										value || 0,
 										'top'
 									)
-								) }
-								min={ getRangeControlMin( 'topUnit' ) }
+								) || 0 }
+								min={ allowNegatives ? getRangeControlMin( 'topUnit' ) : 0 }
 								max={ getRangeControlMax( 'topUnit' ) }
 								step={ getRangeControlStep( 'topUnit' ) }
 								onChange={ ( newValue ) => {

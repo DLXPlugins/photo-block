@@ -151,6 +151,7 @@ const SidebarImageInspectorControl = ( props ) => {
 					labelBottom={ __( 'Bottom Padding', 'photo-block' ) }
 					labelLeft={ __( 'Left Padding', 'photo-block' ) }
 					labelAll={ __( 'Change Padding', 'photo-block' ) }
+					allowNegatives={ false }
 				/>
 				<DimensionsResponsiveControl
 					label={ __( 'Photo Margin', 'photo-block' ) }
@@ -176,6 +177,7 @@ const SidebarImageInspectorControl = ( props ) => {
 					labelBottom={ __( 'Bottom Border', 'photo-block' ) }
 					labelLeft={ __( 'Left Border', 'photo-block' ) }
 					labelAll={ __( 'Change Border', 'photo-block' ) }
+					allowNegatives={ false }
 				/>
 				<DimensionsResponsiveControl
 					label={ __( 'Photo Border Radius', 'photo-block' ) }
@@ -189,6 +191,7 @@ const SidebarImageInspectorControl = ( props ) => {
 					labelLeft={ __( 'Bottom-left Radius', 'photo-block' ) }
 					labelAll={ __( 'Change Border Radius', 'photo-block' ) }
 					isBorderRadius={ true }
+					allowNegatives={ false }
 				/>
 
 			</PanelBodyControl>

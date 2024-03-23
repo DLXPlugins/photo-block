@@ -6127,6 +6127,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
       oldValues.bottomUnit = unitValue;
       oldValues.leftUnit = unitValue;
       setValue(deviceType, oldValues);
+      syncUnits((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.getHierarchicalValueUnit)(props.values, deviceType, unitValue, 'top'));
+      onUnitChange;
     } else {
       var _oldValues = getValues(deviceType);
       _oldValues.top = value;
@@ -6153,7 +6155,11 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
     setValue(deviceType, currentValues);
   };
   var onDimensionChange = function onDimensionChange(value) {
-    changeAllValues(value);
+    var newValue = parseFloat(value);
+    if (isNaN(newValue)) {
+      return;
+    }
+    changeAllValues(newValue);
   };
 
   /**
@@ -6297,15 +6303,12 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           label: labelAll,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
-          value: value,
+          value: !isNaN(value) ? value : 0,
           placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top'),
           type: "text",
-          min: 0,
-          step: 1,
-          max: "Infinity",
           onChange: function onChange(newValue) {
-            _onChange(newValue);
             onDimensionChange(newValue);
+            onUnitChange(newValue, _onChange, setValue, deviceType, 'topUnit');
           },
           hideLabelFromVision: true,
           inputMode: "numeric",
@@ -6343,8 +6346,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
           className: "dlx-photo-block__dimensions-responsive-sync-interface-range",
           label: labelAll,
-          value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top')),
-          min: getRangeControlMin('topUnit'),
+          value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value || 0, 'top')) || 0,
+          min: allowNegatives ? getRangeControlMin('topUnit') : 0,
           max: getRangeControlMax('topUnit'),
           step: getRangeControlStep('topUnit'),
           onChange: function onChange(newValue) {
@@ -8026,7 +8029,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Right Padding', 'photo-block'),
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Padding', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Padding', 'photo-block'),
-    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Padding', 'photo-block')
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Padding', 'photo-block'),
+    allowNegatives: false
   }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Photo Margin', 'photo-block'),
     values: photoMarginSize,
@@ -8053,7 +8057,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Right Border', 'photo-block'),
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Border', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Border', 'photo-block'),
-    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border', 'photo-block')
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border', 'photo-block'),
+    allowNegatives: false
   }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Photo Border Radius', 'photo-block'),
     values: photoBorderRadius,
@@ -8067,7 +8072,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom-right Radius', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom-left Radius', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border Radius', 'photo-block'),
-    isBorderRadius: true
+    isBorderRadius: true,
+    allowNegatives: false
   })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_11__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Container Sizing', 'photo-block'),
     initialOpen: false,
