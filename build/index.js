@@ -8895,7 +8895,6 @@ var TypographyControl = function TypographyControl(props) {
   // Retrieve the list all available fonts.
   var getFonts = function getFonts() {
     var fonts = [];
-    var theme = blockLevelFontFamilies.theme;
     fontFamilies.forEach(function (fontFamily) {
       fonts.push({
         label: fontFamily.name,
@@ -8905,16 +8904,19 @@ var TypographyControl = function TypographyControl(props) {
         type: fontFamily.type
       });
     });
-    if (theme) {
-      theme.forEach(function (fontFamily) {
-        fonts.push({
-          label: fontFamily.name,
-          value: fontFamily.slug,
-          family: fontFamily.fontFamily,
-          fallback: fontFamily.fallback,
-          type: 'web'
+    if (blockLevelFontFamilies) {
+      var theme = blockLevelFontFamilies.theme;
+      if (theme) {
+        theme.forEach(function (fontFamily) {
+          fonts.push({
+            label: fontFamily.name,
+            value: fontFamily.slug,
+            family: fontFamily.fontFamily,
+            fallback: fontFamily.fallback,
+            type: 'web'
+          });
         });
-      });
+      }
     }
 
     // Add placeholder.

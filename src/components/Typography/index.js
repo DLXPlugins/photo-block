@@ -190,16 +190,18 @@ const TypographyControl = ( props ) => {
 	// Retrieve the list all available fonts.
 	const getFonts = () => {
 		const fonts = [];
-		const { theme } = blockLevelFontFamilies;
 
 		fontFamilies.forEach( ( fontFamily ) => {
 			fonts.push( { label: fontFamily.name, value: fontFamily.slug, family: fontFamily.family, fallback: fontFamily.fallback, type: fontFamily.type } );
 		} );
+		if ( blockLevelFontFamilies ) {
+			const { theme } = blockLevelFontFamilies;
 
-		if ( theme ) {
-			theme.forEach( ( fontFamily ) => {
-				fonts.push( { label: fontFamily.name, value: fontFamily.slug, family: fontFamily.fontFamily, fallback: fontFamily.fallback, type: 'web' } );
-			} );
+			if ( theme ) {
+				theme.forEach( ( fontFamily ) => {
+					fonts.push( { label: fontFamily.name, value: fontFamily.slug, family: fontFamily.fontFamily, fallback: fontFamily.fallback, type: 'web' } );
+				} );
+			}
 		}
 
 		// Add placeholder.
