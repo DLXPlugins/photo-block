@@ -1295,7 +1295,7 @@ const PhotoCaptionBlock = ( props ) => {
 			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode ),
 		} );
 
-		if ( photoMode ) {
+		if ( 'data' === photoMode ) {
 			if ( captionLoading ) {
 				return (
 					<>

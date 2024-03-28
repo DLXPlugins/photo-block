@@ -509,7 +509,8 @@ const CropScreen = ( props ) => {
 					icon={ isSaving ? <Loader2 /> : <Save /> }
 					className={ classnames( 'dlx-photo-block__save-button', {
 						'is-saving': isSaving } ) }
-					label={ __( 'Save Changes', 'photo-block' ) }
+					variant="primary"
+					label={ __( 'Apply Crop', 'photo-block' ) }
 					onClick={ () => {
 						if ( isSaving ) {
 							return;
@@ -535,7 +536,7 @@ const CropScreen = ( props ) => {
 						} );
 					} }
 				>
-					{ isSaving ? __( 'Saving…', 'photo-block' ) : __( 'Save Changes', 'photo-block' ) }
+					{ isSaving ? __( 'Saving…', 'photo-block' ) : __( 'Apply Crop', 'photo-block' ) }
 				</ToolbarButton>
 				<ToolbarButton
 					icon={ <X /> }

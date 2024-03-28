@@ -192,7 +192,7 @@ class Blocks {
 
 		// Override with data mode attribute.
 		$is_in_data_mode = false;
-		if ( true === (bool) $attributes['dataMode'] ) {
+		if ( 'data' === $attributes['photoMode'] ) {
 			$is_in_data_mode = true;
 		}
 
@@ -204,7 +204,7 @@ class Blocks {
 			'dlx-photo-block__caption',
 		);
 		// See if smart styles are enabled.
-		if ( 'advanced' === $mode && ! (bool) $attributes['dataMode'] ) {
+		if ( 'advanced' === $mode && ! $is_in_data_mode ) {
 			$caption_classes[] = 'has-smart-styles';
 		}
 
@@ -218,7 +218,6 @@ class Blocks {
 				$caption = $innerblocks_content;
 			}
 		}
-		
 
 		// Begin caption overlay classes.
 		$caption_overlay_styles   = array( 'dlx-photo-block__caption-overlay' );

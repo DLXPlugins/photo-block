@@ -202,7 +202,7 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 						</>
 					) }
 					<Button
-						variant={ 'primary' }
+						variant={ 'secondary' }
 						type="submit"
 						className="dlx-photo-block__component-aspect-ratio-apply"
 						label={ __(
@@ -214,7 +214,7 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 							'photo-block'
 						) }
 					>
-						{ __( 'Apply', 'photo-block' ) }
+						{ __( 'Set Crop Area', 'photo-block' ) }
 					</Button>
 
 				</div>

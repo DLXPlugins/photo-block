@@ -5,6 +5,7 @@ import {
 	useState,
 	useEffect,
 	forwardRef,
+	useCallback,
 } from '@wordpress/element';
 import {
 	Spinner,
@@ -26,6 +27,7 @@ import {
 	InspectorAdvancedControls,
 	store,
 } from '@wordpress/block-editor';
+import { debounce } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
@@ -67,6 +69,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ imageSizeLoading, setImageSizeLoading ] = useState( false );
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
+	const [ isSavingAlt, setIsSavingAlt ] = useState( false );
+	const [ isSavingTitle, setIsSavingTitle ] = useState( false );
 
 	const {
 		screen,
@@ -146,8 +150,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		await SendCommand(
 			photoBlock.restNonce,
 			{},
-			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${
-				photo.id
+			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ photo.id
 			}/size=${ size }`,
 			'GET'
 		)
@@ -175,18 +178,71 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		return originalImageUrl && newImageUrl && originalImageUrl !== newImageUrl;
 	};
 
-	// Take a width/height and calculate the width based on the aspect ratio.
-	const calculateWidth = ( imageWidth, imageHeight, newHeight ) => {
-		const aspectRatio = imageWidth / imageHeight;
+	/**
+	 * Handle changes to the alt text.
+	 *
+	 * @param {string} altText The alt text.
+	 */
+	const handleAltChange = useCallback( debounce( async( altText ) => {
+		// Ignore manual mode, which is direct URL input. Nothing to save to.
+		if ( 'manual' === photoMode ) {
+			return;
+		}
 
-		return Math.round( newHeight * aspectRatio );
-	};
+		// Commence saving.
+		setIsSavingAlt( true );
+		await SendCommand(
+			photoBlock.restNonce,
+			{
+				imageId: photo.id,
+				altText,
+			},
+			`${ photoBlock.restUrl + '/image/save-alt' }`,
+			'POST'
+		)
+			.then( ( response ) => {
+			} )
+			.catch( ( error ) => {
+				// todo: error checking/display.
+				console.error( error );
+			} )
+			.then( () => {
+				setIsSavingAlt( false );
+			} );
+	}, 1000 ), [] );
 
-	// Take a width/height and calculate the height based on the aspect ratio.
-	const calculateHeight = ( imageWidth, imageHeight, newWidth ) => {
-		const aspectRatio = imageWidth / imageHeight;
-		return Math.round( newWidth / aspectRatio );
-	};
+	/**
+	 * Handle changes to the title text.
+	 *
+	 * @param {string} titleText The title text.
+	 */
+	const handleTitleChange = useCallback( debounce( async( titleText ) => {
+		// Ignore manual mode, which is direct URL input. Nothing to save to.
+		if ( 'manual' === photoMode ) {
+			return;
+		}
+
+		// Commence saving.
+		setIsSavingTitle( true );
+		await SendCommand(
+			photoBlock.restNonce,
+			{
+				imageId: photo.id,
+				titleText,
+			},
+			`${ photoBlock.restUrl + '/image/save-title' }`,
+			'POST'
+		)
+			.then( ( response ) => {
+			} )
+			.catch( ( error ) => {
+				// todo: error checking/display.
+				console.error( error );
+			} )
+			.then( () => {
+				setIsSavingTitle( false );
+			} );
+	}, 1500 ), [] );
 
 	// Image Sizes.
 	const imageSizeOptions = [];
@@ -215,33 +271,55 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				initialOpen={ true }
 				scrollAfterOpen={ false }
 			>
-				<PanelRow>
+				<>
 					<TextControl
 						label={ __( 'Photo Title', 'photo-block' ) }
 						value={ photo.title }
 						onChange={ ( title ) => {
 							setAttributes( { photo: { ...photo, title } } );
+							handleTitleChange( title );
 						} }
+						className={
+							classnames( 'photo-block__title-text',
+								{ 'is-saving': isSavingTitle }
+							)
+						}
 						placeholder={ __(
 							'Please enter a title for this photo.',
 							'photo-block'
 						) }
 					/>
-				</PanelRow>
-				<PanelRow>
+					{ isSavingTitle && (
+						<>
+							<div className="photo-block__text-saving"><Spinner /> { __( 'Saving title text…', 'photo-block' ) }</div>
+						</>
+					) }
+				</>
+				<>
 					<TextareaControl
 						label={ __( 'Alt Text', 'photo-block' ) }
 						value={ photo.alt }
 						onChange={ ( alt ) => {
 							setAttributes( { photo: { ...photo, alt } } );
+							handleAltChange( alt );
 						} }
+						className={
+							classnames( 'photo-block__alt-text',
+								{ 'is-saving': isSavingAlt }
+							)
+						}
 						placeholder={ __( 'Please describe this photo.', 'photo-block' ) }
 						help={ __(
 							'Alt text provides a description of the photo for screen readers and search engines.',
 							'photo-block'
 						) }
 					/>
-				</PanelRow>
+					{ isSavingAlt && (
+						<>
+							<div className="photo-block__text-saving"><Spinner /> { __( 'Saving alt text…', 'photo-block' ) }</div>
+						</>
+					) }
+				</>
 				<PanelRow>
 					<SelectControl
 						label={ __( 'Image Size', 'photo-block' ) }
@@ -375,6 +453,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							value={ photo.title }
 							onChange={ ( title ) => {
 								setAttributes( { photo: { ...photo, title } } );
+								handleTitleChange( title );
 							} }
 							placeholder={ __(
 								'Please enter a title for this photo.',
@@ -385,11 +464,17 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								'photo-block'
 							) }
 						/>
+						{ isSavingTitle && (
+							<>
+								<div className="photo-block__text-saving"><Spinner /> { __( 'Saving title text…', 'photo-block' ) }</div>
+							</>
+						) }
 						<TextareaControl
 							label={ __( 'Alt Text', 'photo-block' ) }
 							value={ photo.alt }
 							onChange={ ( alt ) => {
 								setAttributes( { photo: { ...photo, alt } } );
+								handleAltChange( alt );
 							} }
 							placeholder={ __( 'Please describe this image.', 'photo-block' ) }
 							help={ __(
@@ -397,6 +482,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								'photo-block'
 							) }
 						/>
+						{ isSavingAlt && (
+							<>
+								<div className="photo-block__text-saving"><Spinner /> { __( 'Saving alt text…', 'photo-block' ) }</div>
+							</>
+						) }
 					</div>
 				</Popover>
 			) }

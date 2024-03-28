@@ -159,9 +159,95 @@ class Rest {
 			array(
 				'methods'             => 'POST',
 				'permission_callback' => function () {
-					return current_user_can( 'publish_posts' );
+					return current_user_can( 'upload_files' );
 				},
 				'callback'            => array( static::class, 'rest_crop_image' ),
+			)
+		);
+
+		// Register a route for saving alt-text for image.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/image/save-alt',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+				'callback'            => array( static::class, 'rest_save_alt_text' ),
+			)
+		);
+
+		// Register a route for saving alt-text for image.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/image/save-title',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+				'callback'            => array( static::class, 'rest_save_title_text' ),
+			)
+		);
+	}
+
+	/**
+	 * Saves alt-text for an image.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 **/
+	public static function rest_save_alt_text( $request ) {
+		$image_id = absint( $request->get_param( 'imageId' ) );
+		$alt_text = sanitize_textarea_field( $request->get_param( 'altText' ) );
+
+		// Bail early if no image id or if zero.
+		if ( ! $image_id ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No image ID provided.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Update the alt text.
+		update_post_meta( $image_id, '_wp_attachment_image_alt', $alt_text );
+
+		wp_send_json_success(
+			array(
+				'message' => __( 'Alt text saved successfully.', 'photo-block' ),
+			)
+		);
+	}
+
+	/**
+	 * Saves title text for an image.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 **/
+	public static function rest_save_title_text( $request ) {
+		$image_id = absint( $request->get_param( 'imageId' ) );
+		$title_text = sanitize_textarea_field( $request->get_param( 'titleText' ) );
+
+		// Bail early if no image id or if zero.
+		if ( ! $image_id ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No image ID provided.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Update the attachment's title.
+		$attachment = array(
+			'ID'         => $image_id,
+			'post_title' => $title_text,
+		);
+		wp_update_post( $attachment );
+
+		wp_send_json_success(
+			array(
+				'message' => __( 'Title text saved successfully.', 'photo-block' ),
 			)
 		);
 	}

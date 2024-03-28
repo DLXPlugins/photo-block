@@ -1264,6 +1264,48 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
   margin-right: auto;
 }
 
+/* Container Styles on the frontend */
+.dlx-photo-block__container {
+  position: relative;
+  display: flex;
+}
+.dlx-photo-block__container.alignleft {
+  justify-content: flex-start;
+}
+.dlx-photo-block__container.alignright {
+  justify-content: flex-end;
+}
+.dlx-photo-block__container.aligncenter {
+  justify-content: center;
+}
+.dlx-photo-block__container.alignwide {
+  justify-content: center;
+}
+.dlx-photo-block__container.alignfull {
+  justify-content: center;
+}
+
+/** Block Editor Styles */
+.alignleft .dlx-photo-block__container {
+  justify-content: flex-start;
+}
+
+.alignright .dlx-photo-block__container {
+  justify-content: flex-end;
+}
+
+.aligncenter .dlx-photo-block__container {
+  justify-content: center;
+}
+
+.alignwide .dlx-photo-block__container {
+  justify-content: center;
+}
+
+.alignfull .dlx-photo-block__container {
+  justify-content: center;
+}
+
 /**
  * Caption Overlay Styles.
  */
@@ -1934,6 +1976,26 @@ svg.lucide {
   margin-bottom: 0;
 }
 .dlx-photo-block__image-dimensions-row .dlx-photo-block__image-dimensions .components-base-control__field {
+  margin-bottom: 0;
+}
+
+.photo-block__alt-text.components-base-control.is-saving {
+  margin-bottom: 0;
+}
+.photo-block__alt-text.components-base-control.is-saving p {
+  margin-bottom: 0;
+}
+
+.photo-block__text-saving {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.photo-block__title-text.components-base-control.is-saving {
+  margin-bottom: 0;
+}
+.photo-block__title-text.components-base-control.is-saving p {
   margin-bottom: 0;
 }
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
@@ -3667,7 +3729,6 @@ svg.lucide {
   margin-right: 4px;
 }
 .dlx-photo-block__component-aspect-ratio button.dlx-photo-block__component-aspect-ratio-apply.components-button {
-  color: #FFFFFF;
   margin-left: 8px;
   max-height: 30px;
 }

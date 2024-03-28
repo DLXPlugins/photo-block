@@ -185,6 +185,43 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 
 }
 
+/* Container Styles on the frontend */
+.dlx-photo-block__container {
+	position: relative;
+	display: flex;
+
+	&.alignleft {
+		justify-content: flex-start;
+	}
+	&.alignright {
+		justify-content: flex-end;
+	}
+	&.aligncenter {
+		justify-content: center;
+	}
+	&.alignwide {
+		justify-content: center;
+	}
+	&.alignfull {
+		justify-content: center;
+	}
+}
+/** Block Editor Styles */
+.alignleft .dlx-photo-block__container {
+	justify-content: flex-start;
+}
+.alignright .dlx-photo-block__container {
+	justify-content: flex-end;
+}
+.aligncenter .dlx-photo-block__container {
+	justify-content: center;
+}
+.alignwide .dlx-photo-block__container {
+	justify-content: center;
+}
+.alignfull .dlx-photo-block__container {
+	justify-content: center;
+}
 /**
  * Caption Overlay Styles.
  */

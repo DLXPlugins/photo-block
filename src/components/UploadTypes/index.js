@@ -283,8 +283,10 @@ const UploadTypes = ( props ) => {
 							setAttributes( {
 								photo: selectedMedia,
 								screen: 'edit',
+								photoMode: 'photo',
 							} );
 							setImageFile( selectedMedia );
+							setPhotoMode( 'photo' );
 							setScreen( 'edit' );
 						} }
 					/>
@@ -307,6 +309,7 @@ const UploadTypes = ( props ) => {
 							photoMode: 'data',
 							screen: 'data',
 						} );
+						setPhotoMode( 'data' );
 						setScreen( 'data' );
 					} }
 				>
