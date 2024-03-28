@@ -18,7 +18,7 @@
 	"version": "1.0.0",
 	"textdomain": "photo-block",
 	"attributes": {
-		"dataMode": {
+		"photoMode": {
 			"type": "boolean",
 			"default": false
 		},

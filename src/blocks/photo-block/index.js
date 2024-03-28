@@ -33,7 +33,7 @@ const PhotoBlock = ( props ) => {
 	const [ hasCaption, setHasCaption ] = useState( props.attributes.hasCaption ? true : false );
 	const [ captionPosition, setCaptionPosition ] = useState( 'bottom' );
 	const [ inQueryLoop ] = useState( isInQueryLoop( props.context ) );
-	const [ dataMode, setDataMode ] = useState( props.attributes.dataMode ?? false );
+	const [ photoMode, setPhotoMode ] = useState( props.attributes.photoMode ?? 'none' );
 	const [ blockUniqueId, setBlockUniqueId ] = useState( props.attributes.uniqueId );
 
 	return (
@@ -56,8 +56,8 @@ const PhotoBlock = ( props ) => {
 				captionPosition,
 				setCaptionPosition,
 				inQueryLoop,
-				dataMode,
-				setDataMode,
+				photoMode,
+				setPhotoMode,
 				originalImageFile,
 				blockUniqueId,
 				setBlockUniqueId,

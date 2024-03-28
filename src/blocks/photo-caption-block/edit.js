@@ -166,7 +166,7 @@ const uniqueIds = [];
 const PhotoCaptionBlock = ( props ) => {
 	// Read in context values.
 	const {
-		dataMode,
+		photoMode,
 		imageFile,
 		hasCaption,
 		setHasCaption,
@@ -277,7 +277,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
 		{
-			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && ! dataMode && enableSmartStyles ) } ),
+			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && enableSmartStyles ) } ),
 			ref: innerBlocksRef,
 		},
 		{
@@ -352,13 +352,13 @@ const PhotoCaptionBlock = ( props ) => {
 
 	// Do REST request to get dynamic caption if needed.
 	useEffect( () => {
-		if ( dataMode ) {
+		if ( 'data' === photoMode ) {
 			getCaptionFromData();
 		}
 		setAttributes( {
-			dataMode,
+			photoMode,
 		} );
-	}, [ dataMode ] );
+	}, [ photoMode ] );
 
 	// Select the richtext input and focus on it if block is selected and mode is single line.
 	useEffect( () => {
@@ -616,7 +616,7 @@ const PhotoCaptionBlock = ( props ) => {
 				title={ __( 'Caption Settings', 'photo-block' ) }
 				initialOpen={ true }
 			>
-				{ ( dataMode || 'single' === mode ) && (
+				{ ( 'data' === photoMode || 'single' === mode ) && (
 					<PanelRow className="has-typography-panel-row">
 						<TypographyControl
 							values={ captionTypography }
@@ -728,7 +728,7 @@ const PhotoCaptionBlock = ( props ) => {
 						) }
 					</>
 				) }
-				{ ( dataMode || 'single' === mode ) && (
+				{ ( 'data' === photoMode || 'single' === mode ) && (
 					<>
 						<ColorPickerControl
 							value={ captionBackgroundColor }
@@ -996,7 +996,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const localToolbar = (
 		<BlockControls>
 			{
-				( ( dataMode || 'single' === mode ) && 'overlay' !== captionPosition ) && (
+				( ( 'data' === photoMode || 'single' === mode ) && 'overlay' !== captionPosition ) && (
 					<ToolbarGroup className="dlx-photo-block__caption-align-toolbar-buttons">
 						<ToolbarButton
 							icon={ <AlignLeft /> }
@@ -1037,7 +1037,7 @@ const PhotoCaptionBlock = ( props ) => {
 					{ __( 'Position', 'photo-block' ) }
 				</ToolbarButton>
 			</ToolbarGroup>
-			{ ! dataMode && (
+			{ 'data' !== photoMode && (
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <FormInput /> }
@@ -1063,7 +1063,7 @@ const PhotoCaptionBlock = ( props ) => {
 				</ToolbarButton>
 			</ToolbarGroup>
 			{
-				dataMode && (
+				( 'data' === photoMode ) && (
 					<ToolbarGroup>
 						<ToolbarButton
 							icon={ <Database /> }
@@ -1292,10 +1292,10 @@ const PhotoCaptionBlock = ( props ) => {
 	 */
 	const getCaption = () => {
 		const figClasses = classnames( 'dlx-photo-block__caption', {
-			'has-smart-styles': ( 'advanced' === mode && ! dataMode ),
+			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode ),
 		} );
 
-		if ( dataMode ) {
+		if ( photoMode ) {
 			if ( captionLoading ) {
 				return (
 					<>
@@ -1352,7 +1352,7 @@ const PhotoCaptionBlock = ( props ) => {
 	`;
 
 	// Set colors and typography for single caption mode and data mode.
-	if ( 'single' === mode || dataMode ) {
+	if ( 'single' === mode || 'data' === photoMode ) {
 		styles += `
 			figcaption#${ uniqueId } {
 				color: ${ captionTextColor };
@@ -1382,7 +1382,7 @@ const PhotoCaptionBlock = ( props ) => {
 	}
 
 	// Set colors and typography for advanced caption mode.
-	if ( 'advanced' === mode && ! dataMode ) {
+	if ( 'advanced' === mode && 'data' !== photoMode ) {
 		styles += `
 			figcaption#${ uniqueId } {
 				--dlx-photo-block__caption-text-color: ${ captionTextColor };

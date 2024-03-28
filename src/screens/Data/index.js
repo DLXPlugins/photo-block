@@ -69,7 +69,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 	const [ currentAuthorMetaSuggestion, setCurrentAuthorMetaSuggestion ] = useState(
 		dataImageSourceAuthorMeta ? dataImageSourceAuthorMeta : false );
 
-	const { screen, setScreen, setDataMode } = useContext( UploaderContext );
+	const { screen, setScreen, setPhotoMode } = useContext( UploaderContext );
 
 	const localToolbar = (
 		<>
@@ -79,8 +79,8 @@ const DataScreen = forwardRef( ( props, ref ) => {
 						icon={ <LogOut /> }
 						label={ __( 'Exit Data Mode', 'photo-block' ) }
 						onClick={ () => {
-							setAttributes( { dataMode: false, screen: 'initial' } );
-							setDataMode( false );
+							setAttributes( { photoMode: 'none', screen: 'initial' } );
+							setPhotoMode( 'none' );
 							setScreen( 'initial' );
 						} }
 					>
@@ -463,7 +463,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 									variant="primary"
 									onClick={ () => {
 										// Go to data edit screen.
-										setDataMode( true );
+										setPhotoMode( 'data' );
 										setAttributes( { dataScreen: 'data-edit' } );
 										setScreen( 'data-edit' );
 									} }

@@ -190,9 +190,9 @@
 				}
 			}
 		},
-		"dataMode": {
-			"type": "boolean",
-			"default": false
+		"photoMode": {
+			"type": "string",
+			"default": "none"
 		},
 		"dataScreen": {
 			"type": "string",

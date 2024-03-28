@@ -14,7 +14,7 @@ import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import {
 	Database,
 	Link,
-	Image,
+	Image as LucideImage,
 	Upload,
 	Download,
 	AlertCircle,
@@ -50,6 +50,8 @@ const UploadTypes = ( props ) => {
 		setScreen,
 		filepondInstance,
 		setImageFile,
+		photoMode,
+		setPhotoMode,
 	} = useContext( UploaderContext );
 
 	const [ isUrlSelected, setIsUrlSelected ] = useState( false );
@@ -57,7 +59,6 @@ const UploadTypes = ( props ) => {
 	const [ urlInput, setUrlInput ] = useState( null );
 	const [ isUrlValidationError, setIsUrlValidationError ] = useState( false );
 	const [ isUrlSaving, setIsUrlSaving ] = useState( false );
-	const [ isManualMode, setIsManualMode ] = useState( false );
 	const [ urlValidationErrorMessage, setUrlValidationErrorMessage ] = useState( '' );
 
 	/**
@@ -73,7 +74,7 @@ const UploadTypes = ( props ) => {
 		if ( isUrlSaving ) {
 			return <Loader2 />;
 		}
-		if ( isManualMode ) {
+		if ( 'manual' === photoMode ) {
 			return <Save />;
 		}
 		return <Download />;
@@ -106,9 +107,9 @@ const UploadTypes = ( props ) => {
 				<div className="dlx-photo-block__upload-types-checkbox__container">
 					<CheckboxControl
 						label={ __( 'Save image URL manually.', 'photo-block' ) }
-						checked={ isManualMode }
-						onChange={ ( newValue ) => {
-							setIsManualMode( newValue );
+						checked={ 'manual' === photoMode }
+						onChange={ () => {
+							setPhotoMode( 'manual' );
 						} }
 					/>
 				</div>
@@ -152,7 +153,7 @@ const UploadTypes = ( props ) => {
 							setIsUrlSaving( true );
 							setIsUrlValidationError( false );
 
-							if ( ! isManualMode ) {
+							if ( 'manual' !== photoMode ) {
 								SendCommand(
 									photoBlock.restNonce,
 									{ url },
@@ -165,6 +166,7 @@ const UploadTypes = ( props ) => {
 										setAttributes( { photo: response.data } );
 										setImageFile( response.data );
 										setScreen( 'edit' );
+										setPhotoMode( 'photo' );
 									}
 								} ).catch( ( error ) => {
 									const errorMessage = error?.response?.data?.message ?? __( 'An unknown error occurred', 'photo-block' );
@@ -175,9 +177,22 @@ const UploadTypes = ( props ) => {
 									setIsUrlSaving( false );
 								} );
 							} else {
-								setAttributes( { photo: { id: 0, url }, screen: 'edit' } );
-								setImageFile( { id: 0, url } );
-								setScreen( 'edit' );
+								// Get width and height of the image.
+								const newImage = new Image();
+								newImage.src = url;
+								newImage.onload = () => {
+									const selectedMedia = {
+										id: 0,
+										url,
+										width: newImage.width,
+										height: newImage.height,
+										alt: '',
+										caption: '',
+									};
+									setAttributes( { photo: selectedMedia, screen: 'edit', photoMode: 'manual' } );
+									setImageFile( selectedMedia );
+									setScreen( 'edit' );
+								};
 							}
 						} }
 						label={ __( 'Upload', 'photo-block' ) }
@@ -248,7 +263,7 @@ const UploadTypes = ( props ) => {
 						render={ ( { open } ) => (
 							<Button
 								variant="secondary"
-								icon={ <Image /> }
+								icon={ <LucideImage /> }
 								onClick={ () => {
 									open();
 								} }
@@ -289,7 +304,7 @@ const UploadTypes = ( props ) => {
 					icon={ <Database /> }
 					onClick={ () => {
 						setAttributes( {
-							dataMode: true,
+							photoMode: 'data',
 							screen: 'data',
 						} );
 						setScreen( 'data' );

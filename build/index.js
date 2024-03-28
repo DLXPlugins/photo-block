@@ -120,8 +120,8 @@ var PhotoBlock = function PhotoBlock(props) {
     hasCaption = _useContext.hasCaption,
     setHasCaption = _useContext.setHasCaption,
     captionPosition = _useContext.captionPosition,
-    dataMode = _useContext.dataMode,
-    setDataMode = _useContext.setDataMode,
+    photoMode = _useContext.photoMode,
+    setPhotoMode = _useContext.setPhotoMode,
     setBlockUniqueId = _useContext.setBlockUniqueId;
   var blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.useBlockProps)({
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block", "align".concat(align), "dlx-screen-".concat(screen), "dlx-caption-position-".concat(captionPosition))
@@ -236,9 +236,9 @@ var PhotoBlock = function PhotoBlock(props) {
   // Set data mode when setting or exiting data mode.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     setAttributes({
-      dataMode: dataMode
+      photoMode: photoMode
     });
-  }, [dataMode]);
+  }, [photoMode]);
 
   /**
    * Get the screen to display.
@@ -247,7 +247,7 @@ var PhotoBlock = function PhotoBlock(props) {
    */
   var getCurrentScreen = function getCurrentScreen() {
     // If in data mode, show the data screen.
-    if (dataMode) {
+    if ('data' === photoMode) {
       if ('data' === dataScreen) {
         return /*#__PURE__*/React.createElement(_screens_Data__WEBPACK_IMPORTED_MODULE_14__["default"], {
           attributes: attributes,
@@ -376,7 +376,7 @@ var isInQueryLoop = function isInQueryLoop(context) {
   return false;
 };
 var PhotoBlock = function PhotoBlock(props) {
-  var _props$attributes$pho, _props$attributes$pho2, _props$attributes$dat;
+  var _props$attributes$pho, _props$attributes$pho2, _props$attributes$pho3;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)((_props$attributes$pho = props.attributes.photo) !== null && _props$attributes$pho !== void 0 ? _props$attributes$pho : null),
     _useState2 = _slicedToArray(_useState, 2),
     imageFile = _useState2[0],
@@ -415,10 +415,10 @@ var PhotoBlock = function PhotoBlock(props) {
   var _useState19 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(isInQueryLoop(props.context)),
     _useState20 = _slicedToArray(_useState19, 1),
     inQueryLoop = _useState20[0];
-  var _useState21 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)((_props$attributes$dat = props.attributes.dataMode) !== null && _props$attributes$dat !== void 0 ? _props$attributes$dat : false),
+  var _useState21 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)((_props$attributes$pho3 = props.attributes.photoMode) !== null && _props$attributes$pho3 !== void 0 ? _props$attributes$pho3 : 'none'),
     _useState22 = _slicedToArray(_useState21, 2),
-    dataMode = _useState22[0],
-    setDataMode = _useState22[1];
+    photoMode = _useState22[0],
+    setPhotoMode = _useState22[1];
   var _useState23 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(props.attributes.uniqueId),
     _useState24 = _slicedToArray(_useState23, 2),
     blockUniqueId = _useState24[0],
@@ -442,8 +442,8 @@ var PhotoBlock = function PhotoBlock(props) {
       captionPosition: captionPosition,
       setCaptionPosition: setCaptionPosition,
       inQueryLoop: inQueryLoop,
-      dataMode: dataMode,
-      setDataMode: setDataMode,
+      photoMode: photoMode,
+      setPhotoMode: setPhotoMode,
       originalImageFile: originalImageFile,
       blockUniqueId: blockUniqueId,
       setBlockUniqueId: setBlockUniqueId
@@ -715,7 +715,7 @@ var uniqueIds = [];
 var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   // Read in context values.
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_11__["default"]),
-    dataMode = _useContext.dataMode,
+    photoMode = _useContext.photoMode,
     imageFile = _useContext.imageFile,
     hasCaption = _useContext.hasCaption,
     setHasCaption = _useContext.setHasCaption,
@@ -858,7 +858,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var innerBlocksRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
   var innerBlockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.useInnerBlocksProps)({
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()('dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', {
-      'has-smart-styles': 'advanced' === mode && !dataMode && enableSmartStyles
+      'has-smart-styles': 'advanced' === mode && 'data' !== photoMode && enableSmartStyles
     }),
     ref: innerBlocksRef
   }, {
@@ -927,13 +927,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
 
   // Do REST request to get dynamic caption if needed.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    if (dataMode) {
+    if ('data' === photoMode) {
       getCaptionFromData();
     }
     setAttributes({
-      dataMode: dataMode
+      photoMode: photoMode
     });
-  }, [dataMode]);
+  }, [photoMode]);
 
   // Select the richtext input and focus on it if block is selected and mode is single line.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
@@ -1186,7 +1186,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Settings', 'photo-block'),
     initialOpen: true
-  }, (dataMode || 'single' === mode) && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelRow, {
+  }, ('data' === photoMode || 'single' === mode) && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelRow, {
     className: "has-typography-panel-row"
   }, /*#__PURE__*/React.createElement(_components_Typography__WEBPACK_IMPORTED_MODULE_18__["default"], {
     values: captionTypography,
@@ -1295,7 +1295,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     defaultColors: photoBlock.palette,
     defaultColor: 'transparent',
     slug: 'secondary-color-caption'
-  }))), (dataMode || 'single' === mode) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_ColorPicker__WEBPACK_IMPORTED_MODULE_19__["default"], {
+  }))), ('data' === photoMode || 'single' === mode) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_ColorPicker__WEBPACK_IMPORTED_MODULE_19__["default"], {
     value: captionBackgroundColor,
     key: 'background-color-caption',
     onChange: function onChange(slug, newValue) {
@@ -1543,7 +1543,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     }
   }))));
   var interfaceTabs = /*#__PURE__*/React.createElement(React.Fragment, null, settingsInspectorControls, styleInspectorControls);
-  var localToolbar = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.BlockControls, null, (dataMode || 'single' === mode) && 'overlay' !== captionPosition && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, {
+  var localToolbar = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.BlockControls, null, ('data' === photoMode || 'single' === mode) && 'overlay' !== captionPosition && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, {
     className: "dlx-photo-block__caption-align-toolbar-buttons"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_29__["default"], null),
@@ -1579,7 +1579,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       setCaptionPositionPopoverVisible(true);
     },
     ref: setCaptionPopoverRef
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Position', 'photo-block'))), !dataMode && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Position', 'photo-block'))), 'data' !== photoMode && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_33__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Mode', 'photo-block'),
     onClick: function onClick() {
@@ -1592,7 +1592,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     onClick: function onClick() {
       setRemoveCaptionModalVisible(true);
     }
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove', 'photo-block'))), dataMode && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove', 'photo-block'))), 'data' === photoMode && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_35__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Data', 'photo-block'),
     onClick: function onClick() {
@@ -1741,9 +1741,9 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
    */
   var getCaption = function getCaption() {
     var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()('dlx-photo-block__caption', {
-      'has-smart-styles': 'advanced' === mode && !dataMode
+      'has-smart-styles': 'advanced' === mode && 'data' !== photoMode
     });
-    if (dataMode) {
+    if (photoMode) {
       if (captionLoading) {
         return /*#__PURE__*/React.createElement(React.Fragment, null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Loading…', 'photo-block'), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Spinner, null));
       } else if ('' !== caption) {
@@ -1782,7 +1782,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var styles = "\n\t\tfigcaption#".concat(uniqueId, " {\n\t\t\tbackground: ").concat(captionBackgroundColor, ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getValueWithUnit)(deviceType, containerMaxHeight, 'max-height'), "\n\t\t}\n\t\tfigcaption#").concat(uniqueId, " {\n\t\t\tpadding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\tmargin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\tborder-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.buildBorderCSS)(captionBorder, deviceType), "\n\t\t}\n\t");
 
   // Set colors and typography for single caption mode and data mode.
-  if ('single' === mode || dataMode) {
+  if ('single' === mode || 'data' === photoMode) {
     styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\tcolor: ").concat(captionTextColor, ";\n\t\t\t\tfont-family: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontFamily, 'fontFamily'), ";\n\t\t\t\tfont-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontSize, 'fontSize')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].fontSizeUnit, 'fontSizeUnit'), ";\n\t\t\t\tfont-weight: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontWeight, 'fontWeight'), ";\n\t\t\t\tline-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].lineHeight, 'lineHeight')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].lineHeightUnit, 'lineHeightUnit'), ";\n\t\t\t\ttext-transform: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].textTransform, 'textTransform'), ";\n\t\t\t\tletter-spacing: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].letterSpacing, 'letterSpacing')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].letterSpacingUnit, 'letterSpacingUnit'), ";\n\t\t\t\ttext-align: ").concat(captionAlign, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a {\n\t\t\t\tcolor: ").concat(captionLinkColor, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a:hover {\n\t\t\t\tcolor: ").concat(captionLinkHoverColor, ";\n\t\t\t}\n\t\t");
   }
   // Add custom caption.
@@ -1791,7 +1791,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   }
 
   // Set colors and typography for advanced caption mode.
-  if ('advanced' === mode && !dataMode) {
+  if ('advanced' === mode && 'data' !== photoMode) {
     styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--dlx-photo-block__caption-text-color: ").concat(captionTextColor, ";\n\t\t\t\t--dlx-photo-block__caption-accent-color: ").concat(captionAccentColor, ";\n\t\t\t\t--dlx-photo-block__caption-secondary-color: ").concat(captionSecondaryColor, ";\n\t\t\t\t--dlx-photo-block__caption-font-family: ").concat(captionTextFontFamily, ";\n\t\t\t\t--dlx-photo-block__caption-headings-font-family: ").concat(captionHeadingsFontFamily, ";\n\t\t\t\t--dlx-photo-block__caption-font-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.geHierarchicalPlaceholderValue)(captionBaseFontSize, deviceType, captionBaseFontSize[deviceType].value, 'value')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_24__.getHierarchicalValueUnit)(captionBaseFontSize, deviceType, captionBaseFontSize[deviceType].unit, 'unit'), ";\n\t\t\t}\n\t\t");
   }
 
@@ -7237,7 +7237,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../contexts/UploaderContext */ "./src/contexts/UploaderContext.js");
 /* harmony import */ var _URLPicker__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../URLPicker */ "./src/components/URLPicker/index.js");
-function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure " + obj); }
 /**
  * Upload data row including Upload|Media Library|URL|Data.
  */
@@ -7263,7 +7262,8 @@ var MediaLink = function MediaLink(props) {
     anchorRef = props.anchorRef;
 
   // Get context.
-  _objectDestructuringEmpty((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__["default"]));
+  var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__["default"]),
+    photoMode = _useContext.photoMode;
   var mediaLinkType = attributes.mediaLinkType,
     mediaLinkTitle = attributes.mediaLinkTitle,
     mediaLinkUrl = attributes.mediaLinkUrl,
@@ -7317,7 +7317,8 @@ var MediaLink = function MediaLink(props) {
       setAttributes({
         mediaLinkType: 'page'
       });
-    }
+    },
+    disabled: 'photo' !== photoMode
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The photo\'s page', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null),
@@ -7347,7 +7348,7 @@ var MediaLink = function MediaLink(props) {
     iconSize: 18,
     iconPosition: "right",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Open in new tab', 'archive-pages-pro'),
-    href: attributes.photo.full,
+    href: attributes.photo.full || attributes.photo.url,
     target: "_blank",
     rel: "noopener noreferrer"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Media File', 'photo-block')))), 'page' === mediaLinkType && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -7360,7 +7361,8 @@ var MediaLink = function MediaLink(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Open in new tab', 'archive-pages-pro'),
     href: attributes.photo.attachment_link,
     target: "_blank",
-    rel: "noopener noreferrer"
+    rel: "noopener noreferrer",
+    disabled: 'photo' !== photoMode
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Attachment Page', 'photo-block')))), 'image' === mediaLinkType && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Lightbox', 'photo-block'),
     initialOpen: false
@@ -10244,7 +10246,9 @@ var UploadTypes = function UploadTypes(props) {
     imageFile = _useContext.imageFile,
     setScreen = _useContext.setScreen,
     filepondInstance = _useContext.filepondInstance,
-    setImageFile = _useContext.setImageFile;
+    setImageFile = _useContext.setImageFile,
+    photoMode = _useContext.photoMode,
+    setPhotoMode = _useContext.setPhotoMode;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     isUrlSelected = _useState2[0],
@@ -10265,14 +10269,10 @@ var UploadTypes = function UploadTypes(props) {
     _useState10 = _slicedToArray(_useState9, 2),
     isUrlSaving = _useState10[0],
     setIsUrlSaving = _useState10[1];
-  var _useState11 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false),
+  var _useState11 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(''),
     _useState12 = _slicedToArray(_useState11, 2),
-    isManualMode = _useState12[0],
-    setIsManualMode = _useState12[1];
-  var _useState13 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(''),
-    _useState14 = _slicedToArray(_useState13, 2),
-    urlValidationErrorMessage = _useState14[0],
-    setUrlValidationErrorMessage = _useState14[1];
+    urlValidationErrorMessage = _useState12[0],
+    setUrlValidationErrorMessage = _useState12[1];
 
   /**
    * Focus on url when entered.
@@ -10286,7 +10286,7 @@ var UploadTypes = function UploadTypes(props) {
     if (isUrlSaving) {
       return /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null);
     }
-    if (isManualMode) {
+    if ('manual' === photoMode) {
       return /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null);
     }
     return /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null);
@@ -10318,9 +10318,9 @@ var UploadTypes = function UploadTypes(props) {
       className: "dlx-photo-block__upload-types-checkbox__container"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Save image URL manually.', 'photo-block'),
-      checked: isManualMode,
-      onChange: function onChange(newValue) {
-        setIsManualMode(newValue);
+      checked: 'manual' === photoMode,
+      onChange: function onChange() {
+        setPhotoMode('manual');
       }
     })), /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__upload-types-url__container"
@@ -10358,7 +10358,7 @@ var UploadTypes = function UploadTypes(props) {
         setUrlValidationErrorMessage('');
         setIsUrlSaving(true);
         setIsUrlValidationError(false);
-        if (!isManualMode) {
+        if ('manual' !== photoMode) {
           (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_7__["default"])(photoBlock.restNonce, {
             url: url
           }, photoBlock.restUrl + '/add-image-from-url', 'POST').then(function (response) {
@@ -10371,6 +10371,7 @@ var UploadTypes = function UploadTypes(props) {
               });
               setImageFile(response.data);
               setScreen('edit');
+              setPhotoMode('photo');
             }
           })["catch"](function (error) {
             var _error$response$data$, _error$response, _error$response$data;
@@ -10382,18 +10383,26 @@ var UploadTypes = function UploadTypes(props) {
             setIsUrlSaving(false);
           });
         } else {
-          setAttributes({
-            photo: {
+          // Get width and height of the image.
+          var newImage = new Image();
+          newImage.src = url;
+          newImage.onload = function () {
+            var selectedMedia = {
               id: 0,
-              url: url
-            },
-            screen: 'edit'
-          });
-          setImageFile({
-            id: 0,
-            url: url
-          });
-          setScreen('edit');
+              url: url,
+              width: newImage.width,
+              height: newImage.height,
+              alt: '',
+              caption: ''
+            };
+            setAttributes({
+              photo: selectedMedia,
+              screen: 'edit',
+              photoMode: 'manual'
+            });
+            setImageFile(selectedMedia);
+            setScreen('edit');
+          };
         }
       },
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Upload', 'photo-block')
@@ -10479,7 +10488,7 @@ var UploadTypes = function UploadTypes(props) {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     onClick: function onClick() {
       setAttributes({
-        dataMode: true,
+        photoMode: 'data',
         screen: 'data'
       });
       setScreen('data');
@@ -11341,16 +11350,16 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useContext)(_contexts_UploaderContext__WEBPACK_IMPORTED_MODULE_6__["default"]),
     screen = _useContext.screen,
     setScreen = _useContext.setScreen,
-    setDataMode = _useContext.setDataMode;
+    setPhotoMode = _useContext.setPhotoMode;
   var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Exit Data Mode', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
-        dataMode: false,
+        photoMode: 'none',
         screen: 'initial'
       });
-      setDataMode(false);
+      setPhotoMode('none');
       setScreen('initial');
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Exit Data Mode', 'photo-block')))));
@@ -11650,7 +11659,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     variant: "primary",
     onClick: function onClick() {
       // Go to data edit screen.
-      setDataMode(true);
+      setPhotoMode('data');
       setAttributes({
         dataScreen: 'data-edit'
       });
@@ -12396,7 +12405,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     captionPosition = _useContext.captionPosition,
     setImageFile = _useContext.setImageFile,
     imageFile = _useContext.imageFile,
-    originalImageFile = _useContext.originalImageFile;
+    originalImageFile = _useContext.originalImageFile,
+    photoMode = _useContext.photoMode,
+    setPhotoMode = _useContext.setPhotoMode;
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store),
     insertBlock = _useDispatch.insertBlock,
     updateBlockAttributes = _useDispatch.updateBlockAttributes; // For setting the preset defaults.
@@ -12408,7 +12419,6 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
 
   // Setup useEffect to update image dimensions if empty.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    console.log(photo);
     if (photo.url) {
       setImageFile(photo);
     }
@@ -12570,7 +12580,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       });
       getImageFromSize(size);
     },
-    options: imageSizeOptions
+    options: imageSizeOptions,
+    disabled: 'photo' !== photoMode
   }))));
   var interfaceTabs = /*#__PURE__*/React.createElement(React.Fragment, null, settingsInspectorControls, /*#__PURE__*/React.createElement(_components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_13__["default"], {
     attributes: attributes,
@@ -12590,7 +12601,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Crop', 'photo-block'),
     onClick: function onClick() {
       setScreen('crop');
-    }
+    },
+    disabled: 'photo' !== photoMode
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Crop', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Replace Photo', 'photo-block'),
@@ -49371,7 +49383,7 @@ function useForm(props = {}) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":null},"defaultsApplied":{"type":"boolean","default":false},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataMode":{"type":"boolean","default":false},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataImageSourceAuthorMeta":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"dataAltTextPostTitle":{"type":"string","default":""},"dataAltTextPostId":{"type":"string","default":""},"dataAltTextSource":{"type":"string","default":"currentImage"},"dataAltTextType":{"type":"string","default":"altText"},"dataAltTextImageCustomField":{"type":"string","default":""},"dataAltTextTypePostCustomField":{"type":"string","default":""},"dataAltTextPostType":{"type":"string","default":"post"},"dataAltTextPostTypeCustomField":{"type":"string","default":""},"dataAltTextTypePost":{"type":"string","default":"title"},"dataAltTextTypePostAuthorMeta":{"type":"string","default":""},"dataAltTextPostTypeSource":{"type":"string","default":"title"},"dataAltTextPostTypeAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTitle":{"type":"string","default":""},"dataImageTitlePostId":{"type":"string","default":""},"dataImageTitleSource":{"type":"string","default":"currentImage"},"dataImageTitleType":{"type":"string","default":"imageTitle"},"dataImageTitleImageCustomField":{"type":"string","default":""},"dataImageTitleTypePostCustomField":{"type":"string","default":""},"dataImageTitlePostType":{"type":"string","default":"post"},"dataImageTitlePostTypeCustomField":{"type":"string","default":""},"dataImageTitleTypePost":{"type":"string","default":"title"},"dataImageTitleTypePostAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTypeSource":{"type":"string","default":"title"},"dataImageTitlePostTypeAuthorMeta":{"type":"string","default":""},"dataMediaLinkSource":{"type":"string","default":"none"},"dataMediaLinkPostMeta":{"type":"string","default":""},"dataMediaLinkImageCustomField":{"type":"string","default":""},"dataMediaLinkAuthorMeta":{"type":"string","default":""},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":true,"className":true,"customClassName":false,"alignWide":true,"defaultStylePicker":false,"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"common","icon":"<svg aria-hidden=\'true\' focusable=\'false\' data-prefix=\'fas\' data-icon=\'share-alt\' className=\'svg-inline--fa fa-share-alt fa-w-14\' role=\'img\' xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 448 512\'><path fill=\'currentColor\' d=\'M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z\'></path></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","attributes":{"uniqueId":{"type":"string","default":null},"defaultsApplied":{"type":"boolean","default":false},"photo":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataImageSourceAuthorMeta":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"dataAltTextPostTitle":{"type":"string","default":""},"dataAltTextPostId":{"type":"string","default":""},"dataAltTextSource":{"type":"string","default":"currentImage"},"dataAltTextType":{"type":"string","default":"altText"},"dataAltTextImageCustomField":{"type":"string","default":""},"dataAltTextTypePostCustomField":{"type":"string","default":""},"dataAltTextPostType":{"type":"string","default":"post"},"dataAltTextPostTypeCustomField":{"type":"string","default":""},"dataAltTextTypePost":{"type":"string","default":"title"},"dataAltTextTypePostAuthorMeta":{"type":"string","default":""},"dataAltTextPostTypeSource":{"type":"string","default":"title"},"dataAltTextPostTypeAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTitle":{"type":"string","default":""},"dataImageTitlePostId":{"type":"string","default":""},"dataImageTitleSource":{"type":"string","default":"currentImage"},"dataImageTitleType":{"type":"string","default":"imageTitle"},"dataImageTitleImageCustomField":{"type":"string","default":""},"dataImageTitleTypePostCustomField":{"type":"string","default":""},"dataImageTitlePostType":{"type":"string","default":"post"},"dataImageTitlePostTypeCustomField":{"type":"string","default":""},"dataImageTitleTypePost":{"type":"string","default":"title"},"dataImageTitleTypePostAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTypeSource":{"type":"string","default":"title"},"dataImageTitlePostTypeAuthorMeta":{"type":"string","default":""},"dataMediaLinkSource":{"type":"string","default":"none"},"dataMediaLinkPostMeta":{"type":"string","default":""},"dataMediaLinkImageCustomField":{"type":"string","default":""},"dataMediaLinkAuthorMeta":{"type":"string","default":""},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":true,"className":true,"customClassName":false,"alignWide":true,"defaultStylePicker":false,"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 
@@ -49382,7 +49394,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","attributes":{"dataMode":{"type":"boolean","default":false},"uniqueId":{"type":"string","default":""},"captionManual":{"type":"string","default":""},"mode":{"type":"string","default":"single"},"enableSmartStyles":{"type":"boolean","default":true},"captionBaseFontSize":{"type":"object","default":{"mobile":{"value":"14","unit":"px"},"tablet":{"value":"14","unit":"px"},"desktop":{"value":"16","unit":"px"}}},"captionPosition":{"type":"string","default":"bottom"},"captionAlign":{"type":"string","default":"center"},"captionBackgroundColor":{"type":"string","default":"transparent"},"captionTextColor":{"type":"string","default":"#333"},"captionAccentColor":{"type":"string","default":"#e17713"},"captionSecondaryColor":{"type":"string","default":"#FFFFFF"},"captionLinkColor":{"type":"string","default":"#e17713"},"captionLinkHoverColor":{"type":"string","default":"#f58f2f"},"captionTextFontFamily":{"type":"string","default":"Arial"},"captionHeadingsFontFamily":{"type":"string","default":"Arial"},"captionTypography":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"18","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.2","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}},"captionCustomTypography":{"type":"string","default":""},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"15","right":"20","bottom":"15","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":false}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataCaptionPostTitle":{"type":"string","default":""},"dataCaptionPostId":{"type":"string","default":""},"dataCaptionSource":{"type":"string","default":"currentImage"},"dataCaptionType":{"type":"string","default":"caption"},"dataCaptionImageCustomField":{"type":"string","default":""},"dataCaptionTypePostCustomField":{"type":"string","default":""},"dataCaptionPostType":{"type":"string","default":"post"},"dataCaptionPostTypeCustomField":{"type":"string","default":""},"dataCaptionTypePost":{"type":"string","default":"title"},"dataCaptionTypePostAuthorMeta":{"type":"string","default":""},"dataCaptionPostTypeSource":{"type":"string","default":"title"},"dataCaptionPostTypeAuthorMeta":{"type":"string","default":""},"overlayVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionHorizontalPosition":{"type":"string","default":"center"},"overlayHorizontalPosition":{"type":"string","default":"center"},"overlayBackgroundType":{"type":"string","default":"solid"},"overlayBackgroundColor":{"type":"string","default":"rgba(0,0,0,0.5)"},"overlayBackgroundColorOpacity":{"type":"number","default":0.5},"overlayBackgroundColorHover":{"type":"string","default":"rgba(0,0,0,0.40)"},"overlayBackgroundColorOpacityHover":{"type":"number","default":0.4},"overlayBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"overlayBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"overlayBackgroundGradient":{"type":"string","default":""},"overlayBackgroundGradientOpacity":{"type":"number","default":0.5},"overlayBackgroundGradientOpacityHover":{"type":"number","default":0.65},"overlayBackgroundImage":{"type":"object","default":{"url":"","id":0,"backgroundColor":"transparent","backgroundSize":"cover","backgroundPosition":"center center","backgroundRepeat":"no-repeat","backgroundOpacity":0.4,"backgroundOpacityHover":0.65}},"htmlAnchor":{"type":"string","default":""},"captionCSSClasses":{"type":"string","default":""},"customAttributes":{"type":"array","default":[]},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false}},"supports":{"anchor":false,"align":false,"className":false,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false},"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-caption-block-editor","editorStyle":"dlx-photo-caption-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","attributes":{"photoMode":{"type":"boolean","default":false},"uniqueId":{"type":"string","default":""},"captionManual":{"type":"string","default":""},"mode":{"type":"string","default":"single"},"enableSmartStyles":{"type":"boolean","default":true},"captionBaseFontSize":{"type":"object","default":{"mobile":{"value":"14","unit":"px"},"tablet":{"value":"14","unit":"px"},"desktop":{"value":"16","unit":"px"}}},"captionPosition":{"type":"string","default":"bottom"},"captionAlign":{"type":"string","default":"center"},"captionBackgroundColor":{"type":"string","default":"transparent"},"captionTextColor":{"type":"string","default":"#333"},"captionAccentColor":{"type":"string","default":"#e17713"},"captionSecondaryColor":{"type":"string","default":"#FFFFFF"},"captionLinkColor":{"type":"string","default":"#e17713"},"captionLinkHoverColor":{"type":"string","default":"#f58f2f"},"captionTextFontFamily":{"type":"string","default":"Arial"},"captionHeadingsFontFamily":{"type":"string","default":"Arial"},"captionTypography":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"18","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.2","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}},"captionCustomTypography":{"type":"string","default":""},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"15","right":"20","bottom":"15","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":false}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataCaptionPostTitle":{"type":"string","default":""},"dataCaptionPostId":{"type":"string","default":""},"dataCaptionSource":{"type":"string","default":"currentImage"},"dataCaptionType":{"type":"string","default":"caption"},"dataCaptionImageCustomField":{"type":"string","default":""},"dataCaptionTypePostCustomField":{"type":"string","default":""},"dataCaptionPostType":{"type":"string","default":"post"},"dataCaptionPostTypeCustomField":{"type":"string","default":""},"dataCaptionTypePost":{"type":"string","default":"title"},"dataCaptionTypePostAuthorMeta":{"type":"string","default":""},"dataCaptionPostTypeSource":{"type":"string","default":"title"},"dataCaptionPostTypeAuthorMeta":{"type":"string","default":""},"overlayVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionHorizontalPosition":{"type":"string","default":"center"},"overlayHorizontalPosition":{"type":"string","default":"center"},"overlayBackgroundType":{"type":"string","default":"solid"},"overlayBackgroundColor":{"type":"string","default":"rgba(0,0,0,0.5)"},"overlayBackgroundColorOpacity":{"type":"number","default":0.5},"overlayBackgroundColorHover":{"type":"string","default":"rgba(0,0,0,0.40)"},"overlayBackgroundColorOpacityHover":{"type":"number","default":0.4},"overlayBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"overlayBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"overlayBackgroundGradient":{"type":"string","default":""},"overlayBackgroundGradientOpacity":{"type":"number","default":0.5},"overlayBackgroundGradientOpacityHover":{"type":"number","default":0.65},"overlayBackgroundImage":{"type":"object","default":{"url":"","id":0,"backgroundColor":"transparent","backgroundSize":"cover","backgroundPosition":"center center","backgroundRepeat":"no-repeat","backgroundOpacity":0.4,"backgroundOpacityHover":0.65}},"htmlAnchor":{"type":"string","default":""},"captionCSSClasses":{"type":"string","default":""},"customAttributes":{"type":"array","default":[]},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false}},"supports":{"anchor":false,"align":false,"className":false,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false},"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-caption-block-editor","editorStyle":"dlx-photo-caption-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ })
 

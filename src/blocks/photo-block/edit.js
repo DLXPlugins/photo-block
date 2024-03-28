@@ -62,8 +62,8 @@ const PhotoBlock = ( props ) => {
 		hasCaption,
 		setHasCaption,
 		captionPosition,
-		dataMode,
-		setDataMode,
+		photoMode,
+		setPhotoMode,
 		setBlockUniqueId,
 	} = useContext( UploaderContext );
 
@@ -180,9 +180,9 @@ const PhotoBlock = ( props ) => {
 	// Set data mode when setting or exiting data mode.
 	useEffect( () => {
 		setAttributes( {
-			dataMode,
+			photoMode,
 		} );
-	}, [ dataMode ] );
+	}, [ photoMode ] );
 
 	/**
 	 * Get the screen to display.
@@ -191,7 +191,7 @@ const PhotoBlock = ( props ) => {
 	 */
 	const getCurrentScreen = () => {
 		// If in data mode, show the data screen.
-		if ( dataMode ) {
+		if ( 'data' === photoMode ) {
 			if ( 'data' === dataScreen ) {
 				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />;
 			}

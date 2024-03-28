@@ -480,7 +480,7 @@ class Blocks {
 
 		// Next, let's determine if we're in data mode.
 		$is_in_data_mode = false;
-		if ( true === $attributes['dataMode'] ) {
+		if ( 'data' === $attributes['photoMode'] ) {
 			$is_in_data_mode = true;
 		}
 
@@ -634,9 +634,9 @@ class Blocks {
 
 			// Get the image markup.
 			if ( ! $is_avatar ) {
-				if ( 0 === $image_id && ! empty( $attributes['photo']['url'] ) ) {
+				if ( 'manual' === $attributes['photoMode'] ) {
 					// Manual URL entry.
-					$image_markup = '<img src="' . esc_url( $attributes['photo']['url'] ) . '" alt="' . esc_attr( $image_alt ) . '" class="dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ) . '" loading="' . ( $skip_lazy_loading ? 'auto' : 'lazy' ) . '">';
+					$image_markup = '<img width="' . $attributes['photo']['width'] . '" height="' . $attributes['photo']['height'] . '" src="' . esc_url( $attributes['photo']['url'] ) . '" alt="' . esc_attr( $image_alt ) . '" class="dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ) . '" loading="' . ( $skip_lazy_loading ? 'auto' : 'lazy' ) . '">';
 				} elseif ( $image_id ) {
 					$image_markup = wp_get_attachment_image(
 						$image_id,

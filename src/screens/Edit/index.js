@@ -75,6 +75,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		setImageFile,
 		imageFile,
 		originalImageFile,
+		photoMode,
+		setPhotoMode,
 	} = useContext( UploaderContext );
 
 	const { insertBlock, updateBlockAttributes } = useDispatch( store ); // For setting the preset defaults.
@@ -83,7 +85,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	// Setup useEffect to update image dimensions if empty.
 	useEffect( () => {
-		console.log( photo );
 		if ( photo.url ) {
 			setImageFile( photo );
 		}
@@ -250,6 +251,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							getImageFromSize( size );
 						} }
 						options={ imageSizeOptions }
+						disabled={ 'photo' !== photoMode }
 					/>
 				</PanelRow>
 			</PanelBodyControl>
@@ -289,6 +291,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						onClick={ () => {
 							setScreen( 'crop' );
 						} }
+						disabled={ 'photo' !== photoMode }
 					>
 						{ __( 'Crop', 'photo-block' ) }
 					</ToolbarButton>

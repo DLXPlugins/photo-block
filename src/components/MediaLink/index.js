@@ -48,6 +48,7 @@ const MediaLink = ( props ) => {
 
 	// Get context.
 	const {
+		photoMode,
 	} = useContext( UploaderContext );
 
 	const { mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption } = attributes;
@@ -101,6 +102,7 @@ const MediaLink = ( props ) => {
 							onClick={ () => {
 								setAttributes( { mediaLinkType: 'page' } );
 							} }
+							disabled={ 'photo' !== photoMode }
 						>
 							{ __( 'The photo\'s page', 'photo-block' ) }
 						</Button>
@@ -141,7 +143,7 @@ const MediaLink = ( props ) => {
 									iconSize={ 18 }
 									iconPosition="right"
 									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
-									href={ attributes.photo.full }
+									href={ attributes.photo.full || attributes.photo.url }
 									target="_blank"
 									rel="noopener noreferrer"
 								>
@@ -162,6 +164,7 @@ const MediaLink = ( props ) => {
 									href={ attributes.photo.attachment_link }
 									target="_blank"
 									rel="noopener noreferrer"
+									disabled={ 'photo' !== photoMode }
 								>
 									{ __( 'Attachment Page', 'photo-block' ) }
 								</Button>
