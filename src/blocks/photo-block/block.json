@@ -15,6 +15,17 @@
 	],
 	"version": "1.0.0",
 	"textdomain": "photo-block",
+	"providesContext": {
+		"photo-block/dataSource": "dataSource",
+		"photo-block/dataImageSource": "dataImageSource",
+		"photo-block/dataImageSourceCustomField": "dataImageSourceCustomField",
+		"photo-block/dataImageSourceAuthorMeta": "dataImageSourceAuthorMeta",
+		"photo-block/dataHasFallbackImage": "dataHasFallbackImage",
+		"photo-block/dataFallbackImageSize": "dataFallbackImageSize",
+		"photo-block/dataFallbackImage": "dataFallbackImage",
+		"photo-block/dataPostType": "dataPostType",
+		"photo-block/dataPostId": "dataPostId"	
+	},
 	"attributes": {
 		"uniqueId": {
 			"type": "string",

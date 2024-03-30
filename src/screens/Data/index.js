@@ -69,7 +69,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 	const [ currentAuthorMetaSuggestion, setCurrentAuthorMetaSuggestion ] = useState(
 		dataImageSourceAuthorMeta ? dataImageSourceAuthorMeta : false );
 
-	const { screen, setScreen, setPhotoMode } = useContext( UploaderContext );
+	const { setScreen, setPhotoMode, setImageFile } = useContext( UploaderContext );
 
 	const localToolbar = (
 		<>
@@ -462,6 +462,19 @@ const DataScreen = forwardRef( ( props, ref ) => {
 								<Button
 									variant="primary"
 									onClick={ () => {
+										// Set photo and imageFile to empty.
+										const newPhoto = {
+											id: 0,
+											url: '',
+											alt: '',
+											title: '',
+											caption: '',
+											description: '',
+										};
+										setAttributes( {
+											photo: newPhoto,
+										} );
+										setImageFile( newPhoto );
 										// Go to data edit screen.
 										setPhotoMode( 'data' );
 										setAttributes( { dataScreen: 'data-edit' } );

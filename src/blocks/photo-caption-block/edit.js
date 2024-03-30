@@ -296,7 +296,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const getPostId = () => {
 		let currentPostId = 0;
 		// If data type is current post, get the current post ID.
-		if ( 'currentPost' === dataCaptionSource ) {
+		if ( 'currentImage' === dataCaptionSource ) {
 			// Determine if we're in a query block.
 			if ( inQueryLoop ) {
 				currentPostId = postId;
@@ -352,13 +352,16 @@ const PhotoCaptionBlock = ( props ) => {
 
 	// Do REST request to get dynamic caption if needed.
 	useEffect( () => {
+		if ( imageFile.id === 0 ) {
+			return;
+		}
 		if ( 'data' === photoMode ) {
 			getCaptionFromData();
 		}
 		setAttributes( {
 			photoMode,
 		} );
-	}, [ photoMode ] );
+	}, [ photoMode, imageFile ] );
 
 	// Select the richtext input and focus on it if block is selected and mode is single line.
 	useEffect( () => {

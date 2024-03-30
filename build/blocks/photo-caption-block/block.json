@@ -19,10 +19,21 @@
   ],
   "version": "1.0.0",
   "textdomain": "photo-block",
+  "usesContext": [
+    "photo-block/dataSource",
+    "photo-block/dataImageSource",
+    "photo-block/dataImageSourceCustomField",
+    "photo-block/dataImageSourceAuthorMeta",
+    "photo-block/dataHasFallbackImage",
+    "photo-block/dataFallbackImageSize",
+    "photo-block/dataFallbackImage",
+    "photo-block/dataPostType",
+    "photo-block/dataPostId"
+  ],
   "attributes": {
     "photoMode": {
-      "type": "boolean",
-      "default": false
+      "type": "string",
+      "default": ""
     },
     "uniqueId": {
       "type": "string",
