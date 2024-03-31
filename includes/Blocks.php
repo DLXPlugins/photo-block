@@ -178,6 +178,25 @@ class Blocks {
 	 * @param WP_Block $block               The caption block content and attributes.
 	 */
 	public static function caption_frontend( $attributes, $innerblocks_content, $block ) {
+		// Determine if we want to execute this markup. Ignore for REST and admin requests.
+		$can_output = true;
+		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {
+			$can_output = false;
+		}
+
+		/**
+		 * Filter whether the Photo block can output. Attempt not to load in admin.
+		 *
+		 * @param bool     $can_output Whether the Photo block caption can output.
+		 * @param array    $attributes Array of attributes for the Gutenberg block.
+		 * @param string   $innerblocks_content The inner blocks content.
+		 * @param WP_Block $block The caption block content and attributes.
+		 */
+		$can_output = apply_filters( 'dlx_photo_block_can_output_caption', $can_output, $attributes, $innerblocks_content, $block );
+		if ( ! $can_output ) {
+			return;
+		}
+
 		// Let's sanitize the attributes.
 		$attributes = Functions::sanitize_array_recursive( $attributes );
 
@@ -188,6 +207,12 @@ class Blocks {
 		if ( $current_post_id === $maybe_query_post_id && 0 !== $maybe_query_post_id ) {
 			$is_in_query_loop = true;
 			$current_post_id  = $maybe_query_post_id;
+		}
+
+		// Get the post author for later (if applicable).
+		$post_author_id = 0;
+		if ( $is_in_query_loop && $current_post_id ) {
+			$post_author_id = get_post_field( 'post_author', $current_post_id );
 		}
 
 		// Override with data mode attribute.
@@ -206,6 +231,51 @@ class Blocks {
 		// See if smart styles are enabled.
 		if ( 'advanced' === $mode && ! $is_in_data_mode ) {
 			$caption_classes[] = 'has-smart-styles';
+		}
+
+		// Get the image size.
+		$image_size = $block->available_context['photo-block/imageSize'] ?? 'full';
+
+		// Placeholder to tell if image is avatar (no image ID).
+		$is_avatar = false;
+
+		// Build image data. (only applicable if in data mode).
+		$image_data = false;
+
+		// Let's get image data and modify the attributes if in query loop or data mode.
+		if ( $is_in_data_mode ) {
+
+			// Get the image data.
+			$image_data_source = $block->available_context['photo-block/dataSource'] ?? 'currentPost'; /* can be currentPost, postType */
+			$image_source      = $block->available_context['photo-block/dataImageSource'] ?? 'featuredImage'; /* can be featuredImage, customField, authorAvatar, authorMeta */
+
+			// Placeholdr for image ID and src.
+			$image_id = 0;
+
+			// If post type, get the post ID.
+			if ( 'postType' === $image_data_source ) {
+				$post_type_id   = $attributes['dataPostId'] ?? 0;
+				$post_type_post = get_post( $post_type_id );
+				if ( $post_type_post ) {
+					$current_post_id = $post_type_post->ID;
+					$post_author_id  = $post_type_post->post_author;
+				}
+			}
+
+			// Get image data from cache.
+			$maybe_cached_image_data = wp_cache_get( 'dlx_photo_block_image_data_' . $current_post_id, 'dlx_photo_block' );
+			if ( ! $maybe_cached_image_data ) {
+				$image_data = Functions::get_image_data_from_source( $image_data_source, $image_source, $current_post_id, $post_author_id, $image_size );
+
+				// Overwrite attributes so we can use the same output code.
+				if ( false !== $image_data ) {
+					$attributes['imageDimensions'] = $image_data;
+					$attributes['photo']           = $image_data;
+
+					// Set object cache.
+					wp_cache_set( 'dlx_photo_block_image_data_' . $current_post_id, $image_data, 'dlx_photo_block', 60 * 60 );
+				}
+			}
 		}
 
 		$caption = '';
@@ -446,9 +516,12 @@ class Blocks {
 		/**
 		 * Filter whether the Photo block can output. Attempt not to load in admin.
 		 *
-		 * @param bool $can_output Whether the Photo block can output.
+		 * @param bool     $can_output Whether the Photo block can output.
+		 * @param array    $attributes Array of attributes for the Gutenberg block.
+		 * @param string   $innerblocks_content The inner blocks content.
+		 * @param WP_Block $block The photo block content and attributes.
 		 */
-		$can_output = apply_filters( 'dlx_photo_block_can_output', $can_output );
+		$can_output = apply_filters( 'dlx_photo_block_can_output', $can_output, $attributes, $innerblocks_content, $block );
 		if ( ! $can_output ) {
 			return;
 		}
@@ -500,77 +573,36 @@ class Blocks {
 			$image_source      = $attributes['dataImageSource'] ?? 'featuredImage'; /* can be featuredImage, customField, authorAvatar, authorMeta */
 
 			// Placeholdr for image ID and src.
-			$image_id        = 0;
-			$maybe_image_src = false;
+			$image_id = 0;
 
-			// Get the image ID if current post.
-			if ( 'currentPost' === $image_data_source || 'postType' === $image_data_source ) {
-
-				// If post type, get the post ID.
-				if ( 'postType' === $image_data_source ) {
-					$post_type      = $attributes['dataPostType'] ?? 'post';
-					$post_type_id   = $attributes['dataPostId'] ?? 0;
-					$post_type_post = get_post( $post_type_id );
-					if ( $post_type_post ) {
-						$current_post_id = $post_type_post->ID;
-						$post_author_id  = $post_type_post->post_author;
-					}
-				}
-
-				switch ( $image_source ) {
-					case 'featuredImage':
-						$image_id = get_post_thumbnail_id( $current_post_id );
-						break;
-					case 'customField':
-						// We need to get the post meta.
-						$data_post_meta_key = $attributes['dataImageSourceCustomField'] ?? '';
-						$custom_field_value = get_post_meta( $current_post_id, $data_post_meta_key, true );
-						$image_id           = Functions::get_image_id_or_url_from_custom_field( $custom_field_value, $data_post_meta_key );
-						break;
-					case 'authorAvatar':
-						$image_id = 0;
-						break;
-					case 'authorMeta':
-						$author_meta_field = $attributes['dataImageSourceAuthorMeta'] ?? 'avatar';
-						$image_id          = Functions::get_author_image_from_meta( $image_size, $author_meta_field, $post_author_id );
-						break;
+			// If post type, get the post ID.
+			if ( 'postType' === $image_data_source ) {
+				$post_type_id   = $attributes['dataPostId'] ?? 0;
+				$post_type_post = get_post( $post_type_id );
+				if ( $post_type_post ) {
+					$current_post_id = $post_type_post->ID;
+					$post_author_id  = $post_type_post->post_author;
 				}
 			}
 
-			// Check for avatar.
-			if ( 'authorAvatar' === $image_source && 0 === $image_id ) {
-				$avatar = get_avatar_url( $post_author_id, array( 'size' => $image_size ) );
-				if ( $avatar ) {
-					$image_data = array(
-						'id'              => 0,
-						'url'             => $avatar,
-						'alt'             => '',
-						'full'            => $avatar,
-						'attachment_link' => '',
-					);
-					$is_avatar  = true;
-				}
+			// Get image data from cache.
+			$maybe_cached_image_data = wp_cache_get( 'dlx_photo_block_image_data_' . $current_post_id, 'dlx_photo_block' );
+
+			if ( $maybe_cached_image_data ) {
+				$image_data                    = $maybe_cached_image_data;
+				$attributes['imageDimensions'] = $maybe_cached_image_data;
+				$attributes['photo']           = $maybe_cached_image_data;
 			} else {
-				$image_data = Functions::get_image_data( $image_id, $image_size );
-			}
+				$image_data = Functions::get_image_data_from_source( $image_data_source, $image_source, $current_post_id, $post_author_id, $image_size );
 
-			// Get the image URL.
-			if ( false === $image_data ) {
-				$has_fallback_image = $attributes['dataHasFallbackImage'] ?? false;
-				if ( $has_fallback_image ) {
-					$image_data               = $attributes['dataFallbackImage'] ?? array();
-					$data_fallback_image_size = $attributes['dataFallbackImageSize'] ?? 'large';
-					$maybe_data_image_id      = $attributes['dataFallbackImage']['id'] ?? 0;
-					if ( $maybe_data_image_id ) {
-						$image_data = Functions::get_image_data( $maybe_data_image_id, $data_fallback_image_size );
-					}
+				// Overwrite attributes so we can use the same output code.
+				if ( false !== $image_data ) {
+					$attributes['imageDimensions'] = $image_data;
+					$attributes['photo']           = $image_data;
+
+					// Set object cache.
+					wp_cache_set( 'dlx_photo_block_image_data_' . $current_post_id, $image_data, 'dlx_photo_block', 60 * 60 );
 				}
-			}
-
-			// Overwrite attributes so we can use the same output code.
-			if ( false !== $image_data ) {
-				$attributes['imageDimensions'] = $image_data;
-				$attributes['photo']           = $image_data;
 			}
 		}
 

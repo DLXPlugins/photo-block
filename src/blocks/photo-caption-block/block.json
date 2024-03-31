@@ -26,7 +26,8 @@
 		"photo-block/dataFallbackImageSize",
 		"photo-block/dataFallbackImage",
 		"photo-block/dataPostType",
-		"photo-block/dataPostId"
+		"photo-block/dataPostId",
+		"photo-block/imageSize"
 	],
 	"attributes": {
 		"photoMode": {

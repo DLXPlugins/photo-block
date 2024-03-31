@@ -489,6 +489,81 @@ class Functions {
 	/**
 	 * Get an image from a dynamic source.
 	 *
+	 * @param string $image_data_source The image data source.
+	 * @param string $image_source      The image source.
+	 * @param int    $post_id           The post ID.
+	 * @param int    $post_author_id    The post author ID.
+	 * @param string $image_size        The image size.
+	 *
+	 * @return array {
+	 *   @type int    $id              The attachment ID.
+	 *   @type string $url             The image URL.
+	 *   @type int    $width           The image width.
+	 *   @type int    $height          The image height.
+	 *   @type string $alt             The image alt text.
+	 *   @type string $full            The link to the full image.
+	 *   @type string $attachment_link The link to the attachment page.
+	 * }
+	 */
+	public static function get_image_data_from_source( $image_data_source, $image_source, $post_id, $post_author_id, $image_size ) {
+		// Get the image ID if current post.
+		if ( 'currentPost' === $image_data_source || 'postType' === $image_data_source ) {
+
+			switch ( $image_source ) {
+				case 'featuredImage':
+					$image_id = get_post_thumbnail_id( $post_id );
+					break;
+				case 'customField':
+					// We need to get the post meta.
+					$data_post_meta_key = $attributes['dataImageSourceCustomField'] ?? '';
+					$custom_field_value = get_post_meta( $post_id, $data_post_meta_key, true );
+					$image_id           = Functions::get_image_id_or_url_from_custom_field( $custom_field_value, $data_post_meta_key );
+					break;
+				case 'authorAvatar':
+					$image_id = 0;
+					break;
+				case 'authorMeta':
+					$author_meta_field = $attributes['dataImageSourceAuthorMeta'] ?? 'avatar';
+					$image_id          = Functions::get_author_image_from_meta( $image_size, $author_meta_field, $post_author_id );
+					break;
+			}
+		}
+
+		// Check for avatar.
+		if ( 'authorAvatar' === $image_source && 0 === $image_id ) {
+			$avatar = get_avatar_url( $post_author_id, array( 'size' => $image_size ) );
+			if ( $avatar ) {
+				$image_data = array(
+					'id'              => 0,
+					'url'             => $avatar,
+					'alt'             => '',
+					'full'            => $avatar,
+					'attachment_link' => '',
+				);
+				$is_avatar  = true;
+			}
+		} else {
+			$image_data = Functions::get_image_data( $image_id, $image_size );
+		}
+
+		// Get the image URL.
+		if ( false === $image_data ) {
+			$has_fallback_image = $attributes['dataHasFallbackImage'] ?? false;
+			if ( $has_fallback_image ) {
+				$image_data               = $attributes['dataFallbackImage'] ?? array();
+				$data_fallback_image_size = $attributes['dataFallbackImageSize'] ?? 'large';
+				$maybe_data_image_id      = $attributes['dataFallbackImage']['id'] ?? 0;
+				if ( $maybe_data_image_id ) {
+					$image_data = Functions::get_image_data( $maybe_data_image_id, $data_fallback_image_size );
+				}
+			}
+		}
+		return $image_data;
+	}
+
+	/**
+	 * Get an image from a dynamic source.
+	 *
 	 * @param array $attributes       The block attributes.
 	 * @param int   $post_id          The post to retrieve data for.
 	 * @param array $default_alt_text The alt text to use if none (default).
