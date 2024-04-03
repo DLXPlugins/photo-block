@@ -24,7 +24,8 @@
     "photo-block/dataFallbackImageSize": "dataFallbackImageSize",
     "photo-block/dataFallbackImage": "dataFallbackImage",
     "photo-block/dataPostType": "dataPostType",
-    "photo-block/dataPostId": "dataPostId"
+    "photo-block/dataPostId": "dataPostId",
+    "photo-block/imageSize": "imageSize"
   },
   "attributes": {
     "uniqueId": {

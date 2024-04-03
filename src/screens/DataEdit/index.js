@@ -288,6 +288,15 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 										} }
 									/>
 								</div>
+								<Button
+									isDestructive={ true }
+									variant="secondary"
+									onClick={ () => {
+										setAttributes( { dataFallbackImage: {} } );
+									} }
+								>
+									{ __( 'Remove Fallback Image', 'photo-block' ) }
+								</Button>
 							</>
 						) }
 					</>
@@ -296,43 +305,12 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
-	const interfaceTabs = (
-		<TabPanel
-			className="dlx-photo-block__inspector-tabs"
-			activeClass="active-tab"
-			onSelect={ ( tab ) => {
-				setInspectorTab( tab );
-			} }
-			children={ () => <></> }
-			tabs={ [
-				{
-					name: 'settings',
-					title: __( 'Settings', 'photo-block' ),
-					className: 'dlx-photo-block__inspector-tab',
-					icon: <Settings />,
-				},
-				{
-					name: 'styles',
-					title: __( 'Styles', 'photo-block' ),
-					className: 'dlx-photo-block__inspector-tab',
-					icon: <Paintbrush />,
-				},
-			] }
-		>
-			{ ( tab ) => {
-				switch ( tab.name ) {
-					case 'settings':
-						return settingsInspectorControls;
-					case 'styles':
-						return ( <SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> );
-				}
-			} }
-		</TabPanel>
-	);
-
 	// Set the local inspector controls.
 	const localInspectorControls = (
-		<InspectorControls>{ interfaceTabs }</InspectorControls>
+		<InspectorControls>
+			{ settingsInspectorControls }
+			<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> 
+		</InspectorControls>
 	);
 
 	// Set the advanced inspector controls.
