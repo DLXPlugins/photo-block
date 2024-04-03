@@ -62,7 +62,7 @@ const DropShadowControl = ( props ) => {
 						<ColorPickerControl
 							label={ __( 'Color', 'photo-block' ) }
 							value={ attributes.photoDropShadow.color }
-							valueOpacity={ 1 }
+							valueOpacity={ attributes.photoDropShadow.opacity || 1 }
 							onChange={ ( slug, color ) => {
 								setAttributes( {
 									photoDropShadow: {

@@ -11,6 +11,8 @@ import { AlertCircle } from 'lucide-react';
 import Notice from '../Notice';
 import CustomPresetsContext from './context';
 
+const canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
+
 const CustomPresetEditModal = ( props ) => {
 	const { title, editId, saveNonce } = props;
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -120,20 +122,24 @@ const CustomPresetEditModal = ( props ) => {
 						icon={ <AlertCircle /> }
 					/>
 				) }
-				<Controller
-					name="isDefault"
-					control={ control }
-					render={ ( { field: { onChange, value } } ) => (
-						<ToggleControl
-							label={ __( 'Set Default Preset', 'photo-block' ) }
-							checked={ value }
-							onChange={ ( newValue ) => onChange( newValue ) }
-							help={
-								__( 'This preset will be applied to all new Photo Blocks.', 'photo-block' )
-							}
+				{ canSaveDefaultPresets && (
+					<>
+						<Controller
+							name="isDefault"
+							control={ control }
+							render={ ( { field: { onChange, value } } ) => (
+								<ToggleControl
+									label={ __( 'Set Default Preset', 'photo-block' ) }
+									checked={ value }
+									onChange={ ( newValue ) => onChange( newValue ) }
+									help={
+										__( 'This preset will be applied to all new Photo Blocks.', 'photo-block' )
+									}
+								/>
+							) }
 						/>
-					) }
-				/>
+					</>
+				) }
 				<Controller
 					name="editId"
 					control={ control }

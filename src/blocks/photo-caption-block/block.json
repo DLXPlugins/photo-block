@@ -79,6 +79,10 @@
 			"type": "string",
 			"default": "transparent"
 		},
+		"captionBackgroundColorOpacity": {
+			"type": "number",
+			"default": 1
+		},
 		"captionTextColor": {
 			"type": "string",
 			"default": "#333"

@@ -16,7 +16,7 @@ import CustomPresetEditModal from './CustomPresetEditModal';
 import CustomPresetDeleteModal from './CustomPresetDeleteModal';
 
 // Read in localized var and determine if user can save or edit presets.
-const canSavePresets = photoBlock.presetCanEditor;
+const canSavePresets = photoBlockUser.canSavePresets;
 
 const CustomPresetContainer = ( props ) => {
 	const [ loading, setLoading ] = useState( true );

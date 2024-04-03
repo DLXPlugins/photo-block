@@ -53,15 +53,13 @@ class Blocks {
 	 * Register frontend scripts/styles.
 	 */
 	public static function enqueue_frontend_assets() {
-		if ( ! is_admin() && has_block( 'dlxplugins/photo-block' ) ) {
-			wp_register_style(
-				'dlx-photo-block-frontend-and-editor',
-				Functions::get_plugin_url( 'dist/dlx-photo-block-style.css' ),
-				array(),
-				Functions::get_plugin_version(),
-				'all'
-			);
-		}
+		wp_enqueue_style(
+			'dlx-photo-block-frontend-and-editor',
+			Functions::get_plugin_url( 'dist/dlx-photo-block-style.css' ),
+			array(),
+			Functions::get_plugin_version(),
+			'all'
+		);
 	}
 
 	/**
@@ -148,6 +146,14 @@ class Blocks {
 			'palette'            => functions::get_theme_color_palette(),
 			'postTypes'          => $post_type_return,
 		);
+
+		// Add inline script to detect user role.
+		$inline_vars = array(
+			'canUploadFiles'       => current_user_can( 'upload_files' ), /* contributor and above */
+			'canSavePresets'       => current_user_can( 'edit_others_posts' ), /* author and above */
+			'canSetDefaultPresets' => current_user_can( 'edit_others_posts' ), /* editor and above */
+		);
+
 		/**
 		 * Filter the localized variables for the Photo Block.
 		 *
@@ -159,6 +165,13 @@ class Blocks {
 			'dlx-photo-block-editor',
 			'photoBlock',
 			$localized_vars
+		);
+
+		// Inline vars to avoid caching of scripts.
+		wp_add_inline_script(
+			'dlx-photo-block-editor',
+			'var photoBlockUser = ' . wp_json_encode( $inline_vars ) . ';',
+			'before'
 		);
 
 		wp_register_style(
@@ -353,7 +366,7 @@ class Blocks {
 					$attributes['uniqueId'],
 					'figcaption'
 				);
-				$custom_font_family = $attributes['captionTypography']['captionCustomTypography'] ?? null;
+				$custom_font_family  = $attributes['captionTypography']['captionCustomTypography'] ?? null;
 				Functions::add_css_property( $custom_caption_font, 'font-family', $custom_font_family );
 				$css_output .= $custom_caption_font->get_css();
 			}
@@ -685,7 +698,7 @@ class Blocks {
 					);
 				}
 			} else {
-				
+
 				$image_markup = get_avatar(
 					$post_author_id,
 					$image_size,
@@ -865,7 +878,6 @@ class Blocks {
 					),
 					$image_markup,
 					esc_attr( $caption )
-					
 				);
 			}
 
@@ -1242,7 +1254,7 @@ class Blocks {
 		if ( wp_script_is( 'fancybox', 'enqueued' ) || wp_script_is( 'jquery-fancybox', 'enqueued' ) || wp_script_is( 'has-fancybox-js', 'registered' ) ) {
 			if ( wp_script_is( 'dlx-photo-block-fancybox-js', 'registered' ) ) {
 				wp_register_script( 'dlx-photo-block-fancybox-js-inline', false );
-				
+
 				wp_print_scripts( 'dlx-photo-block-fancybox-js-inline' );
 			}
 			return;

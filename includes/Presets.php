@@ -131,7 +131,7 @@ class Presets {
 	 */
 	public static function ajax_save_presets() {
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_preset' ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_preset' ) || ! current_user_can( 'publish_posts' ) ) {
 			wp_send_json_error( array() );
 		}
 
@@ -213,11 +213,12 @@ class Presets {
 		);
 
 		// Check if preset should be default.
-		$is_default = false;
+		$is_default      = false;
+		$can_set_default = current_user_can( 'edit_others_posts' );
 		if ( isset( $form_data['defaultPreset'] ) ) {
 			$is_default = filter_var( $form_data['defaultPreset'], FILTER_VALIDATE_BOOLEAN );
 		}
-		if ( $is_default ) {
+		if ( $is_default && $can_set_default ) {
 			// Remove default from all other presets.
 			self::remove_default_presets();
 
@@ -234,6 +235,9 @@ class Presets {
 	 * Purge defaults from the presets.
 	 */
 	private static function remove_default_presets() {
+		if ( ! current_user_can( 'edit_others_posts' ) ) {
+			return;
+		}
 		$args    = array(
 			'post_type'      => 'dlx_pb_presets',
 			'post_status'    => 'publish',
@@ -332,7 +336,7 @@ class Presets {
 		);
 
 		// Check if preset should be default.
-		if ( $is_default ) {
+		if ( $is_default && current_user_can( 'edit_others_posts' ) ) {
 			// Remove default from all other presets.
 			self::remove_default_presets();
 
@@ -370,15 +374,17 @@ class Presets {
 		);
 
 		// If default, clear all other defaults.
-		if ( $is_default ) {
-			// Remove default from all other presets.
-			self::remove_default_presets();
+		if ( current_user_can( 'edit_others_posts' ) ) {
+			if ( $is_default ) {
+				// Remove default from all other presets.
+				self::remove_default_presets();
 
-			// Set this preset as default.
-			update_post_meta( $preset_id, '_dlx_pb_is_default', true );
-		} else {
-			// Remove default from this preset.
-			delete_post_meta( $preset_id, '_dlx_pb_is_default' );
+				// Set this preset as default.
+				update_post_meta( $preset_id, '_dlx_pb_is_default', true );
+			} else {
+				// Remove default from this preset.
+				delete_post_meta( $preset_id, '_dlx_pb_is_default' );
+			}
 		}
 
 		// Retrieve all presets.

@@ -14,6 +14,8 @@ import { AlertCircle, Save } from 'lucide-react';
 import CustomPresetsContext from './context';
 import Notice from '../Notice';
 
+const canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
+
 const CustomPresetSaveModal = ( props ) => {
 	const [ presetSaveType, setPresetSaveType ] = useState( 'new' );
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -181,7 +183,7 @@ const CustomPresetSaveModal = ( props ) => {
 			value: 'override',
 		},
 	];
-	if ( savedPresets.length === 0 ) {
+	if ( savedPresets.length === 0 || ! canSaveDefaultPresets ) {
 		radioOptions = [
 			{
 				label: __( 'Save Preset', 'photo-block' ),
@@ -251,7 +253,7 @@ const CustomPresetSaveModal = ( props ) => {
 							</div>
 						</>
 					) }
-					{ 'override' === presetSaveType && (
+					{ ( 'override' === presetSaveType && canSaveDefaultPresets ) && (
 						<>
 							{ savedPresets.length > 0 && (
 								<div className="photo-block-preset-modal-override-preset">
@@ -286,21 +288,23 @@ const CustomPresetSaveModal = ( props ) => {
 							) }
 						</>
 					) }
-					<Controller
-						name="defaultPreset"
-						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<ToggleControl
-								label={ __( 'Make This Preset the Default', 'photo-block' ) }
-								checked={ value }
-								onChange={ ( newValue ) => onChange( newValue ) }
-								help={ __(
-									'If this preset is selected as the default, it will be applied to all new photo blocks.',
-									'photo-block'
-								) }
-							/>
-						) }
-					/>
+					{ canSaveDefaultPresets && (
+						<Controller
+							name="defaultPreset"
+							control={ control }
+							render={ ( { field: { onChange, value } } ) => (
+								<ToggleControl
+									label={ __( 'Make This Preset the Default', 'photo-block' ) }
+									checked={ value }
+									onChange={ ( newValue ) => onChange( newValue ) }
+									help={ __(
+										'If this preset is selected as the default, it will be applied to all new photo blocks.',
+										'photo-block'
+									) }
+								/>
+							) }
+						/>
+					) }
 					<div className="photo-block-preset-modal-button-group">
 						<Button
 							type="submit"

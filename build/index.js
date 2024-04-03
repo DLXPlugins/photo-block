@@ -13,7 +13,44 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/TypographyHelper */ "./src/utils/TypographyHelper.js");
+/* harmony import */ var hex_to_rgba__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! hex-to-rgba */ "./node_modules/hex-to-rgba/build/index.js");
+/* harmony import */ var hex_to_rgba__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(hex_to_rgba__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rgb2hex */ "./node_modules/rgb2hex/index.js");
+/* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(rgb2hex__WEBPACK_IMPORTED_MODULE_2__);
 
+
+
+
+/**
+ * Return a color based on passed alpha value.
+ *
+ * @param {string} colorValue   hex, rgb, rgba, or CSS var.
+ * @param {number} opacityValue The opacity (from 0 - 1).
+ * @return {string} The color in hex, rgba, or CSS var format.
+ */
+var getColor = function getColor(colorValue) {
+  var opacityValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  // Test for CSS var values in color value.
+  if (colorValue.indexOf('var(') === 0) {
+    return colorValue;
+  }
+
+  // Test for RGBA at the beginning, and return value.
+  if (colorValue.indexOf('rgba') === 0) {
+    // Calculate hex value from rgba.
+    var hex = rgb2hex__WEBPACK_IMPORTED_MODULE_2___default()(colorValue).hex;
+    return hex_to_rgba__WEBPACK_IMPORTED_MODULE_1___default()(hex, opacityValue);
+  }
+
+  // Test for RGB at the beginning, and return hex if found.
+  if (colorValue.indexOf('rgb') === 0) {
+    return hex_to_rgba__WEBPACK_IMPORTED_MODULE_1___default()(rgb2hex__WEBPACK_IMPORTED_MODULE_2___default()(colorValue).hex, opacityValue);
+  }
+  if (opacityValue < 1) {
+    return hex_to_rgba__WEBPACK_IMPORTED_MODULE_1___default()(colorValue, opacityValue);
+  }
+  return colorValue;
+};
 var getStyles = function getStyles(attributes, deviceType, uniqueId) {
   var containerWidth = attributes.containerWidth,
     containerHeight = attributes.containerHeight,
@@ -37,7 +74,7 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
   // Apply outer margin to container.
   styles += "#".concat(uniqueId, " .dlx-photo-block__figure { margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), "; }");
   if (photoDropShadow.enabled) {
-    styles += "\n\t\t\t#".concat(uniqueId, " img {\n\t\t\t\tbox-sizing: border-box;\n\t\t\t\tbox-shadow: ").concat(photoDropShadow.inset ? 'inset ' : '').concat(photoDropShadow.horizontal, "px ").concat(photoDropShadow.vertical, "px ").concat(photoDropShadow.blur, "px ").concat(photoDropShadow.spread, "px ").concat(photoDropShadow.color, ";\n\t\t\t\t-webkit-box-shadow: ").concat(photoDropShadow.inset ? 'inset ' : '').concat(photoDropShadow.horizontal, "px ").concat(photoDropShadow.vertical, "px ").concat(photoDropShadow.blur, "px ").concat(photoDropShadow.spread, "px ").concat(photoDropShadow.color, ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t#".concat(uniqueId, " img {\n\t\t\t\tbox-sizing: border-box;\n\t\t\t\tbox-shadow: ").concat(photoDropShadow.inset ? 'inset ' : '').concat(photoDropShadow.horizontal, "px ").concat(photoDropShadow.vertical, "px ").concat(photoDropShadow.blur, "px ").concat(photoDropShadow.spread, "px ").concat(getColor(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t\t-webkit-box-shadow: ").concat(photoDropShadow.inset ? 'inset ' : '').concat(photoDropShadow.horizontal, "px ").concat(photoDropShadow.vertical, "px ").concat(photoDropShadow.blur, "px ").concat(photoDropShadow.spread, "px ").concat(getColor(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t}\n\t\t");
   }
   return styles;
 };
@@ -4285,7 +4322,8 @@ var ColorPickerControl = function ColorPickerControl(props) {
     min: 0,
     max: 1,
     step: 0.01,
-    initialPosition: 1
+    initialPosition: 1,
+    disabled: color.indexOf('var(') === 0
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
     className: "photo-block-component-color-picker-palette"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ColorPalette, {
@@ -4486,7 +4524,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 // Read in localized var and determine if user can save or edit presets.
-var canSavePresets = photoBlock.presetCanEditor;
+var canSavePresets = photoBlockUser.canSavePresets;
 var CustomPresetContainer = function CustomPresetContainer(props) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
@@ -4781,6 +4819,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+var canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
 var CustomPresetEditModal = function CustomPresetEditModal(props) {
   var _errors$title, _errors$title2;
   var title = props.title,
@@ -4894,7 +4933,7 @@ var CustomPresetEditModal = function CustomPresetEditModal(props) {
     status: "error",
     politeness: "assertive",
     icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], null)
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_5__.Controller, {
+  }), canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_5__.Controller, {
     name: "isDefault",
     control: control,
     render: function render(_ref2) {
@@ -4910,7 +4949,7 @@ var CustomPresetEditModal = function CustomPresetEditModal(props) {
         help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This preset will be applied to all new Photo Blocks.', 'photo-block')
       });
     }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_5__.Controller, {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_5__.Controller, {
     name: "editId",
     control: control,
     render: function render(_ref3) {
@@ -4977,6 +5016,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+var canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
 var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
   var _errors$presetTitle2, _errors$presetTitle3, _errors$selectedPrese;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('new'),
@@ -5158,7 +5198,7 @@ var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Override Preset', 'photo-block'),
     value: 'override'
   }];
-  if (savedPresets.length === 0) {
+  if (savedPresets.length === 0 || !canSaveDefaultPresets) {
     radioOptions = [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Save Preset', 'photo-block'),
       value: 'new'
@@ -5213,7 +5253,7 @@ var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
     status: "error",
     politeness: "assertive",
     icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
-  }))), 'override' === presetSaveType && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, savedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }))), 'override' === presetSaveType && canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, savedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-preset-modal-override-preset"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
     name: "selectedPreset",
@@ -5240,7 +5280,7 @@ var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
     status: "error",
     politeness: "assertive",
     icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+  }))), canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
     name: "defaultPreset",
     control: control,
     render: function render(_ref3) {
@@ -6703,7 +6743,7 @@ var DropShadowControl = function DropShadowControl(props) {
   }, /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Color', 'photo-block'),
     value: attributes.photoDropShadow.color,
-    valueOpacity: 1,
+    valueOpacity: attributes.photoDropShadow.opacity || 1,
     onChange: function onChange(slug, color) {
       setAttributes({
         photoDropShadow: _objectSpread(_objectSpread({}, attributes.photoDropShadow), {}, {
@@ -49410,7 +49450,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","usesContext":["photo-block/dataSource","photo-block/dataImageSource","photo-block/dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage","photo-block/dataFallbackImageSize","photo-block/dataFallbackImage","photo-block/dataPostType","photo-block/dataPostId","photo-block/imageSize"],"attributes":{"photoMode":{"type":"string","default":""},"uniqueId":{"type":"string","default":""},"captionManual":{"type":"string","default":""},"mode":{"type":"string","default":"single"},"enableSmartStyles":{"type":"boolean","default":true},"captionBaseFontSize":{"type":"object","default":{"mobile":{"value":"14","unit":"px"},"tablet":{"value":"14","unit":"px"},"desktop":{"value":"16","unit":"px"}}},"captionPosition":{"type":"string","default":"bottom"},"captionAlign":{"type":"string","default":"center"},"captionBackgroundColor":{"type":"string","default":"transparent"},"captionTextColor":{"type":"string","default":"#333"},"captionAccentColor":{"type":"string","default":"#e17713"},"captionSecondaryColor":{"type":"string","default":"#FFFFFF"},"captionLinkColor":{"type":"string","default":"#e17713"},"captionLinkHoverColor":{"type":"string","default":"#f58f2f"},"captionTextFontFamily":{"type":"string","default":"Arial"},"captionHeadingsFontFamily":{"type":"string","default":"Arial"},"captionTypography":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"18","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.2","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}},"captionCustomTypography":{"type":"string","default":""},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"15","right":"20","bottom":"15","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":false}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataCaptionPostTitle":{"type":"string","default":""},"dataCaptionPostId":{"type":"string","default":""},"dataCaptionSource":{"type":"string","default":"currentImage"},"dataCaptionType":{"type":"string","default":"caption"},"dataCaptionImageCustomField":{"type":"string","default":""},"dataCaptionTypePostCustomField":{"type":"string","default":""},"dataCaptionPostType":{"type":"string","default":"post"},"dataCaptionPostTypeCustomField":{"type":"string","default":""},"dataCaptionTypePost":{"type":"string","default":"title"},"dataCaptionTypePostAuthorMeta":{"type":"string","default":""},"dataCaptionPostTypeSource":{"type":"string","default":"title"},"dataCaptionPostTypeAuthorMeta":{"type":"string","default":""},"overlayVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionHorizontalPosition":{"type":"string","default":"center"},"overlayHorizontalPosition":{"type":"string","default":"center"},"overlayBackgroundType":{"type":"string","default":"solid"},"overlayBackgroundColor":{"type":"string","default":"rgba(0,0,0,0.5)"},"overlayBackgroundColorOpacity":{"type":"number","default":0.5},"overlayBackgroundColorHover":{"type":"string","default":"rgba(0,0,0,0.40)"},"overlayBackgroundColorOpacityHover":{"type":"number","default":0.4},"overlayBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"overlayBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"overlayBackgroundGradient":{"type":"string","default":""},"overlayBackgroundGradientOpacity":{"type":"number","default":0.5},"overlayBackgroundGradientOpacityHover":{"type":"number","default":0.65},"overlayBackgroundImage":{"type":"object","default":{"url":"","id":0,"backgroundColor":"transparent","backgroundSize":"cover","backgroundPosition":"center center","backgroundRepeat":"no-repeat","backgroundOpacity":0.4,"backgroundOpacityHover":0.65}},"htmlAnchor":{"type":"string","default":""},"captionCSSClasses":{"type":"string","default":""},"customAttributes":{"type":"array","default":[]},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false}},"supports":{"anchor":false,"align":false,"className":false,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false},"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-caption-block-editor","editorStyle":"dlx-photo-caption-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","usesContext":["photo-block/dataSource","photo-block/dataImageSource","photo-block/dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage","photo-block/dataFallbackImageSize","photo-block/dataFallbackImage","photo-block/dataPostType","photo-block/dataPostId","photo-block/imageSize"],"attributes":{"photoMode":{"type":"string","default":""},"uniqueId":{"type":"string","default":""},"captionManual":{"type":"string","default":""},"mode":{"type":"string","default":"single"},"enableSmartStyles":{"type":"boolean","default":true},"captionBaseFontSize":{"type":"object","default":{"mobile":{"value":"14","unit":"px"},"tablet":{"value":"14","unit":"px"},"desktop":{"value":"16","unit":"px"}}},"captionPosition":{"type":"string","default":"bottom"},"captionAlign":{"type":"string","default":"center"},"captionBackgroundColor":{"type":"string","default":"transparent"},"captionBackgroundColorOpacity":{"type":"number","default":1},"captionTextColor":{"type":"string","default":"#333"},"captionAccentColor":{"type":"string","default":"#e17713"},"captionSecondaryColor":{"type":"string","default":"#FFFFFF"},"captionLinkColor":{"type":"string","default":"#e17713"},"captionLinkHoverColor":{"type":"string","default":"#f58f2f"},"captionTextFontFamily":{"type":"string","default":"Arial"},"captionHeadingsFontFamily":{"type":"string","default":"Arial"},"captionTypography":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"18","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.2","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}},"captionCustomTypography":{"type":"string","default":""},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"15","right":"20","bottom":"15","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":false}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataCaptionPostTitle":{"type":"string","default":""},"dataCaptionPostId":{"type":"string","default":""},"dataCaptionSource":{"type":"string","default":"currentImage"},"dataCaptionType":{"type":"string","default":"caption"},"dataCaptionImageCustomField":{"type":"string","default":""},"dataCaptionTypePostCustomField":{"type":"string","default":""},"dataCaptionPostType":{"type":"string","default":"post"},"dataCaptionPostTypeCustomField":{"type":"string","default":""},"dataCaptionTypePost":{"type":"string","default":"title"},"dataCaptionTypePostAuthorMeta":{"type":"string","default":""},"dataCaptionPostTypeSource":{"type":"string","default":"title"},"dataCaptionPostTypeAuthorMeta":{"type":"string","default":""},"overlayVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionHorizontalPosition":{"type":"string","default":"center"},"overlayHorizontalPosition":{"type":"string","default":"center"},"overlayBackgroundType":{"type":"string","default":"solid"},"overlayBackgroundColor":{"type":"string","default":"rgba(0,0,0,0.5)"},"overlayBackgroundColorOpacity":{"type":"number","default":0.5},"overlayBackgroundColorHover":{"type":"string","default":"rgba(0,0,0,0.40)"},"overlayBackgroundColorOpacityHover":{"type":"number","default":0.4},"overlayBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"overlayBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"overlayBackgroundGradient":{"type":"string","default":""},"overlayBackgroundGradientOpacity":{"type":"number","default":0.5},"overlayBackgroundGradientOpacityHover":{"type":"number","default":0.65},"overlayBackgroundImage":{"type":"object","default":{"url":"","id":0,"backgroundColor":"transparent","backgroundSize":"cover","backgroundPosition":"center center","backgroundRepeat":"no-repeat","backgroundOpacity":0.4,"backgroundOpacityHover":0.65}},"htmlAnchor":{"type":"string","default":""},"captionCSSClasses":{"type":"string","default":""},"customAttributes":{"type":"array","default":[]},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false}},"supports":{"anchor":false,"align":false,"className":false,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false},"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-caption-block-editor","editorStyle":"dlx-photo-caption-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ })
 

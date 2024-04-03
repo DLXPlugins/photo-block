@@ -4,7 +4,8 @@
 		"window": true,
 		"document": true,
 		"React": "readonly",
-		"photoBlock": "readonly"
+		"photoBlock": "readonly",
+		"photoBlockUser": "readonly"
 	},
 	"env": {
 		"browser": true,

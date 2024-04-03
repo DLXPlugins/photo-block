@@ -221,6 +221,7 @@ const ColorPickerControl = ( props ) => {
 										max={ 1 }
 										step={ 0.01 }
 										initialPosition={ 1 }
+										disabled={ color.indexOf( 'var(' ) === 0 }
 									/>
 								</div>
 							) }
