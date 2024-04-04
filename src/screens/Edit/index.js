@@ -414,7 +414,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						icon={ <Accessibility /> }
 						label={ __( 'Set Accessibility Options', 'photo-block' ) }
 						onClick={ () => {
-							setA11yPopover( ! a11yPopover );
+							setA11yPopover( ( state ) => ! state );
 						} }
 						ref={ setA11yButton }
 					/>
@@ -422,7 +422,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						icon={ <Link /> }
 						label={ __( 'Set Link Options', 'photo-block' ) }
 						onClick={ () => {
-							setMediaLinkPopover( ! mediaLinkPopover );
+							setMediaLinkPopover( ( state ) => ! state );
 						} }
 						ref={ setMediaLinkRef }
 					/>
@@ -433,17 +433,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 					anchorRef={ mediaLinkRef }
-					onClose={ () => {
-						setMediaLinkPopover( false );
-					} }
 				/>
 			) }
 			{ a11yPopover && (
 				<Popover
 					position="bottom center"
-					onClose={ () => {
-						setA11yPopover( false );
-					} }
 					anchor={ a11yButton }
 				>
 					<div className="dlx-photo-block__a11y-popover">

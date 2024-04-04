@@ -12,32 +12,21 @@ import {
 	ToolbarButton,
 	ToggleControl,
 	Popover,
-	TabPanel,
 	TextControl,
-	TextareaControl,
 	PanelRow,
 	PanelBody,
 	SelectControl,
-	ButtonGroup,
-	RangeControl,
 	Button,
 } from '@wordpress/components';
 import { InspectorControls, InspectorAdvancedControls, BlockControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import {
-	Crop,
 	Image,
 	Accessibility,
 	Link,
-	Settings,
-	Paintbrush,
-	Shrink,
 	CaseSensitive,
 	Database,
-	FileKey,
-	Link2,
-	FileText,
-	File,
+	Layers,
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
@@ -49,6 +38,7 @@ import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
 import { DataSelect, MetaFieldControl } from '../../components/DataSelect';
+import CustomPresets from '../../components/CustomPresets';
 import getStyles from '../../blocks/photo-block/block-styles';
 
 /**
@@ -62,8 +52,6 @@ for ( const key in photoBlock.imageSizes ) {
 
 const DataEditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps, context } = props;
-
-	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
 	const [ titleButton, setTitleButton ] = useState( null );
@@ -187,6 +175,14 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
+			<PanelBody
+				title={ __( 'Presets', 'photo-block' ) }
+				initialOpen={ false }
+				icon={ <Layers /> }
+				className="photo-block__inspector-panel"
+			>
+				{ <CustomPresets { ...props } /> }
+			</PanelBody>
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }
 				icon={ <Image /> }
@@ -377,9 +373,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			{ mediaLinkPopover && (
 				<Popover
 					placement="top-start"
-					onClose={ () => {
-						setMediaLinkPopover( false );
-					} }
 					anchor={ mediaLinkRef }
 				>
 					<div className="dlx-photo-block__a11y-popover">
@@ -534,9 +527,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			{ a11yPopover && (
 				<Popover
 					placement="top-start"
-					onClose={ () => {
-						setA11yPopover( false );
-					} }
 					anchor={ a11yButton }
 				>
 					<div className="dlx-photo-block__a11y-popover">
@@ -553,9 +543,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			{ titlePopover && (
 				<Popover
 					placement="top-start"
-					onClose={ () => {
-						setTitlePopover( false );
-					} }
 					anchor={ titleButton }
 				>
 					<div className="dlx-photo-block__a11y-popover">

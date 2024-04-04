@@ -41,6 +41,7 @@ const UploadTarget = ( props ) => {
 		setIsUploadError,
 		setScreen,
 		setFilepondInstance,
+		setPhotoMode,
 	} = useContext( UploaderContext );
 
 	const { setAttributes } = props;
@@ -85,6 +86,7 @@ const UploadTarget = ( props ) => {
 												photo: JSON.parse( request.responseText ),
 											}
 										);
+										setPhotoMode( 'photo' );
 										setImageFile( JSON.parse( request.responseText ) );
 										load( request.responseText );
 									} else {

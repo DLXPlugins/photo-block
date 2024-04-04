@@ -1390,6 +1390,13 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
 .dlx-photo-block__caption-overlay.caption-horizontal-right figcaption {
   justify-content: flex-end;
 }
+
+/* Set a min-width for the photo container */
+.wp-block .filepond--wrapper {
+  justify-content: center;
+  min-width: 400px;
+  margin: 0 auto;
+}
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/photo-block/editor.scss ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************/
@@ -1620,7 +1627,10 @@ svg.lucide {
   display: none;
 }
 .dlx-photo-block__upload-target__container .dlx-photo-block__upload-target__filepond {
+  display: flex;
   position: absolute;
+  justify-content: center;
+  align-items: center;
   z-index: 1;
   width: 100%;
   height: 100%;
