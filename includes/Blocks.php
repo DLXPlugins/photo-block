@@ -217,7 +217,7 @@ class Blocks {
 		$is_in_query_loop    = false;
 		$current_post_id     = get_queried_object_id();
 		$maybe_query_post_id = $block->context['postId'] ?? 0;
-		if ( $current_post_id === $maybe_query_post_id && 0 !== $maybe_query_post_id ) {
+		if ( $current_post_id === $maybe_query_post_id || 0 !== $maybe_query_post_id ) {
 			$is_in_query_loop = true;
 			$current_post_id  = $maybe_query_post_id;
 		}
@@ -552,7 +552,7 @@ class Blocks {
 		$is_in_query_loop    = false;
 		$current_post_id     = get_queried_object_id();
 		$maybe_query_post_id = $block->context['postId'] ?? 0;
-		if ( $current_post_id === $maybe_query_post_id && 0 !== $maybe_query_post_id ) {
+		if ( $current_post_id === $maybe_query_post_id || 0 !== $maybe_query_post_id ) {
 			$is_in_query_loop = true;
 			$current_post_id  = $maybe_query_post_id;
 		}

@@ -309,8 +309,15 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 }
 
 /* Set a min-width for the photo container */
-.wp-block .filepond--wrapper {
+.wp-block .filepond--wrapper,
+.dlx-photo-block__block-wrapper {
 	justify-content: center;
 	min-width: 400px;
 	margin: 0 auto;
+}
+.dlx-photo-block__screen-initial {
+	width: 100%;
+	max-width: 800px;
+	border: 1px solid #333;
+	padding: 35px;
 }

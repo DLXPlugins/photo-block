@@ -144,7 +144,7 @@ const ColorPickerControl = ( props ) => {
 											'photo-block'
 										) }
 										style={ {
-											background: getColor( color, opacity ),
+											background: color,
 										} }
 									>
 										<span className="components-color-palette__custom-color-gradient" />
@@ -173,7 +173,7 @@ const ColorPickerControl = ( props ) => {
 										'photo-block'
 									) }
 									style={ {
-										background: getColor( color, opacity ),
+										background: color,
 									} }
 								>
 									<span className="components-color-palette__custom-color-gradient" />
