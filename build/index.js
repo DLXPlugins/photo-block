@@ -233,28 +233,6 @@ var PhotoBlock = function PhotoBlock(props) {
   });
 
   /**
-   * Detect when innerblock has changed.
-   *
-   * @param value
-   */
-  // useEffect( () => {
-  // 	console.log( innerBlocksCount );
-  // }, [ innerBlocksCount ] );
-
-  // Set the local inspector controls.
-  var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Photo Block Settings', 'photo-block')
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption', 'photo-block'),
-    value: caption,
-    onChange: function onChange(value) {
-      return setAttributes({
-        caption: value
-      });
-    }
-  }))));
-
-  /**
    * Get a unique ID for the block for inline styling if necessary.
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
@@ -11809,6 +11787,7 @@ for (var key in photoBlock.imageSizes) {
     label: size.label
   });
 }
+var dataImage = [];
 var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(function (props, ref) {
   var _previewImage$width, _previewImage$height;
   var attributes = props.attributes,
@@ -11866,6 +11845,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     dataMediaLinkImageCustomField = attributes.dataMediaLinkImageCustomField,
     dataMediaLinkAuthorMeta = attributes.dataMediaLinkAuthorMeta,
     imageSize = attributes.imageSize,
+    photo = attributes.photo,
     photoOpacity = attributes.photoOpacity,
     photoBlur = attributes.photoBlur,
     photoDropShadow = attributes.photoDropShadow,
@@ -11878,7 +11858,8 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     setScreen = _useContext.setScreen,
     captionPosition = _useContext.captionPosition,
     inQueryLoop = _useContext.inQueryLoop,
-    setImageFile = _useContext.setImageFile;
+    setImageFile = _useContext.setImageFile,
+    imageFile = _useContext.imageFile;
 
   // Get query loop vars.
   var postId = context.postId,
@@ -11916,10 +11897,19 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
    * Set up effect for loading the image initially using data.
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    var currentPostId = getPostId();
+
+    // Check for array key in dataImage.
+    if (dataImage[currentPostId]) {
+      setPreviewImage(dataImage[currentPostId]);
+      setHasImage(true);
+      setImageLoading(false);
+      return;
+    }
     setImageLoading(true);
     (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_8__["default"])(photoBlock.restNonce, {
       dataSource: dataSource,
-      dataCurrentPostId: getPostId(),
+      dataCurrentPostId: currentPostId,
       dataImageSize: imageSize,
       dataImageSource: dataImageSource,
       dataImageSourceCustomField: dataImageSourceCustomField,
@@ -11943,6 +11933,11 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
         // Image must be URL.
         setHasImage(true);
         setPreviewImage(data);
+        setImageFile(data);
+        dataImage[currentPostId] = data;
+        setAttributes({
+          photo: data
+        });
         return;
       }
 
@@ -11951,6 +11946,10 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
         setHasImage(true);
         setImageFile(data);
         setPreviewImage(data);
+        dataImage[currentPostId] = data;
+        setAttributes({
+          photo: data
+        });
       }
     })["catch"](function (error) {
       // todo: error checking/display.

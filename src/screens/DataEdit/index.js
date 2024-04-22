@@ -50,6 +50,8 @@ for ( const key in photoBlock.imageSizes ) {
 	imageSizeOptions.push( { value: key, label: size.label } );
 }
 
+let dataImage = [];
+
 const DataEditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps, context } = props;
 	const [ a11yButton, setA11yButton ] = useState( null );
@@ -77,6 +79,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		dataMediaLinkImageCustomField,
 		dataMediaLinkAuthorMeta,
 		imageSize,
+		photo,
 		photoOpacity,
 		photoBlur,
 		photoDropShadow,
@@ -86,7 +89,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		lightboxShowCaption,
 	} = attributes;
 
-	const { screen, setScreen, captionPosition, inQueryLoop, setImageFile } = useContext( UploaderContext );
+	const { screen, setScreen, captionPosition, inQueryLoop, setImageFile, imageFile } = useContext( UploaderContext );
 
 	// Get query loop vars.
 	const { postId, postType } = context;
@@ -121,12 +124,22 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	 * Set up effect for loading the image initially using data.
 	 */
 	useEffect( () => {
+		const currentPostId = getPostId();
+
+		// Check for array key in dataImage.
+		if ( dataImage[ currentPostId ] ) {
+			setPreviewImage( dataImage[ currentPostId ] );
+			setHasImage( true );
+			setImageLoading( false );
+			return;
+		}
+
 		setImageLoading( true );
 		SendCommand(
 			photoBlock.restNonce,
 			{
 				dataSource,
-				dataCurrentPostId: getPostId(),
+				dataCurrentPostId: currentPostId,
 				dataImageSize: imageSize,
 				dataImageSource,
 				dataImageSourceCustomField,
@@ -154,6 +167,9 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 					// Image must be URL.
 					setHasImage( true );
 					setPreviewImage( data );
+					setImageFile( data );
+					dataImage[ currentPostId ] = data;
+					setAttributes( { photo: data } );
 					return;
 				}
 
@@ -162,6 +178,8 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 					setHasImage( true );
 					setImageFile( data );
 					setPreviewImage( data );
+					dataImage[ currentPostId ] = data;
+					setAttributes( { photo: data } );
 				}
 			} )
 			.catch( ( error ) => {

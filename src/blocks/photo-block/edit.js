@@ -139,30 +139,6 @@ const PhotoBlock = ( props ) => {
 	);
 
 	/**
-	 * Detect when innerblock has changed.
-	 *
-	 * @param value
-	 */
-	// useEffect( () => {
-	// 	console.log( innerBlocksCount );
-	// }, [ innerBlocksCount ] );
-
-	// Set the local inspector controls.
-	const localInspectorControls = (
-		<InspectorControls>
-			<PanelBody title={ __( 'Photo Block Settings', 'photo-block' ) }>
-				<PanelRow>
-					<TextControl
-						label={ __( 'Caption', 'photo-block' ) }
-						value={ caption }
-						onChange={ ( value ) => setAttributes( { caption: value } ) }
-					/>
-				</PanelRow>
-			</PanelBody>
-		</InspectorControls>
-	);
-
-	/**
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
 	useEffect( () => {
