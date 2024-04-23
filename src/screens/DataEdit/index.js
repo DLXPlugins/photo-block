@@ -121,6 +121,13 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	};
 
 	/**
+	 * Set data image to empty array on mount in case someone changes data types.
+	 */
+	useEffect( () => {
+		dataImage = [];
+	}, [] );
+
+	/**
 	 * Set up effect for loading the image initially using data.
 	 */
 	useEffect( () => {

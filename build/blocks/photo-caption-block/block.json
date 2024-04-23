@@ -20,6 +20,11 @@
   "version": "1.0.0",
   "textdomain": "photo-block",
   "usesContext": [
+    "postType",
+    "postId",
+    "queryId",
+    "query",
+    "photo-block/photoMode",
     "photo-block/dataSource",
     "photo-block/dataImageSource",
     "photo-block/dataImageSourceCustomField",

@@ -37,14 +37,12 @@ class Blocks {
 			Functions::get_plugin_dir( 'build/blocks/photo-block/block.json' ),
 			array(
 				'render_callback' => array( static::class, 'block_frontend' ),
-				'uses_context'    => array( 'postType', 'postId' ), /* for determining if we're in a query loop */
 			)
 		);
 		register_block_type(
 			Functions::get_plugin_dir( 'build/blocks/photo-caption-block/block.json' ),
 			array(
 				'render_callback' => array( static::class, 'caption_frontend' ),
-				'uses_context'    => array( 'postType', 'postId' ), /* for determining if we're in a query loop */
 			)
 		);
 	}
@@ -197,6 +195,10 @@ class Blocks {
 			$can_output = false;
 		}
 
+		if ( \in_the_loop() ) {
+			$can_output = true;
+		}
+
 		/**
 		 * Filter whether the Photo block can output. Attempt not to load in admin.
 		 *
@@ -217,15 +219,9 @@ class Blocks {
 		$is_in_query_loop    = false;
 		$current_post_id     = get_queried_object_id();
 		$maybe_query_post_id = $block->context['postId'] ?? 0;
-		if ( $current_post_id === $maybe_query_post_id || 0 !== $maybe_query_post_id ) {
+		if ( $current_post_id !== $maybe_query_post_id && 0 !== $maybe_query_post_id ) {
 			$is_in_query_loop = true;
 			$current_post_id  = $maybe_query_post_id;
-		}
-
-		// Get the post author for later (if applicable).
-		$post_author_id = 0;
-		if ( $is_in_query_loop && $current_post_id ) {
-			$post_author_id = get_post_field( 'post_author', $current_post_id );
 		}
 
 		// Override with data mode attribute.
@@ -247,7 +243,7 @@ class Blocks {
 		}
 
 		// Get the image size.
-		$image_size = $block->available_context['photo-block/imageSize'] ?? 'full';
+		$image_size = $block->context['photo-block/imageSize'] ?? 'full';
 
 		// Placeholder to tell if image is avatar (no image ID).
 		$is_avatar = false;
@@ -259,8 +255,8 @@ class Blocks {
 		if ( $is_in_data_mode ) {
 
 			// Get the image data.
-			$image_data_source = $block->available_context['photo-block/dataSource'] ?? 'currentPost'; /* can be currentPost, postType */
-			$image_source      = $block->available_context['photo-block/dataImageSource'] ?? 'featuredImage'; /* can be featuredImage, customField, authorAvatar, authorMeta */
+			$image_data_source = $block->context['photo-block/dataSource'] ?? 'currentPost'; /* can be currentPost, postType */
+			$image_source      = $block->context['photo-block/dataImageSource'] ?? 'featuredImage'; /* can be featuredImage, customField, authorAvatar, authorMeta */
 
 			// Placeholdr for image ID and src.
 			$image_id = 0;
@@ -278,7 +274,7 @@ class Blocks {
 			// Get image data from cache.
 			$maybe_cached_image_data = wp_cache_get( 'dlx_photo_block_image_data_' . $current_post_id, 'dlx_photo_block' );
 			if ( ! $maybe_cached_image_data ) {
-				$image_data = Functions::get_image_data_from_source( $image_data_source, $image_source, $current_post_id, $post_author_id, $image_size );
+				$image_data = Functions::get_image_data_from_source( $image_data_source, $image_source, $current_post_id, $image_size );
 
 				// Overwrite attributes so we can use the same output code.
 				if ( false !== $image_data ) {
@@ -552,7 +548,7 @@ class Blocks {
 		$is_in_query_loop    = false;
 		$current_post_id     = get_queried_object_id();
 		$maybe_query_post_id = $block->context['postId'] ?? 0;
-		if ( $current_post_id === $maybe_query_post_id || 0 !== $maybe_query_post_id ) {
+		if ( $current_post_id !== $maybe_query_post_id && 0 !== $maybe_query_post_id ) {
 			$is_in_query_loop = true;
 			$current_post_id  = $maybe_query_post_id;
 		}
@@ -606,7 +602,7 @@ class Blocks {
 				$attributes['imageDimensions'] = $maybe_cached_image_data;
 				$attributes['photo']           = $maybe_cached_image_data;
 			} else {
-				$image_data = Functions::get_image_data_from_source( $image_data_source, $image_source, $current_post_id, $post_author_id, $image_size );
+				$image_data = Functions::get_image_data_from_source( $image_data_source, $image_source, $current_post_id, $image_size );
 
 				// Overwrite attributes so we can use the same output code.
 				if ( false !== $image_data ) {
@@ -677,7 +673,7 @@ class Blocks {
 			}
 
 			// Get the image markup.
-			if ( ! $is_avatar ) {
+			if ( $attributes['photo']['id'] !== 0 ) {
 				if ( 'manual' === $attributes['photoMode'] ) {
 					// Manual URL entry.
 					$image_markup = '<img width="' . $attributes['photo']['width'] . '" height="' . $attributes['photo']['height'] . '" src="' . esc_url( $attributes['photo']['url'] ) . '" alt="' . esc_attr( $image_alt ) . '" class="dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ) . '" loading="' . ( $skip_lazy_loading ? 'auto' : 'lazy' ) . '">';

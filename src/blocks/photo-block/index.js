@@ -159,10 +159,6 @@ registerBlockType( metadata, {
 	save() {
 		return <InnerBlocks.Content />;
 	},
-	providesContext: {
-		'dlx-photo-block/uniqueId': 'uniqueId',
-	},
-	usesContext: [ 'postId', 'postType', 'queryId', 'query' ], /* This is for detecting if in query loop */
 	transforms: {
 		from: [
 			{

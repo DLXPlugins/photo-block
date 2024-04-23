@@ -15,7 +15,14 @@
 	],
 	"version": "1.0.0",
 	"textdomain": "photo-block",
+	"usesContext": [
+		"postType",
+		"postId",
+		"queryId",
+		"query"
+	],
 	"providesContext": {
+		"photo-block/photoMode": "photoMode",
 		"photo-block/dataSource": "dataSource",
 		"photo-block/dataImageSource": "dataImageSource",
 		"photo-block/dataImageSourceCustomField": "dataImageSourceCustomField",

@@ -492,7 +492,6 @@ class Functions {
 	 * @param string $image_data_source The image data source.
 	 * @param string $image_source      The image source.
 	 * @param int    $post_id           The post ID.
-	 * @param int    $post_author_id    The post author ID.
 	 * @param string $image_size        The image size.
 	 *
 	 * @return array {
@@ -505,7 +504,7 @@ class Functions {
 	 *   @type string $attachment_link The link to the attachment page.
 	 * }
 	 */
-	public static function get_image_data_from_source( $image_data_source, $image_source, $post_id, $post_author_id, $image_size ) {
+	public static function get_image_data_from_source( $image_data_source, $image_source, $post_id, $image_size ) {
 		// Get the image ID if current post.
 		if ( 'currentPost' === $image_data_source || 'postType' === $image_data_source ) {
 
@@ -523,6 +522,8 @@ class Functions {
 					$image_id = 0;
 					break;
 				case 'authorMeta':
+					// Get the current author ID.
+					$post_author_id    = get_post_field( 'post_author', $post_id );
 					$author_meta_field = $attributes['dataImageSourceAuthorMeta'] ?? 'avatar';
 					$image_id          = Functions::get_author_image_from_meta( $image_size, $author_meta_field, $post_author_id );
 					break;
@@ -531,7 +532,8 @@ class Functions {
 
 		// Check for avatar.
 		if ( 'authorAvatar' === $image_source && 0 === $image_id ) {
-			$avatar = get_avatar_url( $post_author_id, array( 'size' => $image_size ) );
+			$post_author_id = get_post_field( 'post_author', $post_id );
+			$avatar         = get_avatar_url( $post_author_id, array( 'size' => $image_size ) );
 			if ( $avatar ) {
 				$image_data = array(
 					'id'              => 0,
@@ -1513,7 +1515,7 @@ class Functions {
 			// Check desktop.
 			if ( ! empty( $sub_type ) && isset( $props['desktop'][ $type ][ $sub_type ] ) && '' !== $props['desktop'][ $type ][ $sub_type ] ) {
 				return $props['desktop'][ $type ][ $sub_type ];
-			} elseif ( empty( $sub_type ) && isset( $props['desktop'][ $type ]  ) && '' !== $props['desktop'][ $type ] ) {
+			} elseif ( empty( $sub_type ) && isset( $props['desktop'][ $type ] ) && '' !== $props['desktop'][ $type ] ) {
 				return $props['desktop'][ $type ];
 			}
 		}

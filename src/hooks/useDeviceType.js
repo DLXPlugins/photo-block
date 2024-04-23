@@ -1,27 +1,19 @@
-import { useDispatch, useSelect, dispatch } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
 /* Credits: Forked from GenerateBlocks */
 
 export default () => {
-	const {
-		__experimentalSetPreviewDeviceType: setPreviewDeviceType = () => {},
-	} = useDispatch( 'core/edit-post' );
+	const { setDeviceType } = useDispatch( 'core/editor' );
 
 	const deviceType = useSelect( ( select ) => {
-		const {
-			__experimentalGetPreviewDeviceType: experimentalGetPreviewDeviceType = () => false,
-		} = select( 'core/edit-post' );
+		const { getDeviceType } = select( 'core/editor' );
 
-		return experimentalGetPreviewDeviceType().toLowerCase();
+		return getDeviceType().toLowerCase();
 	}, [] );
 
 	useEffect( () => {
 	}, [ deviceType ] );
-
-	const setDeviceType = ( type ) => {
-		setPreviewDeviceType( type );
-	};
 
 	return [ deviceType, setDeviceType ];
 };
