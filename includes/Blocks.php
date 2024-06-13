@@ -755,7 +755,7 @@ class Blocks {
 							);
 							wp_add_inline_script(
 								'dlx-photo-block-fancybox-js-inline',
-								'document.addEventListener("DOMContentLoaded", function() { if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . $unique_id . ' [data-fancybox]"); }; if ( typeof jQuery.fancybox !== "undefined" ) { jQuery.fancybox.bind("#' . $unique_id . '[data-fancybox]"); } });'
+								'document.addEventListener("DOMContentLoaded", function() { if ( typeof jQuery !== "undefined" && typeof jQuery.fancybox !== "undefined" ) { jQuery("#' . $unique_id . '[data-fancybox]").fancybox() } else if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . $unique_id . ' [data-fancybox]"); }  });'
 							);
 
 							// Get caption.
@@ -1018,7 +1018,7 @@ class Blocks {
 		foreach ( $fancybox_css_handles as $fancybox_css_handle ) {
 			wp_add_inline_style(
 				$fancybox_css_handle,
-				'.fancybox__container{z-index:99999;}.fancybox-container{z-index:99999;}'
+				'.fancybox__container{z-index:99999;}.fancybox-container{z-index:99999;}.fancybox__caption{ text-align: center;}'
 			);
 		}
 	}
@@ -1249,7 +1249,6 @@ class Blocks {
 		// Compatible with other fancybox jquery plugins.
 		if ( wp_script_is( 'fancybox', 'enqueued' ) || wp_script_is( 'jquery-fancybox', 'enqueued' ) || wp_script_is( 'has-fancybox-js', 'registered' ) ) {
 			if ( wp_script_is( 'dlx-photo-block-fancybox-js', 'registered' ) ) {
-				wp_register_script( 'dlx-photo-block-fancybox-js-inline', false );
 
 				wp_print_scripts( 'dlx-photo-block-fancybox-js-inline' );
 			}
@@ -1260,6 +1259,11 @@ class Blocks {
 		if ( wp_script_is( 'dlx-photo-block-fancybox-js', 'registered' ) ) {
 			// Output our version of Fancybox.
 			wp_print_scripts( array( 'dlx-photo-block-fancybox-js' ) );
+
+			if ( ! wp_script_is( 'dlx-photo-block-fancybox-js-inline', 'done' ) ) {
+
+				wp_print_scripts( 'dlx-photo-block-fancybox-js-inline' );
+			}
 		}
 
 		// Make sure our fancybox styles are registered.
