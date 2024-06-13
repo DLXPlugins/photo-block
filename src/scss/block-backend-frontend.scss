@@ -265,7 +265,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 
 	figcaption {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		width: 100%;
 		height: 100%;
 	}
@@ -289,22 +289,22 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 		justify-content: flex-end;
 	}
 	&.caption-vertical-middle figcaption {
-		align-items: center;
-	}
-	&.caption-vertical-top  figcaption {
-		align-items: flex-start;
-	}
-	&.caption-vertical-bottom  figcaption {
-		align-items: flex-end;
-	}
-	&.caption-horizontal-center  figcaption {
 		justify-content: center;
 	}
-	&.caption-horizontal-left  figcaption {
+	&.caption-vertical-top  figcaption {
 		justify-content: flex-start;
 	}
-	&.caption-horizontal-right  figcaption {
+	&.caption-vertical-bottom  figcaption {
 		justify-content: flex-end;
+	}
+	&.caption-horizontal-center  figcaption {
+		align-items: center;
+	}
+	&.caption-horizontal-left  figcaption {
+		align-items: flex-start;
+	}
+	&.caption-horizontal-right  figcaption {
+		align-items: flex-end;
 	}
 }
 

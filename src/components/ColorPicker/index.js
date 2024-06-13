@@ -195,7 +195,7 @@ const ColorPickerControl = ( props ) => {
 									onChangeComplete={ ( newColor ) => {
 										const maybeNewColor = getColor( newColor.hex, opacity );
 										setColor( maybeNewColor );
-										onChange( slug, maybeNewColor );
+										onChange( slug, maybeNewColor, newColor.hex );
 									} }
 									disableAlpha
 									defaultValue={ defaultColor }
@@ -214,7 +214,7 @@ const ColorPickerControl = ( props ) => {
 											const newColor = getColor( color, opacityValue );
 											setOpacity( opacityValue );
 											setColor( newColor );
-											onChange( slug, newColor );
+											onChange( slug, newColor, color );
 											onOpacityChange( opacityValue );
 										} }
 										min={ 0 }
