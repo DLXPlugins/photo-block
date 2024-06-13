@@ -1,7 +1,7 @@
 import './editor.scss';
 import 'react-image-crop/src/ReactCrop.scss';
 
-import { useContext, useState, forwardRef } from '@wordpress/element';
+import { useContext, useState, useEffect } from '@wordpress/element';
 import {
 	Spinner,
 	PanelBody,
@@ -28,7 +28,6 @@ import { ZoomIn, Check, RotateCcw, RotateCw, Save, X, Lock, Loader2, Paintbrush2
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
 import UploaderContext from '../../contexts/UploaderContext';
-import { useEffect } from 'react';
 import SendCommand from '../../utils/SendCommand';
 import AspectRatioIcon from '../../components/Icons/AspectRatio';
 import ToolbarAspectRatio from '../../components/ToolbarAspectRatio';

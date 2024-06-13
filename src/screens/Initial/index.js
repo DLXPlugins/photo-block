@@ -26,11 +26,12 @@ import {
 	MenuGroup,
 	MenuItem,
 } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import UploaderContext from '../../contexts/UploaderContext';
 import UploadTypes from '../../components/UploadTypes';
 import UploadTarget from '../../components/UploadTarget';
 import UploadStatus from '../../components/UploadStatus';
+import blockStore from '../../store';
 
 /**
  * InitialScreen component.
@@ -39,7 +40,17 @@ import UploadStatus from '../../components/UploadStatus';
  * @return {Function} Component.
  */
 const InitialScreen = ( props ) => {
-	const { screen, isUploading, isProcessingUpload, isUploadError } = useContext( UploaderContext );
+	const {
+		isUploading,
+		isProcessingUpload,
+		isUploadError,
+	} = useSelect( ( select ) => {
+		return {
+			isUploading: select( blockStore ).isUploading(),
+			isProcessingUpload: select( blockStore ).isProcessingUpload(),
+			isUploadError: select( blockStore ).isUploadError(),
+		};
+	} );
 
 	// Set the local inspector controls.
 	const localInspectorControls = (

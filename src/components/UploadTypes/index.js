@@ -22,15 +22,15 @@ import {
 	Loader2,
 	XCircle,
 	ArrowBigLeftDash,
-	Notice,
 } from 'lucide-react';
 
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
+import { useContext, useState, useEffect } from 'react';
 
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
+import { useDispatch, useSelect } from '@wordpress/data';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
 
 import WPNotice from '../../components/Notice';
@@ -44,15 +44,24 @@ import WPNotice from '../../components/Notice';
 const UploadTypes = ( props ) => {
 	const { attributes, setAttributes } = props;
 
-	// Get context.
 	const {
-		imageFile,
-		setScreen,
-		filepondInstance,
-		setImageFile,
-		photoMode,
+		setImageData,
 		setPhotoMode,
-	} = useContext( UploaderContext );
+		setScreen,
+	} = useDispatch( blockStore );
+
+	// Get current block data.
+	const {
+		imageData,
+		filepondInstance,
+		photoMode,
+	} = useSelect( ( select ) => {
+		return {
+			imageData: select( blockStore ).getImageData(),
+			filepondInstance: select( blockStore ).getFilepondInstance(),
+			photoMode: select( blockStore ).getPhotoMode(),
+		};
+	} );
 
 	const [ isUrlSelected, setIsUrlSelected ] = useState( false );
 	const [ url, setUrl ] = useState( '' );
@@ -164,7 +173,7 @@ const UploadTypes = ( props ) => {
 									const maybeUrl = response.data?.url ?? false; // Double-checking.
 									if ( maybeUrl ) {
 										setAttributes( { photo: response.data } );
-										setImageFile( response.data );
+										setImageData( response.data );
 										setScreen( 'edit' );
 										setPhotoMode( 'photo' );
 									}
@@ -190,7 +199,7 @@ const UploadTypes = ( props ) => {
 										caption: '',
 									};
 									setAttributes( { photo: selectedMedia, screen: 'edit', photoMode: 'manual' } );
-									setImageFile( selectedMedia );
+									setImageData( selectedMedia );
 									setScreen( 'edit' );
 								};
 							}
@@ -231,7 +240,7 @@ const UploadTypes = ( props ) => {
 		<>
 			<div className="dlx-photo-block__upload-types__container">
 				{
-					( imageFile.url !== '' ) && (
+					( imageData.url !== '' ) && (
 						<Button
 							variant="primary"
 							icon={ <ArrowBigLeftDash /> }
@@ -285,7 +294,7 @@ const UploadTypes = ( props ) => {
 								screen: 'edit',
 								photoMode: 'photo',
 							} );
-							setImageFile( selectedMedia );
+							setImageData( selectedMedia );
 							setPhotoMode( 'photo' );
 							setScreen( 'edit' );
 						} }

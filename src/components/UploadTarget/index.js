@@ -21,7 +21,9 @@ import { Upload } from 'lucide-react';
 
 import { __ } from '@wordpress/i18n';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import { useDispatch, useSelect } from '@wordpress/data';
+
+import store from '../../store';
 
 // Register filepond plugins.
 registerPlugin(
@@ -32,17 +34,30 @@ registerPlugin(
 
 import { redoSvg, processSvg } from '../../blocks/photo-block/icons/filepond';
 const UploadTarget = ( props ) => {
+
 	const {
 		setImageFile,
-		isUploading,
+		setFilepondInstance,
 		setIsUploading,
-		isProcessingUpload,
 		setIsProcessingUpload,
+		setPhotoMode,
 		setIsUploadError,
 		setScreen,
-		setFilepondInstance,
-		setPhotoMode,
-	} = useContext( UploaderContext );
+	} = useDispatch( store );
+
+	const {
+		currentScreen,
+		isUploading,
+		isProcessingUpload,
+		isUploadError,
+	} = useSelect( ( select ) => {
+		return {
+			currentScreen: select( store ).getCurrentScreen(),
+			isUploading: select( store ).isUploading(),
+			isProcessingUpload: select( store ).isProcessingUpload(),
+			isUploadError: select( store ).isUploadError(),
+		};
+	} );
 
 	const { setAttributes } = props;
 
