@@ -141,7 +141,8 @@ var PhotoBlock = function PhotoBlock(props) {
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
     clientId = props.clientId,
-    context = props.context;
+    context = props.context,
+    isSelected = props.isSelected;
   var innerBlockCount = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
     return select('core/block-editor').getBlock(clientId).innerBlocks;
   }).length;
@@ -231,10 +232,10 @@ var PhotoBlock = function PhotoBlock(props) {
     allowedBlocks: ['dlxplugins/photo-caption-block'],
     templateInsertUpdatesSelection: true,
     renderAppender: function renderAppender() {
-      return /*#__PURE__*/React.createElement(_components_CaptionAppender__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      return isSelected ? /*#__PURE__*/React.createElement(_components_CaptionAppender__WEBPACK_IMPORTED_MODULE_10__["default"], {
         numBlocks: innerBlockCount,
         clientId: clientId
-      });
+      }) : null;
     }
   });
 

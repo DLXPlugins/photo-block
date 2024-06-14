@@ -54,6 +54,7 @@ const PhotoBlock = ( props ) => {
 		setAttributes,
 		clientId,
 		context,
+		isSelected,
 	} = props;
 
 	const innerBlockCount = useSelect( ( select ) => select( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
@@ -154,7 +155,7 @@ const PhotoBlock = ( props ) => {
 		{
 			allowedBlocks: [ 'dlxplugins/photo-caption-block' ],
 			templateInsertUpdatesSelection: true,
-			renderAppender: () => ( <CaptionAppender numBlocks={ innerBlockCount } clientId={ clientId } /> ),
+			renderAppender: () => ( isSelected ? <CaptionAppender numBlocks={ innerBlockCount } clientId={ clientId } /> : null ),
 		}
 	);
 
