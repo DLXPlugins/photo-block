@@ -278,6 +278,7 @@ class Functions {
 			'width'           => $image_attachment[1],
 			'height'          => $image_attachment[2],
 			'alt'             => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ),
+			'caption'         => wp_get_attachment_caption( $attachment_id ),
 			'full'            => $full_image_attachment[0],
 			'attachment_link' => get_attachment_link( $attachment_id ),
 		);

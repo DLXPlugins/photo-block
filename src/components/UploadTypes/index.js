@@ -4,11 +4,13 @@
 import './editor.scss';
 
 import {
-	CheckboxControl,
+	ToggleControl,
 	TextControl,
 	Button,
+	Slot,
 } from '@wordpress/components';
 
+import { applyFilters } from '@wordpress/hooks';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
 import {
@@ -21,10 +23,13 @@ import {
 	Save,
 	Loader2,
 	XCircle,
+	ImagePlus,
 	ArrowBigLeftDash,
+
 } from 'lucide-react';
 
-import { useContext, useState, useEffect } from 'react';
+
+import { useContext, useState, useEffect } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
@@ -42,7 +47,7 @@ import WPNotice from '../../components/Notice';
  * @return {Function} Component.
  */
 const UploadTypes = ( props ) => {
-	const { attributes, setAttributes } = props;
+	const { attributes, setAttributes, context } = props;
 
 	const {
 		setImageData,
@@ -62,6 +67,8 @@ const UploadTypes = ( props ) => {
 			photoMode: select( blockStore ).getPhotoMode(),
 		};
 	} );
+
+	console.log( photoMode );
 
 	const [ isUrlSelected, setIsUrlSelected ] = useState( false );
 	const [ url, setUrl ] = useState( '' );
@@ -83,11 +90,21 @@ const UploadTypes = ( props ) => {
 		if ( isUrlSaving ) {
 			return <Loader2 />;
 		}
-		if ( 'manual' === photoMode ) {
-			return <Save />;
+		if ( 'url' === photoMode ) {
+			return <ImagePlus />;
 		}
 		return <Download />;
 	};
+
+	const getUrlLabel = () => {
+		if ( isUrlSaving ) {
+			return __( 'Uploading', 'photo-block' );
+		}
+		if ( 'url' === photoMode ) {
+			return __( 'Add Image', 'photo-block' );
+		}
+		return __( 'Upload', 'photo-block' );
+	}
 
 	/**
 	 * Check for a valid URL before submitting via Ajax.
@@ -102,8 +119,17 @@ const UploadTypes = ( props ) => {
 			return false;
 		}
 
-		// Test the file extension.
-		const validExtensions = [ 'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif' ];
+		/**
+		 * Filter the valid extensions for the photo block.
+		 *
+		 * @param {Array} [ 'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif' ] The default valid extensions.
+		 */
+		const validExtensions = applyFilters(
+			'dlx_photo_block_valid_extensions',
+			[ 'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif' ]
+		);
+
+		// Test for valid extensions.
 		const parseUrl = new URL( testUrl );
 		const path = parseUrl.pathname.toLowerCase();
 
@@ -114,11 +140,15 @@ const UploadTypes = ( props ) => {
 		return (
 			<>
 				<div className="dlx-photo-block__upload-types-checkbox__container">
-					<CheckboxControl
+					<ToggleControl
 						label={ __( 'Save image URL manually.', 'photo-block' ) }
-						checked={ 'manual' === photoMode }
-						onChange={ () => {
-							setPhotoMode( 'manual' );
+						checked={ 'url' === photoMode }
+						onChange={ ( value ) => {
+							if ( value ) {
+								setPhotoMode( 'url' );
+							} else {
+								setPhotoMode( 'image' );
+							}
 						} }
 					/>
 				</div>
@@ -162,7 +192,7 @@ const UploadTypes = ( props ) => {
 							setIsUrlSaving( true );
 							setIsUrlValidationError( false );
 
-							if ( 'manual' !== photoMode ) {
+							if ( 'url' !== photoMode ) {
 								SendCommand(
 									photoBlock.restNonce,
 									{ url },
@@ -190,7 +220,7 @@ const UploadTypes = ( props ) => {
 								const newImage = new Image();
 								newImage.src = url;
 								newImage.onload = () => {
-									const selectedMedia = {
+									const urlImageData = {
 										id: 0,
 										url,
 										width: newImage.width,
@@ -198,13 +228,14 @@ const UploadTypes = ( props ) => {
 										alt: '',
 										caption: '',
 									};
-									setAttributes( { photo: selectedMedia, screen: 'edit', photoMode: 'manual' } );
-									setImageData( selectedMedia );
+
+									setAttributes( { imageData: urlImageData, screen: 'edit', photoMode: 'url' } );
+									setImageData( urlImageData );
 									setScreen( 'edit' );
 								};
 							}
 						} }
-						label={ __( 'Upload', 'photo-block' ) }
+						label={ getUrlLabel() }
 					/>
 					<Button
 						variant="secondary"
@@ -310,6 +341,10 @@ const UploadTypes = ( props ) => {
 				>
 					{ __( 'URL', 'photo-block' ) }
 				</Button>
+				<Slot
+					name="dlx-photo-block.upload-types"
+					fillProps={ { ...props } }
+				/>
 				<Button
 					variant="secondary"
 					icon={ <Database /> }

@@ -1,9 +1,17 @@
 
 import { createReduxStore, register } from '@wordpress/data';
-
 const DEFAULT_STATE = {
-	imageData: false,
-	currentScreen: 'loading', /* can be loading, initial, edit, crop, data, effects. */
+	imageData: {
+		id: 0,
+		url: '',
+		alt: '',
+		full: '',
+		width: '',
+		height: '',
+		attachment_link: '',
+		caption: '',
+	},
+	currentScreen: 'loading', /* can be loading, initial, edit, crop, data, featuredImage, effects. */
 	isUploading: false,
 	isProcessingUpload: false,
 	isUploadError: false,
@@ -11,7 +19,7 @@ const DEFAULT_STATE = {
 	hasCaption: false,
 	captionPosition: 'bottom', /* can be bottom, top, or overlay */
 	inQueryLoop: false,
-	photoMode: 'image', /* can be image, data, or url. */
+	photoMode: 'image', /* can be image, featuredImage, data, or url. */
 	blockUniqueId: null,
 	dataScreen: 'data', /* can be `initial`, `edit`. */
 };

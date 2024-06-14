@@ -43,14 +43,17 @@
       "type": "boolean",
       "default": false
     },
-    "photo": {
+    "imageData": {
       "type": "object",
       "default": {
-        "id": "",
+        "id": 0,
         "url": "",
         "alt": "",
         "full": "",
-        "attachment_link": ""
+        "width": "",
+        "height": "",
+        "attachment_link": "",
+        "caption": ""
       }
     },
     "photoOpacity": {

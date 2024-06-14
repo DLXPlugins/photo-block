@@ -6,6 +6,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+import { applyFilters, doAction } from '@wordpress/hooks';
 import blockStore from '../../store';
 
 // Get screens.
@@ -77,24 +78,51 @@ const LoadingScreen = ( props ) => {
 	 */
 	useEffect( () => {
 		// Determine if we're in a query loop based on context.
-		const { query, queryId } = context;
+		const { query, queryId, postId } = context;
 
 		// If vars aren't undefined or null, set data screen as we're in a query loop.
-		if ( typeof query !== 'undefined' && typeof queryId !== 'undefined' ) {
-			// We're in a loop.
-			setInQueryLoop( true );
-			setAttributes( { photoMode: 'data' } );
-			setPhotoMode( 'data' );
-			setDataScreen( 'edit' );
-			setScreen( 'data' );
-			return;
+		if ( typeof query !== 'undefined' && typeof postId !== 'undefined' ) {
+			if ( 0 !== postId ) {
+				setInQueryLoop( true );
+				/**
+				 * Filter: Determine if we're in the premium version of the plugin.
+				 */
+				const isPremium = applyFilters( 'dlx_photo_block_is_premium', false );
+				if ( ! isPremium ) {
+					// Check if attribute imageData is found, and if so, set the image data.
+					if ( attributes.imageData.id !== 0 && attributes.imageData.id !== '' ) {
+						setImageData( attributes.imageData );
+					}
+					setAttributes( { photoMode: 'featuredImage' } );
+					setPhotoMode( 'featurdImage' );
+					setDataScreen( 'featuredImage' );
+					setScreen( 'featuredImage' );
+
+					
+					return;
+				}
+
+				/**
+				 * Action: Load the initial screen if in a data request.
+				 *
+				 * @param {Object}  props     - The block props.
+				 * @param {boolean} isPremium - Whether or not the user is using the premium version.
+				 * @param {Object}  query     - The query object.
+				 */
+				doAction(
+					'dlx_photo_block_loading_screen_data_premium',
+					{
+						...props,
+						isPremium,
+						query,
+					}
+				);
+				return;
+			}
 		}
 
 		// Set the photo mode.
 		setPhotoMode( attributes.photoMode );
-
-		console.log( attributes.photoMode );
-
 
 		// Load the appropriate screen. The main screen logic is in blocks/photo-block/edit.js.
 		switch ( attributes.photoMode ) {
@@ -105,22 +133,27 @@ const LoadingScreen = ( props ) => {
 			case 'image':
 				setScreen( 'edit' );
 				break;
+			case 'featuredImage':
+				setScreen( 'featuredImage' );
+				break;
 			case 'data':
-				if ( attributes.dataScreen === 'initial' ) {
-					setDataScreen( 'initial' );
-					setScreen( 'data' );
-				} else {
-					setDataScreen( 'edit' );
-					setScreen( 'data-edit' );
-				}
+				/**
+				 * Action: Set the initial screen params if data is the mode and not in a query loop
+				 *
+				 * @param {Object} props - The block props.
+				 */
+				doAction(
+					'dlx_photo_block_loading_screen_data',
+					{
+						...props,
+					}
+				);
 				break;
 			default:
 				setScreen( 'initial' );
 				break;
 		}
 	}, [] );
-
-	
 
 	return null;
 };

@@ -42,6 +42,7 @@ import CropScreen from '../../screens/Crop';
 import DataScreen from '../../screens/Data';
 import DataEditScreen from '../../screens/DataEdit';
 import LoadingScreen from '../../screens/Loading';
+import FeaturedImageScreen from '../../screens/FeaturedImageEdit';
 
 // For storing unique IDs.
 const uniqueIds = [];
@@ -54,6 +55,8 @@ const PhotoBlock = ( props ) => {
 		clientId,
 		context,
 	} = props;
+
+	const innerBlockCount = useSelect( ( select ) => select( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
 
 	const {
 		uniqueId,
@@ -95,7 +98,6 @@ const PhotoBlock = ( props ) => {
 		inQueryLoop,
 		photoMode,
 		blockUniqueId,
-		blockCount,
 	} = useSelect( ( select ) => {
 		return {
 			currentScreen: select( blockStore ).getCurrentScreen(),
@@ -108,7 +110,6 @@ const PhotoBlock = ( props ) => {
 			inQueryLoop: select( blockStore ).inQueryLoop(),
 			photoMode: select( blockStore ).getPhotoMode(),
 			blockUniqueId: select( blockStore ).getBlockUniqueId(),
-			blockCount: select( blockEditorStore ).getBlockCount(),
 		};
 	} );
 
@@ -153,7 +154,7 @@ const PhotoBlock = ( props ) => {
 		{
 			allowedBlocks: [ 'dlxplugins/photo-caption-block' ],
 			templateInsertUpdatesSelection: true,
-			renderAppender: () => ( <CaptionAppender numBlocks={ blockCount } clientId={ clientId } /> ),
+			renderAppender: () => ( <CaptionAppender numBlocks={ innerBlockCount } clientId={ clientId } /> ),
 		}
 	);
 
@@ -195,6 +196,8 @@ const PhotoBlock = ( props ) => {
 				return <EditScreen attributes={ attributes } setAttributes={ setAttributes } ref={ imageRef } innerBlockProps={ captionInnerBlockProps } clientId={ clientId } />;
 			case 'crop':
 				return <CropScreen attributes={ attributes } setAttributes={ setAttributes } />;
+			case 'featuredImage':
+				return <FeaturedImageScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } />;
 			case 'data':
 				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />;
 			case 'data-edit':

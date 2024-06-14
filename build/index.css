@@ -1914,10 +1914,27 @@ svg.lucide {
 .dlx-photo-block__screen-edit .dlx-photo-block__screen-edit-spinner {
   width: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.dlx-photo-block__screen-edit .dlx-photo-block__screen-edit-spinner__logo {
+  width: 100%;
+  text-align: center;
+  margin: 0 0 16px 0;
+}
+.dlx-photo-block__screen-edit .dlx-photo-block__screen-edit-spinner__logo svg {
+  width: 72px;
+  height: 72px;
+}
+.dlx-photo-block__screen-edit .dlx-photo-block__screen-edit-spinner__label {
+  margin: 0;
+  padding: 0;
 }
 .dlx-photo-block__screen-edit svg.components-spinner {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
 }
 
 .aligncenter .dlx-photo-block__screen-edit {
@@ -3929,6 +3946,10 @@ svg.lucide {
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/DataSelect/editor.scss ***!
   \**********************************************************************************************************************************************************************************************************************************************************************************************/
+
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/FeaturedImageEdit/editor.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************/
 
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/photo-caption-block/editor.scss ***!
