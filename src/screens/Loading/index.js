@@ -82,7 +82,7 @@ const LoadingScreen = ( props ) => {
 
 		// If vars aren't undefined or null, set data screen as we're in a query loop.
 		if ( typeof query !== 'undefined' && typeof postId !== 'undefined' ) {
-			if ( 0 !== postId ) {
+			if ( 0 !== postId && 'none' !== query && 'undefined' !== query ) {
 				setInQueryLoop( true );
 				/**
 				 * Filter: Determine if we're in the premium version of the plugin.
@@ -124,6 +124,8 @@ const LoadingScreen = ( props ) => {
 		// Set the photo mode.
 		setPhotoMode( attributes.photoMode );
 
+		console.log( 'photoMode: ' + attributes.photoMode);
+
 		// Load the appropriate screen. The main screen logic is in blocks/photo-block/edit.js.
 		switch ( attributes.photoMode ) {
 			case 'none':
@@ -131,6 +133,7 @@ const LoadingScreen = ( props ) => {
 				break;
 			case 'url':
 			case 'image':
+			case 'photo':
 				setScreen( 'edit' );
 				break;
 			case 'featuredImage':

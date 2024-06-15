@@ -202,7 +202,7 @@ const UploadTypes = ( props ) => {
 									// Successful response.
 									const maybeUrl = response.data?.url ?? false; // Double-checking.
 									if ( maybeUrl ) {
-										setAttributes( { photo: response.data } );
+										setAttributes( { imageData: response.data } );
 										setImageData( response.data );
 										setScreen( 'edit' );
 										setPhotoMode( 'photo' );
@@ -321,7 +321,7 @@ const UploadTypes = ( props ) => {
 								caption: media.caption,
 							};
 							setAttributes( {
-								photo: selectedMedia,
+								imageData: selectedMedia,
 								screen: 'edit',
 								photoMode: 'photo',
 							} );

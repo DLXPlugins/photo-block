@@ -9976,7 +9976,7 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 
 var UploadTarget = function UploadTarget(props) {
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_10__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_11__["default"]),
-    setImageFile = _useDispatch.setImageFile,
+    setImageData = _useDispatch.setImageData,
     setFilepondInstance = _useDispatch.setFilepondInstance,
     setIsUploading = _useDispatch.setIsUploading,
     setIsProcessingUpload = _useDispatch.setIsProcessingUpload,
@@ -10022,10 +10022,10 @@ var UploadTarget = function UploadTarget(props) {
         request.onload = function () {
           if (request.status >= 200 && request.status < 300) {
             setAttributes({
-              photo: JSON.parse(request.responseText)
+              imageData: JSON.parse(request.responseText)
             });
             setPhotoMode('photo');
-            setImageFile(JSON.parse(request.responseText));
+            setImageData(JSON.parse(request.responseText));
             load(request.responseText);
           } else {
             error('oh no');
@@ -10315,7 +10315,7 @@ var UploadTypes = function UploadTypes(props) {
             var maybeUrl = (_response$data$url = (_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.url) !== null && _response$data$url !== void 0 ? _response$data$url : false; // Double-checking.
             if (maybeUrl) {
               setAttributes({
-                photo: response.data
+                imageData: response.data
               });
               setImageData(response.data);
               setScreen('edit');
@@ -10419,7 +10419,7 @@ var UploadTypes = function UploadTypes(props) {
         caption: media.caption
       };
       setAttributes({
-        photo: selectedMedia,
+        imageData: selectedMedia,
         screen: 'edit',
         photoMode: 'photo'
       });
@@ -11183,7 +11183,7 @@ var CropScreen = function CropScreen(props) {
         if (data.success) {
           setImageData(data.data.attachment);
           setAttributes({
-            photo: data.data.attachment
+            imageData: data.data.attachment
           });
           setScreen('edit');
         } else {
@@ -11651,7 +11651,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
         description: ''
       };
       setAttributes({
-        photo: newPhoto
+        imageData: newPhoto
       });
       setImageFile(newPhoto);
       // Go to data edit screen.
@@ -11908,7 +11908,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
         setImageData(data);
         dataImage[currentPostId] = data;
         setAttributes({
-          photo: data
+          imageData: data
         });
         return;
       }
@@ -11920,7 +11920,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
         setPreviewImage(data);
         dataImage[currentPostId] = data;
         setAttributes({
-          photo: data
+          imageData: data
         });
       }
     })["catch"](function (error) {
@@ -12373,13 +12373,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     innerBlockProps = props.innerBlockProps,
     clientId = props.clientId;
   var uniqueId = attributes.uniqueId,
-    photo = attributes.photo,
     imageSize = attributes.imageSize,
     cssGramFilter = attributes.cssGramFilter;
-  var url = photo.url,
-    id = photo.id,
-    width = photo.width,
-    height = photo.height;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     imageLoading = _useState2[0],
@@ -12417,19 +12412,26 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     isSavingTitle = _useState18[0],
     setIsSavingTitle = _useState18[1];
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_9__["default"]),
-    setScreen = _useDispatch.setScreen;
+    setScreen = _useDispatch.setScreen,
+    setImageData = _useDispatch.setImageData;
 
   // Get current block data.
-  var _useSelect = useSelect(function (select) {
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
       return {
+        imageData: select(_store__WEBPACK_IMPORTED_MODULE_9__["default"]).getImageData(),
         captionPosition: select(_store__WEBPACK_IMPORTED_MODULE_9__["default"]).getCaptionPosition(),
         photoMode: select(_store__WEBPACK_IMPORTED_MODULE_9__["default"]).getPhotoMode(),
         originalImageData: select(_store__WEBPACK_IMPORTED_MODULE_9__["default"]).getOriginalImageData()
       };
     }),
+    imageData = _useSelect.imageData,
     captionPosition = _useSelect.captionPosition,
     photoMode = _useSelect.photoMode,
     originalImageData = _useSelect.originalImageData;
+  var url = imageData.url,
+    id = imageData.id,
+    width = imageData.width,
+    height = imageData.height;
   var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store),
     insertBlock = _useDispatch2.insertBlock,
     updateBlockAttributes = _useDispatch2.updateBlockAttributes; // For setting the preset defaults.
@@ -12441,8 +12443,11 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
 
   // Setup useEffect to update image dimensions if empty.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (photo.url) {
-      setImageData(photo);
+    var _attributes$imageData;
+    var imageUrl = ((_attributes$imageData = attributes.imageData) === null || _attributes$imageData === void 0 ? void 0 : _attributes$imageData.url) || '';
+    if ('' !== imageUrl) {
+      setImageData(attributes.imageData);
+      setImageLoading(false);
     }
   }, []);
 
@@ -12461,7 +12466,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     }
 
     // Get innerblocks of parent photo block.
-    var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.select)('core/block-editor').getBlocksByClientId(clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
+    var children = ((_select$getBlocksByCl = select('core/block-editor').getBlocksByClientId(clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
     var captionBlock = children.find(function (block) {
       return 'dlxplugins/photo-caption-block' === block.name;
     });
@@ -12502,9 +12507,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
           case 0:
             setImageSizeLoading(true);
             _context.next = 3;
-            return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_10__["default"])(photoBlock.restNonce, {}, "".concat(photoBlock.restUrl + '/get-image-by-size', "/id=").concat(photo.id, "/size=").concat(size), 'GET').then(function (response) {
+            return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_10__["default"])(photoBlock.restNonce, {}, "".concat(photoBlock.restUrl + '/get-image-by-size', "/id=").concat(imageData.id, "/size=").concat(size), 'GET').then(function (response) {
               setAttributes({
-                photo: _objectSpread(_objectSpread({}, photo), response.data)
+                imageData: _objectSpread(_objectSpread({}, imageData), response.data)
               });
             })["catch"](function (error) {
               // todo: error checking/display.
@@ -12530,7 +12535,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
    */
   var canShowUndo = function canShowUndo() {
     var originalImageUrl = originalImageData === null || originalImageData === void 0 ? void 0 : originalImageData.url;
-    var newImageUrl = photo === null || photo === void 0 ? void 0 : photo.url;
+    var newImageUrl = imageData === null || imageData === void 0 ? void 0 : imageData.url;
     return originalImageUrl && newImageUrl && originalImageUrl !== newImageUrl;
   };
 
@@ -12554,7 +12559,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
             setIsSavingAlt(true);
             _context2.next = 5;
             return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_10__["default"])(photoBlock.restNonce, {
-              imageId: photo.id,
+              imageId: imageData.id,
               altText: altText
             }, "".concat(photoBlock.restUrl + '/image/save-alt'), 'POST').then(function (response) {})["catch"](function (error) {
               // todo: error checking/display.
@@ -12593,7 +12598,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
             setIsSavingTitle(true);
             _context3.next = 5;
             return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_10__["default"])(photoBlock.restNonce, {
-              imageId: photo.id,
+              imageId: imageData.id,
               titleText: titleText
             }, "".concat(photoBlock.restUrl + '/image/save-title'), 'POST').then(function (response) {})["catch"](function (error) {
               // todo: error checking/display.
@@ -12638,10 +12643,10 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     scrollAfterOpen: false
   }, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Photo Title', 'photo-block'),
-    value: photo.title,
+    value: imageData.title,
     onChange: function onChange(title) {
       setAttributes({
-        photo: _objectSpread(_objectSpread({}, photo), {}, {
+        imageData: _objectSpread(_objectSpread({}, imageData), {}, {
           title: title
         })
       });
@@ -12650,15 +12655,15 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     className: classnames__WEBPACK_IMPORTED_MODULE_8___default()('photo-block__title-text', {
       'is-saving': isSavingTitle
     }),
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please enter a title for this photo.', 'photo-block')
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please enter a title for this imageData.', 'photo-block')
   }), isSavingTitle && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving title text…', 'photo-block')))), /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt Text', 'photo-block'),
-    value: photo.alt,
+    value: imageData.alt,
     onChange: function onChange(alt) {
       setAttributes({
-        photo: _objectSpread(_objectSpread({}, photo), {}, {
+        imageData: _objectSpread(_objectSpread({}, imageData), {}, {
           alt: alt
         })
       });
@@ -12667,7 +12672,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     className: classnames__WEBPACK_IMPORTED_MODULE_8___default()('photo-block__alt-text', {
       'is-saving': isSavingAlt
     }),
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please describe this photo.', 'photo-block'),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please describe this imageData.', 'photo-block'),
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt text provides a description of the photo for screen readers and search engines.', 'photo-block')
   }), isSavingAlt && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
@@ -12715,7 +12720,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     onClick: function onClick() {
       // Change back to original image.
       setAttributes({
-        photo: originalImageData
+        imageData: originalImageData
       });
       setImageData(originalImageData);
     }
@@ -12748,25 +12753,25 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     className: "dlx-photo-block__a11y-popover"
   }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Accessibility Options', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Photo Title', 'photo-block'),
-    value: photo.title,
+    value: imageData.title,
     onChange: function onChange(title) {
       setAttributes({
-        photo: _objectSpread(_objectSpread({}, photo), {}, {
+        imageData: _objectSpread(_objectSpread({}, imageData), {}, {
           title: title
         })
       });
       handleTitleChange(title);
     },
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please enter a title for this photo.', 'photo-block'),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please enter a title for this imageData.', 'photo-block'),
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('The title is used as a tooltip when hovering over the image.', 'photo-block')
   }), isSavingTitle && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving title text…', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt Text', 'photo-block'),
-    value: photo.alt,
+    value: imageData.alt,
     onChange: function onChange(alt) {
       setAttributes({
-        photo: _objectSpread(_objectSpread({}, photo), {}, {
+        imageData: _objectSpread(_objectSpread({}, imageData), {}, {
           alt: alt
         })
       });
@@ -13460,7 +13465,7 @@ var LoadingScreen = function LoadingScreen(props) {
 
     // If vars aren't undefined or null, set data screen as we're in a query loop.
     if (typeof query !== 'undefined' && typeof postId !== 'undefined') {
-      if (0 !== postId) {
+      if (0 !== postId && 'none' !== query && 'undefined' !== query) {
         setInQueryLoop(true);
         /**
          * Filter: Determine if we're in the premium version of the plugin.
@@ -13497,6 +13502,7 @@ var LoadingScreen = function LoadingScreen(props) {
 
     // Set the photo mode.
     setPhotoMode(attributes.photoMode);
+    console.log('photoMode: ' + attributes.photoMode);
 
     // Load the appropriate screen. The main screen logic is in blocks/photo-block/edit.js.
     switch (attributes.photoMode) {
@@ -13505,6 +13511,7 @@ var LoadingScreen = function LoadingScreen(props) {
         break;
       case 'url':
       case 'image':
+      case 'photo':
         setScreen('edit');
         break;
       case 'featuredImage':

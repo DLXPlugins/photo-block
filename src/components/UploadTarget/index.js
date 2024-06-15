@@ -36,7 +36,7 @@ import { redoSvg, processSvg } from '../../blocks/photo-block/icons/filepond';
 const UploadTarget = ( props ) => {
 
 	const {
-		setImageFile,
+		setImageData,
 		setFilepondInstance,
 		setIsUploading,
 		setIsProcessingUpload,
@@ -98,11 +98,11 @@ const UploadTarget = ( props ) => {
 									if ( request.status >= 200 && request.status < 300 ) {
 										setAttributes(
 											{
-												photo: JSON.parse( request.responseText ),
+												imageData: JSON.parse( request.responseText ),
 											}
 										);
 										setPhotoMode( 'photo' );
-										setImageFile( JSON.parse( request.responseText ) );
+										setImageData( JSON.parse( request.responseText ) );
 										load( request.responseText );
 									} else {
 										error( 'oh no' );

@@ -471,7 +471,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 											description: '',
 										};
 										setAttributes( {
-											photo: newPhoto,
+											imageData: newPhoto,
 										} );
 										setImageFile( newPhoto );
 										// Go to data edit screen.

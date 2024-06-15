@@ -224,7 +224,7 @@ const EffectsScreen = ( props ) => {
 						// 	if ( data.success ) {
 						// 		setImageFile( data.data.attachment );
 						// 		setAttributes( {
-						// 			photo: data.data.attachment,
+						// 			imageData: data.data.attachment,
 						// 			imageDimensions: {
 						// 				width: data.data.width,
 						// 				height: data.data.height,

@@ -526,7 +526,7 @@ const CropScreen = ( props ) => {
 							if ( data.success ) {
 								setImageData( data.data.attachment );
 								setAttributes( {
-									photo: data.data.attachment,
+									imageData: data.data.attachment,
 								} );
 								setScreen( 'edit' );
 							} else {

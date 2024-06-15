@@ -191,7 +191,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 					setPreviewImage( data );
 					setImageData( data );
 					dataImage[ currentPostId ] = data;
-					setAttributes( { photo: data } );
+					setAttributes( { imageData: data } );
 					return;
 				}
 
@@ -201,7 +201,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 					setImageData( data );
 					setPreviewImage( data );
 					dataImage[ currentPostId ] = data;
-					setAttributes( { photo: data } );
+					setAttributes( { imageData: data } );
 				}
 			} )
 			.catch( ( error ) => {

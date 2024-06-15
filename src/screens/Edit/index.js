@@ -29,7 +29,7 @@ import {
 } from '@wordpress/block-editor';
 import { debounce } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
-import { useDispatch, select } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 import {
 	Crop,
@@ -56,11 +56,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps, clientId } = props;
 	const {
 		uniqueId,
-		photo,
 		imageSize,
 		cssGramFilter,
 	} = attributes;
-	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
@@ -73,15 +71,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	const {
 		setScreen,
+		setImageData,
 	} = useDispatch( blockStore );
 
 	// Get current block data.
 	const {
+		imageData,
 		captionPosition,
 		photoMode,
 		originalImageData,
 	} = useSelect( ( select ) => {
 		return {
+			imageData: select( blockStore ).getImageData(),
 			captionPosition: select( blockStore ).getCaptionPosition(),
 			photoMode: select( blockStore ).getPhotoMode(),
 			originalImageData: select( blockStore ).getOriginalImageData(),
@@ -89,14 +90,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		};
 	} );
 
+	const { url, id, width, height } = imageData;
+
 	const { insertBlock, updateBlockAttributes } = useDispatch( store ); // For setting the preset defaults.
 
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
 	// Setup useEffect to update image dimensions if empty.
 	useEffect( () => {
-		if ( photo.url ) {
-			setImageData( photo );
+		const imageUrl = attributes.imageData?.url || '';
+		if ( '' !== imageUrl ) {
+			setImageData( attributes.imageData );
+			setImageLoading( false );
 		}
 	}, [] );
 
@@ -156,12 +161,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		await SendCommand(
 			photoBlock.restNonce,
 			{},
-			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ photo.id
+			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ imageData.id
 			}/size=${ size }`,
 			'GET'
 		)
 			.then( ( response ) => {
-				setAttributes( { photo: { ...photo, ...response.data } } );
+				setAttributes( { imageData: { ...imageData, ...response.data } } );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
@@ -179,7 +184,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 */
 	const canShowUndo = () => {
 		const originalImageUrl = originalImageData?.url;
-		const newImageUrl = photo?.url;
+		const newImageUrl = imageData?.url;
 
 		return originalImageUrl && newImageUrl && originalImageUrl !== newImageUrl;
 	};
@@ -200,7 +205,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		await SendCommand(
 			photoBlock.restNonce,
 			{
-				imageId: photo.id,
+				imageId: imageData.id,
 				altText,
 			},
 			`${ photoBlock.restUrl + '/image/save-alt' }`,
@@ -233,7 +238,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		await SendCommand(
 			photoBlock.restNonce,
 			{
-				imageId: photo.id,
+				imageId: imageData.id,
 				titleText,
 			},
 			`${ photoBlock.restUrl + '/image/save-title' }`,
@@ -280,9 +285,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				<>
 					<TextControl
 						label={ __( 'Photo Title', 'photo-block' ) }
-						value={ photo.title }
+						value={ imageData.title }
 						onChange={ ( title ) => {
-							setAttributes( { photo: { ...photo, title } } );
+							setAttributes( { imageData: { ...imageData, title } } );
 							handleTitleChange( title );
 						} }
 						className={
@@ -291,7 +296,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							)
 						}
 						placeholder={ __(
-							'Please enter a title for this photo.',
+							'Please enter a title for this imageData.',
 							'photo-block'
 						) }
 					/>
@@ -304,9 +309,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				<>
 					<TextareaControl
 						label={ __( 'Alt Text', 'photo-block' ) }
-						value={ photo.alt }
+						value={ imageData.alt }
 						onChange={ ( alt ) => {
-							setAttributes( { photo: { ...photo, alt } } );
+							setAttributes( { imageData: { ...imageData, alt } } );
 							handleAltChange( alt );
 						} }
 						className={
@@ -314,7 +319,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								{ 'is-saving': isSavingAlt }
 							)
 						}
-						placeholder={ __( 'Please describe this photo.', 'photo-block' ) }
+						placeholder={ __( 'Please describe this imageData.', 'photo-block' ) }
 						help={ __(
 							'Alt text provides a description of the photo for screen readers and search engines.',
 							'photo-block'
@@ -406,7 +411,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							onClick={ () => {
 								// Change back to original image.
 								setAttributes( {
-									photo: originalImageData,
+									imageData: originalImageData,
 								} );
 								setImageData( originalImageData );
 							} }
@@ -450,13 +455,13 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<h3>{ __( 'Accessibility Options', 'photo-block' ) }</h3>
 						<TextControl
 							label={ __( 'Photo Title', 'photo-block' ) }
-							value={ photo.title }
+							value={ imageData.title }
 							onChange={ ( title ) => {
-								setAttributes( { photo: { ...photo, title } } );
+								setAttributes( { imageData: { ...imageData, title } } );
 								handleTitleChange( title );
 							} }
 							placeholder={ __(
-								'Please enter a title for this photo.',
+								'Please enter a title for this imageData.',
 								'photo-block'
 							) }
 							help={ __(
@@ -471,9 +476,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						) }
 						<TextareaControl
 							label={ __( 'Alt Text', 'photo-block' ) }
-							value={ photo.alt }
+							value={ imageData.alt }
 							onChange={ ( alt ) => {
-								setAttributes( { photo: { ...photo, alt } } );
+								setAttributes( { imageData: { ...imageData, alt } } );
 								handleAltChange( alt );
 							} }
 							placeholder={ __( 'Please describe this image.', 'photo-block' ) }
