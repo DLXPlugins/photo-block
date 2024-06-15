@@ -107,6 +107,7 @@ const DimensionsResponsiveControl = ( props ) => {
 	 * @param {number} value Value to change to.
 	 */
 	const changeAllValues = ( value ) => {
+		console.log( value );
 		if ( startsWithNumber( value ) ) {
 			const newValuesSplit = splitValues( value );
 			const numericValue = parseFloat( getNumericValue( newValuesSplit ) );
@@ -122,7 +123,6 @@ const DimensionsResponsiveControl = ( props ) => {
 			oldValues.leftUnit = unitValue;
 			setValue( deviceType, oldValues );
 			syncUnits( getHierarchicalValueUnit( props.values, deviceType, unitValue, 'top' ) );
-			onUnitChange
 		} else {
 			const oldValues = getValues( deviceType );
 			oldValues.top = value;
@@ -150,11 +150,7 @@ const DimensionsResponsiveControl = ( props ) => {
 	};
 
 	const onDimensionChange = ( value ) => {
-		const newValue = parseFloat( value );
-		if ( isNaN( newValue ) ) {
-			return;
-		}
-		changeAllValues( newValue );
+		changeAllValues( value );
 	};
 
 	/**
@@ -321,7 +317,7 @@ const DimensionsResponsiveControl = ( props ) => {
 							<TextControl
 								label={ labelAll }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
-								value={ ! isNaN( value ) ? value : 0 }
+								value={ value }
 								placeholder={ geHierarchicalPlaceholderValue(
 									values,
 									deviceType,
@@ -334,7 +330,6 @@ const DimensionsResponsiveControl = ( props ) => {
 									onUnitChange( newValue, onChange, setValue, deviceType, 'topUnit' );
 								} }
 								hideLabelFromVision={ true }
-								inputMode="numeric"
 								autoComplete="off"
 							/>
 						) }
@@ -456,7 +451,6 @@ const DimensionsResponsiveControl = ( props ) => {
 									onUnitChange( newValue, onChange, setValue, deviceType, 'topUnit' );
 								} }
 								hideLabelFromVision={ true }
-								inputMode="numeric"
 								autoComplete="off"
 							/>
 						) }
@@ -510,7 +504,6 @@ const DimensionsResponsiveControl = ( props ) => {
 									onUnitChange( newValue, onChange, setValue, deviceType, 'rightUnit' );
 								} }
 								hideLabelFromVision={ true }
-								inputMode="numeric"
 								autoComplete="off"
 							/>
 						) }
@@ -564,7 +557,6 @@ const DimensionsResponsiveControl = ( props ) => {
 									onUnitChange( newValue, onChange, setValue, deviceType, 'bottomUnit' );
 								} }
 								hideLabelFromVision={ true }
-								inputMode="numeric"
 								autoComplete="off"
 							/>
 						) }
@@ -618,7 +610,6 @@ const DimensionsResponsiveControl = ( props ) => {
 									onUnitChange( newValue, onChange, setValue, deviceType, 'leftUnit' );
 								} }
 								hideLabelFromVision={ true }
-								inputMode="numeric"
 								autoComplete="off"
 							/>
 						) }

@@ -28,10 +28,11 @@ import {
 	Database,
 	Layers,
 } from 'lucide-react';
+import { useSelect, useDispatch } from '@wordpress/data';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import useDeviceType from '../../hooks/useDeviceType';
 import PanelBodyControl from '../../components/PanelBody';
@@ -79,7 +80,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		dataMediaLinkImageCustomField,
 		dataMediaLinkAuthorMeta,
 		imageSize,
-		photo,
+		imageData,
 		photoOpacity,
 		photoBlur,
 		photoDropShadow,
@@ -89,7 +90,21 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		lightboxShowCaption,
 	} = attributes;
 
-	const { screen, setScreen, captionPosition, inQueryLoop, setImageFile, imageFile } = useContext( UploaderContext );
+	const {
+		setScreen,
+		setImageData,
+	} = useDispatch( blockStore );
+
+	// Get current block data.
+	const {
+		captionPosition,
+		inQueryLoop,
+	} = useSelect( ( select ) => {
+		return {
+			captionPosition: select( blockStore ).getCaptionPosition(),
+			inQueryLoop: select( blockStore ).inQueryLoop(),
+		};
+	} );
 
 	// Get query loop vars.
 	const { postId, postType } = context;
@@ -174,7 +189,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 					// Image must be URL.
 					setHasImage( true );
 					setPreviewImage( data );
-					setImageFile( data );
+					setImageData( data );
 					dataImage[ currentPostId ] = data;
 					setAttributes( { photo: data } );
 					return;
@@ -183,7 +198,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 				// If object, set preview image.
 				if ( data.url ) {
 					setHasImage( true );
-					setImageFile( data );
+					setImageData( data );
 					setPreviewImage( data );
 					dataImage[ currentPostId ] = data;
 					setAttributes( { photo: data } );

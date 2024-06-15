@@ -1,6 +1,16 @@
 
 import { createReduxStore, register } from '@wordpress/data';
 const DEFAULT_STATE = {
+	originalImageData: {
+		id: 0,
+		url: '',
+		alt: '',
+		full: '',
+		width: '',
+		height: '',
+		attachment_link: '',
+		caption: '',
+	},
 	imageData: {
 		id: 0,
 		url: '',
@@ -25,6 +35,12 @@ const DEFAULT_STATE = {
 };
 
 const actions = {
+	setOriginalImageData( originalImageData ) {
+		return {
+			type: 'SET_ORIGINAL_IMAGE_DATA',
+			originalImageData,
+		};
+	},
 	setImageData( imageData ) {
 		return {
 			type: 'SET_IMAGE_DATA',
@@ -102,6 +118,11 @@ const actions = {
 const blockStore = createReduxStore( 'dlxplugins/photo-block', {
 	reducer( state = DEFAULT_STATE, action ) {
 		switch ( action.type ) {
+			case 'SET_ORIGINAL_IMAGE_DATA':
+				return {
+					...state,
+					originalImageData: action.originalImageData,
+				};
 			case 'SET_IMAGE_DATA':
 				return {
 					...state,
@@ -203,6 +224,9 @@ const blockStore = createReduxStore( 'dlxplugins/photo-block', {
 		},
 		getImageData( state ) {
 			return state.imageData;
+		},
+		getOriginalImageData( state ) {
+			return state.originalImageData;
 		},
 	},
 } );

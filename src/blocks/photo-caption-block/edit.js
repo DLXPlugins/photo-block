@@ -39,6 +39,7 @@ import {
 
 import {
 	useDispatch,
+	useSelect,
 } from '@wordpress/data';
 
 import { isURL } from '@wordpress/url';
@@ -63,7 +64,7 @@ import { generateUniqueId } from '../../utils/Functions';
 import { useInstanceId } from '@wordpress/compose';
 const HtmlToReactParser = require( 'html-to-react' ).Parser;
 
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import SizeResponsiveControl from '../../components/SizeResponsive';
@@ -164,17 +165,34 @@ const fontFamiliesSelect = fontFamilies.map( ( font ) => ( {
 const uniqueIds = [];
 
 const PhotoCaptionBlock = ( props ) => {
-	// Read in context values.
 	const {
-		photoMode,
-		imageFile,
-		hasCaption,
 		setHasCaption,
-		captionPosition,
 		setCaptionPosition,
+	} = useDispatch( blockStore );
+
+	// Get current block data.
+	const {
+		imageData,
+		hasCaption,
+		captionPosition,
 		inQueryLoop,
+		photoMode,
 		blockUniqueId,
-	} = useContext( UploaderContext );
+	} = useSelect( ( select ) => {
+		return {
+			imageData: select( blockStore ).getImageData(),
+			currentScreen: select( blockStore ).getCurrentScreen(),
+			isUploading: select( blockStore ).isUploading(),
+			isProcessingUpload: select( blockStore ).isProcessingUpload(),
+			isUploadError: select( blockStore ).isUploadError(),
+			filepondInstance: select( blockStore ).getFilepondInstance(),
+			hasCaption: select( blockStore ).hasCaption(),
+			captionPosition: select( blockStore ).getCaptionPosition(),
+			inQueryLoop: select( blockStore ).inQueryLoop(),
+			photoMode: select( blockStore ).getPhotoMode(),
+			blockUniqueId: select( blockStore ).getBlockUniqueId(),
+		};
+	} );
 
 	const [ caption, setCaption ] = useState( '' ); // Only applicable if in data mode.
 	const [ captionLoading, setCaptionLoading ] = useState( false ); // Only applicable if in data mode.
@@ -332,7 +350,7 @@ const PhotoCaptionBlock = ( props ) => {
 				dataCaptionTypePostAuthorMeta,
 				dataCaptionPostTypeSource,
 				dataCaptionPostTypeAuthorMeta,
-				imageId: imageFile.id,
+				imageId: imageData.id,
 				postId: getPostId(),
 			},
 			`${ photoBlock.restUrl + '/get-caption-by-data' }`,
@@ -352,7 +370,7 @@ const PhotoCaptionBlock = ( props ) => {
 
 	// Do REST request to get dynamic caption if needed.
 	useEffect( () => {
-		if ( imageFile.id === 0 ) {
+		if ( imageData.id === 0 ) {
 			return;
 		}
 		if ( 'data' === photoMode ) {
@@ -361,7 +379,7 @@ const PhotoCaptionBlock = ( props ) => {
 		setAttributes( {
 			photoMode,
 		} );
-	}, [ photoMode, imageFile ] );
+	}, [ photoMode, imageData ] );
 
 	// Select the richtext input and focus on it if block is selected and mode is single line.
 	useEffect( () => {

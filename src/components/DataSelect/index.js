@@ -1,7 +1,6 @@
 import './editor.scss';
 
 import {
-	useContext,
 	useState,
 } from '@wordpress/element';
 import {
@@ -17,8 +16,9 @@ import {
 } from 'lucide-react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import UploaderContext from '../../contexts/UploaderContext';
+import { useSelect } from '@wordpress/data';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
+import blockStore from '../../store';
 
 export const MetaFieldControl = ( props ) => {
 	const { setAttributes, attributeName, endpoint, params, label, placeholder, currentSuggestion, acceptDirectInput } = props;
@@ -107,7 +107,14 @@ export const DataSelect = ( props ) => {
 		dataPostId,
 	} = attributes;
 
-	const { inQueryLoop } = useContext( UploaderContext );
+	// Get current block data.
+	const {
+		inQueryLoop,
+	} = useSelect( ( select ) => {
+		return {
+			inQueryLoop: select( blockStore ).inQueryLoop(),
+		};
+	} );
 
 	// Get query loop vars.
 	const { postId } = context;

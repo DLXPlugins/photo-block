@@ -20,23 +20,8 @@ import {
 	RangeControl,
 } from '@wordpress/components';
 
-import { isURL, filterURLForDisplay } from '@wordpress/url';
-
-import {
-	Link2Off,
-	Link2,
-	Image,
-	FileImage,
-	ExternalLink,
-
-} from 'lucide-react';
-
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
-
 import { __ } from '@wordpress/i18n';
-import classnames from 'classnames';
 
-import UploaderContext from '../../contexts/UploaderContext';
 import ColorPickerControl from '../ColorPicker';
 /**
  * DropShadow component.
@@ -45,13 +30,7 @@ import ColorPickerControl from '../ColorPicker';
  * @return {Function} Component.
  */
 const DropShadowControl = ( props ) => {
-	const { attributes, setAttributes, anchorRef } = props;
-
-	// Get context.
-	const {
-	} = useContext( UploaderContext );
-
-	const { mediaLinkType, mediaLinkTitle, mediaLinkUrl } = attributes;
+	const { attributes, setAttributes } = props;
 
 	return (
 		<>

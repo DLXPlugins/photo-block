@@ -33,8 +33,9 @@ import { useContext, useState, useEffect, useRef } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
+import { useSelect, useDispatch } from '@wordpress/data';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import URLPicker from '../URLPicker';
 
 /**
@@ -49,7 +50,11 @@ const MediaLink = ( props ) => {
 	// Get context.
 	const {
 		photoMode,
-	} = useContext( UploaderContext );
+	} = useSelect( ( select ) => {
+		return {
+			photoMode: select( blockStore ).getPhotoMode(),
+		};
+	} );
 
 	const { mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption } = attributes;
 

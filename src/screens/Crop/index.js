@@ -25,9 +25,10 @@ import {
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { Check, RotateCcw, RotateCw, Save, X, Lock, Loader2 } from 'lucide-react';
+import { useSelect, useDispatch } from '@wordpress/data';
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import AspectRatioIcon from '../../components/Icons/AspectRatio';
 import ToolbarAspectRatio from '../../components/ToolbarAspectRatio';
@@ -35,8 +36,11 @@ import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFrom
 import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
 
 const CropScreen = ( props ) => {
-	const { screen, imageFile, setScreen, setImageFile } =
-		useContext( UploaderContext );
+	const {
+		setScreen,
+		setImageData,
+	} = useDispatch( blockStore );
+
 	const { attributes, setAttributes } = props;
 
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
@@ -53,7 +57,7 @@ const CropScreen = ( props ) => {
 	const [ reactCropImageRef, setReactCropImageRef ] = useState( null );
 
 	const {
-		photo,
+		imageData,
 		uniqueId,
 		aspectRatio,
 		aspectRatioUnit,
@@ -63,7 +67,7 @@ const CropScreen = ( props ) => {
 		aspectRatioHeightPixels,
 	} = attributes;
 
-	const { url, id, width, height } = photo;
+	const { url, id, width, height } = imageData;
 
 	/**
 	 * Rotate an image.
@@ -520,7 +524,7 @@ const CropScreen = ( props ) => {
 						croppedImage.then( ( imageResponse ) => {
 							const { data } = imageResponse;
 							if ( data.success ) {
-								setImageFile( data.data.attachment );
+								setImageData( data.data.attachment );
 								setAttributes( {
 									photo: data.data.attachment,
 								} );

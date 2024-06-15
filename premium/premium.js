@@ -14168,6 +14168,16 @@ function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" 
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 var DEFAULT_STATE = {
+  originalImageData: {
+    id: 0,
+    url: '',
+    alt: '',
+    full: '',
+    width: '',
+    height: '',
+    attachment_link: '',
+    caption: ''
+  },
   imageData: {
     id: 0,
     url: '',
@@ -14194,6 +14204,12 @@ var DEFAULT_STATE = {
   dataScreen: 'data' /* can be `initial`, `edit`. */
 };
 var actions = {
+  setOriginalImageData: function setOriginalImageData(originalImageData) {
+    return {
+      type: 'SET_ORIGINAL_IMAGE_DATA',
+      originalImageData: originalImageData
+    };
+  },
   setImageData: function setImageData(imageData) {
     return {
       type: 'SET_IMAGE_DATA',
@@ -14272,6 +14288,10 @@ var blockStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__["default"])('dl
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
     var action = arguments.length > 1 ? arguments[1] : undefined;
     switch (action.type) {
+      case 'SET_ORIGINAL_IMAGE_DATA':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          originalImageData: action.originalImageData
+        });
       case 'SET_IMAGE_DATA':
         return _objectSpread(_objectSpread({}, state), {}, {
           imageData: action.imageData
@@ -14361,6 +14381,9 @@ var blockStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__["default"])('dl
     },
     getImageData: function getImageData(state) {
       return state.imageData;
+    },
+    getOriginalImageData: function getOriginalImageData(state) {
+      return state.originalImageData;
     }
   }
 });

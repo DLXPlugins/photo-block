@@ -9,10 +9,10 @@ import {
 } from '@wordpress/components';
 
 import { useContext, useState } from '@wordpress/element';
-
+import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import CSSGramButtonPreview from '../CSSGramButtonPreview';
 
 const cssGramOptions = [
@@ -53,12 +53,16 @@ const cssGramOptions = [
 const CSSGramButtonGroup = ( props ) => {
 	const { attributes, setAttributes } = props;
 
-	const { cssGramFilter, photo } = attributes;
+	const { cssGramFilter } = attributes;
 
-	// Get context.
 	const {
-		imageFile,
-	} = useContext( UploaderContext );
+		imageData,
+	} = useSelect( ( select ) => {
+		const { getImageData } = select( blockStore );
+		return {
+			imageData: getImageData(),
+		};
+	} );
 
 	const [ currentFilter, setCurrentFilter ] = useState( cssGramFilter );
 
@@ -81,8 +85,8 @@ const CSSGramButtonGroup = ( props ) => {
 									} }
 									label={ option.label }
 									filter={ option.value }
-									fullUrl={ imageFile.url }
-									photo={ photo }
+									fullUrl={ imageData.url }
+									photo={ attributes.imageData }
 								/>
 							);
 						} )

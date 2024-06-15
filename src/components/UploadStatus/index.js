@@ -10,7 +10,8 @@ import { XCircle, Redo2 } from 'lucide-react';
 import { forwardRef, useContext } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
-import UploaderContext from '../../contexts/UploaderContext';
+import { useSelect, useDispatch } from '@wordpress/data';
+import blockStore from '../../store';
 
 /**
  * Upload Status component.
@@ -19,14 +20,24 @@ import UploaderContext from '../../contexts/UploaderContext';
  */
 const UploadStatus = ( props ) => {
 	// Read in context values.
+
 	const {
-		imageFile,
 		setIsUploading,
-		setIsProcessingUpload,
-		isUploadError,
 		setIsUploadError,
+		setIsProcessingUpload,
+	} = useDispatch( blockStore );
+	const {
+		imageData,
+		isUploadError,
 		filepondInstance,
-	} = useContext( UploaderContext );
+	} = useSelect( ( select ) => {
+		return {
+			imageData: select( blockStore ).getImageData(),
+			isUploadError: select( blockStore ).isUploadError(),
+			filepondInstance: select( blockStore ).getFilepondInstance(),
+		};
+	} );
+
 	return (
 		<>
 			<div className="dlx-photo-block__upload-status">
@@ -49,7 +60,7 @@ const UploadStatus = ( props ) => {
 						onClick={ () => {
 							setIsUploading( true );
 							setIsUploadError( false );
-							filepondInstance.addFile( imageFile.file ); // Start upload process again.
+							filepondInstance.addFile( imageData.file ); // Start upload process again.
 						} }
 					>
 						{ __( 'Retry Image', 'photo-block' ) }

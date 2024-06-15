@@ -42,8 +42,7 @@ import {
 	Undo2,
 } from 'lucide-react';
 import classnames from 'classnames';
-
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import MediaLink from '../../components/MediaLink';
 import useDeviceType from '../../hooks/useDeviceType';
@@ -73,15 +72,22 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ isSavingTitle, setIsSavingTitle ] = useState( false );
 
 	const {
-		screen,
 		setScreen,
+	} = useDispatch( blockStore );
+
+	// Get current block data.
+	const {
 		captionPosition,
-		setImageFile,
-		imageFile,
-		originalImageFile,
 		photoMode,
-		setPhotoMode,
-	} = useContext( UploaderContext );
+		originalImageData,
+	} = useSelect( ( select ) => {
+		return {
+			captionPosition: select( blockStore ).getCaptionPosition(),
+			photoMode: select( blockStore ).getPhotoMode(),
+			originalImageData: select( blockStore ).getOriginalImageData(),
+
+		};
+	} );
 
 	const { insertBlock, updateBlockAttributes } = useDispatch( store ); // For setting the preset defaults.
 
@@ -90,7 +96,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Setup useEffect to update image dimensions if empty.
 	useEffect( () => {
 		if ( photo.url ) {
-			setImageFile( photo );
+			setImageData( photo );
 		}
 	}, [] );
 
@@ -172,7 +178,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 * @return {boolean} Whether to show the undo button.
 	 */
 	const canShowUndo = () => {
-		const originalImageUrl = originalImageFile?.url;
+		const originalImageUrl = originalImageData?.url;
 		const newImageUrl = photo?.url;
 
 		return originalImageUrl && newImageUrl && originalImageUrl !== newImageUrl;
@@ -400,9 +406,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							onClick={ () => {
 								// Change back to original image.
 								setAttributes( {
-									photo: originalImageFile,
+									photo: originalImageData,
 								} );
-								setImageFile( originalImageFile );
+								setImageData( originalImageData );
 							} }
 						>
 							{ __( 'Undo', 'photo-block' ) }
