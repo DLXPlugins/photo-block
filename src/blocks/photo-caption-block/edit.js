@@ -271,6 +271,8 @@ const PhotoCaptionBlock = ( props ) => {
 		overlayBackgroundGradientOpacity,
 		overlayBackgroundGradientOpacityHover,
 		overlayBackgroundImage,
+		overlayDisplayOnHover,
+		overlayDisplayAnimation,
 		htmlAnchor,
 		captionCSSClasses,
 		hideOnMobile,
@@ -466,6 +468,36 @@ const PhotoCaptionBlock = ( props ) => {
 							} );
 						} }
 					/>
+					<ToggleControl
+						label={ __( 'Display Overlay on Hover', 'photo-block' ) }
+						checked={ overlayDisplayOnHover }
+						onChange={ ( value ) => {
+							setAttributes( {
+								overlayDisplayOnHover: value,
+							} );
+						} }
+						help={ __( 'Display the overlay only when the image is hovered over.', 'photo-block' ) }
+					/>
+					{
+						overlayDisplayAnimation && (
+							<SelectControl
+								label={ __( 'Display Animation', 'photo-block' ) }
+								value={ overlayDisplayAnimation }
+								options={ [
+									{ label: __( 'Fade', 'photo-block' ), value: 'fade' },
+									{ label: __( 'Slide Left', 'photo-block' ), value: 'slide-left' },
+									{ label: __( 'Slide Right', 'photo-block' ), value: 'slide-right' },
+									{ label: __( 'Slide Up', 'photo-block' ), value: 'slide-up' },
+									{ label: __( 'Slide Down', 'photo-block' ), value: 'slide-down' },
+								] }
+								onChange={ ( value ) => {
+									setAttributes( {
+										overlayDisplayAnimation: value,
+									} );
+								} }
+							/>
+						)
+					}
 					<BaseControl id="dlx-photo-block__overlay-background-type" label={ __( 'Background Type', 'photo-block' ) }>
 						<ButtonGroup className="dlx-photo-block__overlay-background-type">
 							<Button
@@ -1530,7 +1562,20 @@ const PhotoCaptionBlock = ( props ) => {
 			<InspectorAdvancedControls>{ advancedInspectorControls }</InspectorAdvancedControls>
 			{ localInspectorControls }
 			{ localToolbar }
-			<div className={ classnames( 'dlx-photo-block__caption-wrapper' ) }>
+			<div
+				className={
+					classnames(
+						'dlx-photo-block__caption-wrapper',
+						{
+							'overlay-display-hover': 'overlay' === captionPosition && overlayDisplayOnHover,
+							'overlay-slide-down': overlayDisplayAnimation === 'slide-down',
+							'overlay-slide-up': overlayDisplayAnimation === 'slide-up',
+							'overlay-slide-left': overlayDisplayAnimation === 'slide-left',
+							'overlay-slide-right': overlayDisplayAnimation === 'slide-right',
+						}
+					)
+				}
+			>
 				{ 'overlay' === captionPosition && (
 					<>
 						<div className={ overlayStyles } id={ uniqueId }>

@@ -1373,6 +1373,50 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
   width: 100%;
   height: 100%;
 }
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover .dlx-photo-block__caption-overlay,
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover:hover .dlx-photo-block__caption-overlay {
+  transition: 0.5s ease-in-out;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover .dlx-photo-block__caption-overlay {
+  opacity: 0;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover:hover .dlx-photo-block__caption-overlay {
+  opacity: 1;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover.overlay-slide-down .dlx-photo-block__caption-overlay {
+  height: 0;
+  overflow: hidden;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover.overlay-slide-down:hover .dlx-photo-block__caption-overlay {
+  height: 100%;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover.overlay-slide-up .dlx-photo-block__caption-overlay {
+  top: unset;
+  bottom: 0;
+  height: 0;
+  overflow: hidden;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover.overlay-slide-up:hover .dlx-photo-block__caption-overlay {
+  height: 100%;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover.overlay-slide-left .dlx-photo-block__caption-overlay {
+  left: unset;
+  right: 0;
+  width: 0;
+  overflow: hidden;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover.overlay-slide-left:hover .dlx-photo-block__caption-overlay {
+  width: 100%;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover.overlay-slide-right .dlx-photo-block__caption-overlay {
+  right: unset;
+  left: 0;
+  width: 0;
+  overflow: hidden;
+}
+.dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover.overlay-slide-right:hover .dlx-photo-block__caption-overlay {
+  width: 100%;
+}
 
 .dlx-photo-block__caption-overlay {
   display: flex;
@@ -1386,8 +1430,6 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
 .dlx-photo-block__caption-overlay figcaption {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
 }
 .dlx-photo-block__caption-overlay.overlay-vertical-middle {
   align-items: center;
