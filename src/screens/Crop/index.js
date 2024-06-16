@@ -242,7 +242,7 @@ const CropScreen = ( props ) => {
 			const response = await SendCommand(
 				photoBlock.restNonce,
 				{},
-				`${ photoBlock.restUrl + '/get-image' }/id=${ photo.id }`,
+				`${ photoBlock.restUrl + '/get-image' }/id=${ imageData.id }`,
 				'GET'
 			);
 			const { data } = response;
@@ -462,7 +462,7 @@ const CropScreen = ( props ) => {
 					onClick={ () => {
 						const degrees = getDegrees( -90 );
 						setRotateDegrees( degrees );
-						rotateImage( photo.url, degrees ).then( ( newImage ) => {
+						rotateImage( imageData.url, degrees ).then( ( newImage ) => {
 							setFullsizePhoto( newImage );
 							setModifiedPhoto( newImage );
 						} );
@@ -474,7 +474,7 @@ const CropScreen = ( props ) => {
 					onClick={ () => {
 						const degrees = getDegrees( 90 );
 						setRotateDegrees( degrees );
-						rotateImage( photo.url, degrees ).then( ( newImage ) => {
+						rotateImage( imageData.url, degrees ).then( ( newImage ) => {
 							setFullsizePhoto( newImage );
 							setModifiedPhoto( newImage );
 						} );
@@ -521,7 +521,7 @@ const CropScreen = ( props ) => {
 						}
 						setIsSaving( true );
 
-						const croppedImage = cropImage( crop, photo.id, rotateDegrees );
+						const croppedImage = cropImage( crop, imageData.id, rotateDegrees );
 						croppedImage.then( ( imageResponse ) => {
 							const { data } = imageResponse;
 							if ( data.success ) {

@@ -10975,7 +10975,7 @@ var CropScreen = function CropScreen(props) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_10__["default"])(photoBlock.restNonce, {}, "".concat(photoBlock.restUrl + '/get-image', "/id=").concat(photo.id), 'GET');
+              return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_10__["default"])(photoBlock.restNonce, {}, "".concat(photoBlock.restUrl + '/get-image', "/id=").concat(imageData.id), 'GET');
             case 2:
               response = _context2.sent;
               data = response.data;
@@ -11173,7 +11173,7 @@ var CropScreen = function CropScreen(props) {
     onClick: function onClick() {
       var degrees = getDegrees(-90);
       setRotateDegrees(degrees);
-      rotateImage(photo.url, degrees).then(function (newImage) {
+      rotateImage(imageData.url, degrees).then(function (newImage) {
         setFullsizePhoto(newImage);
         setModifiedPhoto(newImage);
       });
@@ -11184,7 +11184,7 @@ var CropScreen = function CropScreen(props) {
     onClick: function onClick() {
       var degrees = getDegrees(90);
       setRotateDegrees(degrees);
-      rotateImage(photo.url, degrees).then(function (newImage) {
+      rotateImage(imageData.url, degrees).then(function (newImage) {
         setFullsizePhoto(newImage);
         setModifiedPhoto(newImage);
       });
@@ -11229,7 +11229,7 @@ var CropScreen = function CropScreen(props) {
         return;
       }
       setIsSaving(true);
-      var croppedImage = cropImage(crop, photo.id, rotateDegrees);
+      var croppedImage = cropImage(crop, imageData.id, rotateDegrees);
       croppedImage.then(function (imageResponse) {
         var data = imageResponse.data;
         if (data.success) {
