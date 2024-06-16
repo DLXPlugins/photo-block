@@ -70,26 +70,26 @@ const PhotoBlock = ( props ) => {
 		if ( ( null === uniqueId || uniqueIds.includes( uniqueId ) ) && ! inQueryLoop ) {
 			const permUniqueId = newUniqueId;
 
-			const oldStore = select( blockStore( uniqueId ) );
-			if ( oldStore ) {
-				// Duplicate the store.
-				const newBlockStore = dispatch( blockStore( permUniqueId ) );
-				console.log( newBlockStore );
-				newBlockStore.setBlockUniqueId( permUniqueId );
-				newBlockStore.setPhotoMode( oldStore.getPhotoMode() );
-				newBlockStore.setScreen( oldStore.getCurrentScreen() );
-				newBlockStore.setCaptionPosition( oldStore.getCaptionPosition() );
-				newBlockStore.setHasCaption( oldStore.hasCaption() );
-				newBlockStore.setInQueryLoop( oldStore.inQueryLoop() );
-				newBlockStore.setImageData( oldStore.getImageData() );
+			// If block is duplicated, set new store defaults.
+			if ( uniqueIds.includes( uniqueId ) ) {
+				const oldStore = select( blockStore( uniqueId ) );
+				if ( oldStore ) {
+					// Duplicate the store and set defaults.
+					const newBlockStore = dispatch( blockStore( permUniqueId ) );
+					newBlockStore.setBlockUniqueId( permUniqueId );
+					newBlockStore.setPhotoMode( oldStore.getPhotoMode() );
+					newBlockStore.setScreen( 'edit' );
+					newBlockStore.setCaptionPosition( oldStore.getCaptionPosition() );
+					newBlockStore.setHasCaption( oldStore.hasCaption() );
+					newBlockStore.setInQueryLoop( oldStore.inQueryLoop() );
+					newBlockStore.setImageData( oldStore.getImageData() );
+					props.attributes.screen = 'edit';
+					setAttributes( { screen: 'edit' } );
+				}
 			}
-
-			// todo - this fails when duplicated.
+			// We need this for duplicated state so one block doesn't affect another.
 			props.attributes.uniqueId = permUniqueId;
 			setAttributes( { uniqueId: permUniqueId } );
-			const newBlockStore = blockStore( permUniqueId ); // init store if not already.
-			console.log( newBlockStore );
-			setBlockUniqueId( permUniqueId );
 			uniqueIds.push( permUniqueId );
 			realUniqueId = permUniqueId;
 		} else if ( ! inQueryLoop ) {
