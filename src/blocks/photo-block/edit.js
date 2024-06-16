@@ -22,7 +22,8 @@ import {
 	MenuGroup,
 	MenuItem,
 } from '@wordpress/components';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect, dispatch, select } from '@wordpress/data';
+import { doAction } from '@wordpress/hooks';
 import {
 	InspectorControls,
 	useBlockProps,
@@ -57,7 +58,7 @@ const PhotoBlock = ( props ) => {
 		isSelected,
 	} = props;
 
-	const innerBlockCount = useSelect( ( select ) => select( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
+	const innerBlockCount = useSelect( ( coreSelect ) => coreSelect( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
 
 	const newUniqueId = 'photo-block-' + clientId.substr( 2, 9 ).replace( '-', '' );
 
@@ -65,16 +66,47 @@ const PhotoBlock = ( props ) => {
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
 	useEffect( () => {
-		if ( null === uniqueId || uniqueIds.includes( uniqueId ) ) {
+		let realUniqueId = null;
+		if ( ( null === uniqueId || uniqueIds.includes( uniqueId ) ) && ! inQueryLoop ) {
 			const permUniqueId = newUniqueId;
 
+			const oldStore = select( blockStore( uniqueId ) );
+			if ( oldStore ) {
+				// Duplicate the store.
+				const newBlockStore = dispatch( blockStore( permUniqueId ) );
+				console.log( newBlockStore );
+				newBlockStore.setBlockUniqueId( permUniqueId );
+				newBlockStore.setPhotoMode( oldStore.getPhotoMode() );
+				newBlockStore.setScreen( oldStore.getCurrentScreen() );
+				newBlockStore.setCaptionPosition( oldStore.getCaptionPosition() );
+				newBlockStore.setHasCaption( oldStore.hasCaption() );
+				newBlockStore.setInQueryLoop( oldStore.inQueryLoop() );
+				newBlockStore.setImageData( oldStore.getImageData() );
+			}
+
+			// todo - this fails when duplicated.
+			props.attributes.uniqueId = permUniqueId;
 			setAttributes( { uniqueId: permUniqueId } );
+			const newBlockStore = blockStore( permUniqueId ); // init store if not already.
+			console.log( newBlockStore );
 			setBlockUniqueId( permUniqueId );
 			uniqueIds.push( permUniqueId );
-		} else {
+			realUniqueId = permUniqueId;
+		} else if ( ! inQueryLoop ) {
 			setBlockUniqueId( uniqueId );
 			uniqueIds.push( uniqueId );
+			realUniqueId = uniqueId;
 		}
+
+		/**
+		 * Action: dlx_photo_block_has_loaded
+		 *
+		 * Fires after the block has loaded and after unique ID has been set.
+		 */
+		doAction(
+			'dlx_photo_block_has_loaded',
+			realUniqueId
+		);
 
 		// Set initial state of the block.
 		setImageData( attributes.imageData );

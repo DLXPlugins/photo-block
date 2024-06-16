@@ -104,19 +104,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _utils_Functions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/Functions */ "./src/utils/Functions.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
-/* harmony import */ var _screens_Initial__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../screens/Initial */ "./src/screens/Initial/index.js");
-/* harmony import */ var _components_CaptionAppender__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/CaptionAppender */ "./src/components/CaptionAppender/index.js");
-/* harmony import */ var _screens_Edit__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../screens/Edit */ "./src/screens/Edit/index.js");
-/* harmony import */ var _screens_Crop__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../screens/Crop */ "./src/screens/Crop/index.js");
-/* harmony import */ var _screens_Data__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../screens/Data */ "./src/screens/Data/index.js");
-/* harmony import */ var _screens_DataEdit__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../screens/DataEdit */ "./src/screens/DataEdit/index.js");
-/* harmony import */ var _screens_Loading__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../screens/Loading */ "./src/screens/Loading/index.js");
-/* harmony import */ var _screens_FeaturedImageEdit__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../screens/FeaturedImageEdit */ "./src/screens/FeaturedImageEdit/index.js");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _utils_Functions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../utils/Functions */ "./src/utils/Functions.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
+/* harmony import */ var _screens_Initial__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../screens/Initial */ "./src/screens/Initial/index.js");
+/* harmony import */ var _components_CaptionAppender__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/CaptionAppender */ "./src/components/CaptionAppender/index.js");
+/* harmony import */ var _screens_Edit__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../screens/Edit */ "./src/screens/Edit/index.js");
+/* harmony import */ var _screens_Crop__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../screens/Crop */ "./src/screens/Crop/index.js");
+/* harmony import */ var _screens_Data__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../screens/Data */ "./src/screens/Data/index.js");
+/* harmony import */ var _screens_DataEdit__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../screens/DataEdit */ "./src/screens/DataEdit/index.js");
+/* harmony import */ var _screens_Loading__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../screens/Loading */ "./src/screens/Loading/index.js");
+/* harmony import */ var _screens_FeaturedImageEdit__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../screens/FeaturedImageEdit */ "./src/screens/FeaturedImageEdit/index.js");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 
 
 
@@ -144,8 +147,8 @@ var PhotoBlock = function PhotoBlock(props) {
     clientId = props.clientId,
     context = props.context,
     isSelected = props.isSelected;
-  var innerBlockCount = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
-    return select('core/block-editor').getBlock(clientId).innerBlocks;
+  var innerBlockCount = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (coreSelect) {
+    return coreSelect('core/block-editor').getBlock(clientId).innerBlocks;
   }).length;
   var newUniqueId = 'photo-block-' + clientId.substr(2, 9).replace('-', '');
 
@@ -153,17 +156,45 @@ var PhotoBlock = function PhotoBlock(props) {
    * Get a unique ID for the block for inline styling if necessary.
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    if (null === uniqueId || uniqueIds.includes(uniqueId)) {
+    var realUniqueId = null;
+    if ((null === uniqueId || uniqueIds.includes(uniqueId)) && !inQueryLoop) {
       var permUniqueId = newUniqueId;
+      var oldStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId));
+      if (oldStore) {
+        // Duplicate the store.
+        var _newBlockStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.dispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(permUniqueId));
+        console.log(_newBlockStore);
+        _newBlockStore.setBlockUniqueId(permUniqueId);
+        _newBlockStore.setPhotoMode(oldStore.getPhotoMode());
+        _newBlockStore.setScreen(oldStore.getCurrentScreen());
+        _newBlockStore.setCaptionPosition(oldStore.getCaptionPosition());
+        _newBlockStore.setHasCaption(oldStore.hasCaption());
+        _newBlockStore.setInQueryLoop(oldStore.inQueryLoop());
+        _newBlockStore.setImageData(oldStore.getImageData());
+      }
+
+      // todo - this fails when duplicated.
+      props.attributes.uniqueId = permUniqueId;
       setAttributes({
         uniqueId: permUniqueId
       });
+      var newBlockStore = (0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(permUniqueId); // init store if not already.
+      console.log(newBlockStore);
       setBlockUniqueId(permUniqueId);
       uniqueIds.push(permUniqueId);
-    } else {
+      realUniqueId = permUniqueId;
+    } else if (!inQueryLoop) {
       setBlockUniqueId(uniqueId);
       uniqueIds.push(uniqueId);
+      realUniqueId = uniqueId;
     }
+
+    /**
+     * Action: dlx_photo_block_has_loaded
+     *
+     * Fires after the block has loaded and after unique ID has been set.
+     */
+    (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_6__.doAction)('dlx_photo_block_has_loaded', realUniqueId);
 
     // Set initial state of the block.
     setImageData(attributes.imageData);
@@ -187,7 +218,7 @@ var PhotoBlock = function PhotoBlock(props) {
     dataScreen = _props$attributes.dataScreen;
 
   // Read in context values.
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)),
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)),
     setBlockUniqueId = _useDispatch.setBlockUniqueId,
     setCaptionPosition = _useDispatch.setCaptionPosition,
     setHasCaption = _useDispatch.setHasCaption,
@@ -197,16 +228,16 @@ var PhotoBlock = function PhotoBlock(props) {
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
       return {
-        currentScreen: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getCurrentScreen(),
-        isUploading: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).isUploading(),
-        isProcessingUpload: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).isProcessingUpload(),
-        isUploadError: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).isUploadError(),
-        filepondInstance: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getFilepondInstance(),
-        hasCaption: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).hasCaption(),
-        captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getCaptionPosition(),
-        inQueryLoop: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).inQueryLoop(),
-        photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getPhotoMode(),
-        blockUniqueId: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getBlockUniqueId()
+        currentScreen: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).getCurrentScreen(),
+        isUploading: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).isUploading(),
+        isProcessingUpload: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).isProcessingUpload(),
+        isUploadError: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).isUploadError(),
+        filepondInstance: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).getFilepondInstance(),
+        hasCaption: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).hasCaption(),
+        captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).getCaptionPosition(),
+        inQueryLoop: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).inQueryLoop(),
+        photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).getPhotoMode(),
+        blockUniqueId: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(uniqueId ? uniqueId : newUniqueId)).getBlockUniqueId()
       };
     }),
     currentScreen = _useSelect.currentScreen,
@@ -219,7 +250,7 @@ var PhotoBlock = function PhotoBlock(props) {
     inQueryLoop = _useSelect.inQueryLoop,
     photoMode = _useSelect.photoMode,
     blockUniqueId = _useSelect.blockUniqueId;
-  var blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.useBlockProps)({
+  var blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__.useBlockProps)({
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block", "align".concat(align), "dlx-screen-".concat(currentScreen), "dlx-caption-position-".concat(captionPosition), {
       'dlx-has-drop-shadow': photoDropShadow.enabled
     })
@@ -257,13 +288,13 @@ var PhotoBlock = function PhotoBlock(props) {
   var captionInnerBlocksClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()('dlx-photo-block__caption', {
     'dlx-photo-block__caption--has-overlay': 'overlay' === captionPosition
   });
-  var captionInnerBlockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.useInnerBlocksProps)({
+  var captionInnerBlockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__.useInnerBlocksProps)({
     className: captionInnerBlocksClasses
   }, {
     allowedBlocks: ['dlxplugins/photo-caption-block'],
     templateInsertUpdatesSelection: true,
     renderAppender: function renderAppender() {
-      return isSelected ? /*#__PURE__*/React.createElement(_components_CaptionAppender__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      return isSelected ? /*#__PURE__*/React.createElement(_components_CaptionAppender__WEBPACK_IMPORTED_MODULE_11__["default"], {
         numBlocks: innerBlockCount,
         clientId: clientId,
         blockUniqueId: blockUniqueId
@@ -291,17 +322,17 @@ var PhotoBlock = function PhotoBlock(props) {
     // Otherwise get the screen based on the current screen.
     switch (currentScreen) {
       case 'loading':
-        return /*#__PURE__*/React.createElement(_screens_Loading__WEBPACK_IMPORTED_MODULE_15__["default"], _extends({}, props, {
+        return /*#__PURE__*/React.createElement(_screens_Loading__WEBPACK_IMPORTED_MODULE_16__["default"], _extends({}, props, {
           blockUniqueId: blockUniqueId
         }));
       case 'initial':
-        return /*#__PURE__*/React.createElement(_screens_Initial__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        return /*#__PURE__*/React.createElement(_screens_Initial__WEBPACK_IMPORTED_MODULE_10__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
           blockUniqueId: blockUniqueId
         });
       case 'edit':
-        return /*#__PURE__*/React.createElement(_screens_Edit__WEBPACK_IMPORTED_MODULE_11__["default"], {
+        return /*#__PURE__*/React.createElement(_screens_Edit__WEBPACK_IMPORTED_MODULE_12__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
           ref: imageRef,
@@ -310,13 +341,13 @@ var PhotoBlock = function PhotoBlock(props) {
           blockUniqueId: blockUniqueId
         });
       case 'crop':
-        return /*#__PURE__*/React.createElement(_screens_Crop__WEBPACK_IMPORTED_MODULE_12__["default"], {
+        return /*#__PURE__*/React.createElement(_screens_Crop__WEBPACK_IMPORTED_MODULE_13__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
           blockUniqueId: blockUniqueId
         });
       case 'featuredImage':
-        return /*#__PURE__*/React.createElement(_screens_FeaturedImageEdit__WEBPACK_IMPORTED_MODULE_16__["default"], {
+        return /*#__PURE__*/React.createElement(_screens_FeaturedImageEdit__WEBPACK_IMPORTED_MODULE_17__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
           context: context,
@@ -324,14 +355,14 @@ var PhotoBlock = function PhotoBlock(props) {
           blockUniqueId: blockUniqueId
         });
       case 'data':
-        return /*#__PURE__*/React.createElement(_screens_Data__WEBPACK_IMPORTED_MODULE_13__["default"], {
+        return /*#__PURE__*/React.createElement(_screens_Data__WEBPACK_IMPORTED_MODULE_14__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
           context: context,
           blockUniqueId: blockUniqueId
         });
       case 'data-edit':
-        return /*#__PURE__*/React.createElement(_screens_DataEdit__WEBPACK_IMPORTED_MODULE_14__["default"], {
+        return /*#__PURE__*/React.createElement(_screens_DataEdit__WEBPACK_IMPORTED_MODULE_15__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
           context: context,
@@ -10630,17 +10661,55 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../store/index */ "./src/store/index.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/database.js");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../store/index */ "./src/store/index.js");
 
 
 
 
 
 
+
+
+// Run after block is initialized.
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__.addAction)('dlx_photo_block_has_loaded', 'dlx-photo-block-data-image-type', function (uniqueId) {
+  var dataPlugin = (0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__.getPlugin)('dlx-photo-block-data-image-type');
+  return;
+  // If already defined, return.
+  if (dataPlugin) {
+    return;
+  }
+  (0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__.registerPlugin)('dlx-photo-block-data-image-type', {
+    render: function render() {
+      var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)((0,_store_index__WEBPACK_IMPORTED_MODULE_5__["default"])(uniqueId)),
+        setPhotoMode = _useDispatch.setPhotoMode,
+        setScreen = _useDispatch.setScreen;
+      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Fill, {
+        name: "dlx-photo-block.upload-types"
+      }, function (_ref) {
+        var setAttributes = _ref.setAttributes;
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+          variant: "secondary",
+          icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], null),
+          onClick: function onClick() {
+            setAttributes({
+              photoMode: 'data',
+              screen: 'data'
+            });
+            setPhotoMode('data');
+            setScreen('data');
+          }
+        }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Data', 'photo-block')));
+      });
+    }
+  });
+});
 
 // registerPlugin(
 // 	'dlx-photo-block-data-image-type',
@@ -13099,13 +13168,13 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     if (0 === postId) {
       return;
     }
-    setImageLoading(true);
     // Check for array key in stored data.
     if ('undefined' !== dataImages[postId] && 'object' === _typeof(dataImages[postId])) {
       setHasImage(true);
       setImageLoading(false);
       return;
     }
+    setImageLoading(true);
     getImage();
   }, [postId]);
 

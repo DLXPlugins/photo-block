@@ -141,13 +141,13 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 		if ( 0 === postId ) {
 			return;
 		}
-		setImageLoading( true );
 		// Check for array key in stored data.
 		if ( 'undefined' !== dataImages[ postId ] && 'object' === typeof dataImages[ postId ] ) {
 			setHasImage( true );
 			setImageLoading( false );
 			return;
 		}
+		setImageLoading( true );
 		getImage();
 	}, [ postId ] );
 
