@@ -705,6 +705,14 @@
         "backgroundOpacityHover": 0.65
       }
     },
+    "overlayDisplayOnHover": {
+      "type": "boolean",
+      "default": false
+    },
+    "overlayDisplayAnimation": {
+      "type": "string",
+      "default": "fade"
+    },
     "htmlAnchor": {
       "type": "string",
       "default": ""
