@@ -318,6 +318,9 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 				<Popover
 					placement="top-start"
 					anchor={ mediaLinkRef }
+					onClose={ () => {
+						setMediaLinkPopover( false );
+					} }
 				>
 					<div className="dlx-photo-block__a11y-popover">
 						<h3>{ __( 'Select a Link Source', 'photo-block' ) }</h3>

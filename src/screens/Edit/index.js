@@ -297,7 +297,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							)
 						}
 						placeholder={ __(
-							'Please enter a title for this imageData.',
+							'Please enter a title for this photo.',
 							'photo-block'
 						) }
 					/>
@@ -321,7 +321,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								{ 'is-saving': isSavingAlt }
 							)
 						}
-						placeholder={ __( 'Please describe this imageData.', 'photo-block' ) }
+						placeholder={ __( 'Please describe this photo.', 'photo-block' ) }
 						help={ __(
 							'Alt text provides a description of the photo for screen readers and search engines.',
 							'photo-block'
@@ -428,7 +428,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						icon={ <Accessibility /> }
 						label={ __( 'Set Accessibility Options', 'photo-block' ) }
 						onClick={ () => {
-							setA11yPopover( ( state ) => ! state );
+							setA11yPopover( ! a11yPopover );
 						} }
 						ref={ setA11yButton }
 					/>
@@ -436,7 +436,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						icon={ <Link /> }
 						label={ __( 'Set Link Options', 'photo-block' ) }
 						onClick={ () => {
-							setMediaLinkPopover( ( state ) => ! state );
+							setMediaLinkPopover( ! mediaLinkPopover );
 						} }
 						ref={ setMediaLinkRef }
 					/>
@@ -448,12 +448,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					setAttributes={ setAttributes }
 					anchorRef={ mediaLinkRef }
 					blockUniqueId={ blockUniqueId }
+					onClose={ () => {
+						setMediaLinkPopover( false );
+					} }
 				/>
 			) }
 			{ a11yPopover && (
 				<Popover
 					position="bottom center"
 					anchor={ a11yButton }
+					onClose={ () => {
+						setA11yPopover( false );
+					} }
 				>
 					<div className="dlx-photo-block__a11y-popover">
 						<h3>{ __( 'Accessibility Options', 'photo-block' ) }</h3>
@@ -466,7 +472,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								handleTitleChange( title );
 							} }
 							placeholder={ __(
-								'Please enter a title for this imageData.',
+								'Please enter a title for this photo.',
 								'photo-block'
 							) }
 							help={ __(
