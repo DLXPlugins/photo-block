@@ -10729,7 +10729,8 @@ var CropScreen = function CropScreen(props) {
     blockUniqueId = props.blockUniqueId;
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)),
     setScreen = _useDispatch.setScreen,
-    setImageData = _useDispatch.setImageData;
+    setImageData = _useDispatch.setImageData,
+    setPhotoMode = _useDispatch.setPhotoMode;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     shouldShowLoading = _useState2[0],
@@ -11235,8 +11236,10 @@ var CropScreen = function CropScreen(props) {
         if (data.success) {
           setImageData(data.data.attachment);
           setAttributes({
+            photoMode: 'photo',
             imageData: data.data.attachment
           });
+          setPhotoMode('photo');
           setScreen('edit');
         } else {
           // todo: error handling.

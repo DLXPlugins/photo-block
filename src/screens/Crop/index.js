@@ -42,6 +42,7 @@ const CropScreen = ( props ) => {
 	const {
 		setScreen,
 		setImageData,
+		setPhotoMode,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
@@ -527,8 +528,10 @@ const CropScreen = ( props ) => {
 							if ( data.success ) {
 								setImageData( data.data.attachment );
 								setAttributes( {
+									photoMode: 'photo',
 									imageData: data.data.attachment,
 								} );
+								setPhotoMode( 'photo' );
 								setScreen( 'edit' );
 							} else {
 								// todo: error handling.
