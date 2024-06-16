@@ -1363,19 +1363,21 @@ const PhotoCaptionBlock = ( props ) => {
 
 	let styles = `
 		figcaption#${ uniqueId } {
-			background: ${ captionBackgroundColor };
-			${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
-			${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
-			${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
-			${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
-			${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
-			${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
+			--photo-block-caption-background-color: ${ captionBackgroundColor };
+			--photo-block-caption-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
+			--photo-block-caption-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
+			--photo-block-caption-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
+			--photo-block-caption-min-height: ${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
+			--photo-block-caption-max-width: ${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
 		}
 		figcaption#${ uniqueId } {
-			padding: ${ buildDimensionsCSS( captionPaddingSize, deviceType ) };
-			margin: ${ buildDimensionsCSS( captionMarginSize, deviceType ) };
-			border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
-			${ buildBorderCSS( captionBorder, deviceType ) }
+			--photo-block-caption-padding: ${ buildDimensionsCSS( captionPaddingSize, deviceType ) };
+			--photo-block-caption-margin: ${ buildDimensionsCSS( captionMarginSize, deviceType ) };
+			--photo-block-caption-border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
+			--photo-block-caption-padding: ${ buildDimensionsCSS( captionPaddingSize, deviceType ) };
+			--photo-block-caption-margin: ${ buildDimensionsCSS( captionMarginSize, deviceType ) };
+			--photo-block-caption-border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
+			${ buildBorderCSS( captionBorder, deviceType, '--photo-block-caption' ) };
 		}
 	`;
 
@@ -1383,20 +1385,20 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'single' === mode || 'data' === photoMode ) {
 		styles += `
 			figcaption#${ uniqueId } {
-				color: ${ captionTextColor };
-				font-family: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontFamily, 'fontFamily' ) };
-				font-size: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontSize, 'fontSize' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].fontSizeUnit, 'fontSizeUnit' ) };
-				font-weight: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontWeight, 'fontWeight' ) };
-				line-height: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].lineHeight, 'lineHeight' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].lineHeightUnit, 'lineHeightUnit' ) };
-				text-transform: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].textTransform, 'textTransform' ) };
-				letter-spacing: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].letterSpacing, 'letterSpacing' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].letterSpacingUnit, 'letterSpacingUnit' ) };
-				text-align: ${ captionAlign };
+				--photo-block-caption-text-color: ${ captionTextColor };
+				--photo-block-caption-font-family: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontFamily, 'fontFamily' ) };
+				--photo-block-caption-font-size: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontSize, 'fontSize' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].fontSizeUnit, 'fontSizeUnit' ) };
+				--photo-block-caption-font-weight: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontWeight, 'fontWeight' ) };
+				--photo-block-caption-line-height: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].lineHeight, 'lineHeight' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].lineHeightUnit, 'lineHeightUnit' ) };
+				--photo-block-caption-text-transform: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].textTransform, 'textTransform' ) };
+				--photo-block-caption-letter-spacing: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].letterSpacing, 'letterSpacing' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].letterSpacingUnit, 'letterSpacingUnit' ) };
+				--photo-block-caption-text-align: ${ captionAlign };
 			}
 			figcaption#${ uniqueId } a {
-				color: ${ captionLinkColor };
+				--photo-block-caption-link-color: ${ captionLinkColor };
 			}
 			figcaption#${ uniqueId } a:hover {
-				color: ${ captionLinkHoverColor };
+				--photo-block-caption-link-color-hover: ${ captionLinkHoverColor };
 			}
 		`;
 	}
@@ -1404,7 +1406,7 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'custom' === captionTypography[ deviceType ].fontFamilySlug ) {
 		styles += `
 			figcaption#${ uniqueId } {
-				font-family: ${ captionTypography?.captionCustomTypography };
+				--photo-block-caption-font-family: ${ captionTypography?.captionCustomTypography };
 			}
 		`;
 	}
@@ -1413,12 +1415,12 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'advanced' === mode && 'data' !== photoMode ) {
 		styles += `
 			figcaption#${ uniqueId } {
-				--dlx-photo-block__caption-text-color: ${ captionTextColor };
-				--dlx-photo-block__caption-accent-color: ${ captionAccentColor };
-				--dlx-photo-block__caption-secondary-color: ${ captionSecondaryColor };
-				--dlx-photo-block__caption-font-family: ${ captionTextFontFamily };
-				--dlx-photo-block__caption-headings-font-family: ${ captionHeadingsFontFamily };
-				--dlx-photo-block__caption-font-size: ${ geHierarchicalPlaceholderValue( captionBaseFontSize, deviceType, captionBaseFontSize[ deviceType ].value, 'value' ) }${ getHierarchicalValueUnit( captionBaseFontSize, deviceType, captionBaseFontSize[ deviceType ].unit, 'unit' ) };
+				--photo-block-caption-text-color: ${ captionTextColor };
+				--photo-block-caption-link-color: ${ captionAccentColor };
+				--photo-block-caption-link-color-hover: ${ captionSecondaryColor };
+				--photo-block-caption-font-family: ${ captionTextFontFamily };
+				--photo-block-caption-headings-font-family: ${ captionHeadingsFontFamily };
+				--photo-block-caption-font-size: ${ geHierarchicalPlaceholderValue( captionBaseFontSize, deviceType, captionBaseFontSize[ deviceType ].value, 'value' ) }${ getHierarchicalValueUnit( captionBaseFontSize, deviceType, captionBaseFontSize[ deviceType ].unit, 'unit' ) };
 			}
 		`;
 	}
@@ -1439,28 +1441,17 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'overlay' === captionPosition && 'solid' === overlayBackgroundType ) {
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
-				transition: background 0.35s ease-in-out;
-				display: block;
-				content: '';
-				position: absolute;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background: ${ overlayBackgroundColor };
-				z-index: 1;
+				--photo-block-caption-overlay-background-color: ${ overlayBackgroundColor };
 			}
 			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
-				background: ${ overlayBackgroundColorHover };
+				--photo-block-caption-overlay-background-color-hover: ${ overlayBackgroundColorHover };
 			}
 		`;
 
 		// The overlay background container needs to match overlay border radius in order to simulate masking.
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
-				border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
+				--photo-block-caption-overlay-border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
 			}
 		`;
 	}
@@ -1469,29 +1460,19 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'overlay' === captionPosition && 'gradient' === overlayBackgroundType ) {
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
-				transition: opacity 0.35s ease-in-out;
-				display: block;
-				content: '';
-				position: absolute;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background-image: ${ overlayBackgroundGradient };
-				opacity: ${ overlayBackgroundGradientOpacity };
+				--photo-block-caption-overlay-background-gradient: ${ overlayBackgroundGradient };
+				--photo-block-caption-overlay-background-gradient-opacity: ${ overlayBackgroundGradientOpacity };
 				z-index: 1;
 			}
 			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
-				opacity: ${ overlayBackgroundGradientOpacityHover };
+				--photo-block-caption-overlay-background-gradient-opacity-hover: ${ overlayBackgroundGradientOpacityHover };
 			}
 		`;
 
 		// The overlay background container needs to match overlay border radius in order to simulate masking.
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
-				border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
+				--photo-block-caption-overlay-border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
 			}
 		`;
 	}
@@ -1500,33 +1481,22 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'overlay' === captionPosition && 'image' === overlayBackgroundType && isURL( overlayBackgroundImage.url ) ) {
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
-				transition: opacity 0.35s ease-in-out;
-				display: block;
-				content: '';
-				position: absolute;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				background-color: ${ overlayBackgroundImage.backgroundColor };
-				background-image: url('${ decodeURIComponent( encodeURIComponent( overlayBackgroundImage.url ) ) } ');
-				background-position: ${ escapeEditableHTML( overlayBackgroundImage.backgroundPosition ) };
-				background-repeat: ${ escapeEditableHTML( overlayBackgroundImage.backgroundRepeat ) };
-				background-size: ${ escapeEditableHTML( overlayBackgroundImage.backgroundSize ) };
-				opacity: ${ parseFloat( overlayBackgroundImage.backgroundOpacity ) };
-				z-index: 1;
+				--photo-block-caption-overlay-background-color: ${ overlayBackgroundImage.backgroundColor };
+				--photo-block-caption-overlay-image: url('${ decodeURIComponent( encodeURIComponent( overlayBackgroundImage.url ) ) } ');
+				--photo-block-caption-overlay-background-position: ${ escapeEditableHTML( overlayBackgroundImage.backgroundPosition ) };
+				--photo-block-caption-overlay-background-repeat: ${ escapeEditableHTML( overlayBackgroundImage.backgroundRepeat ) };
+				--photo-block-caption-overlay-background-size: ${ escapeEditableHTML( overlayBackgroundImage.backgroundSize ) };
+				--photo-block-caption-overlay-opacity: ${ parseFloat( overlayBackgroundImage.backgroundOpacity ) };
 			}
 			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
-				opacity: ${ parseFloat( overlayBackgroundImage.backgroundOpacityHover ) };
+				--photo-block-caption-overlay-opacity-hover: ${ parseFloat( overlayBackgroundImage.backgroundOpacityHover ) };
 			}
 		`;
 
 		// The overlay background container needs to match overlay border radius in order to simulate masking.
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
-				border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
+				--photo-block-caption-overlay-border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
 			}
 		`;
 	}
@@ -1535,8 +1505,8 @@ const PhotoCaptionBlock = ( props ) => {
 	if ( 'overlay' === captionPosition ) {
 		styles += `
 			#${ uniqueId }.dlx-photo-block__caption-overlay {
-				border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
-				${ buildBorderCSS( overlayBorder, deviceType ) }
+				--photo-block-caption-overlay-border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
+				${ buildBorderCSS( overlayBorder, deviceType, '--photo-block-caption' ) }
 				overflow: hidden;
 			}
 		`;
@@ -1547,6 +1517,7 @@ const PhotoCaptionBlock = ( props ) => {
 	 */
 	const overlayStyles = classnames(
 		'dlx-photo-block__caption-overlay',
+		`overlay-type-${ overlayBackgroundType }`,
 		{
 			'is-overlay': 'overlay' === captionPosition,
 			'overlay-vertical-bottom': 'bottom' === overlayVerticalPosition,

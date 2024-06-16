@@ -95,7 +95,7 @@ const PhotoBlock = ( props ) => {
 		marginSize,
 		borderWidth,
 		borderRadiusSize,
-		typographyCaption,
+		photoDropShadow,
 		dataScreen, /* can be `data`, `data-edit`. */
 	} = props.attributes;
 
@@ -141,6 +141,9 @@ const PhotoBlock = ( props ) => {
 			`align${ align }`,
 			`dlx-screen-${ currentScreen }`,
 			`dlx-caption-position-${ captionPosition }`,
+			{
+				'dlx-has-drop-shadow': photoDropShadow.enabled,
+			}
 		),
 	} );
 

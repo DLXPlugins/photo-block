@@ -1097,7 +1097,7 @@ figcaption.dlx-photo-block__caption {
  * Smart Styles.
  */
 figcaption.dlx-photo-block__caption.has-smart-styles {
-  font-size: var(--dlx-photo-block__caption-font-size);
+  font-size: var(--photo-block__caption-font-size);
   /* Strip Margin and padding from first and last elements */
   /* if first and only paragraph child */
   /* Set color for common elements */
@@ -1136,7 +1136,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles cite,
 figcaption.dlx-photo-block__caption.has-smart-styles ul,
 figcaption.dlx-photo-block__caption.has-smart-styles li,
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-verse {
-  color: var(--dlx-photo-block__caption-text-color);
+  color: var(--photo-block__caption-text-color);
 }
 figcaption.dlx-photo-block__caption.has-smart-styles p a,
 figcaption.dlx-photo-block__caption.has-smart-styles h1 a,
@@ -1150,7 +1150,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles cite a,
 figcaption.dlx-photo-block__caption.has-smart-styles ul a,
 figcaption.dlx-photo-block__caption.has-smart-styles li a,
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-verse a {
-  color: var(--dlx-photo-block__caption-accent-color);
+  color: var(--photo-block-caption-link-color);
 }
 figcaption.dlx-photo-block__caption.has-smart-styles p a:hover,
 figcaption.dlx-photo-block__caption.has-smart-styles h1 a:hover,
@@ -1164,25 +1164,25 @@ figcaption.dlx-photo-block__caption.has-smart-styles cite a:hover,
 figcaption.dlx-photo-block__caption.has-smart-styles ul a:hover,
 figcaption.dlx-photo-block__caption.has-smart-styles li a:hover,
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-verse a:hover {
-  color: var(--dlx-photo-block__caption-accent-color);
+  color: var(--photo-block-caption-link-color-hover);
 }
 figcaption.dlx-photo-block__caption.has-smart-styles p,
 figcaption.dlx-photo-block__caption.has-smart-styles li,
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-verse {
-  font-family: var(--dlx-photo-block__caption-font-family);
+  font-family: var(--photo-block-caption-font-family);
   font-size: 1.25em;
   line-height: 1.35;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles blockquote {
-  font-size: var(--dlx-photo-block__caption-font-size);
+  font-size: var(--photo-block-caption-font-size);
 }
 figcaption.dlx-photo-block__caption.has-smart-styles blockquote p {
-  font-family: var(--dlx-photo-block__caption-font-family);
+  font-family: var(--photo-block-caption-font-family);
   font-size: 1.3em;
   line-height: 1.35;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles blockquote cite {
-  font-family: var(--dlx-photo-block__caption-font-family);
+  font-family: var(--photo-block-caption-font-family);
   font-size: 1.5em;
   line-height: 1.4;
 }
@@ -1190,32 +1190,32 @@ figcaption.dlx-photo-block__caption.has-smart-styles li {
   margin-left: 1.5em;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles h1 {
-  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-family: var(--photo-block-caption-headings-font-family);
   font-size: 2.5em;
   line-height: 1.2;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles h2 {
-  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-family: var(--photo-block-caption-headings-font-family);
   font-size: 2em;
   line-height: 1.25;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles h3 {
-  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-family: var(--photo-block-caption-headings-font-family);
   font-size: 1.75em;
   line-height: 1.3;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles h4 {
-  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-family: var(--photo-block-caption-headings-font-family);
   font-size: 1.5em;
   line-height: 1.35;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles h5 {
-  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-family: var(--photo-block-caption-headings-font-family);
   font-size: 1.25em;
   line-height: 1.4;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles h6 {
-  font-family: var(--dlx-photo-block__caption-headings-font-family);
+  font-family: var(--photo-block-caption-headings-font-family);
   font-size: 1.1em;
   line-height: 1.45;
 }
@@ -1234,21 +1234,21 @@ figcaption.dlx-photo-block__caption.has-smart-styles h6 {
   margin-bottom: 0.8em;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button {
-  font-size: var(--dlx-photo-block__caption-font-size);
+  font-size: var(--photo-block-caption-font-size);
 }
 figcaption.dlx-photo-block__caption.has-smart-styles button,
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button .wp-element-button {
-  font-family: var(--dlx-photo-block__caption-font-family);
+  font-family: var(--photo-block-caption-font-family);
   font-size: 1.25em;
   line-height: 1.35;
-  background: var(--dlx-photo-block__caption-accent-color);
-  color: var(--dlx-photo-block__caption-secondary-color);
+  background: var(--photo-block-caption-link-color);
+  color: var(--photo-block-caption-link-color-hover);
   transition: all 0.3s ease-in-out;
 }
 figcaption.dlx-photo-block__caption.has-smart-styles button:hover,
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button .wp-element-button:hover {
-  background: var(--dlx-photo-block__caption-accent-color);
-  color: var(--dlx-photo-block__caption-secondary-color);
+  background: var(--photo-block-caption-link-color);
+  color: var(--photo-block-caption-link-color-hover);
 }
 figcaption.dlx-photo-block__caption.has-smart-styles button,
 figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button {
@@ -1310,7 +1310,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
  * Caption Overlay Styles.
  */
 .dlx-photo-block__image-wrapper,
-.dlx-photo-block__caption-wrapper {
+.dlx-photo-block-caption-wrapper {
   position: relative;
 }
 
@@ -1347,6 +1347,11 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
 
 .dlx-photo-block__figure {
   margin: var(--photo-block-figure-margin, 0);
+}
+
+.dlx-photo-block.dlx-has-drop-shadow img {
+  box-sizing: border-box;
+  box-shadow: var(--photo-block-image-drop-shadow-horizontal, 0) var(--photo-block-image-drop-shadow-vertical, 0) var(--photo-block-image-drop-shadow-blur, 0) var(--photo-block-image-drop-shadow-spread, 0) var(--photo-block-image-drop-shadow-color, #000000);
 }
 
 .dlx-photo-block__caption--has-overlay {
@@ -1419,6 +1424,107 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
 }
 .dlx-photo-block__caption-overlay.caption-horizontal-right figcaption {
   align-items: flex-end;
+}
+
+.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption {
+  background: var(--photo-block-caption-background-color);
+  width: var(--photo-block-caption-width, unset);
+  height: var(--photo-block-caption-height, unset);
+  min-width: var(--photo-block-caption-min-width, unset);
+  min-height: var(--photo-block-caption-min-height, unset);
+  max-width: var(--photo-block-caption-max-width, unset);
+  max-height: var(--photo-block-caption-max-height, unset);
+  padding: var(--photo-block-caption-padding, 0);
+  margin: var(--photo-block-caption-margin, 0);
+  border-radius: var(--photo-block-caption-border-radius, 0);
+  /* Set color for Text elements */
+  color: var(--photo-block-caption-text-color, inherit);
+  font-family: var(--photo-block-caption-font-family, inherit);
+  font-size: var(--photo-block-caption-font-size, inherit);
+  font-weight: var(--photo-block-caption-font-weight, inherit);
+  line-height: var(--photo-block-caption-line-height, inherit);
+  text-transform: var(--photo-block-caption-text-transform, inherit);
+  letter-spacing: var(--photo-block-caption-letter-spacing, inherit);
+  text-align: var(--photo-block-caption-text-align, center);
+}
+.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption a {
+  color: var(--photo-block-caption-link-color, inherit);
+}
+.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption a:hover {
+  color: var(--photo-block-caption-link-color-hover, inherit);
+}
+
+.dlx-photo-block__caption-overlay {
+  box-sizing: border-box;
+  border-top: var(--photo-block-caption-border-top, 0);
+  border-right: var(--photo-block-caption-border-right, 0);
+  border-bottom: var(--photo-block-caption-border-bottom, 0);
+  border-left: var(--photo-block-caption-border-left, 0);
+  overflow: hidden;
+}
+
+.dlx-photo-block__caption-overlay:before {
+  transition: background 0.35s ease-in-out;
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: var(--photo-block-caption-overlay-background-color);
+  border-radius: var(--photo-block-caption-overlay-border-radius, 0);
+}
+
+.dlx-photo-block__caption-overlay:hover:before {
+  background: var(--photo-block-caption-overlay-background-color-hover);
+}
+
+.dlx-photo-block__caption-overlay.overlay-type-gradient:before {
+  transition: opacity 0.35s ease-in-out;
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-image: var(--photo-block-caption-overlay-background-gradient);
+  opacity: var(--photo-block-caption-overlay-background-gradient-opacity);
+}
+
+.dlx-photo-block__caption-overlay.overlay-type-gradient:hover:before {
+  opacity: var(--photo-block-caption-overlay-background-gradient-opacity-hover);
+}
+
+.dlx-photo-block__caption-overlay.overlay-type-image:before {
+  transition: opacity 0.35s ease-in-out;
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: var(--photo-block-caption-overlay-background-color);
+  background-image: var(--photo-block-caption-overlay-image, unset);
+  background-position: var(--photo-block-caption-overlay-background-position, center);
+  background-repeat: var(--photo-block-caption-overlay-background-repeat, no-repeat);
+  background-size: var(--photo-block-caption-overlay-background-size, cover);
+  opacity: var(--photo-block-caption-overlay-opacity, 1);
+}
+
+.dlx-photo-block__caption-overlay.overlay-type-image:hover:before {
+  opacity: var(--photo-block-caption-overlay-background-image-opacity-hover);
 }
 
 /* Set a min-width for the photo container */

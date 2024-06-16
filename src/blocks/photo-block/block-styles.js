@@ -84,22 +84,16 @@ const getStyles = (attributes, deviceType, uniqueId ) => {
 	styles += `#${ uniqueId } .dlx-photo-block__figure { --photo-block-figure-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
 	if ( photoDropShadow.enabled ) {
 		styles += `
-			#${ uniqueId } img {
-				box-sizing: border-box;
-				box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${
-	photoDropShadow.horizontal
-}px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${
-	photoDropShadow.spread
-}px ${ getColor( photoDropShadow.color, photoDropShadow.opacity ) };
-				-webkit-box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${
-	photoDropShadow.horizontal
-}px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${
-	photoDropShadow.spread
-}px ${ getColor( photoDropShadow.color, photoDropShadow.opacity ) };
+			.dlx-has-drop-shadow #${ uniqueId } img {
+				--photo-block-image-drop-shadow-horizontal: ${ photoDropShadow.horizontal }px;
+				--photo-block-image-drop-shadow-vertical: ${ photoDropShadow.vertical }px;
+				--photo-block-image-drop-shadow-blur: ${ photoDropShadow.blur }px;
+				--photo-block-image-drop-shadow-spread: ${ photoDropShadow.spread }px;
+				--photo-block-image-drop-shadow-color: ${ getColor( photoDropShadow.color, photoDropShadow.opacity ) };
 			}
 		`;
 	}
 	return styles;
-}
+};
 
 export default getStyles;
