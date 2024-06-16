@@ -6,7 +6,6 @@
  * @return {string} Aspect ratio in human readable format.
  */
 const CalculateAspectRatioFromPixels = ( width, height ) => {
-	console.log( width, height );
 	// Find the greatest common factor
 	function findGCF( a, b ) {
 		return b === 0 ? a : findGCF( b, a % b );

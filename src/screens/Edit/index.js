@@ -53,7 +53,7 @@ import CustomPresets from '../../components/CustomPresets';
 import getStyles from '../../blocks/photo-block/block-styles';
 
 const EditScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps, clientId } = props;
+	const { attributes, setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
 	const {
 		uniqueId,
 		imageSize,
@@ -72,7 +72,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const {
 		setScreen,
 		setImageData,
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
@@ -82,10 +82,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		originalImageData,
 	} = useSelect( ( select ) => {
 		return {
-			imageData: select( blockStore ).getImageData(),
-			captionPosition: select( blockStore ).getCaptionPosition(),
-			photoMode: select( blockStore ).getPhotoMode(),
-			originalImageData: select( blockStore ).getOriginalImageData(),
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
+			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
+			originalImageData: select( blockStore( blockUniqueId ) ).getOriginalImageData(),
 
 		};
 	} );
@@ -353,6 +353,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			<SidebarImageInspectorControl
 				attributes={ attributes }
 				setAttributes={ setAttributes }
+				blockUniqueId={ blockUniqueId }
 			/>
 		</>
 	);
@@ -444,6 +445,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 					anchorRef={ mediaLinkRef }
+					blockUniqueId={ blockUniqueId }
 				/>
 			) }
 			{ a11yPopover && (

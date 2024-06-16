@@ -47,13 +47,13 @@ import WPNotice from '../../components/Notice';
  * @return {Function} Component.
  */
 const UploadTypes = ( props ) => {
-	const { attributes, setAttributes, context } = props;
+	const { attributes, setAttributes, context, blockUniqueId } = props;
 
 	const {
 		setImageData,
 		setPhotoMode,
 		setScreen,
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
@@ -62,13 +62,11 @@ const UploadTypes = ( props ) => {
 		photoMode,
 	} = useSelect( ( select ) => {
 		return {
-			imageData: select( blockStore ).getImageData(),
-			filepondInstance: select( blockStore ).getFilepondInstance(),
-			photoMode: select( blockStore ).getPhotoMode(),
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
+			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 		};
 	} );
-
-	console.log( photoMode );
 
 	const [ isUrlSelected, setIsUrlSelected ] = useState( false );
 	const [ url, setUrl ] = useState( '' );

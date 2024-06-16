@@ -23,7 +23,7 @@ import { __ } from '@wordpress/i18n';
 
 import { useDispatch, useSelect } from '@wordpress/data';
 
-import store from '../../store';
+import blockStore from '../../store';
 
 // Register filepond plugins.
 registerPlugin(
@@ -35,6 +35,8 @@ registerPlugin(
 import { redoSvg, processSvg } from '../../blocks/photo-block/icons/filepond';
 const UploadTarget = ( props ) => {
 
+	const { blockUniqueId } = props;
+
 	const {
 		setImageData,
 		setFilepondInstance,
@@ -43,7 +45,7 @@ const UploadTarget = ( props ) => {
 		setPhotoMode,
 		setIsUploadError,
 		setScreen,
-	} = useDispatch( store );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const {
 		currentScreen,
@@ -52,10 +54,10 @@ const UploadTarget = ( props ) => {
 		isUploadError,
 	} = useSelect( ( select ) => {
 		return {
-			currentScreen: select( store ).getCurrentScreen(),
-			isUploading: select( store ).isUploading(),
-			isProcessingUpload: select( store ).isProcessingUpload(),
-			isUploadError: select( store ).isUploadError(),
+			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
+			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
 		};
 	} );
 

@@ -116,6 +116,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _screens_DataEdit__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../screens/DataEdit */ "./src/screens/DataEdit/index.js");
 /* harmony import */ var _screens_Loading__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../screens/Loading */ "./src/screens/Loading/index.js");
 /* harmony import */ var _screens_FeaturedImageEdit__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../screens/FeaturedImageEdit */ "./src/screens/FeaturedImageEdit/index.js");
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 
 
@@ -146,6 +147,30 @@ var PhotoBlock = function PhotoBlock(props) {
   var innerBlockCount = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
     return select('core/block-editor').getBlock(clientId).innerBlocks;
   }).length;
+  var newUniqueId = 'photo-block-' + clientId.substr(2, 9).replace('-', '');
+
+  /**
+   * Get a unique ID for the block for inline styling if necessary.
+   */
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    if (null === uniqueId || uniqueIds.includes(uniqueId)) {
+      var permUniqueId = newUniqueId;
+      setAttributes({
+        uniqueId: permUniqueId
+      });
+      setBlockUniqueId(permUniqueId);
+      uniqueIds.push(permUniqueId);
+    } else {
+      setBlockUniqueId(uniqueId);
+      uniqueIds.push(uniqueId);
+    }
+
+    // Set initial state of the block.
+    setImageData(attributes.imageData);
+    setHasCaption(attributes.hasCaption);
+    setCaptionPosition(attributes.captionPosition);
+    setPhotoMode(attributes.photoMode);
+  }, []);
   var _props$attributes = props.attributes,
     uniqueId = _props$attributes.uniqueId,
     photo = _props$attributes.photo,
@@ -162,29 +187,26 @@ var PhotoBlock = function PhotoBlock(props) {
     dataScreen = _props$attributes.dataScreen;
 
   // Read in context values.
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_8__["default"]),
-    setImageFile = _useDispatch.setImageFile,
-    setFilepondInstance = _useDispatch.setFilepondInstance,
-    setIsUploading = _useDispatch.setIsUploading,
-    setIsProcessingUpload = _useDispatch.setIsProcessingUpload,
-    setPhotoMode = _useDispatch.setPhotoMode,
-    setIsUploadError = _useDispatch.setIsUploadError,
-    setScreen = _useDispatch.setScreen,
-    setBlockUniqueId = _useDispatch.setBlockUniqueId;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)),
+    setBlockUniqueId = _useDispatch.setBlockUniqueId,
+    setCaptionPosition = _useDispatch.setCaptionPosition,
+    setHasCaption = _useDispatch.setHasCaption,
+    setImageData = _useDispatch.setImageData,
+    setPhotoMode = _useDispatch.setPhotoMode;
 
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
       return {
-        currentScreen: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getCurrentScreen(),
-        isUploading: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).isUploading(),
-        isProcessingUpload: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).isProcessingUpload(),
-        isUploadError: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).isUploadError(),
-        filepondInstance: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getFilepondInstance(),
-        hasCaption: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).hasCaption(),
-        captionPosition: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getCaptionPosition(),
-        inQueryLoop: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).inQueryLoop(),
-        photoMode: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getPhotoMode(),
-        blockUniqueId: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getBlockUniqueId()
+        currentScreen: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getCurrentScreen(),
+        isUploading: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).isUploading(),
+        isProcessingUpload: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).isProcessingUpload(),
+        isUploadError: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).isUploadError(),
+        filepondInstance: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getFilepondInstance(),
+        hasCaption: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).hasCaption(),
+        captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getCaptionPosition(),
+        inQueryLoop: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).inQueryLoop(),
+        photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getPhotoMode(),
+        blockUniqueId: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(uniqueId ? uniqueId : newUniqueId)).getBlockUniqueId()
       };
     }),
     currentScreen = _useSelect.currentScreen,
@@ -219,6 +241,13 @@ var PhotoBlock = function PhotoBlock(props) {
     }
   }, [hasCaption]);
 
+  // Set the screen when it changes.
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    setAttributes({
+      screen: currentScreen
+    });
+  }, [currentScreen]);
+
   // Store the filepond upload ref.
   var imageRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
 
@@ -234,26 +263,11 @@ var PhotoBlock = function PhotoBlock(props) {
     renderAppender: function renderAppender() {
       return isSelected ? /*#__PURE__*/React.createElement(_components_CaptionAppender__WEBPACK_IMPORTED_MODULE_10__["default"], {
         numBlocks: innerBlockCount,
-        clientId: clientId
+        clientId: clientId,
+        blockUniqueId: blockUniqueId
       }) : null;
     }
   });
-
-  /**
-   * Get a unique ID for the block for inline styling if necessary.
-   */
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    if (null === uniqueId || uniqueIds.includes(uniqueId)) {
-      var newUniqueId = 'photo-block-' + clientId.substr(2, 9).replace('-', '');
-      setAttributes({
-        uniqueId: newUniqueId
-      });
-      setBlockUniqueId(newUniqueId);
-      uniqueIds.push(newUniqueId);
-    } else {
-      uniqueIds.push(uniqueId);
-    }
-  }, []);
 
   // Set data mode when setting or exiting data mode.
   // useEffect( () => {
@@ -268,14 +282,21 @@ var PhotoBlock = function PhotoBlock(props) {
    * @return {Element} The screen to display.
    */
   var initCurrentScreen = function initCurrentScreen() {
+    // Don't load interface until uniqueId's are set. We need this to get block state later.
+    if (null === uniqueId || null === blockUniqueId) {
+      return null;
+    }
     // Otherwise get the screen based on the current screen.
     switch (currentScreen) {
       case 'loading':
-        return /*#__PURE__*/React.createElement(_screens_Loading__WEBPACK_IMPORTED_MODULE_15__["default"], props);
+        return /*#__PURE__*/React.createElement(_screens_Loading__WEBPACK_IMPORTED_MODULE_15__["default"], _extends({}, props, {
+          blockUniqueId: blockUniqueId
+        }));
       case 'initial':
         return /*#__PURE__*/React.createElement(_screens_Initial__WEBPACK_IMPORTED_MODULE_9__["default"], {
           attributes: attributes,
-          setAttributes: setAttributes
+          setAttributes: setAttributes,
+          blockUniqueId: blockUniqueId
         });
       case 'edit':
         return /*#__PURE__*/React.createElement(_screens_Edit__WEBPACK_IMPORTED_MODULE_11__["default"], {
@@ -283,32 +304,37 @@ var PhotoBlock = function PhotoBlock(props) {
           setAttributes: setAttributes,
           ref: imageRef,
           innerBlockProps: captionInnerBlockProps,
-          clientId: clientId
+          clientId: clientId,
+          blockUniqueId: blockUniqueId
         });
       case 'crop':
         return /*#__PURE__*/React.createElement(_screens_Crop__WEBPACK_IMPORTED_MODULE_12__["default"], {
           attributes: attributes,
-          setAttributes: setAttributes
+          setAttributes: setAttributes,
+          blockUniqueId: blockUniqueId
         });
       case 'featuredImage':
         return /*#__PURE__*/React.createElement(_screens_FeaturedImageEdit__WEBPACK_IMPORTED_MODULE_16__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
           context: context,
-          innerBlockProps: captionInnerBlockProps
+          innerBlockProps: captionInnerBlockProps,
+          blockUniqueId: blockUniqueId
         });
       case 'data':
         return /*#__PURE__*/React.createElement(_screens_Data__WEBPACK_IMPORTED_MODULE_13__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
-          context: context
+          context: context,
+          blockUniqueId: blockUniqueId
         });
       case 'data-edit':
         return /*#__PURE__*/React.createElement(_screens_DataEdit__WEBPACK_IMPORTED_MODULE_14__["default"], {
           attributes: attributes,
           setAttributes: setAttributes,
           context: context,
-          innerBlockProps: captionInnerBlockProps
+          innerBlockProps: captionInnerBlockProps,
+          blockUniqueId: blockUniqueId
         });
       case 'effects':
         return null;
@@ -553,32 +579,36 @@ var fontFamiliesSelect = fontFamilies.map(function (font) {
 });
 var uniqueIds = [];
 var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_11__["default"]),
+  var attributes = props.attributes,
+    setAttributes = props.setAttributes,
+    clientId = props.clientId,
+    context = props.context,
+    isSelected = props.isSelected;
+  var blockUniqueId = context['photo-block/uniqueId'];
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)),
     setHasCaption = _useDispatch.setHasCaption,
     setCaptionPosition = _useDispatch.setCaptionPosition;
 
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useSelect)(function (select) {
       return {
-        imageData: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).getImageData(),
-        currentScreen: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).getCurrentScreen(),
-        isUploading: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).isUploading(),
-        isProcessingUpload: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).isProcessingUpload(),
-        isUploadError: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).isUploadError(),
-        filepondInstance: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).getFilepondInstance(),
-        hasCaption: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).hasCaption(),
-        captionPosition: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).getCaptionPosition(),
-        inQueryLoop: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).inQueryLoop(),
-        photoMode: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).getPhotoMode(),
-        blockUniqueId: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).getBlockUniqueId()
+        imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).getImageData(),
+        currentScreen: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).getCurrentScreen(),
+        isUploading: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).isUploading(),
+        isProcessingUpload: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).isProcessingUpload(),
+        isUploadError: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).isUploadError(),
+        filepondInstance: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).getFilepondInstance(),
+        hasCaption: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).hasCaption(),
+        captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).getCaptionPosition(),
+        inQueryLoop: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).inQueryLoop(),
+        photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).getPhotoMode()
       };
     }),
     imageData = _useSelect.imageData,
     hasCaption = _useSelect.hasCaption,
     captionPosition = _useSelect.captionPosition,
     inQueryLoop = _useSelect.inQueryLoop,
-    photoMode = _useSelect.photoMode,
-    blockUniqueId = _useSelect.blockUniqueId;
+    photoMode = _useSelect.photoMode;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
     caption = _useState2[0],
@@ -644,11 +674,6 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.useBlockProps)({
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-caption-block")
   });
-  var attributes = props.attributes,
-    setAttributes = props.setAttributes,
-    clientId = props.clientId,
-    context = props.context,
-    isSelected = props.isSelected;
 
   // Get query loop vars.
   var postId = context.postId;
@@ -1469,7 +1494,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     attributes: attributes,
     setAttributes: setAttributes,
     context: context,
-    prefix: "dataCaption"
+    prefix: "dataCaption",
+    blockUniqueId: blockUniqueId
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ButtonGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
     variant: "primary",
     onClick: function onClick() {
@@ -1719,6 +1745,9 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     className: overlayStyles,
     id: uniqueId
   }, getCaption())), 'overlay' !== captionPosition && /*#__PURE__*/React.createElement(React.Fragment, null, getCaption())));
+  if (null === blockUniqueId) {
+    return null;
+  }
 
   // Return empty if caption isn't visible.
   if (!isCaptionVisible) {
@@ -3716,10 +3745,11 @@ var cssGramOptions = [{
  */
 var CSSGramButtonGroup = function CSSGramButtonGroup(props) {
   var attributes = props.attributes,
-    setAttributes = props.setAttributes;
+    setAttributes = props.setAttributes,
+    blockUniqueId = props.blockUniqueId;
   var cssGramFilter = attributes.cssGramFilter;
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
-      var _select = select(_store__WEBPACK_IMPORTED_MODULE_5__["default"]),
+      var _select = select((0,_store__WEBPACK_IMPORTED_MODULE_5__["default"])(blockUniqueId)),
         getImageData = _select.getImageData;
       return {
         imageData: getImageData()
@@ -3897,10 +3927,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var CaptionAppender = function CaptionAppender(_ref) {
   var numBlocks = _ref.numBlocks,
-    clientId = _ref.clientId;
+    clientId = _ref.clientId,
+    blockUniqueId = _ref.blockUniqueId;
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store),
     insertBlock = _useDispatch.insertBlock;
-  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_7__["default"]),
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_7__["default"])(blockUniqueId)),
     setHasCaption = _useDispatch2.setHasCaption;
 
   /**
@@ -3912,7 +3943,6 @@ var CaptionAppender = function CaptionAppender(_ref) {
   };
 
   // Exit if there are innerblocks.
-  console.log(numBlocks);
   if (numBlocks !== 0) {
     return null;
   }
@@ -5600,7 +5630,8 @@ var DataSelect = function DataSelect(props) {
     setAttributes = props.setAttributes,
     context = props.context,
     title = props.title,
-    prefix = props.prefix;
+    prefix = props.prefix,
+    blockUniqueId = props.blockUniqueId;
   var _useState3 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(attributes["".concat(prefix, "PostTitle")]),
     _useState4 = _slicedToArray(_useState3, 2),
     postTypeSuggestion = _useState4[0],
@@ -5612,7 +5643,7 @@ var DataSelect = function DataSelect(props) {
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
       return {
-        inQueryLoop: select(_store__WEBPACK_IMPORTED_MODULE_7__["default"]).inQueryLoop()
+        inQueryLoop: select((0,_store__WEBPACK_IMPORTED_MODULE_7__["default"])(blockUniqueId)).inQueryLoop()
       };
     }),
     inQueryLoop = _useSelect.inQueryLoop;
@@ -6024,7 +6055,6 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
    * @param {number} value Value to change to.
    */
   var changeAllValues = function changeAllValues(value) {
-    console.log(value);
     if (startsWithNumber(value)) {
       var newValuesSplit = splitValues(value);
       var numericValue = parseFloat(getNumericValue(newValuesSplit));
@@ -7139,12 +7169,13 @@ __webpack_require__.r(__webpack_exports__);
 var MediaLink = function MediaLink(props) {
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
-    anchorRef = props.anchorRef;
+    anchorRef = props.anchorRef,
+    blockUniqueId = props.blockUniqueId;
 
   // Get context.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
       return {
-        photoMode: select(_store__WEBPACK_IMPORTED_MODULE_7__["default"]).getPhotoMode()
+        photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_7__["default"])(blockUniqueId)).getPhotoMode()
       };
     }),
     photoMode = _useSelect.photoMode;
@@ -7850,7 +7881,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var heightUnits = ['px', 'em', 'rem', '%', 'vh'];
 var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) {
   var attributes = props.attributes,
-    setAttributes = props.setAttributes;
+    setAttributes = props.setAttributes,
+    blockUniqueId = props.blockUniqueId;
   var uniqueId = attributes.uniqueId,
     photoOpacity = attributes.photoOpacity,
     photoBlur = attributes.photoBlur,
@@ -7938,7 +7970,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     scrollAfterOpen: false
   }, /*#__PURE__*/React.createElement(_components_CSSGramButtonGroup__WEBPACK_IMPORTED_MODULE_6__["default"], {
     attributes: attributes,
-    setAttributes: setAttributes
+    setAttributes: setAttributes,
+    blockUniqueId: blockUniqueId
   })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_11__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Padding, Margin, and Border', 'photo-block'),
     initialOpen: false,
@@ -9882,15 +9915,16 @@ __webpack_require__.r(__webpack_exports__);
 var UploadStatus = function UploadStatus(props) {
   // Read in context values.
 
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_5__["default"]),
+  var blockUniqueId = props.blockUniqueId;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_5__["default"])(blockUniqueId)),
     setIsUploading = _useDispatch.setIsUploading,
     setIsUploadError = _useDispatch.setIsUploadError,
     setIsProcessingUpload = _useDispatch.setIsProcessingUpload;
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(function (select) {
       return {
-        imageData: select(_store__WEBPACK_IMPORTED_MODULE_5__["default"]).getImageData(),
-        isUploadError: select(_store__WEBPACK_IMPORTED_MODULE_5__["default"]).isUploadError(),
-        filepondInstance: select(_store__WEBPACK_IMPORTED_MODULE_5__["default"]).getFilepondInstance()
+        imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_5__["default"])(blockUniqueId)).getImageData(),
+        isUploadError: select((0,_store__WEBPACK_IMPORTED_MODULE_5__["default"])(blockUniqueId)).isUploadError(),
+        filepondInstance: select((0,_store__WEBPACK_IMPORTED_MODULE_5__["default"])(blockUniqueId)).getFilepondInstance()
       };
     }),
     imageData = _useSelect.imageData,
@@ -9975,7 +10009,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 (0,react_filepond__WEBPACK_IMPORTED_MODULE_2__.registerPlugin)((filepond_plugin_image_preview__WEBPACK_IMPORTED_MODULE_3___default()), (filepond_plugin_image_exif_orientation__WEBPACK_IMPORTED_MODULE_4___default()), (filepond_plugin_file_validate_type__WEBPACK_IMPORTED_MODULE_5___default()));
 
 var UploadTarget = function UploadTarget(props) {
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_10__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_11__["default"]),
+  var blockUniqueId = props.blockUniqueId;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_10__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)),
     setImageData = _useDispatch.setImageData,
     setFilepondInstance = _useDispatch.setFilepondInstance,
     setIsUploading = _useDispatch.setIsUploading,
@@ -9985,10 +10020,10 @@ var UploadTarget = function UploadTarget(props) {
     setScreen = _useDispatch.setScreen;
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_10__.useSelect)(function (select) {
       return {
-        currentScreen: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).getCurrentScreen(),
-        isUploading: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).isUploading(),
-        isProcessingUpload: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).isProcessingUpload(),
-        isUploadError: select(_store__WEBPACK_IMPORTED_MODULE_11__["default"]).isUploadError()
+        currentScreen: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).getCurrentScreen(),
+        isUploading: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).isUploading(),
+        isProcessingUpload: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).isProcessingUpload(),
+        isUploadError: select((0,_store__WEBPACK_IMPORTED_MODULE_11__["default"])(blockUniqueId)).isUploadError()
       };
     }),
     currentScreen = _useSelect.currentScreen,
@@ -10160,8 +10195,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var UploadTypes = function UploadTypes(props) {
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
-    context = props.context;
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_8__["default"]),
+    context = props.context,
+    blockUniqueId = props.blockUniqueId;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)),
     setImageData = _useDispatch.setImageData,
     setPhotoMode = _useDispatch.setPhotoMode,
     setScreen = _useDispatch.setScreen;
@@ -10169,15 +10205,14 @@ var UploadTypes = function UploadTypes(props) {
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useSelect)(function (select) {
       return {
-        imageData: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getImageData(),
-        filepondInstance: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getFilepondInstance(),
-        photoMode: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getPhotoMode()
+        imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)).getImageData(),
+        filepondInstance: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)).getFilepondInstance(),
+        photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)).getPhotoMode()
       };
     }),
     imageData = _useSelect.imageData,
     filepondInstance = _useSelect.filepondInstance,
     photoMode = _useSelect.photoMode;
-  console.log(photoMode);
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     isUrlSelected = _useState2[0],
@@ -10566,7 +10601,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/database.js");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
@@ -10578,30 +10612,47 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__.registerPlugin)('dlx-photo-block-data-image-type', {
-  render: function render() {
-    var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)(_store_index__WEBPACK_IMPORTED_MODULE_4__["default"]),
-      setPhotoMode = _useDispatch.setPhotoMode,
-      setScreen = _useDispatch.setScreen;
-    return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Fill, {
-      name: "dlx-photo-block.upload-types"
-    }, function (_ref) {
-      var setAttributes = _ref.setAttributes;
-      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
-        variant: "secondary",
-        icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_5__["default"], null),
-        onClick: function onClick() {
-          setAttributes({
-            photoMode: 'data',
-            screen: 'data'
-          });
-          setPhotoMode('data');
-          setScreen('data');
-        }
-      }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Data', 'photo-block')));
-    });
-  }
-});
+
+// registerPlugin(
+// 	'dlx-photo-block-data-image-type',
+// 	{
+// 		render: () => {
+// 			const {
+// 				setPhotoMode,
+// 				setScreen,
+// 			// eslint-disable-next-line react-hooks/rules-of-hooks
+// 			} = useDispatch( blockStore( uniqueId ) );
+
+// 			return (
+// 				<Fill
+// 					name="dlx-photo-block.upload-types"
+// 				>
+// 					{ ( { setAttributes } ) => {
+// 						return (
+// 							<>
+// 								<Button
+// 									variant="secondary"
+// 									icon={ <Database /> }
+// 									onClick={ () => {
+// 										setAttributes( {
+// 											photoMode: 'data',
+// 											screen: 'data',
+// 										} );
+// 										setPhotoMode( 'data' );
+// 										setScreen( 'data' );
+// 									} }
+// 								>
+// 									{ __( 'Data', 'photo-block' ) }
+// 								</Button>
+// 							</>
+// 						);
+// 					} }
+
+// 				</Fill>
+// 			);
+// 		},
+// 	}
+// );
 
 /***/ }),
 
@@ -10673,11 +10724,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var CropScreen = function CropScreen(props) {
   var _fullsizePhoto$url;
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_9__["default"]),
+  var attributes = props.attributes,
+    setAttributes = props.setAttributes,
+    blockUniqueId = props.blockUniqueId;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)),
     setScreen = _useDispatch.setScreen,
     setImageData = _useDispatch.setImageData;
-  var attributes = props.attributes,
-    setAttributes = props.setAttributes;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     shouldShowLoading = _useState2[0],
@@ -11189,9 +11241,7 @@ var CropScreen = function CropScreen(props) {
         } else {
           // todo: error handling.
         }
-      })["catch"](function (error) {
-        console.log(error);
-      }).then(function () {
+      })["catch"](function (error) {}).then(function () {
         setIsSaving(false);
       });
     }
@@ -11298,7 +11348,8 @@ for (var key in photoBlock.imageSizes) {
 }
 var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(function (props, ref) {
   var attributes = props.attributes,
-    setAttributes = props.setAttributes;
+    setAttributes = props.setAttributes,
+    blockUniqueId = props.blockUniqueId;
   var dataSource = attributes.dataSource,
     dataImageSource = attributes.dataImageSource,
     dataImageSourceCustomField = attributes.dataImageSourceCustomField,
@@ -11330,7 +11381,7 @@ var DataScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     setCurrentAuthorMetaSuggestion = _useState6[1];
 
   // Load in setters.
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_8__["default"]),
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)),
     setImageFile = _useDispatch.setImageFile,
     setPhotoMode = _useDispatch.setPhotoMode,
     setScreen = _useDispatch.setScreen;
@@ -11752,7 +11803,8 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
     innerBlockProps = props.innerBlockProps,
-    context = props.context;
+    context = props.context,
+    blockUniqueId = props.blockUniqueId;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
     _useState2 = _slicedToArray(_useState, 2),
     a11yButton = _useState2[0],
@@ -11812,15 +11864,15 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     cssGramFilter = attributes.cssGramFilter,
     lightboxEnabled = attributes.lightboxEnabled,
     lightboxShowCaption = attributes.lightboxShowCaption;
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_8__["default"]),
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)),
     setScreen = _useDispatch.setScreen,
     setImageData = _useDispatch.setImageData;
 
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
       return {
-        captionPosition: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).getCaptionPosition(),
-        inQueryLoop: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).inQueryLoop()
+        captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)).getCaptionPosition(),
+        inQueryLoop: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)).inQueryLoop()
       };
     }),
     captionPosition = _useSelect.captionPosition,
@@ -12040,7 +12092,8 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, settingsInspectorControls, /*#__PURE__*/React.createElement(_components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_12__["default"], {
     attributes: attributes,
-    setAttributes: setAttributes
+    setAttributes: setAttributes,
+    blockUniqueId: blockUniqueId
   }));
 
   // Set the advanced inspector controls.
@@ -12371,7 +12424,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
     innerBlockProps = props.innerBlockProps,
-    clientId = props.clientId;
+    clientId = props.clientId,
+    blockUniqueId = props.blockUniqueId;
   var uniqueId = attributes.uniqueId,
     imageSize = attributes.imageSize,
     cssGramFilter = attributes.cssGramFilter;
@@ -12411,17 +12465,17 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     _useState18 = _slicedToArray(_useState17, 2),
     isSavingTitle = _useState18[0],
     setIsSavingTitle = _useState18[1];
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_9__["default"]),
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)),
     setScreen = _useDispatch.setScreen,
     setImageData = _useDispatch.setImageData;
 
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
       return {
-        imageData: select(_store__WEBPACK_IMPORTED_MODULE_9__["default"]).getImageData(),
-        captionPosition: select(_store__WEBPACK_IMPORTED_MODULE_9__["default"]).getCaptionPosition(),
-        photoMode: select(_store__WEBPACK_IMPORTED_MODULE_9__["default"]).getPhotoMode(),
-        originalImageData: select(_store__WEBPACK_IMPORTED_MODULE_9__["default"]).getOriginalImageData()
+        imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getImageData(),
+        captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getCaptionPosition(),
+        photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getPhotoMode(),
+        originalImageData: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getOriginalImageData()
       };
     }),
     imageData = _useSelect.imageData,
@@ -12690,7 +12744,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }))));
   var interfaceTabs = /*#__PURE__*/React.createElement(React.Fragment, null, settingsInspectorControls, /*#__PURE__*/React.createElement(_components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_14__["default"], {
     attributes: attributes,
-    setAttributes: setAttributes
+    setAttributes: setAttributes,
+    blockUniqueId: blockUniqueId
   }));
 
   // Set the local inspector controls.
@@ -12745,7 +12800,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }))), mediaLinkPopover && /*#__PURE__*/React.createElement(_components_MediaLink__WEBPACK_IMPORTED_MODULE_11__["default"], {
     attributes: attributes,
     setAttributes: setAttributes,
-    anchorRef: mediaLinkRef
+    anchorRef: mediaLinkRef,
+    blockUniqueId: blockUniqueId
   }), a11yPopover && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Popover, {
     position: "bottom center",
     anchor: a11yButton
@@ -12904,7 +12960,8 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
     innerBlockProps = props.innerBlockProps,
-    context = props.context;
+    context = props.context,
+    blockUniqueId = props.blockUniqueId;
   var postId = context.postId;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -12936,15 +12993,15 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     cssGramFilter = attributes.cssGramFilter,
     lightboxEnabled = attributes.lightboxEnabled,
     lightboxShowCaption = attributes.lightboxShowCaption;
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_15__["default"]),
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_15__["default"])(blockUniqueId)),
     setImageData = _useDispatch.setImageData,
     setScreen = _useDispatch.setScreen;
 
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useSelect)(function (select) {
       return {
-        imageData: select(_store__WEBPACK_IMPORTED_MODULE_15__["default"]).getImageData(),
-        captionPosition: select(_store__WEBPACK_IMPORTED_MODULE_15__["default"]).getCaptionPosition()
+        imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_15__["default"])(blockUniqueId)).getImageData(),
+        captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_15__["default"])(blockUniqueId)).getCaptionPosition()
       };
     }),
     captionPosition = _useSelect.captionPosition;
@@ -13318,11 +13375,12 @@ __webpack_require__.r(__webpack_exports__);
  * @return {Function} Component.
  */
 var InitialScreen = function InitialScreen(props) {
+  var blockUniqueId = props.blockUniqueId;
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
       return {
-        isUploading: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).isUploading(),
-        isProcessingUpload: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).isProcessingUpload(),
-        isUploadError: select(_store__WEBPACK_IMPORTED_MODULE_8__["default"]).isUploadError()
+        isUploading: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)).isUploading(),
+        isProcessingUpload: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)).isProcessingUpload(),
+        isUploadError: select((0,_store__WEBPACK_IMPORTED_MODULE_8__["default"])(blockUniqueId)).isUploadError()
       };
     }),
     isUploading = _useSelect.isUploading,
@@ -13335,10 +13393,14 @@ var InitialScreen = function InitialScreen(props) {
     className: "dlx-photo-block__screen-initial"
   }, !isUploading && !isProcessingUpload && !isUploadError && /*#__PURE__*/React.createElement(_components_UploadTypes__WEBPACK_IMPORTED_MODULE_5__["default"], {
     attributes: props.attributes,
-    setAttributes: props.setAttributes
-  }), (isUploading || isProcessingUpload || isUploadError) && /*#__PURE__*/React.createElement(_components_UploadStatus__WEBPACK_IMPORTED_MODULE_7__["default"], null), /*#__PURE__*/React.createElement(_components_UploadTarget__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    setAttributes: props.setAttributes,
+    blockUniqueId: blockUniqueId
+  }), (isUploading || isProcessingUpload || isUploadError) && /*#__PURE__*/React.createElement(_components_UploadStatus__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    blockUniqueId: blockUniqueId
+  }), /*#__PURE__*/React.createElement(_components_UploadTarget__WEBPACK_IMPORTED_MODULE_6__["default"], {
     attributes: props.attributes,
-    setAttributes: props.setAttributes
+    setAttributes: props.setAttributes,
+    blockUniqueId: blockUniqueId
   })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InitialScreen);
@@ -13412,7 +13474,8 @@ var LoadingScreen = function LoadingScreen(props) {
     _useState2 = _slicedToArray(_useState, 2),
     isLoading = _useState2[0],
     setIsLoading = _useState2[1];
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)(_store__WEBPACK_IMPORTED_MODULE_4__["default"]),
+  var blockUniqueId = props.blockUniqueId;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)),
     setImageData = _useDispatch.setImageData,
     setFilepondInstance = _useDispatch.setFilepondInstance,
     setIsUploading = _useDispatch.setIsUploading,
@@ -13426,17 +13489,17 @@ var LoadingScreen = function LoadingScreen(props) {
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(function (select) {
       return {
-        currentScreen: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).getCurrentScreen(),
-        isUploading: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).isUploading(),
-        isProcessingUpload: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).isProcessingUpload(),
-        isUploadError: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).isUploadError(),
-        filepondInstance: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).getFilepondInstance(),
-        hasCaption: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).hasCaption(),
-        captionPosition: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).getCaptionPosition(),
-        inQueryLoop: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).inQueryLoop(),
-        photoMode: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).getPhotoMode(),
-        blockUniqueId: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).getBlockUniqueId(),
-        dataScreen: select(_store__WEBPACK_IMPORTED_MODULE_4__["default"]).getDataScreen()
+        currentScreen: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).getCurrentScreen(),
+        isUploading: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).isUploading(),
+        isProcessingUpload: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).isProcessingUpload(),
+        isUploadError: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).isUploadError(),
+        filepondInstance: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).getFilepondInstance(),
+        hasCaption: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).hasCaption(),
+        captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).getCaptionPosition(),
+        inQueryLoop: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).inQueryLoop(),
+        photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).getPhotoMode(),
+        blockUniqueId: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).getBlockUniqueId(),
+        dataScreen: select((0,_store__WEBPACK_IMPORTED_MODULE_4__["default"])(blockUniqueId)).getDataScreen()
       };
     }),
     currentScreen = _useSelect.currentScreen,
@@ -13448,7 +13511,6 @@ var LoadingScreen = function LoadingScreen(props) {
     captionPosition = _useSelect.captionPosition,
     inQueryLoop = _useSelect.inQueryLoop,
     photoMode = _useSelect.photoMode,
-    blockUniqueId = _useSelect.blockUniqueId,
     dataScreen = _useSelect.dataScreen;
   var context = props.context,
     attributes = props.attributes,
@@ -13502,8 +13564,6 @@ var LoadingScreen = function LoadingScreen(props) {
 
     // Set the photo mode.
     setPhotoMode(attributes.photoMode);
-    console.log('photoMode: ' + attributes.photoMode);
-
     // Load the appropriate screen. The main screen logic is in blocks/photo-block/edit.js.
     switch (attributes.photoMode) {
       case 'none':
@@ -13672,111 +13732,134 @@ var actions = {
     };
   }
 };
-var blockStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('dlxplugins/photo-block', {
-  reducer: function reducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
-    var action = arguments.length > 1 ? arguments[1] : undefined;
-    switch (action.type) {
-      case 'SET_ORIGINAL_IMAGE_DATA':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          originalImageData: action.originalImageData
-        });
-      case 'SET_IMAGE_DATA':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          imageData: action.imageData
-        });
-      case 'SET_SCREEN':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          currentScreen: action.screen
-        });
-      case 'SET_IS_UPLOADING':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          isUploading: action.isUploading
-        });
-      case 'SET_IS_PROCESSING_UPLOAD':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          isProcessingUpload: action.isProcessingUpload
-        });
-      case 'SET_IS_UPLOAD_ERROR':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          isUploadError: action.isUploadError
-        });
-      case 'SET_FILEPOND_INSTANCE':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          filepondInstance: action.filepondInstance
-        });
-      case 'SET_HAS_CAPTION':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          hasCaption: action.hasCaption
-        });
-      case 'SET_CAPTION_POSITION':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          captionPosition: action.captionPosition
-        });
-      case 'SET_IN_QUERY_LOOP':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          inQueryLoop: action.inQueryLoop
-        });
-      case 'SET_PHOTO_MODE':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          photoMode: action.photoMode
-        });
-      case 'SET_BLOCK_UNIQUE_ID':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          blockUniqueId: action.blockUniqueId
-        });
-      case 'SET_DATA_SCREEN':
-        return _objectSpread(_objectSpread({}, state), {}, {
-          dataScreen: action.dataScreen
-        });
-      default:
-        return state;
+var createBlockStore = function createBlockStore(uniqueId) {
+  return (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)("dlxplugins/photo-block/".concat(uniqueId), {
+    reducer: function reducer() {
+      var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+      var action = arguments.length > 1 ? arguments[1] : undefined;
+      switch (action.type) {
+        case 'SET_ORIGINAL_IMAGE_DATA':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            originalImageData: action.originalImageData
+          });
+        case 'SET_IMAGE_DATA':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            imageData: action.imageData
+          });
+        case 'SET_SCREEN':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            currentScreen: action.screen
+          });
+        case 'SET_IS_UPLOADING':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            isUploading: action.isUploading
+          });
+        case 'SET_IS_PROCESSING_UPLOAD':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            isProcessingUpload: action.isProcessingUpload
+          });
+        case 'SET_IS_UPLOAD_ERROR':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            isUploadError: action.isUploadError
+          });
+        case 'SET_FILEPOND_INSTANCE':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            filepondInstance: action.filepondInstance
+          });
+        case 'SET_HAS_CAPTION':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            hasCaption: action.hasCaption
+          });
+        case 'SET_CAPTION_POSITION':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            captionPosition: action.captionPosition
+          });
+        case 'SET_IN_QUERY_LOOP':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            inQueryLoop: action.inQueryLoop
+          });
+        case 'SET_PHOTO_MODE':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            photoMode: action.photoMode
+          });
+        case 'SET_BLOCK_UNIQUE_ID':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            blockUniqueId: action.blockUniqueId
+          });
+        case 'SET_DATA_SCREEN':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            dataScreen: action.dataScreen
+          });
+        default:
+          return state;
+      }
+    },
+    actions: actions,
+    selectors: {
+      getCurrentScreen: function getCurrentScreen(state) {
+        return state.currentScreen;
+      },
+      isUploading: function isUploading(state) {
+        return state.isUploading;
+      },
+      isProcessingUpload: function isProcessingUpload(state) {
+        return state.isProcessingUpload;
+      },
+      isUploadError: function isUploadError(state) {
+        return state.isUploadError;
+      },
+      getFilepondInstance: function getFilepondInstance(state) {
+        return state.filepondInstance;
+      },
+      hasCaption: function hasCaption(state) {
+        return state.hasCaption;
+      },
+      getCaptionPosition: function getCaptionPosition(state) {
+        return state.captionPosition;
+      },
+      inQueryLoop: function inQueryLoop(state) {
+        return state.inQueryLoop;
+      },
+      getPhotoMode: function getPhotoMode(state) {
+        return state.photoMode;
+      },
+      getBlockUniqueId: function getBlockUniqueId(state) {
+        return state.blockUniqueId;
+      },
+      getDataScreen: function getDataScreen(state) {
+        return state.dataScreen;
+      },
+      getImageData: function getImageData(state) {
+        return state.imageData;
+      },
+      getOriginalImageData: function getOriginalImageData(state) {
+        return state.originalImageData;
+      }
     }
-  },
-  actions: actions,
-  selectors: {
-    getCurrentScreen: function getCurrentScreen(state) {
-      return state.currentScreen;
-    },
-    isUploading: function isUploading(state) {
-      return state.isUploading;
-    },
-    isProcessingUpload: function isProcessingUpload(state) {
-      return state.isProcessingUpload;
-    },
-    isUploadError: function isUploadError(state) {
-      return state.isUploadError;
-    },
-    getFilepondInstance: function getFilepondInstance(state) {
-      return state.filepondInstance;
-    },
-    hasCaption: function hasCaption(state) {
-      return state.hasCaption;
-    },
-    getCaptionPosition: function getCaptionPosition(state) {
-      return state.captionPosition;
-    },
-    inQueryLoop: function inQueryLoop(state) {
-      return state.inQueryLoop;
-    },
-    getPhotoMode: function getPhotoMode(state) {
-      return state.photoMode;
-    },
-    getBlockUniqueId: function getBlockUniqueId(state) {
-      return state.blockUniqueId;
-    },
-    getDataScreen: function getDataScreen(state) {
-      return state.dataScreen;
-    },
-    getImageData: function getImageData(state) {
-      return state.imageData;
-    },
-    getOriginalImageData: function getOriginalImageData(state) {
-      return state.originalImageData;
-    }
+  });
+};
+var blockStore = function blockStore(uniqueId) {
+  if (!uniqueId) {
+    return null;
   }
-});
-(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.register)(blockStore);
+  var storeName = "dlxplugins/photo-block/".concat(uniqueId);
+  // Attempt to select the store to check if it's already registered
+  var isStoreRegistered = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.select)(storeName); // can be undefined.
+
+  if (!isStoreRegistered) {
+    var store = createBlockStore(uniqueId);
+
+    // Make sure store is initialized. Check for instantiate function and return null if it doesn't exist.
+    if (!store.instantiate) {
+      return storeName;
+    }
+    (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.register)(store);
+    return storeName;
+  }
+
+  // If the store is already registered, return its instance
+  return storeName;
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (blockStore);
 
 /***/ }),
@@ -13800,7 +13883,6 @@ __webpack_require__.r(__webpack_exports__);
  * @return {string} Aspect ratio in human readable format.
  */
 var CalculateAspectRatioFromPixels = function CalculateAspectRatioFromPixels(width, height) {
-  console.log(width, height);
   // Find the greatest common factor
   function findGCF(a, b) {
     return b === 0 ? a : findGCF(b, a % b);
@@ -50378,7 +50460,7 @@ function useForm(props = {}) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg width=\'100%\' height=\'100%\' viewBox=\'0 0 1305 1305\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xml:space=\'preserve\' xmlns:serif=\'http://www.serif.com/\'><path fill=\'currentColor\' d=\'M652.492,1302.95c-359.692,0 -651.275,-291.583 -651.275,-651.275c-0,-359.692 291.583,-651.275 651.275,-651.275c359.687,0 651.275,291.583 651.275,651.275c-0,359.692 -291.588,651.275 -651.275,651.275Z\'/><path d=\'M652.492,1238.55c-324.125,0 -586.879,-262.754 -586.879,-586.879c-0,-324.125 262.754,-586.879 586.879,-586.879c324.125,-0 586.879,262.754 586.879,586.879c-0,324.125 -262.754,586.879 -586.879,586.879Z\' fill=\'#FFFFFF\' /><path fill=\'currentColor\' d=\'M345.942,498.429l-232.484,133.154c-0.246,6.671 -0.412,13.363 -0.412,20.092c-0,183.908 92.054,346.292 232.575,443.671l0.321,-596.917Zm592.429,-35.779l0.771,-268c-83.055,-52.2 -181.317,-82.421 -286.65,-82.421c-82.734,0 -161.105,18.65 -231.175,51.933l517.054,298.488Zm-571.759,378.05l-0.77,268c83.05,52.2 181.312,82.421 286.65,82.421c82.737,-0 161.104,-18.65 231.175,-51.934l-517.055,-298.487Zm264.855,-531.1l-516.7,298.883c14.916,-188.166 126.379,-349.133 284.854,-433.396l231.846,134.513Zm42.05,684.146l516.7,-298.875c-14.917,188.162 -126.375,349.129 -284.855,433.391l-231.845,-134.516Zm285.521,-188.829l232.487,-133.15c0.246,-6.671 0.413,-13.363 0.413,-20.092c-0,-183.908 -92.055,-346.292 -232.571,-443.671l-0.329,596.913Z\'/><path fill=\'currentColor\' d=\'M578.938,398.8c139.62,-40.6 285.816,39.662 326.42,179.329c40.654,139.617 -39.666,285.763 -179.333,326.421c-139.675,40.6 -285.817,-39.667 -326.421,-179.338c-40.6,-139.67 39.663,-285.812 179.334,-326.412Z\'/><path d=\'M473.954,596.729c-0.562,12.3 -10.758,22.063 -23.179,21.975c-12.687,-0.087 -24.004,-10.933 -22.854,-23.921c5.15,-58.075 50.75,-111.021 101.45,-136.596c11.6,-5.849 25.687,0.034 30.775,11.738c5.017,11.546 -0.463,24.512 -11.483,30.1c-33.117,16.783 -67.392,59.958 -74.709,96.704Z\' fill=\'#FFFFFF\' /><path  d=\'M603.883,422.104c12.884,0 23.33,10.446 23.33,23.333c-0,12.884 -10.446,23.33 -23.33,23.33c-12.887,-0 -23.329,-10.446 -23.329,-23.33c0,-12.887 10.442,-23.333 23.329,-23.333Z\' fill=\'#FFFFFF\' /></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/photoMode":"photoMode","photo-block/dataSource":"dataSource","photo-block/dataImageSource":"dataImageSource","photo-block/dataImageSourceCustomField":"dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta":"dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/dataPostType":"dataPostType","photo-block/dataPostId":"dataPostId","photo-block/imageSize":"imageSize"},"attributes":{"uniqueId":{"type":"string","default":null},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataImageSourceAuthorMeta":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"dataAltTextPostTitle":{"type":"string","default":""},"dataAltTextPostId":{"type":"string","default":""},"dataAltTextSource":{"type":"string","default":"currentImage"},"dataAltTextType":{"type":"string","default":"altText"},"dataAltTextImageCustomField":{"type":"string","default":""},"dataAltTextTypePostCustomField":{"type":"string","default":""},"dataAltTextPostType":{"type":"string","default":"post"},"dataAltTextPostTypeCustomField":{"type":"string","default":""},"dataAltTextTypePost":{"type":"string","default":"title"},"dataAltTextTypePostAuthorMeta":{"type":"string","default":""},"dataAltTextPostTypeSource":{"type":"string","default":"title"},"dataAltTextPostTypeAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTitle":{"type":"string","default":""},"dataImageTitlePostId":{"type":"string","default":""},"dataImageTitleSource":{"type":"string","default":"currentImage"},"dataImageTitleType":{"type":"string","default":"imageTitle"},"dataImageTitleImageCustomField":{"type":"string","default":""},"dataImageTitleTypePostCustomField":{"type":"string","default":""},"dataImageTitlePostType":{"type":"string","default":"post"},"dataImageTitlePostTypeCustomField":{"type":"string","default":""},"dataImageTitleTypePost":{"type":"string","default":"title"},"dataImageTitleTypePostAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTypeSource":{"type":"string","default":"title"},"dataImageTitlePostTypeAuthorMeta":{"type":"string","default":""},"dataMediaLinkSource":{"type":"string","default":"none"},"dataMediaLinkPostMeta":{"type":"string","default":""},"dataMediaLinkImageCustomField":{"type":"string","default":""},"dataMediaLinkAuthorMeta":{"type":"string","default":""},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":true,"className":true,"customClassName":false,"alignWide":true,"defaultStylePicker":false,"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg width=\'100%\' height=\'100%\' viewBox=\'0 0 1305 1305\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xml:space=\'preserve\' xmlns:serif=\'http://www.serif.com/\'><path fill=\'currentColor\' d=\'M652.492,1302.95c-359.692,0 -651.275,-291.583 -651.275,-651.275c-0,-359.692 291.583,-651.275 651.275,-651.275c359.687,0 651.275,291.583 651.275,651.275c-0,359.692 -291.588,651.275 -651.275,651.275Z\'/><path d=\'M652.492,1238.55c-324.125,0 -586.879,-262.754 -586.879,-586.879c-0,-324.125 262.754,-586.879 586.879,-586.879c324.125,-0 586.879,262.754 586.879,586.879c-0,324.125 -262.754,586.879 -586.879,586.879Z\' fill=\'#FFFFFF\' /><path fill=\'currentColor\' d=\'M345.942,498.429l-232.484,133.154c-0.246,6.671 -0.412,13.363 -0.412,20.092c-0,183.908 92.054,346.292 232.575,443.671l0.321,-596.917Zm592.429,-35.779l0.771,-268c-83.055,-52.2 -181.317,-82.421 -286.65,-82.421c-82.734,0 -161.105,18.65 -231.175,51.933l517.054,298.488Zm-571.759,378.05l-0.77,268c83.05,52.2 181.312,82.421 286.65,82.421c82.737,-0 161.104,-18.65 231.175,-51.934l-517.055,-298.487Zm264.855,-531.1l-516.7,298.883c14.916,-188.166 126.379,-349.133 284.854,-433.396l231.846,134.513Zm42.05,684.146l516.7,-298.875c-14.917,188.162 -126.375,349.129 -284.855,433.391l-231.845,-134.516Zm285.521,-188.829l232.487,-133.15c0.246,-6.671 0.413,-13.363 0.413,-20.092c-0,-183.908 -92.055,-346.292 -232.571,-443.671l-0.329,596.913Z\'/><path fill=\'currentColor\' d=\'M578.938,398.8c139.62,-40.6 285.816,39.662 326.42,179.329c40.654,139.617 -39.666,285.763 -179.333,326.421c-139.675,40.6 -285.817,-39.667 -326.421,-179.338c-40.6,-139.67 39.663,-285.812 179.334,-326.412Z\'/><path d=\'M473.954,596.729c-0.562,12.3 -10.758,22.063 -23.179,21.975c-12.687,-0.087 -24.004,-10.933 -22.854,-23.921c5.15,-58.075 50.75,-111.021 101.45,-136.596c11.6,-5.849 25.687,0.034 30.775,11.738c5.017,11.546 -0.463,24.512 -11.483,30.1c-33.117,16.783 -67.392,59.958 -74.709,96.704Z\' fill=\'#FFFFFF\' /><path  d=\'M603.883,422.104c12.884,0 23.33,10.446 23.33,23.333c-0,12.884 -10.446,23.33 -23.33,23.33c-12.887,-0 -23.329,-10.446 -23.329,-23.33c0,-12.887 10.442,-23.333 23.329,-23.333Z\' fill=\'#FFFFFF\' /></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataSource":"dataSource","photo-block/dataImageSource":"dataImageSource","photo-block/dataImageSourceCustomField":"dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta":"dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/dataPostType":"dataPostType","photo-block/dataPostId":"dataPostId","photo-block/imageSize":"imageSize"},"attributes":{"uniqueId":{"type":"string","default":null},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataImageSourceAuthorMeta":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"dataAltTextPostTitle":{"type":"string","default":""},"dataAltTextPostId":{"type":"string","default":""},"dataAltTextSource":{"type":"string","default":"currentImage"},"dataAltTextType":{"type":"string","default":"altText"},"dataAltTextImageCustomField":{"type":"string","default":""},"dataAltTextTypePostCustomField":{"type":"string","default":""},"dataAltTextPostType":{"type":"string","default":"post"},"dataAltTextPostTypeCustomField":{"type":"string","default":""},"dataAltTextTypePost":{"type":"string","default":"title"},"dataAltTextTypePostAuthorMeta":{"type":"string","default":""},"dataAltTextPostTypeSource":{"type":"string","default":"title"},"dataAltTextPostTypeAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTitle":{"type":"string","default":""},"dataImageTitlePostId":{"type":"string","default":""},"dataImageTitleSource":{"type":"string","default":"currentImage"},"dataImageTitleType":{"type":"string","default":"imageTitle"},"dataImageTitleImageCustomField":{"type":"string","default":""},"dataImageTitleTypePostCustomField":{"type":"string","default":""},"dataImageTitlePostType":{"type":"string","default":"post"},"dataImageTitlePostTypeCustomField":{"type":"string","default":""},"dataImageTitleTypePost":{"type":"string","default":"title"},"dataImageTitleTypePostAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTypeSource":{"type":"string","default":"title"},"dataImageTitlePostTypeAuthorMeta":{"type":"string","default":""},"dataMediaLinkSource":{"type":"string","default":"none"},"dataMediaLinkPostMeta":{"type":"string","default":""},"dataMediaLinkImageCustomField":{"type":"string","default":""},"dataMediaLinkAuthorMeta":{"type":"string","default":""},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":true,"className":true,"customClassName":false,"alignWide":true,"defaultStylePicker":false,"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 
@@ -50389,7 +50471,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query","photo-block/photoMode","photo-block/dataSource","photo-block/dataImageSource","photo-block/dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage","photo-block/dataFallbackImageSize","photo-block/dataFallbackImage","photo-block/dataPostType","photo-block/dataPostId","photo-block/imageSize"],"attributes":{"photoMode":{"type":"string","default":""},"uniqueId":{"type":"string","default":""},"captionManual":{"type":"string","default":""},"mode":{"type":"string","default":"single"},"enableSmartStyles":{"type":"boolean","default":true},"captionBaseFontSize":{"type":"object","default":{"mobile":{"value":"14","unit":"px"},"tablet":{"value":"14","unit":"px"},"desktop":{"value":"16","unit":"px"}}},"captionPosition":{"type":"string","default":"bottom"},"captionAlign":{"type":"string","default":"center"},"captionBackgroundColor":{"type":"string","default":"transparent"},"captionBackgroundColorOpacity":{"type":"number","default":1},"captionTextColor":{"type":"string","default":"#333"},"captionAccentColor":{"type":"string","default":"#e17713"},"captionSecondaryColor":{"type":"string","default":"#FFFFFF"},"captionLinkColor":{"type":"string","default":"#e17713"},"captionLinkHoverColor":{"type":"string","default":"#f58f2f"},"captionTextFontFamily":{"type":"string","default":"Arial"},"captionHeadingsFontFamily":{"type":"string","default":"Arial"},"captionTypography":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"18","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.2","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}},"captionCustomTypography":{"type":"string","default":""},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"15","right":"20","bottom":"15","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":false}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataCaptionPostTitle":{"type":"string","default":""},"dataCaptionPostId":{"type":"string","default":""},"dataCaptionSource":{"type":"string","default":"currentImage"},"dataCaptionType":{"type":"string","default":"caption"},"dataCaptionImageCustomField":{"type":"string","default":""},"dataCaptionTypePostCustomField":{"type":"string","default":""},"dataCaptionPostType":{"type":"string","default":"post"},"dataCaptionPostTypeCustomField":{"type":"string","default":""},"dataCaptionTypePost":{"type":"string","default":"title"},"dataCaptionTypePostAuthorMeta":{"type":"string","default":""},"dataCaptionPostTypeSource":{"type":"string","default":"title"},"dataCaptionPostTypeAuthorMeta":{"type":"string","default":""},"overlayVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionHorizontalPosition":{"type":"string","default":"center"},"overlayHorizontalPosition":{"type":"string","default":"center"},"overlayBackgroundType":{"type":"string","default":"solid"},"overlayBackgroundColor":{"type":"string","default":"rgba(0,0,0,0.5)"},"overlayBackgroundColorOpacity":{"type":"number","default":0.5},"overlayBackgroundColorHover":{"type":"string","default":"rgba(0,0,0,0.40)"},"overlayBackgroundColorOpacityHover":{"type":"number","default":0.4},"overlayBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"overlayBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"overlayBackgroundGradient":{"type":"string","default":""},"overlayBackgroundGradientOpacity":{"type":"number","default":0.5},"overlayBackgroundGradientOpacityHover":{"type":"number","default":0.65},"overlayBackgroundImage":{"type":"object","default":{"url":"","id":0,"backgroundColor":"transparent","backgroundSize":"cover","backgroundPosition":"center center","backgroundRepeat":"no-repeat","backgroundOpacity":0.4,"backgroundOpacityHover":0.65}},"htmlAnchor":{"type":"string","default":""},"captionCSSClasses":{"type":"string","default":""},"customAttributes":{"type":"array","default":[]},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false}},"supports":{"anchor":false,"align":false,"className":false,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false},"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-caption-block-editor","editorStyle":"dlx-photo-caption-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query","photo-block/photoMode","photo-block/dataSource","photo-block/dataImageSource","photo-block/dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage","photo-block/dataFallbackImageSize","photo-block/dataFallbackImage","photo-block/dataPostType","photo-block/dataPostId","photo-block/imageSize","photo-block/uniqueId"],"attributes":{"photoMode":{"type":"string","default":""},"uniqueId":{"type":"string","default":""},"captionManual":{"type":"string","default":""},"mode":{"type":"string","default":"single"},"enableSmartStyles":{"type":"boolean","default":true},"captionBaseFontSize":{"type":"object","default":{"mobile":{"value":"14","unit":"px"},"tablet":{"value":"14","unit":"px"},"desktop":{"value":"16","unit":"px"}}},"captionPosition":{"type":"string","default":"bottom"},"captionAlign":{"type":"string","default":"center"},"captionBackgroundColor":{"type":"string","default":"transparent"},"captionBackgroundColorOpacity":{"type":"number","default":1},"captionTextColor":{"type":"string","default":"#333"},"captionAccentColor":{"type":"string","default":"#e17713"},"captionSecondaryColor":{"type":"string","default":"#FFFFFF"},"captionLinkColor":{"type":"string","default":"#e17713"},"captionLinkHoverColor":{"type":"string","default":"#f58f2f"},"captionTextFontFamily":{"type":"string","default":"Arial"},"captionHeadingsFontFamily":{"type":"string","default":"Arial"},"captionTypography":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"18","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.2","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}},"captionCustomTypography":{"type":"string","default":""},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"15","right":"20","bottom":"15","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":false}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"dataCaptionPostTitle":{"type":"string","default":""},"dataCaptionPostId":{"type":"string","default":""},"dataCaptionSource":{"type":"string","default":"currentImage"},"dataCaptionType":{"type":"string","default":"caption"},"dataCaptionImageCustomField":{"type":"string","default":""},"dataCaptionTypePostCustomField":{"type":"string","default":""},"dataCaptionPostType":{"type":"string","default":"post"},"dataCaptionPostTypeCustomField":{"type":"string","default":""},"dataCaptionTypePost":{"type":"string","default":"title"},"dataCaptionTypePostAuthorMeta":{"type":"string","default":""},"dataCaptionPostTypeSource":{"type":"string","default":"title"},"dataCaptionPostTypeAuthorMeta":{"type":"string","default":""},"overlayVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionHorizontalPosition":{"type":"string","default":"center"},"overlayHorizontalPosition":{"type":"string","default":"center"},"overlayBackgroundType":{"type":"string","default":"solid"},"overlayBackgroundColor":{"type":"string","default":"rgba(0,0,0,0.5)"},"overlayBackgroundColorOpacity":{"type":"number","default":0.5},"overlayBackgroundColorHover":{"type":"string","default":"rgba(0,0,0,0.40)"},"overlayBackgroundColorOpacityHover":{"type":"number","default":0.4},"overlayBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"overlayBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"overlayBackgroundGradient":{"type":"string","default":""},"overlayBackgroundGradientOpacity":{"type":"number","default":0.5},"overlayBackgroundGradientOpacityHover":{"type":"number","default":0.65},"overlayBackgroundImage":{"type":"object","default":{"url":"","id":0,"backgroundColor":"transparent","backgroundSize":"cover","backgroundPosition":"center center","backgroundRepeat":"no-repeat","backgroundOpacity":0.4,"backgroundOpacityHover":0.65}},"htmlAnchor":{"type":"string","default":""},"captionCSSClasses":{"type":"string","default":""},"customAttributes":{"type":"array","default":[]},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false}},"supports":{"anchor":false,"align":false,"className":false,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false},"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-caption-block-editor","editorStyle":"dlx-photo-caption-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ })
 

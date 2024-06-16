@@ -1,5 +1,5 @@
 
-import { createReduxStore, register } from '@wordpress/data';
+import { createReduxStore, register, select } from '@wordpress/data';
 const DEFAULT_STATE = {
 	originalImageData: {
 		id: 0,
@@ -115,122 +115,145 @@ const actions = {
 	},
 };
 
-const blockStore = createReduxStore( 'dlxplugins/photo-block', {
-	reducer( state = DEFAULT_STATE, action ) {
-		switch ( action.type ) {
-			case 'SET_ORIGINAL_IMAGE_DATA':
-				return {
-					...state,
-					originalImageData: action.originalImageData,
-				};
-			case 'SET_IMAGE_DATA':
-				return {
-					...state,
-					imageData: action.imageData,
-				};
-			case 'SET_SCREEN':
-				return {
-					...state,
-					currentScreen: action.screen,
-				};
-			case 'SET_IS_UPLOADING':
-				return {
-					...state,
-					isUploading: action.isUploading,
-				};
-			case 'SET_IS_PROCESSING_UPLOAD':
-				return {
-					...state,
-					isProcessingUpload: action.isProcessingUpload,
-				};
-			case 'SET_IS_UPLOAD_ERROR':
-				return {
-					...state,
-					isUploadError: action.isUploadError,
-				};
-			case 'SET_FILEPOND_INSTANCE':
-				return {
-					...state,
-					filepondInstance: action.filepondInstance,
-				};
-			case 'SET_HAS_CAPTION':
-				return {
-					...state,
-					hasCaption: action.hasCaption,
-				};
-			case 'SET_CAPTION_POSITION':
-				return {
-					...state,
-					captionPosition: action.captionPosition,
-				};
-			case 'SET_IN_QUERY_LOOP':
-				return {
-					...state,
-					inQueryLoop: action.inQueryLoop,
-				};
-			case 'SET_PHOTO_MODE':
-				return {
-					...state,
-					photoMode: action.photoMode,
-				};
-			case 'SET_BLOCK_UNIQUE_ID':
-				return {
-					...state,
-					blockUniqueId: action.blockUniqueId,
-				};
-			case 'SET_DATA_SCREEN':
-				return {
-					...state,
-					dataScreen: action.dataScreen,
-				};
-			default:
-				return state;
-		}
-	},
-	actions,
-	selectors: {
-		getCurrentScreen( state ) {
-			return state.currentScreen;
+const createBlockStore = ( uniqueId ) => {
+	return createReduxStore( `dlxplugins/photo-block/${ uniqueId }`, {
+		reducer( state = DEFAULT_STATE, action ) {
+			switch ( action.type ) {
+				case 'SET_ORIGINAL_IMAGE_DATA':
+					return {
+						...state,
+						originalImageData: action.originalImageData,
+					};
+				case 'SET_IMAGE_DATA':
+					return {
+						...state,
+						imageData: action.imageData,
+					};
+				case 'SET_SCREEN':
+					return {
+						...state,
+						currentScreen: action.screen,
+					};
+				case 'SET_IS_UPLOADING':
+					return {
+						...state,
+						isUploading: action.isUploading,
+					};
+				case 'SET_IS_PROCESSING_UPLOAD':
+					return {
+						...state,
+						isProcessingUpload: action.isProcessingUpload,
+					};
+				case 'SET_IS_UPLOAD_ERROR':
+					return {
+						...state,
+						isUploadError: action.isUploadError,
+					};
+				case 'SET_FILEPOND_INSTANCE':
+					return {
+						...state,
+						filepondInstance: action.filepondInstance,
+					};
+				case 'SET_HAS_CAPTION':
+					return {
+						...state,
+						hasCaption: action.hasCaption,
+					};
+				case 'SET_CAPTION_POSITION':
+					return {
+						...state,
+						captionPosition: action.captionPosition,
+					};
+				case 'SET_IN_QUERY_LOOP':
+					return {
+						...state,
+						inQueryLoop: action.inQueryLoop,
+					};
+				case 'SET_PHOTO_MODE':
+					return {
+						...state,
+						photoMode: action.photoMode,
+					};
+				case 'SET_BLOCK_UNIQUE_ID':
+					return {
+						...state,
+						blockUniqueId: action.blockUniqueId,
+					};
+				case 'SET_DATA_SCREEN':
+					return {
+						...state,
+						dataScreen: action.dataScreen,
+					};
+				default:
+					return state;
+			}
 		},
-		isUploading( state ) {
-			return state.isUploading;
+		actions,
+		selectors: {
+			getCurrentScreen( state ) {
+				return state.currentScreen;
+			},
+			isUploading( state ) {
+				return state.isUploading;
+			},
+			isProcessingUpload( state ) {
+				return state.isProcessingUpload;
+			},
+			isUploadError( state ) {
+				return state.isUploadError;
+			},
+			getFilepondInstance( state ) {
+				return state.filepondInstance;
+			},
+			hasCaption( state ) {
+				return state.hasCaption;
+			},
+			getCaptionPosition( state ) {
+				return state.captionPosition;
+			},
+			inQueryLoop( state ) {
+				return state.inQueryLoop;
+			},
+			getPhotoMode( state ) {
+				return state.photoMode;
+			},
+			getBlockUniqueId( state ) {
+				return state.blockUniqueId;
+			},
+			getDataScreen( state ) {
+				return state.dataScreen;
+			},
+			getImageData( state ) {
+				return state.imageData;
+			},
+			getOriginalImageData( state ) {
+				return state.originalImageData;
+			},
 		},
-		isProcessingUpload( state ) {
-			return state.isProcessingUpload;
-		},
-		isUploadError( state ) {
-			return state.isUploadError;
-		},
-		getFilepondInstance( state ) {
-			return state.filepondInstance;
-		},
-		hasCaption( state ) {
-			return state.hasCaption;
-		},
-		getCaptionPosition( state ) {
-			return state.captionPosition;
-		},
-		inQueryLoop( state ) {
-			return state.inQueryLoop;
-		},
-		getPhotoMode( state ) {
-			return state.photoMode;
-		},
-		getBlockUniqueId( state ) {
-			return state.blockUniqueId;
-		},
-		getDataScreen( state ) {
-			return state.dataScreen;
-		},
-		getImageData( state ) {
-			return state.imageData;
-		},
-		getOriginalImageData( state ) {
-			return state.originalImageData;
-		},
-	},
-} );
+	} );
+};
+const blockStore = ( uniqueId ) => {
+	if ( ! uniqueId ) {
+		return null;
+	}
+	const storeName = `dlxplugins/photo-block/${ uniqueId }`;
+	// Attempt to select the store to check if it's already registered
+	const isStoreRegistered = select( storeName ); // can be undefined.
 
-register( blockStore );
+	if ( ! isStoreRegistered ) {
+		const store = createBlockStore( uniqueId );
+
+		// Make sure store is initialized. Check for instantiate function and return null if it doesn't exist.
+		if ( ! store.instantiate ) {
+			return storeName;
+		}
+
+		register( store );
+		return storeName;
+	}
+
+	// If the store is already registered, return its instance
+	return storeName;
+};
 
 export default blockStore;

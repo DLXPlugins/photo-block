@@ -107,7 +107,6 @@ const DimensionsResponsiveControl = ( props ) => {
 	 * @param {number} value Value to change to.
 	 */
 	const changeAllValues = ( value ) => {
-		console.log( value );
 		if ( startsWithNumber( value ) ) {
 			const newValuesSplit = splitValues( value );
 			const numericValue = parseFloat( getNumericValue( newValuesSplit ) );

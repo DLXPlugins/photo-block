@@ -40,15 +40,16 @@ import blockStore from '../../store';
  * @return {Function} Component.
  */
 const InitialScreen = ( props ) => {
+	const { blockUniqueId } = props;
 	const {
 		isUploading,
 		isProcessingUpload,
 		isUploadError,
 	} = useSelect( ( select ) => {
 		return {
-			isUploading: select( blockStore ).isUploading(),
-			isProcessingUpload: select( blockStore ).isProcessingUpload(),
-			isUploadError: select( blockStore ).isUploadError(),
+			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
 		};
 	} );
 
@@ -62,12 +63,12 @@ const InitialScreen = ( props ) => {
 			{ localInspectorControls }
 			<div className="dlx-photo-block__screen-initial">
 				{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
-					<UploadTypes attributes={ props.attributes } setAttributes={ props.setAttributes } />
+					<UploadTypes attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } />
 				) }
 				{ ( isUploading || isProcessingUpload || isUploadError ) && (
-					<UploadStatus />
+					<UploadStatus blockUniqueId={ blockUniqueId } />
 				) }
-				<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } />
+				<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } />
 			</div>
 		</>
 	);

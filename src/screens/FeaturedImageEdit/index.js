@@ -50,7 +50,7 @@ for ( const key in photoBlock.imageSizes ) {
 }
 
 const FeaturedImageScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps, context } = props;
+	const { attributes, setAttributes, innerBlockProps, context, blockUniqueId } = props;
 	const { postId } = context;
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
@@ -76,15 +76,15 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	const {
 		setImageData,
 		setScreen,
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
 		captionPosition,
 	} = useSelect( ( select ) => {
 		return {
-			imageData: select( blockStore ).getImageData(),
-			captionPosition: select( blockStore ).getCaptionPosition(),
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
 		};
 	} );
 

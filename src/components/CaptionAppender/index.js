@@ -14,11 +14,12 @@ import blockStore from '../../store';
 const CaptionAppender = ( {
 	numBlocks,
 	clientId,
+	blockUniqueId,
 } ) => {
 	const { insertBlock } = useDispatch( blockEditorStore );
 	const {
 		setHasCaption,
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	/**
 	 * Add a caption block to the main block.
@@ -29,7 +30,6 @@ const CaptionAppender = ( {
 	};
 
 	// Exit if there are innerblocks.
-	console.log( numBlocks );
 	if ( numBlocks !== 0 ) {
 		return null;
 	}

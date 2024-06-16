@@ -51,14 +51,14 @@ const cssGramOptions = [
  * @return {Function} Component.
  */
 const CSSGramButtonGroup = ( props ) => {
-	const { attributes, setAttributes } = props;
+	const { attributes, setAttributes, blockUniqueId } = props;
 
 	const { cssGramFilter } = attributes;
 
 	const {
 		imageData,
 	} = useSelect( ( select ) => {
-		const { getImageData } = select( blockStore );
+		const { getImageData } = select( blockStore( blockUniqueId ) );
 		return {
 			imageData: getImageData(),
 		};

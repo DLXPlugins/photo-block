@@ -36,12 +36,13 @@ import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFrom
 import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
 
 const CropScreen = ( props ) => {
+
+	const { attributes, setAttributes, blockUniqueId } = props;
+
 	const {
 		setScreen,
 		setImageData,
-	} = useDispatch( blockStore );
-
-	const { attributes, setAttributes } = props;
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
 	const [ shouldFetchImage, setShouldFetchImage ] = useState( true );
@@ -533,7 +534,6 @@ const CropScreen = ( props ) => {
 								// todo: error handling.
 							}
 						} ).catch( ( error ) => {
-							console.log( error );
 						} ).then( () => {
 							setIsSaving( false );
 						} );

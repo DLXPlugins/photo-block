@@ -21,20 +21,22 @@ import blockStore from '../../store';
 const UploadStatus = ( props ) => {
 	// Read in context values.
 
+	const { blockUniqueId } = props;
+
 	const {
 		setIsUploading,
 		setIsUploadError,
 		setIsProcessingUpload,
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 	const {
 		imageData,
 		isUploadError,
 		filepondInstance,
 	} = useSelect( ( select ) => {
 		return {
-			imageData: select( blockStore ).getImageData(),
-			isUploadError: select( blockStore ).isUploadError(),
-			filepondInstance: select( blockStore ).getFilepondInstance(),
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
+			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
 		};
 	} );
 

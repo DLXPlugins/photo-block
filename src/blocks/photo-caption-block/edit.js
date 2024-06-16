@@ -166,9 +166,19 @@ const uniqueIds = [];
 
 const PhotoCaptionBlock = ( props ) => {
 	const {
+		attributes,
+		setAttributes,
+		clientId,
+		context,
+		isSelected,
+	} = props;
+
+	const blockUniqueId = context[ 'photo-block/uniqueId' ];
+
+	const {
 		setHasCaption,
 		setCaptionPosition,
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
@@ -177,20 +187,18 @@ const PhotoCaptionBlock = ( props ) => {
 		captionPosition,
 		inQueryLoop,
 		photoMode,
-		blockUniqueId,
 	} = useSelect( ( select ) => {
 		return {
-			imageData: select( blockStore ).getImageData(),
-			currentScreen: select( blockStore ).getCurrentScreen(),
-			isUploading: select( blockStore ).isUploading(),
-			isProcessingUpload: select( blockStore ).isProcessingUpload(),
-			isUploadError: select( blockStore ).isUploadError(),
-			filepondInstance: select( blockStore ).getFilepondInstance(),
-			hasCaption: select( blockStore ).hasCaption(),
-			captionPosition: select( blockStore ).getCaptionPosition(),
-			inQueryLoop: select( blockStore ).inQueryLoop(),
-			photoMode: select( blockStore ).getPhotoMode(),
-			blockUniqueId: select( blockStore ).getBlockUniqueId(),
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
+			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
+			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
+			hasCaption: select( blockStore( blockUniqueId ) ).hasCaption(),
+			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
+			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
+			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 		};
 	} );
 
@@ -223,8 +231,6 @@ const PhotoCaptionBlock = ( props ) => {
 			`dlx-photo-caption-block`,
 		),
 	} );
-
-	const { attributes, setAttributes, clientId, context, isSelected } = props;
 
 	// Get query loop vars.
 	const { postId } = context;
@@ -1112,6 +1118,7 @@ const PhotoCaptionBlock = ( props ) => {
 							setAttributes={ setAttributes }
 							context={ context }
 							prefix="dataCaption"
+							blockUniqueId={ blockUniqueId }
 						/>
 						<ButtonGroup>
 							<Button
@@ -1581,6 +1588,10 @@ const PhotoCaptionBlock = ( props ) => {
 			</div>
 		</>
 	);
+
+	if ( null === blockUniqueId ) {
+		return null;
+	}
 
 	// Return empty if caption isn't visible.
 	if ( ! isCaptionVisible ) {

@@ -54,7 +54,7 @@ for ( const key in photoBlock.imageSizes ) {
 let dataImage = [];
 
 const DataEditScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps, context } = props;
+	const { attributes, setAttributes, innerBlockProps, context, blockUniqueId } = props;
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
 	const [ titleButton, setTitleButton ] = useState( null );
@@ -93,7 +93,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	const {
 		setScreen,
 		setImageData,
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
@@ -101,8 +101,8 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 		inQueryLoop,
 	} = useSelect( ( select ) => {
 		return {
-			captionPosition: select( blockStore ).getCaptionPosition(),
-			inQueryLoop: select( blockStore ).inQueryLoop(),
+			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
+			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
 		};
 	} );
 
@@ -345,7 +345,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	const localInspectorControls = (
 		<InspectorControls>
 			{ settingsInspectorControls }
-			<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> 
+			<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } /> 
 		</InspectorControls>
 	);
 

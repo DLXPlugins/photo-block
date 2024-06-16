@@ -45,14 +45,14 @@ import URLPicker from '../URLPicker';
  * @return {Function} Component.
  */
 const MediaLink = ( props ) => {
-	const { attributes, setAttributes, anchorRef } = props;
+	const { attributes, setAttributes, anchorRef, blockUniqueId } = props;
 
 	// Get context.
 	const {
 		photoMode,
 	} = useSelect( ( select ) => {
 		return {
-			photoMode: select( blockStore ).getPhotoMode(),
+			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 		};
 	} );
 

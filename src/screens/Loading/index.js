@@ -26,6 +26,8 @@ import DataEditScreen from '../../screens/DataEdit';
 const LoadingScreen = ( props ) => {
 	const [ isLoading, setIsLoading ] = useState( true );
 
+	const { blockUniqueId } = props;
+
 	const {
 		setImageData,
 		setFilepondInstance,
@@ -36,7 +38,7 @@ const LoadingScreen = ( props ) => {
 		setInQueryLoop,
 		setScreen,
 		setDataScreen, /* can be 'initial' or 'edit' */
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
@@ -49,21 +51,20 @@ const LoadingScreen = ( props ) => {
 		captionPosition,
 		inQueryLoop,
 		photoMode,
-		blockUniqueId,
 		dataScreen,
 	} = useSelect( ( select ) => {
 		return {
-			currentScreen: select( blockStore ).getCurrentScreen(),
-			isUploading: select( blockStore ).isUploading(),
-			isProcessingUpload: select( blockStore ).isProcessingUpload(),
-			isUploadError: select( blockStore ).isUploadError(),
-			filepondInstance: select( blockStore ).getFilepondInstance(),
-			hasCaption: select( blockStore ).hasCaption(),
-			captionPosition: select( blockStore ).getCaptionPosition(),
-			inQueryLoop: select( blockStore ).inQueryLoop(),
-			photoMode: select( blockStore ).getPhotoMode(),
-			blockUniqueId: select( blockStore ).getBlockUniqueId(),
-			dataScreen: select( blockStore ).getDataScreen(),
+			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
+			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
+			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
+			hasCaption: select( blockStore( blockUniqueId ) ).hasCaption(),
+			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
+			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
+			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
+			blockUniqueId: select( blockStore( blockUniqueId ) ).getBlockUniqueId(),
+			dataScreen: select( blockStore( blockUniqueId ) ).getDataScreen(),
 		};
 	} );
 
@@ -123,9 +124,6 @@ const LoadingScreen = ( props ) => {
 
 		// Set the photo mode.
 		setPhotoMode( attributes.photoMode );
-
-		console.log( 'photoMode: ' + attributes.photoMode);
-
 		// Load the appropriate screen. The main screen logic is in blocks/photo-block/edit.js.
 		switch ( attributes.photoMode ) {
 			case 'none':

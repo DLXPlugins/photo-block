@@ -36,7 +36,7 @@ for ( const key in photoBlock.imageSizes ) {
 }
 
 const DataScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes } = props;
+	const { attributes, setAttributes, blockUniqueId } = props;
 	const {
 		dataSource,
 		dataImageSource,
@@ -68,7 +68,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 		setImageFile,
 		setPhotoMode,
 		setScreen,
-	} = useDispatch( blockStore );
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const localToolbar = (
 		<>

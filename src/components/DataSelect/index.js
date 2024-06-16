@@ -98,7 +98,7 @@ export const MetaFieldControl = ( props ) => {
 };
 
 export const DataSelect = ( props ) => {
-	const { attributes, setAttributes, context, title, prefix } = props;
+	const { attributes, setAttributes, context, title, prefix, blockUniqueId } = props;
 
 	const [ postTypeSuggestion, setPostTypeSuggestion ] = useState( attributes[ `${ prefix }PostTitle` ] );
 	const {
@@ -112,7 +112,7 @@ export const DataSelect = ( props ) => {
 		inQueryLoop,
 	} = useSelect( ( select ) => {
 		return {
-			inQueryLoop: select( blockStore ).inQueryLoop(),
+			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
 		};
 	} );
 
