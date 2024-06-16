@@ -368,10 +368,10 @@ const DimensionsResponsiveControl = ( props ) => {
 									geHierarchicalPlaceholderValue(
 										values,
 										deviceType,
-										value || 0,
+										'' !== value ? value : 0,
 										'top'
 									)
-								) || 0 }
+								) }
 								min={ allowNegatives ? getRangeControlMin( 'topUnit' ) : 0 }
 								max={ getRangeControlMax( 'topUnit' ) }
 								step={ getRangeControlStep( 'topUnit' ) }

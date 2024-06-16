@@ -70,9 +70,9 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
     photoBlur = attributes.photoBlur,
     photoObjectFit = attributes.photoObjectFit,
     captionCustomTypography = attributes.captionCustomTypography;
-  var styles = "\n\t\t#".concat(uniqueId, " .dlx-photo-block__image-wrapper {\n\t\t\tbackground: ").concat(photoBackgroundColor, ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxHeight, 'max-height'), "\n\t\t\tborder-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t\t#").concat(uniqueId, " img {\n\t\t\topacity: ").concat(photoOpacity, ";\n\t\t\t").concat(photoBlur ? "filter: blur(".concat(photoBlur, "px);") : '', "\n\t\t\tobject-fit: ").concat(photoObjectFit, ";\n\t\t\t").concat('none' !== photoObjectFit ? 'height: 100%; width: 100%;' : '', "\n\t\t\t").concat('none' !== photoObjectFit && 'custom' !== photoObjectPosition ? 'object-position:' + photoObjectPosition + ';' : '', "\n\t\t\t").concat('none' !== photoObjectFit && 'custom' === photoObjectPosition && '' !== photoObjectPositionCustom ? 'object-position:' + photoObjectPositionCustom + ';' : '', "\n\t\t\tpadding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoPaddingSize, deviceType), ";\n\t\t\tmargin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), ";\n\t\t\tborder-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(photoBorder, deviceType), "\n\t\t}\n\t");
+  var styles = "\n\t\t#".concat(uniqueId, " .dlx-photo-block__image-wrapper {\n\t\t\t--photo-block-photo-background-color: ").concat(photoBackgroundColor, ";\n\t\t\t--photo-block-photo-container-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-photo-container-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-photo-container-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-photo-container-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-photo-container-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t\t--photo-block-photo-container-max-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxHeight, 'max-height'), "\n\t\t\t--photo-block-photo-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t\t#").concat(uniqueId, " .dlx-photo-block__image-wrapper img {\n\t\t\t--photo-block-image-opacity: ").concat(photoOpacity, ";\n\t\t\t--photo-block-image-object-fit: ").concat(photoObjectFit, ";\n\t\t\t--photo-block-image-blur: ").concat(photoBlur, "px;\n\t\t\t--photo-block-image-width: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-height: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-object-position: ").concat('custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition, ";\n\t\t\t--photo-block-image-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoPaddingSize, deviceType), ";\n\t\t\t--photo-block-image-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(photoBorder, deviceType, '--photo-block-image'), ";\n\t\t\t--photo-block-image-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t");
   // Apply outer margin to container.
-  styles += "#".concat(uniqueId, " .dlx-photo-block__figure { margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), "; }");
+  styles += "#".concat(uniqueId, " .dlx-photo-block__figure { --photo-block-figure-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), "; }");
   if (photoDropShadow.enabled) {
     styles += "\n\t\t\t#".concat(uniqueId, " img {\n\t\t\t\tbox-sizing: border-box;\n\t\t\t\tbox-shadow: ").concat(photoDropShadow.inset ? 'inset ' : '').concat(photoDropShadow.horizontal, "px ").concat(photoDropShadow.vertical, "px ").concat(photoDropShadow.blur, "px ").concat(photoDropShadow.spread, "px ").concat(getColor(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t\t-webkit-box-shadow: ").concat(photoDropShadow.inset ? 'inset ' : '').concat(photoDropShadow.horizontal, "px ").concat(photoDropShadow.vertical, "px ").concat(photoDropShadow.blur, "px ").concat(photoDropShadow.spread, "px ").concat(getColor(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t}\n\t\t");
   }
@@ -6282,7 +6282,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
           className: "dlx-photo-block__dimensions-responsive-sync-interface-range",
           label: labelAll,
-          value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, value || 0, 'top')) || 0,
+          value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_7__.geHierarchicalPlaceholderValue)(values, deviceType, '' !== value ? value : 0, 'top')),
           min: allowNegatives ? getRangeControlMin('topUnit') : 0,
           max: getRangeControlMax('topUnit'),
           step: getRangeControlStep('topUnit'),
@@ -7672,7 +7672,7 @@ var RangeResponsiveControl = function RangeResponsiveControl(props) {
         _onChange = _ref2$field.onChange,
         value = _ref2$field.value;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RangeControl, {
-        value: parseInt((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_5__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).value, 'value')),
+        value: parseInt((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_5__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).value, 'value') || 0),
         onChange: function onChange(newValue) {
           _onChange(newValue);
         },
@@ -10538,6 +10538,9 @@ __webpack_require__.r(__webpack_exports__);
 var useUnits = function useUnits() {
   // Test if the value starts with a number, decimal or a single dash. Single dash is for negative numbers.
   var startsWithNumber = function startsWithNumber(number) {
+    if (0 === number) {
+      return false;
+    }
     return /^([-]?\d|[-]?\.)/.test(number);
   };
   var getNumericValue = function getNumericValue(values) {
@@ -14671,13 +14674,13 @@ var getValueWithUnit = function getValueWithUnit(screenSize, valueObject) {
   // Get RegEx to check for numbers only. IF not a match, then unit should be empty.
   var numberOnly = width.match(/^(-)?[0-9]+$/);
   if (numberOnly) {
-    return "".concat(cssValue, ": ").concat(width).concat(unit, ";");
+    return "".concat(width).concat(unit, ";");
   }
   if ('' === width || '0' === width) {
-    return '';
+    return 'unset;';
   }
   // Build CSS.
-  return "".concat(cssValue, ": ").concat(width, ";");
+  return "".concat(width, ";");
 };
 
 /**
@@ -14730,10 +14733,11 @@ function buildDimensionsCSS(props, screenSize) {
  *
  * @param {Object} props      Dimensions object.
  * @param {string} screenSize mobile|tablet|desktop.
+ * @param {string} prefix     Prefix for CSS rules.
  *
  * @return {string} CSS rules.
  */
-function buildBorderCSS(props, screenSize) {
+function buildBorderCSS(props, screenSize, prefix) {
   screenSize = screenSize.toLowerCase();
   var border = props[screenSize];
   if (true === getHierarchicalValueUnit(props, screenSize, border.unitSync, 'unitSync')) {
@@ -14741,7 +14745,11 @@ function buildBorderCSS(props, screenSize) {
     var _topUnit3 = geHierarchicalPlaceholderValue(props, screenSize, border.top.unit, 'top', 'unit');
     var _topColor = geHierarchicalPlaceholderValue(props, screenSize, border.top.color, 'top', 'color');
     var _topBorderStyle = geHierarchicalPlaceholderValue(props, screenSize, border.top.borderStyle, 'top', 'borderStyle');
-    return "border: ".concat(topValue).concat(_topUnit3, " ").concat(_topBorderStyle, " ").concat(_topColor, ";");
+    var _CSSRule = '';
+    _CSSRule += "".concat(prefix, "-border-top: ").concat(topValue).concat(_topUnit3, " ").concat(_topBorderStyle, " ").concat(_topColor, ";");
+    _CSSRule += "".concat(prefix, "-border-right: ").concat(topValue).concat(_topUnit3, " ").concat(_topBorderStyle, " ").concat(rightColor, ";");
+    _CSSRule += "".concat(prefix, "-border-bottom: ").concat(topValue).concat(_topUnit3, " ").concat(_topBorderStyle, " ").concat(bottomColor, ";");
+    _CSSRule += "".concat(prefix, "-border-left: ").concat(topValue).concat(_topUnit3, " ").concat(_topBorderStyle, " ").concat(leftColor, ";");
   }
   var top = geHierarchicalPlaceholderValue(props, screenSize, border.top.width, 'top', 'width');
   var topUnit = geHierarchicalPlaceholderValue(props, screenSize, border.top.unit, 'top', 'unit');
@@ -14760,10 +14768,10 @@ function buildBorderCSS(props, screenSize) {
   var leftColor = geHierarchicalPlaceholderValue(props, screenSize, border.left.color, 'left', 'color');
   var leftBorderStyle = geHierarchicalPlaceholderValue(props, screenSize, border.left.borderStyle, 'left', 'borderStyle');
   var CSSRule = '';
-  CSSRule += "border-top: ".concat(top).concat(topUnit, " ").concat(topBorderStyle, " ").concat(topColor, ";");
-  CSSRule += "border-right: ".concat(right).concat(rightUnit, " ").concat(rightBorderStyle, " ").concat(rightColor, ";");
-  CSSRule += "border-bottom: ".concat(bottom).concat(bottomUnit, " ").concat(bottomBorderStyle, " ").concat(bottomColor, ";");
-  CSSRule += "border-left: ".concat(left).concat(leftUnit, " ").concat(leftBorderStyle, " ").concat(leftColor, ";");
+  CSSRule += "".concat(prefix, "-border-top: ").concat(top).concat(topUnit, " ").concat(topBorderStyle, " ").concat(topColor, ";");
+  CSSRule += "".concat(prefix, "-border-right: ").concat(right).concat(rightUnit, " ").concat(rightBorderStyle, " ").concat(rightColor, ";");
+  CSSRule += "".concat(prefix, "-border-bottom: ").concat(bottom).concat(bottomUnit, " ").concat(bottomBorderStyle, " ").concat(bottomColor, ";");
+  CSSRule += "".concat(prefix, "-border-left: ").concat(left).concat(leftUnit, " ").concat(leftBorderStyle, " ").concat(leftColor, ";");
   return CSSRule;
 }
 

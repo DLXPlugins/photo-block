@@ -2,7 +2,12 @@ import unitList from '../utils/UnitsList';
 
 const useUnits = () => {
 	// Test if the value starts with a number, decimal or a single dash. Single dash is for negative numbers.
-	const startsWithNumber = ( number ) => /^([-]?\d|[-]?\.)/.test( number );
+	const startsWithNumber = ( number ) => {
+		if ( 0 === number ) {
+			return false;
+		}
+		return /^([-]?\d|[-]?\.)/.test( number );
+	};
 	const getNumericValue = ( values ) => values.length > 0 ? values[ 0 ].trim() : '';
 	const defaultUnitValue = 'px';
 	const getUnitValue = ( values ) => values.length > 1 ? values[ 1 ] : defaultUnitValue;

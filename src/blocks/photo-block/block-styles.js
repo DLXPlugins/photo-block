@@ -58,40 +58,30 @@ const getStyles = (attributes, deviceType, uniqueId ) => {
 	} = attributes;
 	let styles = `
 		#${ uniqueId } .dlx-photo-block__image-wrapper {
-			background: ${ photoBackgroundColor };
-			${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
-			${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
-			${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
-			${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
-			${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
-			${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
-			border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
+			--photo-block-photo-background-color: ${ photoBackgroundColor };
+			--photo-block-photo-container-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
+			--photo-block-photo-container-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
+			--photo-block-photo-container-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
+			--photo-block-photo-container-min-height: ${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
+			--photo-block-photo-container-max-width: ${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
+			--photo-block-photo-container-max-height: ${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
+			--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 		}
-		#${ uniqueId } img {
-			opacity: ${ photoOpacity };
-			${ photoBlur ? `filter: blur(${ photoBlur }px);` : '' }
-			object-fit: ${ photoObjectFit };
-			${ 'none' !== photoObjectFit ? 'height: 100%; width: 100%;' : '' }
-			${
-	'none' !== photoObjectFit && 'custom' !== photoObjectPosition
-		? 'object-position:' + photoObjectPosition + ';'
-		: ''
-}
-			${
-	'none' !== photoObjectFit &&
-				'custom' === photoObjectPosition &&
-				'' !== photoObjectPositionCustom
-		? 'object-position:' + photoObjectPositionCustom + ';'
-		: ''
-}
-			padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
-			margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
-			border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
-			${ buildBorderCSS( photoBorder, deviceType ) }
+		#${ uniqueId } .dlx-photo-block__image-wrapper img {
+			--photo-block-image-opacity: ${ photoOpacity };
+			--photo-block-image-object-fit: ${ photoObjectFit };
+			--photo-block-image-blur: ${ photoBlur }px;
+			--photo-block-image-width: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
+			--photo-block-image-height: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
+			--photo-block-image-object-position: ${ 'custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition };
+			--photo-block-image-padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
+			--photo-block-image-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
+			${ buildBorderCSS( photoBorder, deviceType, '--photo-block-image' ) };
+			--photo-block-image-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 		}
 	`;
 	// Apply outer margin to container.
-	styles += `#${ uniqueId } .dlx-photo-block__figure { margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
+	styles += `#${ uniqueId } .dlx-photo-block__figure { --photo-block-figure-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
 	if ( photoDropShadow.enabled ) {
 		styles += `
 			#${ uniqueId } img {

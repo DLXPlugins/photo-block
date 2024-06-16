@@ -61,14 +61,14 @@ export const getValueWithUnit = ( screenSize, valueObject, cssValue = 'width' ) 
 	// Get RegEx to check for numbers only. IF not a match, then unit should be empty.
 	const numberOnly = width.match( /^(-)?[0-9]+$/ );
 	if ( numberOnly ) {
-		return `${ cssValue }: ${ width }${ unit };`;
+		return `${ width }${ unit };`;
 	}
 
 	if ( ( '' === width || '0' === width ) ) {
-		return '';
+		return 'unset;';
 	}
 	// Build CSS.
-	return `${ cssValue }: ${ width };`;
+	return `${ width };`;
 };
 
 /**
@@ -126,10 +126,11 @@ export function buildDimensionsCSS( props, screenSize ) {
  *
  * @param {Object} props      Dimensions object.
  * @param {string} screenSize mobile|tablet|desktop.
+ * @param {string} prefix     Prefix for CSS rules.
  *
  * @return {string} CSS rules.
  */
-export function buildBorderCSS( props, screenSize ) {
+export function buildBorderCSS( props, screenSize, prefix ) {
 	screenSize = screenSize.toLowerCase();
 	const border = props[ screenSize ];
 
@@ -138,7 +139,12 @@ export function buildBorderCSS( props, screenSize ) {
 		const topUnit = geHierarchicalPlaceholderValue( props, screenSize, border.top.unit, 'top', 'unit' );
 		const topColor = geHierarchicalPlaceholderValue( props, screenSize, border.top.color, 'top', 'color' );
 		const topBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.top.borderStyle, 'top', 'borderStyle' );
-		return `border: ${ topValue }${ topUnit } ${ topBorderStyle } ${ topColor };`;
+
+		let CSSRule = '';
+		CSSRule += `${ prefix }-border-top: ${ topValue }${ topUnit } ${ topBorderStyle } ${ topColor };`;
+		CSSRule += `${ prefix }-border-right: ${ topValue }${ topUnit } ${ topBorderStyle } ${ rightColor };`;
+		CSSRule += `${ prefix }-border-bottom: ${ topValue }${ topUnit } ${ topBorderStyle } ${ bottomColor };`;
+		CSSRule += `${ prefix }-border-left: ${ topValue }${ topUnit } ${ topBorderStyle } ${ leftColor };`;
 	}
 
 	const top = geHierarchicalPlaceholderValue( props, screenSize, border.top.width, 'top', 'width' );
@@ -159,10 +165,10 @@ export function buildBorderCSS( props, screenSize ) {
 	const leftBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.left.borderStyle, 'left', 'borderStyle' );
 
 	let CSSRule = '';
-	CSSRule += `border-top: ${ top }${ topUnit } ${ topBorderStyle } ${ topColor };`;
-	CSSRule += `border-right: ${ right }${ rightUnit } ${ rightBorderStyle } ${ rightColor };`;
-	CSSRule += `border-bottom: ${ bottom }${ bottomUnit } ${ bottomBorderStyle } ${ bottomColor };`;
-	CSSRule += `border-left: ${ left }${ leftUnit } ${ leftBorderStyle } ${ leftColor };`;
+	CSSRule += `${ prefix }-border-top: ${ top }${ topUnit } ${ topBorderStyle } ${ topColor };`;
+	CSSRule += `${ prefix }-border-right: ${ right }${ rightUnit } ${ rightBorderStyle } ${ rightColor };`;
+	CSSRule += `${ prefix }-border-bottom: ${ bottom }${ bottomUnit } ${ bottomBorderStyle } ${ bottomColor };`;
+	CSSRule += `${ prefix }-border-left: ${ left }${ leftUnit } ${ leftBorderStyle } ${ leftColor };`;
 	return CSSRule;
 }
 

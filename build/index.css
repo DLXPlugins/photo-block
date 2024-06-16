@@ -1317,6 +1317,36 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
 .dlx-photo-block__image-wrapper {
   display: flex;
   justify-content: center;
+  background-color: var(--photo-block-photo-background-color);
+  width: var(--photo-block-photo-container-width);
+  height: var(--photo-block-photo-container-height);
+  min-width: var(--photo-block-photo-container-min-width);
+  min-height: var(--photo-block-photo-container-min-height);
+  max-width: var(--photo-block-photo-container-max-width);
+  max-height: var(--photo-block-photo-container-max-height);
+  border-radius: var(--photo-block-photo-border-radius);
+}
+
+.dlx-photo-block__image-wrapper img {
+  opacity: var(--photo-block-image-opacity, 1);
+  -o-object-fit: var(--photo-block-image-object-fit, unset);
+     object-fit: var(--photo-block-image-object-fit, unset);
+  filter: blur(var(--photo-block-image-blur, 0));
+  width: var(--photo-block-image-width, unset);
+  height: var(--photo-block-image-height, unset);
+  -o-object-position: var(--photo-block-image-object-position, center);
+     object-position: var(--photo-block-image-object-position, center);
+  padding: var(--photo-block-image-padding, 0);
+  margin: var(--photo-block-image-margin, 0);
+  border-radius: var(--photo-block-image-border-radius, 0);
+  border-top: var(--photo-block-image-border-top, 0);
+  border-right: var(--photo-block-image-border-right, 0);
+  border-bottom: var(--photo-block-image-border-bottom, 0);
+  border-left: var(--photo-block-image-border-left, 0);
+}
+
+.dlx-photo-block__figure {
+  margin: var(--photo-block-figure-margin, 0);
 }
 
 .dlx-photo-block__caption--has-overlay {

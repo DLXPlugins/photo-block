@@ -84,7 +84,7 @@ const RangeResponsiveControl = ( props ) => {
 					name={ `${ screenSize }.value` }
 					render={ ( { field: { onChange, value } } ) => (
 						<RangeControl
-							value={ parseInt( geHierarchicalPlaceholderValue( props.values, screenSize, getValues( screenSize ).value, 'value' ) )}
+							value={ parseInt( geHierarchicalPlaceholderValue( props.values, screenSize, getValues( screenSize ).value, 'value' ) || 0 ) }
 							onChange={ ( newValue ) => {
 								onChange( newValue );
 							} }
