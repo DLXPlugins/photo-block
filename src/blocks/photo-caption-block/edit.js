@@ -39,6 +39,7 @@ import {
 
 import {
 	useDispatch,
+	useSelect,
 } from '@wordpress/data';
 
 import { isURL } from '@wordpress/url';
@@ -63,7 +64,7 @@ import { generateUniqueId } from '../../utils/Functions';
 import { useInstanceId } from '@wordpress/compose';
 const HtmlToReactParser = require( 'html-to-react' ).Parser;
 
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import SizeResponsiveControl from '../../components/SizeResponsive';
@@ -164,17 +165,42 @@ const fontFamiliesSelect = fontFamilies.map( ( font ) => ( {
 const uniqueIds = [];
 
 const PhotoCaptionBlock = ( props ) => {
-	// Read in context values.
 	const {
-		photoMode,
-		imageFile,
-		hasCaption,
+		attributes,
+		setAttributes,
+		clientId,
+		context,
+		isSelected,
+	} = props;
+
+	const blockUniqueId = context[ 'photo-block/uniqueId' ];
+
+	const {
 		setHasCaption,
-		captionPosition,
 		setCaptionPosition,
+	} = useDispatch( blockStore( blockUniqueId ) );
+
+	// Get current block data.
+	const {
+		imageData,
+		hasCaption,
+		captionPosition,
 		inQueryLoop,
-		blockUniqueId,
-	} = useContext( UploaderContext );
+		photoMode,
+	} = useSelect( ( select ) => {
+		return {
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
+			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
+			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
+			hasCaption: select( blockStore( blockUniqueId ) ).hasCaption(),
+			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
+			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
+			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
+		};
+	} );
 
 	const [ caption, setCaption ] = useState( '' ); // Only applicable if in data mode.
 	const [ captionLoading, setCaptionLoading ] = useState( false ); // Only applicable if in data mode.
@@ -205,8 +231,6 @@ const PhotoCaptionBlock = ( props ) => {
 			`dlx-photo-caption-block`,
 		),
 	} );
-
-	const { attributes, setAttributes, clientId, context, isSelected } = props;
 
 	// Get query loop vars.
 	const { postId } = context;
@@ -332,7 +356,7 @@ const PhotoCaptionBlock = ( props ) => {
 				dataCaptionTypePostAuthorMeta,
 				dataCaptionPostTypeSource,
 				dataCaptionPostTypeAuthorMeta,
-				imageId: imageFile.id,
+				imageId: imageData.id,
 				postId: getPostId(),
 			},
 			`${ photoBlock.restUrl + '/get-caption-by-data' }`,
@@ -352,7 +376,7 @@ const PhotoCaptionBlock = ( props ) => {
 
 	// Do REST request to get dynamic caption if needed.
 	useEffect( () => {
-		if ( imageFile.id === 0 ) {
+		if ( imageData.id === 0 ) {
 			return;
 		}
 		if ( 'data' === photoMode ) {
@@ -361,7 +385,7 @@ const PhotoCaptionBlock = ( props ) => {
 		setAttributes( {
 			photoMode,
 		} );
-	}, [ photoMode, imageFile ] );
+	}, [ photoMode, imageData ] );
 
 	// Select the richtext input and focus on it if block is selected and mode is single line.
 	useEffect( () => {
@@ -1094,6 +1118,7 @@ const PhotoCaptionBlock = ( props ) => {
 							setAttributes={ setAttributes }
 							context={ context }
 							prefix="dataCaption"
+							blockUniqueId={ blockUniqueId }
 						/>
 						<ButtonGroup>
 							<Button
@@ -1563,6 +1588,10 @@ const PhotoCaptionBlock = ( props ) => {
 			</div>
 		</>
 	);
+
+	if ( null === blockUniqueId ) {
+		return null;
+	}
 
 	// Return empty if caption isn't visible.
 	if ( ! isCaptionVisible ) {

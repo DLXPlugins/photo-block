@@ -26,11 +26,12 @@ import {
 	MenuGroup,
 	MenuItem,
 } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import UploaderContext from '../../contexts/UploaderContext';
 import UploadTypes from '../../components/UploadTypes';
 import UploadTarget from '../../components/UploadTarget';
 import UploadStatus from '../../components/UploadStatus';
+import blockStore from '../../store';
 
 /**
  * InitialScreen component.
@@ -39,7 +40,18 @@ import UploadStatus from '../../components/UploadStatus';
  * @return {Function} Component.
  */
 const InitialScreen = ( props ) => {
-	const { screen, isUploading, isProcessingUpload, isUploadError } = useContext( UploaderContext );
+	const { blockUniqueId } = props;
+	const {
+		isUploading,
+		isProcessingUpload,
+		isUploadError,
+	} = useSelect( ( select ) => {
+		return {
+			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
+		};
+	} );
 
 	// Set the local inspector controls.
 	const localInspectorControls = (
@@ -51,12 +63,12 @@ const InitialScreen = ( props ) => {
 			{ localInspectorControls }
 			<div className="dlx-photo-block__screen-initial">
 				{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
-					<UploadTypes attributes={ props.attributes } setAttributes={ props.setAttributes } />
+					<UploadTypes attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } />
 				) }
 				{ ( isUploading || isProcessingUpload || isUploadError ) && (
-					<UploadStatus />
+					<UploadStatus blockUniqueId={ blockUniqueId } />
 				) }
-				<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } />
+				<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } />
 			</div>
 		</>
 	);

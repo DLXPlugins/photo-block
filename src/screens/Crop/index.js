@@ -1,7 +1,7 @@
 import './editor.scss';
 import 'react-image-crop/src/ReactCrop.scss';
 
-import { useContext, useState, forwardRef, useRef } from '@wordpress/element';
+import { useContext, useState, forwardRef, useEffect } from '@wordpress/element';
 import {
 	Spinner,
 	PanelBody,
@@ -25,10 +25,10 @@ import {
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { Check, RotateCcw, RotateCw, Save, X, Lock, Loader2 } from 'lucide-react';
+import { useSelect, useDispatch } from '@wordpress/data';
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
-import UploaderContext from '../../contexts/UploaderContext';
-import { useEffect } from 'react';
+import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import AspectRatioIcon from '../../components/Icons/AspectRatio';
 import ToolbarAspectRatio from '../../components/ToolbarAspectRatio';
@@ -36,9 +36,14 @@ import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFrom
 import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
 
 const CropScreen = ( props ) => {
-	const { screen, imageFile, setScreen, setImageFile } =
-		useContext( UploaderContext );
-	const { attributes, setAttributes } = props;
+
+	const { attributes, setAttributes, blockUniqueId } = props;
+
+	const {
+		setScreen,
+		setImageData,
+		setPhotoMode,
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const [ shouldShowLoading, setShouldShowLoading ] = useState( true );
 	const [ shouldFetchImage, setShouldFetchImage ] = useState( true );
@@ -54,7 +59,7 @@ const CropScreen = ( props ) => {
 	const [ reactCropImageRef, setReactCropImageRef ] = useState( null );
 
 	const {
-		photo,
+		imageData,
 		uniqueId,
 		aspectRatio,
 		aspectRatioUnit,
@@ -64,7 +69,7 @@ const CropScreen = ( props ) => {
 		aspectRatioHeightPixels,
 	} = attributes;
 
-	const { url, id, width, height } = photo;
+	const { url, id, width, height } = imageData;
 
 	/**
 	 * Rotate an image.
@@ -238,7 +243,7 @@ const CropScreen = ( props ) => {
 			const response = await SendCommand(
 				photoBlock.restNonce,
 				{},
-				`${ photoBlock.restUrl + '/get-image' }/id=${ photo.id }`,
+				`${ photoBlock.restUrl + '/get-image' }/id=${ imageData.id }`,
 				'GET'
 			);
 			const { data } = response;
@@ -458,7 +463,7 @@ const CropScreen = ( props ) => {
 					onClick={ () => {
 						const degrees = getDegrees( -90 );
 						setRotateDegrees( degrees );
-						rotateImage( photo.url, degrees ).then( ( newImage ) => {
+						rotateImage( imageData.url, degrees ).then( ( newImage ) => {
 							setFullsizePhoto( newImage );
 							setModifiedPhoto( newImage );
 						} );
@@ -470,7 +475,7 @@ const CropScreen = ( props ) => {
 					onClick={ () => {
 						const degrees = getDegrees( 90 );
 						setRotateDegrees( degrees );
-						rotateImage( photo.url, degrees ).then( ( newImage ) => {
+						rotateImage( imageData.url, degrees ).then( ( newImage ) => {
 							setFullsizePhoto( newImage );
 							setModifiedPhoto( newImage );
 						} );
@@ -517,20 +522,21 @@ const CropScreen = ( props ) => {
 						}
 						setIsSaving( true );
 
-						const croppedImage = cropImage( crop, photo.id, rotateDegrees );
+						const croppedImage = cropImage( crop, imageData.id, rotateDegrees );
 						croppedImage.then( ( imageResponse ) => {
 							const { data } = imageResponse;
 							if ( data.success ) {
-								setImageFile( data.data.attachment );
+								setImageData( data.data.attachment );
 								setAttributes( {
-									photo: data.data.attachment,
+									photoMode: 'photo',
+									imageData: data.data.attachment,
 								} );
+								setPhotoMode( 'photo' );
 								setScreen( 'edit' );
 							} else {
 								// todo: error handling.
 							}
 						} ).catch( ( error ) => {
-							console.log( error );
 						} ).then( () => {
 							setIsSaving( false );
 						} );

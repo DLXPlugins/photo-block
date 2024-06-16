@@ -2,6 +2,7 @@ const path = require( 'path' );
 const defaultConfig = require( './node_modules/@wordpress/scripts/config/webpack.config' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
+const { getWebpackEntryPoints } = require( '@wordpress/scripts/utils/config' );
 module.exports = ( env ) => {
 	return [
 		{
@@ -11,7 +12,23 @@ module.exports = ( env ) => {
 				rules: [ ...defaultConfig.module.rules ],
 			},
 			mode: env.mode,
-			devtool: 'source-map',
+			devtool: env.mode === 'production' ? false : 'source-map',
+		},
+		{
+			module: {
+				...defaultConfig.module,
+				rules: [ ...defaultConfig.module.rules ],
+			},
+			mode: env.mode,
+			devtool: env.mode === 'production' ? false : 'source-map',
+			entry: {
+				premium: './src/premium/index.js',
+			},
+			output: {
+				path: path.resolve( 'premium' ),
+				filename: 'premium.js',
+				clean: true,
+			},
 		},
 		{
 			entry: {

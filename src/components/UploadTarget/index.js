@@ -21,7 +21,9 @@ import { Upload } from 'lucide-react';
 
 import { __ } from '@wordpress/i18n';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import { useDispatch, useSelect } from '@wordpress/data';
+
+import blockStore from '../../store';
 
 // Register filepond plugins.
 registerPlugin(
@@ -32,17 +34,32 @@ registerPlugin(
 
 import { redoSvg, processSvg } from '../../blocks/photo-block/icons/filepond';
 const UploadTarget = ( props ) => {
+
+	const { blockUniqueId } = props;
+
 	const {
-		setImageFile,
-		isUploading,
+		setImageData,
+		setFilepondInstance,
 		setIsUploading,
-		isProcessingUpload,
 		setIsProcessingUpload,
+		setPhotoMode,
 		setIsUploadError,
 		setScreen,
-		setFilepondInstance,
-		setPhotoMode,
-	} = useContext( UploaderContext );
+	} = useDispatch( blockStore( blockUniqueId ) );
+
+	const {
+		currentScreen,
+		isUploading,
+		isProcessingUpload,
+		isUploadError,
+	} = useSelect( ( select ) => {
+		return {
+			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
+			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
+		};
+	} );
 
 	const { setAttributes } = props;
 
@@ -83,11 +100,11 @@ const UploadTarget = ( props ) => {
 									if ( request.status >= 200 && request.status < 300 ) {
 										setAttributes(
 											{
-												photo: JSON.parse( request.responseText ),
+												imageData: JSON.parse( request.responseText ),
 											}
 										);
 										setPhotoMode( 'photo' );
-										setImageFile( JSON.parse( request.responseText ) );
+										setImageData( JSON.parse( request.responseText ) );
 										load( request.responseText );
 									} else {
 										error( 'oh no' );

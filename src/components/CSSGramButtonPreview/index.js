@@ -12,7 +12,9 @@ import { useContext, useState, useEffect } from '@wordpress/element';
 
 import classnames from 'classnames';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import { useSelect, useDispatch } from '@wordpress/data';
+
+import blockStore from '../../store';
 
 /**
  * CSSGramButtonGroup component.
@@ -22,10 +24,6 @@ import UploaderContext from '../../contexts/UploaderContext';
  */
 const CSSGramButtonPreview = ( props ) => {
 	const { filter, label, isSelected, fullUrl, photo } = props;
-
-	// Get context.
-	const {
-	} = useContext( UploaderContext );
 
 	const [ buttonRef, setButtonRef ] = useState( null );
 	const [ showPopOver, setShowPopOver ] = useState( false );

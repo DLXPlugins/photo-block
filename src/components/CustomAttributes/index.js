@@ -14,11 +14,8 @@ import {
 
 } from 'lucide-react';
 
-import { useContext } from '@wordpress/element';
-
 import { __ } from '@wordpress/i18n';
 
-import UploaderContext from '../../contexts/UploaderContext';
 /**
  * DropShadow component.
  *
@@ -27,10 +24,6 @@ import UploaderContext from '../../contexts/UploaderContext';
  */
 const CustomAttributesControl = ( props ) => {
 	const { attributes, setAttributes } = props;
-
-	// Get context.
-	const {
-	} = useContext( UploaderContext );
 
 	const { customAttributes } = attributes;
 

@@ -22,20 +22,18 @@ import {
 	MenuGroup,
 	MenuItem,
 } from '@wordpress/components';
-
+import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
-	store,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { generateUniqueId } from '../../utils/Functions';
 
-import { useSelect } from '@wordpress/data';
+import blockStore from '../../store';
 
-import { useInstanceId } from '@wordpress/compose';
 
-import UploaderContext from '../../contexts/UploaderContext';
 import InitialScreen from '../../screens/Initial';
 //import EffectsScreen from '../../screens/Effects';
 import CaptionAppender from '../../components/CaptionAppender';
@@ -43,35 +41,105 @@ import EditScreen from '../../screens/Edit';
 import CropScreen from '../../screens/Crop';
 import DataScreen from '../../screens/Data';
 import DataEditScreen from '../../screens/DataEdit';
+import LoadingScreen from '../../screens/Loading';
+import FeaturedImageScreen from '../../screens/FeaturedImageEdit';
 
 // For storing unique IDs.
 const uniqueIds = [];
 
 const PhotoBlock = ( props ) => {
+
+	const {
+		attributes,
+		setAttributes,
+		clientId,
+		context,
+		isSelected,
+	} = props;
+
+	const innerBlockCount = useSelect( ( select ) => select( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
+
+	const newUniqueId = 'photo-block-' + clientId.substr( 2, 9 ).replace( '-', '' );
+
+	/**
+	 * Get a unique ID for the block for inline styling if necessary.
+	 */
+	useEffect( () => {
+		if ( null === uniqueId || uniqueIds.includes( uniqueId ) ) {
+			const permUniqueId = newUniqueId;
+
+			setAttributes( { uniqueId: permUniqueId } );
+			setBlockUniqueId( permUniqueId );
+			uniqueIds.push( permUniqueId );
+		} else {
+			setBlockUniqueId( uniqueId );
+			uniqueIds.push( uniqueId );
+		}
+
+		// Set initial state of the block.
+		setImageData( attributes.imageData );
+		setHasCaption( attributes.hasCaption );
+		setCaptionPosition( attributes.captionPosition );
+		setPhotoMode( attributes.photoMode );
+	}, [] );
+
+	const {
+		uniqueId,
+		photo,
+		align,
+		caption,
+		altText,
+		overlayText,
+		overlayTextPosition,
+		paddingSize,
+		marginSize,
+		borderWidth,
+		borderRadiusSize,
+		typographyCaption,
+		dataScreen, /* can be `data`, `data-edit`. */
+	} = props.attributes;
+
 	// Read in context values.
 	const {
-		imageFile,
-		screen,
-		setScreen,
-		isUploading,
-		setIsUploading,
-		isProcessingUpload,
-		setIsProcessingUpload,
-		blockToolbar,
-		isUploadError,
-		hasCaption,
-		setHasCaption,
-		captionPosition,
-		photoMode,
-		setPhotoMode,
 		setBlockUniqueId,
-	} = useContext( UploaderContext );
+		setCaptionPosition,
+		setHasCaption,
+		setImageData,
+		setPhotoMode,
+	} = useDispatch( blockStore( uniqueId ? uniqueId : newUniqueId ) );
+
+	// Get current block data.
+	const {
+		currentScreen,
+		isUploading,
+		isProcessingUpload,
+		isUploadError,
+		filepondInstance,
+		hasCaption,
+		captionPosition,
+		inQueryLoop,
+		photoMode,
+		blockUniqueId,
+	} = useSelect( ( select ) => {
+		return {
+			currentScreen: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).getCurrentScreen(),
+			isUploading: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).isUploadError(),
+			filepondInstance: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).getFilepondInstance(),
+			hasCaption: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).hasCaption(),
+			captionPosition: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).getCaptionPosition(),
+			inQueryLoop: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).inQueryLoop(),
+			photoMode: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).getPhotoMode(),
+			blockUniqueId: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).getBlockUniqueId(),
+		};
+	} );
 
 	const blockProps = useBlockProps( {
 		className: classnames(
 			`dlx-photo-block`,
 			`align${ align }`,
-			`dlx-screen-${ screen }`,
+			`dlx-screen-${ currentScreen }`,
 			`dlx-caption-position-${ captionPosition }`,
 		),
 	} );
@@ -90,35 +158,17 @@ const PhotoBlock = ( props ) => {
 		}
 	}, [ hasCaption ] );
 
+	// Set the screen when it changes.
+	useEffect( () => {
+		setAttributes( {
+			screen: currentScreen,
+		} );
+	}, [ currentScreen ] );
+
 	// Store the filepond upload ref.
-	const filepondRef = useRef( null );
 	const imageRef = useRef( null );
-	const [ captionInnerBlocksRef, setCaptionInnerBlocksRef ] = useState( null );
 
-	const { attributes, setAttributes, clientId, context } = props;
-
-	// Get a function that'll give us the innerblocks count for a custom inserter.
-	const { getBlockCount } = useSelect(
-		( select ) => select( store ),
-		[]
-	);
-	const innerBlocksCount = getBlockCount( clientId );
-
-	const {
-		uniqueId,
-		photo,
-		align,
-		caption,
-		altText,
-		overlayText,
-		overlayTextPosition,
-		paddingSize,
-		marginSize,
-		borderWidth,
-		borderRadiusSize,
-		typographyCaption,
-		dataScreen, /* can be `data`, `data-edit`. */
-	} = attributes;
+	
 
 	// Set caption innerblocks classes.
 	const captionInnerBlocksClasses = classnames(
@@ -129,63 +179,47 @@ const PhotoBlock = ( props ) => {
 	const captionInnerBlockProps = useInnerBlocksProps(
 		{
 			className: captionInnerBlocksClasses,
-			ref: setCaptionInnerBlocksRef,
 		},
 		{
 			allowedBlocks: [ 'dlxplugins/photo-caption-block' ],
 			templateInsertUpdatesSelection: true,
-			renderAppender: () => ( <CaptionAppender numBlocks={ innerBlocksCount } clientId={ clientId } /> ),
+			renderAppender: () => ( isSelected ? <CaptionAppender numBlocks={ innerBlockCount } clientId={ clientId } blockUniqueId={ blockUniqueId } /> : null ),
 		}
 	);
 
-	/**
-	 * Get a unique ID for the block for inline styling if necessary.
-	 */
-	useEffect( () => {
-		if ( null === uniqueId || uniqueIds.includes( uniqueId ) ) {
-			const newUniqueId = 'photo-block-' + clientId.substr( 2, 9 ).replace( '-', '' );
-
-			setAttributes( { uniqueId: newUniqueId } );
-			setBlockUniqueId( newUniqueId );
-			uniqueIds.push( newUniqueId );
-		} else {
-			uniqueIds.push( uniqueId );
-		}
-	}, [] );
-
 	// Set data mode when setting or exiting data mode.
-	useEffect( () => {
-		setAttributes( {
-			photoMode,
-		} );
-	}, [ photoMode ] );
+	// useEffect( () => {
+	// 	setAttributes( {
+	// 		photoMode,
+	// 	} );
+	// }, [ photoMode ] );
 
 	/**
 	 * Get the screen to display.
 	 *
 	 * @return {Element} The screen to display.
 	 */
-	const getCurrentScreen = () => {
-		// If in data mode, show the data screen.
-		if ( 'data' === photoMode ) {
-			if ( 'data' === dataScreen ) {
-				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />;
-			}
-			if ( 'data-edit' === dataScreen ) {
-				return <DataEditScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } />;
-			}
+	const initCurrentScreen = () => {
+		// Don't load interface until uniqueId's are set. We need this to get block state later.
+		if ( null === uniqueId || null === blockUniqueId ) {
+			return null;
 		}
-
 		// Otherwise get the screen based on the current screen.
-		switch ( screen ) {
+		switch ( currentScreen ) {
+			case 'loading':
+				return <LoadingScreen { ...props } blockUniqueId={ blockUniqueId } />;
 			case 'initial':
-				return <InitialScreen attributes={ attributes } setAttributes={ setAttributes } />;
+				return <InitialScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } />;
 			case 'edit':
-				return <EditScreen attributes={ attributes } setAttributes={ setAttributes } ref={ imageRef } innerBlockProps={ captionInnerBlockProps } clientId={ clientId } />;
+				return <EditScreen attributes={ attributes } setAttributes={ setAttributes } ref={ imageRef } innerBlockProps={ captionInnerBlockProps } clientId={ clientId } blockUniqueId={ blockUniqueId } />;
 			case 'crop':
-				return <CropScreen attributes={ attributes } setAttributes={ setAttributes } />;
+				return <CropScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } />;
+			case 'featuredImage':
+				return <FeaturedImageScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } />;
 			case 'data':
-				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } />;
+				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } blockUniqueId={ blockUniqueId } />;
+			case 'data-edit':
+				return <DataEditScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } />;
 			case 'effects':
 				return null;
 				// return (
@@ -198,7 +232,7 @@ const PhotoBlock = ( props ) => {
 	const block = (
 		<>
 			<section className="dlx-photo-block__container dlx-photo-block__block-wrapper" id={ uniqueId }>
-				{ getCurrentScreen() }
+				{ initCurrentScreen() }
 			</section>
 		</>
 	);

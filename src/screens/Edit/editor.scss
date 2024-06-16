@@ -5,10 +5,28 @@
 	.dlx-photo-block__screen-edit-spinner {
 		width: 100%;
 		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	.dlx-photo-block__screen-edit-spinner__logo {
+		width: 100%;
+		text-align: center;
+		margin: 0 0 16px 0;
+
+		svg {
+			width: 72px;
+			height: 72px;
+		}
+	}
+	.dlx-photo-block__screen-edit-spinner__label {
+		margin: 0;
+		padding: 0;
 	}
 	svg.components-spinner {
-		width: 36px;
-		height: 36px;
+		width: 48px;
+		height: 48px;
 	}
 }
 .aligncenter .dlx-photo-block__screen-edit {

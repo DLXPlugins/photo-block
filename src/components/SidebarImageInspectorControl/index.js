@@ -31,7 +31,7 @@ import PanelBodyControl from '../../components/PanelBody';
 const heightUnits = [ 'px', 'em', 'rem', '%', 'vh' ];
 
 const SidebarImageInspectorControl = ( props ) => {
-	const { attributes, setAttributes } = props;
+	const { attributes, setAttributes, blockUniqueId } = props;
 	const {
 		uniqueId,
 		photoOpacity,
@@ -129,6 +129,7 @@ const SidebarImageInspectorControl = ( props ) => {
 				<CSSGramButtonGroup
 					attributes={ attributes }
 					setAttributes={ setAttributes }
+					blockUniqueId={ blockUniqueId }
 				/>
 			</PanelBodyControl>
 			<PanelBodyControl

@@ -8,14 +8,18 @@ import { createBlock } from '@wordpress/blocks';
 
 import { useDispatch } from '@wordpress/data';
 import { Subtitles } from 'lucide-react';
-import UploaderContext from '../../contexts/UploaderContext';
+import { store as blockEditorStore } from '@wordpress/block-editor';
+import blockStore from '../../store';
 
 const CaptionAppender = ( {
 	numBlocks,
 	clientId,
+	blockUniqueId,
 } ) => {
-	const { insertBlock } = useDispatch( store );
-	const { setHasCaption } = useContext( UploaderContext );
+	const { insertBlock } = useDispatch( blockEditorStore );
+	const {
+		setHasCaption,
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	/**
 	 * Add a caption block to the main block.

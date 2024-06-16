@@ -1,7 +1,6 @@
 import './editor.scss';
 
 import {
-	useContext,
 	useState,
 	useEffect,
 	forwardRef,
@@ -22,25 +21,24 @@ import { InspectorControls, InspectorAdvancedControls, BlockControls, MediaUploa
 import { __ } from '@wordpress/i18n';
 import {
 	Image,
-	Accessibility,
 	Link,
-	CaseSensitive,
-	Database,
 	Layers,
 } from 'lucide-react';
-import { useSelect, useDispatch } from '@wordpress/data';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
+import { useDispatch, useSelect } from '@wordpress/data';
 
-import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import useDeviceType from '../../hooks/useDeviceType';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
-import { DataSelect, MetaFieldControl } from '../../components/DataSelect';
 import CustomPresets from '../../components/CustomPresets';
 import getStyles from '../../blocks/photo-block/block-styles';
+import blockStore from '../../store';
+import PhotoBlockIcon from '../../components/Icons/PhotoBlockIcon';
+
+const dataImages = [];
 
 /**
  * Image size.
@@ -51,36 +49,21 @@ for ( const key in photoBlock.imageSizes ) {
 	imageSizeOptions.push( { value: key, label: size.label } );
 }
 
-let dataImage = [];
-
-const DataEditScreen = forwardRef( ( props, ref ) => {
+const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps, context, blockUniqueId } = props;
-	const [ a11yButton, setA11yButton ] = useState( null );
-	const [ a11yPopover, setA11yPopover ] = useState( null );
-	const [ titleButton, setTitleButton ] = useState( null );
-	const [ titlePopover, setTitlePopover ] = useState( null );
+	const { postId } = context;
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ hasImage, setHasImage ] = useState( false );
-	const [ previewImage, setPreviewImage ] = useState( null );
 	const {
 		uniqueId,
-		dataSource,
-		dataImageSource,
-		dataImageSourceCustomField,
-		dataImageSourceAuthorMeta,
-		dataPostType,
-		dataPostId,
 		dataFallbackImage,
 		dataHasFallbackImage,
 		dataFallbackImageSize,
 		dataMediaLinkSource,
-		dataMediaLinkPostMeta,
-		dataMediaLinkImageCustomField,
-		dataMediaLinkAuthorMeta,
+		dataMediaLinkNewTab,
 		imageSize,
-		imageData,
 		photoOpacity,
 		photoBlur,
 		photoDropShadow,
@@ -91,88 +74,37 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	} = attributes;
 
 	const {
-		setScreen,
 		setImageData,
+		setScreen,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
 		captionPosition,
-		inQueryLoop,
 	} = useSelect( ( select ) => {
 		return {
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
-			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
 		};
 	} );
-
-	// Get query loop vars.
-	const { postId, postType } = context;
 
 	const [ deviceType, setDeviceType ] = useDeviceType( 'Desktop' );
 
 	/**
-	 * Get a post ID either from the block or attribute.
-	 *
-	 * @return {number} The post ID.
+	 * Get the image from REST.
 	 */
-	const getPostId = () => {
-		let currentPostId = 0;
-		// If data type is current post, get the current post ID.
-		if ( 'currentPost' === dataSource ) {
-			// Determine if we're in a query block.
-			if ( inQueryLoop ) {
-				currentPostId = postId;
-			} else {
-				currentPostId = wp.data.select( 'core/editor' ).getCurrentPostId();
-			}
-			return currentPostId;
-		}
-		// If data type is post type, get the post ID from the attribute.
-		if ( 'postType' === dataSource && '' !== dataPostId ) {
-			return dataPostId;
-		}
-		return currentPostId;
-	};
-
-	/**
-	 * Set data image to empty array on mount in case someone changes data types.
-	 */
-	useEffect( () => {
-		dataImage = [];
-	}, [] );
-
-	/**
-	 * Set up effect for loading the image initially using data.
-	 */
-	useEffect( () => {
-		const currentPostId = getPostId();
-
-		// Check for array key in dataImage.
-		if ( dataImage[ currentPostId ] ) {
-			setPreviewImage( dataImage[ currentPostId ] );
-			setHasImage( true );
-			setImageLoading( false );
-			return;
-		}
-
+	const getImage = () => {
 		setImageLoading( true );
 		SendCommand(
 			photoBlock.restNonce,
 			{
-				dataSource,
-				dataCurrentPostId: currentPostId,
+				postId,
 				dataImageSize: imageSize,
-				dataImageSource,
-				dataImageSourceCustomField,
-				dataPostType,
-				dataPostId,
 				dataFallbackImage,
 				dataHasFallbackImage,
 				dataFallbackImageSize,
-				dataImageSourceAuthorMeta,
 			},
-			`${ photoBlock.restUrl + '/get-image-by-data' }`,
+			`${ photoBlock.restUrl + '/get-featured-image-by-post-id' }`,
 			'POST'
 		)
 			.then( ( response ) => {
@@ -185,23 +117,12 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 						setHasImage( false );
 						return;
 					}
-
-					// Image must be URL.
-					setHasImage( true );
-					setPreviewImage( data );
-					setImageData( data );
-					dataImage[ currentPostId ] = data;
-					setAttributes( { imageData: data } );
-					return;
 				}
 
 				// If object, set preview image.
 				if ( data.url ) {
 					setHasImage( true );
-					setImageData( data );
-					setPreviewImage( data );
-					dataImage[ currentPostId ] = data;
-					setAttributes( { imageData: data } );
+					dataImages[ postId ] = data;
 				}
 			} )
 			.catch( ( error ) => {
@@ -210,6 +131,33 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			.then( () => {
 				setImageLoading( false );
 			} );
+	};
+
+	/**
+	 * Set up effect for loading the image initially using data.
+	 */
+	useEffect( () => {
+		// Post ID may not be valid when loaded in.
+		if ( 0 === postId ) {
+			return;
+		}
+		setImageLoading( true );
+		// Check for array key in stored data.
+		if ( 'undefined' !== dataImages[ postId ] && 'object' === typeof dataImages[ postId ] ) {
+			setHasImage( true );
+			setImageLoading( false );
+			return;
+		}
+		getImage();
+	}, [ postId ] );
+
+	/**
+	 * Refresh the image when the image size changes or fallback attributes change.
+	 */
+	useEffect( () => {
+		if ( ! imageLoading ) {
+			getImage();
+		}
 	}, [ imageSize, dataFallbackImage, dataFallbackImageSize, dataHasFallbackImage ] );
 
 	// Set settings inspector Controls.
@@ -345,61 +293,17 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	const localInspectorControls = (
 		<InspectorControls>
 			{ settingsInspectorControls }
-			<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } /> 
+			<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> 
 		</InspectorControls>
 	);
 
 	// Set the advanced inspector controls.
 	const advancedInspectorControls = ( <SidebarImageAdvancedInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> );
 
-	/**
-	 * Get a post type label.
-	 *
-	 * @param {string} postTypeValue The post type.
-	 * @return {string} The post type label.
-	 */
-	const getPostTypeLabel = ( postTypeValue ) => {
-		let postTypeLabel = '';
-		photoBlock.postTypes.forEach( ( postTypeOption ) => {
-			if ( postTypeOption.value === postTypeValue ) {
-				postTypeLabel = postTypeOption?.singular ?? postTypeOption.label;
-			}
-		} );
-		return postTypeLabel;
-	};
-
 	const localToolbar = (
 		<>
 			<BlockControls>
 				<ToolbarGroup>
-					<ToolbarButton
-						icon={ <Database /> }
-						label={ __( 'Edit Data', 'photo-block' ) }
-						onClick={ () => {
-							setAttributes( { dataScreen: 'data' } );
-							setScreen( 'data' );
-						} }
-					>
-						{ __( 'Edit Data', 'photo-block' ) }
-					</ToolbarButton>
-				</ToolbarGroup>
-				<ToolbarGroup>
-					<ToolbarButton
-						icon={ <Accessibility /> }
-						label={ __( 'Set Alt Text Dynamic Data', 'photo-block' ) }
-						onClick={ () => {
-							setA11yPopover( ! a11yPopover );
-						} }
-						ref={ setA11yButton }
-					/>
-					<ToolbarButton
-						icon={ <CaseSensitive /> }
-						label={ __( 'Set Title Options', 'photo-block' ) }
-						onClick={ () => {
-							setTitlePopover( ! titlePopover );
-						} }
-						ref={ setTitleButton }
-					/>
 					<ToolbarButton
 						icon={ <Link /> }
 						label={ __( 'Set Link Options', 'photo-block' ) }
@@ -426,66 +330,14 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 						>
 							<option value="none">{ __( 'None', 'photo-block' ) }</option>
 							<optgroup label={ __( 'Media', 'photo-block' ) }>
-								<option value="imageFile">{ __( 'Image File', 'photo-block' ) }</option>
+								<option value="imageData">{ __( 'Image File', 'photo-block' ) }</option>
 								<option value="imageAttachmentPage">{ __( 'Image Attachment Page', 'photo-block' ) }</option>
-								<option value="imageMeta">{ __( 'Image Meta', 'photo-block' ) }</option>
 							</optgroup>
 							<optgroup label={ __( 'Post', 'photo-block' ) }>
 								<option value="postPermalink">{ __( 'Post Permalink', 'photo-block' ) }</option>
-								<option value="customField">{ __( 'Post Meta', 'photo-block' ) }</option>
-							</optgroup>
-							<optgroup label={ __( 'Author', 'photo-block' ) }>
-								<option value="authorPermalink">{ __( 'Author Permalink', 'photo-block' ) }</option>
-								<option value="authorArchive">{ __( 'Author Archive', 'photo-block' ) }</option>
-								<option value="authorMeta">{ __( 'Author Meta', 'photo-block' ) }</option>
 							</optgroup>
 						</SelectControl>
-						{ dataMediaLinkSource === 'customField' && (
-							<MetaFieldControl
-								setAttributes={ setAttributes }
-								attributeName={ 'dataMediaLinkPostMeta' }
-								endpoint={ '/search/custom-fields' }
-								params={ {
-									postType: dataPostType,
-									postId: getPostId(),
-								} }
-								label={ __( 'Select a custom field', 'photo-block' ) }
-								placeholder={ __(
-									'Search for or enter a custom field name',
-									'photo-block'
-								) }
-								currentSuggestion={ dataMediaLinkPostMeta }
-							/>
-						) }
-						{ dataMediaLinkSource === 'imageMeta' && (
-							<MetaFieldControl
-								setAttributes={ setAttributes }
-								attributeName={ 'dataMediaLinkImageCustomField' }
-								params={ {
-									postType: 'attachment',
-									postId: 0,
-								} }
-								currentSuggestion={ dataMediaLinkImageCustomField }
-							/>
-						) }
-						{ dataMediaLinkSource === 'authorMeta' && (
-							<MetaFieldControl
-								setAttributes={ setAttributes }
-								attributeName={ 'dataMediaLinkAuthorMeta' }
-								endpoint={ '/search/author-meta' }
-								params={ {
-									postType: dataPostType,
-									postId: getPostId(),
-								} }
-								label={ __( 'Select an author meta field', 'photo-block' ) }
-								placeholder={ __(
-									'Search for or enter an author meta field',
-									'photo-block'
-								) }
-								currentSuggestion={ dataMediaLinkAuthorMeta }
-							/>
-						) }
-						{ 'imageFile' === dataMediaLinkSource && (
+						{ 'imageData' === dataMediaLinkSource && (
 							<>
 								<PanelBody
 									title={ __( 'Lightbox', 'photo-block' ) }
@@ -505,7 +357,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 										<>
 											<PanelRow>
 												<ToggleControl
-													label={ __( 'Show caption', 'photo-block' ) }
+													label={ __( 'Show caption in Lightbox', 'photo-block' ) }
 													checked={ lightboxShowCaption }
 													onChange={ ( value ) => {
 														setAttributes( { lightboxShowCaption: value } );
@@ -525,7 +377,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 								<PanelRow>
 									<ToggleControl
 										label={ __( 'Open in new tab', 'photo-block' ) }
-										checked={ attributes.dataMediaLinkNewTab }
+										checked={ dataMediaLinkNewTab }
 										onChange={ ( value ) => {
 											if ( '' === attributes.dataMediaLinkRel && value ) {
 												setAttributes( { dataMediaLinkRel: 'noopener noreferrer' } );
@@ -561,38 +413,6 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 								</PanelRow>
 							</PanelBody>
 						) }
-					</div>
-				</Popover>
-			) }
-			{ a11yPopover && (
-				<Popover
-					placement="top-start"
-					anchor={ a11yButton }
-				>
-					<div className="dlx-photo-block__a11y-popover">
-						<DataSelect
-							attributes={ attributes }
-							setAttributes={ setAttributes }
-							title={ __( 'Alt Text Data', 'photo-block' ) }
-							context={ context }
-							prefix="dataAltText"
-						/>
-					</div>
-				</Popover>
-			) }
-			{ titlePopover && (
-				<Popover
-					placement="top-start"
-					anchor={ titleButton }
-				>
-					<div className="dlx-photo-block__a11y-popover">
-						<DataSelect
-							attributes={ attributes }
-							setAttributes={ setAttributes }
-							title={ __( 'Image Title Data', 'photo-block' ) }
-							context={ context }
-							prefix="dataImageTitle"
-						/>
 					</div>
 				</Popover>
 			) }
@@ -633,7 +453,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 			<style>{ styles }{ imageStyles }</style>
 			<div className="dlx-photo-block__screen-edit">
 				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">
-					{ 'top' === captionPosition && (
+					{ ( 'top' === captionPosition && ! imageLoading ) && (
 						<div
 							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
 							{ ...innerBlockProps }
@@ -645,36 +465,35 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 								<div
 									className="dlx-photo-block__screen-edit-spinner"
 									style={ {
-										minWidth: previewImage?.width ?? 500,
-										minHeight: previewImage?.height ?? 500,
+										width: '100%',
+										height: '100%',
+										minWidth: '250px',
+										minHeight: '250px',
 										maxWidth: '100%',
 										maxHeight: '100%',
 									} }
 								>
-									<Spinner />
+									<div className="dlx-photo-block__screen-edit-spinner__logo">
+										<PhotoBlockIcon />
+									</div>
+									<h3 className="dlx-photo-block__screen-edit-spinner__label">
+										{ __( 'Loading Featured Image…', 'photo-block' ) }
+									</h3>
+									<div className="dlx-photo-block__screen-edit-spinner__spinner">
+										<Spinner />
+									</div>
 								</div>
 							)
 						}
 						{
-							( ! imageLoading && hasImage && typeof previewImage.url !== 'undefined' ) && (
+							( ! imageLoading && hasImage && typeof dataImages[ postId ] !== 'undefined' ) && (
 								<img
-									src={ previewImage.url }
+									src={ dataImages[ postId ].url }
 									className={ classnames( `photo-block-${ cssGramFilter }`, {
 										'has-css-gram': cssGramFilter !== 'none',
 									} ) }
-									width={ previewImage.width }
-									height={ previewImage.height }
-									alt=""
-								/>
-							)
-						}
-						{
-							( ! imageLoading && hasImage && typeof previewImage === 'string' ) && (
-								<img
-									src={ previewImage }
-									className={ classnames( `photo-block-${ cssGramFilter }`, {
-										'has-css-gram': cssGramFilter !== 'none',
-									} ) }
+									width={ dataImages[ postId ].width }
+									height={ dataImages[ postId ].height }
 									alt=""
 								/>
 							)
@@ -686,14 +505,14 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 							/>
 						) }
 						{
-							( ! imageLoading && ! hasImage ) && (
+							( ! imageLoading && ( ! hasImage || typeof dataImages[ postId ] === 'undefined' ) ) && (
 								<>
 									Image not found.
 								</>
 							)
 						}
 					</div>
-					{ 'bottom' === captionPosition && (
+					{ ( 'bottom' === captionPosition && ! imageLoading ) && (
 						<div
 							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
 							{ ...innerBlockProps }
@@ -705,4 +524,4 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 	);
 } );
 
-export default DataEditScreen;
+export default FeaturedImageScreen;

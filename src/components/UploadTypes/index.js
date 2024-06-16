@@ -4,11 +4,13 @@
 import './editor.scss';
 
 import {
-	CheckboxControl,
+	ToggleControl,
 	TextControl,
 	Button,
+	Slot,
 } from '@wordpress/components';
 
+import { applyFilters } from '@wordpress/hooks';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
 import {
@@ -21,16 +23,19 @@ import {
 	Save,
 	Loader2,
 	XCircle,
+	ImagePlus,
 	ArrowBigLeftDash,
-	Notice,
+
 } from 'lucide-react';
 
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
+
+import { useContext, useState, useEffect } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
+import { useDispatch, useSelect } from '@wordpress/data';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
 
 import WPNotice from '../../components/Notice';
@@ -42,17 +47,26 @@ import WPNotice from '../../components/Notice';
  * @return {Function} Component.
  */
 const UploadTypes = ( props ) => {
-	const { attributes, setAttributes } = props;
+	const { attributes, setAttributes, context, blockUniqueId } = props;
 
-	// Get context.
 	const {
-		imageFile,
-		setScreen,
-		filepondInstance,
-		setImageFile,
-		photoMode,
+		setImageData,
 		setPhotoMode,
-	} = useContext( UploaderContext );
+		setScreen,
+	} = useDispatch( blockStore( blockUniqueId ) );
+
+	// Get current block data.
+	const {
+		imageData,
+		filepondInstance,
+		photoMode,
+	} = useSelect( ( select ) => {
+		return {
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
+			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
+		};
+	} );
 
 	const [ isUrlSelected, setIsUrlSelected ] = useState( false );
 	const [ url, setUrl ] = useState( '' );
@@ -74,11 +88,21 @@ const UploadTypes = ( props ) => {
 		if ( isUrlSaving ) {
 			return <Loader2 />;
 		}
-		if ( 'manual' === photoMode ) {
-			return <Save />;
+		if ( 'url' === photoMode ) {
+			return <ImagePlus />;
 		}
 		return <Download />;
 	};
+
+	const getUrlLabel = () => {
+		if ( isUrlSaving ) {
+			return __( 'Uploading', 'photo-block' );
+		}
+		if ( 'url' === photoMode ) {
+			return __( 'Add Image', 'photo-block' );
+		}
+		return __( 'Upload', 'photo-block' );
+	}
 
 	/**
 	 * Check for a valid URL before submitting via Ajax.
@@ -93,8 +117,17 @@ const UploadTypes = ( props ) => {
 			return false;
 		}
 
-		// Test the file extension.
-		const validExtensions = [ 'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif' ];
+		/**
+		 * Filter the valid extensions for the photo block.
+		 *
+		 * @param {Array} [ 'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif' ] The default valid extensions.
+		 */
+		const validExtensions = applyFilters(
+			'dlx_photo_block_valid_extensions',
+			[ 'jpg', 'jpeg', 'png', 'gif', 'webp', 'avif' ]
+		);
+
+		// Test for valid extensions.
 		const parseUrl = new URL( testUrl );
 		const path = parseUrl.pathname.toLowerCase();
 
@@ -105,11 +138,15 @@ const UploadTypes = ( props ) => {
 		return (
 			<>
 				<div className="dlx-photo-block__upload-types-checkbox__container">
-					<CheckboxControl
+					<ToggleControl
 						label={ __( 'Save image URL manually.', 'photo-block' ) }
-						checked={ 'manual' === photoMode }
-						onChange={ () => {
-							setPhotoMode( 'manual' );
+						checked={ 'url' === photoMode }
+						onChange={ ( value ) => {
+							if ( value ) {
+								setPhotoMode( 'url' );
+							} else {
+								setPhotoMode( 'image' );
+							}
 						} }
 					/>
 				</div>
@@ -153,7 +190,7 @@ const UploadTypes = ( props ) => {
 							setIsUrlSaving( true );
 							setIsUrlValidationError( false );
 
-							if ( 'manual' !== photoMode ) {
+							if ( 'url' !== photoMode ) {
 								SendCommand(
 									photoBlock.restNonce,
 									{ url },
@@ -163,8 +200,8 @@ const UploadTypes = ( props ) => {
 									// Successful response.
 									const maybeUrl = response.data?.url ?? false; // Double-checking.
 									if ( maybeUrl ) {
-										setAttributes( { photo: response.data } );
-										setImageFile( response.data );
+										setAttributes( { imageData: response.data } );
+										setImageData( response.data );
 										setScreen( 'edit' );
 										setPhotoMode( 'photo' );
 									}
@@ -181,7 +218,7 @@ const UploadTypes = ( props ) => {
 								const newImage = new Image();
 								newImage.src = url;
 								newImage.onload = () => {
-									const selectedMedia = {
+									const urlImageData = {
 										id: 0,
 										url,
 										width: newImage.width,
@@ -189,13 +226,14 @@ const UploadTypes = ( props ) => {
 										alt: '',
 										caption: '',
 									};
-									setAttributes( { photo: selectedMedia, screen: 'edit', photoMode: 'manual' } );
-									setImageFile( selectedMedia );
+
+									setAttributes( { imageData: urlImageData, screen: 'edit', photoMode: 'url' } );
+									setImageData( urlImageData );
 									setScreen( 'edit' );
 								};
 							}
 						} }
-						label={ __( 'Upload', 'photo-block' ) }
+						label={ getUrlLabel() }
 					/>
 					<Button
 						variant="secondary"
@@ -231,7 +269,7 @@ const UploadTypes = ( props ) => {
 		<>
 			<div className="dlx-photo-block__upload-types__container">
 				{
-					( imageFile.url !== '' ) && (
+					( imageData.url !== '' ) && (
 						<Button
 							variant="primary"
 							icon={ <ArrowBigLeftDash /> }
@@ -281,11 +319,11 @@ const UploadTypes = ( props ) => {
 								caption: media.caption,
 							};
 							setAttributes( {
-								photo: selectedMedia,
+								imageData: selectedMedia,
 								screen: 'edit',
 								photoMode: 'photo',
 							} );
-							setImageFile( selectedMedia );
+							setImageData( selectedMedia );
 							setPhotoMode( 'photo' );
 							setScreen( 'edit' );
 						} }
@@ -301,6 +339,10 @@ const UploadTypes = ( props ) => {
 				>
 					{ __( 'URL', 'photo-block' ) }
 				</Button>
+				<Slot
+					name="dlx-photo-block.upload-types"
+					fillProps={ { ...props } }
+				/>
 				<Button
 					variant="secondary"
 					icon={ <Database /> }

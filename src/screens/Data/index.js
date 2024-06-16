@@ -1,22 +1,18 @@
 import './editor.scss';
 
 import {
-	useContext,
 	useState,
-	useEffect,
 	forwardRef,
 } from '@wordpress/element';
 // eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 import {
 	ToolbarGroup,
 	ToolbarButton,
-	ToggleControl,
 	SelectControl,
 	Button,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalHeading as Heading,
 	BaseControl,
-	PanelBody,
 	Card,
 	CardHeader,
 	CardBody,
@@ -24,15 +20,13 @@ import {
 } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 import {
-	InspectorControls,
 	BlockControls,
-	MediaUpload,
-	MediaUploadCheck,
 } from '@wordpress/block-editor';
+import { useDispatch } from '@wordpress/data';
 import { LogOut, Link2, File, FileText, FileKey, Image } from 'lucide-react';
 import classNames from 'classnames';
-import UploaderContext from '../../contexts/UploaderContext';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
+import blockStore from '../../store';
 
 // Image Sizes.
 const imageSizeOptions = [];
@@ -42,7 +36,7 @@ for ( const key in photoBlock.imageSizes ) {
 }
 
 const DataScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes } = props;
+	const { attributes, setAttributes, blockUniqueId } = props;
 	const {
 		dataSource,
 		dataImageSource,
@@ -54,7 +48,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 		dataFallbackImage,
 		dataHasFallbackImage,
 		dataFallbackImageSize,
-		dataScreen, /* can be `data` or `data-edit` */
+		dataScreen, /* can be `initial` or `edit` */
 	} = attributes;
 
 	// Post type suggestion for selecting a post.
@@ -69,7 +63,12 @@ const DataScreen = forwardRef( ( props, ref ) => {
 	const [ currentAuthorMetaSuggestion, setCurrentAuthorMetaSuggestion ] = useState(
 		dataImageSourceAuthorMeta ? dataImageSourceAuthorMeta : false );
 
-	const { setScreen, setPhotoMode, setImageFile } = useContext( UploaderContext );
+	// Load in setters.
+	const {
+		setImageFile,
+		setPhotoMode,
+		setScreen,
+	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const localToolbar = (
 		<>
@@ -472,7 +471,7 @@ const DataScreen = forwardRef( ( props, ref ) => {
 											description: '',
 										};
 										setAttributes( {
-											photo: newPhoto,
+											imageData: newPhoto,
 										} );
 										setImageFile( newPhoto );
 										// Go to data edit screen.

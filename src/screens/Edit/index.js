@@ -29,7 +29,7 @@ import {
 } from '@wordpress/block-editor';
 import { debounce } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
-import { useDispatch, select } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 import {
 	Crop,
@@ -42,8 +42,7 @@ import {
 	Undo2,
 } from 'lucide-react';
 import classnames from 'classnames';
-
-import UploaderContext from '../../contexts/UploaderContext';
+import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import MediaLink from '../../components/MediaLink';
 import useDeviceType from '../../hooks/useDeviceType';
@@ -54,14 +53,12 @@ import CustomPresets from '../../components/CustomPresets';
 import getStyles from '../../blocks/photo-block/block-styles';
 
 const EditScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps, clientId } = props;
+	const { attributes, setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
 	const {
 		uniqueId,
-		photo,
 		imageSize,
 		cssGramFilter,
 	} = attributes;
-	const { url, id, width, height } = photo;
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
@@ -73,15 +70,27 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const [ isSavingTitle, setIsSavingTitle ] = useState( false );
 
 	const {
-		screen,
 		setScreen,
+		setImageData,
+	} = useDispatch( blockStore( blockUniqueId ) );
+
+	// Get current block data.
+	const {
+		imageData,
 		captionPosition,
-		setImageFile,
-		imageFile,
-		originalImageFile,
 		photoMode,
-		setPhotoMode,
-	} = useContext( UploaderContext );
+		originalImageData,
+	} = useSelect( ( select ) => {
+		return {
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
+			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
+			originalImageData: select( blockStore( blockUniqueId ) ).getOriginalImageData(),
+
+		};
+	} );
+
+	const { url, id, width, height } = imageData;
 
 	const { insertBlock, updateBlockAttributes } = useDispatch( store ); // For setting the preset defaults.
 
@@ -89,8 +98,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	// Setup useEffect to update image dimensions if empty.
 	useEffect( () => {
-		if ( photo.url ) {
-			setImageFile( photo );
+		const imageUrl = attributes.imageData?.url || '';
+		if ( '' !== imageUrl ) {
+			setImageData( attributes.imageData );
+			setImageLoading( false );
 		}
 	}, [] );
 
@@ -150,12 +161,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		await SendCommand(
 			photoBlock.restNonce,
 			{},
-			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ photo.id
+			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ imageData.id
 			}/size=${ size }`,
 			'GET'
 		)
 			.then( ( response ) => {
-				setAttributes( { photo: { ...photo, ...response.data } } );
+				setAttributes( { imageData: { ...imageData, ...response.data } } );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
@@ -172,8 +183,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 * @return {boolean} Whether to show the undo button.
 	 */
 	const canShowUndo = () => {
-		const originalImageUrl = originalImageFile?.url;
-		const newImageUrl = photo?.url;
+		const originalImageUrl = originalImageData?.url;
+		const newImageUrl = imageData?.url;
 
 		return originalImageUrl && newImageUrl && originalImageUrl !== newImageUrl;
 	};
@@ -194,7 +205,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		await SendCommand(
 			photoBlock.restNonce,
 			{
-				imageId: photo.id,
+				imageId: imageData.id,
 				altText,
 			},
 			`${ photoBlock.restUrl + '/image/save-alt' }`,
@@ -227,7 +238,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		await SendCommand(
 			photoBlock.restNonce,
 			{
-				imageId: photo.id,
+				imageId: imageData.id,
 				titleText,
 			},
 			`${ photoBlock.restUrl + '/image/save-title' }`,
@@ -274,9 +285,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				<>
 					<TextControl
 						label={ __( 'Photo Title', 'photo-block' ) }
-						value={ photo.title }
+						value={ attributes.imageData.title }
 						onChange={ ( title ) => {
-							setAttributes( { photo: { ...photo, title } } );
+							setAttributes( { imageData: { ...imageData, title } } );
+							setImageData( { ...imageData, title } );
 							handleTitleChange( title );
 						} }
 						className={
@@ -285,7 +297,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							)
 						}
 						placeholder={ __(
-							'Please enter a title for this photo.',
+							'Please enter a title for this imageData.',
 							'photo-block'
 						) }
 					/>
@@ -298,9 +310,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				<>
 					<TextareaControl
 						label={ __( 'Alt Text', 'photo-block' ) }
-						value={ photo.alt }
+						value={ attributes.imageData.alt }
 						onChange={ ( alt ) => {
-							setAttributes( { photo: { ...photo, alt } } );
+							setAttributes( { imageData: { ...imageData, alt } } );
+							setImageData( { ...imageData, alt } );
 							handleAltChange( alt );
 						} }
 						className={
@@ -308,7 +321,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								{ 'is-saving': isSavingAlt }
 							)
 						}
-						placeholder={ __( 'Please describe this photo.', 'photo-block' ) }
+						placeholder={ __( 'Please describe this imageData.', 'photo-block' ) }
 						help={ __(
 							'Alt text provides a description of the photo for screen readers and search engines.',
 							'photo-block'
@@ -342,6 +355,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			<SidebarImageInspectorControl
 				attributes={ attributes }
 				setAttributes={ setAttributes }
+				blockUniqueId={ blockUniqueId }
 			/>
 		</>
 	);
@@ -400,9 +414,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							onClick={ () => {
 								// Change back to original image.
 								setAttributes( {
-									photo: originalImageFile,
+									imageData: originalImageData,
 								} );
-								setImageFile( originalImageFile );
+								setImageData( originalImageData );
 							} }
 						>
 							{ __( 'Undo', 'photo-block' ) }
@@ -433,6 +447,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					attributes={ attributes }
 					setAttributes={ setAttributes }
 					anchorRef={ mediaLinkRef }
+					blockUniqueId={ blockUniqueId }
 				/>
 			) }
 			{ a11yPopover && (
@@ -444,13 +459,14 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<h3>{ __( 'Accessibility Options', 'photo-block' ) }</h3>
 						<TextControl
 							label={ __( 'Photo Title', 'photo-block' ) }
-							value={ photo.title }
+							value={ attributes.imageData.title }
 							onChange={ ( title ) => {
-								setAttributes( { photo: { ...photo, title } } );
+								setAttributes( { imageData: { ...imageData, title } } );
+								setImageData( { ...imageData, title } );
 								handleTitleChange( title );
 							} }
 							placeholder={ __(
-								'Please enter a title for this photo.',
+								'Please enter a title for this imageData.',
 								'photo-block'
 							) }
 							help={ __(
@@ -465,9 +481,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						) }
 						<TextareaControl
 							label={ __( 'Alt Text', 'photo-block' ) }
-							value={ photo.alt }
+							value={ attributes.imageData.alt }
 							onChange={ ( alt ) => {
-								setAttributes( { photo: { ...photo, alt } } );
+								setAttributes( { imageData: { ...imageData, alt } } );
+								setImageData( { ...imageData, alt } );
 								handleAltChange( alt );
 							} }
 							placeholder={ __( 'Please describe this image.', 'photo-block' ) }

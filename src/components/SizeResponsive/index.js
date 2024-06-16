@@ -36,7 +36,6 @@ import classnames from 'classnames';
 import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 
 
-import UploaderContext from '../../contexts/UploaderContext';
 import UnitPicker from '../UnitPicker';
 import { getHierarchicalValueUnit, geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
 import HeadingIconResponsive from '../HeadingIconResponsive';
