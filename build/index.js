@@ -12700,13 +12700,16 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     scrollAfterOpen: false
   }, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Photo Title', 'photo-block'),
-    value: imageData.title,
+    value: attributes.imageData.title,
     onChange: function onChange(title) {
       setAttributes({
         imageData: _objectSpread(_objectSpread({}, imageData), {}, {
           title: title
         })
       });
+      setImageData(_objectSpread(_objectSpread({}, imageData), {}, {
+        title: title
+      }));
       handleTitleChange(title);
     },
     className: classnames__WEBPACK_IMPORTED_MODULE_8___default()('photo-block__title-text', {
@@ -12717,13 +12720,16 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     className: "photo-block__text-saving"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving title text…', 'photo-block')))), /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt Text', 'photo-block'),
-    value: imageData.alt,
+    value: attributes.imageData.alt,
     onChange: function onChange(alt) {
       setAttributes({
         imageData: _objectSpread(_objectSpread({}, imageData), {}, {
           alt: alt
         })
       });
+      setImageData(_objectSpread(_objectSpread({}, imageData), {}, {
+        alt: alt
+      }));
       handleAltChange(alt);
     },
     className: classnames__WEBPACK_IMPORTED_MODULE_8___default()('photo-block__alt-text', {
@@ -12812,13 +12818,16 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     className: "dlx-photo-block__a11y-popover"
   }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Accessibility Options', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Photo Title', 'photo-block'),
-    value: imageData.title,
+    value: attributes.imageData.title,
     onChange: function onChange(title) {
       setAttributes({
         imageData: _objectSpread(_objectSpread({}, imageData), {}, {
           title: title
         })
       });
+      setImageData(_objectSpread(_objectSpread({}, imageData), {}, {
+        title: title
+      }));
       handleTitleChange(title);
     },
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please enter a title for this imageData.', 'photo-block'),
@@ -12827,13 +12836,16 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     className: "photo-block__text-saving"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving title text…', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt Text', 'photo-block'),
-    value: imageData.alt,
+    value: attributes.imageData.alt,
     onChange: function onChange(alt) {
       setAttributes({
         imageData: _objectSpread(_objectSpread({}, imageData), {}, {
           alt: alt
         })
       });
+      setImageData(_objectSpread(_objectSpread({}, imageData), {}, {
+        alt: alt
+      }));
       handleAltChange(alt);
     },
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please describe this image.', 'photo-block'),

@@ -285,9 +285,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				<>
 					<TextControl
 						label={ __( 'Photo Title', 'photo-block' ) }
-						value={ imageData.title }
+						value={ attributes.imageData.title }
 						onChange={ ( title ) => {
 							setAttributes( { imageData: { ...imageData, title } } );
+							setImageData( { ...imageData, title } );
 							handleTitleChange( title );
 						} }
 						className={
@@ -309,9 +310,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				<>
 					<TextareaControl
 						label={ __( 'Alt Text', 'photo-block' ) }
-						value={ imageData.alt }
+						value={ attributes.imageData.alt }
 						onChange={ ( alt ) => {
 							setAttributes( { imageData: { ...imageData, alt } } );
+							setImageData( { ...imageData, alt } );
 							handleAltChange( alt );
 						} }
 						className={
@@ -457,9 +459,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<h3>{ __( 'Accessibility Options', 'photo-block' ) }</h3>
 						<TextControl
 							label={ __( 'Photo Title', 'photo-block' ) }
-							value={ imageData.title }
+							value={ attributes.imageData.title }
 							onChange={ ( title ) => {
 								setAttributes( { imageData: { ...imageData, title } } );
+								setImageData( { ...imageData, title } );
 								handleTitleChange( title );
 							} }
 							placeholder={ __(
@@ -478,9 +481,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						) }
 						<TextareaControl
 							label={ __( 'Alt Text', 'photo-block' ) }
-							value={ imageData.alt }
+							value={ attributes.imageData.alt }
 							onChange={ ( alt ) => {
 								setAttributes( { imageData: { ...imageData, alt } } );
+								setImageData( { ...imageData, alt } );
 								handleAltChange( alt );
 							} }
 							placeholder={ __( 'Please describe this image.', 'photo-block' ) }
