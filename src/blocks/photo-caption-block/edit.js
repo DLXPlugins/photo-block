@@ -1,11 +1,10 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useState, useRef, useContext } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { escapeEditableHTML } from '@wordpress/escape-html';
-import { useSettings } from '@wordpress/block-editor';
-
+import { applyFilters } from '@wordpress/hooks';
 import {
 	BaseControl,
 	PanelBody,
@@ -18,7 +17,6 @@ import {
 	ToolbarGroup,
 	Modal,
 	Popover,
-	TabPanel,
 	MenuGroup,
 	Spinner,
 	RangeControl,
@@ -27,6 +25,7 @@ import {
 } from '@wordpress/components';
 
 import {
+	useSettings,
 	InspectorControls,
 	InspectorAdvancedControls,
 	RichText,
@@ -52,16 +51,12 @@ import {
 	Database,
 	FormInput,
 	Maximize,
-	Settings,
-	Paintbrush,
 	AlignLeft,
 	AlignCenter,
 	AlignRight,
 	Shuffle,
 } from 'lucide-react';
 
-import { generateUniqueId } from '../../utils/Functions';
-import { useInstanceId } from '@wordpress/compose';
 const HtmlToReactParser = require( 'html-to-react' ).Parser;
 
 import blockStore from '../../store';
@@ -157,12 +152,6 @@ const fontFamilies = [
 		type: 'web',
 	},
 ];
-const fontFamiliesSelect = fontFamilies.map( ( font ) => ( {
-	label: font.label,
-	value: font.family,
-} ) );
-
-const uniqueIds = [];
 
 const PhotoCaptionBlock = ( props ) => {
 	const {
@@ -176,26 +165,18 @@ const PhotoCaptionBlock = ( props ) => {
 	const blockUniqueId = context[ 'photo-block/uniqueId' ];
 
 	const {
-		setHasCaption,
 		setCaptionPosition,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
 		imageData,
-		hasCaption,
 		captionPosition,
 		inQueryLoop,
 		photoMode,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
-			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
-			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
-			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
-			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
-			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
-			hasCaption: select( blockStore( blockUniqueId ) ).hasCaption(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
 			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
@@ -211,7 +192,6 @@ const PhotoCaptionBlock = ( props ) => {
 	const [ removeCaptionModalVisible, setRemoveCaptionModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ dataModalVisible, setDataModalVisible ] = useState( false ); // only applicable if in data mode.
 	const [ switchModeModalVisible, setSwitchModeModalVisible ] = useState( false ); // only applicable if in data mode.
-	const [ inspectorTab, setInspectorTab ] = useState( 'settings' ); // Can be settings|styles.
 	const [ isCaptionVisible, setIsCaptionVisible ] = useState( false ); // Make sure caption is positioned correctly before visible render.
 	const [ captionInputRef, setCaptionInputRef ] = useState( null );
 
@@ -409,10 +389,19 @@ const PhotoCaptionBlock = ( props ) => {
 				} );
 			} );
 			const mergedFontFamilies = blockFontFamilies.concat( themeFontFamilies );
-			setBlockFamilies( mergedFontFamilies );
+			/**
+			 * Filter: Filter the font families available for the block.
+			 *
+			 * @param {Array} fontFamilies - The font families.
+			 */
+			setBlockFamilies(
+				applyFilters(
+					'dlx_photo_block_font_families',
+					mergedFontFamilies
+				)
+			);
 		}
 	}, [ blockLevelFontFamilies ] );
-
 
 	const settingsInspectorControls = (
 		<>
