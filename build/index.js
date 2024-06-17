@@ -156,6 +156,12 @@ var PhotoBlock = function PhotoBlock(props) {
    * Get a unique ID for the block for inline styling if necessary.
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    // Check context to see if we're in a query loop.
+    var pid = (context === null || context === void 0 ? void 0 : context.postId) || null;
+    var queryLoop = context.query;
+    if (0 !== pid && null !== pid && 'none' !== queryLoop && typeof queryLoop !== 'undefined') {
+      setInQueryLoop(true);
+    }
     var realUniqueId = null;
     if ((null === uniqueId || uniqueIds.includes(uniqueId)) && !inQueryLoop) {
       var permUniqueId = newUniqueId;
@@ -202,7 +208,7 @@ var PhotoBlock = function PhotoBlock(props) {
       });
       uniqueIds.push(permUniqueId);
       realUniqueId = permUniqueId;
-    } else if (!inQueryLoop) {
+    } else {
       setBlockUniqueId(uniqueId);
       uniqueIds.push(uniqueId);
       realUniqueId = uniqueId;
@@ -242,7 +248,8 @@ var PhotoBlock = function PhotoBlock(props) {
     setCaptionPosition = _useDispatch.setCaptionPosition,
     setHasCaption = _useDispatch.setHasCaption,
     setImageData = _useDispatch.setImageData,
-    setPhotoMode = _useDispatch.setPhotoMode;
+    setPhotoMode = _useDispatch.setPhotoMode,
+    setInQueryLoop = _useDispatch.setInQueryLoop;
 
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
@@ -1738,11 +1745,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
 
   // Set colors and typography for single caption mode and data mode.
   if ('single' === mode || 'data' === photoMode) {
-    styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-text-color: ").concat(captionTextColor, ";\n\t\t\t\t--photo-block-caption-font-family: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontFamily, 'fontFamily'), ";\n\t\t\t\t--photo-block-caption-font-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontSize, 'fontSize')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].fontSizeUnit, 'fontSizeUnit'), ";\n\t\t\t\t--photo-block-caption-font-weight: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontWeight, 'fontWeight'), ";\n\t\t\t\t--photo-block-caption-line-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].lineHeight, 'lineHeight')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].lineHeightUnit, 'lineHeightUnit'), ";\n\t\t\t\t--photo-block-caption-text-transform: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].textTransform, 'textTransform'), ";\n\t\t\t\t--photo-block-caption-letter-spacing: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].letterSpacing, 'letterSpacing')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].letterSpacingUnit, 'letterSpacingUnit'), ";\n\t\t\t\t--photo-block-caption-text-align: ").concat(captionAlign, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a {\n\t\t\t\t--photo-block-caption-link-color: ").concat(captionLinkColor, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a:hover {\n\t\t\t\t--photo-block-caption-link-color-hover: ").concat(captionLinkHoverColor, ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-text-color: ").concat(captionTextColor, ";\n\t\t\t\t--photo-block-caption-font-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontSize, 'fontSize')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].fontSizeUnit, 'fontSizeUnit'), ";\n\t\t\t\t--photo-block-caption-font-weight: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontWeight, 'fontWeight'), ";\n\t\t\t\t--photo-block-caption-line-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].lineHeight, 'lineHeight')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].lineHeightUnit, 'lineHeightUnit'), ";\n\t\t\t\t--photo-block-caption-text-transform: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].textTransform, 'textTransform'), ";\n\t\t\t\t--photo-block-caption-letter-spacing: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].letterSpacing, 'letterSpacing')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].letterSpacingUnit, 'letterSpacingUnit'), ";\n\t\t\t\t--photo-block-caption-text-align: ").concat(captionAlign, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a {\n\t\t\t\t--photo-block-caption-link-color: ").concat(captionLinkColor, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a:hover {\n\t\t\t\t--photo-block-caption-link-color-hover: ").concat(captionLinkHoverColor, ";\n\t\t\t}\n\t\t");
   }
   // Add custom caption.
   if ('custom' === captionTypography[deviceType].fontFamilySlug) {
     styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-font-family: ").concat(captionTypography === null || captionTypography === void 0 ? void 0 : captionTypography.captionCustomTypography, ";\n\t\t\t}\n\t\t");
+  } else {
+    styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-font-family: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_23__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontFamily, 'fontFamily'), ";\n\t\t\t}\n\t\t");
   }
 
   // Set colors and typography for advanced caption mode.

@@ -1407,7 +1407,6 @@ const PhotoCaptionBlock = ( props ) => {
 		styles += `
 			figcaption#${ uniqueId } {
 				--photo-block-caption-text-color: ${ captionTextColor };
-				--photo-block-caption-font-family: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontFamily, 'fontFamily' ) };
 				--photo-block-caption-font-size: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontSize, 'fontSize' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].fontSizeUnit, 'fontSizeUnit' ) };
 				--photo-block-caption-font-weight: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontWeight, 'fontWeight' ) };
 				--photo-block-caption-line-height: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].lineHeight, 'lineHeight' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].lineHeightUnit, 'lineHeightUnit' ) };
@@ -1428,6 +1427,12 @@ const PhotoCaptionBlock = ( props ) => {
 		styles += `
 			figcaption#${ uniqueId } {
 				--photo-block-caption-font-family: ${ captionTypography?.captionCustomTypography };
+			}
+		`;
+	} else {
+		styles += `
+			figcaption#${ uniqueId } {
+				--photo-block-caption-font-family: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontFamily, 'fontFamily' ) };
 			}
 		`;
 	}

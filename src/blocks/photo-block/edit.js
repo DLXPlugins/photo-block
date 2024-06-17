@@ -66,6 +66,13 @@ const PhotoBlock = ( props ) => {
 	 * Get a unique ID for the block for inline styling if necessary.
 	 */
 	useEffect( () => {
+		// Check context to see if we're in a query loop.
+		const pid = context?.postId || null;
+		const queryLoop = context.query;
+		if ( 0 !== pid && null !== pid && 'none' !== queryLoop && typeof queryLoop !== 'undefined' ) {
+			setInQueryLoop( true );
+		}
+
 		let realUniqueId = null;
 		if ( ( null === uniqueId || uniqueIds.includes( uniqueId ) ) && ! inQueryLoop ) {
 			const permUniqueId = newUniqueId;
@@ -108,7 +115,7 @@ const PhotoBlock = ( props ) => {
 			setAttributes( { uniqueId: permUniqueId } );
 			uniqueIds.push( permUniqueId );
 			realUniqueId = permUniqueId;
-		} else if ( ! inQueryLoop ) {
+		} else {
 			setBlockUniqueId( uniqueId );
 			uniqueIds.push( uniqueId );
 			realUniqueId = uniqueId;
@@ -154,6 +161,7 @@ const PhotoBlock = ( props ) => {
 		setHasCaption,
 		setImageData,
 		setPhotoMode,
+		setInQueryLoop,
 	} = useDispatch( blockStore( uniqueId ? uniqueId : newUniqueId ) );
 
 	// Get current block data.
