@@ -64,7 +64,6 @@ import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
-import { DataSelect } from '../../components/DataSelect';
 import SendCommand from '../../utils/SendCommand';
 import TypographyControl from '../../components/Typography';
 import ColorPickerControl from '../../components/ColorPicker';
@@ -174,12 +173,14 @@ const PhotoCaptionBlock = ( props ) => {
 		captionPosition,
 		inQueryLoop,
 		photoMode,
+		currentScreen,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
 			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
+			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
 		};
 	} );
 
@@ -244,18 +245,6 @@ const PhotoCaptionBlock = ( props ) => {
 		containerMinWidth,
 		containerMaxHeight,
 		containerMinHeight,
-		dataCaptionPostTitle,
-		dataCaptionPostId,
-		dataCaptionSource,
-		dataCaptionType,
-		dataCaptionImageCustomField,
-		dataCaptionTypePostCustomField,
-		dataCaptionPostType,
-		dataCaptionPostTypeCustomField,
-		dataCaptionTypePost,
-		dataCaptionTypePostAuthorMeta,
-		dataCaptionPostTypeSource,
-		dataCaptionPostTypeAuthorMeta,
 		overlayVerticalPosition,
 		overlayCaptionVerticalPosition,
 		overlayHorizontalPosition,
@@ -283,7 +272,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
 		{
-			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && enableSmartStyles ) } ),
+			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles ) } ),
 			ref: innerBlocksRef,
 		},
 		{
@@ -301,19 +290,10 @@ const PhotoCaptionBlock = ( props ) => {
 	 */
 	const getPostId = () => {
 		let currentPostId = 0;
-		// If data type is current post, get the current post ID.
-		if ( 'currentImage' === dataCaptionSource ) {
-			// Determine if we're in a query block.
-			if ( inQueryLoop ) {
-				currentPostId = postId;
-			} else {
-				currentPostId = wp.data.select( 'core/editor' ).getCurrentPostId();
-			}
-			return currentPostId;
-		}
-		// If data type is post type, get the post ID from the attribute.
-		if ( 'postType' === dataCaptionSource && '' !== dataCaptionPostId ) {
-			return dataCaptionPostId;
+		if ( inQueryLoop ) {
+			currentPostId = postId;
+		} else {
+			currentPostId = wp.data.select( 'core/editor' ).getCurrentPostId();
 		}
 		return currentPostId;
 	};
@@ -326,27 +306,17 @@ const PhotoCaptionBlock = ( props ) => {
 		SendCommand(
 			photoBlock.restNonce,
 			{
-				dataCaptionPostTitle,
-				dataCaptionPostId,
-				dataCaptionSource,
-				dataCaptionType,
-				dataCaptionImageCustomField,
-				dataCaptionTypePostCustomField,
-				dataCaptionPostType,
-				dataCaptionPostTypeCustomField,
-				dataCaptionTypePost,
-				dataCaptionTypePostAuthorMeta,
-				dataCaptionPostTypeSource,
-				dataCaptionPostTypeAuthorMeta,
-				imageId: imageData.id,
 				postId: getPostId(),
 			},
-			`${ photoBlock.restUrl + '/get-caption-by-data' }`,
+			`${ photoBlock.restUrl + '/get-caption-by-post-id' }`,
 			'POST'
 		)
 			.then( ( response ) => {
-				const { data } = response;
-				setCaption( data );
+				const { data, success } = response.data;
+				if ( ! success ) {
+					return;
+				}
+				setCaption( data.caption );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
@@ -358,11 +328,11 @@ const PhotoCaptionBlock = ( props ) => {
 
 	// Do REST request to get dynamic caption if needed.
 	useEffect( () => {
+		if ( 'featuredImage' === currentScreen ) {
+			getCaptionFromData();
+		}
 		if ( imageData.id === 0 ) {
 			return;
-		}
-		if ( 'data' === photoMode ) {
-			getCaptionFromData();
 		}
 		setAttributes( {
 			photoMode,
@@ -664,7 +634,7 @@ const PhotoCaptionBlock = ( props ) => {
 				title={ __( 'Caption Settings', 'photo-block' ) }
 				initialOpen={ true }
 			>
-				{ ( 'data' === photoMode || 'single' === mode ) && (
+				{ ( 'data' === photoMode || 'single' === mode || 'featuredImage' === photoMode ) && (
 					<PanelRow className="has-typography-panel-row">
 						<TypographyControl
 							values={ captionTypography }
@@ -776,7 +746,7 @@ const PhotoCaptionBlock = ( props ) => {
 						) }
 					</>
 				) }
-				{ ( 'data' === photoMode || 'single' === mode ) && (
+				{ ( 'data' === photoMode || 'single' === mode || 'featuredImage' === photoMode ) && (
 					<>
 						<ColorPickerControl
 							value={ captionBackgroundColor }
@@ -1044,7 +1014,7 @@ const PhotoCaptionBlock = ( props ) => {
 	const localToolbar = (
 		<BlockControls>
 			{
-				( ( 'data' === photoMode || 'single' === mode ) && 'overlay' !== captionPosition ) && (
+				( ( 'data' === photoMode || 'single' === mode || 'featuredImage' === photoMode ) && 'overlay' !== captionPosition ) && (
 					<ToolbarGroup className="dlx-photo-block__caption-align-toolbar-buttons">
 						<ToolbarButton
 							icon={ <AlignLeft /> }
@@ -1085,7 +1055,7 @@ const PhotoCaptionBlock = ( props ) => {
 					{ __( 'Position', 'photo-block' ) }
 				</ToolbarButton>
 			</ToolbarGroup>
-			{ 'data' !== photoMode && (
+			{ ( 'data' !== photoMode && 'featuredImage' !== photoMode ) && (
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <FormInput /> }
@@ -1110,59 +1080,6 @@ const PhotoCaptionBlock = ( props ) => {
 					{ __( 'Remove', 'photo-block' ) }
 				</ToolbarButton>
 			</ToolbarGroup>
-			{
-				( 'data' === photoMode ) && (
-					<ToolbarGroup>
-						<ToolbarButton
-							icon={ <Database /> }
-							label={ __( 'Caption Data', 'photo-block' ) }
-							onClick={ () => {
-								setDataModalVisible( true );
-							} }
-						>
-							{ __( 'Caption Data', 'photo-block' ) }
-						</ToolbarButton>
-					</ToolbarGroup>
-				)
-			}
-			{ dataModalVisible && (
-				<Modal
-					title={ __( 'Caption Data', 'photo-block' ) }
-					onRequestClose={ () => {
-						setDataModalVisible( false );
-					} }
-					className="photo-block__remove-caption-modal"
-				>
-					<div className="dlx-photo-block__a11y-popover">
-						<DataSelect
-							attributes={ attributes }
-							setAttributes={ setAttributes }
-							context={ context }
-							prefix="dataCaption"
-							blockUniqueId={ blockUniqueId }
-						/>
-						<ButtonGroup>
-							<Button
-								variant="primary"
-								onClick={ () => {
-									getCaptionFromData();
-									setDataModalVisible( false );
-								} }
-							>
-								{ __( 'Refresh Caption', 'photo-block' ) }
-							</Button>
-							<Button
-								variant="secondary"
-								onClick={ () => {
-									setDataModalVisible( false );
-								} }
-							>
-								{ __( 'Close', 'photo-block' ) }
-							</Button>
-						</ButtonGroup>
-					</div>
-				</Modal>
-			) }
 			{ switchModeModalVisible && (
 				<Modal
 					title={ 'single' === mode ? __( 'Switch to Multi-Line Mode', 'photo-block' ) : __( 'Switch to Single-Line Mode', 'photo-block' ) }
@@ -1341,10 +1258,11 @@ const PhotoCaptionBlock = ( props ) => {
 	 */
 	const getCaption = () => {
 		const figClasses = classnames( 'dlx-photo-block__caption', {
-			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode ),
+			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ),
 		} );
 
-		if ( 'data' === photoMode ) {
+		// If we're in data mode or a featured image, show the dynamic caption.
+		if ( 'data' === photoMode || 'featuredImage' === photoMode) {
 			if ( captionLoading ) {
 				return (
 					<>
@@ -1403,7 +1321,7 @@ const PhotoCaptionBlock = ( props ) => {
 	`;
 
 	// Set colors and typography for single caption mode and data mode.
-	if ( 'single' === mode || 'data' === photoMode ) {
+	if ( 'single' === mode || 'data' === photoMode || 'featuredImage' === photoMode ) {
 		styles += `
 			figcaption#${ uniqueId } {
 				--photo-block-caption-text-color: ${ captionTextColor };
@@ -1438,7 +1356,7 @@ const PhotoCaptionBlock = ( props ) => {
 	}
 
 	// Set colors and typography for advanced caption mode.
-	if ( 'advanced' === mode && 'data' !== photoMode ) {
+	if ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ) {
 		styles += `
 			figcaption#${ uniqueId } {
 				--photo-block-caption-text-color: ${ captionTextColor };

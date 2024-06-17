@@ -472,54 +472,6 @@
         }
       }
     },
-    "dataCaptionPostTitle": {
-      "type": "string",
-      "default": ""
-    },
-    "dataCaptionPostId": {
-      "type": "string",
-      "default": ""
-    },
-    "dataCaptionSource": {
-      "type": "string",
-      "default": "currentImage"
-    },
-    "dataCaptionType": {
-      "type": "string",
-      "default": "caption"
-    },
-    "dataCaptionImageCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataCaptionTypePostCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataCaptionPostType": {
-      "type": "string",
-      "default": "post"
-    },
-    "dataCaptionPostTypeCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataCaptionTypePost": {
-      "type": "string",
-      "default": "title"
-    },
-    "dataCaptionTypePostAuthorMeta": {
-      "type": "string",
-      "default": ""
-    },
-    "dataCaptionPostTypeSource": {
-      "type": "string",
-      "default": "title"
-    },
-    "dataCaptionPostTypeAuthorMeta": {
-      "type": "string",
-      "default": ""
-    },
     "overlayVerticalPosition": {
       "type": "string",
       "default": "middle"

@@ -112,6 +112,19 @@ class Rest {
 			),
 		);
 
+		// Register a rest route for getting a caption.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/get-caption-by-post-id',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( static::class, 'rest_get_caption_by_post_id' ),
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+			),
+		);
+
 		// Register a route for searching posts/pages.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
@@ -736,6 +749,52 @@ class Rest {
 			}
 		}
 		return '';
+	}
+
+	/**
+	 * Callback function for getting an image caption by post ID.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 *
+	 * @return string The caption, empty string if none.
+	 */
+	public static function rest_get_caption_by_post_id( $request ) {
+		$post_id = absint( $request->get_param( 'postId' ) ); // Can be any image ID.
+
+		// Bail early if no image ID or if zero.
+		if ( ! $post_id ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No image ID provided.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get featured image ID.
+		$image_id = get_post_thumbnail_id( $post_id );
+		if ( ! $image_id ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No featured image found for post.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get the image caption.
+		$image_caption = wp_get_attachment_caption( $image_id );
+		if ( false !== $image_caption ) {
+			wp_send_json_success(
+				array(
+					'caption' => wp_kses_post( $image_caption ),
+				)
+			);
+		}
+
+		wp_send_json_error(
+			array(
+				'message' => __( 'No caption found.', 'photo-block' ),
+			)
+		);
 	}
 
 	/**
