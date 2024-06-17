@@ -168,16 +168,32 @@ var PhotoBlock = function PhotoBlock(props) {
           var newBlockStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.dispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(permUniqueId));
           newBlockStore.setBlockUniqueId(permUniqueId);
           newBlockStore.setPhotoMode(oldStore.getPhotoMode());
-          newBlockStore.setScreen('edit');
           newBlockStore.setCaptionPosition(oldStore.getCaptionPosition());
           newBlockStore.setHasCaption(oldStore.hasCaption());
           newBlockStore.setInQueryLoop(oldStore.inQueryLoop());
           newBlockStore.setImageData(oldStore.getImageData());
-          props.attributes.screen = 'edit';
+
+          // Get the old screen, and if it's not edit, set new screen to initial.
+          var oldScreen = oldStore.getCurrentScreen();
+          var newScreen = 'initial';
+          switch (oldScreen) {
+            case 'edit':
+            case 'crop':
+              newScreen = 'edit';
+              break;
+            default:
+              break;
+          }
+          newBlockStore.setScreen(newScreen);
+          props.attributes.screen = newScreen;
           setAttributes({
-            screen: 'edit'
+            screen: newScreen
           });
         }
+      }
+      // If we're a brand new block, set the unique ID.
+      if (null === uniqueId) {
+        setBlockUniqueId(permUniqueId);
       }
       // We need this for duplicated state so one block doesn't affect another.
       props.attributes.uniqueId = permUniqueId;

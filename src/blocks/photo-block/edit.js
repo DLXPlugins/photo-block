@@ -78,14 +78,30 @@ const PhotoBlock = ( props ) => {
 					const newBlockStore = dispatch( blockStore( permUniqueId ) );
 					newBlockStore.setBlockUniqueId( permUniqueId );
 					newBlockStore.setPhotoMode( oldStore.getPhotoMode() );
-					newBlockStore.setScreen( 'edit' );
 					newBlockStore.setCaptionPosition( oldStore.getCaptionPosition() );
 					newBlockStore.setHasCaption( oldStore.hasCaption() );
 					newBlockStore.setInQueryLoop( oldStore.inQueryLoop() );
 					newBlockStore.setImageData( oldStore.getImageData() );
-					props.attributes.screen = 'edit';
-					setAttributes( { screen: 'edit' } );
+
+					// Get the old screen, and if it's not edit, set new screen to initial.
+					const oldScreen = oldStore.getCurrentScreen();
+					let newScreen = 'initial';
+					switch ( oldScreen ) {
+						case 'edit':
+						case 'crop':
+							newScreen = 'edit';
+							break;
+						default:
+							break;
+					}
+					newBlockStore.setScreen( newScreen );
+					props.attributes.screen = newScreen;
+					setAttributes( { screen: newScreen } );
 				}
+			}
+			// If we're a brand new block, set the unique ID.
+			if ( null === uniqueId ) {
+				setBlockUniqueId( permUniqueId );
 			}
 			// We need this for duplicated state so one block doesn't affect another.
 			props.attributes.uniqueId = permUniqueId;
