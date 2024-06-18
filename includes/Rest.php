@@ -974,6 +974,12 @@ class Rest {
 
 		// Check file extension.
 		$extension = pathinfo( $url, PATHINFO_EXTENSION );
+
+		// Strip all query vars from extension.
+		$extension = explode( '?', $extension );
+		$extension = $extension[0];
+
+		// Start testing.
 		if ( ! $extension ) {
 			return new \WP_Error( 'invalid_url', __( 'File extension not found.', 'photo-block' ), array( 'status' => 400 ) );
 		}
