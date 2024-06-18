@@ -10649,7 +10649,7 @@ __webpack_require__.r(__webpack_exports__);
 // Run after block is initialized.
 (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__.addAction)('dlx_photo_block_has_loaded', 'dlx-photo-block-data-image-type', function (uniqueId) {
   var dataPlugin = (0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__.getPlugin)('dlx-photo-block-data-image-type');
-  return;
+
   // If already defined, return.
   if (dataPlugin) {
     return;

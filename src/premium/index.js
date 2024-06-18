@@ -15,7 +15,7 @@ addAction(
 	'dlx-photo-block-data-image-type',
 	( uniqueId ) => {
 		const dataPlugin = getPlugin( 'dlx-photo-block-data-image-type' );
-return;
+
 		// If already defined, return.
 		if ( dataPlugin ) {
 			return;
