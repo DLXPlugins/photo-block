@@ -22,7 +22,7 @@ const PresetButton = ( props ) => {
 					e.preventDefault();
 					setShowModal( true );
 				} }
-				className="photo-block-preset-button"
+				className="photo-block-global-styles-button"
 				label={ props?.icon ? __( 'This is your default preset.', 'photo-block' ) : null }
 				disabled={ props.disabled ?? false }
 				icon={ props?.icon ?? null }
@@ -35,7 +35,7 @@ const PresetButton = ( props ) => {
 					<Modal
 						title={ __( 'Apply Preset?', 'photo-block' ) }
 						onRequestClose={ () => setShowModal( false ) }
-						className="photo-block-preset-modal"
+						className="photo-block-global-styles-modal"
 					>
 						<p>{ __( 'Are you sure you want to apply this preset? This will override your existing settings.', 'photo-block' ) }</p>
 						<Button
@@ -66,7 +66,7 @@ const PresetButton = ( props ) => {
 
 								setShowModal( false );
 							} }
-							className="photo-block-preset-modal-apply-button"
+							className="photo-block-global-styles-modal-apply-button"
 						>
 							{ __( 'Apply Preset', 'photo-block' ) }
 						</Button>

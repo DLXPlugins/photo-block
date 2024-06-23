@@ -64,7 +64,7 @@ const CustomPresetDeleteModal = ( props ) => {
 		<Modal
 			title={ __( 'Delete Preset', 'photo-block' ) }
 			onRequestClose={ () => setShowDeleteModal( false ) }
-			className="photo-block-preset-modal"
+			className="photo-block-global-styles-modal"
 			shouldCloseOnClickOutside={ false }
 		>
 			<form onSubmit={ handleSubmit( onSubmit ) }>
@@ -76,7 +76,7 @@ const CustomPresetDeleteModal = ( props ) => {
 				<Button
 					type="submit"
 					variant="primary"
-					className="photo-block-preset-modal-apply-button"
+					className="photo-block-global-styles-modal-apply-button"
 					disabled={ isDeleting }
 				>
 					{ isDeleting

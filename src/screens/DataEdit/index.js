@@ -39,7 +39,7 @@ import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
 import { DataSelect, MetaFieldControl } from '../../components/DataSelect';
-import CustomPresets from '../../components/CustomPresets';
+import GlobalStyles from '../../components/GlobalStyles';
 import getStyles from '../../blocks/photo-block/block-styles';
 
 /**
@@ -221,7 +221,7 @@ const DataEditScreen = forwardRef( ( props, ref ) => {
 				icon={ <Layers /> }
 				className="photo-block__inspector-panel"
 			>
-				{ <CustomPresets { ...props } /> }
+				{ <GlobalStyles { ...props } /> }
 			</PanelBody>
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }

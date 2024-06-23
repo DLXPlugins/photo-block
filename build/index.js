@@ -4357,1186 +4357,6 @@ var CustomAttributesControl = function CustomAttributesControl(props) {
 
 /***/ }),
 
-/***/ "./src/components/CustomPresets/CustomPresetContainer.js":
-/*!***************************************************************!*\
-  !*** ./src/components/CustomPresets/CustomPresetContainer.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./context */ "./src/components/CustomPresets/context.js");
-/* harmony import */ var _CustomPresetSaveModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CustomPresetSaveModal */ "./src/components/CustomPresets/CustomPresetSaveModal.js");
-/* harmony import */ var _PresetButtonEdit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./PresetButtonEdit */ "./src/components/CustomPresets/PresetButtonEdit.js");
-/* harmony import */ var _CustomPresetEditModal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./CustomPresetEditModal */ "./src/components/CustomPresets/CustomPresetEditModal.js");
-/* harmony import */ var _CustomPresetDeleteModal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./CustomPresetDeleteModal */ "./src/components/CustomPresets/CustomPresetDeleteModal.js");
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-
-// Read in localized var and determine if user can save or edit presets.
-var canSavePresets = photoBlockUser.canSavePresets;
-var CustomPresetContainer = function CustomPresetContainer(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
-    _useState2 = _slicedToArray(_useState, 2),
-    loading = _useState2[0],
-    setLoading = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('new'),
-    _useState4 = _slicedToArray(_useState3, 2),
-    presetSaveType = _useState4[0],
-    setPresetSaveType = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState6 = _slicedToArray(_useState5, 2),
-    presetSaveLabel = _useState6[0],
-    setPresetSaveLabel = _useState6[1];
-  var setAttributes = props.setAttributes,
-    clientId = props.clientId;
-  var uniqueId = props.attributes.uniqueId;
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_3__["default"]),
-    savedPresets = _useContext.savedPresets,
-    setSavedPresets = _useContext.setSavedPresets,
-    savingPreset = _useContext.savingPreset,
-    setSavingPreset = _useContext.setSavingPreset,
-    editPresets = _useContext.editPresets,
-    setEditPresets = _useContext.setEditPresets,
-    showEditModal = _useContext.showEditModal,
-    showDeleteModal = _useContext.showDeleteModal,
-    setDefaultPreset = _useContext.setDefaultPreset;
-  var presetContainer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (presetContainer.current) {
-      // Perform fetch request to ajax endpoint.
-      var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
-      var data = new FormData();
-      data.append('action', 'dlx_photo_block_load_presets');
-      data.append('nonce', photoBlock.presetLoadNonce);
-      fetch(ajaxUrl, {
-        method: 'POST',
-        body: data,
-        /* get return in json */
-        headers: {
-          Accept: 'application/json'
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (json) {
-        var presets = json.data.presets;
-        setLoading(false);
-        setSavedPresets(presets);
-
-        // Loop through presets and set default.
-        presets.forEach(function (preset) {
-          if (preset.is_default) {
-            setDefaultPreset(preset);
-          }
-        });
-      })["catch"](function (error) {
-        setLoading(false);
-      });
-    }
-  }, [presetContainer]);
-
-  /**
-   * Show a loading spinner.
-   *
-   * @param {string} label Label of the loading spinner.
-   * @return {JSX} Loading spinner.
-   */
-  var showLoading = function showLoading(label) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      className: "photo-block-custom-preset-loading-container"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      className: "photo-block-custom-preset-loading-label"
-    }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Spinner, null));
-  };
-  var getSavedPresets = function getSavedPresets() {
-    if (savedPresets.length > 0) {
-      // Map to preset buttons.
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-        className: "photo-block-presets"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ButtonGroup, null, savedPresets.map(function (preset) {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_PresetButtonEdit__WEBPACK_IMPORTED_MODULE_5__["default"], {
-          key: preset.id,
-          editId: preset.id,
-          title: preset.title,
-          setAttributes: setAttributes,
-          uniqueId: uniqueId,
-          clientId: clientId,
-          slug: preset.slug,
-          photoAttributes: preset.content.attributes.photoAttributes,
-          captionAttributes: preset.content.attributes.captionAttributes,
-          saveNonce: preset.save_nonce,
-          deleteNonce: preset.delete_nonce
-        });
-      })));
-    }
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, canSavePresets ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('No custom presets have been saved yet. Would you like to save a new one?', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('No custom presets have been saved yet.', 'photo-block')));
-  };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, showEditModal && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CustomPresetEditModal__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    editId: showEditModal.editId,
-    title: showEditModal.title,
-    saveNonce: showEditModal.saveNonce
-  }), showDeleteModal && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CustomPresetDeleteModal__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    editId: showDeleteModal.editId,
-    title: showDeleteModal.title,
-    deleteNonce: showDeleteModal.deleteNonce
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "photo-block-custom-preset-container",
-    ref: presetContainer
-  }, loading && showLoading('Loading Presets'), !loading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, getSavedPresets(), canSavePresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "photo-block-custom-preset-actions"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Preset Actions', 'photo-block')), !editPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: 'primary',
-    onClick: function onClick(e) {
-      e.preventDefault();
-      setSavingPreset(true);
-    },
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Save New Preset', 'photo-block')
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Save New Preset', 'photo-block')), !editPresets && !savingPreset && savedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: 'secondary',
-    onClick: function onClick(e) {
-      e.preventDefault();
-      setEditPresets(true);
-    },
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Edit Presets', 'photo-block')
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Edit Presets', 'photo-block')), editPresets && !savingPreset && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: 'primary',
-    onClick: function onClick(e) {
-      e.preventDefault();
-      setEditPresets(false);
-    },
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Exit Edit Mode', 'photo-block')
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Exit Edit Mode', 'photo-block')))), savingPreset && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_CustomPresetSaveModal__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Save Preset', 'photo-block')
-  }, props))));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomPresetContainer);
-
-/***/ }),
-
-/***/ "./src/components/CustomPresets/CustomPresetDeleteModal.js":
-/*!*****************************************************************!*\
-  !*** ./src/components/CustomPresets/CustomPresetDeleteModal.js ***!
-  \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./context */ "./src/components/CustomPresets/context.js");
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-var CustomPresetDeleteModal = function CustomPresetDeleteModal(props) {
-  var title = props.title,
-    editId = props.editId,
-    deleteNonce = props.deleteNonce;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    isDeleting = _useState2[0],
-    setIsDeleting = _useState2[1];
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_3__["default"]),
-    setSavedPresets = _useContext.setSavedPresets,
-    showDeleteModal = _useContext.showDeleteModal,
-    setShowDeleteModal = _useContext.setShowDeleteModal;
-  var getDefaultValues = function getDefaultValues() {
-    return {
-      editId: editId
-    };
-  };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_4__.useForm)({
-      defaultValues: getDefaultValues()
-    }),
-    control = _useForm.control,
-    handleSubmit = _useForm.handleSubmit;
-  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_4__.useFormState)({
-      control: control
-    }),
-    errors = _useFormState.errors;
-  var onSubmit = function onSubmit(formData) {
-    setIsDeleting(true);
-    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
-    var data = new FormData();
-    data.append('action', 'dlx_photo_block_delete_preset');
-    data.append('nonce', deleteNonce);
-    data.append('editId', formData.editId);
-    fetch(ajaxUrl, {
-      method: 'POST',
-      body: data,
-      /* get return in json */
-      headers: {
-        Accept: 'application/json'
-      }
-    }).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      var presets = json.data.presets;
-      setSavedPresets(presets);
-      setIsDeleting(false);
-      setShowDeleteModal(false);
-    })["catch"](function (error) {
-      setIsDeleting(false);
-    });
-  };
-
-  // Don't show modal unless explicitly set.
-  if (!showDeleteModal) {
-    return null;
-  }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Delete Preset', 'photo-block'),
-    onRequestClose: function onRequestClose() {
-      return setShowDeleteModal(false);
-    },
-    className: "photo-block-preset-modal",
-    shouldCloseOnClickOutside: false
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
-    onSubmit: handleSubmit(onSubmit)
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_4__.Controller, {
-    name: "editId",
-    control: control,
-    render: function render(_ref) {
-      var field = _ref.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({
-        type: "hidden"
-      }, field));
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    type: "submit",
-    variant: "primary",
-    className: "photo-block-preset-modal-apply-button",
-    disabled: isDeleting
-  }, isDeleting ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Deleting…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Delete Preset', 'photo-block')), !isDeleting && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: "secondary",
-    onClick: function onClick() {
-      setShowDeleteModal(false);
-    }
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Cancel', 'photo-block'))));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomPresetDeleteModal);
-
-/***/ }),
-
-/***/ "./src/components/CustomPresets/CustomPresetEditModal.js":
-/*!***************************************************************!*\
-  !*** ./src/components/CustomPresets/CustomPresetEditModal.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
-/* harmony import */ var _Notice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Notice */ "./src/components/Notice/index.js");
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./context */ "./src/components/CustomPresets/context.js");
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-var canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
-var CustomPresetEditModal = function CustomPresetEditModal(props) {
-  var _errors$title, _errors$title2;
-  var title = props.title,
-    editId = props.editId,
-    saveNonce = props.saveNonce;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    isSaving = _useState2[0],
-    setIsSaving = _useState2[1];
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_4__["default"]),
-    setSavedPresets = _useContext.setSavedPresets,
-    showEditModal = _useContext.showEditModal,
-    setShowEditModal = _useContext.setShowEditModal,
-    defaultPreset = _useContext.defaultPreset,
-    setDefaultPreset = _useContext.setDefaultPreset;
-  var getDefaultValues = function getDefaultValues() {
-    return {
-      title: title,
-      editId: editId,
-      isDefault: (defaultPreset === null || defaultPreset === void 0 ? void 0 : defaultPreset.id) === editId ? true : false
-    };
-  };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_5__.useForm)({
-      defaultValues: getDefaultValues()
-    }),
-    control = _useForm.control,
-    handleSubmit = _useForm.handleSubmit,
-    getValues = _useForm.getValues;
-  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_5__.useFormState)({
-      control: control
-    }),
-    errors = _useFormState.errors;
-  var onSubmit = function onSubmit(formData) {
-    setIsSaving(true);
-    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
-    var data = new FormData();
-    data.append('action', 'dlx_photo_block_save_preset');
-    data.append('nonce', saveNonce);
-    data.append('editId', formData.editId);
-    data.append('title', formData.title);
-    data.append('isDefault', formData.isDefault ? true : false);
-    fetch(ajaxUrl, {
-      method: 'POST',
-      body: data,
-      /* get return in json */
-      headers: {
-        Accept: 'application/json'
-      }
-    }).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      var presets = json.data.presets;
-      setSavedPresets(presets);
-      setIsSaving(false);
-
-      // Loop through presets and assign default if needed.
-      presets.forEach(function (preset) {
-        if (preset.is_default) {
-          setDefaultPreset(preset);
-        }
-
-        // If none are default, clear default presets.
-        if (!presets.some(function (presetValue) {
-          return presetValue.is_default;
-        })) {
-          setDefaultPreset(null);
-        }
-      });
-
-      // Close the modal.
-      setShowEditModal(false);
-    })["catch"](function (error) {
-      setIsSaving(false);
-    });
-  };
-
-  // Don't show modal unless explicitly set.
-  if (!showEditModal) {
-    return null;
-  }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Update Preset', 'photo-block'),
-    onRequestClose: function onRequestClose() {
-      return setShowEditModal(false);
-    },
-    className: "photo-block-preset-modal",
-    shouldCloseOnClickOutside: false
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
-    onSubmit: handleSubmit(onSubmit)
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_5__.Controller, {
-    name: "title",
-    control: control,
-    rules: {
-      required: true,
-      pattern: /^[a-zA-Z0-9-_ ]+$/
-    },
-    render: function render(_ref) {
-      var field = _ref.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Preset Name', 'photo-block'),
-        className: "is-required"
-      }));
-    }
-  }), 'required' === ((_errors$title = errors.title) === null || _errors$title === void 0 ? void 0 : _errors$title.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This field is required.'),
-    status: "error",
-    politeness: "assertive",
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], null)
-  }), 'pattern' === ((_errors$title2 = errors.title) === null || _errors$title2 === void 0 ? void 0 : _errors$title2.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_3__["default"], {
-    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This field contains invalid characters.'),
-    status: "error",
-    politeness: "assertive",
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], null)
-  }), canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_5__.Controller, {
-    name: "isDefault",
-    control: control,
-    render: function render(_ref2) {
-      var _ref2$field = _ref2.field,
-        _onChange = _ref2$field.onChange,
-        value = _ref2$field.value;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Set Default Preset', 'photo-block'),
-        checked: value,
-        onChange: function onChange(newValue) {
-          return _onChange(newValue);
-        },
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This preset will be applied to all new Photo Blocks.', 'photo-block')
-      });
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_5__.Controller, {
-    name: "editId",
-    control: control,
-    render: function render(_ref3) {
-      var field = _ref3.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({
-        type: "hidden"
-      }, field));
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    type: "submit",
-    variant: "primary",
-    className: "photo-block-preset-modal-apply-button",
-    disabled: isSaving
-  }, isSaving ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Saving…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Apply Changes', 'photo-block')), !isSaving && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: "secondary",
-    onClick: function onClick() {
-      setShowEditModal(false);
-    }
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Cancel', 'photo-block'))));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomPresetEditModal);
-
-/***/ }),
-
-/***/ "./src/components/CustomPresets/CustomPresetSaveModal.js":
-/*!***************************************************************!*\
-  !*** ./src/components/CustomPresets/CustomPresetSaveModal.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/save.js");
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./context */ "./src/components/CustomPresets/context.js");
-/* harmony import */ var _Notice__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Notice */ "./src/components/Notice/index.js");
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-var canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
-var CustomPresetSaveModal = function CustomPresetSaveModal(props) {
-  var _errors$presetTitle2, _errors$presetTitle3, _errors$selectedPrese;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('new'),
-    _useState2 = _slicedToArray(_useState, 2),
-    presetSaveType = _useState2[0],
-    setPresetSaveType = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    isSaving = _useState4[0],
-    setIsSaving = _useState4[1];
-  var title = props.title,
-    attributes = props.attributes,
-    setAttributes = props.setAttributes,
-    clientId = props.clientId;
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_5__["default"]),
-    savedPresets = _useContext.savedPresets,
-    setSavedPresets = _useContext.setSavedPresets,
-    savingPreset = _useContext.savingPreset,
-    setSavingPreset = _useContext.setSavingPreset,
-    defaultPreset = _useContext.defaultPreset,
-    setDefaultPreset = _useContext.setDefaultPreset;
-  var getDefaultValues = function getDefaultValues() {
-    return {
-      presetTitle: '',
-      selectedPreset: null,
-      defaultPreset: false
-    };
-  };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useForm)({
-      defaultValues: getDefaultValues()
-    }),
-    control = _useForm.control,
-    handleSubmit = _useForm.handleSubmit,
-    setValue = _useForm.setValue;
-  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useFormState)({
-      control: control
-    }),
-    errors = _useFormState.errors;
-
-  /**
-   * Retrieve a list of parent and child attributes for the current block.
-   *
-   * @return {Object} Object of attributes with keys photoAttributes, captionAttributes..
-   */
-  var getCurrentAttributes = function getCurrentAttributes() {
-    var _select$getBlocksByCl;
-    // Get the caption block attributes, if any.
-    var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.select)('core/block-editor').getBlocksByClientId(clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
-    var captionBlock = children.find(function (block) {
-      return 'dlxplugins/photo-caption-block' === block.name;
-    });
-    var captionAttributes = captionBlock ? captionBlock.attributes : {};
-
-    // Get the parent block attributes.
-    var parentAttributes = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.select)('core/block-editor').getBlockAttributes(clientId);
-
-    // Merge the parent and child attributes.
-    var allAttributes = {
-      photoAttributes: parentAttributes,
-      captionAttributes: captionAttributes
-    };
-    return allAttributes;
-  };
-  var onSubmit = function onSubmit(formData) {
-    if ('new' === presetSaveType) {
-      saveNewPreset(formData);
-    } else {
-      overridePreset(formData);
-    }
-  };
-
-  /**
-   * Set a default preset if any are set to default. null if no presets are defaults.
-   *
-   * @param {Array} presets Presets array.
-   */
-  var setDefaultFromPresets = function setDefaultFromPresets(presets) {
-    // Loop through presets and assign default if needed.
-    presets.forEach(function (preset) {
-      if (preset.is_default) {
-        setDefaultPreset(preset);
-      }
-
-      // If none are default, clear default presets.
-      if (!presets.some(function (presetValue) {
-        return presetValue.is_default;
-      })) {
-        setDefaultPreset(null);
-      }
-    });
-  };
-
-  /**
-   * Save a new preset via Ajax.
-   *
-   * @param {Array} formData Form data array.
-   */
-  var saveNewPreset = function saveNewPreset(formData) {
-    setIsSaving(true);
-    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
-    var data = new FormData();
-    data.append('action', 'dlx_photo_block_save_presets');
-    data.append('nonce', photoBlock.presetSaveNewNonce);
-    data.append('attributes', JSON.stringify(getCurrentAttributes()));
-    data.append('formData', JSON.stringify(formData));
-    fetch(ajaxUrl, {
-      method: 'POST',
-      body: data,
-      /* get return in json */
-      headers: {
-        Accept: 'application/json'
-      }
-    }).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      var presets = json.data.presets;
-      setIsSaving(false);
-      setSavingPreset(false);
-      setSavedPresets(presets);
-      setDefaultFromPresets(presets);
-    })["catch"](function (error) {
-      setSavingPreset(false);
-    });
-  };
-
-  /**
-   * Save a new preset via Ajax.
-   *
-   * @param {Array} formData Form data array.
-   */
-  var overridePreset = function overridePreset(formData) {
-    setIsSaving(true);
-    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
-    var data = new FormData();
-    data.append('action', 'dlx_photo_block_override_preset');
-    data.append('nonce', photoBlock.presetSaveNewNonce);
-    data.append('attributes', JSON.stringify(getCurrentAttributes()));
-    data.append('editId', formData.selectedPreset);
-    data.append('isDefault', formData.defaultPreset);
-    fetch(ajaxUrl, {
-      method: 'POST',
-      body: data,
-      /* get return in json */
-      headers: {
-        Accept: 'application/json'
-      }
-    }).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      var presets = json.data.presets;
-      setIsSaving(false);
-      setSavingPreset(false);
-      setSavedPresets(presets);
-      setDefaultFromPresets(presets);
-    })["catch"](function (error) {
-      setSavingPreset(false);
-    });
-  };
-
-  /**
-   * Get the preset options in radio group format.
-   *
-   * @return {Array} Array of objects with label and value properties.
-   */
-  var getPresetRadioOptions = function getPresetRadioOptions() {
-    var options = [];
-    savedPresets.forEach(function (preset) {
-      options.push({
-        label: preset.title,
-        value: preset.id + ''
-      });
-    });
-    return options;
-  };
-  var radioOptions = [{
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Save Preset', 'photo-block'),
-    value: 'new'
-  }, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Override Preset', 'photo-block'),
-    value: 'override'
-  }];
-  if (savedPresets.length === 0 || !canSaveDefaultPresets) {
-    radioOptions = [{
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Save Preset', 'photo-block'),
-      value: 'new'
-    }];
-  }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "photo-block-custom-preset-modal"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
-    title: title,
-    onRequestClose: function onRequestClose() {
-      return setSavingPreset(false);
-    },
-    className: "photo-block-preset-modal",
-    shouldCloseOnClickOutside: false
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Save a new preset or override an existing one.', 'photo-block'),
-    className: "photo-block-preset-modal-radio-control",
-    selected: presetSaveType,
-    options: radioOptions,
-    onChange: function onChange(value) {
-      setPresetSaveType(value);
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
-    onSubmit: handleSubmit(onSubmit)
-  }, 'new' === presetSaveType && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "photo-block-preset-modal-new-preset"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
-    name: "presetTitle",
-    control: control,
-    rules: {
-      required: true,
-      pattern: /^[a-zA-Z0-9-_ ]+$/
-    },
-    render: function render(_ref) {
-      var _errors$presetTitle;
-      var field = _ref.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Preset Name', 'photo-block'),
-        className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('photo-block-admin__text-control', {
-          'is-required': true,
-          'has-error': 'required' === ((_errors$presetTitle = errors.presetTitle) === null || _errors$presetTitle === void 0 ? void 0 : _errors$presetTitle.type)
-        })
-      }));
-    }
-  }), 'required' === ((_errors$presetTitle2 = errors.presetTitle) === null || _errors$presetTitle2 === void 0 ? void 0 : _errors$presetTitle2.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('The Preset Name field is required.'),
-    status: "error",
-    politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
-  }), 'pattern' === ((_errors$presetTitle3 = errors.presetTitle) === null || _errors$presetTitle3 === void 0 ? void 0 : _errors$presetTitle3.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('This Preset Name field contains invalid characters.'),
-    status: "error",
-    politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
-  }))), 'override' === presetSaveType && canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, savedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "photo-block-preset-modal-override-preset"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
-    name: "selectedPreset",
-    control: control,
-    rules: {
-      required: true
-    },
-    render: function render(_ref2) {
-      var _ref2$field = _ref2.field,
-        _onChange = _ref2$field.onChange,
-        value = _ref2$field.value;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Select a preset to override', 'photo-block'),
-        className: "is-required",
-        selected: value,
-        options: getPresetRadioOptions(),
-        onChange: function onChange(radioValue) {
-          return _onChange(radioValue);
-        }
-      });
-    }
-  }), 'required' === ((_errors$selectedPrese = errors.selectedPreset) === null || _errors$selectedPrese === void 0 ? void 0 : _errors$selectedPrese.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('This field is required.'),
-    status: "error",
-    politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
-  }))), canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
-    name: "defaultPreset",
-    control: control,
-    render: function render(_ref3) {
-      var _ref3$field = _ref3.field,
-        _onChange2 = _ref3$field.onChange,
-        value = _ref3$field.value;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Make This Preset the Default', 'photo-block'),
-        checked: value,
-        onChange: function onChange(newValue) {
-          return _onChange2(newValue);
-        },
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('If this preset is selected as the default, it will be applied to all new photo blocks.', 'photo-block')
-      });
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "photo-block-preset-modal-button-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    type: "submit",
-    variant: "primary",
-    className: "photo-block-preset-modal-apply-button",
-    disabled: isSaving,
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null)
-  }, isSaving ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Saving…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Save Preset', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: "secondary",
-    onClick: function onClick() {
-      setSavingPreset(false);
-    },
-    className: "photo-block-preset-modal-cancel-button",
-    disabled: isSaving
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Cancel', 'photo-block'))))));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomPresetSaveModal);
-
-/***/ }),
-
-/***/ "./src/components/CustomPresets/PresetButton.js":
-/*!******************************************************!*\
-  !*** ./src/components/CustomPresets/PresetButton.js ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__);
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-var PresetButton = function PresetButton(props) {
-  var _props$disabled, _props$icon;
-  var setAttributes = props.setAttributes,
-    label = props.label,
-    photoAttributes = props.photoAttributes,
-    captionAttributes = props.captionAttributes,
-    uniqueId = props.uniqueId,
-    clientId = props.clientId;
-
-  // Define state for modal options.
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    showModal = _useState2[0],
-    setShowModal = _useState2[1];
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store),
-    insertBlock = _useDispatch.insertBlock,
-    updateBlockAttributes = _useDispatch.updateBlockAttributes;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: 'secondary',
-    onClick: function onClick(e) {
-      e.preventDefault();
-      setShowModal(true);
-    },
-    className: "photo-block-preset-button",
-    label: props !== null && props !== void 0 && props.icon ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This is your default preset.', 'photo-block') : null,
-    disabled: (_props$disabled = props.disabled) !== null && _props$disabled !== void 0 ? _props$disabled : false,
-    icon: (_props$icon = props === null || props === void 0 ? void 0 : props.icon) !== null && _props$icon !== void 0 ? _props$icon : null,
-    showTooltip: props !== null && props !== void 0 && props.icon ? true : false
-  }, label), showModal && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Apply Preset?', 'photo-block'),
-    onRequestClose: function onRequestClose() {
-      return setShowModal(false);
-    },
-    className: "photo-block-preset-modal"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Are you sure you want to apply this preset? This will override your existing settings.', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: "primary",
-    onClick: function onClick() {
-      var _select$getBlocksByCl;
-      // Get unique ID for the caption block.
-      var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)('core/block-editor').getBlocksByClientId(clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
-      var captionBlock = children.find(function (block) {
-        return 'dlxplugins/photo-caption-block' === block.name;
-      });
-
-      // Get unique ID for the photo block.
-      var uniqueIdAttribute = {
-        uniqueId: uniqueId
-      };
-      var photoBlockAttributes = _objectSpread(_objectSpread({}, photoAttributes), uniqueIdAttribute);
-
-      // Apply attributes for photo block.
-      setAttributes(photoBlockAttributes);
-
-      // If there is no caption block, but there are attributes to apply, create one.
-      if (!captionBlock && captionAttributes) {
-        var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__.createBlock)('dlxplugins/photo-caption-block', captionAttributes);
-        insertBlock(newBlocks, undefined, clientId);
-      }
-
-      // If there is a caption block and attributes to apply, apply them.
-      if (captionBlock && captionAttributes) {
-        var captionBlockAttributes = _objectSpread(_objectSpread({}, captionAttributes), uniqueIdAttribute);
-        updateBlockAttributes(captionBlock.clientId, captionBlockAttributes);
-      }
-      setShowModal(false);
-    },
-    className: "photo-block-preset-modal-apply-button"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Apply Preset', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: "secondary",
-    onClick: function onClick() {
-      setShowModal(false);
-    }
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Cancel', 'photo-block')))));
-};
-PresetButton.propTypes = {
-  setAttributes: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().func).isRequired,
-  label: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().string).isRequired,
-  presetData: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().object).isRequired
-};
-PresetButton.defaultProps = {
-  label: 'Purple',
-  setAttributes: function setAttributes() {},
-  presetData: {}
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PresetButton);
-
-/***/ }),
-
-/***/ "./src/components/CustomPresets/PresetButtonEdit.js":
-/*!**********************************************************!*\
-  !*** ./src/components/CustomPresets/PresetButtonEdit.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/pen-line.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash-2.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/star.js");
-/* harmony import */ var _PresetButton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./PresetButton */ "./src/components/CustomPresets/PresetButton.js");
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./context */ "./src/components/CustomPresets/context.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-var PresetButtonEdit = function PresetButtonEdit(props) {
-  var _defaultPreset$id;
-  var title = props.title,
-    setAttributes = props.setAttributes,
-    photoAttributes = props.photoAttributes,
-    captionAttributes = props.captionAttributes,
-    uniqueId = props.uniqueId,
-    editId = props.editId,
-    clientId = props.clientId,
-    saveNonce = props.saveNonce,
-    deleteNonce = props.deleteNonce;
-  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_5__["default"]),
-    editPresets = _useContext.editPresets,
-    setShowEditModal = _useContext.setShowEditModal,
-    setShowDeleteModal = _useContext.setShowDeleteModal,
-    defaultPreset = _useContext.defaultPreset;
-
-  // Detect when a default preset has been changed, and update the preset ID in state.
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)((_defaultPreset$id = defaultPreset === null || defaultPreset === void 0 ? void 0 : defaultPreset.id) !== null && _defaultPreset$id !== void 0 ? _defaultPreset$id : 0),
-    _useState2 = _slicedToArray(_useState, 2),
-    defaultPresetId = _useState2[0],
-    setDefaultPresetId = _useState2[1];
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if ((defaultPreset === null || defaultPreset === void 0 ? void 0 : defaultPreset.id) !== defaultPresetId) {
-      var _defaultPreset$id2;
-      setDefaultPresetId((_defaultPreset$id2 = defaultPreset === null || defaultPreset === void 0 ? void 0 : defaultPreset.id) !== null && _defaultPreset$id2 !== void 0 ? _defaultPreset$id2 : 0);
-    }
-  }, [defaultPreset]);
-
-  /**
-   * Check whether a preset is a default or not.
-   *
-   * @return {boolean} Whether the preset is the default preset
-   */
-  var isPresetDefault = function isPresetDefault() {
-    return defaultPresetId === editId && 0 !== defaultPresetId;
-  };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('photo-block-preset-edit-container', {
-      'photo-block-preset-edit-container--edit': editPresets
-    })
-  }, editPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "photo-block-preset-edit-buttons"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: 'secondary',
-    onClick: function onClick(e) {
-      setShowEditModal({
-        show: true,
-        editId: editId,
-        title: title,
-        saveNonce: saveNonce,
-        isDefault: isPresetDefault()
-      });
-    },
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Edit Preset', 'photo-block'),
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], null),
-    className: "photo-block-preset-edit-button"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-    variant: 'secondary',
-    onClick: function onClick(e) {
-      setShowDeleteModal({
-        show: true,
-        editId: editId,
-        deleteNonce: deleteNonce
-      });
-    },
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Delete Preset', 'photo-block'),
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], null),
-    className: "photo-block-preset-delete-button"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_PresetButton__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    key: editId,
-    label: '' === title ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Untitled Preset', 'photo-block') : title,
-    setAttributes: setAttributes,
-    uniqueId: uniqueId,
-    className: "photo-block-preset-button",
-    clientId: clientId,
-    photoAttributes: photoAttributes,
-    captionAttributes: captionAttributes,
-    disabled: editPresets,
-    icon: isPresetDefault() ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], null) : null
-  })));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PresetButtonEdit);
-
-/***/ }),
-
-/***/ "./src/components/CustomPresets/context.js":
-/*!*************************************************!*\
-  !*** ./src/components/CustomPresets/context.js ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-var CustomPresetsContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomPresetsContext);
-
-/***/ }),
-
-/***/ "./src/components/CustomPresets/index.js":
-/*!***********************************************!*\
-  !*** ./src/components/CustomPresets/index.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/CustomPresets/editor.scss");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./context */ "./src/components/CustomPresets/context.js");
-/* harmony import */ var _CustomPresetContainer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CustomPresetContainer */ "./src/components/CustomPresets/CustomPresetContainer.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-var CustomPresets = function CustomPresets(props) {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
-    _useState2 = _slicedToArray(_useState, 2),
-    savedPresets = _useState2[0],
-    setSavedPresets = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    savingPreset = _useState4[0],
-    setSavingPreset = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState6 = _slicedToArray(_useState5, 2),
-    editPresets = _useState6[0],
-    setEditPresets = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState8 = _slicedToArray(_useState7, 2),
-    showEditModal = _useState8[0],
-    setShowEditModal = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState10 = _slicedToArray(_useState9, 2),
-    showDeleteModal = _useState10[0],
-    setShowDeleteModal = _useState10[1];
-  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
-    _useState12 = _slicedToArray(_useState11, 2),
-    defaultPreset = _useState12[0],
-    setDefaultPreset = _useState12[1];
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_context__WEBPACK_IMPORTED_MODULE_2__["default"].Provider, {
-    value: {
-      savedPresets: savedPresets,
-      setSavedPresets: setSavedPresets,
-      savingPreset: savingPreset,
-      setSavingPreset: setSavingPreset,
-      editPresets: editPresets,
-      setEditPresets: setEditPresets,
-      showEditModal: showEditModal,
-      setShowEditModal: setShowEditModal,
-      showDeleteModal: showDeleteModal,
-      setShowDeleteModal: setShowDeleteModal,
-      defaultPreset: defaultPreset,
-      setDefaultPreset: setDefaultPreset
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_CustomPresetContainer__WEBPACK_IMPORTED_MODULE_3__["default"], props));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CustomPresets);
-
-/***/ }),
-
 /***/ "./src/components/DataSelect/index.js":
 /*!********************************************!*\
   !*** ./src/components/DataSelect/index.js ***!
@@ -6692,6 +5512,783 @@ var DropShadowControl = function DropShadowControl(props) {
   })))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DropShadowControl);
+
+/***/ }),
+
+/***/ "./src/components/GlobalStyles/GlobalStylesContainer.js":
+/*!**************************************************************!*\
+  !*** ./src/components/GlobalStyles/GlobalStylesContainer.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/layers.js");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./context */ "./src/components/GlobalStyles/context.js");
+/* harmony import */ var _GlobalStylesSaveModal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./GlobalStylesSaveModal */ "./src/components/GlobalStyles/GlobalStylesSaveModal.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+// import PresetButtonEdit from './PresetButtonEdit';
+// import CustomPresetEditModal from './CustomPresetEditModal';
+// import CustomPresetDeleteModal from './CustomPresetDeleteModal';
+
+// Read in localized var and determine if user can save or edit presets.
+var canSavePresets = photoBlockUser.canSavePresets;
+var GlobalStylesContainer = function GlobalStylesContainer(props) {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    loading = _useState2[0],
+    setLoading = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('new'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    presetSaveType = _useState4[0],
+    setPresetSaveType = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState6 = _slicedToArray(_useState5, 2),
+    presetSaveLabel = _useState6[0],
+    setPresetSaveLabel = _useState6[1];
+  var setAttributes = props.setAttributes,
+    clientId = props.clientId;
+  var _props$attributes = props.attributes,
+    uniqueId = _props$attributes.uniqueId,
+    globalStyle = _props$attributes.globalStyle;
+  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_6__["default"]),
+    savedPresets = _useContext.savedPresets,
+    setSavedPresets = _useContext.setSavedPresets,
+    savingPreset = _useContext.savingPreset,
+    setSavingPreset = _useContext.setSavingPreset,
+    editPresets = _useContext.editPresets,
+    setEditPresets = _useContext.setEditPresets,
+    showEditModal = _useContext.showEditModal,
+    showDeleteModal = _useContext.showDeleteModal,
+    setDefaultPreset = _useContext.setDefaultPreset;
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
+      return {
+        getGlobalStyles: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]).getGlobalStyles,
+        getGlobalStyleBySlug: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]).getGlobalStyleBySlug
+      };
+    }),
+    getGlobalStyles = _useSelect.getGlobalStyles,
+    getGlobalStyleBySlug = _useSelect.getGlobalStyleBySlug;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]),
+    setGlobalStyle = _useDispatch.setGlobalStyle;
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store),
+    updateBlockAttributes = _useDispatch2.updateBlockAttributes,
+    insertBlock = _useDispatch2.insertBlock;
+  var getDefaultValues = function getDefaultValues() {
+    return {
+      selectedGlobalStyle: '',
+      applyAsPreset: false
+    };
+  };
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useForm)({
+      defaultValues: getDefaultValues()
+    }),
+    control = _useForm.control,
+    handleSubmit = _useForm.handleSubmit,
+    setValue = _useForm.setValue,
+    trigger = _useForm.trigger,
+    setError = _useForm.setError,
+    clearErrors = _useForm.clearErrors,
+    getValues = _useForm.getValues;
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useFormState)({
+      control: control
+    }),
+    errors = _useFormState.errors;
+  var globalStyleContainer = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+
+  /**
+   * Show a loading spinner.
+   *
+   * @param {string} label Label of the loading spinner.
+   * @return {JSX} Loading spinner.
+   */
+  var showLoading = function showLoading(label) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "photo-block-global-styles-loading-container"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "photo-block-global-styles-loading-label"
+    }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Spinner, null));
+  };
+  var onSubmit = function onSubmit(formData) {
+    var _select$getBlocksByCl;
+    var globalStyleSlug = formData.selectedGlobalStyle;
+    if ('none' === globalStyleSlug) {
+      setError('selectedGlobalStyle', {
+        type: 'manual',
+        message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Please select a global style.', 'photo-block')
+      });
+      return;
+    }
+
+    // Get the global style data.
+    var currentGlobalStyle = getGlobalStyleBySlug(globalStyleSlug);
+
+    // IF the global style is not found, return.
+    if (!(currentGlobalStyle !== null && currentGlobalStyle !== void 0 && currentGlobalStyle.content)) {
+      setError('selectedGlobalStyle', {
+        type: 'manual',
+        message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Global style not found.', 'photo-block')
+      });
+      return;
+    }
+
+    // Get unique ID for the caption block.
+    var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)('core/block-editor').getBlocksByClientId(clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
+    var captionBlock = children.find(function (block) {
+      return 'dlxplugins/photo-caption-block' === block.name;
+    });
+
+    // Get unique ID for the photo block.
+    var uniqueIdAttribute = {
+      uniqueId: uniqueId
+    };
+    var photoBlockAttributes = _objectSpread(_objectSpread({}, currentGlobalStyle.content.photoAttributes), uniqueIdAttribute);
+    var captionAttributes = currentGlobalStyle.content.captionAttributes;
+
+    // Apply attributes for current photo block.
+    setAttributes(photoBlockAttributes);
+
+    // Set the global style attribute.
+    setAttributes({
+      globalStyle: globalStyleSlug
+    });
+
+    // If there is no caption block, but there are attributes to apply, create one.
+    if (!captionBlock && captionAttributes) {
+      var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.createBlock)('dlxplugins/photo-caption-block', captionAttributes);
+      insertBlock(newBlocks, undefined, clientId);
+    }
+
+    // If there is a caption block and attributes to apply, apply them.
+    if (captionBlock && captionAttributes) {
+      var captionBlockAttributes = _objectSpread(_objectSpread({}, captionAttributes), uniqueIdAttribute);
+      updateBlockAttributes(captionBlock.clientId, captionBlockAttributes);
+    }
+  };
+  var getSavedPresets = function getSavedPresets() {
+    var styles = getGlobalStyles();
+    var styleSelect = [{
+      value: 'none',
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Select a Global Style', 'photo-block')
+    }];
+    if (Object.keys(styles).length > 0) {
+      // Append to the select options.
+      Object.keys(styles).forEach(function (key) {
+        styleSelect.push({
+          value: styles[key].slug,
+          label: styles[key].title
+        });
+      });
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+        onSubmit: handleSubmit(onSubmit)
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+        name: "selectedGlobalStyle",
+        control: control,
+        render: function render(_ref) {
+          var field = _ref.field;
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.SelectControl, _extends({}, field, {
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Select a Global Style', 'photo-block'),
+            options: styleSelect,
+            onChange: function onChange(newValue) {
+              field.onChange(newValue);
+            },
+            value: globalStyle || 'none'
+          }));
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+        name: "applyAsPreset",
+        control: control,
+        render: function render(_ref2) {
+          var field = _ref2.field;
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.CheckboxControl, _extends({}, field, {
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Apply as a Preset Only', 'photo-block'),
+            onChange: function onChange(newValue) {
+              field.onChange(newValue);
+            }
+          }));
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+        type: "submit",
+        variant: "secondary",
+        className: "photo-block-global-styles-modal-apply-button",
+        disabled: getValues('selectedGlobalStyle') === 'none'
+      }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Apply Global Style', 'photo-block'))));
+    }
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, canSavePresets ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('No global styles have been saved yet. Would you like to save a new one?', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('No global styles have been saved yet.', 'photo-block')));
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Global Styles', 'photo-block'),
+    initialOpen: true,
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null),
+    className: "photo-block__inspector-panel"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-container",
+    ref: globalStyleContainer
+  }, !loading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, getSavedPresets(), canSavePresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-actions"
+  }, !editPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: 'secondary',
+    onClick: function onClick(e) {
+      e.preventDefault();
+      setSavingPreset(true);
+    },
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Save New Global Style', 'photo-block')
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Save New Global Style', 'photo-block')), !editPresets && !savingPreset && savedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: 'secondary',
+    onClick: function onClick(e) {
+      e.preventDefault();
+      setEditPresets(true);
+    },
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit Presets', 'photo-block')
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit Presets', 'photo-block')), editPresets && !savingPreset && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: 'primary',
+    onClick: function onClick(e) {
+      e.preventDefault();
+      setEditPresets(false);
+    },
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Exit Edit Mode', 'photo-block')
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Exit Edit Mode', 'photo-block')))), savingPreset && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GlobalStylesSaveModal__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Save Global Style', 'photo-block')
+  }, props)))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GlobalStylesContainer);
+
+/***/ }),
+
+/***/ "./src/components/GlobalStyles/GlobalStylesSaveModal.js":
+/*!**************************************************************!*\
+  !*** ./src/components/GlobalStyles/GlobalStylesSaveModal.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/url */ "@wordpress/url");
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/save.js");
+/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./context */ "./src/components/GlobalStyles/context.js");
+/* harmony import */ var _Notice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Notice */ "./src/components/Notice/index.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+var canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
+var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
+  var _errors$globalStyleLa2, _errors$globalStyleLa3, _errors$globalStyleSl, _errors$selectedPrese;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('new'),
+    _useState2 = _slicedToArray(_useState, 2),
+    presetSaveType = _useState2[0],
+    setPresetSaveType = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    isSaving = _useState4[0],
+    setIsSaving = _useState4[1];
+  var title = props.title,
+    attributes = props.attributes,
+    setAttributes = props.setAttributes,
+    clientId = props.clientId;
+  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_6__["default"]),
+    savedPresets = _useContext.savedPresets,
+    setSavedPresets = _useContext.setSavedPresets,
+    savingPreset = _useContext.savingPreset,
+    setSavingPreset = _useContext.setSavingPreset,
+    defaultPreset = _useContext.defaultPreset,
+    setDefaultPreset = _useContext.setDefaultPreset;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]),
+    setGlobalStyle = _useDispatch.setGlobalStyle;
+  var getDefaultValues = function getDefaultValues() {
+    return {
+      globalStyleLabel: '',
+      globalStyleSlug: '',
+      selectedPreset: null,
+      defaultPreset: false
+    };
+  };
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useForm)({
+      defaultValues: getDefaultValues()
+    }),
+    control = _useForm.control,
+    handleSubmit = _useForm.handleSubmit,
+    setValue = _useForm.setValue,
+    trigger = _useForm.trigger,
+    setError = _useForm.setError,
+    clearErrors = _useForm.clearErrors;
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useFormState)({
+      control: control
+    }),
+    errors = _useFormState.errors;
+
+  /**
+   * Retrieve a list of parent and child attributes for the current block.
+   *
+   * @return {Object} Object of attributes with keys photoAttributes, captionAttributes..
+   */
+  var getCurrentAttributes = function getCurrentAttributes() {
+    var _select$getBlocksByCl;
+    // Get the caption block attributes, if any.
+    var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
+    var captionBlock = children.find(function (block) {
+      return 'dlxplugins/photo-caption-block' === block.name;
+    });
+    var captionAttributes = captionBlock ? captionBlock.attributes : {};
+
+    // Get the parent block attributes.
+    var parentAttributes = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlockAttributes(clientId);
+
+    // Merge the parent and child attributes.
+    var allAttributes = {
+      photoAttributes: parentAttributes,
+      captionAttributes: captionAttributes
+    };
+    return allAttributes;
+  };
+  var onSubmit = function onSubmit(formData) {
+    if ('new' === presetSaveType) {
+      saveNewPreset(formData);
+    } else {
+      overridePreset(formData);
+    }
+  };
+  var hasErrors = function hasErrors() {
+    return Object.keys(errors).length > 0;
+  };
+
+  /**
+   * Set a default preset if any are set to default. null if no presets are defaults.
+   *
+   * @param {Array} presets Presets array.
+   */
+  var setDefaultFromPresets = function setDefaultFromPresets(presets) {
+    // Loop through presets and assign default if needed.
+    presets.forEach(function (preset) {
+      if (preset.is_default) {
+        setDefaultPreset(preset);
+      }
+
+      // If none are default, clear default presets.
+      if (!presets.some(function (presetValue) {
+        return presetValue.is_default;
+      })) {
+        setDefaultPreset(null);
+      }
+    });
+  };
+
+  /**
+   * Save a new preset via Ajax.
+   *
+   * @param {Array} formData Form data array.
+   */
+  var saveNewPreset = function saveNewPreset(formData) {
+    setIsSaving(true);
+    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
+    var formDataNew = new FormData();
+    formDataNew.append('action', 'dlx_photo_block_save_global_styles');
+    formDataNew.append('nonce', photoBlock.globalStylesSaveNewNonce);
+    formDataNew.append('attributes', JSON.stringify(getCurrentAttributes()));
+    formDataNew.append('formData', JSON.stringify(formData));
+    fetch(ajaxUrl, {
+      method: 'POST',
+      body: formDataNew,
+      /* get return in json */
+      headers: {
+        Accept: 'application/json'
+      }
+    }).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      var success = json.success,
+        data = json.data;
+      if (!success) {
+        setError('formAjaxError', {
+          type: 'ajax',
+          message: data.message
+        });
+        setIsSaving(false);
+        return;
+      }
+      setGlobalStyle(data, data.slug);
+      setIsSaving(false);
+      setSavingPreset(false);
+    })["catch"](function (error) {
+      setIsSaving(false);
+      setSavingPreset(false);
+    });
+  };
+
+  /**
+   * Save a new preset via Ajax.
+   *
+   * @param {Array} formData Form data array.
+   */
+  var overridePreset = function overridePreset(formData) {
+    setIsSaving(true);
+    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
+    var data = new FormData();
+    data.append('action', 'dlx_photo_block_override_preset');
+    data.append('nonce', photoBlock.presetSaveNewNonce);
+    data.append('attributes', JSON.stringify(getCurrentAttributes()));
+    data.append('editId', formData.selectedPreset);
+    data.append('isDefault', formData.defaultPreset);
+    fetch(ajaxUrl, {
+      method: 'POST',
+      body: data,
+      /* get return in json */
+      headers: {
+        Accept: 'application/json'
+      }
+    }).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      var presets = json.data.presets;
+      setIsSaving(false);
+      setSavingPreset(false);
+      setSavedPresets(presets);
+      setDefaultFromPresets(presets);
+    })["catch"](function (error) {
+      setSavingPreset(false);
+    });
+  };
+
+  /**
+   * Get the preset options in radio group format.
+   *
+   * @return {Array} Array of objects with label and value properties.
+   */
+  var getPresetRadioOptions = function getPresetRadioOptions() {
+    var options = [];
+    savedPresets.forEach(function (preset) {
+      options.push({
+        label: preset.title,
+        value: preset.id + ''
+      });
+    });
+    return options;
+  };
+  var radioOptions = [{
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Save Global Style', 'photo-block'),
+    value: 'new'
+  }, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Override Global Style', 'photo-block'),
+    value: 'override'
+  }];
+  if (savedPresets.length === 0 || !canSaveDefaultPresets) {
+    radioOptions = [{
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Save Global Style', 'photo-block'),
+      value: 'new'
+    }];
+  }
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-modal"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
+    title: title,
+    onRequestClose: function onRequestClose() {
+      return setSavingPreset(false);
+    },
+    className: "photo-block-global-styles-modal",
+    shouldCloseOnClickOutside: false
+  }, radioOptions.length > 1 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Save a new global style or override an existing one.', 'photo-block'),
+    className: "photo-block-global-styles-modal-radio-control",
+    selected: presetSaveType,
+    options: radioOptions,
+    onChange: function onChange(value) {
+      setPresetSaveType(value);
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleSubmit(onSubmit)
+  }, 'new' === presetSaveType && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-modal-new-preset"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+    name: "globalStyleLabel",
+    control: control,
+    rules: {
+      required: true,
+      pattern: /^(?=[^0-9-_])[a-zA-Z0-9-_ ]+$/
+    },
+    render: function render(_ref) {
+      var _errors$globalStyleLa;
+      var field = _ref.field;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global Style Name', 'photo-block'),
+        className: classnames__WEBPACK_IMPORTED_MODULE_3___default()('photo-block-admin__text-control', {
+          'is-required': true,
+          'has-error': 'required' === ((_errors$globalStyleLa = errors.globalStyleLabel) === null || _errors$globalStyleLa === void 0 ? void 0 : _errors$globalStyleLa.type)
+        }),
+        onBlur: function onBlur() {
+          setValue('globalStyleSlug', (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_2__.cleanForSlug)(field.value));
+          trigger('globalStyleSlug');
+        },
+        onChange: function onChange(newValue) {
+          clearErrors();
+          field.onChange(newValue);
+        },
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Enter a descriptive label for this global style. A unique slug will be generated automatically.', 'photo-block')
+      }));
+    }
+  }), 'required' === ((_errors$globalStyleLa2 = errors.globalStyleLabel) === null || _errors$globalStyleLa2 === void 0 ? void 0 : _errors$globalStyleLa2.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The Preset Name field is required.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
+  }), 'pattern' === ((_errors$globalStyleLa3 = errors.globalStyleLabel) === null || _errors$globalStyleLa3 === void 0 ? void 0 : _errors$globalStyleLa3.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('This Preset Name field contains invalid characters.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+    name: "globalStyleSlug",
+    control: control,
+    rules: {
+      pattern: /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/
+    },
+    render: function render(_ref2) {
+      var value = _ref2.field.value;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global Style Slug', 'photo-block'),
+        readOnly: true,
+        value: value,
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The slug is used as a CSS class name and must be unique. The slug cannot be changed later.', 'photo-block')
+      });
+    }
+  }), 'pattern' === ((_errors$globalStyleSl = errors.globalStyleSlug) === null || _errors$globalStyleSl === void 0 ? void 0 : _errors$globalStyleSl.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The slug contains invalid characters and must be a CSS friendly name.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
+  })))), 'override' === presetSaveType && canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, savedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-modal-override-preset"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+    name: "selectedPreset",
+    control: control,
+    rules: {
+      required: true
+    },
+    render: function render(_ref3) {
+      var _ref3$field = _ref3.field,
+        _onChange = _ref3$field.onChange,
+        value = _ref3$field.value;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a preset to override', 'photo-block'),
+        className: "is-required",
+        selected: value,
+        options: getPresetRadioOptions(),
+        onChange: function onChange(radioValue) {
+          return _onChange(radioValue);
+        }
+      });
+    }
+  }), 'required' === ((_errors$selectedPrese = errors.selectedPreset) === null || _errors$selectedPrese === void 0 ? void 0 : _errors$selectedPrese.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('This field is required.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
+  }))), canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+    name: "defaultPreset",
+    control: control,
+    render: function render(_ref4) {
+      var _ref4$field = _ref4.field,
+        _onChange2 = _ref4$field.onChange,
+        value = _ref4$field.value;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Make This Preset the Default', 'photo-block'),
+        checked: value,
+        onChange: function onChange(newValue) {
+          return _onChange2(newValue);
+        },
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('If this preset is selected as the default, it will be applied to all new photo blocks.', 'photo-block')
+      });
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-modal-button-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    type: "submit",
+    variant: "primary",
+    className: "photo-block-global-styles-modal-apply-button",
+    disabled: isSaving || hasErrors(),
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null)
+  }, isSaving ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Saving…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Save Global Style', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "secondary",
+    onClick: function onClick() {
+      setSavingPreset(false);
+    },
+    className: "photo-block-global-styles-modal-cancel-button",
+    disabled: isSaving
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Cancel', 'photo-block'))), (errors === null || errors === void 0 ? void 0 : errors.formAjaxError) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "photo-block-global-styles-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    message: errors.formAjaxError.message,
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
+  })))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GlobalStylesSaveModal);
+
+/***/ }),
+
+/***/ "./src/components/GlobalStyles/context.js":
+/*!************************************************!*\
+  !*** ./src/components/GlobalStyles/context.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var GlobalStylesContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GlobalStylesContext);
+
+/***/ }),
+
+/***/ "./src/components/GlobalStyles/index.js":
+/*!**********************************************!*\
+  !*** ./src/components/GlobalStyles/index.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/GlobalStyles/editor.scss");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./context */ "./src/components/GlobalStyles/context.js");
+/* harmony import */ var _GlobalStylesContainer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./GlobalStylesContainer */ "./src/components/GlobalStyles/GlobalStylesContainer.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+var GlobalStyles = function GlobalStyles(props) {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    savedPresets = _useState2[0],
+    setSavedPresets = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    savingPreset = _useState4[0],
+    setSavingPreset = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    editPresets = _useState6[0],
+    setEditPresets = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    showEditModal = _useState8[0],
+    setShowEditModal = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState10 = _slicedToArray(_useState9, 2),
+    showDeleteModal = _useState10[0],
+    setShowDeleteModal = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+    _useState12 = _slicedToArray(_useState11, 2),
+    defaultPreset = _useState12[0],
+    setDefaultPreset = _useState12[1];
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_context__WEBPACK_IMPORTED_MODULE_2__["default"].Provider, {
+    value: {
+      savedPresets: savedPresets,
+      setSavedPresets: setSavedPresets,
+      savingPreset: savingPreset,
+      setSavingPreset: setSavingPreset,
+      editPresets: editPresets,
+      setEditPresets: setEditPresets,
+      showEditModal: showEditModal,
+      setShowEditModal: setShowEditModal,
+      showDeleteModal: showDeleteModal,
+      setShowDeleteModal: setShowDeleteModal,
+      defaultPreset: defaultPreset,
+      setDefaultPreset: setDefaultPreset
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_GlobalStylesContainer__WEBPACK_IMPORTED_MODULE_3__["default"], props));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GlobalStyles);
 
 /***/ }),
 
@@ -10618,6 +10215,27 @@ var useUnits = function useUnits() {
 
 /***/ }),
 
+/***/ "./src/plugins/GlobalStyles/index.js":
+/*!*******************************************!*\
+  !*** ./src/plugins/GlobalStyles/index.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/plugins */ "@wordpress/plugins");
+/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__);
+var _photoBlock;
+
+var globalStyles = ((_photoBlock = photoBlock) === null || _photoBlock === void 0 ? void 0 : _photoBlock.globalStyles) || [];
+(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__.registerPlugin)('photo-block-global-styles', {
+  render: function render() {
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Global Styles"));
+  }
+});
+
+/***/ }),
+
 /***/ "./src/premium/index.js":
 /*!******************************!*\
   !*** ./src/premium/index.js ***!
@@ -11828,7 +11446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/SidebarImageInspectorControl */ "./src/components/SidebarImageInspectorControl/index.js");
 /* harmony import */ var _components_SidebarImageAdvancedInspectorControl__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/SidebarImageAdvancedInspectorControl */ "./src/components/SidebarImageAdvancedInspectorControl/index.js");
 /* harmony import */ var _components_DataSelect__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../components/DataSelect */ "./src/components/DataSelect/index.js");
-/* harmony import */ var _components_CustomPresets__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../components/CustomPresets */ "./src/components/CustomPresets/index.js");
+/* harmony import */ var _components_GlobalStyles__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../components/GlobalStyles */ "./src/components/GlobalStyles/index.js");
 /* harmony import */ var _blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../blocks/photo-block/block-styles */ "./src/blocks/photo-block/block-styles.js");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -12058,7 +11676,7 @@ var DataEditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardR
     initialOpen: false,
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
     className: "photo-block__inspector-panel"
-  }, /*#__PURE__*/React.createElement(_components_CustomPresets__WEBPACK_IMPORTED_MODULE_15__["default"], props)), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_GlobalStyles__WEBPACK_IMPORTED_MODULE_15__["default"], props)), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_11__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Settings', 'photo-block'),
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     className: "photo-block__inspector-panel",
@@ -12438,12 +12056,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/layers.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/crop.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/undo-2.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/crop.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/undo-2.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
@@ -12453,7 +12070,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/PanelBody */ "./src/components/PanelBody/index.js");
 /* harmony import */ var _components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../components/SidebarImageInspectorControl */ "./src/components/SidebarImageInspectorControl/index.js");
 /* harmony import */ var _components_SidebarImageAdvancedInspectorControl__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../components/SidebarImageAdvancedInspectorControl */ "./src/components/SidebarImageAdvancedInspectorControl/index.js");
-/* harmony import */ var _components_CustomPresets__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../components/CustomPresets */ "./src/components/CustomPresets/index.js");
+/* harmony import */ var _components_GlobalStyles__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../components/GlobalStyles */ "./src/components/GlobalStyles/index.js");
 /* harmony import */ var _blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../blocks/photo-block/block-styles */ "./src/blocks/photo-block/block-styles.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -12752,14 +12369,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }
 
   // Set settings inspector Controls.
-  var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Presets', 'photo-block'),
-    initialOpen: false,
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
-    className: "photo-block__inspector-panel"
-  }, /*#__PURE__*/React.createElement(_components_CustomPresets__WEBPACK_IMPORTED_MODULE_16__["default"], props)), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_GlobalStyles__WEBPACK_IMPORTED_MODULE_16__["default"], props), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Photo Settings', 'photo-block'),
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-settings",
     uniqueId: uniqueId,
@@ -12833,20 +12445,20 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     setAttributes: setAttributes
   });
   var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Crop', 'photo-block'),
     onClick: function onClick() {
       setScreen('crop');
     },
     disabled: 'photo' !== photoMode
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Crop', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace Photo', 'photo-block'),
     onClick: function onClick() {
       setScreen('initial');
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace', 'photo-block')), canShowUndo() && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo', 'photo-block'),
     onClick: function onClick() {
       // Change back to original image.
@@ -12856,14 +12468,14 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setImageData(originalImageData);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Set Accessibility Options', 'photo-block'),
     onClick: function onClick() {
       setA11yPopover(!a11yPopover);
     },
     ref: setA11yButton
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_23__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Set Link Options', 'photo-block'),
     onClick: function onClick() {
       setMediaLinkPopover(!mediaLinkPopover);
@@ -12997,7 +12609,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/PanelBody */ "./src/components/PanelBody/index.js");
 /* harmony import */ var _components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/SidebarImageInspectorControl */ "./src/components/SidebarImageInspectorControl/index.js");
 /* harmony import */ var _components_SidebarImageAdvancedInspectorControl__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/SidebarImageAdvancedInspectorControl */ "./src/components/SidebarImageAdvancedInspectorControl/index.js");
-/* harmony import */ var _components_CustomPresets__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/CustomPresets */ "./src/components/CustomPresets/index.js");
+/* harmony import */ var _components_GlobalStyles__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/GlobalStyles */ "./src/components/GlobalStyles/index.js");
 /* harmony import */ var _blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../blocks/photo-block/block-styles */ "./src/blocks/photo-block/block-styles.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
 /* harmony import */ var _components_Icons_PhotoBlockIcon__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../components/Icons/PhotoBlockIcon */ "./src/components/Icons/PhotoBlockIcon.js");
@@ -13158,11 +12770,11 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
 
   // Set settings inspector Controls.
   var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Presets', 'photo-block'),
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Presets and Globals', 'photo-block'),
     initialOpen: false,
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
     className: "photo-block__inspector-panel"
-  }, /*#__PURE__*/React.createElement(_components_CustomPresets__WEBPACK_IMPORTED_MODULE_13__["default"], props)), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_GlobalStyles__WEBPACK_IMPORTED_MODULE_13__["default"], props)), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_10__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Settings', 'photo-block'),
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     className: "photo-block__inspector-panel",
@@ -13680,6 +13292,87 @@ var LoadingScreen = function LoadingScreen(props) {
   return null;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingScreen);
+
+/***/ }),
+
+/***/ "./src/store/global-styles.js":
+/*!************************************!*\
+  !*** ./src/store/global-styles.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var filepond__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! filepond */ "./node_modules/filepond/dist/filepond.js");
+/* harmony import */ var filepond__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(filepond__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+var _photoBlock;
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+
+var DEFAULT_STATE = {
+  globalStyles: ((_photoBlock = photoBlock) === null || _photoBlock === void 0 ? void 0 : _photoBlock.globalStyles) || []
+};
+var actions = {
+  setGlobalStyle: function setGlobalStyle(globalStyle, slug) {
+    return {
+      type: 'SET_GLOBAL_STYLE',
+      globalStyle: globalStyle,
+      slug: slug
+    };
+  },
+  removeGlobalStyle: function removeGlobalStyle(slug) {
+    return {
+      type: 'REMOVE_GLOBAL_STYLE',
+      slug: slug
+    };
+  }
+};
+var globalStylesStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)('dlxplugins/photo-block/global-styles', {
+  reducer: function reducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_STATE;
+    var action = arguments.length > 1 ? arguments[1] : undefined;
+    switch (action.type) {
+      case 'SET_GLOBAL_STYLE':
+        var slug = action.slug;
+
+        // Global styles are stored in [slug] => attributes format.
+        var globalStyles = _objectSpread(_objectSpread({}, state.globalStyles), {}, _defineProperty({}, slug, action.globalStyle));
+        console.log('hi', globalStyles);
+        return _objectSpread(_objectSpread({}, state), {}, {
+          globalStyles: globalStyles
+        });
+      case 'REMOVE_GLOBAL_STYLE':
+        var newGlobalStyles = _objectSpread({}, state.globalStyles);
+        delete newGlobalStyles[action.slug];
+        return _objectSpread(_objectSpread({}, state), {}, {
+          globalStyles: newGlobalStyles
+        });
+      default:
+        return state;
+    }
+  },
+  actions: actions,
+  selectors: {
+    getGlobalStyleBySlug: function getGlobalStyleBySlug(state, slug) {
+      return state.globalStyles[slug] || {};
+    },
+    getGlobalStyles: function getGlobalStyles(state) {
+      return state.globalStyles;
+    }
+  }
+});
+(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.register)(globalStylesStore);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (globalStylesStore);
 
 /***/ }),
 
@@ -39660,38 +39353,6 @@ const Palette = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 
 /***/ }),
 
-/***/ "./node_modules/lucide-react/dist/esm/icons/pen-line.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/lucide-react/dist/esm/icons/pen-line.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ PenLine)
-/* harmony export */ });
-/* harmony import */ var _createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createLucideIcon.js */ "./node_modules/lucide-react/dist/esm/createLucideIcon.js");
-/**
- * @license lucide-react v0.359.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-
-const PenLine = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])("PenLine", [
-  ["path", { d: "M12 20h9", key: "t2du7b" }],
-  ["path", { d: "M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z", key: "ymcmye" }]
-]);
-
-
-//# sourceMappingURL=pen-line.js.map
-
-
-/***/ }),
-
 /***/ "./node_modules/lucide-react/dist/esm/icons/rectangle-ellipsis.js":
 /*!************************************************************************!*\
   !*** ./node_modules/lucide-react/dist/esm/icons/rectangle-ellipsis.js ***!
@@ -40017,43 +39678,6 @@ const Smartphone = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default
 
 
 //# sourceMappingURL=smartphone.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/lucide-react/dist/esm/icons/star.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/lucide-react/dist/esm/icons/star.js ***!
-  \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Star)
-/* harmony export */ });
-/* harmony import */ var _createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createLucideIcon.js */ "./node_modules/lucide-react/dist/esm/createLucideIcon.js");
-/**
- * @license lucide-react v0.359.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-
-
-
-const Star = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])("Star", [
-  [
-    "polygon",
-    {
-      points: "12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2",
-      key: "8f66p6"
-    }
-  ]
-]);
-
-
-//# sourceMappingURL=star.js.map
 
 
 /***/ }),
@@ -40509,19 +40133,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/components/CustomPresets/editor.scss":
-/*!**************************************************!*\
-  !*** ./src/components/CustomPresets/editor.scss ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ "./src/components/DataSelect/editor.scss":
 /*!***********************************************!*\
   !*** ./src/components/DataSelect/editor.scss ***!
@@ -40552,6 +40163,19 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************!*\
   !*** ./src/components/DropShadow/editor.scss ***!
   \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/components/GlobalStyles/editor.scss":
+/*!*************************************************!*\
+  !*** ./src/components/GlobalStyles/editor.scss ***!
+  \*************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -50552,7 +50176,7 @@ function useForm(props = {}) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg width=\'100%\' height=\'100%\' viewBox=\'0 0 1305 1305\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xml:space=\'preserve\' xmlns:serif=\'http://www.serif.com/\'><path fill=\'currentColor\' d=\'M652.492,1302.95c-359.692,0 -651.275,-291.583 -651.275,-651.275c-0,-359.692 291.583,-651.275 651.275,-651.275c359.687,0 651.275,291.583 651.275,651.275c-0,359.692 -291.588,651.275 -651.275,651.275Z\'/><path d=\'M652.492,1238.55c-324.125,0 -586.879,-262.754 -586.879,-586.879c-0,-324.125 262.754,-586.879 586.879,-586.879c324.125,-0 586.879,262.754 586.879,586.879c-0,324.125 -262.754,586.879 -586.879,586.879Z\' fill=\'#FFFFFF\' /><path fill=\'currentColor\' d=\'M345.942,498.429l-232.484,133.154c-0.246,6.671 -0.412,13.363 -0.412,20.092c-0,183.908 92.054,346.292 232.575,443.671l0.321,-596.917Zm592.429,-35.779l0.771,-268c-83.055,-52.2 -181.317,-82.421 -286.65,-82.421c-82.734,0 -161.105,18.65 -231.175,51.933l517.054,298.488Zm-571.759,378.05l-0.77,268c83.05,52.2 181.312,82.421 286.65,82.421c82.737,-0 161.104,-18.65 231.175,-51.934l-517.055,-298.487Zm264.855,-531.1l-516.7,298.883c14.916,-188.166 126.379,-349.133 284.854,-433.396l231.846,134.513Zm42.05,684.146l516.7,-298.875c-14.917,188.162 -126.375,349.129 -284.855,433.391l-231.845,-134.516Zm285.521,-188.829l232.487,-133.15c0.246,-6.671 0.413,-13.363 0.413,-20.092c-0,-183.908 -92.055,-346.292 -232.571,-443.671l-0.329,596.913Z\'/><path fill=\'currentColor\' d=\'M578.938,398.8c139.62,-40.6 285.816,39.662 326.42,179.329c40.654,139.617 -39.666,285.763 -179.333,326.421c-139.675,40.6 -285.817,-39.667 -326.421,-179.338c-40.6,-139.67 39.663,-285.812 179.334,-326.412Z\'/><path d=\'M473.954,596.729c-0.562,12.3 -10.758,22.063 -23.179,21.975c-12.687,-0.087 -24.004,-10.933 -22.854,-23.921c5.15,-58.075 50.75,-111.021 101.45,-136.596c11.6,-5.849 25.687,0.034 30.775,11.738c5.017,11.546 -0.463,24.512 -11.483,30.1c-33.117,16.783 -67.392,59.958 -74.709,96.704Z\' fill=\'#FFFFFF\' /><path  d=\'M603.883,422.104c12.884,0 23.33,10.446 23.33,23.333c-0,12.884 -10.446,23.33 -23.33,23.33c-12.887,-0 -23.329,-10.446 -23.329,-23.33c0,-12.887 10.442,-23.333 23.329,-23.333Z\' fill=\'#FFFFFF\' /></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataSource":"dataSource","photo-block/dataImageSource":"dataImageSource","photo-block/dataImageSourceCustomField":"dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta":"dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/dataPostType":"dataPostType","photo-block/dataPostId":"dataPostId","photo-block/imageSize":"imageSize"},"attributes":{"uniqueId":{"type":"string","default":null},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"dataScreen":{"type":"string","default":"data"},"dataSource":{"type":"string","default":"currentPost"},"dataImageSource":{"type":"string","default":"featuredImage"},"dataImageSourceCustomField":{"type":"string","default":""},"dataImageSourceAuthorMeta":{"type":"string","default":""},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"dataPostType":{"type":"string","default":"post"},"dataPostId":{"type":"string","default":""},"dataPostTitle":{"type":"string","default":""},"dataAltTextPostTitle":{"type":"string","default":""},"dataAltTextPostId":{"type":"string","default":""},"dataAltTextSource":{"type":"string","default":"currentImage"},"dataAltTextType":{"type":"string","default":"altText"},"dataAltTextImageCustomField":{"type":"string","default":""},"dataAltTextTypePostCustomField":{"type":"string","default":""},"dataAltTextPostType":{"type":"string","default":"post"},"dataAltTextPostTypeCustomField":{"type":"string","default":""},"dataAltTextTypePost":{"type":"string","default":"title"},"dataAltTextTypePostAuthorMeta":{"type":"string","default":""},"dataAltTextPostTypeSource":{"type":"string","default":"title"},"dataAltTextPostTypeAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTitle":{"type":"string","default":""},"dataImageTitlePostId":{"type":"string","default":""},"dataImageTitleSource":{"type":"string","default":"currentImage"},"dataImageTitleType":{"type":"string","default":"imageTitle"},"dataImageTitleImageCustomField":{"type":"string","default":""},"dataImageTitleTypePostCustomField":{"type":"string","default":""},"dataImageTitlePostType":{"type":"string","default":"post"},"dataImageTitlePostTypeCustomField":{"type":"string","default":""},"dataImageTitleTypePost":{"type":"string","default":"title"},"dataImageTitleTypePostAuthorMeta":{"type":"string","default":""},"dataImageTitlePostTypeSource":{"type":"string","default":"title"},"dataImageTitlePostTypeAuthorMeta":{"type":"string","default":""},"dataMediaLinkSource":{"type":"string","default":"none"},"dataMediaLinkPostMeta":{"type":"string","default":""},"dataMediaLinkImageCustomField":{"type":"string","default":""},"dataMediaLinkAuthorMeta":{"type":"string","default":""},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":true,"className":true,"customClassName":false,"alignWide":true,"defaultStylePicker":false,"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg width=\'100%\' height=\'100%\' viewBox=\'0 0 1305 1305\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xml:space=\'preserve\' xmlns:serif=\'http://www.serif.com/\'><path fill=\'currentColor\' d=\'M652.492,1302.95c-359.692,0 -651.275,-291.583 -651.275,-651.275c-0,-359.692 291.583,-651.275 651.275,-651.275c359.687,0 651.275,291.583 651.275,651.275c-0,359.692 -291.588,651.275 -651.275,651.275Z\'/><path d=\'M652.492,1238.55c-324.125,0 -586.879,-262.754 -586.879,-586.879c-0,-324.125 262.754,-586.879 586.879,-586.879c324.125,-0 586.879,262.754 586.879,586.879c-0,324.125 -262.754,586.879 -586.879,586.879Z\' fill=\'#FFFFFF\' /><path fill=\'currentColor\' d=\'M345.942,498.429l-232.484,133.154c-0.246,6.671 -0.412,13.363 -0.412,20.092c-0,183.908 92.054,346.292 232.575,443.671l0.321,-596.917Zm592.429,-35.779l0.771,-268c-83.055,-52.2 -181.317,-82.421 -286.65,-82.421c-82.734,0 -161.105,18.65 -231.175,51.933l517.054,298.488Zm-571.759,378.05l-0.77,268c83.05,52.2 181.312,82.421 286.65,82.421c82.737,-0 161.104,-18.65 231.175,-51.934l-517.055,-298.487Zm264.855,-531.1l-516.7,298.883c14.916,-188.166 126.379,-349.133 284.854,-433.396l231.846,134.513Zm42.05,684.146l516.7,-298.875c-14.917,188.162 -126.375,349.129 -284.855,433.391l-231.845,-134.516Zm285.521,-188.829l232.487,-133.15c0.246,-6.671 0.413,-13.363 0.413,-20.092c-0,-183.908 -92.055,-346.292 -232.571,-443.671l-0.329,596.913Z\'/><path fill=\'currentColor\' d=\'M578.938,398.8c139.62,-40.6 285.816,39.662 326.42,179.329c40.654,139.617 -39.666,285.763 -179.333,326.421c-139.675,40.6 -285.817,-39.667 -326.421,-179.338c-40.6,-139.67 39.663,-285.812 179.334,-326.412Z\'/><path d=\'M473.954,596.729c-0.562,12.3 -10.758,22.063 -23.179,21.975c-12.687,-0.087 -24.004,-10.933 -22.854,-23.921c5.15,-58.075 50.75,-111.021 101.45,-136.596c11.6,-5.849 25.687,0.034 30.775,11.738c5.017,11.546 -0.463,24.512 -11.483,30.1c-33.117,16.783 -67.392,59.958 -74.709,96.704Z\' fill=\'#FFFFFF\' /><path  d=\'M603.883,422.104c12.884,0 23.33,10.446 23.33,23.333c-0,12.884 -10.446,23.33 -23.33,23.33c-12.887,-0 -23.329,-10.446 -23.329,-23.33c0,-12.887 10.442,-23.333 23.329,-23.333Z\' fill=\'#FFFFFF\' /></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataSource":"dataSource","photo-block/dataImageSource":"dataImageSource","photo-block/dataImageSourceCustomField":"dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta":"dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/dataPostType":"dataPostType","photo-block/dataPostId":"dataPostId","photo-block/imageSize":"imageSize","photo-block/globalStyle":"globalStyle"},"attributes":{"uniqueId":{"type":"string","default":null},"globalStyle":{"type":"string","default":"none"},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"screen":{"type":"string","default":"initial"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":true,"className":true,"customClassName":false,"alignWide":true,"defaultStylePicker":false,"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 
@@ -50563,7 +50187,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query","photo-block/photoMode","photo-block/dataSource","photo-block/dataImageSource","photo-block/dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage","photo-block/dataFallbackImageSize","photo-block/dataFallbackImage","photo-block/dataPostType","photo-block/dataPostId","photo-block/imageSize","photo-block/uniqueId"],"attributes":{"photoMode":{"type":"string","default":""},"uniqueId":{"type":"string","default":""},"captionManual":{"type":"string","default":""},"mode":{"type":"string","default":"single"},"enableSmartStyles":{"type":"boolean","default":true},"captionBaseFontSize":{"type":"object","default":{"mobile":{"value":"14","unit":"px"},"tablet":{"value":"14","unit":"px"},"desktop":{"value":"16","unit":"px"}}},"captionPosition":{"type":"string","default":"bottom"},"captionAlign":{"type":"string","default":"center"},"captionBackgroundColor":{"type":"string","default":"transparent"},"captionBackgroundColorOpacity":{"type":"number","default":1},"captionTextColor":{"type":"string","default":"#333"},"captionAccentColor":{"type":"string","default":"#e17713"},"captionSecondaryColor":{"type":"string","default":"#FFFFFF"},"captionLinkColor":{"type":"string","default":"#e17713"},"captionLinkHoverColor":{"type":"string","default":"#f58f2f"},"captionTextFontFamily":{"type":"string","default":"Arial"},"captionHeadingsFontFamily":{"type":"string","default":"Arial"},"captionTypography":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"18","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.2","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}},"captionCustomTypography":{"type":"string","default":""},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"15","right":"20","bottom":"15","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":false}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"overlayVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionHorizontalPosition":{"type":"string","default":"center"},"overlayHorizontalPosition":{"type":"string","default":"center"},"overlayBackgroundType":{"type":"string","default":"solid"},"overlayBackgroundColor":{"type":"string","default":"rgba(0,0,0,0.5)"},"overlayBackgroundColorOpacity":{"type":"number","default":0.5},"overlayBackgroundColorHover":{"type":"string","default":"rgba(0,0,0,0.40)"},"overlayBackgroundColorOpacityHover":{"type":"number","default":0.4},"overlayBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"overlayBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"overlayBackgroundGradient":{"type":"string","default":""},"overlayBackgroundGradientOpacity":{"type":"number","default":0.5},"overlayBackgroundGradientOpacityHover":{"type":"number","default":0.65},"overlayBackgroundImage":{"type":"object","default":{"url":"","id":0,"backgroundColor":"transparent","backgroundSize":"cover","backgroundPosition":"center center","backgroundRepeat":"no-repeat","backgroundOpacity":0.4,"backgroundOpacityHover":0.65}},"overlayDisplayOnHover":{"type":"boolean","default":false},"overlayDisplayAnimation":{"type":"string","default":"fade"},"htmlAnchor":{"type":"string","default":""},"captionCSSClasses":{"type":"string","default":""},"customAttributes":{"type":"array","default":[]},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false}},"supports":{"anchor":false,"align":false,"className":false,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false},"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-caption-block-editor","editorStyle":"dlx-photo-caption-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Caption Block","apiVersion":2,"name":"dlxplugins/photo-caption-block","parent":["dlxplugins/photo-block"],"category":"common","description":"A caption for a photo block.","keywords":["photo","block","image","picture","photos","caption","credit"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query","photo-block/photoMode","photo-block/dataSource","photo-block/dataImageSource","photo-block/dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage","photo-block/dataFallbackImageSize","photo-block/dataFallbackImage","photo-block/dataPostType","photo-block/dataPostId","photo-block/imageSize","photo-block/uniqueId","photo-block/globalStyle"],"attributes":{"photoMode":{"type":"string","default":""},"uniqueId":{"type":"string","default":""},"captionManual":{"type":"string","default":""},"mode":{"type":"string","default":"single"},"enableSmartStyles":{"type":"boolean","default":true},"captionBaseFontSize":{"type":"object","default":{"mobile":{"value":"14","unit":"px"},"tablet":{"value":"14","unit":"px"},"desktop":{"value":"16","unit":"px"}}},"captionPosition":{"type":"string","default":"bottom"},"captionAlign":{"type":"string","default":"center"},"captionBackgroundColor":{"type":"string","default":"transparent"},"captionBackgroundColorOpacity":{"type":"number","default":1},"captionTextColor":{"type":"string","default":"#333"},"captionAccentColor":{"type":"string","default":"#e17713"},"captionSecondaryColor":{"type":"string","default":"#FFFFFF"},"captionLinkColor":{"type":"string","default":"#e17713"},"captionLinkHoverColor":{"type":"string","default":"#f58f2f"},"captionTextFontFamily":{"type":"string","default":"Arial"},"captionHeadingsFontFamily":{"type":"string","default":"Arial"},"captionTypography":{"type":"object","default":{"mobile":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"tablet":{"fontFamily":"","fontFamilySlug":"","fontSize":"","fontSizeUnit":"px","fontWeight":"","lineHeight":"","lineHeightUnit":"em","textTransform":"","letterSpacing":"","letterSpacingUnit":"px","fontFallback":"","fontType":"web"},"desktop":{"fontFamily":"Arial","fontFamilySlug":"arial","fontSize":"18","fontSizeUnit":"px","fontWeight":"normal","lineHeight":"1.2","lineHeightUnit":"em","textTransform":"none","letterSpacing":"0","letterSpacingUnit":"px","fontFallback":"serif","fontType":"web"}}},"captionCustomTypography":{"type":"string","default":""},"captionPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"15","right":"20","bottom":"15","left":"20","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":false}}},"captionMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"captionBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"captionBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"overlayVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionVerticalPosition":{"type":"string","default":"middle"},"overlayCaptionHorizontalPosition":{"type":"string","default":"center"},"overlayHorizontalPosition":{"type":"string","default":"center"},"overlayBackgroundType":{"type":"string","default":"solid"},"overlayBackgroundColor":{"type":"string","default":"rgba(0,0,0,0.5)"},"overlayBackgroundColorOpacity":{"type":"number","default":0.5},"overlayBackgroundColorHover":{"type":"string","default":"rgba(0,0,0,0.40)"},"overlayBackgroundColorOpacityHover":{"type":"number","default":0.4},"overlayBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"overlayBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"overlayBackgroundGradient":{"type":"string","default":""},"overlayBackgroundGradientOpacity":{"type":"number","default":0.5},"overlayBackgroundGradientOpacityHover":{"type":"number","default":0.65},"overlayBackgroundImage":{"type":"object","default":{"url":"","id":0,"backgroundColor":"transparent","backgroundSize":"cover","backgroundPosition":"center center","backgroundRepeat":"no-repeat","backgroundOpacity":0.4,"backgroundOpacityHover":0.65}},"overlayDisplayOnHover":{"type":"boolean","default":false},"overlayDisplayAnimation":{"type":"string","default":"fade"},"htmlAnchor":{"type":"string","default":""},"captionCSSClasses":{"type":"string","default":""},"customAttributes":{"type":"array","default":[]},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false}},"supports":{"anchor":false,"align":false,"className":false,"alignWide":false,"defaultStylePicker":false,"spacing":{"padding":false,"margin":false},"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-caption-block-editor","editorStyle":"dlx-photo-caption-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ })
 
@@ -50658,10 +50282,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scss_block_backend_frontend_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scss/block-backend-frontend.scss */ "./src/scss/block-backend-frontend.scss");
 /* harmony import */ var _blocks_photo_block_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/photo-block/index.js */ "./src/blocks/photo-block/index.js");
 /* harmony import */ var _blocks_photo_caption_block_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./blocks/photo-caption-block/index.js */ "./src/blocks/photo-caption-block/index.js");
-/* harmony import */ var _premium_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./premium/index.js */ "./src/premium/index.js");
+/* harmony import */ var _plugins_GlobalStyles_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugins/GlobalStyles/index.js */ "./src/plugins/GlobalStyles/index.js");
+/* harmony import */ var _premium_index_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./premium/index.js */ "./src/premium/index.js");
 /**
  * WordPress Block initialization.
  */
+
 
 
 

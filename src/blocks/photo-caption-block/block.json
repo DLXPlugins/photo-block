@@ -33,7 +33,8 @@
 		"photo-block/dataPostType",
 		"photo-block/dataPostId",
 		"photo-block/imageSize",
-		"photo-block/uniqueId"
+		"photo-block/uniqueId",
+		"photo-block/globalStyle"
 	],
 	"attributes": {
 		"photoMode": {

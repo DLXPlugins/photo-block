@@ -87,7 +87,7 @@ const CustomPresetEditModal = ( props ) => {
 		<Modal
 			title={ __( 'Update Preset', 'photo-block' ) }
 			onRequestClose={ () => setShowEditModal( false ) }
-			className="photo-block-preset-modal"
+			className="photo-block-global-styles-modal"
 			shouldCloseOnClickOutside={ false }
 		>
 			<form onSubmit={ handleSubmit( onSubmit ) }>
@@ -148,7 +148,7 @@ const CustomPresetEditModal = ( props ) => {
 				<Button
 					type="submit"
 					variant="primary"
-					className="photo-block-preset-modal-apply-button"
+					className="photo-block-global-styles-modal-apply-button"
 					disabled={ isSaving }
 				>
 					{ isSaving

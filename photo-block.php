@@ -71,7 +71,7 @@ class PhotoBlock {
 	 */
 	public function plugins_loaded() {
 		Blocks::run();
-		Presets::run();
+		Global_Styles::run();
 		Rest::run();
 	}
 }

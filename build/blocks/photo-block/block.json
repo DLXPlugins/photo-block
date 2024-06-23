@@ -33,12 +33,17 @@
     "photo-block/dataFallbackImage": "dataFallbackImage",
     "photo-block/dataPostType": "dataPostType",
     "photo-block/dataPostId": "dataPostId",
-    "photo-block/imageSize": "imageSize"
+    "photo-block/imageSize": "imageSize",
+    "photo-block/globalStyle": "globalStyle"
   },
   "attributes": {
     "uniqueId": {
       "type": "string",
       "default": null
+    },
+    "globalStyle": {
+      "type": "string",
+      "default": "none"
     },
     "defaultsApplied": {
       "type": "boolean",
@@ -216,168 +221,6 @@
     "photoMode": {
       "type": "string",
       "default": "none"
-    },
-    "dataScreen": {
-      "type": "string",
-      "default": "data"
-    },
-    "dataSource": {
-      "type": "string",
-      "default": "currentPost"
-    },
-    "dataImageSource": {
-      "type": "string",
-      "default": "featuredImage"
-    },
-    "dataImageSourceCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataImageSourceAuthorMeta": {
-      "type": "string",
-      "default": ""
-    },
-    "dataHasFallbackImage": {
-      "type": "boolean",
-      "default": false
-    },
-    "dataFallbackImageSize": {
-      "type": "string",
-      "default": "large"
-    },
-    "dataFallbackImage": {
-      "type": "object",
-      "default": {
-        "id": "",
-        "url": "",
-        "alt": "",
-        "full": "",
-        "attachment_link": ""
-      }
-    },
-    "dataPostType": {
-      "type": "string",
-      "default": "post"
-    },
-    "dataPostId": {
-      "type": "string",
-      "default": ""
-    },
-    "dataPostTitle": {
-      "type": "string",
-      "default": ""
-    },
-    "dataAltTextPostTitle": {
-      "type": "string",
-      "default": ""
-    },
-    "dataAltTextPostId": {
-      "type": "string",
-      "default": ""
-    },
-    "dataAltTextSource": {
-      "type": "string",
-      "default": "currentImage"
-    },
-    "dataAltTextType": {
-      "type": "string",
-      "default": "altText"
-    },
-    "dataAltTextImageCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataAltTextTypePostCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataAltTextPostType": {
-      "type": "string",
-      "default": "post"
-    },
-    "dataAltTextPostTypeCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataAltTextTypePost": {
-      "type": "string",
-      "default": "title"
-    },
-    "dataAltTextTypePostAuthorMeta": {
-      "type": "string",
-      "default": ""
-    },
-    "dataAltTextPostTypeSource": {
-      "type": "string",
-      "default": "title"
-    },
-    "dataAltTextPostTypeAuthorMeta": {
-      "type": "string",
-      "default": ""
-    },
-    "dataImageTitlePostTitle": {
-      "type": "string",
-      "default": ""
-    },
-    "dataImageTitlePostId": {
-      "type": "string",
-      "default": ""
-    },
-    "dataImageTitleSource": {
-      "type": "string",
-      "default": "currentImage"
-    },
-    "dataImageTitleType": {
-      "type": "string",
-      "default": "imageTitle"
-    },
-    "dataImageTitleImageCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataImageTitleTypePostCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataImageTitlePostType": {
-      "type": "string",
-      "default": "post"
-    },
-    "dataImageTitlePostTypeCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataImageTitleTypePost": {
-      "type": "string",
-      "default": "title"
-    },
-    "dataImageTitleTypePostAuthorMeta": {
-      "type": "string",
-      "default": ""
-    },
-    "dataImageTitlePostTypeSource": {
-      "type": "string",
-      "default": "title"
-    },
-    "dataImageTitlePostTypeAuthorMeta": {
-      "type": "string",
-      "default": ""
-    },
-    "dataMediaLinkSource": {
-      "type": "string",
-      "default": "none"
-    },
-    "dataMediaLinkPostMeta": {
-      "type": "string",
-      "default": ""
-    },
-    "dataMediaLinkImageCustomField": {
-      "type": "string",
-      "default": ""
-    },
-    "dataMediaLinkAuthorMeta": {
-      "type": "string",
-      "default": ""
     },
     "cssGramFilter": {
       "type": "string",

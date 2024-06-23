@@ -33,7 +33,7 @@ import useDeviceType from '../../hooks/useDeviceType';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
-import CustomPresets from '../../components/CustomPresets';
+import GlobalStyles from '../../components/GlobalStyles';
 import getStyles from '../../blocks/photo-block/block-styles';
 import blockStore from '../../store';
 import PhotoBlockIcon from '../../components/Icons/PhotoBlockIcon';
@@ -164,12 +164,12 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	const settingsInspectorControls = (
 		<>
 			<PanelBody
-				title={ __( 'Presets', 'photo-block' ) }
+				title={ __( 'Presets and Globals', 'photo-block' ) }
 				initialOpen={ false }
 				icon={ <Layers /> }
 				className="photo-block__inspector-panel"
 			>
-				{ <CustomPresets { ...props } /> }
+				{ <GlobalStyles { ...props } /> }
 			</PanelBody>
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }

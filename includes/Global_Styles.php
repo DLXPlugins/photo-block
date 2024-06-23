@@ -8,9 +8,9 @@
 namespace DLXPlugins\PhotoBlock;
 
 /**
- * Presets class.
+ * Global Styles class.
  */
-class Presets {
+class Global_Styles {
 
 
 	/**
@@ -19,11 +19,11 @@ class Presets {
 	public static function run() {
 		$self = new self();
 		add_action( 'init', array( static::class, 'register_post_type' ) );
-		add_action( 'wp_ajax_dlx_photo_block_load_presets', array( static::class, 'ajax_load_presets' ) );
-		add_action( 'wp_ajax_dlx_photo_block_save_preset', array( static::class, 'ajax_save_preset' ) ); // For Updating an existing preset (like title).
-		add_action( 'wp_ajax_dlx_photo_block_save_presets', array( static::class, 'ajax_save_presets' ) ); // For saving new presets.
-		add_action( 'wp_ajax_dlx_photo_block_delete_preset', array( static::class, 'ajax_delete_preset' ) );
-		add_action( 'wp_ajax_dlx_photo_block_override_preset', array( static::class, 'ajax_override_preset' ) ); // For overwriting an existing preset.
+		add_action( 'wp_ajax_dlx_photo_block_load_global_styles', array( static::class, 'ajax_load_global_styles' ) );
+		add_action( 'wp_ajax_dlx_photo_block_save_global_style', array( static::class, 'ajax_save_global_style' ) ); // For Updating an existing preset (like title).
+		add_action( 'wp_ajax_dlx_photo_block_save_global_styles', array( static::class, 'ajax_save_global_styles' ) ); // For saving new presets.
+		add_action( 'wp_ajax_dlx_photo_block_delete_global_styles', array( static::class, 'ajax_delete_global_styles' ) );
+		add_action( 'wp_ajax_dlx_photo_block_override_global_styles', array( static::class, 'ajax_override_global_styles' ) ); // For overwriting an existing preset.
 
 		// Filter for adding localized vars to output.
 		add_filter( 'photo_block_localized_vars', array( static::class, 'add_localized_vars' ) );
@@ -38,37 +38,49 @@ class Presets {
 	 * @return array $vars The updated localized vars.
 	 */
 	public static function add_localized_vars( $vars ) {
-		$vars['presetLoadNonce']    = wp_create_nonce( 'dlx_photo_block_load_presets' );
-		$vars['presetSaveNewNonce'] = wp_create_nonce( 'dlx_photo_block_save_new_preset' );
-		$vars['presetCanEditor']    = current_user_can( 'edit_others_posts' );
+		$vars['globalStylesLoadNonce']    = wp_create_nonce( 'dlx_photo_block_load_global_styles' );
+		$vars['globalStylesSaveNewNonce'] = wp_create_nonce( 'dlx_photo_block_save_new_global_styles' );
+		$vars['globalStylesCanEditor']    = current_user_can( 'edit_others_posts' );
 
 		// Get the default preset (if any), and return it as localized variable.
-		$default_preset = wp_cache_get( 'dlx_pb_default_preset' ); // can be false (empty) or array.
-		if ( ! empty( $default_preset ) ) {
-			$vars['defaultPreset'] = Functions::sanitize_array_recursive( $default_preset );
+		$default_global_styles = wp_cache_get( 'dlx_pb_global_styles' ); // can be false (empty) or array.
+		if ( ! empty( $default_global_styles ) ) {
+			$vars['globalStyles'] = $default_global_styles;
 		}
-		if ( false === $default_preset ) {
+		if ( false === $default_global_styles ) {
 			$post_args = array(
-				'post_type'      => 'dlx_pb_presets',
+				'post_type'      => 'dlx_pb_global_styles',
 				'post_status'    => 'publish',
-				'posts_per_page' => 1,
-				'meta_query'     => array(
-					array(
-						'key'   => '_dlx_pb_is_default',
-						'value' => true,
-					),
-				),
+				'posts_per_page' => 50, /* lets hope there's not more than this */
+				'order'          => 'ASC',
+				'orderby'        => 'title',
 			);
 			$posts     = get_posts( $post_args );
 			$preset    = array();
 			if ( $posts ) {
-				$preset  = $posts[0];
-				$content = json_decode( $preset->post_content, true ); // Decode JSON here, then $content will be re-encoded in the return array.
-				$content = Functions::sanitize_array_recursive( $content );
-				wp_cache_set( 'dlx_pb_default_preset', $content ); // Content would be attributes with key values `photoAttributes` and `captionAttributes`.
-				$vars['defaultPreset'] = $content;
+				$global_styles = array();
+				foreach ( $posts as $post ) {
+					$is_default_global_styles = (bool) get_post_meta( $post->ID, '_dlx_pb_is_default', true );
+					$content                  = json_decode( $post->post_content, true );
+					if ( isset( $content['attributes'] ) ) {
+						$content = $content['attributes'];
+					} else {
+						continue;
+					}
+					$global_styles[ sanitize_key( $post->post_name ) ] = array(
+						'id'           => $post->ID,
+						'title'        => $post->post_title,
+						'slug'         => $post->post_name,
+						'is_default'   => $is_default_global_styles,
+						'content'      => Functions::sanitize_array_recursive( $content ),
+						'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $post->ID ),
+						'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $post->ID ),
+					);
+				}
+				wp_cache_set( 'dlx_pb_global_styles', $global_styles ); // Content would be attributes with key values `photoAttributes` and `captionAttributes`.
+				$vars['globalStyles'] = $global_styles;
 			} else {
-				wp_cache_set( 'dlx_pb_default_preset', array() );
+				wp_cache_set( 'dlx_pb_default_global_styles', array() );
 			}
 		}
 		return $vars;
@@ -77,15 +89,15 @@ class Presets {
 	/**
 	 * Loads the presets and returns via Ajax.
 	 */
-	public static function ajax_load_presets() {
+	public static function ajax_load_global_styles() {
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_load_presets' ) || ! current_user_can( 'edit_posts' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_load_global_styles' ) || ! current_user_can( 'edit_posts' ) ) {
 			wp_send_json_error( array() );
 		}
 
-		$return = self::return_saved_presets();
+		$return = self::return_saved_global_styles();
 
-		wp_send_json_success( array( 'presets' => $return ) );
+		wp_send_json_success( array( 'globalStyles' => $return ) );
 	}
 
 	/**
@@ -93,33 +105,38 @@ class Presets {
 	 *
 	 * @return array $return The saved presets.
 	 */
-	private static function return_saved_presets() {
+	private static function return_saved_global_styles() {
 		// Get the presets.
-		$args    = array(
-			'post_type'      => 'dlx_pb_presets',
+		$args          = array(
+			'post_type'      => 'dlx_pb_global_styles',
 			'post_status'    => 'publish',
 			'posts_per_page' => 100,
 			'order'          => 'ASC',
 			'orderby'        => 'title',
 		);
-		$presets = get_posts( $args );
+		$global_styles = get_posts( $args );
 
 		// Build the return array.
 		$return = array();
-		if ( $presets ) {
-			foreach ( $presets as $preset ) {
+		if ( $global_styles ) {
+			foreach ( $global_styles as $global_style ) {
 				// Format content that is JSON into an array.
-				$content           = json_decode( $preset->post_content, true ); // Decode JSON here, then $content will be re-encoded in the return array.
-				$content           = Functions::sanitize_array_recursive( $content );
-				$is_default_preset = get_post_meta( $preset->ID, '_dlx_pb_is_default', true );
-				$return[]          = array(
-					'id'           => $preset->ID,
-					'title'        => $preset->post_title,
-					'slug'         => $preset->post_name,
-					'is_default'   => $is_default_preset ? true : false,
+				$content = json_decode( $global_style->post_content, true ); // Decode JSON here, then $content will be re-encoded in the return array.
+				if ( isset( $content['attributes'] ) ) {
+					$content = $content['attributes'];
+				} else {
+					continue;
+				}
+				$content                 = Functions::sanitize_array_recursive( $content );
+				$is_default_global_style = (bool) get_post_meta( $global_style->ID, '_dlx_pb_is_default', true );
+				$return[]                = array(
+					'id'           => $global_style->ID,
+					'title'        => $global_style->post_title,
+					'slug'         => $global_style->post_name,
+					'is_default'   => $is_default_global_style ? true : false,
 					'content'      => $content, // No need to escape here because it will be re-encoded in the return array.
-					'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_preset_' . $preset->ID ),
-					'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_preset_' . $preset->ID ),
+					'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $global_style->ID ),
+					'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $global_style->ID ),
 				);
 			}
 		}
@@ -129,10 +146,10 @@ class Presets {
 	/**
 	 * Saves a new preset and returns all via Ajax.
 	 */
-	public static function ajax_save_presets() {
+	public static function ajax_save_global_styles() {
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_preset' ) || ! current_user_can( 'publish_posts' ) ) {
-			wp_send_json_error( array() );
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'publish_posts' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ) ) );
 		}
 
 		// Get attributes JSON.
@@ -147,8 +164,11 @@ class Presets {
 			}
 			$photo_keys_to_ignore = array(
 				'uniqueId',
-				'photo',
 				'screen',
+				'imageData',
+				'dataScreen',
+				'altText',
+				'htmlAnchor',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -173,6 +193,7 @@ class Presets {
 			}
 			$caption_keys_to_ignore = array(
 				'captionManual',
+				'uniqueId',
 			);
 			/**
 			 * Filter the caption keys to ignore when saving presets.
@@ -192,8 +213,15 @@ class Presets {
 		$form_data = json_decode( filter_input( INPUT_POST, 'formData', FILTER_DEFAULT ), true );
 
 		// Get the preset title.
-		$title           = isset( $form_data['presetTitle'] ) ? sanitize_text_field( $form_data['presetTitle'] ) : '';
-		$title_sanitized = sanitize_title( $title );
+		$title          = isset( $form_data['globalStyleLabel'] ) ? sanitize_text_field( $form_data['globalStyleLabel'] ) : '';
+		$slug           = isset( $form_data['globalStyleSlug'] ) ? sanitize_text_field( $form_data['globalStyleSlug'] ) : '';
+		$slug_sanitized = sanitize_title( $slug );
+
+		// Check if slug already exists.
+		$maybe_slug_exists = get_page_by_path( $slug_sanitized, OBJECT, 'dlx_pb_global_styles' );
+		if ( $maybe_slug_exists ) {
+			wp_send_json_error( array( 'message' => __( 'A global style with that slug already exists.', 'photo-block' ) ) );
+		}
 
 		// Gather attributes.
 		$attributes = array(
@@ -205,12 +233,18 @@ class Presets {
 		$post_id = wp_insert_post(
 			array(
 				'post_title'   => $title,
-				'post_name'    => $title_sanitized,
+				'post_name'    => $slug_sanitized,
 				'post_content' => wp_json_encode( array( 'attributes' => $attributes ), 1048 ),
 				'post_status'  => 'publish',
-				'post_type'    => 'dlx_pb_presets',
+				'post_type'    => 'dlx_pb_global_styles',
 			)
 		);
+		if ( is_wp_error( $post_id ) ) {
+			wp_send_json_error( array( 'message' => $post_id->get_error_message() ) );
+		}
+
+		// Get post.
+		$global_style = get_post( $post_id );
 
 		// Check if preset should be default.
 		$is_default      = false;
@@ -220,26 +254,35 @@ class Presets {
 		}
 		if ( $is_default && $can_set_default ) {
 			// Remove default from all other presets.
-			self::remove_default_presets();
+			self::remove_default_global_styles();
 
 			// Set this preset as default.
 			update_post_meta( $post_id, '_dlx_pb_is_default', true );
 		}
 
-		// Get the presets.
-		$return = self::return_saved_presets();
-		wp_send_json_success( array( 'presets' => $return ) );
+		$return_global_style = array(
+			'id'           => $global_style->ID,
+			'title'        => $global_style->post_title,
+			'slug'         => $global_style->post_name,
+			'is_default'   => $is_default && $can_set_default,
+			'content'      => Functions::sanitize_array_recursive( json_decode( $global_style->post_content, true ), ),
+			'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $global_style->ID ),
+			'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $global_style->ID ),
+		);
+
+		// Return the preset name and slug.
+		wp_send_json_success( $return_global_style );
 	}
 
 	/**
 	 * Purge defaults from the presets.
 	 */
-	private static function remove_default_presets() {
+	private static function remove_default_global_styles() {
 		if ( ! current_user_can( 'edit_others_posts' ) ) {
 			return;
 		}
 		$args    = array(
-			'post_type'      => 'dlx_pb_presets',
+			'post_type'      => 'dlx_pb_global_styles',
 			'post_status'    => 'publish',
 			'posts_per_page' => 100, /* if there's more presets than that, we have issues */
 			'order'          => 'ASC',
@@ -256,12 +299,12 @@ class Presets {
 	/**
 	 * Overrides a preset and returns all saved presets.
 	 */
-	public static function ajax_override_preset() {
+	public static function ajax_override_global_styles() {
 		// Get preset post ID.
 		$preset_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_preset' ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error( array() );
 		}
 
@@ -338,27 +381,27 @@ class Presets {
 		// Check if preset should be default.
 		if ( $is_default && current_user_can( 'edit_others_posts' ) ) {
 			// Remove default from all other presets.
-			self::remove_default_presets();
+			self::remove_default_global_styles();
 
 			// Set this preset as default.
 			update_post_meta( $preset_id, '_dlx_pb_is_default', true );
 		}
 
 		// Get the presets.
-		$return = self::return_saved_presets();
-		wp_send_json_success( array( 'presets' => $return ) );
+		$return = self::return_saved_global_styles();
+		wp_send_json_success( array( 'globalStyles' => $return ) );
 	}
 
 	/**
 	 * Save a preset and return all via Ajax.
 	 */
-	public static function ajax_save_preset() {
+	public static function ajax_save_global_style() {
 		// Get preset post ID.
 		$preset_id  = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
 		$is_default = filter_var( filter_input( INPUT_POST, 'isDefault', FILTER_DEFAULT ), FILTER_VALIDATE_BOOLEAN );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_preset_' . $preset_id ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_global_styles_' . $preset_id ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error( array() );
 		}
 
@@ -377,7 +420,7 @@ class Presets {
 		if ( current_user_can( 'edit_others_posts' ) ) {
 			if ( $is_default ) {
 				// Remove default from all other presets.
-				self::remove_default_presets();
+				self::remove_default_global_styles();
 
 				// Set this preset as default.
 				update_post_meta( $preset_id, '_dlx_pb_is_default', true );
@@ -388,21 +431,21 @@ class Presets {
 		}
 
 		// Retrieve all presets.
-		$return = self::return_saved_presets();
+		$return = self::return_saved_global_styles();
 
 		// Send json response.
-		wp_send_json_success( array( 'presets' => $return ) );
+		wp_send_json_success( array( 'globalStyles' => $return ) );
 	}
 
 	/**
 	 * Delete a preset and return all via Ajax.
 	 */
-	public static function ajax_delete_preset() {
+	public static function ajax_delete_global_styles() {
 		// Get preset post ID.
 		$preset_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_delete_preset_' . $preset_id ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_delete_global_styles_' . $preset_id ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error( array() );
 		}
 
@@ -410,30 +453,30 @@ class Presets {
 		wp_delete_post( $preset_id, true );
 
 		// Retrieve all presets.
-		$return = self::return_saved_presets();
+		$return = self::return_saved_global_styles();
 
 		// Send json response.
-		wp_send_json_success( array( 'presets' => $return ) );
+		wp_send_json_success( array( 'globalStyles' => $return ) );
 	}
 
 	/**
-	 * Registers the Presets Post type.
+	 * Registers the Global Styles Post type.
 	 */
 	public static function register_post_type() {
 		$labels = array(
-			'name'               => __( 'Presets', 'photo-block' ),
-			'singular_name'      => __( 'Presets', 'photo-block' ),
+			'name'               => __( 'Global Styles', 'photo-block' ),
+			'singular_name'      => __( 'Global Styles', 'photo-block' ),
 			'add_new'            => __( 'Add New', 'photo-block' ),
-			'add_new_item'       => __( 'Add New Preset', 'photo-block' ),
-			'edit_item'          => __( 'Edit Preset', 'photo-block' ),
-			'new_item'           => __( 'New Preset', 'photo-block' ),
-			'all_items'          => __( 'All Presets', 'photo-block' ),
-			'view_item'          => __( 'View Preset', 'photo-block' ),
-			'search_items'       => __( 'Search Presets', 'photo-block' ),
+			'add_new_item'       => __( 'Add New Global Style', 'photo-block' ),
+			'edit_item'          => __( 'Edit Global Style', 'photo-block' ),
+			'new_item'           => __( 'New Global Style', 'photo-block' ),
+			'all_items'          => __( 'All Global Styles', 'photo-block' ),
+			'view_item'          => __( 'View Global Style', 'photo-block' ),
+			'search_items'       => __( 'Search Global Styles', 'photo-block' ),
 			'not_found'          => __( 'No presets found', 'photo-block' ),
 			'not_found_in_trash' => __( 'No presets found in Trash', 'photo-block' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => __( 'Presets', 'photo-block' ),
+			'menu_name'          => __( 'Global Styles', 'photo-block' ),
 		);
 
 		$args = array(
@@ -448,6 +491,6 @@ class Presets {
 			'hierarchical'            => false,
 		);
 
-		register_post_type( 'dlx_pb_presets', $args );
+		register_post_type( 'dlx_pb_global_styles', $args );
 	}
 }

@@ -41,12 +41,12 @@ const PresetButtonEdit = ( props ) => {
 	return (
 		<>
 			<div
-				className={ classNames( 'photo-block-preset-edit-container', {
-					'photo-block-preset-edit-container--edit': editPresets,
+				className={ classNames( 'photo-block-global-styles-edit-container', {
+					'photo-block-global-styles-edit-container--edit': editPresets,
 				} ) }
 			>
 				{ editPresets && (
-					<div className="photo-block-preset-edit-buttons">
+					<div className="photo-block-global-styles-edit-buttons">
 						<Button
 							variant={ 'secondary' }
 							onClick={ ( e ) => {
@@ -60,7 +60,7 @@ const PresetButtonEdit = ( props ) => {
 							} }
 							label={ __( 'Edit Preset', 'photo-block' ) }
 							icon={ <Edit3 /> }
-							className="photo-block-preset-edit-button"
+							className="photo-block-global-styles-edit-button"
 						/>
 						<Button
 							variant={ 'secondary' }
@@ -73,7 +73,7 @@ const PresetButtonEdit = ( props ) => {
 							} }
 							label={ __( 'Delete Preset', 'photo-block' ) }
 							icon={ <Trash2 /> }
-							className="photo-block-preset-delete-button"
+							className="photo-block-global-styles-delete-button"
 						/>
 					</div>
 				) }
@@ -84,7 +84,7 @@ const PresetButtonEdit = ( props ) => {
 					}
 					setAttributes={ setAttributes }
 					uniqueId={ uniqueId }
-					className="photo-block-preset-button"
+					className="photo-block-global-styles-button"
 					clientId={ clientId }
 					photoAttributes={ photoAttributes }
 					captionAttributes={ captionAttributes }
