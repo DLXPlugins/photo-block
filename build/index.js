@@ -5592,8 +5592,6 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     uniqueId = _props$attributes.uniqueId,
     globalStyle = _props$attributes.globalStyle;
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_6__["default"]),
-    savedPresets = _useContext.savedPresets,
-    setSavedPresets = _useContext.setSavedPresets,
     savingPreset = _useContext.savingPreset,
     setSavingPreset = _useContext.setSavingPreset,
     editPresets = _useContext.editPresets,
@@ -5705,8 +5703,10 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
       updateBlockAttributes(captionBlock.clientId, captionBlockAttributes);
     }
   };
+  var savedPresets = getGlobalStyles();
+  console.log('savedPresets', savedPresets);
   var getSavedPresets = function getSavedPresets() {
-    var styles = getGlobalStyles();
+    var styles = savedPresets;
     var styleSelect = [{
       value: 'none',
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Select a Global Style', 'photo-block')
@@ -5732,7 +5732,7 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
             onChange: function onChange(newValue) {
               field.onChange(newValue);
             },
-            value: globalStyle || 'none'
+            value: field.value
           }));
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
@@ -5773,7 +5773,7 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
       setSavingPreset(true);
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Save New Global Style', 'photo-block')
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Save New Global Style', 'photo-block')), !editPresets && !savingPreset && savedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Save New Global Style', 'photo-block')), !editPresets && !savingPreset && Object.keys(savedPresets).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: 'secondary',
     onClick: function onClick(e) {
       e.preventDefault();

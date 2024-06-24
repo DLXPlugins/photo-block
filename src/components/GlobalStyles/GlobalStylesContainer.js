@@ -33,8 +33,6 @@ const GlobalStylesContainer = ( props ) => {
 	const { setAttributes, clientId } = props;
 	const { uniqueId, globalStyle } = props.attributes;
 	const {
-		savedPresets,
-		setSavedPresets,
 		savingPreset,
 		setSavingPreset,
 		editPresets,
@@ -138,8 +136,12 @@ const GlobalStylesContainer = ( props ) => {
 			updateBlockAttributes( captionBlock.clientId, captionBlockAttributes );
 		}
 	};
+	const savedPresets = getGlobalStyles();
+
+	console.log( 'savedPresets', savedPresets );
+
 	const getSavedPresets = () => {
-		const styles = getGlobalStyles();
+		const styles = savedPresets;
 		const styleSelect = [
 			{
 				value: 'none',
@@ -169,7 +171,7 @@ const GlobalStylesContainer = ( props ) => {
 									onChange={ ( newValue ) => {
 										field.onChange( newValue );
 									} }
-									value={ globalStyle || 'none' }
+									value={ field.value }
 								/>
 							) }
 						/>
@@ -252,7 +254,7 @@ const GlobalStylesContainer = ( props ) => {
 											{ __( 'Save New Global Style', 'photo-block' ) }
 										</Button>
 									) }
-									{ ( ! editPresets && ! savingPreset && savedPresets.length > 0 ) && (
+									{ ( ! editPresets && ! savingPreset && Object.keys( savedPresets ).length > 0 ) && (
 										<Button
 											variant={ 'secondary' }
 											onClick={ ( e ) => {
