@@ -14,11 +14,12 @@ import { createBlock } from '@wordpress/blocks';
 import { useDispatch, useSelect, select } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { Save, Edit, Layers } from 'lucide-react';
+import { Save, Edit, Layers, Pencil, Trash } from 'lucide-react';
 import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 import CustomPresetsContext from './context';
 import CustomPresetSaveModal from './GlobalStylesSaveModal';
 import globalStylesStore from '../../store/global-styles';
+import GlobalStylesDeleteModal from './GlobalStylesDeleteModal';
 // import PresetButtonEdit from './PresetButtonEdit';
 // import CustomPresetEditModal from './CustomPresetEditModal';
 // import CustomPresetDeleteModal from './CustomPresetDeleteModal';
@@ -39,6 +40,7 @@ const GlobalStylesContainer = ( props ) => {
 		setEditPresets,
 		showEditModal,
 		showDeleteModal,
+		setShowDeleteModal,
 		setDefaultPreset,
 	} = useContext( CustomPresetsContext );
 
@@ -137,66 +139,58 @@ const GlobalStylesContainer = ( props ) => {
 		}
 	};
 	const savedPresets = getGlobalStyles();
-
-	console.log( 'savedPresets', savedPresets );
-
-	const getSavedPresets = () => {
+	const getGlobalStylesForEditing = () => {
 		const styles = savedPresets;
-		const styleSelect = [
-			{
-				value: 'none',
-				label: __( 'Select a Global Style', 'photo-block' ),
-			},
-		];
+		const styleSelect = [];
 		if ( Object.keys( styles ).length > 0 ) {
 			// Append to the select options.
 			Object.keys( styles ).forEach( ( key ) => {
 				styleSelect.push( {
 					value: styles[ key ].slug,
 					label: styles[ key ].title,
+					id: styles[ key ].id,
+					deleteNonce: styles[ key ].delete_nonce,
 				} );
 			} );
 
 			return (
 				<>
-					<form onSubmit={ handleSubmit( onSubmit ) }>
-						<Controller
-							name="selectedGlobalStyle"
-							control={ control }
-							render={ ( { field } ) => (
-								<SelectControl
-									{ ...field }
-									label={ __( 'Select a Global Style', 'photo-block' ) }
-									options={ styleSelect }
-									onChange={ ( newValue ) => {
-										field.onChange( newValue );
-									} }
-									value={ field.value }
-								/>
-							) }
-						/>
-						<Controller
-							name="applyAsPreset"
-							control={ control }
-							render={ ( { field } ) => (
-								<CheckboxControl
-									{ ...field }
-									label={ __( 'Apply as a Preset Only', 'photo-block' ) }
-									onChange={ ( newValue ) => {
-										field.onChange( newValue );
-									} }
-								/>
-							) }
-						/>
-						<Button
-							type="submit"
-							variant="secondary"
-							className="photo-block-global-styles-modal-apply-button"
-							disabled={ getValues( 'selectedGlobalStyle' ) === 'none' }
-						>
-							{ __( 'Apply Global Style', 'photo-block' ) }
-						</Button>
-					</form>
+					<div className="photo-block-global-styles-edit-grid">
+						{
+							styleSelect.map( ( style ) => {
+								return (
+									<div key={ style.value } className="photo-block-global-styles-edit-item">
+										<div className="photo-block-global-styles-edit-item-title">
+											{ style.label }
+										</div>
+										<div className="photo-block-global-styles-edit-item-actions">
+											<ButtonGroup>
+												<Button
+													icon={ <Pencil /> }
+													onClick={ () => {
+
+													} }
+													label={ __( 'Edit Global Style', 'photo-block' ) }
+												/>
+												<Button
+													icon={ <Trash /> }
+													onClick={ () => {
+														setShowDeleteModal( {
+															editId: style.id,
+															title: style.label,
+															deleteNonce: style.deleteNonce,
+															slug: style.value,
+														} );
+													} }
+													label={ __( 'Delete Global Style', 'photo-block' ) }
+												/>
+											</ButtonGroup>
+										</div>
+									</div>
+								);
+							} )
+						}
+					</div>
 				</>
 			);
 		}
@@ -222,75 +216,70 @@ const GlobalStylesContainer = ( props ) => {
 					title={ showEditModal.title }
 					saveNonce={ showEditModal.saveNonce }
 				/>
-			) }
+			) } */ }
 			{ showDeleteModal && (
-				<CustomPresetDeleteModal
+				<GlobalStylesDeleteModal
 					editId={ showDeleteModal.editId }
 					title={ showDeleteModal.title }
 					deleteNonce={ showDeleteModal.deleteNonce }
+					slug={ showDeleteModal.slug }
 				/>
-			) } */ }
-			<PanelBody
-				title={ __( 'Global Styles', 'photo-block' ) }
-				initialOpen={ true }
-				icon={ <Layers /> }
-				className="photo-block__inspector-panel"
-			>
-				<div className="photo-block-global-styles-container" ref={ globalStyleContainer }>
-					{ ! loading && (
-						<>
-							{ getSavedPresets() }
-							{ canSavePresets && (
-								<div className="photo-block-global-styles-actions">
-									{ ! editPresets && (
-										<Button
-											variant={ 'secondary' }
-											onClick={ ( e ) => {
-												e.preventDefault();
-												setSavingPreset( true );
-											} }
-											label={ __( 'Save New Global Style', 'photo-block' ) }
-										>
-											{ __( 'Save New Global Style', 'photo-block' ) }
-										</Button>
-									) }
-									{ ( ! editPresets && ! savingPreset && Object.keys( savedPresets ).length > 0 ) && (
-										<Button
-											variant={ 'secondary' }
-											onClick={ ( e ) => {
-												e.preventDefault();
-												setEditPresets( true );
-											} }
-											label={ __( 'Edit Presets', 'photo-block' ) }
-										>
-											{ __( 'Edit Presets', 'photo-block' ) }
-										</Button>
-									) }
-									{ editPresets && ! savingPreset && (
-										<Button
-											variant={ 'primary' }
-											onClick={ ( e ) => {
-												e.preventDefault();
-												setEditPresets( false );
-											} }
-											label={ __( 'Exit Edit Mode', 'photo-block' ) }
-										>
-											{ __( 'Exit Edit Mode', 'photo-block' ) }
-										</Button>
-									) }
-								</div>
-							) }
-						</>
-					) }
-					{ savingPreset && (
-						<CustomPresetSaveModal
-							title={ __( 'Save Global Style', 'photo-block' ) }
-							{ ...props }
-						/>
-					) }
-				</div>
-			</PanelBody>
-
+			) }
+			<div className="photo-block-global-styles-container" ref={ globalStyleContainer }>
+				{ ! loading && (
+					<>
+						{ getGlobalStylesForEditing() }
+						{ canSavePresets && (
+							<div className="photo-block-global-styles-actions">
+								{ ! editPresets && (
+									<Button
+										variant={ 'primary' }
+										onClick={ ( e ) => {
+											e.preventDefault();
+											setSavingPreset( true );
+										} }
+										className="photo-block-global-styles-save-button"
+										label={ __( 'Save New Global Style', 'photo-block' ) }
+									>
+										{ __( 'Save New Global Style', 'photo-block' ) }
+									</Button>
+								) }
+								{ ( ! editPresets && Object.keys( savedPresets ).length > 0 ) && (
+									<Button
+										variant={ 'secondary' }
+										onClick={ ( e ) => {
+											e.preventDefault();
+											setEditPresets( true );
+										} }
+										className="photo-block-global-styles-edit-button"
+										label={ __( 'Edit Global Styles', 'photo-block' ) }
+									>
+										{ __( 'Edit Global Styles', 'photo-block' ) }
+									</Button>
+								) }
+								{ editPresets && ! savingPreset && (
+									<Button
+										variant={ 'primary' }
+										onClick={ ( e ) => {
+											e.preventDefault();
+											setEditPresets( false );
+										} }
+										label={ __( 'Exit Edit Mode', 'photo-block' ) }
+									>
+										{ __( 'Exit Edit Mode', 'photo-block' ) }
+									</Button>
+								) }
+							</div>
+						) }
+					</>
+				) }
+				{ savingPreset && (
+					<CustomPresetSaveModal
+						title={ __( 'Save Global Style', 'photo-block' ) }
+						{ ...props }
+					/>
+				) }
+			</div>
 		</>
 	);
 };

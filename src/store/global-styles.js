@@ -32,7 +32,6 @@ const globalStylesStore = createReduxStore( 'dlxplugins/photo-block/global-style
 					...state.globalStyles,
 					[ slug ]: action.globalStyle,
 				};
-				console.log( 'hi', globalStyles);
 				return {
 					...state,
 					globalStyles,

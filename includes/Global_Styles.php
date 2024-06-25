@@ -22,7 +22,7 @@ class Global_Styles {
 		add_action( 'wp_ajax_dlx_photo_block_load_global_styles', array( static::class, 'ajax_load_global_styles' ) );
 		add_action( 'wp_ajax_dlx_photo_block_save_global_style', array( static::class, 'ajax_save_global_style' ) ); // For Updating an existing preset (like title).
 		add_action( 'wp_ajax_dlx_photo_block_save_global_styles', array( static::class, 'ajax_save_global_styles' ) ); // For saving new presets.
-		add_action( 'wp_ajax_dlx_photo_block_delete_global_styles', array( static::class, 'ajax_delete_global_styles' ) );
+		add_action( 'wp_ajax_dlx_photo_block_delete_global_style', array( static::class, 'ajax_delete_global_style' ) );
 		add_action( 'wp_ajax_dlx_photo_block_override_global_styles', array( static::class, 'ajax_override_global_styles' ) ); // For overwriting an existing preset.
 
 		// Filter for adding localized vars to output.
@@ -440,17 +440,17 @@ class Global_Styles {
 	/**
 	 * Delete a preset and return all via Ajax.
 	 */
-	public static function ajax_delete_global_styles() {
+	public static function ajax_delete_global_style() {
 		// Get preset post ID.
-		$preset_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
+		$group_id = absint( filter_input( INPUT_POST, 'editId', FILTER_VALIDATE_INT ) );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_delete_global_styles_' . $preset_id ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_delete_global_styles_' . $group_id ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error( array() );
 		}
 
 		// Remove the post.
-		wp_delete_post( $preset_id, true );
+		//wp_delete_post( $group_id, true );
 
 		// Retrieve all presets.
 		$return = self::return_saved_global_styles();

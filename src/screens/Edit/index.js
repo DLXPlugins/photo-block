@@ -49,7 +49,6 @@ import useDeviceType from '../../hooks/useDeviceType';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
-import GlobalStyles from '../../components/GlobalStyles';
 import getStyles from '../../blocks/photo-block/block-styles';
 
 const EditScreen = forwardRef( ( props, ref ) => {
@@ -265,7 +264,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
-			{ <GlobalStyles { ...props } /> }
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }
 				icon={ <Image /> }
@@ -361,8 +359,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set the advanced inspector controls.
 	const advancedInspectorControls = (
 		<SidebarImageAdvancedInspectorControl
-			attributes={ attributes }
-			setAttributes={ setAttributes }
+			{ ...props }
 		/>
 	);
 
