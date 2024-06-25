@@ -54,6 +54,7 @@ const GlobalStylesSaveModal = ( props ) => {
 		control,
 	} );
 
+	const { createSuccessNotice, createWarningNotice } = useDispatch( 'core/notices' );
 	/**
 	 * Retrieve a list of parent and child attributes for the current block.
 	 *
@@ -89,25 +90,6 @@ const GlobalStylesSaveModal = ( props ) => {
 	};
 
 	/**
-	 * Set a default preset if any are set to default. null if no presets are defaults.
-	 *
-	 * @param {Array} presets Presets array.
-	 */
-	const setDefaultFromPresets = ( presets ) => {
-		// Loop through presets and assign default if needed.
-		presets.forEach( ( preset ) => {
-			if ( preset.is_default ) {
-				setDefaultPreset( preset );
-			}
-
-			// If none are default, clear default presets.
-			if ( ! presets.some( ( presetValue ) => presetValue.is_default ) ) {
-				setDefaultPreset( null );
-			}
-		} );
-	};
-
-	/**
 	 * Save a new preset via Ajax.
 	 *
 	 * @param {Array} formData Form data array.
@@ -136,9 +118,21 @@ const GlobalStylesSaveModal = ( props ) => {
 						type: 'ajax',
 						message: data.message,
 					} );
+					createWarningNotice(
+						__( 'There was an error saving the global style.', 'photo-block' ),
+						{
+							type: 'snackbar',
+						}
+					);
 					setIsSaving( false );
 					return;
 				}
+				createSuccessNotice(
+					__( 'Global style saved successfully.', 'photo-block' ),
+					{
+						type: 'snackbar',
+					}
+				);
 				setGlobalStyle( data, data.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
@@ -172,11 +166,31 @@ const GlobalStylesSaveModal = ( props ) => {
 		} )
 			.then( ( response ) => response.json() )
 			.then( ( json ) => {
-				const { presets } = json.data;
+				const { success } = json;
+				const newData = json.data;
+				if ( ! success ) {
+					setError( 'formAjaxError', {
+						type: 'ajax',
+						message: newData.message,
+					} );
+					createWarningNotice(
+						__( 'There was an error saving the global style override.', 'photo-block' ),
+						{
+							type: 'snackbar',
+						}
+					);
+					setIsSaving( false );
+					return;
+				}
+				createSuccessNotice(
+					__( 'Global style saved successfully.', 'photo-block' ),
+					{
+						type: 'snackbar',
+					}
+				);
+				setGlobalStyle( newData, newData.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
-				setSavedPresets( presets );
-				setDefaultFromPresets( presets );
 			} )
 			.catch( ( error ) => {
 				setSavingPreset( false );
@@ -329,6 +343,14 @@ const GlobalStylesSaveModal = ( props ) => {
 									{ 'pattern' === errors.globalStyleCSSClass?.type && (
 										<Notice
 											message={ __( 'The CSS class contains invalid characters and must be a CSS friendly name.' ) }
+											status="error"
+											politeness="assertive"
+											icon={ AlertCircle }
+										/>
+									) }
+									{ 'required' === errors.globalStyleCSSClass?.type && (
+										<Notice
+											message={ __( 'The Global Style CSS Class field is required.' ) }
 											status="error"
 											politeness="assertive"
 											icon={ AlertCircle }

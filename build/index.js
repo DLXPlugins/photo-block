@@ -5538,13 +5538,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/pencil.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash.js");
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/pencil.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash.js");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
 /* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./context */ "./src/components/GlobalStyles/context.js");
 /* harmony import */ var _GlobalStylesSaveModal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./GlobalStylesSaveModal */ "./src/components/GlobalStyles/GlobalStylesSaveModal.js");
 /* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 /* harmony import */ var _GlobalStylesDeleteModal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./GlobalStylesDeleteModal */ "./src/components/GlobalStyles/GlobalStylesDeleteModal.js");
+/* harmony import */ var _GlobalStylesEditModal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./GlobalStylesEditModal */ "./src/components/GlobalStyles/GlobalStylesEditModal.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -5558,6 +5559,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -5600,6 +5602,7 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     editPresets = _useContext.editPresets,
     setEditPresets = _useContext.setEditPresets,
     showEditModal = _useContext.showEditModal,
+    setShowEditModal = _useContext.setShowEditModal,
     showDeleteModal = _useContext.showDeleteModal,
     setShowDeleteModal = _useContext.setShowDeleteModal,
     setDefaultPreset = _useContext.setDefaultPreset;
@@ -5622,7 +5625,7 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
       applyAsPreset: false
     };
   };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useForm)({
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_11__.useForm)({
       defaultValues: getDefaultValues()
     }),
     control = _useForm.control,
@@ -5632,7 +5635,7 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     setError = _useForm.setError,
     clearErrors = _useForm.clearErrors,
     getValues = _useForm.getValues;
-  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useFormState)({
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_11__.useFormState)({
       control: control
     }),
     errors = _useFormState.errors;
@@ -5718,7 +5721,9 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
           value: styles[key].slug,
           label: styles[key].title,
           id: styles[key].id,
-          deleteNonce: styles[key].delete_nonce
+          deleteNonce: styles[key].delete_nonce,
+          saveNonce: styles[key].save_nonce,
+          cssClass: styles[key].css_class
         });
       });
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -5732,17 +5737,26 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
         }, style.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
           className: "photo-block-global-styles-edit-item-actions"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ButtonGroup, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-          icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null),
-          onClick: function onClick() {},
+          icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"], null),
+          onClick: function onClick() {
+            setShowEditModal({
+              editId: style.id,
+              title: style.label,
+              saveNonce: style.saveNonce,
+              slug: style.value,
+              cssClass: style.cssClass
+            });
+          },
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit Global Style', 'photo-block')
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
-          icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"], null),
+          icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_13__["default"], null),
           onClick: function onClick() {
             setShowDeleteModal({
               editId: style.id,
               title: style.label,
               deleteNonce: style.deleteNonce,
-              slug: style.value
+              slug: style.value,
+              cssClass: style.cssClass
             });
           },
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Delete Global Style', 'photo-block')
@@ -5751,7 +5765,12 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     }
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, canSavePresets ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('No global styles have been saved yet. Would you like to save a new one?', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('No global styles have been saved yet.', 'photo-block')));
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, showDeleteModal && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GlobalStylesDeleteModal__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, showEditModal && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GlobalStylesEditModal__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    editId: showEditModal.editId,
+    title: showEditModal.title,
+    saveNonce: showEditModal.saveNonce,
+    cssClass: showEditModal.cssClass
+  }), showDeleteModal && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GlobalStylesDeleteModal__WEBPACK_IMPORTED_MODULE_9__["default"], {
     editId: showDeleteModal.editId,
     title: showDeleteModal.title,
     deleteNonce: showDeleteModal.deleteNonce,
@@ -5783,6 +5802,7 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
       e.preventDefault();
       setEditPresets(false);
     },
+    className: "photo-block-global-styles-exit-button",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Exit Edit Mode', 'photo-block')
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Exit Edit Mode', 'photo-block')))), savingPreset && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GlobalStylesSaveModal__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Save Global Style', 'photo-block')
@@ -5862,6 +5882,9 @@ var GlobalStylesDeleteModal = function GlobalStylesDeleteModal(props) {
     errors = _useFormState.errors;
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]),
     removeGlobalStyle = _useDispatch.removeGlobalStyle;
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)('core/notices'),
+    createWarningNotice = _useDispatch2.createWarningNotice,
+    createSuccessNotice = _useDispatch2.createSuccessNotice;
   var onSubmit = function onSubmit(formData) {
     setIsDeleting(true);
     var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
@@ -5879,15 +5902,22 @@ var GlobalStylesDeleteModal = function GlobalStylesDeleteModal(props) {
     }).then(function (response) {
       return response.json();
     }).then(function (json) {
-      var success = json.success;
+      var success = json.success,
+        data = json.data;
       if (!success) {
         setError('deletionFailed', {
           type: 'manual',
           message: data.message
         });
+        createWarningNotice(data.message, {
+          type: 'snackbar'
+        });
         setIsDeleting(false);
         return;
       }
+      createWarningNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Global style deleted.', 'photo-block'), {
+        type: 'snackbar'
+      });
       removeGlobalStyle(slug);
       setIsDeleting(false);
       setShowDeleteModal(false);
@@ -5946,6 +5976,219 @@ var GlobalStylesDeleteModal = function GlobalStylesDeleteModal(props) {
 
 /***/ }),
 
+/***/ "./src/components/GlobalStyles/GlobalStylesEditModal.js":
+/*!**************************************************************!*\
+  !*** ./src/components/GlobalStyles/GlobalStylesEditModal.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
+/* harmony import */ var _Notice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Notice */ "./src/components/Notice/index.js");
+/* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./context */ "./src/components/GlobalStyles/context.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+var canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
+var GlobalStylesEditModal = function GlobalStylesEditModal(props) {
+  var _errors$title, _errors$title2, _errors$cssClass, _errors$cssClass2;
+  var title = props.title,
+    editId = props.editId,
+    saveNonce = props.saveNonce,
+    cssClass = props.cssClass;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    isSaving = _useState2[0],
+    setIsSaving = _useState2[1];
+  console.log(props);
+  var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_5__["default"]),
+    setSavedPresets = _useContext.setSavedPresets,
+    showEditModal = _useContext.showEditModal,
+    setShowEditModal = _useContext.setShowEditModal,
+    defaultPreset = _useContext.defaultPreset,
+    setDefaultPreset = _useContext.setDefaultPreset;
+  var getDefaultValues = function getDefaultValues() {
+    return {
+      title: title,
+      editId: editId,
+      cssClass: cssClass
+    };
+  };
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useForm)({
+      defaultValues: getDefaultValues()
+    }),
+    control = _useForm.control,
+    handleSubmit = _useForm.handleSubmit,
+    getValues = _useForm.getValues,
+    setError = _useForm.setError;
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useFormState)({
+      control: control
+    }),
+    errors = _useFormState.errors;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]),
+    setGlobalStyle = _useDispatch.setGlobalStyle;
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)('core/notices'),
+    createSuccessNotice = _useDispatch2.createSuccessNotice;
+  var onSubmit = function onSubmit(formData) {
+    setIsSaving(true);
+    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
+    var data = new FormData();
+    data.append('action', 'dlx_photo_block_save_edited_global_style');
+    data.append('nonce', saveNonce);
+    data.append('editId', formData.editId);
+    data.append('title', formData.title);
+    data.append('cssClass', formData.cssClass);
+    fetch(ajaxUrl, {
+      method: 'POST',
+      body: data,
+      /* get return in json */
+      headers: {
+        Accept: 'application/json'
+      }
+    }).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      var success = json.success;
+      setIsSaving(false);
+      if (!success) {
+        setError('saveError', {
+          type: 'manual',
+          message: data.message
+        });
+        return;
+      }
+      setGlobalStyle(json.data, json.data.slug);
+
+      // Show a success notice.
+      createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Global style updated successfully.', 'photo-block'), {
+        type: 'snackbar'
+      });
+
+      // Close the modal.
+      setShowEditModal(false);
+    })["catch"](function (error) {
+      setIsSaving(false);
+    });
+  };
+
+  // Don't show modal unless explicitly set.
+  if (!showEditModal) {
+    return null;
+  }
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Update Global Style', 'photo-block'),
+    onRequestClose: function onRequestClose() {
+      return setShowEditModal(false);
+    },
+    className: "photo-block-global-styles-modal",
+    shouldCloseOnClickOutside: false
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleSubmit(onSubmit)
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    name: "title",
+    control: control,
+    rules: {
+      required: true,
+      pattern: /^[a-zA-Z0-9-_ ]+$/
+    },
+    render: function render(_ref) {
+      var field = _ref.field;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Global Style Label', 'photo-block'),
+        className: "is-required"
+      }));
+    }
+  }), 'required' === ((_errors$title = errors.title) === null || _errors$title === void 0 ? void 0 : _errors$title.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This field is required.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
+  }), 'pattern' === ((_errors$title2 = errors.title) === null || _errors$title2 === void 0 ? void 0 : _errors$title2.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This field contains invalid characters.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    name: "cssClass",
+    control: control,
+    rules: {
+      required: true,
+      pattern: /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/
+    },
+    render: function render(_ref2) {
+      var field = _ref2.field;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Global Style CSS Class Name', 'photo-block'),
+        className: "is-required"
+      }));
+    }
+  }), 'required' === ((_errors$cssClass = errors.cssClass) === null || _errors$cssClass === void 0 ? void 0 : _errors$cssClass.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This field is required.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
+  }), 'pattern' === ((_errors$cssClass2 = errors.cssClass) === null || _errors$cssClass2 === void 0 ? void 0 : _errors$cssClass2.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('This field contains invalid characters.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    name: "editId",
+    control: control,
+    render: function render(_ref3) {
+      var field = _ref3.field;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({
+        type: "hidden"
+      }, field));
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    type: "submit",
+    variant: "primary",
+    className: "photo-block-global-styles-modal-apply-button",
+    disabled: isSaving
+  }, isSaving ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Saving…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Apply Changes', 'photo-block')), !isSaving && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: "secondary",
+    onClick: function onClick() {
+      setShowEditModal(false);
+    }
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Cancel', 'photo-block')), (errors === null || errors === void 0 ? void 0 : errors.saveError) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    message: errors.saveError.message,
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"]
+  })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GlobalStylesEditModal);
+
+/***/ }),
+
 /***/ "./src/components/GlobalStyles/GlobalStylesSaveModal.js":
 /*!**************************************************************!*\
   !*** ./src/components/GlobalStyles/GlobalStylesSaveModal.js ***!
@@ -5995,7 +6238,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var canSaveDefaultPresets = photoBlockUser.canSetDefaultPresets;
 var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
-  var _errors$globalStyleLa2, _errors$globalStyleLa3, _errors$globalStyleCS2, _errors$selectedGloba;
+  var _errors$globalStyleLa2, _errors$globalStyleLa3, _errors$globalStyleCS2, _errors$globalStyleCS3, _errors$selectedGloba;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('new'),
     _useState2 = _slicedToArray(_useState, 2),
     presetSaveType = _useState2[0],
@@ -6043,7 +6286,9 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       control: control
     }),
     errors = _useFormState.errors;
-
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)('core/notices'),
+    createSuccessNotice = _useDispatch2.createSuccessNotice,
+    createWarningNotice = _useDispatch2.createWarningNotice;
   /**
    * Retrieve a list of parent and child attributes for the current block.
    *
@@ -6080,27 +6325,6 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
   };
 
   /**
-   * Set a default preset if any are set to default. null if no presets are defaults.
-   *
-   * @param {Array} presets Presets array.
-   */
-  var setDefaultFromPresets = function setDefaultFromPresets(presets) {
-    // Loop through presets and assign default if needed.
-    presets.forEach(function (preset) {
-      if (preset.is_default) {
-        setDefaultPreset(preset);
-      }
-
-      // If none are default, clear default presets.
-      if (!presets.some(function (presetValue) {
-        return presetValue.is_default;
-      })) {
-        setDefaultPreset(null);
-      }
-    });
-  };
-
-  /**
    * Save a new preset via Ajax.
    *
    * @param {Array} formData Form data array.
@@ -6130,9 +6354,15 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
           type: 'ajax',
           message: data.message
         });
+        createWarningNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('There was an error saving the global style.', 'photo-block'), {
+          type: 'snackbar'
+        });
         setIsSaving(false);
         return;
       }
+      createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global style saved successfully.', 'photo-block'), {
+        type: 'snackbar'
+      });
       setGlobalStyle(data, data.slug);
       setIsSaving(false);
       setSavingPreset(false);
@@ -6165,11 +6395,25 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     }).then(function (response) {
       return response.json();
     }).then(function (json) {
-      var presets = json.data.presets;
+      var success = json.success;
+      var newData = json.data;
+      if (!success) {
+        setError('formAjaxError', {
+          type: 'ajax',
+          message: newData.message
+        });
+        createWarningNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('There was an error saving the global style override.', 'photo-block'), {
+          type: 'snackbar'
+        });
+        setIsSaving(false);
+        return;
+      }
+      createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global style saved successfully.', 'photo-block'), {
+        type: 'snackbar'
+      });
+      setGlobalStyle(newData, newData.slug);
       setIsSaving(false);
       setSavingPreset(false);
-      setSavedPresets(presets);
-      setDefaultFromPresets(presets);
     })["catch"](function (error) {
       setSavingPreset(false);
     });
@@ -6295,6 +6539,11 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     }
   }), 'pattern' === ((_errors$globalStyleCS2 = errors.globalStyleCSSClass) === null || _errors$globalStyleCS2 === void 0 ? void 0 : _errors$globalStyleCS2.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
     message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The CSS class contains invalid characters and must be a CSS friendly name.'),
+    status: "error",
+    politeness: "assertive",
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
+  }), 'required' === ((_errors$globalStyleCS3 = errors.globalStyleCSSClass) === null || _errors$globalStyleCS3 === void 0 ? void 0 : _errors$globalStyleCS3.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The Global Style CSS Class field is required.'),
     status: "error",
     politeness: "assertive",
     icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]

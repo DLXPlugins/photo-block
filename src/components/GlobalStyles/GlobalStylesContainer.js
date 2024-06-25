@@ -20,6 +20,7 @@ import CustomPresetsContext from './context';
 import CustomPresetSaveModal from './GlobalStylesSaveModal';
 import globalStylesStore from '../../store/global-styles';
 import GlobalStylesDeleteModal from './GlobalStylesDeleteModal';
+import GlobalStylesEditModal from './GlobalStylesEditModal';
 // import PresetButtonEdit from './PresetButtonEdit';
 // import CustomPresetEditModal from './CustomPresetEditModal';
 // import CustomPresetDeleteModal from './CustomPresetDeleteModal';
@@ -39,6 +40,7 @@ const GlobalStylesContainer = ( props ) => {
 		editPresets,
 		setEditPresets,
 		showEditModal,
+		setShowEditModal,
 		showDeleteModal,
 		setShowDeleteModal,
 		setDefaultPreset,
@@ -150,6 +152,8 @@ const GlobalStylesContainer = ( props ) => {
 					label: styles[ key ].title,
 					id: styles[ key ].id,
 					deleteNonce: styles[ key ].delete_nonce,
+					saveNonce: styles[ key ].save_nonce,
+					cssClass: styles[ key ].css_class,
 				} );
 			} );
 
@@ -168,7 +172,13 @@ const GlobalStylesContainer = ( props ) => {
 												<Button
 													icon={ <Pencil /> }
 													onClick={ () => {
-
+														setShowEditModal( {
+															editId: style.id,
+															title: style.label,
+															saveNonce: style.saveNonce,
+															slug: style.value,
+															cssClass: style.cssClass,
+														} );
 													} }
 													label={ __( 'Edit Global Style', 'photo-block' ) }
 												/>
@@ -180,6 +190,7 @@ const GlobalStylesContainer = ( props ) => {
 															title: style.label,
 															deleteNonce: style.deleteNonce,
 															slug: style.value,
+															cssClass: style.cssClass,
 														} );
 													} }
 													label={ __( 'Delete Global Style', 'photo-block' ) }
@@ -210,13 +221,14 @@ const GlobalStylesContainer = ( props ) => {
 
 	return (
 		<>
-			{ /* { showEditModal && (
-				<CustomPresetEditModal
+			{ showEditModal && (
+				<GlobalStylesEditModal
 					editId={ showEditModal.editId }
 					title={ showEditModal.title }
 					saveNonce={ showEditModal.saveNonce }
+					cssClass={ showEditModal.cssClass }
 				/>
-			) } */ }
+			) }
 			{ showDeleteModal && (
 				<GlobalStylesDeleteModal
 					editId={ showDeleteModal.editId }
@@ -268,6 +280,7 @@ const GlobalStylesContainer = ( props ) => {
 											e.preventDefault();
 											setEditPresets( false );
 										} }
+										className="photo-block-global-styles-exit-button"
 										label={ __( 'Exit Edit Mode', 'photo-block' ) }
 									>
 										{ __( 'Exit Edit Mode', 'photo-block' ) }

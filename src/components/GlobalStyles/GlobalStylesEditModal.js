@@ -7,16 +7,19 @@ import {
 } from '@wordpress/components';
 import { useForm, Controller, useFormState } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
+import { useDispatch } from '@wordpress/data';
 import { AlertCircle } from 'lucide-react';
 import Notice from '../Notice';
 import CustomPresetsContext from './context';
+import globalStylesStore from '../../store/global-styles';
 
 const canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
 
-const CustomPresetEditModal = ( props ) => {
-	const { title, editId, saveNonce } = props;
+const GlobalStylesEditModal = ( props ) => {
+	const { title, editId, saveNonce, cssClass } = props;
 	const [ isSaving, setIsSaving ] = useState( false );
 
+	console.log( props );
 	const { setSavedPresets, showEditModal, setShowEditModal, defaultPreset, setDefaultPreset } =
 		useContext( CustomPresetsContext );
 
@@ -24,10 +27,10 @@ const CustomPresetEditModal = ( props ) => {
 		return {
 			title,
 			editId,
-			isDefault: defaultPreset?.id === editId ? true : false,
+			cssClass,
 		};
 	};
-	const { control, handleSubmit, getValues } = useForm( {
+	const { control, handleSubmit, getValues, setError } = useForm( {
 		defaultValues: getDefaultValues(),
 	} );
 
@@ -35,15 +38,19 @@ const CustomPresetEditModal = ( props ) => {
 		control,
 	} );
 
+	const {setGlobalStyle } = useDispatch( globalStylesStore );
+
+	const { createSuccessNotice } = useDispatch( 'core/notices' );
+
 	const onSubmit = ( formData ) => {
 		setIsSaving( true );
 		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
 		const data = new FormData();
-		data.append( 'action', 'dlx_photo_block_save_preset' );
+		data.append( 'action', 'dlx_photo_block_save_edited_global_style' );
 		data.append( 'nonce', saveNonce );
 		data.append( 'editId', formData.editId );
 		data.append( 'title', formData.title );
-		data.append( 'isDefault', formData.isDefault ? true : false );
+		data.append( 'cssClass', formData.cssClass );
 		fetch( ajaxUrl, {
 			method: 'POST',
 			body: data,
@@ -54,21 +61,27 @@ const CustomPresetEditModal = ( props ) => {
 		} )
 			.then( ( response ) => response.json() )
 			.then( ( json ) => {
-				const { presets } = json.data;
-				setSavedPresets( presets );
+				const { success } = json;
 				setIsSaving( false );
+				if ( ! success ) {
+					setError(
+						'saveError',
+						{
+							type: 'manual',
+							message: data.message,
+						}
+					);
+					return;
+				}
+				setGlobalStyle( json.data, json.data.slug );
 
-				// Loop through presets and assign default if needed.
-				presets.forEach( ( preset ) => {
-					if ( preset.is_default ) {
-						setDefaultPreset( preset );
+				// Show a success notice.
+				createSuccessNotice(
+					__( 'Global style updated successfully.', 'photo-block' ),
+					{
+						type: 'snackbar',
 					}
-
-					// If none are default, clear default presets.
-					if ( ! presets.some( ( presetValue ) => presetValue.is_default ) ) {
-						setDefaultPreset( null );
-					}
-				} );
+				);
 
 				// Close the modal.
 				setShowEditModal( false );
@@ -85,7 +98,7 @@ const CustomPresetEditModal = ( props ) => {
 
 	return (
 		<Modal
-			title={ __( 'Update Preset', 'photo-block' ) }
+			title={ __( 'Update Global Style', 'photo-block' ) }
 			onRequestClose={ () => setShowEditModal( false ) }
 			className="photo-block-global-styles-modal"
 			shouldCloseOnClickOutside={ false }
@@ -101,7 +114,7 @@ const CustomPresetEditModal = ( props ) => {
 					render={ ( { field } ) => (
 						<TextControl
 							{ ...field }
-							label={ __( 'Preset Name', 'photo-block' ) }
+							label={ __( 'Global Style Label', 'photo-block' ) }
 							className="is-required"
 						/>
 					) }
@@ -111,7 +124,7 @@ const CustomPresetEditModal = ( props ) => {
 						message={ __( 'This field is required.' ) }
 						status="error"
 						politeness="assertive"
-						icon={ <AlertCircle /> }
+						icon={ AlertCircle }
 					/>
 				) }
 				{ 'pattern' === errors.title?.type && (
@@ -119,26 +132,41 @@ const CustomPresetEditModal = ( props ) => {
 						message={ __( 'This field contains invalid characters.' ) }
 						status="error"
 						politeness="assertive"
-						icon={ <AlertCircle /> }
+						icon={ AlertCircle }
 					/>
 				) }
-				{ canSaveDefaultPresets && (
-					<>
-						<Controller
-							name="isDefault"
-							control={ control }
-							render={ ( { field: { onChange, value } } ) => (
-								<ToggleControl
-									label={ __( 'Set Default Preset', 'photo-block' ) }
-									checked={ value }
-									onChange={ ( newValue ) => onChange( newValue ) }
-									help={
-										__( 'This preset will be applied to all new Photo Blocks.', 'photo-block' )
-									}
-								/>
-							) }
+				<Controller
+					name="cssClass"
+					control={ control }
+					rules={
+						{
+							required: true,
+							pattern: /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/,
+						}
+					}
+					render={ ( { field } ) => (
+						<TextControl
+							{ ...field }
+							label={ __( 'Global Style CSS Class Name', 'photo-block' ) }
+							className="is-required"
 						/>
-					</>
+					) }
+				/>
+				{ 'required' === errors.cssClass?.type && (
+					<Notice
+						message={ __( 'This field is required.' ) }
+						status="error"
+						politeness="assertive"
+						icon={ AlertCircle }
+					/>
+				) }
+				{ 'pattern' === errors.cssClass?.type && (
+					<Notice
+						message={ __( 'This field contains invalid characters.' ) }
+						status="error"
+						politeness="assertive"
+						icon={ AlertCircle }
+					/>
 				) }
 				<Controller
 					name="editId"
@@ -165,8 +193,18 @@ const CustomPresetEditModal = ( props ) => {
 						{ __( 'Cancel', 'photo-block' ) }
 					</Button>
 				) }
+				{
+					errors?.saveError && (
+						<Notice
+							message={ errors.saveError.message }
+							status="error"
+							politeness="assertive"
+							icon={ AlertCircle }
+						/>
+					)
+				}
 			</form>
 		</Modal>
 	);
 };
-export default CustomPresetEditModal;
+export default GlobalStylesEditModal;

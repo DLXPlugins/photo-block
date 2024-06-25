@@ -34,6 +34,8 @@ const GlobalStylesDeleteModal = ( props ) => {
 
 	const { removeGlobalStyle } = useDispatch( globalStylesStore );
 
+	const { createWarningNotice, createSuccessNotice } = useDispatch( 'core/notices' );
+
 	const onSubmit = ( formData ) => {
 		setIsDeleting( true );
 		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
@@ -51,15 +53,27 @@ const GlobalStylesDeleteModal = ( props ) => {
 		} )
 			.then( ( response ) => response.json() )
 			.then( ( json ) => {
-				const { success } = json;
+				const { success, data } = json;
 				if ( ! success ) {
 					setError( 'deletionFailed', {
 						type: 'manual',
 						message: data.message,
 					} );
+					createWarningNotice(
+						data.message,
+						{
+							type: 'snackbar',
+						}
+					)
 					setIsDeleting( false );
 					return;
 				}
+				createWarningNotice(
+					__( 'Global style deleted.', 'photo-block' ),
+					{
+						type: 'snackbar',
+					}
+				);
 				removeGlobalStyle( slug );
 				setIsDeleting( false );
 				setShowDeleteModal( false );

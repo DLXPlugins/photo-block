@@ -20,7 +20,7 @@ class Global_Styles {
 		$self = new self();
 		add_action( 'init', array( static::class, 'register_post_type' ) );
 		add_action( 'wp_ajax_dlx_photo_block_load_global_styles', array( static::class, 'ajax_load_global_styles' ) );
-		add_action( 'wp_ajax_dlx_photo_block_save_global_style', array( static::class, 'ajax_save_global_style' ) ); // For Updating an existing preset (like title).
+		add_action( 'wp_ajax_dlx_photo_block_save_edited_global_style', array( static::class, 'ajax_save_edited_global_style' ) ); // For Updating an existing preset (like title).
 		add_action( 'wp_ajax_dlx_photo_block_save_global_styles', array( static::class, 'ajax_save_global_styles' ) ); // For saving new presets.
 		add_action( 'wp_ajax_dlx_photo_block_delete_global_style', array( static::class, 'ajax_delete_global_style' ) );
 		add_action( 'wp_ajax_dlx_photo_block_override_global_style', array( static::class, 'ajax_override_global_style' ) ); // For overwriting an existing preset.
@@ -60,18 +60,18 @@ class Global_Styles {
 			if ( $posts ) {
 				$global_styles = array();
 				foreach ( $posts as $post ) {
-					$is_default_global_styles = (bool) get_post_meta( $post->ID, '_dlx_pb_is_default', true );
-					$content                  = json_decode( $post->post_content, true );
+					$content = json_decode( $post->post_content, true );
 					if ( isset( $content['attributes'] ) ) {
 						$content = $content['attributes'];
 					} else {
 						continue;
 					}
+					$css_class = get_post_meta( $post->ID, '_dlx_pb_css_class', true );
 					$global_styles[ sanitize_key( $post->post_name ) ] = array(
 						'id'           => $post->ID,
 						'title'        => $post->post_title,
 						'slug'         => $post->post_name,
-						'is_default'   => $is_default_global_styles,
+						'css_class'    => $css_class ? $css_class : '',
 						'content'      => Functions::sanitize_array_recursive( $content ),
 						'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $post->ID ),
 						'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $post->ID ),
@@ -127,13 +127,13 @@ class Global_Styles {
 				} else {
 					continue;
 				}
-				$content                 = Functions::sanitize_array_recursive( $content );
-				$is_default_global_style = (bool) get_post_meta( $global_style->ID, '_dlx_pb_is_default', true );
-				$return[]                = array(
+				$css_class_name = get_post_meta( $global_style->ID, '_dlx_pb_css_class', true );
+				$content        = Functions::sanitize_array_recursive( $content );
+				$return[]       = array(
 					'id'           => $global_style->ID,
 					'title'        => $global_style->post_title,
 					'slug'         => $global_style->post_name,
-					'is_default'   => $is_default_global_style ? true : false,
+					'css_class'    => $css_class_name ? $css_class_name : '',
 					'content'      => $content, // No need to escape here because it will be re-encoded in the return array.
 					'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $global_style->ID ),
 					'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $global_style->ID ),
@@ -216,6 +216,7 @@ class Global_Styles {
 		$title          = isset( $form_data['globalStyleLabel'] ) ? sanitize_text_field( $form_data['globalStyleLabel'] ) : '';
 		$slug           = isset( $form_data['globalStyleSlug'] ) ? sanitize_text_field( $form_data['globalStyleSlug'] ) : '';
 		$slug_sanitized = sanitize_title( $slug );
+		$css_class_name = isset( $form_data['globalStyleCSSClass'] ) ? sanitize_text_field( $form_data['globalStyleCSSClass'] ) : '';
 
 		// Check if slug already exists.
 		$maybe_slug_exists = get_page_by_path( $slug_sanitized, OBJECT, 'dlx_pb_global_styles' );
@@ -243,6 +244,11 @@ class Global_Styles {
 			wp_send_json_error( array( 'message' => $post_id->get_error_message() ) );
 		}
 
+		// Add CSS class to post meta.
+		if ( ! empty( $css_class_name ) ) {
+			update_post_meta( $post_id, '_dlx_pb_css_class', $css_class_name );
+		}
+
 		// Get post.
 		$global_style = get_post( $post_id );
 
@@ -250,6 +256,7 @@ class Global_Styles {
 			'id'           => $global_style->ID,
 			'title'        => $global_style->post_title,
 			'slug'         => $global_style->post_name,
+			'css_class'    => $css_class_name ? $css_class_name : '',
 			'content'      => Functions::sanitize_array_recursive( json_decode( $global_style->post_content, true ), ),
 			'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $global_style->ID ),
 			'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $global_style->ID ),
@@ -290,7 +297,11 @@ class Global_Styles {
 
 		// Verify nonce.
 		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
-			wp_send_json_error( array() );
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ),
+				)
+			);
 		}
 
 		// Get attributes JSON.
@@ -364,54 +375,77 @@ class Global_Styles {
 			)
 		);
 
+		// Get the post.
+		$global_style = get_post( $global_style_id );
+
+		// Get the default CSS class.
+		$css_class_name = get_post_meta( $global_style_id, '_dlx_pb_css_class', true );
+
 		// Get the presets.
-		$return = self::return_saved_global_styles();
-		wp_send_json_success( array( 'globalStyles' => $return ) );
+		$return_global_style = array(
+			'id'           => $global_style_id,
+			'title'        => sanitize_text_field( $global_style->post_title ),
+			'slug'         => sanitize_text_field( $global_style->post_name ),
+			'css_class'    => $css_class_name ? $css_class_name : '',
+			'content'      => Functions::sanitize_array_recursive( json_decode( $global_style->post_content, true ), ),
+			'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $global_style_id ),
+			'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $global_style_id ),
+		);
+
+		// Send json response.
+		wp_send_json_success( $return_global_style );
 	}
 
 	/**
 	 * Save a preset and return all via Ajax.
 	 */
-	public static function ajax_save_global_style() {
+	public static function ajax_save_edited_global_style() {
 		// Get preset post ID.
-		$preset_id  = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
-		$is_default = filter_var( filter_input( INPUT_POST, 'isDefault', FILTER_DEFAULT ), FILTER_VALIDATE_BOOLEAN );
+		$global_style_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_global_styles_' . $preset_id ) || ! current_user_can( 'edit_others_posts' ) ) {
-			wp_send_json_error( array() );
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_global_styles_' . $global_style_id ) || ! current_user_can( 'edit_others_posts' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ),
+				)
+			);
 		}
 
 		// Get the preset title.
 		$title = sanitize_text_field( filter_input( INPUT_POST, 'title', FILTER_DEFAULT ) );
 
+		// Get the default CSS class.
+		$css_class_name = sanitize_text_field( filter_input( INPUT_POST, 'cssClass', FILTER_DEFAULT ) );
+
 		// Update the post title.
 		wp_update_post(
 			array(
-				'ID'         => $preset_id,
+				'ID'         => $global_style_id,
 				'post_title' => $title,
 			)
 		);
 
-		// If default, clear all other defaults.
-		if ( current_user_can( 'edit_others_posts' ) ) {
-			if ( $is_default ) {
-				// Remove default from all other presets.
-				self::remove_default_global_styles();
+		// Get the post.
+		$global_style = get_post( $global_style_id );
 
-				// Set this preset as default.
-				update_post_meta( $preset_id, '_dlx_pb_is_default', true );
-			} else {
-				// Remove default from this preset.
-				delete_post_meta( $preset_id, '_dlx_pb_is_default' );
-			}
+		// Add CSS class to post meta.
+		if ( ! empty( $css_class_name ) ) {
+			update_post_meta( $global_style_id, '_dlx_pb_css_class', $css_class_name );
 		}
 
-		// Retrieve all presets.
-		$return = self::return_saved_global_styles();
+		$return_global_style = array(
+			'id'           => $global_style_id,
+			'title'        => $title,
+			'slug'         => $global_style->post_name,
+			'css_class'    => $css_class_name ? $css_class_name : '',
+			'content'      => Functions::sanitize_array_recursive( json_decode( $global_style->post_content, true ), ),
+			'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $global_style_id ),
+			'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $global_style_id ),
+		);
 
 		// Send json response.
-		wp_send_json_success( array( 'globalStyles' => $return ) );
+		wp_send_json_success( $return_global_style );
 	}
 
 	/**
@@ -423,7 +457,11 @@ class Global_Styles {
 
 		// Verify nonce.
 		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_delete_global_styles_' . $group_id ) || ! current_user_can( 'edit_others_posts' ) ) {
-			wp_send_json_error( array() );
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ),
+				)
+			);
 		}
 
 		// Remove the post.
