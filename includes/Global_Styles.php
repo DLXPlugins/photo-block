@@ -450,7 +450,7 @@ class Global_Styles {
 		}
 
 		// Remove the post.
-		//wp_delete_post( $group_id, true );
+		wp_delete_post( $group_id, true );
 
 		// Retrieve all presets.
 		$return = self::return_saved_global_styles();

@@ -228,7 +228,11 @@ const GlobalStylesContainer = ( props ) => {
 			<div className="photo-block-global-styles-container" ref={ globalStyleContainer }>
 				{ ! loading && (
 					<>
-						{ getGlobalStylesForEditing() }
+						{ editPresets && (
+							<>
+								{ getGlobalStylesForEditing() }
+							</>
+						) }
 						{ canSavePresets && (
 							<div className="photo-block-global-styles-actions">
 								{ ! editPresets && (
