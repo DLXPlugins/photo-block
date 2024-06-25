@@ -87,7 +87,7 @@ const GlobalStylesDeleteModal = ( props ) => {
 		>
 			<form onSubmit={ handleSubmit( onSubmit ) }>
 				<p className="description">
-					{ __( 'Removing this global style will remove it from all blocks using it.', 'photo-block' ) }
+					{ __( 'Any photos using this global style will use last-assigned values.', 'photo-block' ) }
 				</p>
 				<Controller
 					name="editId"
@@ -99,6 +99,7 @@ const GlobalStylesDeleteModal = ( props ) => {
 					variant="primary"
 					className="photo-block-global-styles-modal-apply-button"
 					disabled={ isDeleting }
+					isDestructive={ true }
 				>
 					{ isDeleting
 						? __( 'Deleting…', 'photo-block' )

@@ -16,29 +16,37 @@ import CustomPresetsContext from './context';
 import Notice from '../Notice';
 import globalStylesStore from '../../store/global-styles';
 
-const canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
+const canSaveDefaultPresets = photoBlockUser.canSetDefaultPresets;
 
 const GlobalStylesSaveModal = ( props ) => {
 	const [ presetSaveType, setPresetSaveType ] = useState( 'new' );
 	const [ isSaving, setIsSaving ] = useState( false );
 	const { title, attributes, setAttributes, clientId } = props;
 
-	const { savedPresets, setSavedPresets, savingPreset, setSavingPreset, defaultPreset, setDefaultPreset } =
+	const { savedPresets, setSavedPresets, savingPreset, setSavingPreset } =
 		useContext( CustomPresetsContext );
 
 	const {
 		setGlobalStyle,
 	} = useDispatch( globalStylesStore );
 
+	const {
+		globalStyles,
+	} = useSelect( ( groupSelect ) => {
+		return {
+			globalStyles: groupSelect( globalStylesStore ).getGlobalStyles(),
+		};
+	} );
+
 	const getDefaultValues = () => {
 		return {
 			globalStyleLabel: '',
 			globalStyleSlug: '',
-			selectedPreset: null,
-			defaultPreset: false,
+			globalStyleCSSClass: '',
+			selectedGlobalStyle: null,
 		};
 	};
-	const { control, handleSubmit, setValue, trigger, setError, clearErrors } = useForm( {
+	const { control, handleSubmit, setValue, trigger, setError, clearErrors, getValues } = useForm( {
 		defaultValues: getDefaultValues(),
 	} );
 
@@ -150,11 +158,10 @@ const GlobalStylesSaveModal = ( props ) => {
 		setIsSaving( true );
 		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
 		const data = new FormData();
-		data.append( 'action', 'dlx_photo_block_override_preset' );
-		data.append( 'nonce', photoBlock.presetSaveNewNonce );
+		data.append( 'action', 'dlx_photo_block_override_global_style' );
+		data.append( 'nonce', photoBlock.globalStylesSaveNewNonce );
 		data.append( 'attributes', JSON.stringify( getCurrentAttributes() ) );
-		data.append( 'editId', formData.selectedPreset );
-		data.append( 'isDefault', formData.defaultPreset );
+		data.append( 'editId', formData.selectedGlobalStyle );
 		fetch( ajaxUrl, {
 			method: 'POST',
 			body: data,
@@ -183,10 +190,10 @@ const GlobalStylesSaveModal = ( props ) => {
 	 */
 	const getPresetRadioOptions = () => {
 		const options = [];
-		savedPresets.forEach( ( preset ) => {
+		Object.values( globalStyles ).forEach( ( globalStyle ) => {
 			options.push( {
-				label: preset.title,
-				value: preset.id + '',
+				label: globalStyle.title,
+				value: globalStyle.id + '',
 			} );
 		} );
 		return options;
@@ -202,7 +209,7 @@ const GlobalStylesSaveModal = ( props ) => {
 			value: 'override',
 		},
 	];
-	if ( savedPresets.length === 0 || ! canSaveDefaultPresets ) {
+	if ( Object.keys( globalStyles ).length === 0 || ! canSaveDefaultPresets ) {
 		radioOptions = [
 			{
 				label: __( 'Save Global Style', 'photo-block' ),
@@ -254,11 +261,13 @@ const GlobalStylesSaveModal = ( props ) => {
 													'has-error': 'required' === errors.globalStyleLabel?.type,
 												} ) }
 												onBlur={ () => {
-													setValue(
-														'globalStyleSlug',
-														cleanForSlug( field.value )
-													);
-													trigger( 'globalStyleSlug' );
+													if ( getValues( 'globalStyleCSSClass' ) === '' ) {
+														setValue(
+															'globalStyleCSSClass',
+															cleanForSlug( field.value )
+														);
+														trigger( 'globalStyleCSSClass' );
+													}
 												} }
 												onChange={ ( newValue ) => {
 													clearErrors();
@@ -273,7 +282,7 @@ const GlobalStylesSaveModal = ( props ) => {
 									/>
 									{ 'required' === errors.globalStyleLabel?.type && (
 										<Notice
-											message={ __( 'The Preset Name field is required.' ) }
+											message={ __( 'The Global Style Name field is required.' ) }
 											status="error"
 											politeness="assertive"
 											icon={ AlertCircle }
@@ -281,7 +290,7 @@ const GlobalStylesSaveModal = ( props ) => {
 									) }
 									{ 'pattern' === errors.globalStyleLabel?.type && (
 										<Notice
-											message={ __( 'This Preset Name field contains invalid characters.' ) }
+											message={ __( 'This Global Style label contains invalid characters.' ) }
 											status="error"
 											politeness="assertive"
 											icon={ AlertCircle }
@@ -290,28 +299,36 @@ const GlobalStylesSaveModal = ( props ) => {
 								</div>
 								<div className="photo-block-global-styles-row">
 									<Controller
-										name="globalStyleSlug"
+										name="globalStyleCSSClass"
 										control={ control }
 										rules={
 											{
+												required: true,
 												pattern: /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/,
 											}
 										}
-										render={ ( { field: { value } } ) => (
+										render={ ( { field: { onChange, value } } ) => (
 											<TextControl
-												label={ __( 'Global Style Slug', 'photo-block' ) }
-												readOnly={ true }
+												label={ __( 'Global Style CSS Class', 'photo-block' ) }
 												value={ value }
+												className={ classnames( 'photo-block-admin__text-control', {
+													'is-required': true,
+													'has-error': 'required' === errors.globalStyleCSSClass?.type,
+												} ) }
 												help={ __(
-													'The slug is used as a CSS class name and must be unique. The slug cannot be changed later.',
+													'The CSS class used when outputting the block.',
 													'photo-block'
 												) }
+												onChange={ ( newValue ) => {
+													clearErrors();
+													onChange( newValue );
+												} }
 											/>
 										) }
 									/>
-									{ 'pattern' === errors.globalStyleSlug?.type && (
+									{ 'pattern' === errors.globalStyleCSSClass?.type && (
 										<Notice
-											message={ __( 'The slug contains invalid characters and must be a CSS friendly name.' ) }
+											message={ __( 'The CSS class contains invalid characters and must be a CSS friendly name.' ) }
 											status="error"
 											politeness="assertive"
 											icon={ AlertCircle }
@@ -323,10 +340,10 @@ const GlobalStylesSaveModal = ( props ) => {
 					) }
 					{ ( 'override' === presetSaveType && canSaveDefaultPresets ) && (
 						<>
-							{ savedPresets.length > 0 && (
+							{ Object.keys( globalStyles ).length > 0 && (
 								<div className="photo-block-global-styles-modal-override-preset">
 									<Controller
-										name="selectedPreset"
+										name="selectedGlobalStyle"
 										control={ control }
 										rules={ {
 											required: true,
@@ -334,7 +351,7 @@ const GlobalStylesSaveModal = ( props ) => {
 										render={ ( { field: { onChange, value } } ) => (
 											<RadioControl
 												label={ __(
-													'Select a preset to override',
+													'Select a global style to override',
 													'photo-block'
 												) }
 												className="is-required"
@@ -344,7 +361,7 @@ const GlobalStylesSaveModal = ( props ) => {
 											/>
 										) }
 									/>
-									{ 'required' === errors.selectedPreset?.type && (
+									{ 'required' === errors.selectedGlobalStyle?.type && (
 										<Notice
 											message={ __( 'This field is required.' ) }
 											status="error"
@@ -355,23 +372,6 @@ const GlobalStylesSaveModal = ( props ) => {
 								</div>
 							) }
 						</>
-					) }
-					{ canSaveDefaultPresets && (
-						<Controller
-							name="defaultPreset"
-							control={ control }
-							render={ ( { field: { onChange, value } } ) => (
-								<ToggleControl
-									label={ __( 'Make This Preset the Default', 'photo-block' ) }
-									checked={ value }
-									onChange={ ( newValue ) => onChange( newValue ) }
-									help={ __(
-										'If this preset is selected as the default, it will be applied to all new photo blocks.',
-										'photo-block'
-									) }
-								/>
-							) }
-						/>
 					) }
 					<div className="photo-block-global-styles-modal-button-group">
 						<Button

@@ -23,7 +23,7 @@ class Global_Styles {
 		add_action( 'wp_ajax_dlx_photo_block_save_global_style', array( static::class, 'ajax_save_global_style' ) ); // For Updating an existing preset (like title).
 		add_action( 'wp_ajax_dlx_photo_block_save_global_styles', array( static::class, 'ajax_save_global_styles' ) ); // For saving new presets.
 		add_action( 'wp_ajax_dlx_photo_block_delete_global_style', array( static::class, 'ajax_delete_global_style' ) );
-		add_action( 'wp_ajax_dlx_photo_block_override_global_styles', array( static::class, 'ajax_override_global_styles' ) ); // For overwriting an existing preset.
+		add_action( 'wp_ajax_dlx_photo_block_override_global_style', array( static::class, 'ajax_override_global_style' ) ); // For overwriting an existing preset.
 
 		// Filter for adding localized vars to output.
 		add_filter( 'photo_block_localized_vars', array( static::class, 'add_localized_vars' ) );
@@ -246,25 +246,10 @@ class Global_Styles {
 		// Get post.
 		$global_style = get_post( $post_id );
 
-		// Check if preset should be default.
-		$is_default      = false;
-		$can_set_default = current_user_can( 'edit_others_posts' );
-		if ( isset( $form_data['defaultPreset'] ) ) {
-			$is_default = filter_var( $form_data['defaultPreset'], FILTER_VALIDATE_BOOLEAN );
-		}
-		if ( $is_default && $can_set_default ) {
-			// Remove default from all other presets.
-			self::remove_default_global_styles();
-
-			// Set this preset as default.
-			update_post_meta( $post_id, '_dlx_pb_is_default', true );
-		}
-
 		$return_global_style = array(
 			'id'           => $global_style->ID,
 			'title'        => $global_style->post_title,
 			'slug'         => $global_style->post_name,
-			'is_default'   => $is_default && $can_set_default,
 			'content'      => Functions::sanitize_array_recursive( json_decode( $global_style->post_content, true ), ),
 			'delete_nonce' => wp_create_nonce( 'dlx_photo_block_delete_global_styles_' . $global_style->ID ),
 			'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $global_style->ID ),
@@ -297,11 +282,11 @@ class Global_Styles {
 	}
 
 	/**
-	 * Overrides a preset and returns all saved presets.
+	 * Overrides a global style and returns all saved presets.
 	 */
-	public static function ajax_override_global_styles() {
+	public static function ajax_override_global_style() {
 		// Get preset post ID.
-		$preset_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
+		$global_style_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
 
 		// Verify nonce.
 		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
@@ -310,9 +295,6 @@ class Global_Styles {
 
 		// Get attributes JSON.
 		$attributes = json_decode( filter_input( INPUT_POST, 'attributes', FILTER_DEFAULT ), true );
-
-		// Get isdefault value for presets.
-		$is_default = filter_var( filter_input( INPUT_POST, 'isDefault', FILTER_DEFAULT ), FILTER_VALIDATE_BOOLEAN );
 
 		// Get photo attributes and strip out data.
 		$photo_attributes = array();
@@ -323,8 +305,11 @@ class Global_Styles {
 			}
 			$photo_keys_to_ignore = array(
 				'uniqueId',
-				'photo',
 				'screen',
+				'imageData',
+				'dataScreen',
+				'altText',
+				'htmlAnchor',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -349,6 +334,7 @@ class Global_Styles {
 			}
 			$caption_keys_to_ignore = array(
 				'captionManual',
+				'uniqueId',
 			);
 			/**
 			 * Filter the caption keys to ignore when saving presets.
@@ -373,19 +359,10 @@ class Global_Styles {
 		// Update post with new attribute data.
 		wp_update_post(
 			array(
-				'ID'           => $preset_id,
+				'ID'           => $global_style_id,
 				'post_content' => wp_json_encode( array( 'attributes' => $attributes ), 1048 ),
 			)
 		);
-
-		// Check if preset should be default.
-		if ( $is_default && current_user_can( 'edit_others_posts' ) ) {
-			// Remove default from all other presets.
-			self::remove_default_global_styles();
-
-			// Set this preset as default.
-			update_post_meta( $preset_id, '_dlx_pb_is_default', true );
-		}
 
 		// Get the presets.
 		$return = self::return_saved_global_styles();

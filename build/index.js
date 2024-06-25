@@ -5915,7 +5915,7 @@ var GlobalStylesDeleteModal = function GlobalStylesDeleteModal(props) {
     onSubmit: handleSubmit(onSubmit)
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     className: "description"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Removing this global style will remove it from all blocks using it.', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Any photos using this global style will use last-assigned values.', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
     name: "editId",
     control: control,
     render: function render(_ref) {
@@ -5928,7 +5928,8 @@ var GlobalStylesDeleteModal = function GlobalStylesDeleteModal(props) {
     type: "submit",
     variant: "primary",
     className: "photo-block-global-styles-modal-apply-button",
-    disabled: isDeleting
+    disabled: isDeleting,
+    isDestructive: true
   }, isDeleting ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Deleting…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Delete Global Style', 'photo-block')), !isDeleting && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
     onClick: function onClick() {
@@ -5992,9 +5993,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var canSaveDefaultPresets = photoBlockUser.canSaveDefaultPresets;
+var canSaveDefaultPresets = photoBlockUser.canSetDefaultPresets;
 var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
-  var _errors$globalStyleLa2, _errors$globalStyleLa3, _errors$globalStyleSl, _errors$selectedPrese;
+  var _errors$globalStyleLa2, _errors$globalStyleLa3, _errors$globalStyleCS2, _errors$selectedGloba;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('new'),
     _useState2 = _slicedToArray(_useState, 2),
     presetSaveType = _useState2[0],
@@ -6011,17 +6012,21 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     savedPresets = _useContext.savedPresets,
     setSavedPresets = _useContext.setSavedPresets,
     savingPreset = _useContext.savingPreset,
-    setSavingPreset = _useContext.setSavingPreset,
-    defaultPreset = _useContext.defaultPreset,
-    setDefaultPreset = _useContext.setDefaultPreset;
+    setSavingPreset = _useContext.setSavingPreset;
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]),
     setGlobalStyle = _useDispatch.setGlobalStyle;
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (groupSelect) {
+      return {
+        globalStyles: groupSelect(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]).getGlobalStyles()
+      };
+    }),
+    globalStyles = _useSelect.globalStyles;
   var getDefaultValues = function getDefaultValues() {
     return {
       globalStyleLabel: '',
       globalStyleSlug: '',
-      selectedPreset: null,
-      defaultPreset: false
+      globalStyleCSSClass: '',
+      selectedGlobalStyle: null
     };
   };
   var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useForm)({
@@ -6032,7 +6037,8 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     setValue = _useForm.setValue,
     trigger = _useForm.trigger,
     setError = _useForm.setError,
-    clearErrors = _useForm.clearErrors;
+    clearErrors = _useForm.clearErrors,
+    getValues = _useForm.getValues;
   var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_9__.useFormState)({
       control: control
     }),
@@ -6145,11 +6151,10 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     setIsSaving(true);
     var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
     var data = new FormData();
-    data.append('action', 'dlx_photo_block_override_preset');
-    data.append('nonce', photoBlock.presetSaveNewNonce);
+    data.append('action', 'dlx_photo_block_override_global_style');
+    data.append('nonce', photoBlock.globalStylesSaveNewNonce);
     data.append('attributes', JSON.stringify(getCurrentAttributes()));
-    data.append('editId', formData.selectedPreset);
-    data.append('isDefault', formData.defaultPreset);
+    data.append('editId', formData.selectedGlobalStyle);
     fetch(ajaxUrl, {
       method: 'POST',
       body: data,
@@ -6177,10 +6182,10 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
    */
   var getPresetRadioOptions = function getPresetRadioOptions() {
     var options = [];
-    savedPresets.forEach(function (preset) {
+    Object.values(globalStyles).forEach(function (globalStyle) {
       options.push({
-        label: preset.title,
-        value: preset.id + ''
+        label: globalStyle.title,
+        value: globalStyle.id + ''
       });
     });
     return options;
@@ -6192,7 +6197,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Override Global Style', 'photo-block'),
     value: 'override'
   }];
-  if (savedPresets.length === 0 || !canSaveDefaultPresets) {
+  if (Object.keys(globalStyles).length === 0 || !canSaveDefaultPresets) {
     radioOptions = [{
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Save Global Style', 'photo-block'),
       value: 'new'
@@ -6238,8 +6243,10 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
           'has-error': 'required' === ((_errors$globalStyleLa = errors.globalStyleLabel) === null || _errors$globalStyleLa === void 0 ? void 0 : _errors$globalStyleLa.type)
         }),
         onBlur: function onBlur() {
-          setValue('globalStyleSlug', (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_2__.cleanForSlug)(field.value));
-          trigger('globalStyleSlug');
+          if (getValues('globalStyleCSSClass') === '') {
+            setValue('globalStyleCSSClass', (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_2__.cleanForSlug)(field.value));
+            trigger('globalStyleCSSClass');
+          }
         },
         onChange: function onChange(newValue) {
           clearErrors();
@@ -6249,81 +6256,76 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       }));
     }
   }), 'required' === ((_errors$globalStyleLa2 = errors.globalStyleLabel) === null || _errors$globalStyleLa2 === void 0 ? void 0 : _errors$globalStyleLa2.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The Preset Name field is required.'),
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The Global Style Name field is required.'),
     status: "error",
     politeness: "assertive",
     icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
   }), 'pattern' === ((_errors$globalStyleLa3 = errors.globalStyleLabel) === null || _errors$globalStyleLa3 === void 0 ? void 0 : _errors$globalStyleLa3.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('This Preset Name field contains invalid characters.'),
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('This Global Style label contains invalid characters.'),
     status: "error",
     politeness: "assertive",
     icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-global-styles-row"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-    name: "globalStyleSlug",
+    name: "globalStyleCSSClass",
     control: control,
     rules: {
+      required: true,
       pattern: /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/
     },
     render: function render(_ref2) {
-      var value = _ref2.field.value;
+      var _errors$globalStyleCS;
+      var _ref2$field = _ref2.field,
+        _onChange = _ref2$field.onChange,
+        value = _ref2$field.value;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global Style Slug', 'photo-block'),
-        readOnly: true,
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global Style CSS Class', 'photo-block'),
         value: value,
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The slug is used as a CSS class name and must be unique. The slug cannot be changed later.', 'photo-block')
+        className: classnames__WEBPACK_IMPORTED_MODULE_3___default()('photo-block-admin__text-control', {
+          'is-required': true,
+          'has-error': 'required' === ((_errors$globalStyleCS = errors.globalStyleCSSClass) === null || _errors$globalStyleCS === void 0 ? void 0 : _errors$globalStyleCS.type)
+        }),
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The CSS class used when outputting the block.', 'photo-block'),
+        onChange: function onChange(newValue) {
+          clearErrors();
+          _onChange(newValue);
+        }
       });
     }
-  }), 'pattern' === ((_errors$globalStyleSl = errors.globalStyleSlug) === null || _errors$globalStyleSl === void 0 ? void 0 : _errors$globalStyleSl.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
-    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The slug contains invalid characters and must be a CSS friendly name.'),
+  }), 'pattern' === ((_errors$globalStyleCS2 = errors.globalStyleCSSClass) === null || _errors$globalStyleCS2 === void 0 ? void 0 : _errors$globalStyleCS2.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The CSS class contains invalid characters and must be a CSS friendly name.'),
     status: "error",
     politeness: "assertive",
     icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
-  })))), 'override' === presetSaveType && canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, savedPresets.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  })))), 'override' === presetSaveType && canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, Object.keys(globalStyles).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-global-styles-modal-override-preset"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-    name: "selectedPreset",
+    name: "selectedGlobalStyle",
     control: control,
     rules: {
       required: true
     },
     render: function render(_ref3) {
       var _ref3$field = _ref3.field,
-        _onChange = _ref3$field.onChange,
+        _onChange2 = _ref3$field.onChange,
         value = _ref3$field.value;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RadioControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a preset to override', 'photo-block'),
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a global style to override', 'photo-block'),
         className: "is-required",
         selected: value,
         options: getPresetRadioOptions(),
         onChange: function onChange(radioValue) {
-          return _onChange(radioValue);
+          return _onChange2(radioValue);
         }
       });
     }
-  }), 'required' === ((_errors$selectedPrese = errors.selectedPreset) === null || _errors$selectedPrese === void 0 ? void 0 : _errors$selectedPrese.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }), 'required' === ((_errors$selectedGloba = errors.selectedGlobalStyle) === null || _errors$selectedGloba === void 0 ? void 0 : _errors$selectedGloba.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
     message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('This field is required.'),
     status: "error",
     politeness: "assertive",
     icon: lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"]
-  }))), canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
-    name: "defaultPreset",
-    control: control,
-    render: function render(_ref4) {
-      var _ref4$field = _ref4.field,
-        _onChange2 = _ref4$field.onChange,
-        value = _ref4$field.value;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Make This Preset the Default', 'photo-block'),
-        checked: value,
-        onChange: function onChange(newValue) {
-          return _onChange2(newValue);
-        },
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('If this preset is selected as the default, it will be applied to all new photo blocks.', 'photo-block')
-      });
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-global-styles-modal-button-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     type: "submit",
