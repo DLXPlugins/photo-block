@@ -50,6 +50,7 @@ import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
 import getStyles from '../../blocks/photo-block/block-styles';
+import GlobalStylesPicker from '../../components/GlobalStylesPicker';
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { attributes, setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
@@ -264,6 +265,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
+			<GlobalStylesPicker { ...props } />
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }
 				icon={ <Image /> }
