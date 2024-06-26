@@ -3693,10 +3693,23 @@ svg.lucide {
   display: grid;
   grid-template-columns: 1fr 36px;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .photo-block-global-styles-selected-title {
   padding: 16px 8px;
+}
+
+.photo-block-global-styles-picker-button-group {
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: 1fr 1fr;
+  -moz-column-gap: 12px;
+       column-gap: 12px;
+  row-gap: 12px;
+}
+.photo-block-global-styles-picker-button-group button {
+  justify-content: center;
 }
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/GlobalStylesPicker/ButtonPreview/editor.scss ***!

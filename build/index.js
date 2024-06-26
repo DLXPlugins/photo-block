@@ -6893,7 +6893,6 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
   var handlePopoverClose = function handlePopoverClose() {
     setShowPopOver(false);
   };
-  console.log('button-preview', globalStyle);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: globalStyle === (globalStyle === null || globalStyle === void 0 ? void 0 : globalStyle.slug) ? 'primary' : 'secondary',
     onClick: function onClick() {

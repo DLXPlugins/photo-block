@@ -40,8 +40,6 @@ const GlobalStylesButtonPreview = ( props ) => {
 		setShowPopOver( false );
 	};
 
-	console.log( 'button-preview', globalStyle );
-
 	return (
 		<>
 

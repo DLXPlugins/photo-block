@@ -60,12 +60,7 @@ class Global_Styles {
 			if ( $posts ) {
 				$global_styles = array();
 				foreach ( $posts as $post ) {
-					$content = json_decode( $post->post_content, true );
-					if ( isset( $content['attributes'] ) ) {
-						$content = $content['attributes'];
-					} else {
-						continue;
-					}
+					$content   = json_decode( $post->post_content, true );
 					$css_class = get_post_meta( $post->ID, '_dlx_pb_css_class', true );
 					$global_styles[ sanitize_key( $post->post_name ) ] = array(
 						'id'           => $post->ID,

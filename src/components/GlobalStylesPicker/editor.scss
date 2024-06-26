@@ -5,7 +5,19 @@
 	display: grid;
 	grid-template-columns: 1fr 36px;
 	align-items: center;
+	box-sizing: border-box;
 }
 .photo-block-global-styles-selected-title {
 	padding: 16px 8px;
+}
+.photo-block-global-styles-picker-button-group {
+	display: grid;
+	box-sizing: border-box;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 12px;
+	row-gap: 12px;
+
+	button {
+		justify-content: center;
+	}
 }
