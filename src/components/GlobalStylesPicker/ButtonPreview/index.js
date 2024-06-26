@@ -40,13 +40,18 @@ const GlobalStylesButtonPreview = ( props ) => {
 		setShowPopOver( false );
 	};
 
+	console.log( 'button-preview', globalStyle );
+
 	return (
 		<>
 
 			<Button
 				variant={ globalStyle === globalStyle?.slug ? 'primary' : 'secondary' }
 				onClick={ () => {
-					// Do something here. Apply global style.
+					props.setAttributes( {
+						globalStyle: globalStyle.slug,
+					} );
+					props.attributes.globalStyle = globalStyle.slug;
 				} }
 				onMouseEnter={ () => handlePopoverOpen( true ) }
 				onMouseLeave={ () => handlePopoverClose( false ) }

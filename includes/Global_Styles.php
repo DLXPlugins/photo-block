@@ -235,7 +235,7 @@ class Global_Styles {
 			array(
 				'post_title'   => $title,
 				'post_name'    => $slug_sanitized,
-				'post_content' => wp_json_encode( array( 'attributes' => $attributes ), 1048 ),
+				'post_content' => wp_json_encode( $attributes, 1048 ),
 				'post_status'  => 'publish',
 				'post_type'    => 'dlx_pb_global_styles',
 			)
@@ -371,7 +371,7 @@ class Global_Styles {
 		wp_update_post(
 			array(
 				'ID'           => $global_style_id,
-				'post_content' => wp_json_encode( array( 'attributes' => $attributes ), 1048 ),
+				'post_content' => wp_json_encode( $attributes, 1048 ),
 			)
 		);
 

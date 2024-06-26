@@ -41,6 +41,7 @@ import {
 	Layers,
 	Undo2,
 } from 'lucide-react';
+import { applyFilters } from '@wordpress/hooks';
 import classnames from 'classnames';
 import blockStore from '../../store';
 import SendCommand from '../../utils/SendCommand';
@@ -53,7 +54,10 @@ import getStyles from '../../blocks/photo-block/block-styles';
 import GlobalStylesPicker from '../../components/GlobalStylesPicker';
 
 const EditScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
+	const { setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
+
+	const attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
+
 	const {
 		uniqueId,
 		imageSize,

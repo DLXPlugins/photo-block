@@ -5,7 +5,9 @@ import getStyles from '../../../blocks/photo-block/block-styles';
 import blockStore from '../../../store';
 import CaptionBlockPreview from './caption-block-preview';
 const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) => {
-	console.log( photoAttributes );
+	if ( 'undefined' === typeof photoAttributes ) {
+		return null;
+	}
 	const styles = getStyles( photoAttributes, 'desktop', 'photo-block-preview' );
 
 	const {

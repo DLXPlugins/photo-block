@@ -20,6 +20,7 @@ const GlobalStylesPicker = ( props ) => {
 	if ( Object.keys( globalStyles ).length === 0 ) {
 		return null;
 	}
+	console.log( 'global-styles-picker', globalStyles );
 	return (
 		<>
 			<PanelBody

@@ -19,7 +19,6 @@ const GlobalStylesEditModal = ( props ) => {
 	const { title, editId, saveNonce, cssClass } = props;
 	const [ isSaving, setIsSaving ] = useState( false );
 
-	console.log( props );
 	const { setSavedPresets, showEditModal, setShowEditModal, defaultPreset, setDefaultPreset } =
 		useContext( CustomPresetsContext );
 

@@ -30,8 +30,6 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 		);
 	};
 
-	console.log( captionPosition );
-
 	const overlayStyles = classnames(
 		'dlx-photo-block__caption-wrapper',
 		`overlay-type-${ overlayBackgroundType }`,

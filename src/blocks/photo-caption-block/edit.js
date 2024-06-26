@@ -155,7 +155,6 @@ const fontFamilies = [
 
 const PhotoCaptionBlock = ( props ) => {
 	const {
-		attributes,
 		setAttributes,
 		clientId,
 		context,
@@ -163,6 +162,9 @@ const PhotoCaptionBlock = ( props ) => {
 	} = props;
 
 	const blockUniqueId = context[ 'photo-block/uniqueId' ];
+	const globalStyle = context[ 'photo-block/globalStyle' ];
+
+	const attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, globalStyle, clientId, 'caption' );
 
 	const {
 		setCaptionPosition,
@@ -199,9 +201,9 @@ const PhotoCaptionBlock = ( props ) => {
 
 	// Set caption position context based on captionPosition attribute. After setting, show the caption.
 	useEffect( () => {
-		setCaptionPosition( props.attributes.captionPosition ); // Caption position can be top|bottom|overlay
+		setCaptionPosition( attributes.captionPosition ); // Caption position can be top|bottom|overlay
 		setIsCaptionVisible( true );
-	}, [ props.attributes.captionPosition ] );
+	}, [ attributes.captionPosition ] );
 
 	const { removeBlocks } = useDispatch( store );
 
