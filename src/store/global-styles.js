@@ -18,7 +18,7 @@ const actions = {
 			type: 'REMOVE_GLOBAL_STYLE',
 			slug,
 		};
-	}
+	},
 };
 
 const globalStylesStore = createReduxStore( 'dlxplugins/photo-block/global-styles', {

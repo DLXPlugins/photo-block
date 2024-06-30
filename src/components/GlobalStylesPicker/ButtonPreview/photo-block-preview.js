@@ -23,7 +23,19 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 		};
 	} );
 
-	const { url } = imageData;
+	/**
+	 * Return an image URL. If in data mode, use a placeholder image.
+	 *
+	 * @return {string} Image URL.
+	 */
+	const getImageUrl = () => {
+		const { url, id } = imageData;
+		if ( ! url || 0 === id ) {
+			const defaultImageUrl = photoBlock.defaultImagePlacheolder;
+			return defaultImageUrl;
+		}
+		return url;
+	};
 
 	return (
 		<>
@@ -43,7 +55,7 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 					) }
 					<div className="dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper">
 						<img
-							src={ url }
+							src={ getImageUrl() }
 							className={ classnames(
 								`photo-block-${ cssGramFilter } dlx-photo-block__image`,
 								{

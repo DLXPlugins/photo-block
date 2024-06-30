@@ -378,7 +378,8 @@ var PhotoBlock = function PhotoBlock(props) {
           setAttributes: setAttributes,
           context: context,
           innerBlockProps: captionInnerBlockProps,
-          blockUniqueId: blockUniqueId
+          blockUniqueId: blockUniqueId,
+          clientId: clientId
         });
       case 'data':
         return /*#__PURE__*/React.createElement(_screens_Data__WEBPACK_IMPORTED_MODULE_14__["default"], {
@@ -6846,8 +6847,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../store/global-styles */ "./src/store/global-styles.js");
-/* harmony import */ var _photo_block_preview__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./photo-block-preview */ "./src/components/GlobalStylesPicker/ButtonPreview/photo-block-preview.js");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../store/index */ "./src/store/index.js");
+/* harmony import */ var _photo_block_preview__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./photo-block-preview */ "./src/components/GlobalStylesPicker/ButtonPreview/photo-block-preview.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -6857,6 +6866,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /**
  * Upload data row including Upload|Media Library|URL|Data.
  */
+
 
 
 
@@ -6886,6 +6896,11 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
     _useState6 = _slicedToArray(_useState5, 2),
     blockPreview = _useState6[0],
     setBlockPreview = _useState6[1];
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)((0,_store_index__WEBPACK_IMPORTED_MODULE_7__["default"])(props.attributes.uniqueId ? props.attributes.uniqueId : null)),
+    setHasCaption = _useDispatch.setHasCaption;
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.store),
+    insertBlock = _useDispatch2.insertBlock,
+    updateBlockAttributes = _useDispatch2.updateBlockAttributes;
   var handlePopoverOpen = function handlePopoverOpen() {
     setShowPopOver(true);
     buttonRef.focus();
@@ -6896,10 +6911,41 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: globalStyle === (globalStyle === null || globalStyle === void 0 ? void 0 : globalStyle.slug) ? 'primary' : 'secondary',
     onClick: function onClick() {
+      var _globalStyle$content, _globalStyle$content$, _select$getBlocksByCl;
+      // Try to see if photo has caption.
+      var hasCaption = false;
+      if ((_globalStyle$content = globalStyle.content) !== null && _globalStyle$content !== void 0 && (_globalStyle$content$ = _globalStyle$content.photoAttributes) !== null && _globalStyle$content$ !== void 0 && _globalStyle$content$.hasCaption) {
+        setHasCaption(true);
+        hasCaption = true;
+      }
       props.setAttributes({
-        globalStyle: globalStyle.slug
+        globalStyle: globalStyle.slug,
+        hasCaption: hasCaption
       });
-      props.attributes.globalStyle = globalStyle.slug;
+
+      // Try to get children of the block (caption).
+      var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(props.clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
+
+      // Get any exising caption blocks.
+      var captionBlock = children.find(function (block) {
+        return 'dlxplugins/photo-caption-block' === block.name;
+      });
+
+      // Get unique ID for the photo block.
+      var uniqueIdAttribute = props.attributes.uniqueId;
+      var captionAttributes = globalStyle.content.captionAttributes;
+
+      // If there is no caption block, but there are attributes to apply, create one.
+      if (!captionBlock && captionAttributes) {
+        var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__.createBlock)('dlxplugins/photo-caption-block', captionAttributes);
+        insertBlock(newBlocks, undefined, props.clientId);
+      }
+
+      // If there is a caption block and attributes to apply, apply them.
+      if (captionBlock && captionAttributes) {
+        var captionBlockAttributes = _objectSpread(_objectSpread({}, captionAttributes), uniqueIdAttribute);
+        updateBlockAttributes(captionBlock.clientId, captionBlockAttributes);
+      }
     },
     onMouseEnter: function onMouseEnter() {
       return handlePopoverOpen(true);
@@ -6919,7 +6965,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
     noArrow: false
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__css-gram-image-popover-wrapper"
-  }, /*#__PURE__*/React.createElement(_photo_block_preview__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, /*#__PURE__*/React.createElement(_photo_block_preview__WEBPACK_IMPORTED_MODULE_8__["default"], {
     uniqueId: attributes.uniqueId,
     photoAttributes: globalStyle.content.photoAttributes,
     captionAttributes: globalStyle.content.captionAttributes
@@ -6968,7 +7014,21 @@ var PhotoBlockPreview = function PhotoBlockPreview(_ref) {
       };
     }),
     imageData = _useSelect.imageData;
-  var url = imageData.url;
+
+  /**
+   * Return an image URL. If in data mode, use a placeholder image.
+   *
+   * @return {string} Image URL.
+   */
+  var getImageUrl = function getImageUrl() {
+    var url = imageData.url,
+      id = imageData.id;
+    if (!url || 0 === id) {
+      var defaultImageUrl = photoBlock.defaultImagePlacheolder;
+      return defaultImageUrl;
+    }
+    return url;
+  };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("style", null, styles), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit",
     id: "photo-block-preview"
@@ -6983,7 +7043,7 @@ var PhotoBlockPreview = function PhotoBlockPreview(_ref) {
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper"
   }, /*#__PURE__*/React.createElement("img", {
-    src: url,
+    src: getImageUrl(),
     className: classnames__WEBPACK_IMPORTED_MODULE_0___default()("photo-block-".concat(cssGramFilter, " dlx-photo-block__image"), {
       'has-css-gram': cssGramFilter !== 'none'
     }),
@@ -7030,11 +7090,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash.js");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
-/* harmony import */ var _ButtonPreview__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ButtonPreview */ "./src/components/GlobalStylesPicker/ButtonPreview/index.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
+/* harmony import */ var _ButtonPreview__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ButtonPreview */ "./src/components/GlobalStylesPicker/ButtonPreview/index.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -7048,6 +7109,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -7119,14 +7181,14 @@ var GlobalStylesPicker = function GlobalStylesPicker(props) {
         onClick: function onClick() {
           setIsRemoveModalOpen(true);
         },
-        icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_8__["default"], null),
+        icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null),
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove', 'photo-block')
       })));
     }
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "photo-block-global-styles-picker-button-group"
     }, Object.values(globalStyles).map(function (globalStyle) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ButtonPreview__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_ButtonPreview__WEBPACK_IMPORTED_MODULE_8__["default"], _extends({
         key: globalStyle.slug,
         globalStyle: globalStyle
       }, props));
@@ -7164,12 +7226,14 @@ var GlobalStylesPicker = function GlobalStylesPicker(props) {
             // Need to apply global styles to the photo.
             updateBlockAttributes(props.clientId, photoAttributes);
 
-            // Get the caption block.
+            // Get the caption block. No need to create caption block here.
             var block = getBlock(props.clientId);
-            var captionBlockClientId = block.innerBlocks[0].clientId;
-
-            // Need to apply global styles to the caption.
-            updateBlockAttributes(captionBlockClientId, captionAttributes);
+            var captionInnerBlocks = block === null || block === void 0 ? void 0 : block.innerBlocks;
+            if (captionInnerBlocks.length > 0) {
+              var captionBlockClientId = (block === null || block === void 0 ? void 0 : block.innerBlocks[0].clientId) || null;
+              // Need to apply global styles to the caption.
+              updateBlockAttributes(captionBlockClientId, captionAttributes);
+            }
           }
         } else {
           props.setAttributes({
@@ -13543,7 +13607,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/layers.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
@@ -13561,6 +13624,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../blocks/photo-block/block-styles */ "./src/blocks/photo-block/block-styles.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
 /* harmony import */ var _components_Icons_PhotoBlockIcon__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../components/Icons/PhotoBlockIcon */ "./src/components/Icons/PhotoBlockIcon.js");
+/* harmony import */ var _components_GlobalStylesPicker__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../components/GlobalStylesPicker */ "./src/components/GlobalStylesPicker/index.js");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -13569,6 +13633,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -13605,7 +13670,8 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     setAttributes = props.setAttributes,
     innerBlockProps = props.innerBlockProps,
     context = props.context,
-    blockUniqueId = props.blockUniqueId;
+    blockUniqueId = props.blockUniqueId,
+    clientId = props.clientId;
   var postId = context.postId;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -13717,12 +13783,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
   }, [imageSize, dataFallbackImage, dataFallbackImageSize, dataHasFallbackImage]);
 
   // Set settings inspector Controls.
-  var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Presets and Globals', 'photo-block'),
-    initialOpen: false,
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
-    className: "photo-block__inspector-panel"
-  }, /*#__PURE__*/React.createElement(_components_GlobalStyles__WEBPACK_IMPORTED_MODULE_13__["default"], props)), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_GlobalStylesPicker__WEBPACK_IMPORTED_MODULE_17__["default"], props), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_10__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Settings', 'photo-block'),
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     className: "photo-block__inspector-panel",

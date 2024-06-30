@@ -37,6 +37,7 @@ import GlobalStyles from '../../components/GlobalStyles';
 import getStyles from '../../blocks/photo-block/block-styles';
 import blockStore from '../../store';
 import PhotoBlockIcon from '../../components/Icons/PhotoBlockIcon';
+import GlobalStylesPicker from '../../components/GlobalStylesPicker';
 
 const dataImages = [];
 
@@ -50,7 +51,7 @@ for ( const key in photoBlock.imageSizes ) {
 }
 
 const FeaturedImageScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps, context, blockUniqueId } = props;
+	const { attributes, setAttributes, innerBlockProps, context, blockUniqueId, clientId } = props;
 	const { postId } = context;
 	const [ mediaLinkPopover, setMediaLinkPopover ] = useState( false );
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
@@ -163,14 +164,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
-			<PanelBody
-				title={ __( 'Presets and Globals', 'photo-block' ) }
-				initialOpen={ false }
-				icon={ <Layers /> }
-				className="photo-block__inspector-panel"
-			>
-				{ <GlobalStyles { ...props } /> }
-			</PanelBody>
+			<GlobalStylesPicker { ...props } />
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }
 				icon={ <Image /> }

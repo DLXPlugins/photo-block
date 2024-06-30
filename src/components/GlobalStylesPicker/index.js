@@ -11,6 +11,7 @@ import {
 import { Trash } from 'lucide-react';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import globalStylesStore from '../../store/global-styles';
+import blockStore from '../../store';
 import GlobalStylesButtonPreview from './ButtonPreview';
 
 const GlobalStylesPicker = ( props ) => {
@@ -132,12 +133,14 @@ const GlobalStylesPicker = ( props ) => {
 									// Need to apply global styles to the photo.
 									updateBlockAttributes( props.clientId, photoAttributes );
 
-									// Get the caption block.
+									// Get the caption block. No need to create caption block here.
 									const block = getBlock( props.clientId );
-									const captionBlockClientId = block.innerBlocks[ 0 ].clientId;
-
-									// Need to apply global styles to the caption.
-									updateBlockAttributes( captionBlockClientId, captionAttributes );
+									const captionInnerBlocks = block?.innerBlocks;
+									if ( captionInnerBlocks.length > 0 ) {
+										const captionBlockClientId = block?.innerBlocks[ 0 ].clientId || null;
+										// Need to apply global styles to the caption.
+										updateBlockAttributes( captionBlockClientId, captionAttributes );
+									}
 								}
 							} else {
 								props.setAttributes( {

@@ -274,7 +274,7 @@ const PhotoBlock = ( props ) => {
 			case 'crop':
 				return <CropScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } />;
 			case 'featuredImage':
-				return <FeaturedImageScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } />;
+				return <FeaturedImageScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } clientId={ clientId } />;
 			case 'data':
 				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } blockUniqueId={ blockUniqueId } />;
 			case 'data-edit':
