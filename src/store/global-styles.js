@@ -55,6 +55,9 @@ const globalStylesStore = createReduxStore( 'dlxplugins/photo-block/global-style
 		getGlobalStyles( state ) {
 			return state.globalStyles;
 		},
+		hasGlobalStyle( state, slug ) {
+			return Object.keys( state.globalStyles ).includes( slug );
+		},
 	},
 } );
 

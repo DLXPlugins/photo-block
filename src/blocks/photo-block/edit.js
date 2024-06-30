@@ -217,17 +217,8 @@ const PhotoBlock = ( props ) => {
 		}
 	}, [ hasCaption ] );
 
-	// Set the screen when it changes.
-	useEffect( () => {
-		setAttributes( {
-			screen: currentScreen,
-		} );
-	}, [ currentScreen ] );
-
 	// Store the filepond upload ref.
 	const imageRef = useRef( null );
-
-	
 
 	// Set caption innerblocks classes.
 	const captionInnerBlocksClasses = classnames(

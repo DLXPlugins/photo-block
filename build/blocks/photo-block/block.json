@@ -306,10 +306,6 @@
       "type": "string",
       "default": "720"
     },
-    "screen": {
-      "type": "string",
-      "default": "initial"
-    },
     "align": {
       "type": "string",
       "default": "center"
