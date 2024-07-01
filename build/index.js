@@ -8942,26 +8942,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/ToolbarAspectRatio/editor.scss");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../utils/CalculateAspectRatioFromPixels */ "./src/utils/CalculateAspectRatioFromPixels.js");
-/* harmony import */ var _utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/CalculateDimensionsFromAspectRatio */ "./src/utils/CalculateDimensionsFromAspectRatio.js");
-/* harmony import */ var _Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Icons/ColonIcon */ "./src/components/Icons/ColonIcon.js");
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/CalculateAspectRatioFromPixels */ "./src/utils/CalculateAspectRatioFromPixels.js");
+/* harmony import */ var _utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/CalculateDimensionsFromAspectRatio */ "./src/utils/CalculateDimensionsFromAspectRatio.js");
+/* harmony import */ var _Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Icons/ColonIcon */ "./src/components/Icons/ColonIcon.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
 /**
  * Uploading including showing Cancel and Retry buttons.
  */
+
+
+
 
 
 
@@ -8979,49 +8979,67 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  * @return {Object} JSX markup for the component.
  */
 var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef)(function (props, ref) {
-  var attributes = props.attributes,
-    setAttributes = props.setAttributes;
-  var getDefaultValues = function getDefaultValues() {
-    return {
-      aspectRatioWidth: attributes.aspectRatioWidth,
-      aspectRatioHeight: attributes.aspectRatioHeight,
-      aspectRatioWidthPixels: attributes.aspectRatioWidthPixels,
-      aspectRatioHeightPixels: attributes.aspectRatioHeightPixels,
-      aspectRatioUnit: attributes.aspectRatioUnit
-    };
-  };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_8__.useForm)({
-      defaultValues: getDefaultValues()
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
+      return {
+        aspectRatioWidth: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(props.uniqueId)).getAspectRatioWidth(),
+        aspectRatioHeight: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(props.uniqueId)).getAspectRatioHeight(),
+        aspectRatioWidthPixels: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(props.uniqueId)).getAspectRatioWidthPixels(),
+        aspectRatioHeightPixels: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(props.uniqueId)).getAspectRatioHeightPixels(),
+        aspectRatioToolbarSelection: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(props.uniqueId)).getAspectRatioToolbarSelection(),
+        aspectRatioUnit: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(props.uniqueId)).getAspectRatioUnit()
+      };
+    }),
+    aspectRatioWidth = _useSelect.aspectRatioWidth,
+    aspectRatioHeight = _useSelect.aspectRatioHeight,
+    aspectRatioWidthPixels = _useSelect.aspectRatioWidthPixels,
+    aspectRatioHeightPixels = _useSelect.aspectRatioHeightPixels,
+    aspectRatioToolbarSelection = _useSelect.aspectRatioToolbarSelection,
+    aspectRatioUnit = _useSelect.aspectRatioUnit;
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(props.uniqueId)),
+    setAspectRatio = _useDispatch.setAspectRatio,
+    setAspectRatioPixels = _useDispatch.setAspectRatioPixels,
+    setAspectRatioUnit = _useDispatch.setAspectRatioUnit;
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useForm)({
+      defaultValues: {
+        aspectRatioWidthRatio: aspectRatioWidth,
+        aspectRatioHeightRatio: aspectRatioHeight,
+        aspectRatioWidthPixels: aspectRatioWidthPixels,
+        aspectRatioHeightPixels: aspectRatioHeightPixels,
+        aspectRatioUnit: aspectRatioUnit
+      }
     }),
     control = _useForm.control,
     handleSubmit = _useForm.handleSubmit,
     setValue = _useForm.setValue,
     getValues = _useForm.getValues;
-  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_8__.useFormState)({
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useFormState)({
       control: control
     }),
     isDirty = _useFormState.isDirty;
-  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_8__.useWatch)({
+  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useWatch)({
     control: control
   });
 
   /**
    * Swap from pixels to aspect ratio and back.
+   *
+   * @param {string} ratioToCalculate - 'pixels' or 'ratio'.
    */
-  var swapAspectRatio = function swapAspectRatio() {
-    var aspectRatioWidthPixels = getValues('aspectRatioWidthPixels');
-    var aspectRatioHeightPixels = getValues('aspectRatioHeightPixels');
-    var aspectRatioWidth = getValues('aspectRatioWidth');
-    var aspectRatioHeight = getValues('aspectRatioHeight');
-    if (getValues('aspectRatioUnit') === 'pixels') {
+  var swapAspectRatio = function swapAspectRatio(ratioToCalculate) {
+    var aspectRatioWidthRatio = getValues('aspectRatioWidthRatio');
+    var aspectRatioHeightRatio = getValues('aspectRatioHeightRatio');
+    if (ratioToCalculate === 'ratio') {
       // Convert aspect width / height to ratio for display.
-      var humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_5__["default"])(aspectRatioWidthPixels, aspectRatioHeightPixels);
-      setValue('aspectRatioWidth', humanImageRatio.width);
-      setValue('aspectRatioHeight', humanImageRatio.height);
+      var newAspectRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_6__["default"])(getValues('aspectRatioWidthPixels'), getValues('aspectRatioHeightPixels'));
+      setValue('aspectRatioWidthRatio', newAspectRatio.width);
+      setValue('aspectRatioHeightRatio', newAspectRatio.height);
+      setAspectRatio(newAspectRatio.width, newAspectRatio.height);
     } else {
-      var pixelsWidthHeight = (0,_utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_6__["default"])("".concat(aspectRatioWidth, ":").concat(aspectRatioHeight), getValues('aspectRatioWidthPixels'));
-      setValue('aspectRatioWidthPixels', pixelsWidthHeight.width);
-      setValue('aspectRatioHeightPixels', pixelsWidthHeight.height);
+      var _props$fullsizePhoto;
+      var imageRatioPixels = (0,_utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_7__["default"])("".concat(aspectRatioWidthRatio, ":").concat(aspectRatioHeightRatio), props === null || props === void 0 ? void 0 : (_props$fullsizePhoto = props.fullsizePhoto) === null || _props$fullsizePhoto === void 0 ? void 0 : _props$fullsizePhoto.width);
+      setValue('aspectRatioWidthPixels', imageRatioPixels.width);
+      setValue('aspectRatioHeightPixels', imageRatioPixels.height);
+      setAspectRatioPixels(imageRatioPixels.width, imageRatioPixels.height);
     }
   };
 
@@ -9031,24 +9049,38 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
    * @param {Object} formData form data.
    */
   var onSubmit = function onSubmit(formData) {
-    props.onChange(_objectSpread({}, formData));
+    var humanImageRatio = {};
+    // Calculate human aspect ratio.
+    if ('pixels' === getValues('aspectRatioUnit')) {
+      humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_6__["default"])(formData.aspectRatioWidthPixels, formData.aspectRatioHeightPixels);
+    } else {
+      humanImageRatio = {
+        width: formData.aspectRatioWidthRatio,
+        height: formData.aspectRatioHeightRatio
+      };
+    }
+    // Set global values.
+    setAspectRatio(formData.aspectRatioWidthRatio, formData.aspectRatioHeightRatio);
+    setAspectRatioPixels(formData.aspectRatioWidthPixels, formData.aspectRatioHeightPixels);
+    props.onChange(humanImageRatio);
+    return formData;
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("form", {
     onSubmit: handleSubmit(onSubmit)
   }, /*#__PURE__*/React.createElement("div", {
-    className: classnames__WEBPACK_IMPORTED_MODULE_3___default()('dlx-photo-block__component-aspect-ratio', {
+    className: classnames__WEBPACK_IMPORTED_MODULE_4___default()('dlx-photo-block__component-aspect-ratio', {
       'dlx-photo-block__component-aspect-ratio--active': 'ratio' === getValues('aspectRatioUnit'),
       'dlx-photo-block__component-pixels--active': 'pixels' === getValues('aspectRatioUnit')
     })
-  }, getValues('aspectRatioUnit') === 'ratio' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
-    name: "aspectRatioWidth",
+  }, getValues('aspectRatioUnit') === 'ratio' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
+    name: "aspectRatioWidthRatio",
     control: control,
     render: function render(_ref) {
       var _ref$field = _ref.field,
         _onChange = _ref$field.onChange,
         value = _ref$field.value;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio Width', 'photo-block'),
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Aspect Ratio Width', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
           _onChange(newValue);
@@ -9062,30 +9094,28 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
     className: "dlx-photo-block__component-aspect-ratio-splitter-button",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Change between aspect ratio and pixels', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Change between aspect ratio and pixels', 'photo-block'),
     onClick: function onClick() {
       if ('pixels' === getValues('aspectRatioUnit')) {
         setValue('aspectRatioUnit', 'ratio');
-        setAttributes({
-          aspectRatioUnit: 'ratio'
-        });
+        swapAspectRatio('ratio');
+        setAspectRatioUnit('ratio');
       } else {
         setValue('aspectRatioUnit', 'pixels');
-        setAttributes({
-          aspectRatioUnit: 'pixels'
-        });
+        swapAspectRatio('pixels');
+        setAspectRatioUnit('pixels');
       }
     },
-    icon: 'pixels' === getValues('aspectRatioUnit') ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null) : /*#__PURE__*/React.createElement(_Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_7__["default"], null)
-  })), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
-    name: "aspectRatioHeight",
+    icon: 'pixels' === getValues('aspectRatioUnit') ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null) : /*#__PURE__*/React.createElement(_Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_8__["default"], null)
+  })), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
+    name: "aspectRatioHeightRatio",
     control: control,
     render: function render(_ref2) {
       var _ref2$field = _ref2.field,
         _onChange2 = _ref2$field.onChange,
         value = _ref2$field.value;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio Height', 'photo-block'),
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Aspect Ratio Height', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
           _onChange2(newValue);
@@ -9094,7 +9124,7 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
         placeholder: 9
       });
     }
-  })), getValues('aspectRatioUnit') === 'pixels' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+  })), getValues('aspectRatioUnit') === 'pixels' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
     name: "aspectRatioWidthPixels",
     control: control,
     render: function render(_ref3) {
@@ -9102,7 +9132,7 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
         _onChange3 = _ref3$field.onChange,
         value = _ref3$field.value;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Pixel Width', 'photo-block'),
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Pixel Width', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
           _onChange3(newValue);
@@ -9116,28 +9146,26 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
     className: "dlx-photo-block__component-aspect-ratio-splitter-button",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Change between aspect ratio and pixels', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Change between aspect ratio and pixels', 'photo-block'),
     onClick: function onClick() {
       if ('pixels' === getValues('aspectRatioUnit')) {
+        setAspectRatioUnit('ratio');
         setValue('aspectRatioUnit', 'ratio');
-        setAttributes({
-          aspectRatioUnit: 'ratio'
-        });
+        swapAspectRatio('ratio');
       } else {
+        setAspectRatioUnit('pixels');
         setValue('aspectRatioUnit', 'pixels');
-        setAttributes({
-          aspectRatioUnit: 'pixels'
-        });
+        swapAspectRatio('pixels');
       }
     },
-    icon: 'pixels' === getValues('aspectRatioUnit') ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    icon: 'pixels' === getValues('aspectRatioUnit') ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], {
       width: 16,
       height: 16
-    }) : /*#__PURE__*/React.createElement(_Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    }) : /*#__PURE__*/React.createElement(_Icons_ColonIcon__WEBPACK_IMPORTED_MODULE_8__["default"], {
       width: 16,
       height: 16
     })
-  })), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_8__.Controller, {
+  })), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
     name: "aspectRatioHeightPixels",
     control: control,
     render: function render(_ref4) {
@@ -9145,7 +9173,7 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
         _onChange4 = _ref4$field.onChange,
         value = _ref4$field.value;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
-        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Pixel Height', 'photo-block'),
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Pixel Height', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
           _onChange4(newValue);
@@ -9158,9 +9186,9 @@ var ToolbarAspectRatio = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forw
     variant: 'secondary',
     type: "submit",
     className: "dlx-photo-block__component-aspect-ratio-apply",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Apply the Aspect Ratio', 'photo-block'),
-    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Switch modes from Aspect Ratio to Width and Height (pixels)', 'photo-block')
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Set Crop Area', 'photo-block')))));
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Apply the Aspect Ratio', 'photo-block'),
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Switch modes from Aspect Ratio to Width and Height (pixels)', 'photo-block')
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Set Crop Area', 'photo-block')))));
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ToolbarAspectRatio);
 
@@ -11367,13 +11395,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/check.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/lock.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/rotate-ccw.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/rotate-cw.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/loader-circle.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/save.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/x.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/arrow-big-left-dash.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/check.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/lock.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/rotate-ccw.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/rotate-cw.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/loader-circle.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/save.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var react_image_crop__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-image-crop */ "./node_modules/react-image-crop/dist/ReactCrop.min.js");
@@ -11420,7 +11448,27 @@ var CropScreen = function CropScreen(props) {
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)),
     setScreen = _useDispatch.setScreen,
     setImageData = _useDispatch.setImageData,
-    setPhotoMode = _useDispatch.setPhotoMode;
+    setPhotoMode = _useDispatch.setPhotoMode,
+    setJustCropped = _useDispatch.setJustCropped,
+    setOriginalImageData = _useDispatch.setOriginalImageData,
+    setAspectRatio = _useDispatch.setAspectRatio,
+    setAspectRatioToolbarSelection = _useDispatch.setAspectRatioToolbarSelection;
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
+      return {
+        aspectRatioWidth: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getAspectRatioWidth(),
+        aspectRatioHeight: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getAspectRatioHeight(),
+        aspectRatioToolbarSelection: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getAspectRatioToolbarSelection(),
+        aspectRatioWidthPixels: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getAspectRatioWidthPixels(),
+        aspectRatioHeightPixels: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getAspectRatioHeightPixels(),
+        getAspectRatioUnit: select((0,_store__WEBPACK_IMPORTED_MODULE_9__["default"])(blockUniqueId)).getAspectRatioUnit()
+      };
+    }),
+    aspectRatioWidth = _useSelect.aspectRatioWidth,
+    aspectRatioHeight = _useSelect.aspectRatioHeight,
+    aspectRatioToolbarSelection = _useSelect.aspectRatioToolbarSelection,
+    aspectRatioWidthPixels = _useSelect.aspectRatioWidthPixels,
+    aspectRatioHeightPixels = _useSelect.aspectRatioHeightPixels,
+    getAspectRatioUnit = _useSelect.getAspectRatioUnit;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     shouldShowLoading = _useState2[0],
@@ -11453,30 +11501,24 @@ var CropScreen = function CropScreen(props) {
     _useState16 = _slicedToArray(_useState15, 2),
     isSaving = _useState16[0],
     setIsSaving = _useState16[1];
-  var _useState17 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(undefined),
+  var _useState17 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
     _useState18 = _slicedToArray(_useState17, 2),
-    cropAspectRatio = _useState18[0],
-    setCropAspectRatio = _useState18[1];
+    cropMaxWidth = _useState18[0],
+    setCropMaxWidth = _useState18[1]; // Used for setting the max crop size when selecting pixel values for aspect ratio.
   var _useState19 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
     _useState20 = _slicedToArray(_useState19, 2),
-    cropMaxWidth = _useState20[0],
-    setCropMaxWidth = _useState20[1]; // Used for setting the max crop size when selecting pixel values for aspect ratio.
+    cropMaxHeight = _useState20[0],
+    setCropMaxHeight = _useState20[1]; // Used for setting the max crop size when selecting pixel values for aspect ratio.
   var _useState21 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
     _useState22 = _slicedToArray(_useState21, 2),
-    cropMaxHeight = _useState22[0],
-    setCropMaxHeight = _useState22[1]; // Used for setting the max crop size when selecting pixel values for aspect ratio.
-  var _useState23 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(null),
+    reactCropImageRef = _useState22[0],
+    setReactCropImageRef = _useState22[1];
+  var _useState23 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState24 = _slicedToArray(_useState23, 2),
-    reactCropImageRef = _useState24[0],
-    setReactCropImageRef = _useState24[1];
+    isDiry = _useState24[0],
+    setIsDirty = _useState24[1];
   var imageData = attributes.imageData,
-    uniqueId = attributes.uniqueId,
-    aspectRatio = attributes.aspectRatio,
-    aspectRatioUnit = attributes.aspectRatioUnit,
-    aspectRatioWidth = attributes.aspectRatioWidth,
-    aspectRatioHeight = attributes.aspectRatioHeight,
-    aspectRatioWidthPixels = attributes.aspectRatioWidthPixels,
-    aspectRatioHeightPixels = attributes.aspectRatioHeightPixels;
+    uniqueId = attributes.uniqueId;
   var url = imageData.url,
     id = imageData.id,
     width = imageData.width,
@@ -11518,6 +11560,7 @@ var CropScreen = function CropScreen(props) {
             height: canvas.height
           });
         }, 'image/png');
+        setIsDirty(true);
       };
       image.onerror = function (error) {
         reject(error);
@@ -11661,7 +11704,7 @@ var CropScreen = function CropScreen(props) {
     }
     function _fetchImage() {
       _fetchImage = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var response, data, newAspectRatio, humanImageRatio;
+        var response, data, aspectRatioWidthPixels, aspectRatioHeightPixels;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
@@ -11670,17 +11713,13 @@ var CropScreen = function CropScreen(props) {
             case 2:
               response = _context2.sent;
               data = response.data;
+              aspectRatioWidthPixels = data.width;
+              aspectRatioHeightPixels = data.height;
               setFullsizePhoto(data);
-              newAspectRatio = aspectRatioWidth / aspectRatioHeight;
-              if ('pixels' === aspectRatioUnit) {
-                humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_13__["default"])(aspectRatioWidthPixels, aspectRatioHeightPixels);
-                newAspectRatio = humanImageRatio.width / humanImageRatio.height;
-              }
 
               // Set crop value.
               setShouldShowLoading(false);
-              setCropAspectRatio(newAspectRatio);
-            case 9:
+            case 8:
             case "end":
               return _context2.stop();
           }
@@ -11694,7 +11733,28 @@ var CropScreen = function CropScreen(props) {
   /* Set Center Crop when image has finished loading */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     if (reactCropImageRef) {
-      setCenterCrop(reactCropImageRef.offsetWidth, reactCropImageRef.offsetHeight, cropAspectRatio);
+      // Get the current toolbar selection.
+      if ('original' === aspectRatioToolbarSelection) {
+        handleAspectRatioChange(aspectRatioWidth, aspectRatioHeight, reactCropImageRef.width, reactCropImageRef.height);
+      } else if ('square' === aspectRatioToolbarSelection) {
+        var newDimensions = (0,_utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_14__["default"])('1:1', reactCropImageRef.width, reactCropImageRef.height);
+        handleAspectRatioChange(1, 1, newDimensions.width, newDimensions.height);
+      } else if ('custom' === aspectRatioToolbarSelection) {
+        // Check if we're in ratio or pixels.
+        if ('pixels' === getAspectRatioUnit) {
+          var _newDimensions = (0,_utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_14__["default"])("".concat(aspectRatioWidthPixels, ":").concat(aspectRatioHeightPixels), reactCropImageRef.width, reactCropImageRef.height);
+          handleAspectRatioChange(aspectRatioWidthPixels, aspectRatioHeightPixels, _newDimensions.width, _newDimensions.height);
+        } else {
+          var _newDimensions2 = (0,_utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_14__["default"])("".concat(aspectRatioWidth, ":").concat(aspectRatioHeight), reactCropImageRef.width, reactCropImageRef.height);
+          handleAspectRatioChange(aspectRatioWidth, aspectRatioHeight, _newDimensions2.width, _newDimensions2.height);
+        }
+      } else {
+        var _newDimensions3 = (0,_utils_CalculateDimensionsFromAspectRatio__WEBPACK_IMPORTED_MODULE_14__["default"])(aspectRatioToolbarSelection, reactCropImageRef.width, reactCropImageRef.height);
+
+        // Aspect ratio is in format 3:2.
+        var newAspectSplit = aspectRatioToolbarSelection.split(':');
+        handleAspectRatioChange(newAspectSplit[0], newAspectSplit[1], _newDimensions3.width, _newDimensions3.height);
+      }
     }
   }, [reactCropImageRef]);
 
@@ -11710,7 +11770,7 @@ var CropScreen = function CropScreen(props) {
     var maximumWidth = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
     var maximumHeight = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
     // Aspect ratio.
-    var newAspectRatio = newAspectRatioWidth / newAspectRatioHeight;
+    var newAspectRatio = parseInt(newAspectRatioWidth) / parseInt(newAspectRatioHeight);
     if (null !== maximumWidth && null !== maximumHeight) {
       newAspectRatio = maximumWidth / maximumHeight;
       setCropMaxWidth(maximumWidth);
@@ -11719,90 +11779,86 @@ var CropScreen = function CropScreen(props) {
       setCropMaxWidth(null);
       setCropMaxHeight(null);
     }
-    setCropAspectRatio(newAspectRatio);
     setCenterCrop(reactCropImageRef.offsetWidth, reactCropImageRef === null || reactCropImageRef === void 0 ? void 0 : reactCropImageRef.offsetHeight, newAspectRatio, maximumWidth, maximumHeight);
+    setIsDirty(true);
   };
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Crop Settings', 'photo-block')
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, "Crop options here")));
-  var localToolbar = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarDropdownMenu, {
+  var localToolbar = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Back', 'photo-block'),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null),
+    variant: "secondary",
+    onClick: function onClick() {
+      setScreen('edit');
+    },
+    className: "dlx-photo-block__toolbar-back-button"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Back', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarDropdownMenu, {
     icon: /*#__PURE__*/React.createElement(_components_Icons_AspectRatio__WEBPACK_IMPORTED_MODULE_11__["default"], null),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Aspect Ratio', 'photo-block')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Ratio', 'photo-block') + ' ' + aspectRatioToolbarSelection,
+    className: "dlx-photo-block__aspect-ratio-dropdown"
   }, function (_ref2) {
     var onClose = _ref2.onClose;
     return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuGroup, {
       className: "dlx-photo-block__aspect-ratio-group"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: 'original' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: 'original' === aspectRatio,
+      icon: 'original' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: 'original' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: 'original'
-        });
+        setAspectRatioToolbarSelection('original');
         handleAspectRatioChange(fullsizePhoto === null || fullsizePhoto === void 0 ? void 0 : fullsizePhoto.width, fullsizePhoto === null || fullsizePhoto === void 0 ? void 0 : fullsizePhoto.height);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Original', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: 'square' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: 'square' === aspectRatio,
+      icon: 'square' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: 'square' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: 'square'
-        });
+        setAspectRatioToolbarSelection('square');
         handleAspectRatioChange(1, 1);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Square', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: 'custom' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: 'custom' === aspectRatio,
+      icon: 'custom' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: 'custom' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: 'custom'
-        });
+        setAspectRatioToolbarSelection('custom');
         onClose();
+        setIsDirty(true);
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Custom', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuGroup, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Landscape', 'photo-block'),
       className: "dlx-photo-block__aspect-ratio-group"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: '16:10' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: '16:10' === aspectRatio,
+      icon: '16:10' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: '16:10' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: '16:10'
-        });
+        setAspectRatioToolbarSelection('16:10');
         handleAspectRatioChange(16, 10);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('16:10', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: '16:9' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: '16:9' === aspectRatio,
+      icon: '16:9' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: '16:9' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: '16:9'
-        });
+        setAspectRatioToolbarSelection('16:9');
         handleAspectRatioChange(16, 9);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('16:9', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: '4:3' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: '4:3' === aspectRatio,
+      icon: '4:3' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: '4:3' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: '4:3'
-        });
+        setAspectRatioToolbarSelection('4:3');
         handleAspectRatioChange(4, 3);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('4:3', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: '3:2' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: '3:2' === aspectRatio,
+      icon: '3:2' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: '3:2' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: '3:2'
-        });
+        setAspectRatioToolbarSelection('3:2');
         handleAspectRatioChange(3, 2);
         onClose();
       }
@@ -11810,56 +11866,48 @@ var CropScreen = function CropScreen(props) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Portrait', 'photo-block'),
       className: "dlx-photo-block__aspect-ratio-group"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: '10:16' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: '10:16' === aspectRatio,
+      icon: '10:16' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: '10:16' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: '10:16'
-        });
+        setAspectRatioToolbarSelection('10:16');
         handleAspectRatioChange(10, 16);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('10:16', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: '9:16' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: '9:16' === aspectRatio,
+      icon: '9:16' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: '9:16' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: '9:16'
-        });
+        setAspectRatioToolbarSelection('9:16');
         handleAspectRatioChange(9, 16);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('9:16', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: '3:4' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: '3:4' === aspectRatio,
+      icon: '3:4' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: '3:4' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: '3:4'
-        });
+        setAspectRatioToolbarSelection('3:4');
         handleAspectRatioChange(3, 4);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('3:4', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.MenuItem, {
-      icon: '2:3' === aspectRatio ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null) : null,
-      isSelected: '2:3' === aspectRatio,
+      icon: '2:3' === aspectRatioToolbarSelection ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null) : null,
+      isSelected: '2:3' === aspectRatioToolbarSelection,
       onClick: function onClick() {
-        setAttributes({
-          aspectRatio: '2:3'
-        });
+        setAspectRatioToolbarSelection('2:3');
         handleAspectRatioChange(2, 3);
         onClose();
       }
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('2:3', 'photo-block'))));
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
     className: "dlx-photo-block__lock-crop-button",
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
     label: lockCrop ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('UnLock Aspect Ratio', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Lock Aspect Ratio', 'photo-block'),
     isActive: lockCrop,
     onClick: function onClick() {
       setLockCrop(!lockCrop);
     }
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Rotate Left', 'photo-block'),
     onClick: function onClick() {
       var degrees = getDegrees(-90);
@@ -11870,7 +11918,7 @@ var CropScreen = function CropScreen(props) {
       });
     }
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Rotate Right', 'photo-block'),
     onClick: function onClick() {
       var degrees = getDegrees(90);
@@ -11880,46 +11928,32 @@ var CropScreen = function CropScreen(props) {
         setModifiedPhoto(newImage);
       });
     }
-  })), 'custom' === aspectRatio && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarItem, {
+  })), 'custom' === aspectRatioToolbarSelection && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarItem, {
     as: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.forwardRef)(function (args, ref) {
       return /*#__PURE__*/React.createElement(_components_ToolbarAspectRatio__WEBPACK_IMPORTED_MODULE_12__["default"], {
-        attributes: attributes,
-        setAttributes: setAttributes,
         forwardRef: ref,
         onChange: function onChange(values) {
-          setAttributes({
-            aspectRatioWidthPixels: values.aspectRatioWidthPixels,
-            aspectRatioHeightPixels: values.aspectRatioHeightPixels
-          });
-          if ('pixels' === values.aspectRatioUnit) {
-            var humanImageRatio = (0,_utils_CalculateAspectRatioFromPixels__WEBPACK_IMPORTED_MODULE_13__["default"])(values.aspectRatioWidthPixels, values.aspectRatioHeightPixels);
-            setAttributes({
-              aspectRatioWidth: humanImageRatio.width,
-              aspectRatioHeight: humanImageRatio.height
-            });
-            handleAspectRatioChange(humanImageRatio.width, humanImageRatio.height, values.aspectRatioWidthPixels, values.aspectRatioHeightPixels);
-          } else {
-            setAttributes({
-              aspectRatioWidth: values.aspectRatioWidth,
-              aspectRatioHeight: values.aspectRatioHeight
-            });
-            handleAspectRatioChange(values.aspectRatioWidth, values.aspectRatioHeight);
-          }
-        }
+          handleAspectRatioChange(values.width, values.height);
+        },
+        fullsizePhoto: fullsizePhoto,
+        uniqueId: uniqueId
       });
     })
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
-    icon: isSaving ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null) : /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
+    icon: isSaving ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null) : /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
     className: classnames__WEBPACK_IMPORTED_MODULE_8___default()('dlx-photo-block__save-button', {
       'is-saving': isSaving
     }),
     variant: "primary",
+    disabled: !isDiry,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Apply Crop', 'photo-block'),
     onClick: function onClick() {
       if (isSaving) {
         return;
       }
       setIsSaving(true);
+      setOriginalImageData(imageData); // Save original image data.
+
       var croppedImage = cropImage(crop, imageData.id, rotateDegrees);
       croppedImage.then(function (imageResponse) {
         var data = imageResponse.data;
@@ -11929,6 +11963,7 @@ var CropScreen = function CropScreen(props) {
             photoMode: 'photo',
             imageData: data.data.attachment
           });
+          setJustCropped(true);
           setPhotoMode('photo');
           setScreen('edit');
         } else {
@@ -11938,14 +11973,8 @@ var CropScreen = function CropScreen(props) {
         setIsSaving(false);
       });
     }
-  }, isSaving ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Saving…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Apply Crop', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Cancel', 'photo-block'),
-    onClick: function onClick() {
-      setScreen('edit');
-    },
-    disabled: isSaving
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Cancel', 'photo-block'))));
+  }, isSaving ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Saving…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Apply Crop', 'photo-block'))));
+  var cropAspectRatio = aspectRatioWidth / aspectRatioHeight;
   return /*#__PURE__*/React.createElement(React.Fragment, null, localInspectorControls, localToolbar, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit"
   }, shouldShowLoading && /*#__PURE__*/React.createElement("div", {
@@ -13062,8 +13091,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/crop.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/undo-2.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/undo-2.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/crop.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
@@ -13170,20 +13199,24 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
         imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)).getImageData(),
         captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)).getCaptionPosition(),
         photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)).getPhotoMode(),
-        originalImageData: select((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)).getOriginalImageData()
+        originalImageData: select((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)).getOriginalImageData(),
+        isJustCropped: select((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)).getJustCropped()
       };
     }),
     imageData = _useSelect.imageData,
     captionPosition = _useSelect.captionPosition,
     photoMode = _useSelect.photoMode,
-    originalImageData = _useSelect.originalImageData;
+    originalImageData = _useSelect.originalImageData,
+    isJustCropped = _useSelect.isJustCropped;
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)),
+    setJustCropped = _useDispatch2.setJustCropped;
   var url = imageData.url,
     id = imageData.id,
     width = imageData.width,
     height = imageData.height;
-  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store),
-    insertBlock = _useDispatch2.insertBlock,
-    updateBlockAttributes = _useDispatch2.updateBlockAttributes; // For setting the preset defaults.
+  var _useDispatch3 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store),
+    insertBlock = _useDispatch3.insertBlock,
+    updateBlockAttributes = _useDispatch3.updateBlockAttributes; // For setting the preset defaults.
 
   var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_13__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 2),
@@ -13257,6 +13290,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
             setImageSizeLoading(true);
             _context.next = 3;
             return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_11__["default"])(photoBlock.restNonce, {}, "".concat(photoBlock.restUrl + '/get-image-by-size', "/id=").concat(imageData.id, "/size=").concat(size), 'GET').then(function (response) {
+              setImageData(_objectSpread(_objectSpread({}, imageData), response.data));
               setAttributes({
                 imageData: _objectSpread(_objectSpread({}, imageData), response.data)
               });
@@ -13426,7 +13460,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt text provides a description of the photo for screen readers and search engines.', 'photo-block')
   }), isSavingAlt && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block')))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block')))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement("div", {
+    className: "photo-block__image-size-control"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Image Size', 'photo-block'),
     value: imageSize,
     onChange: function onChange(size) {
@@ -13437,7 +13473,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     },
     options: imageSizeOptions,
     disabled: 'photo' !== photoMode
-  }))));
+  }), imageSizeLoading && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "photo-block__text-saving"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Loading image size…', 'photo-block')))))));
   var interfaceTabs = /*#__PURE__*/React.createElement(React.Fragment, null, settingsInspectorControls, /*#__PURE__*/React.createElement(_components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_15__["default"], {
     attributes: attributes,
     setAttributes: setAttributes,
@@ -13449,10 +13487,21 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
 
   // Set the advanced inspector controls.
   var advancedInspectorControls = /*#__PURE__*/React.createElement(_components_SidebarImageAdvancedInspectorControl__WEBPACK_IMPORTED_MODULE_16__["default"], props);
-  var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+  var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, isJustCropped && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo Crop', 'photo-block'),
+    onClick: function onClick() {
+      setAttributes({
+        imageData: originalImageData
+      });
+      setImageData(originalImageData);
+      setScreen('edit');
+    }
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo Crop', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Crop', 'photo-block'),
     onClick: function onClick() {
+      setJustCropped(false);
       setScreen('crop');
     },
     disabled: 'photo' !== photoMode
@@ -13461,18 +13510,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace Photo', 'photo-block'),
     onClick: function onClick() {
       setScreen('initial');
+      setJustCropped(false);
     }
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace', 'photo-block')), canShowUndo() && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo', 'photo-block'),
-    onClick: function onClick() {
-      // Change back to original image.
-      setAttributes({
-        imageData: originalImageData
-      });
-      setImageData(originalImageData);
-    }
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Set Accessibility Options', 'photo-block'),
     onClick: function onClick() {
@@ -14434,7 +14474,15 @@ var DEFAULT_STATE = {
   photoMode: 'image',
   /* can be image, featuredImage, data, or url. */
   blockUniqueId: null,
-  dataScreen: 'data' /* can be `initial`, `edit`. */
+  dataScreen: 'data',
+  /* can be `initial`, `edit`. */
+  justCropped: false,
+  aspectRatioWidth: 16,
+  aspectRatioHeight: 9,
+  aspectRatioWidthPixels: 0,
+  aspectRatioHeightPixels: 0,
+  aspectRatioToolbarSelection: '16:9',
+  aspectRatioUnit: 'ratio'
 };
 var actions = {
   setOriginalImageData: function setOriginalImageData(originalImageData) {
@@ -14447,6 +14495,13 @@ var actions = {
     return {
       type: 'SET_IMAGE_DATA',
       imageData: imageData
+    };
+  },
+  setAspectRatio: function setAspectRatio(aspectRatioWidth, aspectRatioHeight) {
+    return {
+      type: 'SET_ASPECT_RATIO',
+      aspectRatioWidth: aspectRatioWidth,
+      aspectRatioHeight: aspectRatioHeight
     };
   },
   setScreen: function setScreen(screen) {
@@ -14514,6 +14569,31 @@ var actions = {
       type: 'SET_DATA_SCREEN',
       dataScreen: dataScreen
     };
+  },
+  setJustCropped: function setJustCropped(justCropped) {
+    return {
+      type: 'SET_JUST_CROPPED',
+      justCropped: justCropped
+    };
+  },
+  setAspectRatioToolbarSelection: function setAspectRatioToolbarSelection(aspectRatioToolbarSelection) {
+    return {
+      type: 'SET_ASPECT_RATIO_TOOLBAR_SELECTION',
+      aspectRatioToolbarSelection: aspectRatioToolbarSelection
+    };
+  },
+  setAspectRatioPixels: function setAspectRatioPixels(aspectRatioWidthPixels, aspectRatioHeightPixels) {
+    return {
+      type: 'SET_ASPECT_RATIO_PIXELS',
+      aspectRatioWidthPixels: aspectRatioWidthPixels,
+      aspectRatioHeightPixels: aspectRatioHeightPixels
+    };
+  },
+  setAspectRatioUnit: function setAspectRatioUnit(aspectRatioUnit) {
+    return {
+      type: 'SET_ASPECT_RATIO_UNIT',
+      aspectRatioUnit: aspectRatioUnit
+    };
   }
 };
 var createBlockStore = function createBlockStore(uniqueId) {
@@ -14574,6 +14654,24 @@ var createBlockStore = function createBlockStore(uniqueId) {
           return _objectSpread(_objectSpread({}, state), {}, {
             dataScreen: action.dataScreen
           });
+        case 'SET_ASPECT_RATIO':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioWidth: action.aspectRatioWidth,
+            aspectRatioHeight: action.aspectRatioHeight
+          });
+        case 'SET_ASPECT_RATIO_PIXELS':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioWidthPixels: action.aspectRatioWidthPixels,
+            aspectRatioHeightPixels: action.aspectRatioHeightPixels
+          });
+        case 'SET_ASPECT_RATIO_TOOLBAR_SELECTION':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioToolbarSelection: action.aspectRatioToolbarSelection
+          });
+        case 'SET_ASPECT_RATIO_UNIT':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioUnit: action.aspectRatioUnit
+          });
         default:
           return state;
       }
@@ -14618,6 +14716,27 @@ var createBlockStore = function createBlockStore(uniqueId) {
       },
       getOriginalImageData: function getOriginalImageData(state) {
         return state.originalImageData;
+      },
+      getJustCropped: function getJustCropped(state) {
+        return state.justCropped;
+      },
+      getAspectRatioWidth: function getAspectRatioWidth(state) {
+        return state.aspectRatioWidth;
+      },
+      getAspectRatioHeight: function getAspectRatioHeight(state) {
+        return state.aspectRatioHeight;
+      },
+      getAspectRatioWidthPixels: function getAspectRatioWidthPixels(state) {
+        return state.aspectRatioWidthPixels;
+      },
+      getAspectRatioHeightPixels: function getAspectRatioHeightPixels(state) {
+        return state.aspectRatioHeightPixels;
+      },
+      getAspectRatioToolbarSelection: function getAspectRatioToolbarSelection(state) {
+        return state.aspectRatioToolbarSelection;
+      },
+      getAspectRatioUnit: function getAspectRatioUnit(state) {
+        return state.aspectRatioUnit;
       }
     }
   });

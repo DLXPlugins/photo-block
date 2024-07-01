@@ -14202,7 +14202,15 @@ var DEFAULT_STATE = {
   photoMode: 'image',
   /* can be image, featuredImage, data, or url. */
   blockUniqueId: null,
-  dataScreen: 'data' /* can be `initial`, `edit`. */
+  dataScreen: 'data',
+  /* can be `initial`, `edit`. */
+  justCropped: false,
+  aspectRatioWidth: 16,
+  aspectRatioHeight: 9,
+  aspectRatioWidthPixels: 0,
+  aspectRatioHeightPixels: 0,
+  aspectRatioToolbarSelection: '16:9',
+  aspectRatioUnit: 'ratio'
 };
 var actions = {
   setOriginalImageData: function setOriginalImageData(originalImageData) {
@@ -14215,6 +14223,13 @@ var actions = {
     return {
       type: 'SET_IMAGE_DATA',
       imageData: imageData
+    };
+  },
+  setAspectRatio: function setAspectRatio(aspectRatioWidth, aspectRatioHeight) {
+    return {
+      type: 'SET_ASPECT_RATIO',
+      aspectRatioWidth: aspectRatioWidth,
+      aspectRatioHeight: aspectRatioHeight
     };
   },
   setScreen: function setScreen(screen) {
@@ -14282,6 +14297,31 @@ var actions = {
       type: 'SET_DATA_SCREEN',
       dataScreen: dataScreen
     };
+  },
+  setJustCropped: function setJustCropped(justCropped) {
+    return {
+      type: 'SET_JUST_CROPPED',
+      justCropped: justCropped
+    };
+  },
+  setAspectRatioToolbarSelection: function setAspectRatioToolbarSelection(aspectRatioToolbarSelection) {
+    return {
+      type: 'SET_ASPECT_RATIO_TOOLBAR_SELECTION',
+      aspectRatioToolbarSelection: aspectRatioToolbarSelection
+    };
+  },
+  setAspectRatioPixels: function setAspectRatioPixels(aspectRatioWidthPixels, aspectRatioHeightPixels) {
+    return {
+      type: 'SET_ASPECT_RATIO_PIXELS',
+      aspectRatioWidthPixels: aspectRatioWidthPixels,
+      aspectRatioHeightPixels: aspectRatioHeightPixels
+    };
+  },
+  setAspectRatioUnit: function setAspectRatioUnit(aspectRatioUnit) {
+    return {
+      type: 'SET_ASPECT_RATIO_UNIT',
+      aspectRatioUnit: aspectRatioUnit
+    };
   }
 };
 var createBlockStore = function createBlockStore(uniqueId) {
@@ -14342,6 +14382,24 @@ var createBlockStore = function createBlockStore(uniqueId) {
           return _objectSpread(_objectSpread({}, state), {}, {
             dataScreen: action.dataScreen
           });
+        case 'SET_ASPECT_RATIO':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioWidth: action.aspectRatioWidth,
+            aspectRatioHeight: action.aspectRatioHeight
+          });
+        case 'SET_ASPECT_RATIO_PIXELS':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioWidthPixels: action.aspectRatioWidthPixels,
+            aspectRatioHeightPixels: action.aspectRatioHeightPixels
+          });
+        case 'SET_ASPECT_RATIO_TOOLBAR_SELECTION':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioToolbarSelection: action.aspectRatioToolbarSelection
+          });
+        case 'SET_ASPECT_RATIO_UNIT':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioUnit: action.aspectRatioUnit
+          });
         default:
           return state;
       }
@@ -14386,6 +14444,27 @@ var createBlockStore = function createBlockStore(uniqueId) {
       },
       getOriginalImageData: function getOriginalImageData(state) {
         return state.originalImageData;
+      },
+      getJustCropped: function getJustCropped(state) {
+        return state.justCropped;
+      },
+      getAspectRatioWidth: function getAspectRatioWidth(state) {
+        return state.aspectRatioWidth;
+      },
+      getAspectRatioHeight: function getAspectRatioHeight(state) {
+        return state.aspectRatioHeight;
+      },
+      getAspectRatioWidthPixels: function getAspectRatioWidthPixels(state) {
+        return state.aspectRatioWidthPixels;
+      },
+      getAspectRatioHeightPixels: function getAspectRatioHeightPixels(state) {
+        return state.aspectRatioHeightPixels;
+      },
+      getAspectRatioToolbarSelection: function getAspectRatioToolbarSelection(state) {
+        return state.aspectRatioToolbarSelection;
+      },
+      getAspectRatioUnit: function getAspectRatioUnit(state) {
+        return state.aspectRatioUnit;
       }
     }
   });

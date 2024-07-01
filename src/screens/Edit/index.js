@@ -84,15 +84,20 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		captionPosition,
 		photoMode,
 		originalImageData,
+		isJustCropped,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 			originalImageData: select( blockStore( blockUniqueId ) ).getOriginalImageData(),
+			isJustCropped: select( blockStore( blockUniqueId ) ).getJustCropped(),
+
 
 		};
 	} );
+
+	const { setJustCropped } = useDispatch( blockStore( blockUniqueId ) );
 
 	const { url, id, width, height } = imageData;
 
@@ -170,6 +175,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			'GET'
 		)
 			.then( ( response ) => {
+				setImageData( { ...imageData, ...response.data } );
 				setAttributes( { imageData: { ...imageData, ...response.data } } );
 			} )
 			.catch( ( error ) => {
@@ -259,6 +265,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			} );
 	}, 1500 ), [] );
 
+
 	// Image Sizes.
 	const imageSizeOptions = [];
 	for ( const key in photoBlock.imageSizes ) {
@@ -331,16 +338,23 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					) }
 				</>
 				<PanelRow>
-					<SelectControl
-						label={ __( 'Image Size', 'photo-block' ) }
-						value={ imageSize }
-						onChange={ ( size ) => {
-							setAttributes( { imageSize: size } );
-							getImageFromSize( size );
-						} }
-						options={ imageSizeOptions }
-						disabled={ 'photo' !== photoMode }
-					/>
+					<div className="photo-block__image-size-control">
+						<SelectControl
+							label={ __( 'Image Size', 'photo-block' ) }
+							value={ imageSize }
+							onChange={ ( size ) => {
+								setAttributes( { imageSize: size } );
+								getImageFromSize( size );
+							} }
+							options={ imageSizeOptions }
+							disabled={ 'photo' !== photoMode }
+						/>
+						{ imageSizeLoading && (
+							<>
+								<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
+							</>
+						) }
+					</div>
 				</PanelRow>
 			</PanelBodyControl>
 		</>
@@ -373,10 +387,26 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		<>
 			<BlockControls>
 				<ToolbarGroup>
+					{
+						isJustCropped && (
+							<ToolbarButton
+								icon={ <Undo2 /> }
+								label={ __( 'Undo Crop', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { imageData: originalImageData } );
+									setImageData( originalImageData );
+									setScreen( 'edit' );
+								} }
+							>
+								{ __( 'Undo Crop', 'photo-block' ) }
+							</ToolbarButton>
+						)
+					}
 					<ToolbarButton
 						icon={ <Crop /> }
 						label={ __( 'Crop', 'photo-block' ) }
 						onClick={ () => {
+							setJustCropped( false );
 							setScreen( 'crop' );
 						} }
 						disabled={ 'photo' !== photoMode }
@@ -399,25 +429,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						label={ __( 'Replace Photo', 'photo-block' ) }
 						onClick={ () => {
 							setScreen( 'initial' );
+							setJustCropped( false );
 						} }
 					>
 						{ __( 'Replace', 'photo-block' ) }
 					</ToolbarButton>
-					{ canShowUndo() && (
-						<ToolbarButton
-							icon={ <Undo2 /> }
-							label={ __( 'Undo', 'photo-block' ) }
-							onClick={ () => {
-								// Change back to original image.
-								setAttributes( {
-									imageData: originalImageData,
-								} );
-								setImageData( originalImageData );
-							} }
-						>
-							{ __( 'Undo', 'photo-block' ) }
-						</ToolbarButton>
-					) }
 				</ToolbarGroup>
 				<ToolbarGroup>
 					<ToolbarButton
@@ -519,7 +535,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			}
 			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
-				{ imageLoading && (
+				{ ( imageLoading ) && (
 					<div
 						className="dlx-photo-block__screen-edit-spinner"
 						style={ {

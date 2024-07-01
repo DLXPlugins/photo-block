@@ -20,3 +20,23 @@
 		animation-timing-function: linear;
 	}
 }
+.dlx-photo-block__toolbar-back-button {
+	box-shadow: none !important; /* override core style */
+	border-right: 1px solid #333;
+	height: unset;
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+.dlx-photo-block__aspect-ratio-dropdown button {
+	height: 100%;
+}
+.dlx-photo-block__aspect-ratio-dropdown button:after {
+	content: attr(aria-label);
+	display: block;
+	align-items: center;
+	margin-left: 8px;
+}
+.dlx-photo-block__aspect-ratio-dropdown button {
+	text-transform: capitalize;
+}

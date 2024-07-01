@@ -2210,6 +2210,12 @@ svg.lucide {
 .photo-block__title-text.components-base-control.is-saving p {
   margin-bottom: 0;
 }
+
+.photo-block__text-saving {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/MediaLink/editor.scss ***!
   \*********************************************************************************************************************************************************************************************************************************************************************************************/
@@ -3736,6 +3742,30 @@ svg.lucide {
   animation-duration: 1.5s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+}
+
+.dlx-photo-block__toolbar-back-button {
+  box-shadow: none !important; /* override core style */
+  border-right: 1px solid #333;
+  height: unset;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.dlx-photo-block__aspect-ratio-dropdown button {
+  height: 100%;
+}
+
+.dlx-photo-block__aspect-ratio-dropdown button:after {
+  content: attr(aria-label);
+  display: block;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.dlx-photo-block__aspect-ratio-dropdown button {
+  text-transform: capitalize;
 }
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./node_modules/react-image-crop/src/ReactCrop.scss ***!

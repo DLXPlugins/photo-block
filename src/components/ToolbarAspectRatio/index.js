@@ -12,6 +12,7 @@ import { X } from 'lucide-react';
 import { useContext, forwardRef, useState } from '@wordpress/element';
 
 import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 import classnames from 'classnames';
 
@@ -19,6 +20,8 @@ import { __ } from '@wordpress/i18n';
 import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFromPixels';
 import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
 import ColonIcon from '../Icons/ColonIcon';
+import blockStore from '../../store';
+
 /**
  * Upload Status component.
  *
@@ -26,17 +29,29 @@ import ColonIcon from '../Icons/ColonIcon';
  * @return {Object} JSX markup for the component.
  */
 const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes } = props;
-
-	const getDefaultValues = () => {
+	const {
+		aspectRatioWidth,
+		aspectRatioHeight,
+		aspectRatioWidthPixels,
+		aspectRatioHeightPixels,
+		aspectRatioToolbarSelection,
+		aspectRatioUnit,
+	} = useSelect( ( select ) => {
 		return {
-			aspectRatioWidth: attributes.aspectRatioWidth,
-			aspectRatioHeight: attributes.aspectRatioHeight,
-			aspectRatioWidthPixels: attributes.aspectRatioWidthPixels,
-			aspectRatioHeightPixels: attributes.aspectRatioHeightPixels,
-			aspectRatioUnit: attributes.aspectRatioUnit,
+			aspectRatioWidth: select( blockStore( props.uniqueId ) ).getAspectRatioWidth(),
+			aspectRatioHeight: select( blockStore( props.uniqueId ) ).getAspectRatioHeight(),
+			aspectRatioWidthPixels: select( blockStore( props.uniqueId ) ).getAspectRatioWidthPixels(),
+			aspectRatioHeightPixels: select( blockStore( props.uniqueId ) ).getAspectRatioHeightPixels(),
+			aspectRatioToolbarSelection: select( blockStore( props.uniqueId ) ).getAspectRatioToolbarSelection(),
+			aspectRatioUnit: select( blockStore( props.uniqueId ) ).getAspectRatioUnit(),
 		};
-	};
+	} );
+
+	const {
+		setAspectRatio,
+		setAspectRatioPixels,
+		setAspectRatioUnit,
+	} = useDispatch( blockStore( props.uniqueId ) );
 
 	const {
 		control,
@@ -44,34 +59,44 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 		setValue,
 		getValues,
 	} = useForm( {
-		defaultValues: getDefaultValues(),
+		defaultValues: {
+			aspectRatioWidthRatio: aspectRatioWidth,
+			aspectRatioHeightRatio: aspectRatioHeight,
+			aspectRatioWidthPixels: aspectRatioWidthPixels,
+			aspectRatioHeightPixels: aspectRatioHeightPixels,
+			aspectRatioUnit: aspectRatioUnit,
+		},
 	} );
+
 
 	const { isDirty } = useFormState( {
 		control,
 	} );
 	const formValues = useWatch( { control } );
 
+
 	/**
 	 * Swap from pixels to aspect ratio and back.
+	 *
+	 * @param {string} ratioToCalculate - 'pixels' or 'ratio'.
 	 */
-	const swapAspectRatio = () => {
-		const aspectRatioWidthPixels = getValues( 'aspectRatioWidthPixels' );
-		const aspectRatioHeightPixels = getValues( 'aspectRatioHeightPixels' );
-		const aspectRatioWidth = getValues( 'aspectRatioWidth' );
-		const aspectRatioHeight = getValues( 'aspectRatioHeight' );
-		if ( getValues( 'aspectRatioUnit' ) === 'pixels' ) {
+	const swapAspectRatio = ( ratioToCalculate ) => {
+		const aspectRatioWidthRatio = getValues( 'aspectRatioWidthRatio' );
+		const aspectRatioHeightRatio = getValues( 'aspectRatioHeightRatio' );
+		if ( ratioToCalculate === 'ratio' ) {
 			// Convert aspect width / height to ratio for display.
-			const humanImageRatio = CalculateAspectRatioFromPixels(
-				aspectRatioWidthPixels,
-				aspectRatioHeightPixels
-			);
-			setValue( 'aspectRatioWidth', humanImageRatio.width );
-			setValue( 'aspectRatioHeight', humanImageRatio.height );
+			const newAspectRatio = CalculateAspectRatioFromPixels( getValues( 'aspectRatioWidthPixels' ), getValues( 'aspectRatioHeightPixels' ) );
+			setValue( 'aspectRatioWidthRatio', newAspectRatio.width );
+			setValue( 'aspectRatioHeightRatio', newAspectRatio.height );
+			setAspectRatio( newAspectRatio.width, newAspectRatio.height );
 		} else {
-			const pixelsWidthHeight = CalculateDimensionsFromAspectRatio( `${ aspectRatioWidth }:${ aspectRatioHeight }`, getValues( 'aspectRatioWidthPixels' ) );
-			setValue( 'aspectRatioWidthPixels', pixelsWidthHeight.width );
-			setValue( 'aspectRatioHeightPixels', pixelsWidthHeight.height );
+			const imageRatioPixels = CalculateDimensionsFromAspectRatio(
+				`${ aspectRatioWidthRatio }:${ aspectRatioHeightRatio }`,
+				props?.fullsizePhoto?.width,
+			);
+			setValue( 'aspectRatioWidthPixels', imageRatioPixels.width );
+			setValue( 'aspectRatioHeightPixels', imageRatioPixels.height );
+			setAspectRatioPixels( imageRatioPixels.width, imageRatioPixels.height );
 		}
 	};
 
@@ -81,7 +106,24 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 	 * @param {Object} formData form data.
 	 */
 	const onSubmit = ( formData ) => {
-		props.onChange( { ...formData } );
+		let humanImageRatio = {};
+		// Calculate human aspect ratio.
+		if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
+			humanImageRatio = CalculateAspectRatioFromPixels(
+				formData.aspectRatioWidthPixels,
+				formData.aspectRatioHeightPixels
+			);
+		} else {
+			humanImageRatio = {
+				width: formData.aspectRatioWidthRatio,
+				height: formData.aspectRatioHeightRatio,
+			};
+		}
+		// Set global values.
+		setAspectRatio( formData.aspectRatioWidthRatio, formData.aspectRatioHeightRatio );
+		setAspectRatioPixels( formData.aspectRatioWidthPixels, formData.aspectRatioHeightPixels );
+		props.onChange( humanImageRatio );
+		return formData;
 	};
 	return (
 		<>
@@ -89,16 +131,16 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 				<div
 					className={ classnames( 'dlx-photo-block__component-aspect-ratio', {
 						'dlx-photo-block__component-aspect-ratio--active':
-						'ratio' === getValues( 'aspectRatioUnit' ),
+							'ratio' === getValues( 'aspectRatioUnit' ),
 						'dlx-photo-block__component-pixels--active':
-						'pixels' === getValues( 'aspectRatioUnit' ),
+							'pixels' === getValues( 'aspectRatioUnit' ),
 					} ) }
 				>
 
 					{ getValues( 'aspectRatioUnit' ) === 'ratio' && (
 						<>
 							<Controller
-								name="aspectRatioWidth"
+								name="aspectRatioWidthRatio"
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
@@ -122,17 +164,19 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 									onClick={ () => {
 										if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
 											setValue( 'aspectRatioUnit', 'ratio' );
-											setAttributes( { aspectRatioUnit: 'ratio' } );
+											swapAspectRatio( 'ratio' );
+											setAspectRatioUnit( 'ratio' );
 										} else {
 											setValue( 'aspectRatioUnit', 'pixels' );
-											setAttributes( { aspectRatioUnit: 'pixels' } );
+											swapAspectRatio( 'pixels' );
+											setAspectRatioUnit( 'pixels' );
 										}
 									} }
 									icon={ 'pixels' === getValues( 'aspectRatioUnit' ) ? <X /> : <ColonIcon /> }
 								/>
 							</span>
 							<Controller
-								name="aspectRatioHeight"
+								name="aspectRatioHeightRatio"
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
@@ -174,11 +218,13 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 									) }
 									onClick={ () => {
 										if ( 'pixels' === getValues( 'aspectRatioUnit' ) ) {
+											setAspectRatioUnit( 'ratio' );
 											setValue( 'aspectRatioUnit', 'ratio' );
-											setAttributes( { aspectRatioUnit: 'ratio' } );
+											swapAspectRatio( 'ratio' );
 										} else {
+											setAspectRatioUnit( 'pixels' );
 											setValue( 'aspectRatioUnit', 'pixels' );
-											setAttributes( { aspectRatioUnit: 'pixels' } );
+											swapAspectRatio( 'pixels' );
 										}
 									} }
 									icon={ 'pixels' === getValues( 'aspectRatioUnit' ) ? <X width={ 16 } height={ 16 } /> : <ColonIcon width={ 16 } height={ 16 } /> }
