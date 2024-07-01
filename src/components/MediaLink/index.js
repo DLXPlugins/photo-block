@@ -222,26 +222,30 @@ const MediaLink = ( props ) => {
 							</PanelBody>
 						</>
 					) }
-					{ 'none' !== mediaLinkType && (
+					{ ( 'none' !== mediaLinkType ) && (
 						<PanelBody
 							title={ __( 'Advanced', 'photo-block' ) }
 							initialOpen={ false }
 						>
-							<PanelRow>
-								<ToggleControl
-									label={ __( 'Open in new tab', 'photo-block' ) }
-									checked={ attributes.mediaLinkNewTab }
-									onChange={ ( value ) => {
-										if ( '' === attributes.mediaLinkRel && value ) {
-											setAttributes( { mediaLinkRel: 'noopener noreferrer' } );
-										}
-										if ( 'noopener noreferrer' === attributes.mediaLinkRel && ! value ) {
-											setAttributes( { mediaLinkRel: '' } );
-										}
-										setAttributes( { mediaLinkNewTab: value } );
-									} }
-								/>
-							</PanelRow>
+							{
+								! lightboxEnabled && (
+									<PanelRow>
+										<ToggleControl
+											label={ __( 'Open in new tab', 'photo-block' ) }
+											checked={ attributes.mediaLinkNewTab }
+											onChange={ ( value ) => {
+												if ( '' === attributes.mediaLinkRel && value ) {
+													setAttributes( { mediaLinkRel: 'noopener noreferrer' } );
+												}
+												if ( 'noopener noreferrer' === attributes.mediaLinkRel && ! value ) {
+													setAttributes( { mediaLinkRel: '' } );
+												}
+												setAttributes( { mediaLinkNewTab: value } );
+											} }
+										/>
+									</PanelRow>
+								)
+							}
 							<PanelRow>
 								<TextControl
 									label={ __( 'Link Title', 'photo-block' ) }

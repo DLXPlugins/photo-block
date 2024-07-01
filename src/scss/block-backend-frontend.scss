@@ -240,6 +240,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 	max-width: var( --photo-block-photo-container-max-width );
 	max-height: var( --photo-block-photo-container-max-height );
 	border-radius: var( --photo-block-photo-border-radius );
+	box-sizing: border-box;
 }
 .dlx-photo-block__image-wrapper img {
 	opacity: var( --photo-block-image-opacity, 1 );

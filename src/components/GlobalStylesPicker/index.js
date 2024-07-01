@@ -18,10 +18,15 @@ const GlobalStylesPicker = ( props ) => {
 	const [ isRemoveModalOpen, setIsRemoveModalOpen ] = useState( false );
 	const [ isKeepStyleSettings, setIsKeepStyleSettings ] = useState( false );
 
-	const { globalStyles, getGlobalStyleBySlug } = useSelect( ( select ) => {
+	const {
+		globalStyles,
+		getGlobalStyleBySlug,
+		hasGlobalStyle
+	} = useSelect( ( select ) => {
 		return {
 			globalStyles: select( globalStylesStore ).getGlobalStyles(),
 			getGlobalStyleBySlug: select( globalStylesStore ).getGlobalStyleBySlug,
+			hasGlobalStyle: select( globalStylesStore ).hasGlobalStyle,
 		};
 	} );
 
@@ -37,20 +42,8 @@ const GlobalStylesPicker = ( props ) => {
 		return null;
 	}
 
-	/**
-	 * Determines if there's a global style or not.
-	 *
-	 * @return {boolean} True if there's a global style, false otherwise.
-	 */
-	const hasGlobalStyle = () => {
-		if ( 'none' !== props.attributes.globalStyle && Object.keys( getGlobalStyleBySlug( props.attributes.globalStyle ) ).length > 0 ) {
-			return true;
-		}
-		return false;
-	};
-
 	const getGlobalStyles = () => {
-		if ( hasGlobalStyle() ) {
+		if ( hasGlobalStyle( props.attributes.globalStyle ) ) {
 			const globalStyle = getGlobalStyleBySlug( props.attributes.globalStyle );
 
 			// Make sure the global style is not empty.
@@ -92,80 +85,80 @@ const GlobalStylesPicker = ( props ) => {
 			</div>
 		);
 	};
-	if ( isRemoveModalOpen ) {
-		return (
-			<Modal
-				title={ __( 'Remove Global Style', 'photo-block' ) }
-				onRequestClose={ () => setIsRemoveModalOpen( false ) }
-				className="photo-block-global-styles-modal"
-				shouldCloseOnClickOutside={ false }
-			>
-				<form>
-					<p className="description">
-						{ __( 'Remove the global style from this photo.', 'photo-block' ) }
-					</p>
-					<CheckboxControl
-						label={ __( 'Keep current style settings', 'photo-block' ) }
-						checked={ isKeepStyleSettings }
-						onChange={ () => {
-							setIsKeepStyleSettings( ! isKeepStyleSettings );
-						} }
-					/>
-					<Button
-						onClick={ () => {
-							if ( isKeepStyleSettings ) {
-								if ( hasGlobalStyle() ) {
-									const globalStyle = getGlobalStyleBySlug( props.attributes.globalStyle );
-
-									// Reset global style in attributes.
-									const newGlobalStyle = {
-										globalStyle: 'none',
-									};
-									const photoAttributes = {
-										...globalStyle.content.photoAttributes,
-										...newGlobalStyle,
-									};
-									const captionAttributes = {
-										...globalStyle.content.captionAttributes,
-										...newGlobalStyle,
-									};
-
-									// Need to apply global styles to the photo.
-									updateBlockAttributes( props.clientId, photoAttributes );
-
-									// Get the caption block. No need to create caption block here.
-									const block = getBlock( props.clientId );
-									const captionInnerBlocks = block?.innerBlocks;
-									if ( captionInnerBlocks.length > 0 ) {
-										const captionBlockClientId = block?.innerBlocks[ 0 ].clientId || null;
-										// Need to apply global styles to the caption.
-										updateBlockAttributes( captionBlockClientId, captionAttributes );
-									}
-								}
-							} else {
-								props.setAttributes( {
-									globalStyle: 'none',
-								} );
-							}
-							setIsRemoveModalOpen( false );
-						} }
-						variant="primary"
-						className="photo-block-global-styles-modal-apply-button"
-					>
-						{ __( 'Remove Global Style', 'photo-block' ) }
-					</Button>
-					<Button
-						onClick={ () => setIsRemoveModalOpen( false ) }
-						variant="secondary"
-					>
-						{ __( 'Cancel', 'photo-block' ) }
-					</Button>
-				</form>
-			</Modal>
-		);
-	}
 	return (
 		<>
+			{
+				isRemoveModalOpen && (
+					<Modal
+						title={ __( 'Remove Global Style', 'photo-block' ) }
+						onRequestClose={ () => setIsRemoveModalOpen( false ) }
+						className="photo-block-global-styles-modal"
+						shouldCloseOnClickOutside={ false }
+					>
+						<form>
+							<p className="description">
+								{ __( 'Remove the global style from this photo.', 'photo-block' ) }
+							</p>
+							<CheckboxControl
+								label={ __( 'Keep current style settings', 'photo-block' ) }
+								checked={ isKeepStyleSettings }
+								onChange={ () => {
+									setIsKeepStyleSettings( ! isKeepStyleSettings );
+								} }
+							/>
+							<Button
+								onClick={ () => {
+									if ( isKeepStyleSettings ) {
+										if ( hasGlobalStyle( props.attributes.globalStyle ) ) {
+											const globalStyle = getGlobalStyleBySlug( props.attributes.globalStyle );
+
+											// Reset global style in attributes.
+											const newGlobalStyle = {
+												globalStyle: 'none',
+											};
+											const photoAttributes = {
+												...globalStyle.content.photoAttributes,
+												...newGlobalStyle,
+											};
+											const captionAttributes = {
+												...globalStyle.content.captionAttributes,
+												...newGlobalStyle,
+											};
+
+											// Need to apply global styles to the photo.
+											updateBlockAttributes( props.clientId, photoAttributes );
+
+											// Get the caption block. No need to create caption block here.
+											const block = getBlock( props.clientId );
+											const captionInnerBlocks = block?.innerBlocks;
+											if ( captionInnerBlocks.length > 0 ) {
+												const captionBlockClientId = block?.innerBlocks[ 0 ].clientId || null;
+												// Need to apply global styles to the caption.
+												updateBlockAttributes( captionBlockClientId, captionAttributes );
+											}
+										}
+									} else {
+										props.setAttributes( {
+											globalStyle: 'none',
+										} );
+									}
+									setIsRemoveModalOpen( false );
+								} }
+								variant="primary"
+								className="photo-block-global-styles-modal-apply-button"
+							>
+								{ __( 'Remove Global Style', 'photo-block' ) }
+							</Button>
+							<Button
+								onClick={ () => setIsRemoveModalOpen( false ) }
+								variant="secondary"
+							>
+								{ __( 'Cancel', 'photo-block' ) }
+							</Button>
+						</form>
+					</Modal>
+				)
+			}
 			<PanelBody
 				title={ __( 'Global Styles' ) }
 				initialOpen={ true }

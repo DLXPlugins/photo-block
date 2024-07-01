@@ -38,6 +38,8 @@ import getStyles from '../../blocks/photo-block/block-styles';
 import blockStore from '../../store';
 import PhotoBlockIcon from '../../components/Icons/PhotoBlockIcon';
 import GlobalStylesPicker from '../../components/GlobalStylesPicker';
+import globalStylesStore from '../../store/global-styles';
+import AlignmentToolbar from '../../components/AlignmentToolbar';
 
 const dataImages = [];
 
@@ -86,6 +88,14 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
+		};
+	} );
+
+	const {
+		hasGlobalStyle,
+	} = useSelect( ( select ) => {
+		return {
+			hasGlobalStyle: select( globalStylesStore ).hasGlobalStyle,
 		};
 	} );
 
@@ -165,121 +175,128 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	const settingsInspectorControls = (
 		<>
 			<GlobalStylesPicker { ...props } />
-			<PanelBodyControl
-				title={ __( 'Photo Settings', 'photo-block' ) }
-				icon={ <Image /> }
-				className="photo-block__inspector-panel"
-				id="photo-block__photo-settings"
-				uniqueId={ uniqueId }
-				initialOpen={ true }
-				scrollAfterOpen={ false }
-			>
-				<PanelRow>
-					<SelectControl
-						label={ __( 'Image Size', 'photo-block' ) }
-						value={ imageSize }
-						onChange={ ( size ) => {
-							setAttributes( { imageSize: size } );
-
-							// Also set fallback image size.
-							setAttributes( { dataFallbackImageSize: size } );
-						} }
-						options={ imageSizeOptions }
-					/>
-				</PanelRow>
-			</PanelBodyControl>
-			<PanelBody
-				icon={ <Image /> }
-				title={ __( 'Fallback Image', 'photo-block' ) }
-				initialOpen={ true }
-				className="photo-block__inspector-panel"
-			>
-				<div className="dlx-photo-block__data-row">
-					<ToggleControl
-						label={ __( 'Enable a Fallback Image', 'photo-block' ) }
-						checked={ dataHasFallbackImage }
-						onChange={ ( value ) => {
-							setAttributes( { dataHasFallbackImage: value } );
-						} }
-					/>
-				</div>
-				{ dataHasFallbackImage && (
+			{
+				! hasGlobalStyle( attributes.globalStyle ) && (
 					<>
-						<div className="dlx-photo-block__data-row">
-							<SelectControl
-								label={ __( 'Select the Fallback Image Size', 'photo-block' ) }
-								value={ dataFallbackImageSize }
-								onChange={ ( size ) => {
-									setAttributes( { dataFallbackImageSize: size } );
-								} }
-								options={ imageSizeOptions }
-							/>
-						</div>
-						<div className="dlx-photo-block__data-row">
-							<MediaUploadCheck>
-								<MediaUpload
-									allowedTypes="image"
-									mode="browse"
-									multiple={ false }
-									title={ __( 'Please select a Fallback Image', 'photo-block' ) }
-									render={ ( { open } ) => (
-										<Button
-											variant="secondary"
-											icon={ <Image /> }
-											onClick={ () => {
-												open();
-											} }
-										>
-											{ __( 'Set Fallback Image', 'photo-block' ) }
-										</Button>
-									) }
-									onSelect={ ( media ) => {
-										const selectedMedia = {
-											id: media.id,
-											url: media.sizes?.large?.url ?? media.sizes.full.url,
-											width:
-												media.sizes?.large?.width ?? media.sizes.full.width,
-											height:
-												media.sizes?.large?.height ?? media.sizes.full.height,
-											alt: media.alt,
-											caption: media.caption,
-										};
-										setAttributes( {
-											dataFallbackImage: selectedMedia,
-										} );
+						<PanelBodyControl
+							title={ __( 'Photo Settings', 'photo-block' ) }
+							icon={ <Image /> }
+							className="photo-block__inspector-panel"
+							id="photo-block__photo-settings"
+							uniqueId={ uniqueId }
+							initialOpen={ true }
+							scrollAfterOpen={ false }
+						>
+							<PanelRow>
+								<SelectControl
+									label={ __( 'Image Size', 'photo-block' ) }
+									value={ imageSize }
+									onChange={ ( size ) => {
+										setAttributes( { imageSize: size } );
+
+										// Also set fallback image size.
+										setAttributes( { dataFallbackImageSize: size } );
+									} }
+									options={ imageSizeOptions }
+								/>
+							</PanelRow>
+						</PanelBodyControl>
+						<PanelBody
+							icon={ <Image /> }
+							title={ __( 'Fallback Image', 'photo-block' ) }
+							initialOpen={ true }
+							className="photo-block__inspector-panel"
+						>
+							<div className="dlx-photo-block__data-row">
+								<ToggleControl
+									label={ __( 'Enable a Fallback Image', 'photo-block' ) }
+									checked={ dataHasFallbackImage }
+									onChange={ ( value ) => {
+										setAttributes( { dataHasFallbackImage: value } );
 									} }
 								/>
-							</MediaUploadCheck>
-						</div>
-						{ dataFallbackImage?.url && (
-							<>
-								<div className="dlx-photo-block__data-row">
-									<img
-										src={ dataFallbackImage.url }
-										alt={ dataFallbackImage.alt }
-										width={ dataFallbackImage.width }
-										height={ dataFallbackImage.height }
-										style={ {
-											maxWidth: '175px',
-											height: 'auto',
-											border: '1px solid #ddd',
-										} }
-									/>
-								</div>
-								<Button
-									isDestructive={ true }
-									variant="secondary"
-									onClick={ () => {
-										setAttributes( { dataFallbackImage: {} } );
-									} }
-								>
-									{ __( 'Remove Fallback Image', 'photo-block' ) }
-								</Button>
-							</>
-						) }
+							</div>
+							{ dataHasFallbackImage && (
+								<>
+									<div className="dlx-photo-block__data-row">
+										<SelectControl
+											label={ __( 'Select the Fallback Image Size', 'photo-block' ) }
+											value={ dataFallbackImageSize }
+											onChange={ ( size ) => {
+												setAttributes( { dataFallbackImageSize: size } );
+											} }
+											options={ imageSizeOptions }
+										/>
+									</div>
+									<div className="dlx-photo-block__data-row">
+										<MediaUploadCheck>
+											<MediaUpload
+												allowedTypes="image"
+												mode="browse"
+												multiple={ false }
+												title={ __( 'Please select a Fallback Image', 'photo-block' ) }
+												render={ ( { open } ) => (
+													<Button
+														variant="secondary"
+														icon={ <Image /> }
+														onClick={ () => {
+															open();
+														} }
+													>
+														{ __( 'Set Fallback Image', 'photo-block' ) }
+													</Button>
+												) }
+												onSelect={ ( media ) => {
+													const selectedMedia = {
+														id: media.id,
+														url: media.sizes?.large?.url ?? media.sizes.full.url,
+														width:
+															media.sizes?.large?.width ?? media.sizes.full.width,
+														height:
+															media.sizes?.large?.height ?? media.sizes.full.height,
+														alt: media.alt,
+														caption: media.caption,
+													};
+													setAttributes( {
+														dataFallbackImage: selectedMedia,
+													} );
+												} }
+											/>
+										</MediaUploadCheck>
+									</div>
+									{ dataFallbackImage?.url && (
+										<>
+											<div className="dlx-photo-block__data-row">
+												<img
+													src={ dataFallbackImage.url }
+													alt={ dataFallbackImage.alt }
+													width={ dataFallbackImage.width }
+													height={ dataFallbackImage.height }
+													style={ {
+														maxWidth: '175px',
+														height: 'auto',
+														border: '1px solid #ddd',
+													} }
+												/>
+											</div>
+											<Button
+												isDestructive={ true }
+												variant="secondary"
+												onClick={ () => {
+													setAttributes( { dataFallbackImage: {} } );
+												} }
+											>
+												{ __( 'Remove Fallback Image', 'photo-block' ) }
+											</Button>
+										</>
+									) }
+								</>
+							) }
+						</PanelBody>
 					</>
-				) }
-			</PanelBody>
+				)
+			}
+
 		</>
 	);
 
@@ -287,7 +304,11 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	const localInspectorControls = (
 		<InspectorControls>
 			{ settingsInspectorControls }
-			<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } /> 
+			{ ! hasGlobalStyle( attributes.globalStyle ) && (
+				<>
+					<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } />
+				</>
+			) }
 		</InspectorControls>
 	);
 
@@ -297,6 +318,11 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	const localToolbar = (
 		<>
 			<BlockControls>
+				{
+					! hasGlobalStyle( attributes.globalStyle ) && (
+						<AlignmentToolbar { ...props } />
+					)
+				}
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <Link /> }
@@ -428,15 +454,11 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	if ( photoDropShadow.enabled ) {
 		styles += `
 			#${ uniqueId } img {
-				box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${
-	photoDropShadow.horizontal
-}px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${
-	photoDropShadow.spread
+				box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${ photoDropShadow.horizontal
+}px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${ photoDropShadow.spread
 }px ${ hexToRgba( photoDropShadow.color, photoDropShadow.opacity ) };
-				-webkit-box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${
-	photoDropShadow.horizontal
-}px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${
-	photoDropShadow.spread
+				-webkit-box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${ photoDropShadow.horizontal
+}px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${ photoDropShadow.spread
 }px ${ hexToRgba( photoDropShadow.color, photoDropShadow.opacity ) };
 			}
 		`;
@@ -445,8 +467,16 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	return (
 		<>
 			{ localInspectorControls }
-			{ <InspectorAdvancedControls>{ advancedInspectorControls }</InspectorAdvancedControls> }
-			{ localToolbar }
+			{
+				! hasGlobalStyle( attributes.globalStyle ) && (
+					<>
+						<InspectorAdvancedControls>
+							{ advancedInspectorControls }
+						</InspectorAdvancedControls>
+						{ localToolbar }
+					</>
+				)
+			}
 			<style>{ styles }{ imageStyles }</style>
 			<div className="dlx-photo-block__screen-edit">
 				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">

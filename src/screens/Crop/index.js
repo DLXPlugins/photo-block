@@ -363,6 +363,7 @@ const CropScreen = ( props ) => {
 										handleAspectRatioChange( fullsizePhoto?.width, fullsizePhoto?.height );
 										onClose();
 									} }
+									className="is-active"
 								>
 									{ __( 'Original', 'photo-block' ) }
 								</MenuItem>

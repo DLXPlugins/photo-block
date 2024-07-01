@@ -41,14 +41,12 @@ import {
 	useSelect,
 } from '@wordpress/data';
 
-import { isURL } from '@wordpress/url';
-
 import {
 	Trash2,
 	SeparatorHorizontal,
 	Check,
 	Shrink,
-	Database,
+	Info,
 	FormInput,
 	Maximize,
 	AlignLeft,
@@ -71,9 +69,10 @@ import GradientPickerControl from '../../components/GradientPicker';
 import getRandomGradient from '../../utils/GetRandomGradient';
 import RangeResponsiveControl from '../../components/RangeResponsive';
 import BackgroundSelectorControl from '../../components/BackgroundSelector';
-import { getValueWithUnit, buildBorderCSS, buildDimensionsCSS, geHierarchicalPlaceholderValue, getHierarchicalValueUnit } from '../../utils/TypographyHelper';
 import CustomAttributesControl from '../../components/CustomAttributes';
 import getStyles from './block-styles';
+import globalStylesStore from '../../store/global-styles';
+import Notice from '../../components/Notice';
 
 /**
  * Height units.
@@ -185,6 +184,15 @@ const PhotoCaptionBlock = ( props ) => {
 			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
+		};
+	} );
+
+	// Get global style data.
+	const {
+		hasGlobalStyle,
+	} = useSelect( ( select ) => {
+		return {
+			hasGlobalStyle: select( globalStylesStore ).hasGlobalStyle,
 		};
 	} );
 
@@ -338,7 +346,7 @@ const PhotoCaptionBlock = ( props ) => {
 		if ( imageData.id === 0 ) {
 			return;
 		}
-	}, [ photoMode, imageData ] );
+	}, [ photoMode, imageData, globalStyle ] );
 
 	// Select the richtext input and focus on it if block is selected and mode is single line.
 	useEffect( () => {
@@ -806,62 +814,68 @@ const PhotoCaptionBlock = ( props ) => {
 
 	const advancedInspectorControls = (
 		<>
-			<PanelRow>
-				<TextControl
-					label={ __( 'HTML Anchor', 'photo-block' ) }
-					value={ htmlAnchor }
-					onChange={ ( value ) => {
-						setAttributes( { htmlAnchor: value } );
-					} }
-					help={ __( 'Enter a word or two — without spaces — to make a unique web address just for this caption, called an "anchor." Then, you\'ll be able to link directly to this caption on your page.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<TextControl
-					label={ __( 'Caption CSS Class(es)', 'photo-block' ) }
-					value={ captionCSSClasses }
-					onChange={ ( value ) => {
-						setAttributes( { imageCSSClasses: value } );
-					} }
-					help={ __( 'Add CSS class(es) directly to the figcaption tag.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<CustomAttributesControl
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<ToggleControl
-					label={ __( 'Hide on Mobile', 'photo-block' ) }
-					checked={ hideOnMobile }
-					onChange={ ( value ) => {
-						setAttributes( { hideOnMobile: value } );
-					} }
-					help={ __( 'Hide this photo on mobile devices.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<ToggleControl
-					label={ __( 'Hide on Tablet', 'photo-block' ) }
-					checked={ hideOnTablet }
-					onChange={ ( value ) => {
-						setAttributes( { hideOnTablet: value } );
-					} }
-					help={ __( 'Hide this photo on tablet devices.', 'photo-block' ) }
-				/>
-			</PanelRow>
-			<PanelRow>
-				<ToggleControl
-					label={ __( 'Hide on Desktop', 'photo-block' ) }
-					checked={ hideOnDesktop }
-					onChange={ ( value ) => {
-						setAttributes( { hideOnDesktop: value } );
-					} }
-					help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
-				/>
-			</PanelRow>
+			{
+				! hasGlobalStyle( globalStyle ) && (
+					<>
+						<PanelRow>
+							<TextControl
+								label={ __( 'HTML Anchor', 'photo-block' ) }
+								value={ htmlAnchor }
+								onChange={ ( value ) => {
+									setAttributes( { htmlAnchor: value } );
+								} }
+								help={ __( 'Enter a word or two — without spaces — to make a unique web address just for this caption, called an "anchor." Then, you\'ll be able to link directly to this caption on your page.', 'photo-block' ) }
+							/>
+						</PanelRow>
+						<PanelRow>
+							<TextControl
+								label={ __( 'Caption CSS Class(es)', 'photo-block' ) }
+								value={ captionCSSClasses }
+								onChange={ ( value ) => {
+									setAttributes( { imageCSSClasses: value } );
+								} }
+								help={ __( 'Add CSS class(es) directly to the figcaption tag.', 'photo-block' ) }
+							/>
+						</PanelRow>
+						<PanelRow>
+							<CustomAttributesControl
+								attributes={ attributes }
+								setAttributes={ setAttributes }
+							/>
+						</PanelRow>
+						<PanelRow>
+							<ToggleControl
+								label={ __( 'Hide on Mobile', 'photo-block' ) }
+								checked={ hideOnMobile }
+								onChange={ ( value ) => {
+									setAttributes( { hideOnMobile: value } );
+								} }
+								help={ __( 'Hide this photo on mobile devices.', 'photo-block' ) }
+							/>
+						</PanelRow>
+						<PanelRow>
+							<ToggleControl
+								label={ __( 'Hide on Tablet', 'photo-block' ) }
+								checked={ hideOnTablet }
+								onChange={ ( value ) => {
+									setAttributes( { hideOnTablet: value } );
+								} }
+								help={ __( 'Hide this photo on tablet devices.', 'photo-block' ) }
+							/>
+						</PanelRow>
+						<PanelRow>
+							<ToggleControl
+								label={ __( 'Hide on Desktop', 'photo-block' ) }
+								checked={ hideOnDesktop }
+								onChange={ ( value ) => {
+									setAttributes( { hideOnDesktop: value } );
+								} }
+								help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
+							/>
+						</PanelRow>
+					</>
+				)
+			}
 		</>
 	);
 
@@ -1007,8 +1021,22 @@ const PhotoCaptionBlock = ( props ) => {
 
 	const interfaceTabs = (
 		<>
-			{ settingsInspectorControls }
-			{ styleInspectorControls }
+			{ ! hasGlobalStyle( globalStyle ) && (
+				<>
+					{ settingsInspectorControls }
+					{ styleInspectorControls }
+				</>
+			) }
+			{ hasGlobalStyle( globalStyle ) && (
+				<>
+					<Notice
+						message={ __( 'Caption settings are controlled by global styles.', 'photo-block' ) }
+						status="info"
+						politeness="polite"
+						icon={ Info }
+					/>
+				</>
+			) }
 		</>
 	);
 
@@ -1044,19 +1072,23 @@ const PhotoCaptionBlock = ( props ) => {
 					</ToolbarGroup>
 				)
 			}
-			<ToolbarGroup>
-				<ToolbarButton
-					icon={ <SeparatorHorizontal /> }
-					label={ __( 'Caption Position', 'photo-block' ) }
-					onClick={ () => {
-						setCaptionPositionPopoverVisible( true );
-					} }
-					ref={ setCaptionPopoverRef }
-				>
-					{ __( 'Position', 'photo-block' ) }
-				</ToolbarButton>
-			</ToolbarGroup>
-			{ ( 'data' !== photoMode && 'featuredImage' !== photoMode ) && (
+			{
+				! hasGlobalStyle( globalStyle ) && (
+					<ToolbarGroup>
+						<ToolbarButton
+							icon={ <SeparatorHorizontal /> }
+							label={ __( 'Caption Position', 'photo-block' ) }
+							onClick={ () => {
+								setCaptionPositionPopoverVisible( true );
+							} }
+							ref={ setCaptionPopoverRef }
+						>
+							{ __( 'Position', 'photo-block' ) }
+						</ToolbarButton>
+					</ToolbarGroup>
+				)
+			}
+			{ ( 'data' !== photoMode && 'featuredImage' !== photoMode && ! hasGlobalStyle( globalStyle ) ) && (
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <FormInput /> }
@@ -1264,7 +1296,7 @@ const PhotoCaptionBlock = ( props ) => {
 		} );
 
 		// If we're in data mode or a featured image, show the dynamic caption.
-		if ( 'data' === photoMode || 'featuredImage' === photoMode) {
+		if ( 'data' === photoMode || 'featuredImage' === currentScreen ) {
 			if ( captionLoading ) {
 				return (
 					<>

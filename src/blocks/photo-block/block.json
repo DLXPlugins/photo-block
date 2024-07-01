@@ -586,10 +586,10 @@
 	},
 	"supports": {
 		"anchor": false,
-		"align": true,
+		"align": false,
 		"className": true,
 		"customClassName": false,
-		"alignWide": true,
+		"alignWide": false,
 		"defaultStylePicker": false,
 		"html": false
 	},

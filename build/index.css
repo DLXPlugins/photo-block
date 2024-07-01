@@ -1325,6 +1325,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
   max-width: var(--photo-block-photo-container-max-width);
   max-height: var(--photo-block-photo-container-max-height);
   border-radius: var(--photo-block-photo-border-radius);
+  box-sizing: border-box;
 }
 
 .dlx-photo-block__image-wrapper img {
@@ -3721,6 +3722,14 @@ svg.lucide {
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/GlobalStylesPicker/ButtonPreview/editor.scss ***!
   \********************************************************************************************************************************************************************************************************************************************************************************************************************/
 
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AlignmentToolbar/editor.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__alignment-dropdown-group .is-active .dashicons:before {
+  background: #333;
+  color: #FFF;
+  padding: 1px 3px;
+}
 /*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/Crop/editor.scss ***!
   \*************************************************************************************************************************************************************************************************************************************************************************************/

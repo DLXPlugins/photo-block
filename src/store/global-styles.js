@@ -1,6 +1,5 @@
 
-import { createReduxStore, register, select } from '@wordpress/data';
-import { create } from 'filepond';
+import { createReduxStore, register } from '@wordpress/data';
 const DEFAULT_STATE = {
 	globalStyles: photoBlock?.globalStyles || [],
 };
@@ -56,6 +55,9 @@ const globalStylesStore = createReduxStore( 'dlxplugins/photo-block/global-style
 			return state.globalStyles;
 		},
 		hasGlobalStyle( state, slug ) {
+			if ( 'none' === slug || ! slug ) {
+				return false;
+			}
 			return Object.keys( state.globalStyles ).includes( slug );
 		},
 	},

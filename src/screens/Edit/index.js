@@ -52,17 +52,19 @@ import SidebarImageInspectorControl from '../../components/SidebarImageInspector
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
 import getStyles from '../../blocks/photo-block/block-styles';
 import GlobalStylesPicker from '../../components/GlobalStylesPicker';
+import globalStylesStore from '../../store/global-styles';
+import AlignmentToolbar from '../../components/AlignmentToolbar';
 
 const EditScreen = forwardRef( ( props, ref ) => {
-	const { setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
-
-	const attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
+	const { attributes, setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
 
 	const {
 		uniqueId,
 		imageSize,
 		cssGramFilter,
+		globalStyle,
 	} = attributes;
+
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
@@ -93,8 +95,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 			originalImageData: select( blockStore( blockUniqueId ) ).getOriginalImageData(),
 			isJustCropped: select( blockStore( blockUniqueId ) ).getJustCropped(),
+		};
+	} );
 
-
+	// Get global style data.
+	const {
+		hasGlobalStyle,
+	} = useSelect( ( select ) => {
+		return {
+			hasGlobalStyle: select( globalStylesStore ).hasGlobalStyle,
 		};
 	} );
 
@@ -206,7 +215,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			} );
 	}, 1500 ), [] );
 
-
 	// Image Sizes.
 	const imageSizeOptions = [];
 	for ( const key in photoBlock.imageSizes ) {
@@ -278,25 +286,29 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						</>
 					) }
 				</>
-				<PanelRow>
-					<div className="photo-block__image-size-control">
-						<SelectControl
-							label={ __( 'Image Size', 'photo-block' ) }
-							value={ imageSize }
-							onChange={ ( size ) => {
-								setAttributes( { imageSize: size } );
-								getImageFromSize( size );
-							} }
-							options={ imageSizeOptions }
-							disabled={ 'photo' !== photoMode }
-						/>
-						{ imageSizeLoading && (
-							<>
-								<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
-							</>
-						) }
-					</div>
-				</PanelRow>
+				{
+					! hasGlobalStyle( globalStyle ) && (
+						<PanelRow>
+							<div className="photo-block__image-size-control">
+								<SelectControl
+									label={ __( 'Image Size', 'photo-block' ) }
+									value={ imageSize }
+									onChange={ ( size ) => {
+										setAttributes( { imageSize: size } );
+										getImageFromSize( size );
+									} }
+									options={ imageSizeOptions }
+									disabled={ 'photo' !== photoMode }
+								/>
+								{ imageSizeLoading && (
+									<>
+										<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
+									</>
+								) }
+							</div>
+						</PanelRow>
+					)
+				}
 			</PanelBodyControl>
 		</>
 	);
@@ -304,11 +316,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const interfaceTabs = (
 		<>
 			{ settingsInspectorControls }
-			<SidebarImageInspectorControl
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-				blockUniqueId={ blockUniqueId }
-			/>
+			{
+				! hasGlobalStyle( globalStyle ) && (
+					<SidebarImageInspectorControl
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+						blockUniqueId={ blockUniqueId }
+					/>
+				)
+			}
 		</>
 	);
 
@@ -319,14 +335,23 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	// Set the advanced inspector controls.
 	const advancedInspectorControls = (
-		<SidebarImageAdvancedInspectorControl
-			{ ...props }
-		/>
+		<>
+			{ ! hasGlobalStyle( globalStyle ) && (
+				<SidebarImageAdvancedInspectorControl
+					{ ...props }
+				/>
+			) }
+		</>
 	);
 
 	const localToolbar = (
 		<>
 			<BlockControls>
+				{
+					! hasGlobalStyle( globalStyle ) && (
+						<AlignmentToolbar { ...props } />
+					)
+				}
 				<ToolbarGroup>
 					{
 						isJustCropped && (
@@ -385,14 +410,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						} }
 						ref={ setA11yButton }
 					/>
-					<ToolbarButton
-						icon={ <Link /> }
-						label={ __( 'Set Link Options', 'photo-block' ) }
-						onClick={ () => {
-							setMediaLinkPopover( ! mediaLinkPopover );
-						} }
-						ref={ setMediaLinkRef }
-					/>
+					{
+						! hasGlobalStyle( globalStyle ) && (
+							<ToolbarButton
+								icon={ <Link /> }
+								label={ __( 'Set Link Options', 'photo-block' ) }
+								onClick={ () => {
+									setMediaLinkPopover( ! mediaLinkPopover );
+								} }
+								ref={ setMediaLinkRef }
+							/>
+						)
+					}
 				</ToolbarGroup>
 			</BlockControls>
 			{ mediaLinkPopover && (
