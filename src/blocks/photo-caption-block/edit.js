@@ -163,7 +163,12 @@ const PhotoCaptionBlock = ( props ) => {
 	const blockUniqueId = context[ 'photo-block/uniqueId' ];
 	const globalStyle = context[ 'photo-block/globalStyle' ];
 
-	const attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, globalStyle, clientId, 'caption' );
+	let attributes = props.attributes || {};
+
+	// Apply filters to attributes.
+	useEffect( () => {
+		attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, globalStyle, clientId, 'caption' );
+	}, [ props.attributes ] );
 
 	const {
 		setCaptionPosition,

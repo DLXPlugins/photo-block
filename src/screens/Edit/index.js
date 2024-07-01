@@ -56,7 +56,14 @@ import globalStylesStore from '../../store/global-styles';
 import AlignmentToolbar from '../../components/AlignmentToolbar';
 
 const EditScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
+	const { setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
+
+	let attributes = props.attributes || {};
+
+	// Apply filters to attributes.
+	useEffect( () => {
+		attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
+	}, [ props.attributes ] );
 
 	const {
 		uniqueId,
