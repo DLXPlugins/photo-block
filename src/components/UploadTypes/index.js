@@ -28,7 +28,6 @@ import {
 
 } from 'lucide-react';
 
-
 import { useContext, useState, useEffect } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
@@ -102,7 +101,7 @@ const UploadTypes = ( props ) => {
 			return __( 'Add Image', 'photo-block' );
 		}
 		return __( 'Upload', 'photo-block' );
-	}
+	};
 
 	/**
 	 * Check for a valid URL before submitting via Ajax.
@@ -309,23 +308,30 @@ const UploadTypes = ( props ) => {
 								{ __( 'Media Library', 'photo-block' ) }
 							</Button>
 						) }
-						onSelect={ ( media ) => {
-							const selectedMedia = {
-								id: media.id,
-								url: media.sizes?.large?.url ?? media.sizes.full.url,
-								width: media.sizes?.large?.width ?? media.sizes.full.width,
-								height: media.sizes?.large?.height ?? media.sizes.full.height,
-								alt: media.alt,
-								caption: media.caption,
-							};
-							setAttributes( {
-								imageData: selectedMedia,
-								screen: 'edit',
-								photoMode: 'photo',
-							} );
-							setImageData( selectedMedia );
-							setPhotoMode( 'photo' );
-							setScreen( 'edit' );
+						onSelect={ async( media ) => {
+							// Fetch image data.
+							await SendCommand(
+								photoBlock.restNonce,
+								{},
+								`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ media.id
+								}/size=${ attributes.imageSize }`,
+								'GET'
+							)
+								.then( ( response ) => {
+									setAttributes( {
+										imageData: response.data,
+										screen: 'edit',
+										photoMode: 'photo',
+									} );
+									setImageData( response.data );
+									setPhotoMode( 'photo' );
+									setScreen( 'edit' );
+								} )
+								.catch( ( error ) => {
+									// todo: error checking/display.
+								} )
+								.then( () => {
+								} );
 						} }
 					/>
 				</MediaUploadCheck>

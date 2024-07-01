@@ -113,52 +113,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		}
 	}, [] );
 
-	// Set the default preset when first loading in (if not already set).
-	useEffect( () => {
-		if ( false !== imageLoading ) {
-			return;
-		}
-		if ( false !== attributes.defaultsApplied ) {
-			return;
-		}
-		const defaultPreset = photoBlock?.defaultPreset?.attributes ?? false;
-		if ( ! defaultPreset ) {
-			return;
-		}
-
-		// Get innerblocks of parent photo block.
-		const children =
-			select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]
-				?.innerBlocks || [];
-		const captionBlock = children.find(
-			( block ) => 'dlxplugins/photo-caption-block' === block.name
-		);
-
-		// Get unique ID for the photo block.
-		const photoBlockAttributes = { ...defaultPreset.photoAttributes };
-
-		// Apply attributes for photo block.
-		setAttributes( photoBlockAttributes );
-
-		// If there is no caption block, but there are attributes to apply, create one.
-		if ( ! captionBlock && defaultPreset?.captionAttributes ) {
-			const newBlocks = createBlock(
-				'dlxplugins/photo-caption-block',
-				defaultPreset?.captionAttributes
-			);
-			insertBlock( newBlocks, undefined, clientId );
-		}
-
-		// If there is a caption block and attributes to apply, apply them.
-		if ( captionBlock && defaultPreset?.captionAttributes ) {
-			const captionBlockAttributes = { ...defaultPreset?.captionAttributes };
-			updateBlockAttributes( captionBlock.clientId, captionBlockAttributes );
-		}
-
-		// Set having applied defaults to true.
-		setAttributes( { defaultsApplied: true } );
-	}, [ imageLoading ] );
-
 	/**
 	 * Retrieve an image based on size from REST API.
 	 *
@@ -184,18 +138,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			.then( () => {
 				setImageSizeLoading( false );
 			} );
-	};
-
-	/**
-	 * Whether to show the undo button.
-	 *
-	 * @return {boolean} Whether to show the undo button.
-	 */
-	const canShowUndo = () => {
-		const originalImageUrl = originalImageData?.url;
-		const newImageUrl = imageData?.url;
-
-		return originalImageUrl && newImageUrl && originalImageUrl !== newImageUrl;
 	};
 
 	/**

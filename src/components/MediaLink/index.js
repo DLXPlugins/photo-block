@@ -50,9 +50,11 @@ const MediaLink = ( props ) => {
 	// Get context.
 	const {
 		photoMode,
+		imageData,
 	} = useSelect( ( select ) => {
 		return {
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 		};
 	} );
 
@@ -148,7 +150,7 @@ const MediaLink = ( props ) => {
 									iconSize={ 18 }
 									iconPosition="right"
 									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
-									href={ attributes.photo.full || attributes.photo.url }
+									href={ imageData.full }
 									target="_blank"
 									rel="noopener noreferrer"
 								>
@@ -166,7 +168,7 @@ const MediaLink = ( props ) => {
 									iconSize={ 18 }
 									iconPosition="right"
 									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
-									href={ attributes.photo.attachment_link }
+									href={ imageData.attachment_link }
 									target="_blank"
 									rel="noopener noreferrer"
 									disabled={ 'photo' !== photoMode }

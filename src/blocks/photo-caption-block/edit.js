@@ -168,6 +168,7 @@ const PhotoCaptionBlock = ( props ) => {
 
 	const {
 		setCaptionPosition,
+		setHasCaption,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
@@ -337,9 +338,6 @@ const PhotoCaptionBlock = ( props ) => {
 		if ( imageData.id === 0 ) {
 			return;
 		}
-		setAttributes( {
-			photoMode,
-		} );
 	}, [ photoMode, imageData ] );
 
 	// Select the richtext input and focus on it if block is selected and mode is single line.
@@ -1213,6 +1211,7 @@ const PhotoCaptionBlock = ( props ) => {
 				<Modal
 					title={ __( 'Remove Caption', 'photo-block' ) }
 					onRequestClose={ () => {
+						setHasCaption( false );
 						setRemoveCaptionModalVisible( false );
 					} }
 					className="photo-block__remove-caption-modal"
