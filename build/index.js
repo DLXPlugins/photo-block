@@ -13191,7 +13191,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     setIsSavingTitle = _useState18[1];
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)),
     setScreen = _useDispatch.setScreen,
-    setImageData = _useDispatch.setImageData;
+    setImageData = _useDispatch.setImageData,
+    setJustCropped = _useDispatch.setJustCropped;
 
   // Get current block data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
@@ -13208,15 +13209,13 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     photoMode = _useSelect.photoMode,
     originalImageData = _useSelect.originalImageData,
     isJustCropped = _useSelect.isJustCropped;
-  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_10__["default"])(blockUniqueId)),
-    setJustCropped = _useDispatch2.setJustCropped;
   var url = imageData.url,
     id = imageData.id,
     width = imageData.width,
     height = imageData.height;
-  var _useDispatch3 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store),
-    insertBlock = _useDispatch3.insertBlock,
-    updateBlockAttributes = _useDispatch3.updateBlockAttributes; // For setting the preset defaults.
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store),
+    insertBlock = _useDispatch2.insertBlock,
+    updateBlockAttributes = _useDispatch2.updateBlockAttributes; // For setting the preset defaults.
 
   var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_13__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 2),
@@ -14671,6 +14670,10 @@ var createBlockStore = function createBlockStore(uniqueId) {
         case 'SET_ASPECT_RATIO_UNIT':
           return _objectSpread(_objectSpread({}, state), {}, {
             aspectRatioUnit: action.aspectRatioUnit
+          });
+        case 'SET_JUST_CROPPED':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            justCropped: action.justCropped
           });
         default:
           return state;

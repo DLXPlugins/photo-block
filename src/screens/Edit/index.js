@@ -76,6 +76,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const {
 		setScreen,
 		setImageData,
+		setJustCropped,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
@@ -96,8 +97,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 		};
 	} );
-
-	const { setJustCropped } = useDispatch( blockStore( blockUniqueId ) );
 
 	const { url, id, width, height } = imageData;
 

@@ -14400,6 +14400,10 @@ var createBlockStore = function createBlockStore(uniqueId) {
           return _objectSpread(_objectSpread({}, state), {}, {
             aspectRatioUnit: action.aspectRatioUnit
           });
+        case 'SET_JUST_CROPPED':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            justCropped: action.justCropped
+          });
         default:
           return state;
       }

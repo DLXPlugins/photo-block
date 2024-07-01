@@ -245,6 +245,11 @@ const createBlockStore = ( uniqueId ) => {
 						...state,
 						aspectRatioUnit: action.aspectRatioUnit,
 					};
+				case 'SET_JUST_CROPPED':
+					return {
+						...state,
+						justCropped: action.justCropped,
+					};
 				default:
 					return state;
 			}
