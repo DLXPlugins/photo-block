@@ -52,6 +52,7 @@ var getColor = function getColor(colorValue) {
   return colorValue;
 };
 var getStyles = function getStyles(attributes, deviceType, uniqueId) {
+  var useClass = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   var containerWidth = attributes.containerWidth,
     containerHeight = attributes.containerHeight,
     containerMinWidth = attributes.containerMinWidth,
@@ -70,11 +71,11 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
     photoBlur = attributes.photoBlur,
     photoObjectFit = attributes.photoObjectFit,
     captionCustomTypography = attributes.captionCustomTypography;
-  var styles = "\n\t\t#".concat(uniqueId, " .dlx-photo-block__image-wrapper {\n\t\t\t--photo-block-photo-background-color: ").concat(photoBackgroundColor, ";\n\t\t\t--photo-block-photo-container-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-photo-container-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-photo-container-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-photo-container-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-photo-container-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t\t--photo-block-photo-container-max-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxHeight, 'max-height'), "\n\t\t\t--photo-block-photo-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t\t#").concat(uniqueId, " .dlx-photo-block__image-wrapper img {\n\t\t\t--photo-block-image-opacity: ").concat(photoOpacity, ";\n\t\t\t--photo-block-image-object-fit: ").concat(photoObjectFit, ";\n\t\t\t--photo-block-image-blur: ").concat(photoBlur, "px;\n\t\t\t--photo-block-image-width: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-height: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-object-position: ").concat('custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition, ";\n\t\t\t--photo-block-image-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoPaddingSize, deviceType), ";\n\t\t\t--photo-block-image-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(photoBorder, deviceType, '--photo-block-image'), ";\n\t\t\t--photo-block-image-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t");
+  var styles = "\n\t\t".concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__image-wrapper {\n\t\t\t--photo-block-photo-background-color: ").concat(photoBackgroundColor, ";\n\t\t\t--photo-block-photo-container-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-photo-container-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-photo-container-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-photo-container-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-photo-container-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t\t--photo-block-photo-container-max-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxHeight, 'max-height'), "\n\t\t\t--photo-block-photo-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t\t").concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__image-wrapper img {\n\t\t\t--photo-block-image-opacity: ").concat(photoOpacity, ";\n\t\t\t--photo-block-image-object-fit: ").concat(photoObjectFit, ";\n\t\t\t--photo-block-image-blur: ").concat(photoBlur, "px;\n\t\t\t--photo-block-image-width: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-height: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-object-position: ").concat('custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition, ";\n\t\t\t--photo-block-image-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoPaddingSize, deviceType), ";\n\t\t\t--photo-block-image-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(photoBorder, deviceType, '--photo-block-image'), ";\n\t\t\t--photo-block-image-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t");
   // Apply outer margin to container.
-  styles += "#".concat(uniqueId, " .dlx-photo-block__figure { --photo-block-figure-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), "; }");
+  styles += "".concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__figure { --photo-block-figure-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), "; }");
   if (photoDropShadow.enabled) {
-    styles += "\n\t\t\t.dlx-has-drop-shadow #".concat(uniqueId, " img {\n\t\t\t\t--photo-block-image-drop-shadow-horizontal: ").concat(photoDropShadow.horizontal, "px;\n\t\t\t\t--photo-block-image-drop-shadow-vertical: ").concat(photoDropShadow.vertical, "px;\n\t\t\t\t--photo-block-image-drop-shadow-blur: ").concat(photoDropShadow.blur, "px;\n\t\t\t\t--photo-block-image-drop-shadow-spread: ").concat(photoDropShadow.spread, "px;\n\t\t\t\t--photo-block-image-drop-shadow-color: ").concat(getColor(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t.dlx-has-drop-shadow ".concat(useClass ? '.' : '#').concat(uniqueId, " img {\n\t\t\t\t--photo-block-image-drop-shadow-horizontal: ").concat(photoDropShadow.horizontal, "px;\n\t\t\t\t--photo-block-image-drop-shadow-vertical: ").concat(photoDropShadow.vertical, "px;\n\t\t\t\t--photo-block-image-drop-shadow-blur: ").concat(photoDropShadow.blur, "px;\n\t\t\t\t--photo-block-image-drop-shadow-spread: ").concat(photoDropShadow.spread, "px;\n\t\t\t\t--photo-block-image-drop-shadow-color: ").concat(getColor(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t}\n\t\t");
   }
   return styles;
 };
@@ -473,6 +474,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var getStyles = function getStyles(attributes, deviceType, uniqueId) {
+  var useClass = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   var containerWidth = attributes.containerWidth,
     containerHeight = attributes.containerHeight,
     containerMinWidth = attributes.containerMinWidth,
@@ -505,51 +507,51 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
     mode = attributes.mode,
     photoMode = attributes.photoMode,
     captionPosition = attributes.captionPosition;
-  var styles = "\n\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t--photo-block-caption-background-color: ").concat(captionBackgroundColor, ";\n\t\t\t--photo-block-caption-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-caption-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-caption-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-caption-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-caption-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t}\n\t\tfigcaption#").concat(uniqueId, " {\n\t\t\t--photo-block-caption-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\t--photo-block-caption-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\t--photo-block-caption-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t--photo-block-caption-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\t--photo-block-caption-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\t--photo-block-caption-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(captionBorder, deviceType, '--photo-block-caption'), ";\n\t\t}\n\t");
+  var styles = "\n\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t--photo-block-caption-background-color: ").concat(captionBackgroundColor, ";\n\t\t\t--photo-block-caption-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-caption-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-caption-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-caption-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-caption-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t}\n\t\tfigcaption").concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t--photo-block-caption-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\t--photo-block-caption-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\t--photo-block-caption-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t--photo-block-caption-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\t--photo-block-caption-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\t--photo-block-caption-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(captionBorder, deviceType, '--photo-block-caption'), ";\n\t\t}\n\t");
 
   // Set colors and typography for single caption mode and data mode.
   if ('single' === mode || 'data' === photoMode || 'featuredImage' === photoMode) {
-    styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-text-color: ").concat(captionTextColor, ";\n\t\t\t\t--photo-block-caption-font-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontSize, 'fontSize')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].fontSizeUnit, 'fontSizeUnit'), ";\n\t\t\t\t--photo-block-caption-font-weight: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontWeight, 'fontWeight'), ";\n\t\t\t\t--photo-block-caption-line-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].lineHeight, 'lineHeight')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].lineHeightUnit, 'lineHeightUnit'), ";\n\t\t\t\t--photo-block-caption-text-transform: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].textTransform, 'textTransform'), ";\n\t\t\t\t--photo-block-caption-letter-spacing: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].letterSpacing, 'letterSpacing')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].letterSpacingUnit, 'letterSpacingUnit'), ";\n\t\t\t\t--photo-block-caption-text-align: ").concat(captionAlign, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a {\n\t\t\t\t--photo-block-caption-link-color: ").concat(captionLinkColor, ";\n\t\t\t}\n\t\t\tfigcaption#").concat(uniqueId, " a:hover {\n\t\t\t\t--photo-block-caption-link-color-hover: ").concat(captionLinkHoverColor, ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-text-color: ").concat(captionTextColor, ";\n\t\t\t\t--photo-block-caption-font-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontSize, 'fontSize')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].fontSizeUnit, 'fontSizeUnit'), ";\n\t\t\t\t--photo-block-caption-font-weight: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontWeight, 'fontWeight'), ";\n\t\t\t\t--photo-block-caption-line-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].lineHeight, 'lineHeight')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].lineHeightUnit, 'lineHeightUnit'), ";\n\t\t\t\t--photo-block-caption-text-transform: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].textTransform, 'textTransform'), ";\n\t\t\t\t--photo-block-caption-letter-spacing: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].letterSpacing, 'letterSpacing')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionTypography, deviceType, captionTypography[deviceType].letterSpacingUnit, 'letterSpacingUnit'), ";\n\t\t\t\t--photo-block-caption-text-align: ").concat(captionAlign, ";\n\t\t\t}\n\t\t\tfigcaption").concat(useClass ? '.' : '#').concat(uniqueId, " a {\n\t\t\t\t--photo-block-caption-link-color: ").concat(captionLinkColor, ";\n\t\t\t}\n\t\t\tfigcaption").concat(useClass ? '.' : '#').concat(uniqueId, " a:hover {\n\t\t\t\t--photo-block-caption-link-color-hover: ").concat(captionLinkHoverColor, ";\n\t\t\t}\n\t\t");
   }
   // Add custom caption.
   if ('custom' === captionTypography[deviceType].fontFamilySlug) {
-    styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-font-family: ").concat(captionTypography === null || captionTypography === void 0 ? void 0 : captionTypography.captionCustomTypography, ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-font-family: ").concat(captionTypography === null || captionTypography === void 0 ? void 0 : captionTypography.captionCustomTypography, ";\n\t\t\t}\n\t\t");
   } else {
-    styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-font-family: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontFamily, 'fontFamily'), ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-font-family: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionTypography, deviceType, captionTypography[deviceType].fontFamily, 'fontFamily'), ";\n\t\t\t}\n\t\t");
   }
 
   // Set colors and typography for advanced caption mode.
   if ('advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode) {
-    styles += "\n\t\t\tfigcaption#".concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-text-color: ").concat(captionTextColor, ";\n\t\t\t\t--photo-block-caption-link-color: ").concat(captionAccentColor, ";\n\t\t\t\t--photo-block-caption-link-color-hover: ").concat(captionSecondaryColor, ";\n\t\t\t\t--photo-block-caption-font-family: ").concat(captionTextFontFamily, ";\n\t\t\t\t--photo-block-caption-headings-font-family: ").concat(captionHeadingsFontFamily, ";\n\t\t\t\t--photo-block-caption-font-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionBaseFontSize, deviceType, captionBaseFontSize[deviceType].value, 'value')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionBaseFontSize, deviceType, captionBaseFontSize[deviceType].unit, 'unit'), ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-text-color: ").concat(captionTextColor, ";\n\t\t\t\t--photo-block-caption-link-color: ").concat(captionAccentColor, ";\n\t\t\t\t--photo-block-caption-link-color-hover: ").concat(captionSecondaryColor, ";\n\t\t\t\t--photo-block-caption-font-family: ").concat(captionTextFontFamily, ";\n\t\t\t\t--photo-block-caption-headings-font-family: ").concat(captionHeadingsFontFamily, ";\n\t\t\t\t--photo-block-caption-font-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionBaseFontSize, deviceType, captionBaseFontSize[deviceType].value, 'value')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionBaseFontSize, deviceType, captionBaseFontSize[deviceType].unit, 'unit'), ";\n\t\t\t}\n\t\t");
   }
 
   // Set overlay background color if gradient.
   if ('overlay' === captionPosition && 'solid' === overlayBackgroundType) {
-    styles += "\n\t\t\t#".concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-background-color: ").concat(overlayBackgroundColor, ";\n\t\t\t}\n\t\t\t#").concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-background-color-hover: ").concat(overlayBackgroundColorHover, ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-background-color: ").concat(overlayBackgroundColor, ";\n\t\t\t}\n\t\t\t").concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-background-color-hover: ").concat(overlayBackgroundColorHover, ";\n\t\t\t}\n\t\t");
 
     // The overlay background container needs to match overlay border radius in order to simulate masking.
-    styles += "\n\t\t\t#".concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(overlayBorderRadius, deviceType), ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(overlayBorderRadius, deviceType), ";\n\t\t\t}\n\t\t");
   }
 
   // Set overlay background color if gradient.
   if ('overlay' === captionPosition && 'gradient' === overlayBackgroundType) {
-    styles += "\n\t\t\t#".concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-background-gradient: ").concat(overlayBackgroundGradient, ";\n\t\t\t\t--photo-block-caption-overlay-background-gradient-opacity: ").concat(overlayBackgroundGradientOpacity, ";\n\t\t\t\tz-index: 1;\n\t\t\t}\n\t\t\t#").concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-background-gradient-opacity-hover: ").concat(overlayBackgroundGradientOpacityHover, ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-background-gradient: ").concat(overlayBackgroundGradient, ";\n\t\t\t\t--photo-block-caption-overlay-background-gradient-opacity: ").concat(overlayBackgroundGradientOpacity, ";\n\t\t\t\tz-index: 1;\n\t\t\t}\n\t\t\t").concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-background-gradient-opacity-hover: ").concat(overlayBackgroundGradientOpacityHover, ";\n\t\t\t}\n\t\t");
 
     // The overlay background container needs to match overlay border radius in order to simulate masking.
-    styles += "\n\t\t\t#".concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(overlayBorderRadius, deviceType), ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(overlayBorderRadius, deviceType), ";\n\t\t\t}\n\t\t");
   }
 
   // Set overlay background color if background image.
   if ('overlay' === captionPosition && 'image' === overlayBackgroundType && (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_4__.isURL)(overlayBackgroundImage.url)) {
-    styles += "\n\t\t\t#".concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-background-color: ").concat(overlayBackgroundImage.backgroundColor, ";\n\t\t\t\t--photo-block-caption-overlay-image: url('").concat(decodeURIComponent(encodeURIComponent(overlayBackgroundImage.url)), " ');\n\t\t\t\t--photo-block-caption-overlay-background-position: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundPosition), ";\n\t\t\t\t--photo-block-caption-overlay-background-repeat: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundRepeat), ";\n\t\t\t\t--photo-block-caption-overlay-background-size: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundSize), ";\n\t\t\t\t--photo-block-caption-overlay-opacity: ").concat(parseFloat(overlayBackgroundImage.backgroundOpacity), ";\n\t\t\t}\n\t\t\t#").concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-opacity-hover: ").concat(parseFloat(overlayBackgroundImage.backgroundOpacityHover), ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-background-color: ").concat(overlayBackgroundImage.backgroundColor, ";\n\t\t\t\t--photo-block-caption-overlay-image: url('").concat(decodeURIComponent(encodeURIComponent(overlayBackgroundImage.url)), " ');\n\t\t\t\t--photo-block-caption-overlay-background-position: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundPosition), ";\n\t\t\t\t--photo-block-caption-overlay-background-repeat: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundRepeat), ";\n\t\t\t\t--photo-block-caption-overlay-background-size: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundSize), ";\n\t\t\t\t--photo-block-caption-overlay-opacity: ").concat(parseFloat(overlayBackgroundImage.backgroundOpacity), ";\n\t\t\t}\n\t\t\t").concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-opacity-hover: ").concat(parseFloat(overlayBackgroundImage.backgroundOpacityHover), ";\n\t\t\t}\n\t\t");
 
     // The overlay background container needs to match overlay border radius in order to simulate masking.
-    styles += "\n\t\t\t#".concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(overlayBorderRadius, deviceType), ";\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(overlayBorderRadius, deviceType), ";\n\t\t\t}\n\t\t");
   }
 
   // Set overlay padding, border, and border radius.
   if ('overlay' === captionPosition) {
-    styles += "\n\t\t\t#".concat(uniqueId, ".dlx-photo-block__caption-overlay {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(overlayBorder, deviceType, '--photo-block-caption'), "\n\t\t\t\toverflow: hidden;\n\t\t\t}\n\t\t");
+    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(overlayBorder, deviceType, '--photo-block-caption'), "\n\t\t\t\toverflow: hidden;\n\t\t\t}\n\t\t");
   }
   return styles;
 };
@@ -869,7 +871,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var innerBlocksRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
   var innerBlockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__.useInnerBlocksProps)({
     className: classnames__WEBPACK_IMPORTED_MODULE_1___default()('dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', {
-      'has-smart-styles': 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles
+      'has-smart-styles': 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles,
+      globalStyle: globalStyle
     }),
     ref: innerBlocksRef
   }, {
@@ -924,9 +927,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     if ('featuredImage' === currentScreen) {
       getCaptionFromData();
     }
-    if (imageData.id === 0) {
-      return;
-    }
+    if (imageData.id === 0) {}
   }, [photoMode, imageData, globalStyle]);
 
   // Select the richtext input and focus on it if block is selected and mode is single line.
@@ -1748,7 +1749,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
    * @return {JSX.Element} The caption.
    */
   var getCaption = function getCaption() {
-    var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()('dlx-photo-block__caption', {
+    var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block__caption ".concat(globalStyle), {
       'has-smart-styles': 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode
     });
 
@@ -1789,7 +1790,10 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__.InspectorControls, null, interfaceTabs);
-  var styles = (0,_block_styles__WEBPACK_IMPORTED_MODULE_22__["default"])(attributes, deviceType, uniqueId);
+  var styles = '';
+  if (!hasGlobalStyle(globalStyle)) {
+    styles = (0,_block_styles__WEBPACK_IMPORTED_MODULE_22__["default"])(attributes, deviceType, uniqueId);
+  }
 
   /**
    * Get overlay container classes.
@@ -11388,15 +11392,25 @@ var useUnits = function useUnits() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/plugins */ "@wordpress/plugins");
-/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
-/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/plugins */ "@wordpress/plugins");
+/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../blocks/photo-block/block-styles */ "./src/blocks/photo-block/block-styles.js");
+/* harmony import */ var _blocks_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../blocks/photo-caption-block/block-styles */ "./src/blocks/photo-caption-block/block-styles.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var _photoBlock;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -11405,13 +11419,16 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 
+
+
+
 var globalStyles = ((_photoBlock = photoBlock) === null || _photoBlock === void 0 ? void 0 : _photoBlock.globalStyles) || [];
 
-(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__.registerPlugin)('photo-block-global-styles', {
+(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__.registerPlugin)('photo-block-global-styles', {
   render: function render() {
-    var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(function (select) {
+    var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
         return {
-          getGlobalStyleBySlug: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_3__["default"]).getGlobalStyleBySlug
+          getGlobalStyleBySlug: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleBySlug
         };
       }),
       getGlobalStyleBySlug = _useSelect.getGlobalStyleBySlug;
@@ -11431,8 +11448,56 @@ var globalStyles = ((_photoBlock = photoBlock) === null || _photoBlock === void 
       // Overwrite attributes with new ones.
       return _objectSpread(_objectSpread({}, propAttributes), newAttributes);
     };
-    (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_1__.addFilter)('dlx_photo_block_attributes', 'dlx_photo_block', returnBlockAttributes);
+    (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__.addFilter)('dlx_photo_block_attributes', 'dlx_photo_block', returnBlockAttributes);
     return null;
+  }
+});
+var devices = ['desktop', 'tablet', 'mobile'];
+(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__.registerPlugin)('photo-block-print-global-styles', {
+  render: function render() {
+    var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState2 = _slicedToArray(_useState, 2),
+      styles = _useState2[0],
+      setStyles = _useState2[1];
+    var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
+        return {
+          globalStyles: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyles()
+        };
+      }),
+      globalStyles = _useSelect2.globalStyles;
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+      if (Object.keys(globalStyles).length === 0) {
+        return;
+      }
+      var globalStylesCSS = Object.values(globalStyles).map(function (globalStyle) {
+        var photoAttributes = globalStyle.content.photoAttributes;
+        var captionAttributes = globalStyle.content.captionAttributes;
+        var photoStyles = '';
+        devices.forEach(function (device) {
+          var deviceStyles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_4__["default"])(photoAttributes, device, globalStyle.slug, true);
+          deviceStyles += (0,_blocks_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_5__["default"])(captionAttributes, device, globalStyle.slug, true);
+          switch (device) {
+            case 'desktop':
+              deviceStyles = '@media (min-width: 1025px) {' + deviceStyles + '}';
+              break;
+            case 'tablet':
+              deviceStyles = '@media (min-width: 768px) and (max-width: 1024px) {' + deviceStyles + '}';
+              break;
+            case 'mobile':
+              deviceStyles = '@media (max-width: 767px) {' + deviceStyles + '}';
+              break;
+          }
+          photoStyles += deviceStyles;
+        });
+        setStyles(photoStyles);
+      });
+    }, [globalStyles]);
+
+    // Don't return anything if no global styles.
+    if ('' === styles) {
+      return null;
+    }
+    return /*#__PURE__*/React.createElement("style", null, styles);
   }
 });
 
@@ -13712,7 +13777,10 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }), isSavingAlt && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block'))))));
-  var styles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_17__["default"])(attributes, deviceType, uniqueId);
+  var styles = '';
+  if (!hasGlobalStyle(globalStyle)) {
+    styles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_17__["default"])(attributes, deviceType, uniqueId);
+  }
   return /*#__PURE__*/React.createElement(React.Fragment, null, localInspectorControls, localToolbar, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorAdvancedControls, null, advancedInspectorControls), /*#__PURE__*/React.createElement("style", null, styles), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit"
   }, imageLoading && /*#__PURE__*/React.createElement("div", {

@@ -499,7 +499,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
-	const styles = getStyles( attributes, deviceType, uniqueId );
+	let styles = '';
+	if ( ! hasGlobalStyle( globalStyle ) ) {
+		styles = getStyles( attributes, deviceType, uniqueId );
+	}
 
 	return (
 		<>

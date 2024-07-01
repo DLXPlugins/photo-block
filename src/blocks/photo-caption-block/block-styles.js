@@ -4,7 +4,7 @@ import rgb2hex from 'rgb2hex';
 import { escapeEditableHTML } from '@wordpress/escape-html';
 import { isURL } from '@wordpress/url';
 
-const getStyles = ( attributes, deviceType, uniqueId ) => {
+const getStyles = ( attributes, deviceType, uniqueId, useClass = false ) => {
 	const {
 		containerWidth,
 		containerHeight,
@@ -40,7 +40,7 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 		captionPosition,
 	} = attributes;
 	let styles = `
-		figcaption#${ uniqueId } {
+		figcaption${ useClass ? '.' : '#' }${ uniqueId } {
 			--photo-block-caption-background-color: ${ captionBackgroundColor };
 			--photo-block-caption-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
 			--photo-block-caption-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
@@ -48,7 +48,7 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 			--photo-block-caption-min-height: ${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
 			--photo-block-caption-max-width: ${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
 		}
-		figcaption#${ uniqueId } {
+		figcaption${ useClass ? '.' : '#' }${ uniqueId } {
 			--photo-block-caption-padding: ${ buildDimensionsCSS( captionPaddingSize, deviceType ) };
 			--photo-block-caption-margin: ${ buildDimensionsCSS( captionMarginSize, deviceType ) };
 			--photo-block-caption-border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
@@ -62,7 +62,7 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 	// Set colors and typography for single caption mode and data mode.
 	if ( 'single' === mode || 'data' === photoMode || 'featuredImage' === photoMode ) {
 		styles += `
-			figcaption#${ uniqueId } {
+			figcaption${ useClass ? '.' : '#' }${ uniqueId } {
 				--photo-block-caption-text-color: ${ captionTextColor };
 				--photo-block-caption-font-size: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontSize, 'fontSize' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].fontSizeUnit, 'fontSizeUnit' ) };
 				--photo-block-caption-font-weight: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontWeight, 'fontWeight' ) };
@@ -71,10 +71,10 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 				--photo-block-caption-letter-spacing: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].letterSpacing, 'letterSpacing' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].letterSpacingUnit, 'letterSpacingUnit' ) };
 				--photo-block-caption-text-align: ${ captionAlign };
 			}
-			figcaption#${ uniqueId } a {
+			figcaption${ useClass ? '.' : '#' }${ uniqueId } a {
 				--photo-block-caption-link-color: ${ captionLinkColor };
 			}
-			figcaption#${ uniqueId } a:hover {
+			figcaption${ useClass ? '.' : '#' }${ uniqueId } a:hover {
 				--photo-block-caption-link-color-hover: ${ captionLinkHoverColor };
 			}
 		`;
@@ -82,13 +82,13 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 	// Add custom caption.
 	if ( 'custom' === captionTypography[ deviceType ].fontFamilySlug ) {
 		styles += `
-			figcaption#${ uniqueId } {
+			figcaption${ useClass ? '.' : '#' }${ uniqueId } {
 				--photo-block-caption-font-family: ${ captionTypography?.captionCustomTypography };
 			}
 		`;
 	} else {
 		styles += `
-			figcaption#${ uniqueId } {
+			figcaption${ useClass ? '.' : '#' }${ uniqueId } {
 				--photo-block-caption-font-family: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontFamily, 'fontFamily' ) };
 			}
 		`;
@@ -97,7 +97,7 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 	// Set colors and typography for advanced caption mode.
 	if ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ) {
 		styles += `
-			figcaption#${ uniqueId } {
+			figcaption${ useClass ? '.' : '#' }${ uniqueId } {
 				--photo-block-caption-text-color: ${ captionTextColor };
 				--photo-block-caption-link-color: ${ captionAccentColor };
 				--photo-block-caption-link-color-hover: ${ captionSecondaryColor };
@@ -111,17 +111,17 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 	// Set overlay background color if gradient.
 	if ( 'overlay' === captionPosition && 'solid' === overlayBackgroundType ) {
 		styles += `
-			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
 				--photo-block-caption-overlay-background-color: ${ overlayBackgroundColor };
 			}
-			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
 				--photo-block-caption-overlay-background-color-hover: ${ overlayBackgroundColorHover };
 			}
 		`;
 
 		// The overlay background container needs to match overlay border radius in order to simulate masking.
 		styles += `
-			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
 				--photo-block-caption-overlay-border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
 			}
 		`;
@@ -130,19 +130,19 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 	// Set overlay background color if gradient.
 	if ( 'overlay' === captionPosition && 'gradient' === overlayBackgroundType ) {
 		styles += `
-			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
 				--photo-block-caption-overlay-background-gradient: ${ overlayBackgroundGradient };
 				--photo-block-caption-overlay-background-gradient-opacity: ${ overlayBackgroundGradientOpacity };
 				z-index: 1;
 			}
-			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
 				--photo-block-caption-overlay-background-gradient-opacity-hover: ${ overlayBackgroundGradientOpacityHover };
 			}
 		`;
 
 		// The overlay background container needs to match overlay border radius in order to simulate masking.
 		styles += `
-			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
 				--photo-block-caption-overlay-border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
 			}
 		`;
@@ -152,7 +152,7 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 	// Set overlay background color if background image.
 	if ( 'overlay' === captionPosition && 'image' === overlayBackgroundType && isURL( overlayBackgroundImage.url ) ) {
 		styles += `
-			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
 				--photo-block-caption-overlay-background-color: ${ overlayBackgroundImage.backgroundColor };
 				--photo-block-caption-overlay-image: url('${ decodeURIComponent( encodeURIComponent( overlayBackgroundImage.url ) ) } ');
 				--photo-block-caption-overlay-background-position: ${ escapeEditableHTML( overlayBackgroundImage.backgroundPosition ) };
@@ -160,14 +160,14 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 				--photo-block-caption-overlay-background-size: ${ escapeEditableHTML( overlayBackgroundImage.backgroundSize ) };
 				--photo-block-caption-overlay-opacity: ${ parseFloat( overlayBackgroundImage.backgroundOpacity ) };
 			}
-			#${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
 				--photo-block-caption-overlay-opacity-hover: ${ parseFloat( overlayBackgroundImage.backgroundOpacityHover ) };
 			}
 		`;
 
 		// The overlay background container needs to match overlay border radius in order to simulate masking.
 		styles += `
-			#${ uniqueId }.dlx-photo-block__caption-overlay:before {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
 				--photo-block-caption-overlay-border-radius: ${ buildDimensionsCSS( overlayBorderRadius, deviceType ) };
 			}
 		`;
@@ -176,7 +176,7 @@ const getStyles = ( attributes, deviceType, uniqueId ) => {
 	// Set overlay padding, border, and border radius.
 	if ( 'overlay' === captionPosition ) {
 		styles += `
-			#${ uniqueId }.dlx-photo-block__caption-overlay {
+			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay {
 				--photo-block-caption-overlay-border-radius: ${ buildDimensionsCSS( captionBorderRadius, deviceType ) };
 				${ buildBorderCSS( overlayBorder, deviceType, '--photo-block-caption' ) }
 				overflow: hidden;

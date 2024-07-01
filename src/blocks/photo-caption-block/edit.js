@@ -289,7 +289,10 @@ const PhotoCaptionBlock = ( props ) => {
 	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
 		{
-			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', { 'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles ) } ),
+			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', {
+				'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles ),
+				globalStyle,
+			} ),
 			ref: innerBlocksRef,
 		},
 		{
@@ -349,7 +352,7 @@ const PhotoCaptionBlock = ( props ) => {
 			getCaptionFromData();
 		}
 		if ( imageData.id === 0 ) {
-			return;
+
 		}
 	}, [ photoMode, imageData, globalStyle ] );
 
@@ -1296,7 +1299,7 @@ const PhotoCaptionBlock = ( props ) => {
 	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = () => {
-		const figClasses = classnames( 'dlx-photo-block__caption', {
+		const figClasses = classnames( `dlx-photo-block__caption ${ globalStyle }`, {
 			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ),
 		} );
 
@@ -1339,7 +1342,10 @@ const PhotoCaptionBlock = ( props ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
-	const styles = getStyles( attributes, deviceType, uniqueId );
+	let styles = '';
+	if ( ! hasGlobalStyle( globalStyle ) ) {
+		styles = getStyles( attributes, deviceType, uniqueId );
+	}
 
 	/**
 	 * Get overlay container classes.

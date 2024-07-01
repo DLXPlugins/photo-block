@@ -34,7 +34,7 @@ const getColor = ( colorValue, opacityValue = 1 ) => {
 	return colorValue;
 };
 
-const getStyles = (attributes, deviceType, uniqueId ) => {
+const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 	const {
 		containerWidth,
 		containerHeight,
@@ -57,7 +57,7 @@ const getStyles = (attributes, deviceType, uniqueId ) => {
 
 	} = attributes;
 	let styles = `
-		#${ uniqueId } .dlx-photo-block__image-wrapper {
+		${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
 			--photo-block-photo-background-color: ${ photoBackgroundColor };
 			--photo-block-photo-container-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
 			--photo-block-photo-container-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
@@ -67,7 +67,7 @@ const getStyles = (attributes, deviceType, uniqueId ) => {
 			--photo-block-photo-container-max-height: ${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
 			--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 		}
-		#${ uniqueId } .dlx-photo-block__image-wrapper img {
+		${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
 			--photo-block-image-opacity: ${ photoOpacity };
 			--photo-block-image-object-fit: ${ photoObjectFit };
 			--photo-block-image-blur: ${ photoBlur }px;
@@ -81,10 +81,10 @@ const getStyles = (attributes, deviceType, uniqueId ) => {
 		}
 	`;
 	// Apply outer margin to container.
-	styles += `#${ uniqueId } .dlx-photo-block__figure { --photo-block-figure-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
+	styles += `${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__figure { --photo-block-figure-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
 	if ( photoDropShadow.enabled ) {
 		styles += `
-			.dlx-has-drop-shadow #${ uniqueId } img {
+			.dlx-has-drop-shadow ${ useClass ? '.' : '#' }${ uniqueId } img {
 				--photo-block-image-drop-shadow-horizontal: ${ photoDropShadow.horizontal }px;
 				--photo-block-image-drop-shadow-vertical: ${ photoDropShadow.vertical }px;
 				--photo-block-image-drop-shadow-blur: ${ photoDropShadow.blur }px;
