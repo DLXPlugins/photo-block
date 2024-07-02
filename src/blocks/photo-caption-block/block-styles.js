@@ -38,10 +38,10 @@ const getStyles = ( attributes, deviceType, uniqueId, useClass = false ) => {
 		mode,
 		photoMode,
 		captionPosition,
+		enableSmartStyles,
 	} = attributes;
 	let styles = `
 		figcaption${ useClass ? '.' : '#' }${ uniqueId } {
-			--photo-block-caption-background-color: ${ captionBackgroundColor };
 			--photo-block-caption-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
 			--photo-block-caption-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
 			--photo-block-caption-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
@@ -58,6 +58,13 @@ const getStyles = ( attributes, deviceType, uniqueId, useClass = false ) => {
 			${ buildBorderCSS( captionBorder, deviceType, '--photo-block-caption' ) };
 		}
 	`;
+
+	if ( enableSmartStyles || 'single' === mode || 'data' === photoMode || 'featuredImage' === photoMode  ) {
+		styles += `
+			figcaption${ useClass ? '.' : '#' }${ uniqueId } {
+				--photo-block-caption-background-color: ${ captionBackgroundColor };
+			}`;
+	}
 
 	// Set colors and typography for single caption mode and data mode.
 	if ( 'single' === mode || 'data' === photoMode || 'featuredImage' === photoMode ) {
@@ -95,7 +102,7 @@ const getStyles = ( attributes, deviceType, uniqueId, useClass = false ) => {
 	}
 
 	// Set colors and typography for advanced caption mode.
-	if ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ) {
+	if ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles ) {
 		styles += `
 			figcaption${ useClass ? '.' : '#' }${ uniqueId } {
 				--photo-block-caption-text-color: ${ captionTextColor };

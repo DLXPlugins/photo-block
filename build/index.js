@@ -506,8 +506,12 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
     overlayBorder = attributes.overlayBorder,
     mode = attributes.mode,
     photoMode = attributes.photoMode,
-    captionPosition = attributes.captionPosition;
-  var styles = "\n\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t--photo-block-caption-background-color: ").concat(captionBackgroundColor, ";\n\t\t\t--photo-block-caption-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-caption-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-caption-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-caption-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-caption-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t}\n\t\tfigcaption").concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t--photo-block-caption-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\t--photo-block-caption-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\t--photo-block-caption-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t--photo-block-caption-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\t--photo-block-caption-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\t--photo-block-caption-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(captionBorder, deviceType, '--photo-block-caption'), ";\n\t\t}\n\t");
+    captionPosition = attributes.captionPosition,
+    enableSmartStyles = attributes.enableSmartStyles;
+  var styles = "\n\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t--photo-block-caption-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-caption-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-caption-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-caption-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-caption-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t}\n\t\tfigcaption").concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t--photo-block-caption-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\t--photo-block-caption-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\t--photo-block-caption-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t--photo-block-caption-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionPaddingSize, deviceType), ";\n\t\t\t--photo-block-caption-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionMarginSize, deviceType), ";\n\t\t\t--photo-block-caption-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(captionBorderRadius, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(captionBorder, deviceType, '--photo-block-caption'), ";\n\t\t}\n\t");
+  if (enableSmartStyles || 'single' === mode || 'data' === photoMode || 'featuredImage' === photoMode) {
+    styles += "\n\t\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-background-color: ").concat(captionBackgroundColor, ";\n\t\t\t}");
+  }
 
   // Set colors and typography for single caption mode and data mode.
   if ('single' === mode || 'data' === photoMode || 'featuredImage' === photoMode) {
@@ -521,7 +525,7 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
   }
 
   // Set colors and typography for advanced caption mode.
-  if ('advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode) {
+  if ('advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles) {
     styles += "\n\t\t\tfigcaption".concat(useClass ? '.' : '#').concat(uniqueId, " {\n\t\t\t\t--photo-block-caption-text-color: ").concat(captionTextColor, ";\n\t\t\t\t--photo-block-caption-link-color: ").concat(captionAccentColor, ";\n\t\t\t\t--photo-block-caption-link-color-hover: ").concat(captionSecondaryColor, ";\n\t\t\t\t--photo-block-caption-font-family: ").concat(captionTextFontFamily, ";\n\t\t\t\t--photo-block-caption-headings-font-family: ").concat(captionHeadingsFontFamily, ";\n\t\t\t\t--photo-block-caption-font-size: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.geHierarchicalPlaceholderValue)(captionBaseFontSize, deviceType, captionBaseFontSize[deviceType].value, 'value')).concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getHierarchicalValueUnit)(captionBaseFontSize, deviceType, captionBaseFontSize[deviceType].unit, 'unit'), ";\n\t\t\t}\n\t\t");
   }
 
@@ -11491,6 +11495,12 @@ var globalStyles = ((_photoBlock = photoBlock) === null || _photoBlock === void 
       }),
       getGlobalStyleBySlug = _useSelect.getGlobalStyleBySlug;
     var returnRealtimeBlockAttributes = function returnRealtimeBlockAttributes(propAttributes, globalStyle, clientId, type) {
+      // Return if global style is defined, none, or empty.
+      if ('undefined' === typeof globalStyle || 'none' === globalStyle || '' === globalStyle) {
+        return propAttributes;
+      }
+
+      // Get global style.
       var maybeGlobalStyle = getGlobalStyleBySlug(globalStyle);
       if (Object.keys(maybeGlobalStyle).length === 0) {
         return propAttributes;
@@ -11564,7 +11574,7 @@ var returnBlockAttributes = function returnBlockAttributes(attributes, blockType
   switch (name) {
     case 'dlxplugins/photo-block':
       // Get global style.
-      if ('undefined' !== typeof attributes.globalStyle && 'none' !== attributes.globalStyle) {
+      if ('undefined' !== typeof attributes.globalStyle && 'none' !== attributes.globalStyle && '' !== attributes.globalStyle) {
         var globalStyle = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleBySlug(attributes.globalStyle);
         if (Object.keys(globalStyle).length > 0) {
           // Get photo block global style attributes.
@@ -11575,8 +11585,9 @@ var returnBlockAttributes = function returnBlockAttributes(attributes, blockType
       break;
     case 'dlxplugins/photo-caption-block':
       // Get global style.
-      if ('undefined' !== typeof attributes.globalStyle && 'none' !== attributes.globalStyle) {
+      if ('undefined' !== typeof attributes.globalStyle && 'none' !== attributes.globalStyle && '' !== attributes.globalStyle) {
         var _globalStyle = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleBySlug(attributes.globalStyle);
+        console.log(attributes);
         if (Object.keys(_globalStyle).length > 0) {
           // Get photo block global style attributes.
           var _globalStyleAttributes = _globalStyle.content.captionAttributes;

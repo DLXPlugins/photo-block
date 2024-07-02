@@ -24,6 +24,12 @@ registerPlugin(
 			} );
 
 			const returnRealtimeBlockAttributes = ( propAttributes, globalStyle, clientId, type ) => {
+				// Return if global style is defined, none, or empty.
+				if ( 'undefined' === typeof ( globalStyle ) || 'none' === globalStyle || '' === globalStyle ) {
+					return propAttributes;
+				}
+
+				// Get global style.
 				const maybeGlobalStyle = getGlobalStyleBySlug( globalStyle );
 				if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
 					return propAttributes;
@@ -109,7 +115,7 @@ const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 	switch ( name ) {
 		case 'dlxplugins/photo-block':
 			// Get global style.
-			if ( 'undefined' !== typeof ( attributes.globalStyle ) && 'none' !== attributes.globalStyle ) {
+			if ( 'undefined' !== typeof ( attributes.globalStyle ) && 'none' !== attributes.globalStyle && '' !== attributes.globalStyle ) {
 				const globalStyle = select( globalStylesStore ).getGlobalStyleBySlug( attributes.globalStyle );
 
 				if ( Object.keys( globalStyle ).length > 0 ) {
@@ -126,9 +132,10 @@ const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 			break;
 		case 'dlxplugins/photo-caption-block':
 			// Get global style.
-			if ( 'undefined' !== typeof ( attributes.globalStyle ) && 'none' !== attributes.globalStyle ) {
+			if ( 'undefined' !== typeof ( attributes.globalStyle ) && 'none' !== attributes.globalStyle && '' !== attributes.globalStyle ) {
 				const globalStyle = select( globalStylesStore ).getGlobalStyleBySlug( attributes.globalStyle );
 
+				console.log( attributes );
 				if ( Object.keys( globalStyle ).length > 0 ) {
 					// Get photo block global style attributes.
 					const globalStyleAttributes = globalStyle.content.captionAttributes;
