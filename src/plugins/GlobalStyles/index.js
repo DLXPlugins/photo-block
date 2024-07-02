@@ -74,11 +74,11 @@ registerPlugin(
 				if ( Object.keys( globalStyles ).length === 0 ) {
 					return;
 				}
+				let photoStyles = '';
 				const globalStylesCSS = Object.values( globalStyles ).map( ( globalStyle ) => {
 					const photoAttributes = globalStyle.content.photoAttributes;
 					const captionAttributes = globalStyle.content.captionAttributes;
 
-					let photoStyles = '';
 					devices.forEach( ( device ) => {
 						let deviceStyles = getStyles( photoAttributes, device, globalStyle.css_class, true );
 						deviceStyles += getStylesCaption( captionAttributes, device, globalStyle.css_class, true );
@@ -95,8 +95,8 @@ registerPlugin(
 						}
 						photoStyles += deviceStyles;
 					} );
-					setStyles( photoStyles );
 				} );
+				setStyles( photoStyles );
 			}, [ globalStyles ] );
 
 			// Don't return anything if no global styles.

@@ -11570,10 +11570,10 @@ var devices = ['desktop', 'tablet', 'mobile'];
       if (Object.keys(globalStyles).length === 0) {
         return;
       }
+      var photoStyles = '';
       var globalStylesCSS = Object.values(globalStyles).map(function (globalStyle) {
         var photoAttributes = globalStyle.content.photoAttributes;
         var captionAttributes = globalStyle.content.captionAttributes;
-        var photoStyles = '';
         devices.forEach(function (device) {
           var deviceStyles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_4__["default"])(photoAttributes, device, globalStyle.css_class, true);
           deviceStyles += (0,_blocks_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_5__["default"])(captionAttributes, device, globalStyle.css_class, true);
@@ -11590,8 +11590,8 @@ var devices = ['desktop', 'tablet', 'mobile'];
           }
           photoStyles += deviceStyles;
         });
-        setStyles(photoStyles);
       });
+      setStyles(photoStyles);
     }, [globalStyles]);
 
     // Don't return anything if no global styles.
