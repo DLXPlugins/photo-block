@@ -235,8 +235,8 @@ var PhotoBlock = function PhotoBlock(props) {
     align = _props$attributes.align,
     globalStyle = _props$attributes.globalStyle,
     photoDropShadow = _props$attributes.photoDropShadow;
-  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
-      var maybeGlobalStyle = select(_store_global_styles__WEBPACK_IMPORTED_MODULE_18__["default"]).getGlobalStyleBySlug(globalStyle);
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (newSelect) {
+      var maybeGlobalStyle = newSelect(_store_global_styles__WEBPACK_IMPORTED_MODULE_18__["default"]).getGlobalStyleBySlug(globalStyle);
       if (Object.keys(maybeGlobalStyle).length === 0) {
         return '';
       }
@@ -13532,6 +13532,16 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     imageSize = _attributes.imageSize,
     cssGramFilter = _attributes.cssGramFilter,
     globalStyle = _attributes.globalStyle;
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (newSelect) {
+      var maybeGlobalStyle = newSelect(_store_global_styles__WEBPACK_IMPORTED_MODULE_19__["default"]).getGlobalStyleBySlug(globalStyle);
+      if (Object.keys(maybeGlobalStyle).length === 0) {
+        return '';
+      }
+      return {
+        globalStyleCSSClassName: maybeGlobalStyle.css_class
+      };
+    }),
+    globalStyleCSSClassName = _useSelect.globalStyleCSSClassName;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(true),
     _useState2 = _slicedToArray(_useState, 2),
     imageLoading = _useState2[0],
@@ -13574,7 +13584,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     setJustCropped = _useDispatch.setJustCropped;
 
   // Get current block data.
-  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
+  var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
       return {
         imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_10__.blockStore)(blockUniqueId)).getImageData(),
         captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_10__.blockStore)(blockUniqueId)).getCaptionPosition(),
@@ -13583,19 +13593,19 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
         isJustCropped: select((0,_store__WEBPACK_IMPORTED_MODULE_10__.blockStore)(blockUniqueId)).getJustCropped()
       };
     }),
-    imageData = _useSelect.imageData,
-    captionPosition = _useSelect.captionPosition,
-    photoMode = _useSelect.photoMode,
-    originalImageData = _useSelect.originalImageData,
-    isJustCropped = _useSelect.isJustCropped;
+    imageData = _useSelect2.imageData,
+    captionPosition = _useSelect2.captionPosition,
+    photoMode = _useSelect2.photoMode,
+    originalImageData = _useSelect2.originalImageData,
+    isJustCropped = _useSelect2.isJustCropped;
 
   // Get global style data.
-  var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
+  var _useSelect3 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
       return {
         hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_19__["default"]).hasGlobalStyle
       };
     }),
-    hasGlobalStyle = _useSelect2.hasGlobalStyle;
+    hasGlobalStyle = _useSelect3.hasGlobalStyle;
   var url = imageData.url,
     id = imageData.id,
     width = imageData.width,
@@ -13925,7 +13935,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       maxHeight: '100%'
     }
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null)), /*#__PURE__*/React.createElement("figure", {
-    className: "dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure"
+    className: "dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure ".concat(globalStyleCSSClassName)
   }, 'top' === captionPosition && /*#__PURE__*/React.createElement("div", _extends({
     className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
   }, innerBlockProps)), /*#__PURE__*/React.createElement("div", {

@@ -146,8 +146,8 @@ const PhotoBlock = ( props ) => {
 		photoDropShadow,
 	} = props.attributes;
 
-	const { globalStyleCSSClassName } = useSelect( ( select ) => {
-		const maybeGlobalStyle = select( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
+	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
+		const maybeGlobalStyle = newSelect( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
 		if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
 			return '';
 		}

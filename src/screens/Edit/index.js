@@ -72,6 +72,16 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		globalStyle,
 	} = attributes;
 
+	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
+		const maybeGlobalStyle = newSelect( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
+		if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
+			return '';
+		}
+		return {
+			globalStyleCSSClassName: maybeGlobalStyle.css_class,
+		};
+	} );
+
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
@@ -528,7 +538,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<Spinner />
 					</div>
 				) }
-				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">
+				<figure className={ `dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure ${ globalStyleCSSClassName }` }>
 					{ 'top' === captionPosition && (
 						<div
 							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
