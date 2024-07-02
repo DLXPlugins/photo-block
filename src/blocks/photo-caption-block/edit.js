@@ -202,6 +202,16 @@ const PhotoCaptionBlock = ( props ) => {
 		};
 	} );
 
+	const { globalStyleCSSClassName } = useSelect( ( select ) => {
+		const maybeGlobalStyle = select( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
+		if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
+			return '';
+		}
+		return {
+			globalStyleCSSClassName: maybeGlobalStyle.css_class,
+		};
+	} );
+
 	// Get global style data.
 	const {
 		hasGlobalStyle,
@@ -1306,7 +1316,7 @@ const PhotoCaptionBlock = ( props ) => {
 	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = () => {
-		const figClasses = classnames( `dlx-photo-block__caption ${ globalStyle } align${ captionAlign }`, {
+		const figClasses = classnames( `dlx-photo-block__caption ${ globalStyle } align${ captionAlign } ${ globalStyleCSSClassName }`, {
 			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ),
 		} );
 

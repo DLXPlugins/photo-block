@@ -44,6 +44,7 @@ import DataScreen from '../../screens/Data';
 import DataEditScreen from '../../screens/DataEdit';
 import LoadingScreen from '../../screens/Loading';
 import FeaturedImageScreen from '../../screens/FeaturedImageEdit';
+import globalStylesStore from '../../store/global-styles';
 
 // For storing unique IDs.
 const uniqueIds = [];
@@ -140,19 +141,20 @@ const PhotoBlock = ( props ) => {
 
 	const {
 		uniqueId,
-		photo,
 		align,
-		caption,
-		altText,
-		overlayText,
-		overlayTextPosition,
-		paddingSize,
-		marginSize,
-		borderWidth,
-		borderRadiusSize,
+		globalStyle,
 		photoDropShadow,
-		dataScreen, /* can be `data`, `data-edit`. */
 	} = props.attributes;
+
+	const { globalStyleCSSClassName } = useSelect( ( select ) => {
+		const maybeGlobalStyle = select( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
+		if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
+			return '';
+		}
+		return {
+			globalStyleCSSClassName: maybeGlobalStyle.css_class,
+		};
+	} );
 
 	// Read in context values.
 	const {
@@ -197,11 +199,21 @@ const PhotoBlock = ( props ) => {
 			`align${ align }`,
 			`dlx-screen-${ currentScreen }`,
 			`dlx-caption-position-${ captionPosition }`,
+			globalStyleCSSClassName,
 			{
 				'dlx-has-drop-shadow': photoDropShadow.enabled,
 			}
 		),
 	} );
+
+	// Set caption position attribute as captionPosition context is updated so the parent knows the caption position.
+	useEffect( () => {
+		if ( props.attributes.captionPosition !== captionPosition ) {
+			props.setAttributes( { captionPosition } );
+		}
+	}, [ captionPosition ] );
+
+	
 
 	// Store the filepond upload ref.
 	const imageRef = useRef( null );

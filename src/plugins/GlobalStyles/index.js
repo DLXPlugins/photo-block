@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { registerPlugin } from '@wordpress/plugins';
 import { addFilter } from '@wordpress/hooks';
-import { useDispatch, useSelect, select } from '@wordpress/data';
+import { useDispatch, useSelect, select, dispatch } from '@wordpress/data';
 import getStyles from '../../blocks/photo-block/block-styles';
 import getStylesCaption from '../../blocks/photo-caption-block/block-styles';
 
@@ -80,8 +80,8 @@ registerPlugin(
 
 					let photoStyles = '';
 					devices.forEach( ( device ) => {
-						let deviceStyles = getStyles( photoAttributes, device, globalStyle.slug, true );
-						deviceStyles += getStylesCaption( captionAttributes, device, globalStyle.slug, true );
+						let deviceStyles = getStyles( photoAttributes, device, globalStyle.css_class, true );
+						deviceStyles += getStylesCaption( captionAttributes, device, globalStyle.css_class, true );
 						switch ( device ) {
 							case 'desktop':
 								deviceStyles = '@media (min-width: 1025px) {' + deviceStyles + '}';
@@ -135,7 +135,6 @@ const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 			if ( 'undefined' !== typeof ( attributes.globalStyle ) && 'none' !== attributes.globalStyle && '' !== attributes.globalStyle ) {
 				const globalStyle = select( globalStylesStore ).getGlobalStyleBySlug( attributes.globalStyle );
 
-				console.log( attributes );
 				if ( Object.keys( globalStyle ).length > 0 ) {
 					// Get photo block global style attributes.
 					const globalStyleAttributes = globalStyle.content.captionAttributes;

@@ -119,6 +119,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _screens_DataEdit__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../screens/DataEdit */ "./src/screens/DataEdit/index.js");
 /* harmony import */ var _screens_Loading__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../screens/Loading */ "./src/screens/Loading/index.js");
 /* harmony import */ var _screens_FeaturedImageEdit__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../screens/FeaturedImageEdit */ "./src/screens/FeaturedImageEdit/index.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 
@@ -132,6 +133,7 @@ function _extends() { _extends = Object.assign ? Object.assign.bind() : function
 
 
 //import EffectsScreen from '../../screens/Effects';
+
 
 
 
@@ -230,18 +232,19 @@ var PhotoBlock = function PhotoBlock(props) {
   }, []);
   var _props$attributes = props.attributes,
     uniqueId = _props$attributes.uniqueId,
-    photo = _props$attributes.photo,
     align = _props$attributes.align,
-    caption = _props$attributes.caption,
-    altText = _props$attributes.altText,
-    overlayText = _props$attributes.overlayText,
-    overlayTextPosition = _props$attributes.overlayTextPosition,
-    paddingSize = _props$attributes.paddingSize,
-    marginSize = _props$attributes.marginSize,
-    borderWidth = _props$attributes.borderWidth,
-    borderRadiusSize = _props$attributes.borderRadiusSize,
-    photoDropShadow = _props$attributes.photoDropShadow,
-    dataScreen = _props$attributes.dataScreen;
+    globalStyle = _props$attributes.globalStyle,
+    photoDropShadow = _props$attributes.photoDropShadow;
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
+      var maybeGlobalStyle = select(_store_global_styles__WEBPACK_IMPORTED_MODULE_18__["default"]).getGlobalStyleBySlug(globalStyle);
+      if (Object.keys(maybeGlobalStyle).length === 0) {
+        return '';
+      }
+      return {
+        globalStyleCSSClassName: maybeGlobalStyle.css_class
+      };
+    }),
+    globalStyleCSSClassName = _useSelect.globalStyleCSSClassName;
 
   // Read in context values.
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_9__.blockStore)(uniqueId ? uniqueId : newUniqueId)),
@@ -253,7 +256,7 @@ var PhotoBlock = function PhotoBlock(props) {
     setInQueryLoop = _useDispatch.setInQueryLoop;
 
   // Get current block data.
-  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
+  var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
       return {
         currentScreen: select((0,_store__WEBPACK_IMPORTED_MODULE_9__.blockStore)(uniqueId ? uniqueId : newUniqueId)).getCurrentScreen(),
         isUploading: select((0,_store__WEBPACK_IMPORTED_MODULE_9__.blockStore)(uniqueId ? uniqueId : newUniqueId)).isUploading(),
@@ -267,21 +270,30 @@ var PhotoBlock = function PhotoBlock(props) {
         blockUniqueId: select((0,_store__WEBPACK_IMPORTED_MODULE_9__.blockStore)(uniqueId ? uniqueId : newUniqueId)).getBlockUniqueId()
       };
     }),
-    currentScreen = _useSelect.currentScreen,
-    isUploading = _useSelect.isUploading,
-    isProcessingUpload = _useSelect.isProcessingUpload,
-    isUploadError = _useSelect.isUploadError,
-    filepondInstance = _useSelect.filepondInstance,
-    hasCaption = _useSelect.hasCaption,
-    captionPosition = _useSelect.captionPosition,
-    inQueryLoop = _useSelect.inQueryLoop,
-    photoMode = _useSelect.photoMode,
-    blockUniqueId = _useSelect.blockUniqueId;
+    currentScreen = _useSelect2.currentScreen,
+    isUploading = _useSelect2.isUploading,
+    isProcessingUpload = _useSelect2.isProcessingUpload,
+    isUploadError = _useSelect2.isUploadError,
+    filepondInstance = _useSelect2.filepondInstance,
+    hasCaption = _useSelect2.hasCaption,
+    captionPosition = _useSelect2.captionPosition,
+    inQueryLoop = _useSelect2.inQueryLoop,
+    photoMode = _useSelect2.photoMode,
+    blockUniqueId = _useSelect2.blockUniqueId;
   var blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__.useBlockProps)({
-    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block", "align".concat(align), "dlx-screen-".concat(currentScreen), "dlx-caption-position-".concat(captionPosition), {
+    className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block", "align".concat(align), "dlx-screen-".concat(currentScreen), "dlx-caption-position-".concat(captionPosition), globalStyleCSSClassName, {
       'dlx-has-drop-shadow': photoDropShadow.enabled
     })
   });
+
+  // Set caption position attribute as captionPosition context is updated so the parent knows the caption position.
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    if (props.attributes.captionPosition !== captionPosition) {
+      props.setAttributes({
+        captionPosition: captionPosition
+      });
+    }
+  }, [captionPosition]);
 
   // Store the filepond upload ref.
   var imageRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
@@ -768,14 +780,24 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     inQueryLoop = _useSelect.inQueryLoop,
     photoMode = _useSelect.photoMode,
     currentScreen = _useSelect.currentScreen;
+  var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_8__.useSelect)(function (select) {
+      var maybeGlobalStyle = select(_store_global_styles__WEBPACK_IMPORTED_MODULE_23__["default"]).getGlobalStyleBySlug(globalStyle);
+      if (Object.keys(maybeGlobalStyle).length === 0) {
+        return '';
+      }
+      return {
+        globalStyleCSSClassName: maybeGlobalStyle.css_class
+      };
+    }),
+    globalStyleCSSClassName = _useSelect2.globalStyleCSSClassName;
 
   // Get global style data.
-  var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_8__.useSelect)(function (select) {
+  var _useSelect3 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_8__.useSelect)(function (select) {
       return {
         hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_23__["default"]).hasGlobalStyle
       };
     }),
-    hasGlobalStyle = _useSelect2.hasGlobalStyle;
+    hasGlobalStyle = _useSelect3.hasGlobalStyle;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
     caption = _useState2[0],
@@ -1768,7 +1790,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
    * @return {JSX.Element} The caption.
    */
   var getCaption = function getCaption() {
-    var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block__caption ".concat(globalStyle, " align").concat(captionAlign), {
+    var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block__caption ".concat(globalStyle, " align").concat(captionAlign, " ").concat(globalStyleCSSClassName), {
       'has-smart-styles': 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode
     });
 
@@ -6448,18 +6470,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/save.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-alert.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/save.js");
 /* harmony import */ var _context__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./context */ "./src/components/GlobalStyles/context.js");
 /* harmony import */ var _Notice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Notice */ "./src/components/Notice/index.js");
 /* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -6467,6 +6490,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -6509,6 +6533,8 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       };
     }),
     globalStyles = _useSelect.globalStyles;
+  var _useDispatch3 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_9__.store),
+    setCaptionPosition = _useDispatch3.setCaptionPosition;
   var getDefaultValues = function getDefaultValues() {
     return {
       globalStyleLabel: '',
@@ -6517,7 +6543,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       selectedGlobalStyle: null
     };
   };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useForm)({
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_11__.useForm)({
       defaultValues: getDefaultValues()
     }),
     control = _useForm.control,
@@ -6527,13 +6553,13 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     setError = _useForm.setError,
     clearErrors = _useForm.clearErrors,
     getValues = _useForm.getValues;
-  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_10__.useFormState)({
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_11__.useFormState)({
       control: control
     }),
     errors = _useFormState.errors;
-  var _useDispatch3 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)('core/notices'),
-    createSuccessNotice = _useDispatch3.createSuccessNotice,
-    createWarningNotice = _useDispatch3.createWarningNotice;
+  var _useDispatch4 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)('core/notices'),
+    createSuccessNotice = _useDispatch4.createSuccessNotice,
+    createWarningNotice = _useDispatch4.createWarningNotice;
   /**
    * Retrieve a list of parent and child attributes for the current block.
    *
@@ -6656,10 +6682,10 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global style saved successfully.', 'photo-block'), {
         type: 'snackbar'
       });
+      maybeRefreshBlocks(newData);
       setGlobalStyle(newData, newData.slug);
       setIsSaving(false);
       setSavingPreset(false);
-      maybeRefreshBlocks();
     })["catch"](function (error) {
       setSavingPreset(false);
     });
@@ -6667,19 +6693,25 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
 
   /**
    * Refresh blocks upon a global style override.
+   *
+   * @param {Object} incomingData Incoming data from the server.
    */
-  var maybeRefreshBlocks = function maybeRefreshBlocks() {
+  var maybeRefreshBlocks = function maybeRefreshBlocks(incomingData) {
     // Get a list of all photo blocks.
     var photoBlocks = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocks().filter(function (block) {
       return 'dlxplugins/photo-block' === block.name;
     });
     // Now for each that has a global style, let's force an attribute update.
     photoBlocks.forEach(function (block) {
-      var globalStyle = block.attributes.globalStyle;
-      if (globalStyle !== 'none') {
+      var _block$attributes = block.attributes,
+        globalStyle = _block$attributes.globalStyle,
+        uniqueId = _block$attributes.uniqueId;
+      var captionPosition = incomingData.content.captionAttributes.captionPosition;
+      if (globalStyle !== 'none' && '' !== globalStyle) {
         updateBlockAttributes(block.clientId, {
           date: new Date().getTime(),
-          globalStyle: globalStyle
+          globalStyle: globalStyle,
+          captionPosition: captionPosition
         });
 
         // Now get caption blocks and refresh.
@@ -6690,7 +6722,8 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
         if (captionBlock) {
           updateBlockAttributes(captionBlock.clientId, {
             date: new Date().getTime(),
-            globalStyle: globalStyle
+            globalStyle: globalStyle,
+            captionPosition: captionPosition
           });
         }
       }
@@ -6748,7 +6781,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     className: "photo-block-global-styles-modal-new-preset"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-global-styles-row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_11__.Controller, {
     name: "globalStyleLabel",
     control: control,
     rules: {
@@ -6781,15 +6814,15 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The Global Style Name field is required.'),
     status: "error",
     politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"]
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"]
   }), 'pattern' === ((_errors$globalStyleLa3 = errors.globalStyleLabel) === null || _errors$globalStyleLa3 === void 0 ? void 0 : _errors$globalStyleLa3.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
     message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('This Global Style label contains invalid characters.'),
     status: "error",
     politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"]
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"]
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-global-styles-row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_11__.Controller, {
     name: "globalStyleCSSClass",
     control: control,
     rules: {
@@ -6819,15 +6852,15 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The CSS class contains invalid characters and must be a CSS friendly name.'),
     status: "error",
     politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"]
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"]
   }), 'required' === ((_errors$globalStyleCS3 = errors.globalStyleCSSClass) === null || _errors$globalStyleCS3 === void 0 ? void 0 : _errors$globalStyleCS3.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Notice__WEBPACK_IMPORTED_MODULE_7__["default"], {
     message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('The Global Style CSS Class field is required.'),
     status: "error",
     politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"]
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"]
   })))), 'override' === presetSaveType && canSaveDefaultPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, Object.keys(globalStyles).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-global-styles-modal-override-preset"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_10__.Controller, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_11__.Controller, {
     name: "selectedGlobalStyle",
     control: control,
     rules: {
@@ -6851,7 +6884,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('This field is required.'),
     status: "error",
     politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"]
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"]
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-global-styles-modal-button-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -6859,7 +6892,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     variant: "primary",
     className: "photo-block-global-styles-modal-apply-button",
     disabled: isSaving || hasErrors(),
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"], null)
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_13__["default"], null)
   }, isSaving ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Saving…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Save Global Style', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
     onClick: function onClick() {
@@ -6873,7 +6906,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     message: errors.formAjaxError.message,
     status: "error",
     politeness: "assertive",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"]
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"]
   })))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GlobalStylesSaveModal);
@@ -11542,8 +11575,8 @@ var devices = ['desktop', 'tablet', 'mobile'];
         var captionAttributes = globalStyle.content.captionAttributes;
         var photoStyles = '';
         devices.forEach(function (device) {
-          var deviceStyles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_4__["default"])(photoAttributes, device, globalStyle.slug, true);
-          deviceStyles += (0,_blocks_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_5__["default"])(captionAttributes, device, globalStyle.slug, true);
+          var deviceStyles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_4__["default"])(photoAttributes, device, globalStyle.css_class, true);
+          deviceStyles += (0,_blocks_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_5__["default"])(captionAttributes, device, globalStyle.css_class, true);
           switch (device) {
             case 'desktop':
               deviceStyles = '@media (min-width: 1025px) {' + deviceStyles + '}';
@@ -11587,7 +11620,6 @@ var returnBlockAttributes = function returnBlockAttributes(attributes, blockType
       // Get global style.
       if ('undefined' !== typeof attributes.globalStyle && 'none' !== attributes.globalStyle && '' !== attributes.globalStyle) {
         var _globalStyle = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.select)(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleBySlug(attributes.globalStyle);
-        console.log(attributes);
         if (Object.keys(_globalStyle).length > 0) {
           // Get photo block global style attributes.
           var _globalStyleAttributes = _globalStyle.content.captionAttributes;

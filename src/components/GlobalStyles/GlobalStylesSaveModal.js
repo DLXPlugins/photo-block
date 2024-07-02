@@ -16,6 +16,7 @@ import CustomPresetsContext from './context';
 import Notice from '../Notice';
 import globalStylesStore from '../../store/global-styles';
 import { store as blockEditorStore } from '@wordpress/block-editor';
+import { blockStore } from '../../store';
 
 const canSaveDefaultPresets = photoBlockUser.canSetDefaultPresets;
 
@@ -42,6 +43,7 @@ const GlobalStylesSaveModal = ( props ) => {
 			globalStyles: groupSelect( globalStylesStore ).getGlobalStyles(),
 		};
 	} );
+	const { setCaptionPosition } = useDispatch( blockEditorStore );
 
 	const getDefaultValues = () => {
 		return {
@@ -193,10 +195,10 @@ const GlobalStylesSaveModal = ( props ) => {
 						type: 'snackbar',
 					}
 				);
+				maybeRefreshBlocks( newData );
 				setGlobalStyle( newData, newData.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
-				maybeRefreshBlocks();
 			} )
 			.catch( ( error ) => {
 				setSavingPreset( false );
@@ -205,19 +207,23 @@ const GlobalStylesSaveModal = ( props ) => {
 
 	/**
 	 * Refresh blocks upon a global style override.
+	 *
+	 * @param {Object} incomingData Incoming data from the server.
 	 */
-	const maybeRefreshBlocks = () => {
+	const maybeRefreshBlocks = ( incomingData ) => {
 		// Get a list of all photo blocks.
 		const photoBlocks = select( 'core/block-editor' ).getBlocks().filter( ( block ) => {
 			return 'dlxplugins/photo-block' === block.name;
 		} );
 		// Now for each that has a global style, let's force an attribute update.
 		photoBlocks.forEach( ( block ) => {
-			const { globalStyle } = block.attributes;
-			if ( globalStyle !== 'none' ) {
+			const { globalStyle, uniqueId } = block.attributes;
+			const captionPosition = incomingData.content.captionAttributes.captionPosition;
+			if ( globalStyle !== 'none' && '' !== globalStyle ) {
 				updateBlockAttributes( block.clientId, {
 					date: new Date().getTime(),
 					globalStyle,
+					captionPosition,
 				} );
 
 				// Now get caption blocks and refresh.
@@ -227,6 +233,7 @@ const GlobalStylesSaveModal = ( props ) => {
 					updateBlockAttributes( captionBlock.clientId, {
 						date: new Date().getTime(),
 						globalStyle,
+						captionPosition,
 					} );
 				}
 			}
