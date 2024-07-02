@@ -18,6 +18,7 @@
 namespace DLXPlugins\PhotoBlock;
 
 define( 'PHOTO_BLOCK_VERSION', '4.3.5' );
+define( 'PHOTO_BLOCK_CACHE_VERSION', '1.0.0' );
 define( 'PHOTO_BLOCK_FILE', __FILE__ );
 
 // Support for site-level autoloading.

@@ -27,6 +27,10 @@ class Global_Styles {
 
 		// Filter for adding localized vars to output.
 		add_filter( 'photo_block_localized_vars', array( static::class, 'add_localized_vars' ) );
+
+		// Set up a call to generate the global styles either inline or via file.
+		add_action( 'init', array( static::class, 'generate_global_styles' ) );
+
 		return $self;
 	}
 
@@ -506,5 +510,81 @@ class Global_Styles {
 		);
 
 		register_post_type( 'dlx_pb_global_styles', $args );
+	}
+
+	/**
+	 * Generate the global styles.
+	 */
+	public static function generate_global_styles() {
+		// Let's see if there's already a global styles file.
+		$upload_dir = wp_upload_dir();
+		$upload_dir = trailingslashit( $upload_dir['basedir'] );
+		$upload_dir = trailingslashit( $upload_dir . 'photo-block/' );
+
+		if ( file_exists( $upload_dir . 'global-styles.css' ) ) {
+			// Check to see if we need to cache bust based on constant and option.
+			$cache_bust              = defined( 'PHOTO_BLOCK_CACHE_VERSION' ) ? PHOTO_BLOCK_CACHE_VERSION : false;
+			$last_cache_bust_version = get_option( 'dlx_pb_cache_bust_version', false );
+
+			/**
+			 * Filter to allow clearing the global styles cache.
+			 *
+			 * @param bool $can_clear_cache Whether or not to clear the cache.
+			 *
+			 * @since 1.0.0
+			 */
+			$can_clear_cache = apply_filters( 'dlx_pb_clear_global_styles_cache', false );
+
+			// Remove file if can clear cache or cache bust version is different.
+			if ( $cache_bust !== $last_cache_bust_version || $can_clear_cache ) {
+				unlink( $upload_dir . 'global-styles.css' );
+				// Update the option.
+				update_option( 'dlx_pb_cache_bust_version', $cache_bust );
+			} else {
+				return;
+			}
+		}
+
+		// Get the global styles from cache.
+		$global_styles = wp_cache_get( 'dlx_pb_global_styles' );
+
+		if ( false === $global_styles ) {
+			// Begin generating global styles for the file.
+			$post_args = array(
+				'post_type'      => 'dlx_pb_global_styles',
+				'post_status'    => 'publish',
+				'posts_per_page' => 50, /* lets hope there's not more than this */
+				'order'          => 'ASC',
+				'orderby'        => 'title',
+			);
+			$posts     = get_posts( $post_args );
+
+			wp_cache_set( 'dlx_pb_global_styles', $posts );
+			$global_styles = $posts;
+
+			// If there are no global styles, return.
+			if ( empty( $posts ) ) {
+				return;
+			}
+		}
+
+		// Generate CSS (TODO).
+
+		$css_string = 'I am full of CSS!';
+		$css_string = apply_filters( 'dlx_photo_block_global_styles_css', $css_string );
+
+		// Write the CSS to the file.
+		global $wp_filesystem;
+		if ( ! is_a( $wp_filesystem, 'WP_Filesystem_Base' ) ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+
+		// Check if photo-block directory exists, if not create it.
+		if ( ! $wp_filesystem->is_dir( $upload_dir ) ) {
+			$wp_filesystem->mkdir( $upload_dir );
+		}
+
+		$wp_filesystem->put_contents( $upload_dir . 'global-styles.css', $css_string, FS_CHMOD_FILE );
 	}
 }
