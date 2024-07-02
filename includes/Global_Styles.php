@@ -161,6 +161,7 @@ class Global_Styles {
 				'uniqueId',
 				'screen',
 				'imageData',
+				'globalStyle',
 				'dataScreen',
 				'altText',
 				'htmlAnchor',
@@ -189,6 +190,7 @@ class Global_Styles {
 			$caption_keys_to_ignore = array(
 				'captionManual',
 				'uniqueId',
+				'globalStyle',
 			);
 			/**
 			 * Filter the caption keys to ignore when saving presets.
@@ -316,6 +318,7 @@ class Global_Styles {
 				'dataScreen',
 				'altText',
 				'htmlAnchor',
+				'globalStyle',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -341,6 +344,7 @@ class Global_Styles {
 			$caption_keys_to_ignore = array(
 				'captionManual',
 				'uniqueId',
+				'globalStyle',
 			);
 			/**
 			 * Filter the caption keys to ignore when saving presets.

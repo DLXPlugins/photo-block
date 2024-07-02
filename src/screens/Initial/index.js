@@ -31,7 +31,7 @@ import { __ } from '@wordpress/i18n';
 import UploadTypes from '../../components/UploadTypes';
 import UploadTarget from '../../components/UploadTarget';
 import UploadStatus from '../../components/UploadStatus';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 /**
  * InitialScreen component.

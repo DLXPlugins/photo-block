@@ -1075,6 +1075,7 @@
 .dlx-photo-block__screen-edit-image-wrapper {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
 }
@@ -1091,6 +1092,20 @@ figcaption.dlx-photo-block__caption {
   position: relative;
   z-index: 2; /* this is to make sure the caption is on top of the overlay */
   box-sizing: border-box;
+}
+
+figcaption.dlx-photo-block__caption:not(.has-smart-styles) {
+  display: flex;
+  align-items: center;
+}
+figcaption.dlx-photo-block__caption:not(.has-smart-styles).aligncenter {
+  justify-content: center;
+}
+figcaption.dlx-photo-block__caption:not(.has-smart-styles).alignleft {
+  justify-content: flex-start;
+}
+figcaption.dlx-photo-block__caption:not(.has-smart-styles).alignright {
+  justify-content: flex-end;
 }
 
 /**
@@ -3721,7 +3736,9 @@ svg.lucide {
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/GlobalStylesPicker/ButtonPreview/editor.scss ***!
   \********************************************************************************************************************************************************************************************************************************************************************************************************************/
-
+#photo-block-preview .dlx-photo-block__screen-edit-image-wrapper {
+  display: block;
+}
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AlignmentToolbar/editor.scss ***!
   \****************************************************************************************************************************************************************************************************************************************************************************************************/

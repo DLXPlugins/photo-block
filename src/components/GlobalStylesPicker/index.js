@@ -11,7 +11,7 @@ import {
 import { Trash } from 'lucide-react';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import globalStylesStore from '../../store/global-styles';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import GlobalStylesButtonPreview from './ButtonPreview';
 
 const GlobalStylesPicker = ( props ) => {

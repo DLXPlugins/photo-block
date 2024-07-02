@@ -35,7 +35,7 @@ import SidebarImageInspectorControl from '../../components/SidebarImageInspector
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
 import GlobalStyles from '../../components/GlobalStyles';
 import getStyles from '../../blocks/photo-block/block-styles';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import PhotoBlockIcon from '../../components/Icons/PhotoBlockIcon';
 import GlobalStylesPicker from '../../components/GlobalStylesPicker';
 import globalStylesStore from '../../store/global-styles';

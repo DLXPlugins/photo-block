@@ -12,6 +12,7 @@
 .dlx-photo-block__screen-edit-image-wrapper {
 	position: relative;
 	display: flex;
+	flex-wrap: wrap;
 	flex-direction: column;
 	align-items: center;
 }
@@ -25,6 +26,20 @@ figcaption.dlx-photo-block__caption {
 	position: relative;
 	z-index: 2; /* this is to make sure the caption is on top of the overlay */
 	box-sizing: border-box;
+}
+figcaption.dlx-photo-block__caption:not(.has-smart-styles) {
+	display: flex;
+	align-items: center;
+
+	&.aligncenter {
+		justify-content: center;
+	}
+	&.alignleft {
+		justify-content: flex-start;
+	}
+	&.alignright {
+		justify-content: flex-end;
+	}
 }
 /**
  * Smart Styles.

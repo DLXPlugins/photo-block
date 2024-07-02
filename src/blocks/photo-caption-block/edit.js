@@ -57,7 +57,7 @@ import {
 
 const HtmlToReactParser = require( 'html-to-react' ).Parser;
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
 import BorderResponsiveControl from '../../components/BorderResponsive';
 import SizeResponsiveControl from '../../components/SizeResponsive';
@@ -167,7 +167,17 @@ const PhotoCaptionBlock = ( props ) => {
 
 	// Apply filters to attributes.
 	useEffect( () => {
+		const oldAttrs = { ...props.attributes };
 		attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, globalStyle, clientId, 'caption' );
+
+		// Determine if caption position changed.
+		if ( oldAttrs.captionPosition !== attributes.captionPosition ) {
+			setCaptionPosition( attributes.captionPosition );
+		}
+		// Determine if mode has changed.
+		if ( oldAttrs.mode !== attributes.mode ) {
+			setAttributes( { mode: attributes.mode } );
+		}
 	}, [ props.attributes ] );
 
 	const {
@@ -286,14 +296,11 @@ const PhotoCaptionBlock = ( props ) => {
 		hideOnDesktop,
 	} = attributes;
 
-	const innerBlocksRef = useRef( null );
 	const innerBlockProps = useInnerBlocksProps(
 		{
-			className: classnames( 'dlx-photo-caption-block__inner-blocks dlx-photo-block__caption', {
+			className: classnames( `dlx-photo-caption-block__inner-blocks dlx-photo-block__caption ${ globalStyle }`, {
 				'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles ),
-				globalStyle,
 			} ),
-			ref: innerBlocksRef,
 		},
 		{
 			allowedBlocks: photoBlock.captionInnerBlocks,
@@ -1299,7 +1306,7 @@ const PhotoCaptionBlock = ( props ) => {
 	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = () => {
-		const figClasses = classnames( `dlx-photo-block__caption ${ globalStyle }`, {
+		const figClasses = classnames( `dlx-photo-block__caption ${ globalStyle } align${ captionAlign }`, {
 			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ),
 		} );
 

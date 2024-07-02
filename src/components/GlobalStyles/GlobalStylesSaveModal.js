@@ -15,6 +15,7 @@ import { AlertCircle, Save } from 'lucide-react';
 import CustomPresetsContext from './context';
 import Notice from '../Notice';
 import globalStylesStore from '../../store/global-styles';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 
 const canSaveDefaultPresets = photoBlockUser.canSetDefaultPresets;
 
@@ -29,6 +30,10 @@ const GlobalStylesSaveModal = ( props ) => {
 	const {
 		setGlobalStyle,
 	} = useDispatch( globalStylesStore );
+
+	const {
+		updateBlockAttributes,
+	} = useDispatch( blockEditorStore );
 
 	const {
 		globalStyles,
@@ -191,10 +196,41 @@ const GlobalStylesSaveModal = ( props ) => {
 				setGlobalStyle( newData, newData.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
+				maybeRefreshBlocks();
 			} )
 			.catch( ( error ) => {
 				setSavingPreset( false );
 			} );
+	};
+
+	/**
+	 * Refresh blocks upon a global style override.
+	 */
+	const maybeRefreshBlocks = () => {
+		// Get a list of all photo blocks.
+		const photoBlocks = select( 'core/block-editor' ).getBlocks().filter( ( block ) => {
+			return 'dlxplugins/photo-block' === block.name;
+		} );
+		// Now for each that has a global style, let's force an attribute update.
+		photoBlocks.forEach( ( block ) => {
+			const { globalStyle } = block.attributes;
+			if ( globalStyle !== 'none' ) {
+				updateBlockAttributes( block.clientId, {
+					date: new Date().getTime(),
+					globalStyle,
+				} );
+
+				// Now get caption blocks and refresh.
+				const children = block.innerBlocks || [];
+				const captionBlock = children.find( ( innerBlock ) => 'dlxplugins/photo-caption-block' === innerBlock.name );
+				if ( captionBlock ) {
+					updateBlockAttributes( captionBlock.clientId, {
+						date: new Date().getTime(),
+						globalStyle,
+					} );
+				}
+			}
+		} );
 	};
 
 	/**

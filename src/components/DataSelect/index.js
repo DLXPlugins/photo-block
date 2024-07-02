@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useSelect } from '@wordpress/data';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 export const MetaFieldControl = ( props ) => {
 	const { setAttributes, attributeName, endpoint, params, label, placeholder, currentSuggestion, acceptDirectInput } = props;

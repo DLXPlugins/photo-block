@@ -14,7 +14,7 @@ import classnames from 'classnames';
 
 import { useSelect, useDispatch } from '@wordpress/data';
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 /**
  * CSSGramButtonGroup component.

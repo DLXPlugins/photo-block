@@ -32,7 +32,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import useDeviceType from '../../hooks/useDeviceType';
 import PanelBodyControl from '../../components/PanelBody';

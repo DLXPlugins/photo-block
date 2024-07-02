@@ -12,7 +12,7 @@ import { useContext, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import CSSGramButtonPreview from '../CSSGramButtonPreview';
 
 const cssGramOptions = [

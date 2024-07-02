@@ -26,7 +26,7 @@ import { useDispatch } from '@wordpress/data';
 import { LogOut, Link2, File, FileText, FileKey, Image } from 'lucide-react';
 import classNames from 'classnames';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 // Image Sizes.
 const imageSizeOptions = [];

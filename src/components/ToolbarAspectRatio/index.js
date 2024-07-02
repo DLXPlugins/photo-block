@@ -20,7 +20,7 @@ import { __ } from '@wordpress/i18n';
 import CalculateAspectRatioFromPixels from '../../utils/CalculateAspectRatioFromPixels';
 import CalculateDimensionsFromAspectRatio from '../../utils/CalculateDimensionsFromAspectRatio';
 import ColonIcon from '../Icons/ColonIcon';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 /**
  * Upload Status component.

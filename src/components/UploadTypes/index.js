@@ -34,7 +34,7 @@ import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useDispatch, useSelect } from '@wordpress/data';
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import SendCommand from '../../utils/SendCommand';
 
 import WPNotice from '../../components/Notice';

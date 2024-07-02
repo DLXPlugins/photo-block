@@ -37,6 +37,14 @@
 		"photo-block/globalStyle"
 	],
 	"attributes": {
+		"date": {
+			"type": "string",
+			"default": ""
+		},
+		"globalStyle": {
+			"type": "string",
+			"default": ""
+		},
 		"photoMode": {
 			"type": "string",
 			"default": ""

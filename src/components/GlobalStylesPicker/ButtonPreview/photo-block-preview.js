@@ -2,8 +2,9 @@
 import classnames from 'classnames';
 import { useSelect } from '@wordpress/data';
 import getStyles from '../../../blocks/photo-block/block-styles';
-import blockStore from '../../../store';
+import { blockStore } from '../../../store';
 import CaptionBlockPreview from './caption-block-preview';
+
 const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) => {
 	if ( 'undefined' === typeof photoAttributes ) {
 		return null;
@@ -11,9 +12,12 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 	const styles = getStyles( photoAttributes, 'desktop', 'photo-block-preview' );
 
 	const {
-		captionPosition,
 		cssGramFilter,
 	} = photoAttributes;
+
+	const {
+		captionPosition,
+	} = captionAttributes;
 
 	const {
 		imageData,

@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react';
 import { registerPlugin } from '@wordpress/plugins';
 import { addFilter } from '@wordpress/hooks';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect, select } from '@wordpress/data';
 import getStyles from '../../blocks/photo-block/block-styles';
 import getStylesCaption from '../../blocks/photo-caption-block/block-styles';
 
 const globalStyles = photoBlock?.globalStyles || [];
 
 import globalStylesStore from '../../store/global-styles';
+import { blockStore } from '../../store';
 
 registerPlugin(
 	'photo-block-global-styles',
@@ -21,7 +22,8 @@ registerPlugin(
 					getGlobalStyleBySlug: select( globalStylesStore ).getGlobalStyleBySlug,
 				};
 			} );
-			const returnBlockAttributes = ( propAttributes, globalStyle, clientId, type ) => {
+
+			const returnRealtimeBlockAttributes = ( propAttributes, globalStyle, clientId, type ) => {
 				const maybeGlobalStyle = getGlobalStyleBySlug( globalStyle );
 				if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
 					return propAttributes;
@@ -41,7 +43,7 @@ registerPlugin(
 				};
 			};
 
-			addFilter( 'dlx_photo_block_attributes', 'dlx_photo_block', returnBlockAttributes );
+			addFilter( 'dlx_photo_block_attributes', 'dlx_photo_block', returnRealtimeBlockAttributes );
 			return null;
 		},
 	}
@@ -99,4 +101,51 @@ registerPlugin(
 			return <style>{ styles }</style>;
 		},
 	}
+);
+
+const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
+	const { name } = blockType;
+	// Get attributes from settings.
+	switch ( name ) {
+		case 'dlxplugins/photo-block':
+			// Get global style.
+			if ( 'undefined' !== typeof ( attributes.globalStyle ) && 'none' !== attributes.globalStyle ) {
+				const globalStyle = select( globalStylesStore ).getGlobalStyleBySlug( attributes.globalStyle );
+
+				if ( Object.keys( globalStyle ).length > 0 ) {
+					// Get photo block global style attributes.
+					const globalStyleAttributes = globalStyle.content.photoAttributes;
+
+					return {
+						...attributes,
+						...globalStyleAttributes,
+					};
+				}
+			}
+
+			break;
+		case 'dlxplugins/photo-caption-block':
+			// Get global style.
+			if ( 'undefined' !== typeof ( attributes.globalStyle ) && 'none' !== attributes.globalStyle ) {
+				const globalStyle = select( globalStylesStore ).getGlobalStyleBySlug( attributes.globalStyle );
+
+				if ( Object.keys( globalStyle ).length > 0 ) {
+					// Get photo block global style attributes.
+					const globalStyleAttributes = globalStyle.content.captionAttributes;
+					return {
+						...attributes,
+						...globalStyleAttributes,
+					};
+				}
+			}
+			break;
+		default:
+			break;
+	}
+	return attributes;
+};
+addFilter(
+    'blocks.getBlockAttributes',
+    'dlxplugins/photo-block',
+    returnBlockAttributes
 );

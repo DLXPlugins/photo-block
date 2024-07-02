@@ -18,7 +18,7 @@ import { useSelect, useDispatch, select } from '@wordpress/data';
 
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
-import blockStore from '../../../store/index';
+import { blockStore } from '../../../store/index';
 import PhotoBlockPreview from './photo-block-preview';
 /**
  * CSSGramButtonGroup component.
@@ -75,7 +75,10 @@ const GlobalStylesButtonPreview = ( props ) => {
 
 					// Get unique ID for the photo block.
 					const uniqueIdAttribute = props.attributes.uniqueId;
-					const captionAttributes = globalStyle.content.captionAttributes;
+					const captionAttributes = {
+						...globalStyle.content.captionAttributes,
+						...{ globalStyle: globalStyle.slug },
+					};
 
 					// If there is no caption block, but there are attributes to apply, create one.
 					if ( ! captionBlock && captionAttributes ) {

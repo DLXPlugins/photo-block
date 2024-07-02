@@ -43,7 +43,7 @@ import {
 } from 'lucide-react';
 import { applyFilters } from '@wordpress/hooks';
 import classnames from 'classnames';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import MediaLink from '../../components/MediaLink';
 import useDeviceType from '../../hooks/useDeviceType';

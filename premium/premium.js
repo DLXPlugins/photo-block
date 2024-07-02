@@ -14156,7 +14156,8 @@ function createRuntime(controls = {}, dispatch) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   blockStore: () => (/* binding */ blockStore),
+/* harmony export */   getBlockStores: () => (/* binding */ getBlockStores)
 /* harmony export */ });
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "./node_modules/@wordpress/data/build-module/redux-store/index.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "./node_modules/@wordpress/data/build-module/select.js");
@@ -14473,6 +14474,7 @@ var createBlockStore = function createBlockStore(uniqueId) {
     }
   });
 };
+var blockStores = [];
 var blockStore = function blockStore(uniqueId) {
   if (!uniqueId) {
     return null;
@@ -14489,13 +14491,22 @@ var blockStore = function blockStore(uniqueId) {
       return storeName;
     }
     (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.register)(store);
+    blockStores.push(store);
     return storeName;
   }
 
   // If the store is already registered, return its instance
   return storeName;
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (blockStore);
+/**
+ * Retrieve a current list of all registered blocks.
+ *
+ * @return {Array} Array of block stores
+ */
+var getBlockStores = function getBlockStores() {
+  return blockStores;
+};
+
 
 /***/ }),
 
@@ -63693,7 +63704,7 @@ __webpack_require__.r(__webpack_exports__);
   }
   (0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__.registerPlugin)('dlx-photo-block-data-image-type', {
     render: function render() {
-      var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__["default"])((0,_store_index__WEBPACK_IMPORTED_MODULE_3__["default"])(uniqueId)),
+      var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__["default"])((0,_store_index__WEBPACK_IMPORTED_MODULE_3__.blockStore)(uniqueId)),
         setPhotoMode = _useDispatch.setPhotoMode,
         setScreen = _useDispatch.setScreen;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Fill, {

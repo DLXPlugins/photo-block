@@ -58,7 +58,7 @@ const actions = {
 		return {
 			type: 'SET_ASPECT_RATIO',
 			aspectRatioWidth,
-			aspectRatioHeight
+			aspectRatioHeight,
 		};
 	},
 	setScreen( screen ) {
@@ -319,6 +319,7 @@ const createBlockStore = ( uniqueId ) => {
 		},
 	} );
 };
+const blockStores = [];
 const blockStore = ( uniqueId ) => {
 	if ( ! uniqueId ) {
 		return null;
@@ -336,11 +337,20 @@ const blockStore = ( uniqueId ) => {
 		}
 
 		register( store );
+		blockStores.push( store );
 		return storeName;
 	}
 
 	// If the store is already registered, return its instance
 	return storeName;
 };
+/**
+ * Retrieve a current list of all registered blocks.
+ *
+ * @return {Array} Array of block stores
+ */
+const getBlockStores = () => {
+	return blockStores;
+};
 
-export default blockStore;
+export { blockStore, getBlockStores };

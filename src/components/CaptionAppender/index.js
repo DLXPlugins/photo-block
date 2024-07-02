@@ -9,7 +9,7 @@ import { createBlock } from '@wordpress/blocks';
 import { useDispatch } from '@wordpress/data';
 import { Subtitles } from 'lucide-react';
 import { store as blockEditorStore } from '@wordpress/block-editor';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 const CaptionAppender = ( {
 	numBlocks,

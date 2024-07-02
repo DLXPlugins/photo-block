@@ -41,6 +41,10 @@
       "type": "string",
       "default": null
     },
+    "date": {
+      "type": "string",
+      "default": ""
+    },
     "globalStyle": {
       "type": "string",
       "default": "none"

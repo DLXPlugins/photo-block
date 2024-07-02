@@ -32,7 +32,7 @@ import {
 } from '@wordpress/block-editor';
 import { generateUniqueId } from '../../utils/Functions';
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 
 import InitialScreen from '../../screens/Initial';

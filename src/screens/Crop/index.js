@@ -28,7 +28,7 @@ import { Check, RotateCcw, RotateCw, Save, X, Lock, Loader2, ArrowBigLeftDash } 
 import { useSelect, useDispatch } from '@wordpress/data';
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import AspectRatioIcon from '../../components/Icons/AspectRatio';
 import ToolbarAspectRatio from '../../components/ToolbarAspectRatio';

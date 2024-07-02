@@ -13,6 +13,7 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 		overlayVerticalPosition,
 		overlayCaptionHorizontalPosition,
 		overlayCaptionVerticalPosition,
+		captionAlign,
 	} = captionAttributes;
 
 	/**
@@ -21,7 +22,7 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = () => {
-		const figClasses = classnames( 'dlx-photo-block__caption', {
+		const figClasses = classnames( `dlx-photo-block__caption align${ captionAlign }`, {
 			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ),
 		} );
 

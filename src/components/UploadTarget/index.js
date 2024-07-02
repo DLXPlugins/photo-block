@@ -23,7 +23,7 @@ import { __ } from '@wordpress/i18n';
 
 import { useDispatch, useSelect } from '@wordpress/data';
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 // Register filepond plugins.
 registerPlugin(

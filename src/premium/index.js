@@ -7,7 +7,7 @@ import { Fill, Button } from '@wordpress/components';
 
 import { __ } from '@wordpress/i18n';
 
-import blockStore from '../store/index';
+import { blockStore } from '../store/index';
 
 // Run after block is initialized.
 addAction(
