@@ -195,6 +195,7 @@ class Blocks {
 		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {
 			$can_output = false;
 		}
+		return '';
 
 		$is_in_query_loop = false;
 		$context = $block->context ?? array();
@@ -297,173 +298,7 @@ class Blocks {
 			<?php
 		}
 
-		// Begin styles.
-		$css_output = '';
-		$css_helper = new CSS_Helper(
-			$attributes['uniqueId'],
-			'figcaption'
-		);
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxWidth'], 'max-width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinWidth'], 'min-width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerHeight'], 'height' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height' );
-		Functions::add_css_property( $css_helper, 'background-color', $attributes['captionBackgroundColor'] );
-		Functions::build_dimension_css( $css_helper, $attributes['captionBorderRadius'], 'border-radius' );
-		Functions::build_dimension_css( $css_helper, $attributes['captionPaddingSize'], 'padding' );
-		Functions::build_dimension_css( $css_helper, $attributes['captionMarginSize'], 'margin' );
-
-		$attributes['dataMode'] = false;
-		if ( 'single' === $mode && ! (bool) $attributes['dataMode'] ) {
-			Functions::add_css_property( $css_helper, 'color', $attributes['captionTextColor'] );
-			Functions::build_typography_css( $css_helper, $attributes['captionTypography'] );
-			Functions::add_css_property( $css_helper, 'text-align', $attributes['captionAlign'] );
-
-			if ( 'custom' === $attributes['captionTypography']['desktop']['fontFamilySlug'] ) {
-				// Fill in anchor CSS.
-				$custom_caption_font = new CSS_Helper(
-					$attributes['uniqueId'],
-					'figcaption'
-				);
-				$custom_font_family  = $attributes['captionTypography']['captionCustomTypography'] ?? null;
-				Functions::add_css_property( $custom_caption_font, 'font-family', $custom_font_family );
-				$css_output .= $custom_caption_font->get_css();
-			}
-
-			// Fill in anchor CSS.
-			$figcaption_anchor = new CSS_Helper(
-				$attributes['uniqueId'],
-				'figcaption a'
-			);
-			Functions::add_css_property( $figcaption_anchor, 'color', $attributes['captionLinkColor'] );
-			$css_output .= $figcaption_anchor->get_css();
-
-			// Get anchor hover state.
-			$figcaption_anchor_hover = new CSS_Helper(
-				$attributes['uniqueId'],
-				'figcaption a:hover'
-			);
-			Functions::add_css_property( $figcaption_anchor_hover, 'color', $attributes['captionLinkHoverColor'] );
-			$css_output .= $figcaption_anchor_hover->get_css();
-		}
-		$css_output .= $css_helper->get_css();
-
-		if ( 'overlay' === $attributes['captionPosition'] ) {
-			$overlay_css_helper = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay'
-			);
-			Functions::build_dimension_css( $overlay_css_helper, $attributes['captionBorderRadius'], 'border-radius' );
-			Functions::add_css_property( $overlay_css_helper, 'overflow', 'hidden' );
-			$css_output .= $overlay_css_helper->get_css();
-		}
-
-		if ( 'advanced' === $mode && ! (bool) $attributes['dataMode'] ) {
-			$smart_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'figcaption'
-			);
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-text-color', $attributes['captionTextColor'] );
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-accent-color', $attributes['captionAccentColor'] );
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-secondary-color', $attributes['captionSecondaryColor'] );
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-font-family', $attributes['captionTextFontFamily'] );
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-headings-font-family', $attributes['captionHeadingsFontFamily'] );
-			Functions::build_font_size_css( $smart_styles, $attributes['captionBaseFontSize'], '--dlx-photo-block__caption-font-size' );
-			$css_output .= $smart_styles->get_css();
-		}
-
-		/* Overlay solid color styles */
-		if ( 'overlay' === $attributes['captionPosition'] && 'solid' === $attributes['overlayBackgroundType'] ) {
-			$caption_overlay_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:before'
-			);
-			Functions::add_css_property( $caption_overlay_styles, 'transition', 'background 0.35s ease-in-out' );
-			Functions::add_css_property( $caption_overlay_styles, 'display', 'block' );
-			Functions::add_css_property( $caption_overlay_styles, 'content', '' );
-			Functions::add_css_property( $caption_overlay_styles, 'position', 'absolute' );
-			Functions::add_css_property( $caption_overlay_styles, 'top', '0' );
-			Functions::add_css_property( $caption_overlay_styles, 'right', '0' );
-			Functions::add_css_property( $caption_overlay_styles, 'bottom', '0' );
-			Functions::add_css_property( $caption_overlay_styles, 'left', '0' );
-			Functions::add_css_property( $caption_overlay_styles, 'width', '100%' );
-			Functions::add_css_property( $caption_overlay_styles, 'height', '100%' );
-			Functions::add_css_property( $caption_overlay_styles, 'background', $attributes['overlayBackgroundColor'] );
-			Functions::add_css_property( $caption_overlay_styles, 'z-index', '1' );
-			Functions::build_dimension_css( $caption_overlay_styles, $attributes['overlayBorderRadius'], 'border-radius' );
-			$css_output .= $caption_overlay_styles->get_css();
-
-			$caption_overlay_hover_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:hover:before'
-			);
-			Functions::add_css_property( $caption_overlay_hover_styles, 'background', $attributes['overlayBackgroundColorHover'] );
-			$css_output .= $caption_overlay_hover_styles->get_css();
-		}
-
-		/* overlay gradient styles */
-		if ( 'overlay' === $attributes['captionPosition'] && 'gradient' === $attributes['overlayBackgroundType'] ) {
-			$caption_overlay_gradient_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:before'
-			);
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'transition', 'opacity 0.35s ease-in-out' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'display', 'block' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'content', '' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'position', 'absolute' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'top', '0' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'right', '0' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'bottom', '0' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'left', '0' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'width', '100%' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'height', '100%' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'background-image', $attributes['overlayBackgroundGradient'] );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'opacity', $attributes['overlayBackgroundGradientOpacity'] );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'z-index', '1' );
-			Functions::build_dimension_css( $caption_overlay_gradient_styles, $attributes['overlayBorderRadius'], 'border-radius' );
-			$css_output .= $caption_overlay_gradient_styles->get_css();
-
-			$caption_overlay_gradient_hover_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:hover:before'
-			);
-			Functions::add_css_property( $caption_overlay_gradient_hover_styles, 'opacity', $attributes['overlayBackgroundGradientOpacityHover'] );
-			$css_output .= $caption_overlay_gradient_hover_styles->get_css();
-		}
-
-		/* overlay image styles */
-		if ( 'overlay' === $attributes['captionPosition'] && 'image' === $attributes['overlayBackgroundType'] && ! empty( $attributes['overlayBackgroundImage']['url'] ) ) {
-			$caption_overlay_image_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:before'
-			);
-			Functions::add_css_property( $caption_overlay_image_styles, 'transition', 'opacity 0.35s ease-in-out' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'display', 'block' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'content', '' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'position', 'absolute' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'top', '0' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'right', '0' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'bottom', '0' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'left', '0' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'width', '100%' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'height', '100%' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'background-color', $attributes['overlayBackgroundImage']['backgroundColor'] );
-			Functions::add_css_property( $caption_overlay_image_styles, 'background-image', 'url(\'' . $attributes['overlayBackgroundImage']['url'] . '\')' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'background-position', $attributes['overlayBackgroundImage']['backgroundPosition'] );
-			Functions::add_css_property( $caption_overlay_image_styles, 'background-repeat', $attributes['overlayBackgroundImage']['backgroundRepeat'] );
-			Functions::add_css_property( $caption_overlay_image_styles, 'opacity', $attributes['overlayBackgroundImage']['backgroundOpacity'] );
-			Functions::add_css_property( $caption_overlay_image_styles, 'z-index', '1' );
-			Functions::build_dimension_css( $caption_overlay_image_styles, $attributes['overlayBorderRadius'], 'border-radius' );
-			$css_output .= $caption_overlay_image_styles->get_css();
-
-			$caption_overlay_image_hover_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:hover:before'
-			);
-			Functions::add_css_property( $caption_overlay_image_hover_styles, 'opacity', $attributes['overlayBackgroundImage']['backgroundOpacityHover'] );
-			$css_output .= $caption_overlay_image_hover_styles->get_css();
-		}
+		$css_output = Functions::generate_photo_block_css( $attributes, $block->context['uniqueId'] );
 
 		?>
 		<style type="text/css"><?php echo $css_output; ?></style>
@@ -484,6 +319,44 @@ class Blocks {
 		$can_output = true;
 		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {
 			$can_output = false;
+		}
+
+		// Let's get the global style, if any.
+		$has_global_style = false;
+		$global_style_css_class = '';
+		$global_style_slug = $attributes['globalStyle'] ?? false;
+
+		if ( 'none' !== $global_style_slug && '' !== $global_style_slug ) {
+			// Try to get global style from cache.
+			$global_style = wp_cache_get( 'dlx_pb_global_style_' . $global_style_slug, 'dlx_photo_block' ); // can be WP_Post or null.
+
+			// Get global style by slug.
+			if ( false === $global_style ) {
+				$global_style = get_page_by_path( $global_style_slug, OBJECT, 'dlx_pb_global_styles' );
+
+				if ( null !== $global_style ) {
+					$has_global_style = true;
+
+					// Get the CSS classname.
+					$global_style_css_class = get_post_meta( $global_style->ID, '_dlx_pb_css_class', true );
+				}
+
+				// Set object cache.
+				wp_cache_set( 'dlx_pb_global_style_' . $global_style_slug, $global_style, 'dlx_photo_block', 60 * 60 );
+			}
+
+			// If we have a global style, get the attributes.
+			if ( $global_style ) {
+				$global_style_content = json_decode( $global_style->post_content, true );
+
+				// Get photo attributes.
+				$photo_attributes = $global_style_content['photoAttributes'] ?? array();
+				$photo_attributes = Functions::sanitize_array_recursive( $photo_attributes );
+
+				if ( ! empty( $photo_attributes ) ) {
+					$attributes = array_merge( $photo_attributes, $attributes );
+				}
+			}
 		}
 
 		/**
@@ -825,6 +698,9 @@ class Blocks {
 		// Get figure CSS advanced classes.
 		$figure_css_classes   = explode( ' ', $attributes['figureCSSClasses'] ?? '' );
 		$figure_css_classes[] = 'dlx-photo-block__figure';
+		if ( $has_global_style ) {
+			$figure_css_classes[] = $global_style_css_class;
+		}
 
 		/**
 		 * Filter the figure CSS classes.
@@ -849,6 +725,9 @@ class Blocks {
 			'dlx-photo-block__container',
 			'align' . esc_attr( $attributes['align'] ),
 		);
+		if ( $has_global_style ) {
+			$section_css_classes[] = $global_style_css_class;
+		}
 
 		/**
 		 * Filter the section CSS classes.
@@ -882,7 +761,10 @@ class Blocks {
 		$image_markup = apply_filters( 'dlx_pb_image_markup', $image_markup, $attributes, $context );
 
 		// Begin frontend styles.
-		$css_output = Functions::generate_photo_block_css( $attributes, $unique_id );
+		$css_output = '';
+		if ( ! $has_global_style ) {
+			$css_output = Functions::generate_photo_block_css( $attributes, $unique_id );
+		}
 
 		// Determine if right+click protection is enabled.
 		$right_click_protection_enabled = (bool) $attributes['imageProtectionEnabled'] ?? false;
@@ -901,11 +783,16 @@ class Blocks {
 				'document.getElementById("' . esc_js( $unique_id ) . '").addEventListener("contextmenu",function(e){e.preventDefault()},!1);'
 			);
 		}
-		?>
+
+		// Output styles.
+		if ( ! $has_global_style ) {
+			?>
 			<style type="text/css">
 				<?php echo esc_html( $css_output ); ?>
 			</style>
-		<?php
+			<?php
+		}
+
 		// Output image markup.
 		echo wp_kses( $image_markup, Functions::get_kses_allowed_html() );
 		return ob_get_clean();
