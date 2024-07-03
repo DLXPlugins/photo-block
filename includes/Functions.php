@@ -530,9 +530,9 @@ class Functions {
 			Functions::add_css_property( $caption_overlay_styles, 'left', '0' );
 			Functions::add_css_property( $caption_overlay_styles, 'width', '100%' );
 			Functions::add_css_property( $caption_overlay_styles, 'height', '100%' );
-			Functions::add_css_property( $caption_overlay_styles, 'background', $attributes['overlayBackgroundColor'] );
+			Functions::add_css_property( $caption_overlay_styles, 'background', $attributes['overlayBackgroundColor'], '--photo-block-caption-overlay-background-color' );
 			Functions::add_css_property( $caption_overlay_styles, 'z-index', '1' );
-			Functions::build_dimension_css( $caption_overlay_styles, $attributes['overlayBorderRadius'], 'border-radius' );
+			Functions::build_dimension_css( $caption_overlay_styles, $attributes['overlayBorderRadius'], 'border-radius', '--photo-block-caption-overlay-border-radius' );
 			$css_output .= $caption_overlay_styles->get_css();
 
 			$caption_overlay_hover_styles = new CSS_Helper(
@@ -559,10 +559,10 @@ class Functions {
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'left', '0' );
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'width', '100%' );
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'height', '100%' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'background-image', $attributes['overlayBackgroundGradient'] );
+			Functions::add_css_property( $caption_overlay_gradient_styles, 'background-image', $attributes['overlayBackgroundGradient'], '--photo-block-caption-overlay-background-gradient' );
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'opacity', $attributes['overlayBackgroundGradientOpacity'] );
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'z-index', '1' );
-			Functions::build_dimension_css( $caption_overlay_gradient_styles, $attributes['overlayBorderRadius'], 'border-radius' );
+			Functions::build_dimension_css( $caption_overlay_gradient_styles, $attributes['overlayBorderRadius'], 'border-radius', '--photo-block-caption-overlay-border-radius' );
 			$css_output .= $caption_overlay_gradient_styles->get_css();
 
 			$caption_overlay_gradient_hover_styles = new CSS_Helper(
@@ -589,13 +589,13 @@ class Functions {
 			Functions::add_css_property( $caption_overlay_image_styles, 'left', '0' );
 			Functions::add_css_property( $caption_overlay_image_styles, 'width', '100%' );
 			Functions::add_css_property( $caption_overlay_image_styles, 'height', '100%' );
-			Functions::add_css_property( $caption_overlay_image_styles, 'background-color', $attributes['overlayBackgroundImage']['backgroundColor'] );
+			Functions::add_css_property( $caption_overlay_image_styles, 'background-color', $attributes['overlayBackgroundImage']['backgroundColor'], '--photo-block-caption-overlay-background-image-color' );
 			Functions::add_css_property( $caption_overlay_image_styles, 'background-image', 'url(\'' . $attributes['overlayBackgroundImage']['url'] . '\')' );
 			Functions::add_css_property( $caption_overlay_image_styles, 'background-position', $attributes['overlayBackgroundImage']['backgroundPosition'] );
 			Functions::add_css_property( $caption_overlay_image_styles, 'background-repeat', $attributes['overlayBackgroundImage']['backgroundRepeat'] );
 			Functions::add_css_property( $caption_overlay_image_styles, 'opacity', $attributes['overlayBackgroundImage']['backgroundOpacity'] );
 			Functions::add_css_property( $caption_overlay_image_styles, 'z-index', '1' );
-			Functions::build_dimension_css( $caption_overlay_image_styles, $attributes['overlayBorderRadius'], 'border-radius' );
+			Functions::build_dimension_css( $caption_overlay_image_styles, $attributes['overlayBorderRadius'], 'border-radius', '--photo-block-caption-overlay-border-radius' );
 			$css_output .= $caption_overlay_image_styles->get_css();
 
 			$caption_overlay_image_hover_styles = new CSS_Helper(
