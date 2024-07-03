@@ -444,22 +444,22 @@ class Functions {
 			'figcaption'
 		);
 		$mode       = $attributes['mode'] ?? 'single';
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxWidth'], 'max-width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinWidth'], 'min-width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerHeight'], 'height' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height' );
-		Functions::add_css_property( $css_helper, 'background-color', $attributes['captionBackgroundColor'] );
-		Functions::build_dimension_css( $css_helper, $attributes['captionBorderRadius'], 'border-radius' );
-		Functions::build_dimension_css( $css_helper, $attributes['captionPaddingSize'], 'padding' );
-		Functions::build_dimension_css( $css_helper, $attributes['captionMarginSize'], 'margin' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width', 'width', '', '--photo-block-caption-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxWidth'], 'max-width', 'width', '', '--photo-block-caption-max-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinWidth'], 'min-width', 'width', '', '--photo-block-caption-min-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerHeight'], 'height', 'width', '', '--photo-block-caption-height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height', 'width', '', '--photo-block-caption-max-height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height', 'width', '', '--photo-block-caption-min-height' );
+		Functions::add_css_property( $css_helper, 'background-color', $attributes['captionBackgroundColor'], '--photo-block-caption-background-color' );
+		Functions::build_dimension_css( $css_helper, $attributes['captionBorderRadius'], 'border-radius', '--photo-block-caption-border-radius' );
+		Functions::build_dimension_css( $css_helper, $attributes['captionPaddingSize'], 'padding', '--photo-block-caption-padding' );
+		Functions::build_dimension_css( $css_helper, $attributes['captionMarginSize'], 'margin', '--photo-block-caption-margin' );
 
 		$attributes['dataMode'] = false;
 		if ( 'single' === $mode ) {
-			Functions::add_css_property( $css_helper, 'color', $attributes['captionTextColor'] );
+			Functions::add_css_property( $css_helper, 'color', $attributes['captionTextColor'], '--photo-block-caption-text-color' );
 			Functions::build_typography_css( $css_helper, $attributes['captionTypography'] );
-			Functions::add_css_property( $css_helper, 'text-align', $attributes['captionAlign'] );
+			Functions::add_css_property( $css_helper, 'text-align', $attributes['captionAlign'], '--photo-block-caption-text-align' );
 
 			if ( 'custom' === $attributes['captionTypography']['desktop']['fontFamilySlug'] ) {
 				// Fill in anchor CSS.
@@ -477,7 +477,7 @@ class Functions {
 				$attributes['uniqueId'],
 				'figcaption a'
 			);
-			Functions::add_css_property( $figcaption_anchor, 'color', $attributes['captionLinkColor'] );
+			Functions::add_css_property( $figcaption_anchor, 'color', $attributes['captionLinkColor'], '--photo-block-caption-link-color' );
 			$css_output .= $figcaption_anchor->get_css();
 
 			// Get anchor hover state.
@@ -485,7 +485,7 @@ class Functions {
 				$attributes['uniqueId'],
 				'figcaption a:hover'
 			);
-			Functions::add_css_property( $figcaption_anchor_hover, 'color', $attributes['captionLinkHoverColor'] );
+			Functions::add_css_property( $figcaption_anchor_hover, 'color', $attributes['captionLinkHoverColor'], '--photo-block-caption-link-hover-color' );
 			$css_output .= $figcaption_anchor_hover->get_css();
 		}
 		$css_output .= $css_helper->get_css();
@@ -605,6 +605,7 @@ class Functions {
 			Functions::add_css_property( $caption_overlay_image_hover_styles, 'opacity', $attributes['overlayBackgroundImage']['backgroundOpacityHover'] );
 			$css_output .= $caption_overlay_image_hover_styles->get_css();
 		}
+		return $css_output;
 	}
 
 	/**

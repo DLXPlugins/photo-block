@@ -130,6 +130,7 @@ const GlobalStylesContainer = ( props ) => {
 
 		// If there is no caption block, but there are attributes to apply, create one.
 		if ( ! captionBlock && captionAttributes ) {
+			setAttributes( { hasCaption: true } );
 			const newBlocks = createBlock( 'dlxplugins/photo-caption-block', captionAttributes );
 			insertBlock( newBlocks, undefined, clientId );
 		}

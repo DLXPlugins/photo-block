@@ -3,7 +3,6 @@ import './editor.scss';
 import React, { useContext } from 'react';
 import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
-import { store } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 
 import { useDispatch } from '@wordpress/data';
@@ -16,7 +15,7 @@ const CaptionAppender = ( {
 	clientId,
 	blockUniqueId,
 } ) => {
-	const { insertBlock } = useDispatch( blockEditorStore );
+	const { insertBlock, updateBlockAttributes } = useDispatch( blockEditorStore );
 	const {
 		setHasCaption,
 	} = useDispatch( blockStore( blockUniqueId ) );
@@ -27,6 +26,7 @@ const CaptionAppender = ( {
 	const appendBlock = () => {
 		const newBlocks = createBlock( 'dlxplugins/photo-caption-block' );
 		insertBlock( newBlocks, undefined, clientId );
+		updateBlockAttributes( clientId, { hasCaption: true } );
 	};
 
 	// Exit if there are innerblocks.

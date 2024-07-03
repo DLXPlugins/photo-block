@@ -4195,16 +4195,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
-/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/captions.js");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
 // eslint-disable-next-line no-unused-vars
-
 
 
 
@@ -4218,17 +4217,21 @@ var CaptionAppender = function CaptionAppender(_ref) {
   var numBlocks = _ref.numBlocks,
     clientId = _ref.clientId,
     blockUniqueId = _ref.blockUniqueId;
-  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store),
-    insertBlock = _useDispatch.insertBlock;
-  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_7__.blockStore)(blockUniqueId)),
+  var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.store),
+    insertBlock = _useDispatch.insertBlock,
+    updateBlockAttributes = _useDispatch.updateBlockAttributes;
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_7__.blockStore)(blockUniqueId)),
     setHasCaption = _useDispatch2.setHasCaption;
 
   /**
    * Add a caption block to the main block.
    */
   var appendBlock = function appendBlock() {
-    var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_5__.createBlock)('dlxplugins/photo-caption-block');
+    var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_4__.createBlock)('dlxplugins/photo-caption-block');
     insertBlock(newBlocks, undefined, clientId);
+    updateBlockAttributes(clientId, {
+      hasCaption: true
+    });
   };
 
   // Exit if there are innerblocks.
@@ -5963,6 +5966,9 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
 
     // If there is no caption block, but there are attributes to apply, create one.
     if (!captionBlock && captionAttributes) {
+      setAttributes({
+        hasCaption: true
+      });
       var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.createBlock)('dlxplugins/photo-caption-block', captionAttributes);
       insertBlock(newBlocks, undefined, clientId);
     }
@@ -7197,6 +7203,9 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
       if (!captionBlock && captionAttributes) {
         var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__.createBlock)('dlxplugins/photo-caption-block', captionAttributes);
         insertBlock(newBlocks, undefined, props.clientId);
+        props.setAttributes({
+          hasCaption: true
+        });
       }
 
       // If there is a caption block and attributes to apply, apply them.

@@ -195,10 +195,47 @@ class Blocks {
 		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {
 			$can_output = false;
 		}
-		return '';
+
+		// Let's get the global style, if any.
+		$has_global_style       = false;
+		$global_style_css_class = '';
+		$global_style_slug      = $attributes['globalStyle'] ?? false;
+
+		if ( 'none' !== $global_style_slug && '' !== $global_style_slug ) {
+			// Try to get global style from cache.
+			$global_style = wp_cache_get( 'dlx_pb_global_style_' . $global_style_slug, 'dlx_photo_block' ); // can be WP_Post or null.
+
+			// Get global style by slug.
+			if ( false === $global_style ) {
+				$global_style = get_page_by_path( $global_style_slug, OBJECT, 'dlx_pb_global_styles' );
+
+				if ( null !== $global_style ) {
+					$has_global_style = true;
+
+					// Get the CSS classname.
+					$global_style_css_class = get_post_meta( $global_style->ID, '_dlx_pb_css_class', true );
+				}
+
+				// Set object cache.
+				wp_cache_set( 'dlx_pb_global_style_' . $global_style_slug, $global_style, 'dlx_photo_block', 60 * 60 );
+			}
+
+			// If we have a global style, get the attributes.
+			if ( $global_style ) {
+				$global_style_content = json_decode( $global_style->post_content, true );
+
+				// Get photo attributes.
+				$caption_attributes = $global_style_content['captionAttributes'] ?? array();
+				$caption_attributes = Functions::sanitize_array_recursive( $caption_attributes );
+
+				if ( ! empty( $caption_attributes ) ) {
+					$attributes = array_merge( $caption_attributes, $attributes );
+				}
+			}
+		}
 
 		$is_in_query_loop = false;
-		$context = $block->context ?? array();
+		$context          = $block->context ?? array();
 		$current_post_id  = $context['postId'] ?? 0;
 		$maybe_query      = $context['query'] ?? array();
 		if ( $current_post_id && ! empty( $maybe_query ) ) {
@@ -218,6 +255,9 @@ class Blocks {
 		if ( ! $can_output ) {
 			return;
 		}
+
+		// Get unique ID from parent context.
+		$unique_id = $context['photo-block/uniqueId'] ?? '';
 
 		// Let's sanitize the attributes.
 		$attributes = Functions::sanitize_array_recursive( $attributes );
@@ -288,22 +328,31 @@ class Blocks {
 			<?php
 		}
 		?>
-			<figcaption class="<?php echo esc_attr( implode( ' ', $caption_classes ) ); ?>">
-				<?php echo wp_kses_post( trim( $caption ) ); ?>
-			</figcaption>
+			<div class="dlx-photo-block__caption-wrapper">
+				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_classes ) ); ?>">
+					<?php echo wp_kses_post( trim( $caption ) ); ?>
+				</figcaption>
+			</div>
 		<?php
 		if ( 'overlay' === $attributes['captionPosition'] ) {
 			?>
 				</div>
 			<?php
 		}
+		$css_output = '';
+		if ( ! $has_global_style ) {
+			$css_output = Functions::generate_photo_block_caption_css( $attributes, $block->context['photo-block/uniqueId'] );
+		}
 
-		$css_output = Functions::generate_photo_block_css( $attributes, $block->context['uniqueId'] );
-
-		?>
-		<style type="text/css"><?php echo $css_output; ?></style>
-		<?php
+		if ( ! $has_global_style ) {
+			?>
+			<style type="text/css">
+				<?php echo esc_html( $css_output ); ?>
+			</style>
+			<?php
+		}
 		$caption = ob_get_clean();
+		$caption = wp_kses( $caption, Functions::get_kses_allowed_html() );
 		return $caption;
 	}
 
@@ -322,9 +371,9 @@ class Blocks {
 		}
 
 		// Let's get the global style, if any.
-		$has_global_style = false;
+		$has_global_style       = false;
 		$global_style_css_class = '';
-		$global_style_slug = $attributes['globalStyle'] ?? false;
+		$global_style_slug      = $attributes['globalStyle'] ?? false;
 
 		if ( 'none' !== $global_style_slug && '' !== $global_style_slug ) {
 			// Try to get global style from cache.

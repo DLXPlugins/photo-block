@@ -84,6 +84,7 @@ const GlobalStylesButtonPreview = ( props ) => {
 					if ( ! captionBlock && captionAttributes ) {
 						const newBlocks = createBlock( 'dlxplugins/photo-caption-block', captionAttributes );
 						insertBlock( newBlocks, undefined, props.clientId );
+						props.setAttributes( { hasCaption: true } );
 					}
 
 					// If there is a caption block and attributes to apply, apply them.
