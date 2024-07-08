@@ -348,7 +348,7 @@ class Blocks {
 		}
 		?>
 			<div class="dlx-photo-block__caption-wrapper <?php echo esc_attr( implode( ' ', $caption_hover_overlay_styles ) ); ?>">
-				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
+				<figcaption class="dlx-photo-block__caption <?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
 					<?php echo wp_kses_post( trim( $caption ) ); ?>
 				</figcaption>
 			</div>

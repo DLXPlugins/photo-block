@@ -13614,6 +13614,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     setScreen = _useDispatch.setScreen,
     setImageData = _useDispatch.setImageData,
     setJustCropped = _useDispatch.setJustCropped;
+  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)('core/notices'),
+    createSuccessNotice = _useDispatch2.createSuccessNotice,
+    createInfoNotice = _useDispatch2.createInfoNotice;
 
   // Get current block data.
   var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (select) {
@@ -13642,9 +13645,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     id = imageData.id,
     width = imageData.width,
     height = imageData.height;
-  var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store),
-    insertBlock = _useDispatch2.insertBlock,
-    updateBlockAttributes = _useDispatch2.updateBlockAttributes; // For setting the preset defaults.
+  var _useDispatch3 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.store),
+    insertBlock = _useDispatch3.insertBlock,
+    updateBlockAttributes = _useDispatch3.updateBlockAttributes; // For setting the preset defaults.
 
   var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_13__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 2),
@@ -13711,19 +13714,28 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
             }
             return _context2.abrupt("return");
           case 2:
+            // Set snackbar notice.
+            createInfoNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block'), {
+              type: 'snackbar'
+            });
+
             // Commence saving.
             setIsSavingAlt(true);
-            _context2.next = 5;
+            _context2.next = 6;
             return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_11__["default"])(photoBlock.restNonce, {
               imageId: imageData.id,
               altText: altText
-            }, "".concat(photoBlock.restUrl + '/image/save-alt'), 'POST').then(function (response) {})["catch"](function (error) {
+            }, "".concat(photoBlock.restUrl + '/image/save-alt'), 'POST').then(function (response) {
+              createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt text saved.', 'photo-block'), {
+                type: 'snackbar'
+              });
+            })["catch"](function (error) {
               // todo: error checking/display.
               console.error(error);
             }).then(function () {
               setIsSavingAlt(false);
             });
-          case 5:
+          case 6:
           case "end":
             return _context2.stop();
         }
@@ -13750,19 +13762,28 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
             }
             return _context3.abrupt("return");
           case 2:
+            // Set snackbar notice.
+            createInfoNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving title text…', 'photo-block'), {
+              type: 'snackbar'
+            });
+
             // Commence saving.
             setIsSavingTitle(true);
-            _context3.next = 5;
+            _context3.next = 6;
             return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_11__["default"])(photoBlock.restNonce, {
               imageId: imageData.id,
               titleText: titleText
-            }, "".concat(photoBlock.restUrl + '/image/save-title'), 'POST').then(function (response) {})["catch"](function (error) {
+            }, "".concat(photoBlock.restUrl + '/image/save-title'), 'POST').then(function (response) {
+              createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Title text saved.', 'photo-block'), {
+                type: 'snackbar'
+              });
+            })["catch"](function (error) {
               // todo: error checking/display.
               console.error(error);
             }).then(function () {
               setIsSavingTitle(false);
             });
-          case 5:
+          case 6:
           case "end":
             return _context3.stop();
         }

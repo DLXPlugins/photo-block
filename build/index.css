@@ -2246,6 +2246,12 @@ svg.lucide {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+.photo-block__text-saving svg {
+  margin: 0;
+  margin-right: 12px;
 }
 
 .photo-block__title-text.components-base-control.is-saving {
@@ -3753,7 +3759,7 @@ svg.lucide {
 .photo-block-global-styles-picker-button-group {
   display: grid;
   box-sizing: border-box;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   -moz-column-gap: 12px;
        column-gap: 12px;
   row-gap: 12px;

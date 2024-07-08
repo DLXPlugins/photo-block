@@ -98,6 +98,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		setJustCropped,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
+	const { createSuccessNotice, createInfoNotice } = useDispatch( 'core/notices' );
+
 	// Get current block data.
 	const {
 		imageData,
@@ -177,6 +179,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			return;
 		}
 
+		// Set snackbar notice.
+		createInfoNotice( __( 'Saving alt text…', 'photo-block' ), {
+			type: 'snackbar',
+		} );
+
 		// Commence saving.
 		setIsSavingAlt( true );
 		await SendCommand(
@@ -189,6 +196,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			'POST'
 		)
 			.then( ( response ) => {
+				createSuccessNotice( __( 'Alt text saved.', 'photo-block' ), {
+					type: 'snackbar',
+				} );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
@@ -210,6 +220,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			return;
 		}
 
+		// Set snackbar notice.
+		createInfoNotice( __( 'Saving title text…', 'photo-block' ), {
+			type: 'snackbar',
+		} );
+
 		// Commence saving.
 		setIsSavingTitle( true );
 		await SendCommand(
@@ -222,6 +237,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			'POST'
 		)
 			.then( ( response ) => {
+				createSuccessNotice( __( 'Title text saved.', 'photo-block' ), {
+					type: 'snackbar',
+				} );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
@@ -498,7 +516,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								'photo-block'
 							) }
 						/>
-						{ isSavingAlt && (
+						{ ( isSavingAlt ) && (
 							<>
 								<div className="photo-block__text-saving"><Spinner /> { __( 'Saving alt text…', 'photo-block' ) }</div>
 							</>
