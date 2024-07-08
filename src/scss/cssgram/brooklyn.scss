@@ -25,6 +25,7 @@
 @mixin photo-block-brooklyn($filters...) {
   @include filter-base;
   filter: contrast(.9) brightness(1.1) $filters;
+  --photo-block-image-filter: contrast(.9) brightness(1.1) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: radial-gradient(circle, rgba(168, 223, 193, .4) 70%, rgb(196, 183, 200));

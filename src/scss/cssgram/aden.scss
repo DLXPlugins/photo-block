@@ -26,6 +26,7 @@
 @mixin photo-block-aden($filters...) {
   @include filter-base;
   filter: hue-rotate(-20deg) contrast(.9) saturate(.85) brightness(1.2) $filters;
+  --photo-block-image-filter: hue-rotate(-20deg) contrast(.9) saturate(.85) brightness(1.2)blur(var(--photo-block-blur, 0));
 
   &::after {
     background: linear-gradient(to right, rgba(66, 10, 14, .2), transparent);

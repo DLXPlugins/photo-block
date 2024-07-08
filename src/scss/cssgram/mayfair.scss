@@ -25,6 +25,7 @@
 @mixin photo-block-mayfair($filters...) {
   @include filter-base;
   filter: contrast(1.1) saturate(1.1) $filters;
+  --photo-block-image-filter: contrast(1.1) saturate(1.1) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, .8), rgba(255, 200, 200, .6), rgb(17, 17, 17) 60%);

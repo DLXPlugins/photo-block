@@ -26,6 +26,7 @@
 @mixin photo-block-brannan($filters...) {
   @include filter-base;
   filter: sepia(0.5) contrast(1.4) $filters;
+  --photo-block-image-filter: sepia(0.5) contrast(1.4) blur(var(--photo-block-blur, 0));
 
   &::after {
     background-color: rgba(161, 44, 199, .31);

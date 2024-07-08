@@ -24,6 +24,7 @@
 @mixin photo-block-clarendon($filters...) {
   @include filter-base;
   filter: contrast(1.2) saturate(1.35) $filters;
+  --photo-block-image-filter: contrast(1.2) saturate(1.35) blur(var(--photo-block-blur, 0));
 
   &:before {
     background: rgba(127, 187, 227, .2);

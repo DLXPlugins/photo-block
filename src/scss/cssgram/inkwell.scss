@@ -25,6 +25,7 @@
 @mixin photo-block-inkwell($filters...) {
   @include filter-base;
   filter: sepia(.3) contrast(1.1) brightness(1.1) grayscale(1) $filters;
+  --photo-block-image-filter: sepia(.3) contrast(1.1) brightness(1.1) grayscale(1) blur(var(--photo-block-blur, 0));
 
   @content;
 }

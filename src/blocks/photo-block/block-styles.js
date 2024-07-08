@@ -70,7 +70,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 		${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
 			--photo-block-image-opacity: ${ photoOpacity };
 			--photo-block-image-object-fit: ${ photoObjectFit };
-			--photo-block-image-blur: ${ photoBlur }px;
+			--photo-block-blur: ${ photoBlur }px;
 			--photo-block-image-width: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
 			--photo-block-image-height: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
 			--photo-block-image-object-position: ${ 'custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition };

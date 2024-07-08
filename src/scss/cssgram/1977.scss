@@ -24,6 +24,7 @@
 @mixin photo-block-1977($filters...) {
   @include filter-base;
   filter: contrast(1.1) brightness(1.1) saturate(1.3) $filters;
+  --photo-block-image-filter: contrast(1.1) brightness(1.1) saturate(1.3) blur(var(--photo-block-blur, 0));
 
   &:after{
     background: rgba(243, 106, 188, .3);

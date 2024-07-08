@@ -27,6 +27,7 @@
 @mixin photo-block-maven($filters...) {
   @include filter-base;
   filter: sepia(.25) brightness(.95) contrast(.95) saturate(1.5) $filters;
+  --photo-block-image-filter: sepia(.25) brightness(.95) contrast(.95) saturate(1.5) blur(var(--photo-block-blur, 0));
 
   &:after{
     background: rgba(3, 230, 26, .20);

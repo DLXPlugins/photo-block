@@ -25,6 +25,7 @@
 @mixin photo-block-gingham($filters...) {
   @include filter-base;
   filter: brightness(1.05) hue-rotate(-10deg) $filters;
+  --photo-block-image-filter: brightness(1.05) hue-rotate(-10deg) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: rgb(230, 230, 250);

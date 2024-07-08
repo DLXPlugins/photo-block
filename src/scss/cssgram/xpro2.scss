@@ -25,6 +25,7 @@
 @mixin photo-block-xpro2($filters...) {
   @include filter-base;
   filter: sepia(.3) $filters;
+  --photo-block-image-filter: sepia(.3) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: radial-gradient(circle, rgb(230, 231, 224) 40%, rgba(43, 42, 161, .6) 110%);

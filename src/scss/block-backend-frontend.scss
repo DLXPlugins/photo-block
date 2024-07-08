@@ -260,7 +260,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 .dlx-photo-block__image-wrapper img {
 	opacity: var( --photo-block-image-opacity, 1 );
 	object-fit: var( --photo-block-image-object-fit, unset );
-	filter: blur( var( --photo-block-image-blur, 0 ) );
+	filter: var( --photo-block-image-filter, unset );
 	width: var( --photo-block-image-width, unset );
 	height: var( --photo-block-image-height, unset );
 	object-position: var( --photo-block-image-object-position, center );
@@ -507,4 +507,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 	max-width: 800px;
 	border: 1px solid #333;
 	padding: 35px;
+}
+.dlx-photo-block__image:not(.has-css-gram) {
+	filter: blur( var( --photo-block-blur, 0 ) );
 }

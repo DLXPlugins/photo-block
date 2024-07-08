@@ -386,8 +386,8 @@ class Functions {
 			$is_class
 		);
 		Functions::add_css_property( $image_css_helper, 'opacity', (float) $attributes['photoOpacity'] );
-		if ( $attributes['photoBlur'] ) {
-			Functions::add_css_property( $image_css_helper, 'filter', 'blur(' . (int) $attributes['photoBlur'] . 'px)' );
+		if ( $attributes['photoBlur'] && $attributes['photoBlur'] > 0 ) {
+			Functions::add_css_property( $image_css_helper, 'filter', (int) $attributes['photoBlur'] . 'px', '--photo-block-blur' );
 		}
 		if ( 'none' !== $attributes['photoObjectFit'] ) {
 			Functions::add_css_property( $image_css_helper, 'object-fit', $attributes['photoObjectFit'] );
