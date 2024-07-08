@@ -308,6 +308,21 @@ class Blocks {
 		$caption_overlay_styles[] = 'center' === $attributes['overlayHorizontalPosition'] ? 'overlay-horizontal-center' : '';
 		$caption_overlay_styles[] = 'right' === $attributes['overlayHorizontalPosition'] ? 'overlay-horizontal-right' : '';
 
+		// Set hover overlay options.
+		$caption_hover_overlay_styles   = array();
+		$caption_hover_overlay_styles[] = ( 'overlay' === $attributes['captionPosition'] && (bool) $attributes['overlayDisplayOnHover'] ) ? 'overlay-display-hover' : '';
+		if ( 'slide-down' === $attributes['overlayDisplayAnimation'] ) {
+			$caption_hover_overlay_styles[] = 'overlay-slide-down';
+		} elseif ( 'slide-up' === $attributes['overlayDisplayAnimation'] ) {
+			$caption_hover_overlay_styles[] = 'overlay-slide-up';
+		} elseif ( 'slide-left' === $attributes['overlayDisplayAnimation'] ) {
+			$caption_hover_overlay_styles[] = 'overlay-slide-left';
+		} elseif ( 'slide-right' === $attributes['overlayDisplayAnimation'] ) {
+			$caption_hover_overlay_styles[] = 'overlay-slide-right';
+		} else {
+			$caption_hover_overlay_styles[] = 'overlay-fade';
+		}
+
 		/**
 		 * Filter the caption overlay styles.
 		 *
@@ -324,12 +339,16 @@ class Blocks {
 		<?php
 		if ( 'overlay' === $attributes['captionPosition'] ) {
 			?>
-				<div class="<?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
+				<div class="dlx-photo-block__caption--has-overlay">
 			<?php
 		}
+		if ( 'overlay' !== $attributes['captionPosition'] ) {
+			$caption_hover_overlay_styles = array();
+			$caption_overlay_styles       = array();
+		}
 		?>
-			<div class="dlx-photo-block__caption-wrapper">
-				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_classes ) ); ?>">
+			<div class="dlx-photo-block__caption-wrapper <?php echo esc_attr( implode( ' ', $caption_hover_overlay_styles ) ); ?>">
+				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
 					<?php echo wp_kses_post( trim( $caption ) ); ?>
 				</figcaption>
 			</div>
