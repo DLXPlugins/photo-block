@@ -355,11 +355,6 @@ class Functions {
 	 * @return string The generated CSS.
 	 */
 	public static function generate_photo_block_css( $attributes, $unique_id, $is_class = false ) {
-		$unique_id = $attributes['uniqueId'] ?? '';
-		if ( ! $unique_id ) {
-			return '';
-		}
-
 		// Placeholder for all CSS styles generated.
 		$css_output = '';
 
@@ -437,12 +432,22 @@ class Functions {
 		return $css_output;
 	}
 
+	/**
+	 * Generate the photo block caption CSS.
+	 *
+	 * @param array  $attributes The block attributes.
+	 * @param string $unique_id  The unique ID for the block.
+	 * @param bool   $is_class   If true, the uniqueId is a class name, if false, it is an ID.
+	 *
+	 * @return string The generated CSS.
+	 */
 	public static function generate_photo_block_caption_css( $attributes, $unique_id, $is_class = false ) {
 		// Begin styles.
 		$css_output = '';
 		$css_helper = new CSS_Helper(
 			$unique_id,
-			'figcaption'
+			'figcaption',
+			$is_class
 		);
 		$mode       = $attributes['mode'] ?? 'single';
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width', 'width', '', '--photo-block-caption-width' );
@@ -465,8 +470,9 @@ class Functions {
 			if ( 'custom' === $attributes['captionTypography']['desktop']['fontFamilySlug'] ) {
 				// Fill in anchor CSS.
 				$custom_caption_font = new CSS_Helper(
-					$attributes['uniqueId'],
-					'figcaption'
+					$unique_id,
+					'figcaption',
+					$is_class
 				);
 				$custom_font_family  = $attributes['captionTypography']['captionCustomTypography'] ?? null;
 				Functions::add_css_property( $custom_caption_font, 'font-family', $custom_font_family );
@@ -475,16 +481,18 @@ class Functions {
 
 			// Fill in anchor CSS.
 			$figcaption_anchor = new CSS_Helper(
-				$attributes['uniqueId'],
-				'figcaption a'
+				$unique_id,
+				'figcaption a',
+				$is_class
 			);
 			Functions::add_css_property( $figcaption_anchor, 'color', $attributes['captionLinkColor'], '--photo-block-caption-link-color' );
 			$css_output .= $figcaption_anchor->get_css();
 
 			// Get anchor hover state.
 			$figcaption_anchor_hover = new CSS_Helper(
-				$attributes['uniqueId'],
-				'figcaption a:hover'
+				$unique_id,
+				'figcaption a:hover',
+				$is_class
 			);
 			Functions::add_css_property( $figcaption_anchor_hover, 'color', $attributes['captionLinkHoverColor'], '--photo-block-caption-link-hover-color' );
 			$css_output .= $figcaption_anchor_hover->get_css();
@@ -493,8 +501,9 @@ class Functions {
 
 		if ( 'overlay' === $attributes['captionPosition'] ) {
 			$overlay_css_helper = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay'
+				$unique_id,
+				'.dlx-photo-block__caption-overlay',
+				$is_class
 			);
 			Functions::build_dimension_css( $overlay_css_helper, $attributes['captionBorderRadius'], 'border-radius' );
 			Functions::add_css_property( $overlay_css_helper, 'overflow', 'hidden' );
@@ -503,8 +512,9 @@ class Functions {
 
 		if ( 'advanced' === $mode && ! (bool) $attributes['dataMode'] ) {
 			$smart_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'figcaption'
+				$unique_id,
+				'figcaption',
+				$is_class
 			);
 			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-text-color', $attributes['captionTextColor'] );
 			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-accent-color', $attributes['captionAccentColor'] );
@@ -518,8 +528,9 @@ class Functions {
 		/* Overlay solid color styles */
 		if ( 'overlay' === $attributes['captionPosition'] && 'solid' === $attributes['overlayBackgroundType'] ) {
 			$caption_overlay_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:before'
+				$unique_id,
+				'.dlx-photo-block__caption-overlay:before',
+				$is_class
 			);
 			Functions::add_css_property( $caption_overlay_styles, 'transition', 'background 0.35s ease-in-out' );
 			Functions::add_css_property( $caption_overlay_styles, 'display', 'block' );
@@ -537,7 +548,7 @@ class Functions {
 			$css_output .= $caption_overlay_styles->get_css();
 
 			$caption_overlay_hover_styles = new CSS_Helper(
-				$attributes['uniqueId'],
+				$unique_id,
 				'.dlx-photo-block__caption-overlay:hover:before'
 			);
 			Functions::add_css_property( $caption_overlay_hover_styles, 'background', $attributes['overlayBackgroundColorHover'] );
@@ -547,8 +558,9 @@ class Functions {
 		/* overlay gradient styles */
 		if ( 'overlay' === $attributes['captionPosition'] && 'gradient' === $attributes['overlayBackgroundType'] ) {
 			$caption_overlay_gradient_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:before'
+				$unique_id,
+				'.dlx-photo-block__caption-overlay:before',
+				$is_class
 			);
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'transition', 'opacity 0.35s ease-in-out' );
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'display', 'block' );
@@ -567,8 +579,9 @@ class Functions {
 			$css_output .= $caption_overlay_gradient_styles->get_css();
 
 			$caption_overlay_gradient_hover_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:hover:before'
+				$unique_id,
+				'.dlx-photo-block__caption-overlay:hover:before',
+				$is_class
 			);
 			Functions::add_css_property( $caption_overlay_gradient_hover_styles, 'opacity', $attributes['overlayBackgroundGradientOpacityHover'] );
 			$css_output .= $caption_overlay_gradient_hover_styles->get_css();
@@ -577,8 +590,9 @@ class Functions {
 		/* overlay image styles */
 		if ( 'overlay' === $attributes['captionPosition'] && 'image' === $attributes['overlayBackgroundType'] && ! empty( $attributes['overlayBackgroundImage']['url'] ) ) {
 			$caption_overlay_image_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:before'
+				$unique_id,
+				'.dlx-photo-block__caption-overlay:before',
+				$is_class
 			);
 			Functions::add_css_property( $caption_overlay_image_styles, 'transition', 'opacity 0.35s ease-in-out' );
 			Functions::add_css_property( $caption_overlay_image_styles, 'display', 'block' );
@@ -600,8 +614,9 @@ class Functions {
 			$css_output .= $caption_overlay_image_styles->get_css();
 
 			$caption_overlay_image_hover_styles = new CSS_Helper(
-				$attributes['uniqueId'],
-				'.dlx-photo-block__caption-overlay:hover:before'
+				$unique_id,
+				'.dlx-photo-block__caption-overlay:hover:before',
+				$is_class
 			);
 			Functions::add_css_property( $caption_overlay_image_hover_styles, 'opacity', $attributes['overlayBackgroundImage']['backgroundOpacityHover'] );
 			$css_output .= $caption_overlay_image_hover_styles->get_css();

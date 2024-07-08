@@ -229,7 +229,7 @@ class Blocks {
 				$caption_attributes = Functions::sanitize_array_recursive( $caption_attributes );
 
 				if ( ! empty( $caption_attributes ) ) {
-					$attributes = array_merge( $caption_attributes, $attributes );
+					$attributes = array_replace_recursive( $attributes, $caption_attributes );
 				}
 			}
 		}
@@ -293,7 +293,7 @@ class Blocks {
 		}
 
 		// Begin caption overlay classes.
-		$caption_overlay_styles   = array( 'dlx-photo-block__caption-overlay' );
+		$caption_overlay_styles   = array( 'dlx-photo-block__caption-overlay dlx-photo-block__caption' );
 		$caption_overlay_styles[] = 'is-overlay' === $attributes['captionPosition'] ? 'is-overlay' : '';
 		$caption_overlay_styles[] = 'bottom' === $attributes['overlayCaptionVerticalPosition'] ? 'caption-vertical-bottom' : '';
 		$caption_overlay_styles[] = 'middle' === $attributes['overlayCaptionVerticalPosition'] ? 'caption-vertical-middle' : '';
@@ -309,7 +309,7 @@ class Blocks {
 		$caption_overlay_styles[] = 'right' === $attributes['overlayHorizontalPosition'] ? 'overlay-horizontal-right' : '';
 
 		// Set hover overlay options.
-		$caption_hover_overlay_styles   = array();
+		$caption_hover_overlay_styles   = array( 'dlx-photo-block__caption-wrapper' );
 		$caption_hover_overlay_styles[] = ( 'overlay' === $attributes['captionPosition'] && (bool) $attributes['overlayDisplayOnHover'] ) ? 'overlay-display-hover' : '';
 		if ( 'slide-down' === $attributes['overlayDisplayAnimation'] ) {
 			$caption_hover_overlay_styles[] = 'overlay-slide-down';
@@ -343,12 +343,12 @@ class Blocks {
 			<?php
 		}
 		if ( 'overlay' !== $attributes['captionPosition'] ) {
-			$caption_hover_overlay_styles = array();
-			$caption_overlay_styles       = array();
+			$caption_hover_overlay_styles = array( 'dlx-photo-block__caption-wrapper' );
+			$caption_overlay_styles       = array( 'dlx-photo-block__caption' );
 		}
 		?>
-			<div class="dlx-photo-block__caption-wrapper <?php echo esc_attr( implode( ' ', $caption_hover_overlay_styles ) ); ?>">
-				<figcaption class="dlx-photo-block__caption <?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
+			<div class="<?php echo esc_attr( implode( ' ', $caption_hover_overlay_styles ) ); ?>">
+				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
 					<?php echo wp_kses_post( trim( $caption ) ); ?>
 				</figcaption>
 			</div>
@@ -416,13 +416,32 @@ class Blocks {
 			// If we have a global style, get the attributes.
 			if ( $global_style ) {
 				$global_style_content = json_decode( $global_style->post_content, true );
+				// Get the CSS classname.
+				$global_style_css_class = get_post_meta( $global_style->ID, '_dlx_pb_css_class', true );
 
 				// Get photo attributes.
 				$photo_attributes = $global_style_content['photoAttributes'] ?? array();
 				$photo_attributes = Functions::sanitize_array_recursive( $photo_attributes );
 
 				if ( ! empty( $photo_attributes ) ) {
-					$attributes = array_merge( $photo_attributes, $attributes );
+					$attributes = array_replace_recursive( $attributes, $photo_attributes );
+				}
+
+				// Get global style location in uploads dir.
+				$upload_dir = wp_upload_dir();
+				$upload_url = $upload_dir['baseurl'] . '/photo-block/global-styles.css';
+
+				// Register the style.
+				wp_register_style(
+					'dlx-photo-block-global-styles',
+					$upload_url,
+					array(),
+					Functions::get_plugin_version(),
+					'all'
+				);
+
+				if ( ! wp_style_is( 'dlx-photo-block-global-styles', 'done' ) ) {
+					wp_print_styles( 'dlx-photo-block-global-styles' );
 				}
 			}
 		}
@@ -530,6 +549,7 @@ class Blocks {
 		 * @since 1.0.0
 		 */
 		$image_classes = apply_filters( 'dlx_pb_image_classes', $image_classes, $attributes, $context );
+		$image_classes[] = '' !== $global_style_css_class ? $global_style_css_class : '';
 
 		// Determine if lazy loading is on.
 		$skip_lazy_loading = $attributes['skipLazyLoading'] ?? false;
@@ -722,7 +742,7 @@ class Blocks {
 		// Build caption markup if there's a caption.
 		if ( $has_caption && ! empty( $innerblocks_content ) ) {
 
-			$caption_markup = wp_kses( $innerblocks_content, Functions::get_kses_allowed_html() );
+			$caption_markup = wp_kses( $innerblocks_content, Functions::get_kses_allowed_html( true, true ) );
 		}
 
 		// If overlay, include at same level of image.
@@ -810,11 +830,12 @@ class Blocks {
 
 		// Wrap figure in section tag, gather classes from block props.
 		$image_markup = sprintf(
-			'<section id="%1$s" class="dlx-photo-block__container align%3$s %4$s">%2$s</section>',
+			'<section id="%1$s" class="dlx-photo-block__container align%3$s %4$s %5$s">%2$s</section>',
 			$unique_id,
 			$image_markup,
 			esc_attr( $attributes['align'] ),
-			esc_attr( implode( ' ', $section_css_classes ) )
+			esc_attr( implode( ' ', $section_css_classes ) ),
+			esc_attr( $global_style_css_class )
 		);
 
 		/**

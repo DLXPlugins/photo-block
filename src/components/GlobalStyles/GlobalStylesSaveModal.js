@@ -96,6 +96,48 @@ const GlobalStylesSaveModal = ( props ) => {
 		return Object.keys( errors ).length > 0;
 	};
 
+	const generateGlobalStyle = () => {
+		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
+		const formDataNew = new FormData();
+		formDataNew.append( 'action', 'dlx_photo_block_generate_global_styles' );
+		formDataNew.append( 'nonce', photoBlock.globalStylesGenerateNonce );
+
+		fetch( ajaxUrl, {
+			method: 'POST',
+			body: formDataNew,
+			/* get return in json */
+			headers: {
+				Accept: 'application/json',
+			},
+		} )
+			.then( ( response ) => response.json() )
+			.then( ( json ) => {
+				const { success, data } = json;
+				if ( ! success ) {
+					setError( 'formAjaxError', {
+						type: 'ajax',
+						message: data.message,
+					} );
+					createWarningNotice(
+						__( 'There was an error saving the global style CSS file.', 'photo-block' ),
+						{
+							type: 'snackbar',
+						}
+					);
+					setIsSaving( false );
+					return;
+				}
+				createSuccessNotice(
+					__( 'Global style CSS File generated successfully.', 'photo-block' ),
+					{
+						type: 'snackbar',
+					}
+				);
+			} )
+			.catch( ( error ) => {
+			} );
+	};
+
 	/**
 	 * Save a new preset via Ajax.
 	 *
@@ -143,6 +185,8 @@ const GlobalStylesSaveModal = ( props ) => {
 				setGlobalStyle( data, data.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
+
+				generateGlobalStyle();
 			} )
 			.catch( ( error ) => {
 				setIsSaving( false );
@@ -199,6 +243,7 @@ const GlobalStylesSaveModal = ( props ) => {
 				setGlobalStyle( newData, newData.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
+				generateGlobalStyle();
 			} )
 			.catch( ( error ) => {
 				setSavingPreset( false );

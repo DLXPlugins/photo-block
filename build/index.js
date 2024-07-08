@@ -71,7 +71,7 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
     photoBlur = attributes.photoBlur,
     photoObjectFit = attributes.photoObjectFit,
     captionCustomTypography = attributes.captionCustomTypography;
-  var styles = "\n\t\t".concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__image-wrapper {\n\t\t\t--photo-block-photo-background-color: ").concat(photoBackgroundColor, ";\n\t\t\t--photo-block-photo-container-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-photo-container-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-photo-container-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-photo-container-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-photo-container-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t\t--photo-block-photo-container-max-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxHeight, 'max-height'), "\n\t\t\t--photo-block-photo-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t\t").concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__image-wrapper img {\n\t\t\t--photo-block-image-opacity: ").concat(photoOpacity, ";\n\t\t\t--photo-block-image-object-fit: ").concat(photoObjectFit, ";\n\t\t\t--photo-block-blur: ").concat(photoBlur, "px;\n\t\t\t--photo-block-image-width: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-height: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-object-position: ").concat('custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition, ";\n\t\t\t--photo-block-image-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoPaddingSize, deviceType), ";\n\t\t\t--photo-block-image-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(photoBorder, deviceType, '--photo-block-image'), ";\n\t\t\t--photo-block-image-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t");
+  var styles = "\n\t\t".concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__image-wrapper {\n\t\t\t--photo-block-photo-background-color: ").concat(photoBackgroundColor, ";\n\t\t\t--photo-block-image-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerWidth, 'width'), "\n\t\t\t--photo-block-image-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerHeight, 'height'), "\n\t\t\t--photo-block-image-min-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinWidth, 'min-width'), "\n\t\t\t--photo-block-image-min-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMinHeight, 'min-height'), "\n\t\t\t--photo-block-image-max-width: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxWidth, 'max-width'), "\n\t\t\t--photo-block-image-max-height: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.getValueWithUnit)(deviceType, containerMaxHeight, 'max-height'), "\n\t\t\t--photo-block-photo-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t\t").concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__image-wrapper img {\n\t\t\t--photo-block-image-opacity: ").concat(photoOpacity, ";\n\t\t\t--photo-block-image-object-fit: ").concat(photoObjectFit, ";\n\t\t\t--photo-block-blur: ").concat(photoBlur, "px;\n\t\t\t--photo-block-image-width: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-height: ").concat('none' !== photoObjectFit ? '100%' : 'unset', ";\n\t\t\t--photo-block-image-object-position: ").concat('custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition, ";\n\t\t\t--photo-block-image-padding: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoPaddingSize, deviceType), ";\n\t\t\t--photo-block-image-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), ";\n\t\t\t").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildBorderCSS)(photoBorder, deviceType, '--photo-block-image'), ";\n\t\t\t--photo-block-image-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoBorderRadius, deviceType), ";\n\t\t}\n\t");
   // Apply outer margin to container.
   styles += "".concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__figure { --photo-block-figure-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), "; }");
   if (photoDropShadow.enabled) {
@@ -6601,6 +6601,39 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
   var hasErrors = function hasErrors() {
     return Object.keys(errors).length > 0;
   };
+  var generateGlobalStyle = function generateGlobalStyle() {
+    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
+    var formDataNew = new FormData();
+    formDataNew.append('action', 'dlx_photo_block_generate_global_styles');
+    formDataNew.append('nonce', photoBlock.globalStylesGenerateNonce);
+    fetch(ajaxUrl, {
+      method: 'POST',
+      body: formDataNew,
+      /* get return in json */
+      headers: {
+        Accept: 'application/json'
+      }
+    }).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      var success = json.success,
+        data = json.data;
+      if (!success) {
+        setError('formAjaxError', {
+          type: 'ajax',
+          message: data.message
+        });
+        createWarningNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('There was an error saving the global style CSS file.', 'photo-block'), {
+          type: 'snackbar'
+        });
+        setIsSaving(false);
+        return;
+      }
+      createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global style CSS File generated successfully.', 'photo-block'), {
+        type: 'snackbar'
+      });
+    })["catch"](function (error) {});
+  };
 
   /**
    * Save a new preset via Ajax.
@@ -6644,6 +6677,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       setGlobalStyle(data, data.slug);
       setIsSaving(false);
       setSavingPreset(false);
+      generateGlobalStyle();
     })["catch"](function (error) {
       setIsSaving(false);
       setSavingPreset(false);
@@ -6693,6 +6727,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       setGlobalStyle(newData, newData.slug);
       setIsSaving(false);
       setSavingPreset(false);
+      generateGlobalStyle();
     })["catch"](function (error) {
       setSavingPreset(false);
     });

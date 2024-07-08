@@ -20,16 +20,16 @@ class Global_Styles {
 		$self = new self();
 		add_action( 'init', array( static::class, 'register_post_type' ) );
 		add_action( 'wp_ajax_dlx_photo_block_load_global_styles', array( static::class, 'ajax_load_global_styles' ) );
-		add_action( 'wp_ajax_dlx_photo_block_save_edited_global_style', array( static::class, 'ajax_save_edited_global_style' ) ); // For Updating an existing preset (like title).
-		add_action( 'wp_ajax_dlx_photo_block_save_global_styles', array( static::class, 'ajax_save_global_styles' ) ); // For saving new presets.
+		add_action( 'wp_ajax_dlx_photo_block_save_edited_global_style', array( static::class, 'ajax_save_edited_global_style' ) ); // For Updating an existing global style (like title).
+		add_action( 'wp_ajax_dlx_photo_block_save_global_styles', array( static::class, 'ajax_save_global_styles' ) ); // For saving new global styles.
 		add_action( 'wp_ajax_dlx_photo_block_delete_global_style', array( static::class, 'ajax_delete_global_style' ) );
-		add_action( 'wp_ajax_dlx_photo_block_override_global_style', array( static::class, 'ajax_override_global_style' ) ); // For overwriting an existing preset.
+		add_action( 'wp_ajax_dlx_photo_block_override_global_style', array( static::class, 'ajax_override_global_style' ) ); // For overwriting an existing global style.
+
+		// For generating a new global styles file.
+		add_action( 'wp_ajax_dlx_photo_block_generate_global_styles', array( static::class, 'generate_global_styles' ) );
 
 		// Filter for adding localized vars to output.
 		add_filter( 'photo_block_localized_vars', array( static::class, 'add_localized_vars' ) );
-
-		// Set up a call to generate the global styles either inline or via file.
-		add_action( 'init', array( static::class, 'generate_global_styles' ) );
 
 		return $self;
 	}
@@ -45,6 +45,7 @@ class Global_Styles {
 		$vars['globalStylesLoadNonce']    = wp_create_nonce( 'dlx_photo_block_load_global_styles' );
 		$vars['globalStylesSaveNewNonce'] = wp_create_nonce( 'dlx_photo_block_save_new_global_styles' );
 		$vars['globalStylesCanEditor']    = current_user_can( 'edit_others_posts' );
+		$vars['globalStylesGenerateNonce'] = wp_create_nonce( 'dlx_photo_block_generate_global_styles' );
 
 		// Get the default preset (if any), and return it as localized variable.
 		$default_global_styles = wp_cache_get( 'dlx_pb_global_styles' ); // can be false (empty) or array.
@@ -516,6 +517,14 @@ class Global_Styles {
 	 * Generate the global styles.
 	 */
 	public static function generate_global_styles() {
+		// Verify nonce.
+		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_generate_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ),
+				)
+			);
+		}
 		// Let's see if there's already a global styles file.
 		$upload_dir = wp_upload_dir();
 		$upload_dir = trailingslashit( $upload_dir['basedir'] );
@@ -540,8 +549,6 @@ class Global_Styles {
 				unlink( $upload_dir . 'global-styles.css' );
 				// Update the option.
 				update_option( 'dlx_pb_cache_bust_version', $cache_bust );
-			} else {
-				return;
 			}
 		}
 
@@ -568,10 +575,30 @@ class Global_Styles {
 			}
 		}
 
-		// Generate CSS (TODO).
+		// Loop through global styles, extract attributes.
+		$css_string = '';
+		foreach ( $global_styles as $global_style ) {
+			$content_attributes = json_decode( $global_style->post_content, true );
+			$photo_attributes   = Functions::sanitize_array_recursive( $content_attributes['photoAttributes'] );
+			$caption_attributes = Functions::sanitize_array_recursive( $content_attributes['captionAttributes'] );
+			$css_class = sanitize_text_field( get_post_meta( $global_style->ID, '_dlx_pb_css_class', true ) );
+			$css_string .= Functions::generate_photo_block_css( $photo_attributes, $css_class, true );
+			$css_string .= Functions::generate_photo_block_caption_css( $caption_attributes, $css_class, true );
+		}
 
-		$css_string = 'I am full of CSS!';
-		$css_string = apply_filters( 'dlx_photo_block_global_styles_css', $css_string );
+		/**
+		 * Filter to allow adding additional global styles.
+		 *
+		 * @param string $css_string The CSS string.
+		 * @param array  $photo_attributes The photo attributes.
+		 * @param array  $caption_attributes The caption attributes.
+		 *
+		 * @since 1.0.0
+		 */
+		$css_string = apply_filters( 'dlx_photo_block_global_styles_css', $css_string, $photo_attributes, $caption_attributes );
+
+		// Strip all excess whitespace.
+		$css_string = preg_replace( '/\s+/', ' ', $css_string );
 
 		// Write the CSS to the file.
 		global $wp_filesystem;
@@ -586,5 +613,8 @@ class Global_Styles {
 		}
 
 		$wp_filesystem->put_contents( $upload_dir . 'global-styles.css', $css_string, FS_CHMOD_FILE );
+
+		// Send json response.
+		wp_send_json_success( array( 'message' => __( 'Global styles generated.', 'photo-block' ) ) );
 	}
 }

@@ -59,12 +59,12 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 	let styles = `
 		${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
 			--photo-block-photo-background-color: ${ photoBackgroundColor };
-			--photo-block-photo-container-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
-			--photo-block-photo-container-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
-			--photo-block-photo-container-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
-			--photo-block-photo-container-min-height: ${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
-			--photo-block-photo-container-max-width: ${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
-			--photo-block-photo-container-max-height: ${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
+			--photo-block-image-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
+			--photo-block-image-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
+			--photo-block-image-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
+			--photo-block-image-min-height: ${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
+			--photo-block-image-max-width: ${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
+			--photo-block-image-max-height: ${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
 			--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 		}
 		${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
