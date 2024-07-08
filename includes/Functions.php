@@ -281,6 +281,7 @@ class Functions {
 			'caption'         => wp_get_attachment_caption( $attachment_id ),
 			'full'            => $full_image_attachment[0],
 			'attachment_link' => get_attachment_link( $attachment_id ),
+			'title'           => get_the_title( $attachment_id ),
 		);
 
 		return $return;
@@ -1529,7 +1530,7 @@ class Functions {
 	 * @param string     $css_value     CSS value to add.
 	 * @param string     $css_var       CSS variable to use.
 	 */
-	public static function add_css_property( $css_helper, $css_property, $css_value, $css_var = '') {
+	public static function add_css_property( $css_helper, $css_property, $css_value, $css_var = '' ) {
 		// Special case for content.
 		if ( 'content' === $css_property ) {
 			$css_helper->add_css( sprintf( '%s: "%s";', $css_var ?? $css_property, $css_value ) );

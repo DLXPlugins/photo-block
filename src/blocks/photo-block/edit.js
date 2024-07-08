@@ -257,7 +257,7 @@ const PhotoBlock = ( props ) => {
 			case 'loading':
 				return <LoadingScreen { ...props } blockUniqueId={ blockUniqueId } />;
 			case 'initial':
-				return <InitialScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } />;
+				return <InitialScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } clientId={ clientId } />;
 			case 'edit':
 				return <EditScreen attributes={ attributes } setAttributes={ setAttributes } ref={ imageRef } innerBlockProps={ captionInnerBlockProps } clientId={ clientId } blockUniqueId={ blockUniqueId } />;
 			case 'crop':

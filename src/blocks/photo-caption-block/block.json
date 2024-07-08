@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"title": "Caption Block",
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "dlxplugins/photo-caption-block",
 	"parent": [ "dlxplugins/photo-block" ],
 	"category": "common",
