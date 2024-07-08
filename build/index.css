@@ -1357,12 +1357,12 @@ figcaption.dlx-photo-block__caption.has-smart-styles .wp-block-button:has(.has-t
   display: flex;
   justify-content: center;
   background-color: var(--photo-block-photo-background-color);
-  width: var(--photo-block-photo-container-width);
-  height: var(--photo-block-photo-container-height);
-  min-width: var(--photo-block-photo-container-min-width);
-  min-height: var(--photo-block-photo-container-min-height);
-  max-width: var(--photo-block-photo-container-max-width);
-  max-height: var(--photo-block-photo-container-max-height);
+  width: var(--photo-block-image-width);
+  height: var(--photo-block-image-height);
+  min-width: var(--photo-block-image-min-width);
+  min-height: var(--photo-block-image-min-height);
+  max-width: var(--photo-block-image-max-width);
+  max-height: var(--photo-block-image-max-height);
   border-radius: var(--photo-block-photo-border-radius);
   box-sizing: border-box;
 }

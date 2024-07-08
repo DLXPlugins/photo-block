@@ -370,12 +370,12 @@ class Functions {
 			$is_class
 		);
 
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width', 'width', '', '--photo-block-photo-container-width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxWidth'], 'max-width', 'width', '', '--photo-block-photo-container-max-width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinWidth'], 'min-width', 'width', '', '--photo-block-photo-container-min-width' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerHeight'], 'height', 'width', '', '--photo-block-photo-container-height' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height', 'width', '', '--photo-block-photo-container-max-height' );
-		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height', 'width', '', '--photo-block-photo-container-min-height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerWidth'], 'width', 'width', '', '--photo-block-image-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxWidth'], 'max-width', 'width', '', '--photo-block-image-max-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinWidth'], 'min-width', 'width', '', '--photo-block-image-min-width' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerHeight'], 'height', 'width', '', '--photo-block-image-height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height', 'width', '', '--photo-block-image-max-height' );
+		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height', 'width', '', '--photo-block-image-min-height' );
 		Functions::add_css_property( $css_helper, 'background-color', $attributes['photoBackgroundColor'], '--photo-block-photo-background-color' );
 		Functions::build_dimension_css( $css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-photo-border-radius' );
 		$css_output .= $css_helper->get_css();
@@ -391,12 +391,12 @@ class Functions {
 			Functions::add_css_property( $image_css_helper, 'filter', (int) $attributes['photoBlur'] . 'px', '--photo-block-blur' );
 		}
 		if ( 'none' !== $attributes['photoObjectFit'] ) {
-			Functions::add_css_property( $image_css_helper, 'object-fit', $attributes['photoObjectFit'] );
+			Functions::add_css_property( $image_css_helper, 'object-fit', $attributes['photoObjectFit'], '--photo-block-image-object-fit' );
 			Functions::add_css_property( $image_css_helper, 'width', '100%' );
 			Functions::add_css_property( $image_css_helper, 'height', '100%' );
 		}
 		if ( 'none' !== $attributes['photoObjectFit'] && 'none' !== $attributes['photoObjectPosition'] ) {
-			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPosition'] );
+			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPosition'], '--photo-block-image-object-position' );
 		}
 		if ( 'none' !== $attributes['photoObjectFit'] && 'custom' === $attributes['photoObjectPosition'] && '' !== $attributes['photoObjectPositionCustom'] ) {
 			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPositionCustom'] );
