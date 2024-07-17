@@ -255,6 +255,24 @@
       "type": "string",
       "default": "9"
     },
+    "dataHasFallbackImage": {
+      "type": "boolean",
+      "default": false
+    },
+    "dataFallbackImageSize": {
+      "type": "string",
+      "default": "large"
+    },
+    "dataFallbackImage": {
+      "type": "object",
+      "default": {
+        "id": "",
+        "url": "",
+        "alt": "",
+        "full": "",
+        "attachment_link": ""
+      }
+    },
     "mediaLinkType": {
       "type": "string",
       "default": "none"
