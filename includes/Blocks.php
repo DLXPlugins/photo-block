@@ -471,13 +471,9 @@ class Blocks {
 		ob_start();
 
 		// First, let's determine if we're in a query loop.
+		$is_in_query_loop = Functions::is_in_query_loop( $block );
 		$context          = $block->context ?? array();
-		$is_in_query_loop = false;
 		$current_post_id  = $block->context['postId'] ?? 0;
-		$maybe_query      = $block->context['query'] ?? array();
-		if ( $current_post_id && ! empty( $maybe_query ) ) {
-			$is_in_query_loop = true;
-		}
 
 		// Get the image size.
 		$image_size = $attributes['imageSize'] ?? 'full';
@@ -489,42 +485,27 @@ class Blocks {
 		if ( $is_in_query_loop ) {
 			// get featured image.
 
-			// // Get the image data.
-			// $image_data_source = $attributes['dataSource'] ?? 'currentPost'; /* can be currentPost, postType */
-			// $image_source      = $attributes['dataImageSource'] ?? 'featuredImage'; /* can be featuredImage, customField, authorAvatar, authorMeta */
+			$maybe_featured_image_id = get_post_thumbnail_id( $current_post_id );
+			$maybe_featured_image    = false;
 
-			// // Placeholdr for image ID and src.
-			// $image_id = 0;
-
-			// // If post type, get the post ID.
-			// if ( 'postType' === $image_data_source ) {
-			// $post_type_id   = $attributes['dataPostId'] ?? 0;
-			// $post_type_post = get_post( $post_type_id );
-			// if ( $post_type_post ) {
-			// $current_post_id = $post_type_post->ID;
-			// $post_author_id  = $post_type_post->post_author;
-			// }
-			// }
-
-			// // Get image data from cache.
-			// $maybe_cached_image_data = wp_cache_get( 'dlx_photo_block_image_data_' . $current_post_id, 'dlx_photo_block' );
-
-			// if ( $maybe_cached_image_data ) {
-			// $image_data                    = $maybe_cached_image_data;
-			// $attributes['imageDimensions'] = $maybe_cached_image_data;
-			// $attributes['imageData']           = $maybe_cached_image_data;
-			// } else {
-			// $image_data = Functions::get_image_data_from_source( $image_data_source, $image_source, $current_post_id, $image_size );
-
-			// Overwrite attributes so we can use the same output code.
-			// if ( false !== $image_data ) {
-			// $attributes['imageDimensions'] = $image_data;
-			// $attributes['imageData']           = $image_data;
-
-			// Set object cache.
-			// wp_cache_set( 'dlx_photo_block_image_data_' . $current_post_id, $image_data, 'dlx_photo_block', 60 * 60 );
-			// }
-			// }
+			// If no image, then try to get the fallback.
+			if ( ! $maybe_featured_image_id ) {
+				if ( (bool) $attributes['dataHasFallbackImage'] && '' !== $attributes['dataFallbackImage']['id'] ) {
+					$attributes['imageData'] = $attributes['dataFallbackImage'];
+				} else {
+					// No image. Return.
+					return;
+				}
+			} else {
+				$featured_image                     = wp_get_attachment_image_src( $maybe_featured_image_id, $image_size );
+				$attributes['imageData']['id']      = $maybe_featured_image_id;
+				$attributes['imageData']['url']     = $featured_image[0];
+				$attributes['imageData']['width']   = $featured_image[1];
+				$attributes['imageData']['height']  = $featured_image[2];
+				$attributes['imageData']['alt']     = get_post_meta( $maybe_featured_image_id, '_wp_attachment_image_alt', true );
+				$attributes['imageData']['title']   = get_the_title( $maybe_featured_image_id );
+				$attributes['imageData']['caption'] = get_post( $maybe_featured_image_id )->post_excerpt;
+			}
 		}
 
 		// Get alt/title attributes.
@@ -548,7 +529,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$image_classes = apply_filters( 'dlx_pb_image_classes', $image_classes, $attributes, $context );
+		$image_classes   = apply_filters( 'dlx_pb_image_classes', $image_classes, $attributes, $context );
 		$image_classes[] = '' !== $global_style_css_class ? $global_style_css_class : '';
 
 		// Determine if lazy loading is on.
@@ -591,6 +572,7 @@ class Blocks {
 			case 'url':
 				$image_markup = '<img width="' . $attributes['imageData']['width'] . '" height="' . $attributes['imageData']['height'] . '" src="' . esc_url( $attributes['imageData']['url'] ) . '" alt="' . esc_attr( $image_alt ) . '" class="dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ) . '" loading="' . ( $skip_lazy_loading ? 'auto' : 'lazy' ) . '">';
 				break;
+			case 'featuredImage':
 			case 'image':
 			case 'photo':
 				$image_markup = wp_get_attachment_image(

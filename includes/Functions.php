@@ -288,6 +288,33 @@ class Functions {
 	}
 
 	/**
+	 * Determine if the block is in the block's query block loop.
+	 *
+	 * @param \WP_Block_Parser_Block $block The block object.
+	 *
+	 * @return bool True if in the block's query loop, false if not.
+	 */
+	public static function is_in_query_loop( $block ) {
+		// Get the main queried object for the page.
+		$queried_object  = get_queried_object();
+		$current_post_id = $block->context['postId'] ?? 0;
+
+		// If it's a post, get the post ID.
+		if ( is_a( $queried_object, 'WP_Post' ) ) {
+			// If the current post ID and queried post ID are the same, then we're in the main loop, but not in a block query loop.
+			if ( $queried_object->ID === $current_post_id ) {
+				return false;
+			}
+		}
+		global $wp_query;
+
+		if ( $current_post_id && $wp_query->in_the_loop ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Retrieve an image ID from a custom field value.
 	 *
 	 * @param int|Object|Array $custom_field_value The custom field value.
