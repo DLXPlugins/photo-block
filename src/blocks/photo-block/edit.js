@@ -32,7 +32,7 @@ import {
 } from '@wordpress/block-editor';
 import { generateUniqueId } from '../../utils/Functions';
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 
 import InitialScreen from '../../screens/Initial';
@@ -44,6 +44,7 @@ import DataScreen from '../../screens/Data';
 import DataEditScreen from '../../screens/DataEdit';
 import LoadingScreen from '../../screens/Loading';
 import FeaturedImageScreen from '../../screens/FeaturedImageEdit';
+import globalStylesStore from '../../store/global-styles';
 
 // For storing unique IDs.
 const uniqueIds = [];
@@ -140,19 +141,20 @@ const PhotoBlock = ( props ) => {
 
 	const {
 		uniqueId,
-		photo,
 		align,
-		caption,
-		altText,
-		overlayText,
-		overlayTextPosition,
-		paddingSize,
-		marginSize,
-		borderWidth,
-		borderRadiusSize,
+		globalStyle,
 		photoDropShadow,
-		dataScreen, /* can be `data`, `data-edit`. */
 	} = props.attributes;
+
+	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
+		const maybeGlobalStyle = newSelect( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
+		if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
+			return '';
+		}
+		return {
+			globalStyleCSSClassName: maybeGlobalStyle.css_class,
+		};
+	} );
 
 	// Read in context values.
 	const {
@@ -197,6 +199,7 @@ const PhotoBlock = ( props ) => {
 			`align${ align }`,
 			`dlx-screen-${ currentScreen }`,
 			`dlx-caption-position-${ captionPosition }`,
+			globalStyleCSSClassName,
 			{
 				'dlx-has-drop-shadow': photoDropShadow.enabled,
 			}
@@ -210,24 +213,10 @@ const PhotoBlock = ( props ) => {
 		}
 	}, [ captionPosition ] );
 
-	// Set whether there's a caption or not.
-	useEffect( () => {
-		if ( props.attributes.hasCaption !== hasCaption ) {
-			props.setAttributes( { hasCaption } );
-		}
-	}, [ hasCaption ] );
-
-	// Set the screen when it changes.
-	useEffect( () => {
-		setAttributes( {
-			screen: currentScreen,
-		} );
-	}, [ currentScreen ] );
+	
 
 	// Store the filepond upload ref.
 	const imageRef = useRef( null );
-
-	
 
 	// Set caption innerblocks classes.
 	const captionInnerBlocksClasses = classnames(
@@ -268,13 +257,13 @@ const PhotoBlock = ( props ) => {
 			case 'loading':
 				return <LoadingScreen { ...props } blockUniqueId={ blockUniqueId } />;
 			case 'initial':
-				return <InitialScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } />;
+				return <InitialScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } clientId={ clientId } />;
 			case 'edit':
 				return <EditScreen attributes={ attributes } setAttributes={ setAttributes } ref={ imageRef } innerBlockProps={ captionInnerBlockProps } clientId={ clientId } blockUniqueId={ blockUniqueId } />;
 			case 'crop':
 				return <CropScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } />;
 			case 'featuredImage':
-				return <FeaturedImageScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } />;
+				return <FeaturedImageScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } clientId={ clientId } />;
 			case 'data':
 				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } blockUniqueId={ blockUniqueId } />;
 			case 'data-edit':

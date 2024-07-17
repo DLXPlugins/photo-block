@@ -14156,7 +14156,8 @@ function createRuntime(controls = {}, dispatch) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   blockStore: () => (/* binding */ blockStore),
+/* harmony export */   getBlockStores: () => (/* binding */ getBlockStores)
 /* harmony export */ });
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "./node_modules/@wordpress/data/build-module/redux-store/index.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "./node_modules/@wordpress/data/build-module/select.js");
@@ -14202,7 +14203,15 @@ var DEFAULT_STATE = {
   photoMode: 'image',
   /* can be image, featuredImage, data, or url. */
   blockUniqueId: null,
-  dataScreen: 'data' /* can be `initial`, `edit`. */
+  dataScreen: 'data',
+  /* can be `initial`, `edit`. */
+  justCropped: false,
+  aspectRatioWidth: 16,
+  aspectRatioHeight: 9,
+  aspectRatioWidthPixels: 0,
+  aspectRatioHeightPixels: 0,
+  aspectRatioToolbarSelection: '16:9',
+  aspectRatioUnit: 'ratio'
 };
 var actions = {
   setOriginalImageData: function setOriginalImageData(originalImageData) {
@@ -14215,6 +14224,13 @@ var actions = {
     return {
       type: 'SET_IMAGE_DATA',
       imageData: imageData
+    };
+  },
+  setAspectRatio: function setAspectRatio(aspectRatioWidth, aspectRatioHeight) {
+    return {
+      type: 'SET_ASPECT_RATIO',
+      aspectRatioWidth: aspectRatioWidth,
+      aspectRatioHeight: aspectRatioHeight
     };
   },
   setScreen: function setScreen(screen) {
@@ -14282,6 +14298,31 @@ var actions = {
       type: 'SET_DATA_SCREEN',
       dataScreen: dataScreen
     };
+  },
+  setJustCropped: function setJustCropped(justCropped) {
+    return {
+      type: 'SET_JUST_CROPPED',
+      justCropped: justCropped
+    };
+  },
+  setAspectRatioToolbarSelection: function setAspectRatioToolbarSelection(aspectRatioToolbarSelection) {
+    return {
+      type: 'SET_ASPECT_RATIO_TOOLBAR_SELECTION',
+      aspectRatioToolbarSelection: aspectRatioToolbarSelection
+    };
+  },
+  setAspectRatioPixels: function setAspectRatioPixels(aspectRatioWidthPixels, aspectRatioHeightPixels) {
+    return {
+      type: 'SET_ASPECT_RATIO_PIXELS',
+      aspectRatioWidthPixels: aspectRatioWidthPixels,
+      aspectRatioHeightPixels: aspectRatioHeightPixels
+    };
+  },
+  setAspectRatioUnit: function setAspectRatioUnit(aspectRatioUnit) {
+    return {
+      type: 'SET_ASPECT_RATIO_UNIT',
+      aspectRatioUnit: aspectRatioUnit
+    };
   }
 };
 var createBlockStore = function createBlockStore(uniqueId) {
@@ -14342,6 +14383,28 @@ var createBlockStore = function createBlockStore(uniqueId) {
           return _objectSpread(_objectSpread({}, state), {}, {
             dataScreen: action.dataScreen
           });
+        case 'SET_ASPECT_RATIO':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioWidth: action.aspectRatioWidth,
+            aspectRatioHeight: action.aspectRatioHeight
+          });
+        case 'SET_ASPECT_RATIO_PIXELS':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioWidthPixels: action.aspectRatioWidthPixels,
+            aspectRatioHeightPixels: action.aspectRatioHeightPixels
+          });
+        case 'SET_ASPECT_RATIO_TOOLBAR_SELECTION':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioToolbarSelection: action.aspectRatioToolbarSelection
+          });
+        case 'SET_ASPECT_RATIO_UNIT':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            aspectRatioUnit: action.aspectRatioUnit
+          });
+        case 'SET_JUST_CROPPED':
+          return _objectSpread(_objectSpread({}, state), {}, {
+            justCropped: action.justCropped
+          });
         default:
           return state;
       }
@@ -14386,10 +14449,32 @@ var createBlockStore = function createBlockStore(uniqueId) {
       },
       getOriginalImageData: function getOriginalImageData(state) {
         return state.originalImageData;
+      },
+      getJustCropped: function getJustCropped(state) {
+        return state.justCropped;
+      },
+      getAspectRatioWidth: function getAspectRatioWidth(state) {
+        return state.aspectRatioWidth;
+      },
+      getAspectRatioHeight: function getAspectRatioHeight(state) {
+        return state.aspectRatioHeight;
+      },
+      getAspectRatioWidthPixels: function getAspectRatioWidthPixels(state) {
+        return state.aspectRatioWidthPixels;
+      },
+      getAspectRatioHeightPixels: function getAspectRatioHeightPixels(state) {
+        return state.aspectRatioHeightPixels;
+      },
+      getAspectRatioToolbarSelection: function getAspectRatioToolbarSelection(state) {
+        return state.aspectRatioToolbarSelection;
+      },
+      getAspectRatioUnit: function getAspectRatioUnit(state) {
+        return state.aspectRatioUnit;
       }
     }
   });
 };
+var blockStores = [];
 var blockStore = function blockStore(uniqueId) {
   if (!uniqueId) {
     return null;
@@ -14406,13 +14491,22 @@ var blockStore = function blockStore(uniqueId) {
       return storeName;
     }
     (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.register)(store);
+    blockStores.push(store);
     return storeName;
   }
 
   // If the store is already registered, return its instance
   return storeName;
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (blockStore);
+/**
+ * Retrieve a current list of all registered blocks.
+ *
+ * @return {Array} Array of block stores
+ */
+var getBlockStores = function getBlockStores() {
+  return blockStores;
+};
+
 
 /***/ }),
 
@@ -63610,7 +63704,7 @@ __webpack_require__.r(__webpack_exports__);
   }
   (0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_0__.registerPlugin)('dlx-photo-block-data-image-type', {
     render: function render() {
-      var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__["default"])((0,_store_index__WEBPACK_IMPORTED_MODULE_3__["default"])(uniqueId)),
+      var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__["default"])((0,_store_index__WEBPACK_IMPORTED_MODULE_3__.blockStore)(uniqueId)),
         setPhotoMode = _useDispatch.setPhotoMode,
         setScreen = _useDispatch.setScreen;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Fill, {

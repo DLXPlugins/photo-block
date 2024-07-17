@@ -3,11 +3,14 @@ import {
 	ToggleControl,
 	PanelRow,
 	TextControl,
+	BaseControl,
 } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import CustomAttributesControl from '../../components/CustomAttributes';
+import GlobalStyles from '../GlobalStyles';
+const canSavePresets = photoBlockUser.canSavePresets;
 
 const SidebarImageAdvancedInspectorControl = ( props ) => {
 	const { attributes, setAttributes } = props;
@@ -110,6 +113,17 @@ const SidebarImageAdvancedInspectorControl = ( props ) => {
 					help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
 				/>
 			</PanelRow>
+			{ canSavePresets && (
+				<PanelRow>
+					<BaseControl
+						label={ __( 'Global Styles', 'photo-block' ) }
+						id="photo-block-global-styles"
+						className="photo-block-global-styles"
+					>
+						<GlobalStyles { ...props } />
+					</BaseControl>
+				</PanelRow>
+			) }
 		</>
 	);
 	return ( stylesInspectorControls );

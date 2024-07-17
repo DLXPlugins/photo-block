@@ -9,9 +9,9 @@ import {
 	Button,
 	Slot,
 } from '@wordpress/components';
-
+import { createBlock } from '@wordpress/blocks';
 import { applyFilters } from '@wordpress/hooks';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+import { MediaUpload, MediaUploadCheck, store as blockEditorStore } from '@wordpress/block-editor';
 
 import {
 	Database,
@@ -28,14 +28,12 @@ import {
 
 } from 'lucide-react';
 
-
 import { useContext, useState, useEffect } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useDispatch, useSelect } from '@wordpress/data';
-
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import SendCommand from '../../utils/SendCommand';
 
 import WPNotice from '../../components/Notice';
@@ -47,13 +45,19 @@ import WPNotice from '../../components/Notice';
  * @return {Function} Component.
  */
 const UploadTypes = ( props ) => {
-	const { attributes, setAttributes, context, blockUniqueId } = props;
+	const { attributes, setAttributes, context, blockUniqueId, clientId } = props;
 
 	const {
 		setImageData,
 		setPhotoMode,
 		setScreen,
+		setHasCaption,
 	} = useDispatch( blockStore( blockUniqueId ) );
+
+	const {
+		insertBlock,
+		updateBlockAttributes,
+	} = useDispatch( blockEditorStore );
 
 	// Get current block data.
 	const {
@@ -102,7 +106,7 @@ const UploadTypes = ( props ) => {
 			return __( 'Add Image', 'photo-block' );
 		}
 		return __( 'Upload', 'photo-block' );
-	}
+	};
 
 	/**
 	 * Check for a valid URL before submitting via Ajax.
@@ -265,6 +269,48 @@ const UploadTypes = ( props ) => {
 		);
 	}
 
+	const handleSelect = ( media ) => {
+		// Fetch image data.
+		SendCommand(
+			photoBlock.restNonce,
+			{},
+			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ media.id }/size=${ attributes.imageSize }`,
+			'GET'
+		)
+			.then( ( response ) => {
+				setPhotoMode( 'photo' );
+				setScreen( 'edit' );
+				attributes.screen = 'edit';
+				setAttributes( {
+					imageData: response.data,
+					screen: 'edit',
+					photoMode: 'photo',
+					hasCaption: true,
+				} );
+				setImageData( response.data );
+
+				if ( response.data.caption !== '' ) {
+					const newBlock = createBlock( 'dlxplugins/photo-caption-block', {
+						captionManual: response.data.caption,
+						uniqueId: blockUniqueId,
+					} );
+
+					// Ensure block editor is ready
+					setTimeout( async() => {
+						try {
+							insertBlock( newBlock, undefined, props.clientId );
+						} catch ( error ) {
+							console.error( 'Error inserting block:', error );
+						}
+					}, 0 );
+				}
+			} )
+			.catch( ( error ) => {
+				// TODO: Handle error appropriately.
+				console.error( 'Error fetching image data:', error );
+			} );
+	};
+
 	return (
 		<>
 			<div className="dlx-photo-block__upload-types__container">
@@ -309,24 +355,7 @@ const UploadTypes = ( props ) => {
 								{ __( 'Media Library', 'photo-block' ) }
 							</Button>
 						) }
-						onSelect={ ( media ) => {
-							const selectedMedia = {
-								id: media.id,
-								url: media.sizes?.large?.url ?? media.sizes.full.url,
-								width: media.sizes?.large?.width ?? media.sizes.full.width,
-								height: media.sizes?.large?.height ?? media.sizes.full.height,
-								alt: media.alt,
-								caption: media.caption,
-							};
-							setAttributes( {
-								imageData: selectedMedia,
-								screen: 'edit',
-								photoMode: 'photo',
-							} );
-							setImageData( selectedMedia );
-							setPhotoMode( 'photo' );
-							setScreen( 'edit' );
-						} }
+						onSelect={ handleSelect }
 					/>
 				</MediaUploadCheck>
 

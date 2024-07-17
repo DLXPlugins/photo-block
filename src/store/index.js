@@ -32,6 +32,13 @@ const DEFAULT_STATE = {
 	photoMode: 'image', /* can be image, featuredImage, data, or url. */
 	blockUniqueId: null,
 	dataScreen: 'data', /* can be `initial`, `edit`. */
+	justCropped: false,
+	aspectRatioWidth: 16,
+	aspectRatioHeight: 9,
+	aspectRatioWidthPixels: 0,
+	aspectRatioHeightPixels: 0,
+	aspectRatioToolbarSelection: '16:9',
+	aspectRatioUnit: 'ratio',
 };
 
 const actions = {
@@ -45,6 +52,13 @@ const actions = {
 		return {
 			type: 'SET_IMAGE_DATA',
 			imageData,
+		};
+	},
+	setAspectRatio( aspectRatioWidth, aspectRatioHeight ) {
+		return {
+			type: 'SET_ASPECT_RATIO',
+			aspectRatioWidth,
+			aspectRatioHeight,
 		};
 	},
 	setScreen( screen ) {
@@ -111,6 +125,31 @@ const actions = {
 		return {
 			type: 'SET_DATA_SCREEN',
 			dataScreen,
+		};
+	},
+	setJustCropped( justCropped ) {
+		return {
+			type: 'SET_JUST_CROPPED',
+			justCropped,
+		};
+	},
+	setAspectRatioToolbarSelection( aspectRatioToolbarSelection ) {
+		return {
+			type: 'SET_ASPECT_RATIO_TOOLBAR_SELECTION',
+			aspectRatioToolbarSelection,
+		};
+	},
+	setAspectRatioPixels( aspectRatioWidthPixels, aspectRatioHeightPixels ) {
+		return {
+			type: 'SET_ASPECT_RATIO_PIXELS',
+			aspectRatioWidthPixels,
+			aspectRatioHeightPixels,
+		};
+	},
+	setAspectRatioUnit( aspectRatioUnit ) {
+		return {
+			type: 'SET_ASPECT_RATIO_UNIT',
+			aspectRatioUnit,
 		};
 	},
 };
@@ -184,6 +223,33 @@ const createBlockStore = ( uniqueId ) => {
 						...state,
 						dataScreen: action.dataScreen,
 					};
+				case 'SET_ASPECT_RATIO':
+					return {
+						...state,
+						aspectRatioWidth: action.aspectRatioWidth,
+						aspectRatioHeight: action.aspectRatioHeight,
+					};
+				case 'SET_ASPECT_RATIO_PIXELS':
+					return {
+						...state,
+						aspectRatioWidthPixels: action.aspectRatioWidthPixels,
+						aspectRatioHeightPixels: action.aspectRatioHeightPixels,
+					};
+				case 'SET_ASPECT_RATIO_TOOLBAR_SELECTION':
+					return {
+						...state,
+						aspectRatioToolbarSelection: action.aspectRatioToolbarSelection,
+					};
+				case 'SET_ASPECT_RATIO_UNIT':
+					return {
+						...state,
+						aspectRatioUnit: action.aspectRatioUnit,
+					};
+				case 'SET_JUST_CROPPED':
+					return {
+						...state,
+						justCropped: action.justCropped,
+					};
 				default:
 					return state;
 			}
@@ -229,9 +295,31 @@ const createBlockStore = ( uniqueId ) => {
 			getOriginalImageData( state ) {
 				return state.originalImageData;
 			},
+			getJustCropped( state ) {
+				return state.justCropped;
+			},
+			getAspectRatioWidth( state ) {
+				return state.aspectRatioWidth;
+			},
+			getAspectRatioHeight( state ) {
+				return state.aspectRatioHeight;
+			},
+			getAspectRatioWidthPixels( state ) {
+				return state.aspectRatioWidthPixels;
+			},
+			getAspectRatioHeightPixels( state ) {
+				return state.aspectRatioHeightPixels;
+			},
+			getAspectRatioToolbarSelection( state ) {
+				return state.aspectRatioToolbarSelection;
+			},
+			getAspectRatioUnit( state ) {
+				return state.aspectRatioUnit;
+			},
 		},
 	} );
 };
+const blockStores = [];
 const blockStore = ( uniqueId ) => {
 	if ( ! uniqueId ) {
 		return null;
@@ -249,11 +337,20 @@ const blockStore = ( uniqueId ) => {
 		}
 
 		register( store );
+		blockStores.push( store );
 		return storeName;
 	}
 
 	// If the store is already registered, return its instance
 	return storeName;
 };
+/**
+ * Retrieve a current list of all registered blocks.
+ *
+ * @return {Array} Array of block stores
+ */
+const getBlockStores = () => {
+	return blockStores;
+};
 
-export default blockStore;
+export { blockStore, getBlockStores };

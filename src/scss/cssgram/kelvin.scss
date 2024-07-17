@@ -25,7 +25,7 @@
   @include filter-base;
 
   @if length($filters) > 0 {
-    filter: $filters;
+    filter: $filters blur(var(--photo-block-blur, 0));
   }
 
   &::after{

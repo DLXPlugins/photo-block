@@ -25,6 +25,7 @@
 @mixin photo-block-earlybird($filters...) {
   @include filter-base;
   filter: contrast(.9) sepia(.2) $filters;
+  --photo-block-image-filter: contrast(.9) sepia(.2) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: radial-gradient(circle, rgb(208, 186, 142) 20%, rgb(54, 3, 9) 85%, rgb(29, 2, 16) 100%);

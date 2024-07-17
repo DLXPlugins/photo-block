@@ -11,7 +11,7 @@ import { forwardRef, useContext } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 /**
  * Upload Status component.

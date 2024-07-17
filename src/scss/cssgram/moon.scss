@@ -24,6 +24,7 @@
 @mixin photo-block-moon($filters...) {
   @include filter-base;
   filter: grayscale(1) contrast(1.1) brightness(1.1) $filters;
+  --photo-block-image-filter: grayscale(1) contrast(1.1) brightness(1.1) blur(var(--photo-block-blur, 0));
 
   &::before {
     background: rgb(160, 160, 160);

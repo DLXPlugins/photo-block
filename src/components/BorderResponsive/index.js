@@ -178,6 +178,15 @@ const BorderResponsiveControl = ( props ) => {
 	 * @param {string} key   The key to change.
 	 */
 	const changeAllValues = ( value, key ) => {
+		if ( 'color' === key ) {
+			const oldValues = getValues( deviceType );
+			oldValues.top[ key ] = value;
+			oldValues.right[ key ] = value;
+			oldValues.bottom[ key ] = value;
+			oldValues.left[ key ] = value;
+			setValue( deviceType, oldValues );
+			return;
+		}
 		if ( startsWithNumber( value ) ) {
 			const newValuesSplit = splitValues( value );
 			const numericValue = getNumericValue( newValuesSplit );

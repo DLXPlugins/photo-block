@@ -31,7 +31,7 @@ import { __ } from '@wordpress/i18n';
 import UploadTypes from '../../components/UploadTypes';
 import UploadTarget from '../../components/UploadTarget';
 import UploadStatus from '../../components/UploadStatus';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 /**
  * InitialScreen component.
@@ -40,7 +40,7 @@ import blockStore from '../../store';
  * @return {Function} Component.
  */
 const InitialScreen = ( props ) => {
-	const { blockUniqueId } = props;
+	const { blockUniqueId, clientId } = props;
 	const {
 		isUploading,
 		isProcessingUpload,
@@ -63,7 +63,7 @@ const InitialScreen = ( props ) => {
 			{ localInspectorControls }
 			<div className="dlx-photo-block__screen-initial">
 				{ ( ! isUploading && ! isProcessingUpload && ! isUploadError ) && (
-					<UploadTypes attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } />
+					<UploadTypes attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } clientId={ clientId } />
 				) }
 				{ ( isUploading || isProcessingUpload || isUploadError ) && (
 					<UploadStatus blockUniqueId={ blockUniqueId } />

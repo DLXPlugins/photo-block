@@ -41,24 +41,47 @@ import {
 	Layers,
 	Undo2,
 } from 'lucide-react';
+import { applyFilters } from '@wordpress/hooks';
 import classnames from 'classnames';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import SendCommand from '../../utils/SendCommand';
 import MediaLink from '../../components/MediaLink';
 import useDeviceType from '../../hooks/useDeviceType';
 import PanelBodyControl from '../../components/PanelBody';
 import SidebarImageInspectorControl from '../../components/SidebarImageInspectorControl';
 import SidebarImageAdvancedInspectorControl from '../../components/SidebarImageAdvancedInspectorControl';
-import CustomPresets from '../../components/CustomPresets';
 import getStyles from '../../blocks/photo-block/block-styles';
+import GlobalStylesPicker from '../../components/GlobalStylesPicker';
+import globalStylesStore from '../../store/global-styles';
+import AlignmentToolbar from '../../components/AlignmentToolbar';
 
 const EditScreen = forwardRef( ( props, ref ) => {
-	const { attributes, setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
+	const { setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
+
+	let attributes = props.attributes || {};
+
+	// Apply filters to attributes.
+	useEffect( () => {
+		attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
+	}, [ props.attributes ] );
+
 	const {
 		uniqueId,
 		imageSize,
 		cssGramFilter,
+		globalStyle,
 	} = attributes;
+
+	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
+		const maybeGlobalStyle = newSelect( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
+		if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
+			return '';
+		}
+		return {
+			globalStyleCSSClassName: maybeGlobalStyle.css_class,
+		};
+	} );
+
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ a11yButton, setA11yButton ] = useState( null );
 	const [ a11yPopover, setA11yPopover ] = useState( null );
@@ -72,7 +95,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const {
 		setScreen,
 		setImageData,
+		setJustCropped,
 	} = useDispatch( blockStore( blockUniqueId ) );
+
+	const { createSuccessNotice, createInfoNotice } = useDispatch( 'core/notices' );
 
 	// Get current block data.
 	const {
@@ -80,13 +106,23 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		captionPosition,
 		photoMode,
 		originalImageData,
+		isJustCropped,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 			originalImageData: select( blockStore( blockUniqueId ) ).getOriginalImageData(),
+			isJustCropped: select( blockStore( blockUniqueId ) ).getJustCropped(),
+		};
+	} );
 
+	// Get global style data.
+	const {
+		hasGlobalStyle,
+	} = useSelect( ( select ) => {
+		return {
+			hasGlobalStyle: select( globalStylesStore ).hasGlobalStyle,
 		};
 	} );
 
@@ -105,52 +141,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		}
 	}, [] );
 
-	// Set the default preset when first loading in (if not already set).
-	useEffect( () => {
-		if ( false !== imageLoading ) {
-			return;
-		}
-		if ( false !== attributes.defaultsApplied ) {
-			return;
-		}
-		const defaultPreset = photoBlock?.defaultPreset?.attributes ?? false;
-		if ( ! defaultPreset ) {
-			return;
-		}
-
-		// Get innerblocks of parent photo block.
-		const children =
-			select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]
-				?.innerBlocks || [];
-		const captionBlock = children.find(
-			( block ) => 'dlxplugins/photo-caption-block' === block.name
-		);
-
-		// Get unique ID for the photo block.
-		const photoBlockAttributes = { ...defaultPreset.photoAttributes };
-
-		// Apply attributes for photo block.
-		setAttributes( photoBlockAttributes );
-
-		// If there is no caption block, but there are attributes to apply, create one.
-		if ( ! captionBlock && defaultPreset?.captionAttributes ) {
-			const newBlocks = createBlock(
-				'dlxplugins/photo-caption-block',
-				defaultPreset?.captionAttributes
-			);
-			insertBlock( newBlocks, undefined, clientId );
-		}
-
-		// If there is a caption block and attributes to apply, apply them.
-		if ( captionBlock && defaultPreset?.captionAttributes ) {
-			const captionBlockAttributes = { ...defaultPreset?.captionAttributes };
-			updateBlockAttributes( captionBlock.clientId, captionBlockAttributes );
-		}
-
-		// Set having applied defaults to true.
-		setAttributes( { defaultsApplied: true } );
-	}, [ imageLoading ] );
-
 	/**
 	 * Retrieve an image based on size from REST API.
 	 *
@@ -166,6 +156,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			'GET'
 		)
 			.then( ( response ) => {
+				setImageData( { ...imageData, ...response.data } );
 				setAttributes( { imageData: { ...imageData, ...response.data } } );
 			} )
 			.catch( ( error ) => {
@@ -175,18 +166,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			.then( () => {
 				setImageSizeLoading( false );
 			} );
-	};
-
-	/**
-	 * Whether to show the undo button.
-	 *
-	 * @return {boolean} Whether to show the undo button.
-	 */
-	const canShowUndo = () => {
-		const originalImageUrl = originalImageData?.url;
-		const newImageUrl = imageData?.url;
-
-		return originalImageUrl && newImageUrl && originalImageUrl !== newImageUrl;
 	};
 
 	/**
@@ -200,6 +179,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			return;
 		}
 
+		// Set snackbar notice.
+		createInfoNotice( __( 'Saving alt text…', 'photo-block' ), {
+			type: 'snackbar',
+		} );
+
 		// Commence saving.
 		setIsSavingAlt( true );
 		await SendCommand(
@@ -212,6 +196,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			'POST'
 		)
 			.then( ( response ) => {
+				createSuccessNotice( __( 'Alt text saved.', 'photo-block' ), {
+					type: 'snackbar',
+				} );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
@@ -233,6 +220,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			return;
 		}
 
+		// Set snackbar notice.
+		createInfoNotice( __( 'Saving title text…', 'photo-block' ), {
+			type: 'snackbar',
+		} );
+
 		// Commence saving.
 		setIsSavingTitle( true );
 		await SendCommand(
@@ -245,6 +237,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			'POST'
 		)
 			.then( ( response ) => {
+				createSuccessNotice( __( 'Title text saved.', 'photo-block' ), {
+					type: 'snackbar',
+				} );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
@@ -265,14 +260,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set settings inspector Controls.
 	const settingsInspectorControls = (
 		<>
-			<PanelBody
-				title={ __( 'Presets', 'photo-block' ) }
-				initialOpen={ false }
-				icon={ <Layers /> }
-				className="photo-block__inspector-panel"
-			>
-				{ <CustomPresets { ...props } /> }
-			</PanelBody>
+			<GlobalStylesPicker { ...props } />
 			<PanelBodyControl
 				title={ __( 'Photo Settings', 'photo-block' ) }
 				icon={ <Image /> }
@@ -333,18 +321,29 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						</>
 					) }
 				</>
-				<PanelRow>
-					<SelectControl
-						label={ __( 'Image Size', 'photo-block' ) }
-						value={ imageSize }
-						onChange={ ( size ) => {
-							setAttributes( { imageSize: size } );
-							getImageFromSize( size );
-						} }
-						options={ imageSizeOptions }
-						disabled={ 'photo' !== photoMode }
-					/>
-				</PanelRow>
+				{
+					! hasGlobalStyle( globalStyle ) && (
+						<PanelRow>
+							<div className="photo-block__image-size-control">
+								<SelectControl
+									label={ __( 'Image Size', 'photo-block' ) }
+									value={ imageSize }
+									onChange={ ( size ) => {
+										setAttributes( { imageSize: size } );
+										getImageFromSize( size );
+									} }
+									options={ imageSizeOptions }
+									disabled={ 'photo' !== photoMode }
+								/>
+								{ imageSizeLoading && (
+									<>
+										<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
+									</>
+								) }
+							</div>
+						</PanelRow>
+					)
+				}
 			</PanelBodyControl>
 		</>
 	);
@@ -352,11 +351,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const interfaceTabs = (
 		<>
 			{ settingsInspectorControls }
-			<SidebarImageInspectorControl
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-				blockUniqueId={ blockUniqueId }
-			/>
+			{
+				! hasGlobalStyle( globalStyle ) && (
+					<SidebarImageInspectorControl
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+						blockUniqueId={ blockUniqueId }
+					/>
+				)
+			}
 		</>
 	);
 
@@ -367,20 +370,44 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	// Set the advanced inspector controls.
 	const advancedInspectorControls = (
-		<SidebarImageAdvancedInspectorControl
-			attributes={ attributes }
-			setAttributes={ setAttributes }
-		/>
+		<>
+			{ ! hasGlobalStyle( globalStyle ) && (
+				<SidebarImageAdvancedInspectorControl
+					{ ...props }
+				/>
+			) }
+		</>
 	);
 
 	const localToolbar = (
 		<>
 			<BlockControls>
+				{
+					! hasGlobalStyle( globalStyle ) && (
+						<AlignmentToolbar { ...props } />
+					)
+				}
 				<ToolbarGroup>
+					{
+						isJustCropped && (
+							<ToolbarButton
+								icon={ <Undo2 /> }
+								label={ __( 'Undo Crop', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { imageData: originalImageData } );
+									setImageData( originalImageData );
+									setScreen( 'edit' );
+								} }
+							>
+								{ __( 'Undo Crop', 'photo-block' ) }
+							</ToolbarButton>
+						)
+					}
 					<ToolbarButton
 						icon={ <Crop /> }
 						label={ __( 'Crop', 'photo-block' ) }
 						onClick={ () => {
+							setJustCropped( false );
 							setScreen( 'crop' );
 						} }
 						disabled={ 'photo' !== photoMode }
@@ -403,25 +430,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						label={ __( 'Replace Photo', 'photo-block' ) }
 						onClick={ () => {
 							setScreen( 'initial' );
+							setJustCropped( false );
 						} }
 					>
 						{ __( 'Replace', 'photo-block' ) }
 					</ToolbarButton>
-					{ canShowUndo() && (
-						<ToolbarButton
-							icon={ <Undo2 /> }
-							label={ __( 'Undo', 'photo-block' ) }
-							onClick={ () => {
-								// Change back to original image.
-								setAttributes( {
-									imageData: originalImageData,
-								} );
-								setImageData( originalImageData );
-							} }
-						>
-							{ __( 'Undo', 'photo-block' ) }
-						</ToolbarButton>
-					) }
 				</ToolbarGroup>
 				<ToolbarGroup>
 					<ToolbarButton
@@ -432,14 +445,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						} }
 						ref={ setA11yButton }
 					/>
-					<ToolbarButton
-						icon={ <Link /> }
-						label={ __( 'Set Link Options', 'photo-block' ) }
-						onClick={ () => {
-							setMediaLinkPopover( ! mediaLinkPopover );
-						} }
-						ref={ setMediaLinkRef }
-					/>
+					{
+						! hasGlobalStyle( globalStyle ) && (
+							<ToolbarButton
+								icon={ <Link /> }
+								label={ __( 'Set Link Options', 'photo-block' ) }
+								onClick={ () => {
+									setMediaLinkPopover( ! mediaLinkPopover );
+								} }
+								ref={ setMediaLinkRef }
+							/>
+						)
+					}
 				</ToolbarGroup>
 			</BlockControls>
 			{ mediaLinkPopover && (
@@ -499,7 +516,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								'photo-block'
 							) }
 						/>
-						{ isSavingAlt && (
+						{ ( isSavingAlt ) && (
 							<>
 								<div className="photo-block__text-saving"><Spinner /> { __( 'Saving alt text…', 'photo-block' ) }</div>
 							</>
@@ -510,7 +527,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
-	const styles = getStyles( attributes, deviceType, uniqueId );
+	let styles = '';
+	if ( ! hasGlobalStyle( globalStyle ) ) {
+		styles = getStyles( attributes, deviceType, uniqueId );
+	}
 
 	return (
 		<>
@@ -523,7 +543,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			}
 			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
-				{ imageLoading && (
+				{ ( imageLoading ) && (
 					<div
 						className="dlx-photo-block__screen-edit-spinner"
 						style={ {
@@ -536,7 +556,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<Spinner />
 					</div>
 				) }
-				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">
+				<figure className={ `dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure ${ globalStyleCSSClassName }` }>
 					{ 'top' === captionPosition && (
 						<div
 							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"

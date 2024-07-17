@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { applyFilters, doAction } from '@wordpress/hooks';
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 
 // Get screens.
 import InitialScreen from '../../screens/Initial';

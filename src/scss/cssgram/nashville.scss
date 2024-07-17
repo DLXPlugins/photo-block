@@ -25,6 +25,7 @@
 @mixin photo-block-nashville($filters...) {
   @include filter-base;
   filter: sepia(.2) contrast(1.2) brightness(1.05) saturate(1.2) $filters;
+  --photo-block-image-filter: sepia(.2) contrast(1.2) brightness(1.05) saturate(1.2) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: rgba(0, 70, 150, .4);

@@ -1,9 +1,9 @@
 import './editor.scss';
 import React, { useState } from 'react';
-import CustomPresetsContext from './context';
-import CustomPresetContainer from './CustomPresetContainer';
+import GlobalStylesContext from './context';
+import GlobalStylesContainer from './GlobalStylesContainer';
 
-const CustomPresets = ( props ) => {
+const GlobalStyles = ( props ) => {
 	const [ savedPresets, setSavedPresets ] = useState( [] );
 	const [ savingPreset, setSavingPreset ] = useState( false );
 	const [ editPresets, setEditPresets ] = useState( false );
@@ -12,7 +12,7 @@ const CustomPresets = ( props ) => {
 	const [ defaultPreset, setDefaultPreset ] = useState( null );
 
 	return (
-		<CustomPresetsContext.Provider
+		<GlobalStylesContext.Provider
 			value={ {
 				savedPresets,
 				setSavedPresets,
@@ -28,9 +28,9 @@ const CustomPresets = ( props ) => {
 				setDefaultPreset,
 			} }
 		>
-			<CustomPresetContainer { ...props } />
-		</CustomPresetsContext.Provider>
+			<GlobalStylesContainer { ...props } />
+		</GlobalStylesContext.Provider>
 	);
 };
 
-export default CustomPresets;
+export default GlobalStyles;

@@ -35,7 +35,7 @@ import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { useSelect, useDispatch } from '@wordpress/data';
 
-import blockStore from '../../store';
+import { blockStore } from '../../store';
 import URLPicker from '../URLPicker';
 
 /**
@@ -50,9 +50,11 @@ const MediaLink = ( props ) => {
 	// Get context.
 	const {
 		photoMode,
+		imageData,
 	} = useSelect( ( select ) => {
 		return {
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 		};
 	} );
 
@@ -148,7 +150,7 @@ const MediaLink = ( props ) => {
 									iconSize={ 18 }
 									iconPosition="right"
 									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
-									href={ attributes.photo.full || attributes.photo.url }
+									href={ imageData.full }
 									target="_blank"
 									rel="noopener noreferrer"
 								>
@@ -166,7 +168,7 @@ const MediaLink = ( props ) => {
 									iconSize={ 18 }
 									iconPosition="right"
 									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
-									href={ attributes.photo.attachment_link }
+									href={ imageData.attachment_link }
 									target="_blank"
 									rel="noopener noreferrer"
 									disabled={ 'photo' !== photoMode }
@@ -220,26 +222,30 @@ const MediaLink = ( props ) => {
 							</PanelBody>
 						</>
 					) }
-					{ 'none' !== mediaLinkType && (
+					{ ( 'none' !== mediaLinkType ) && (
 						<PanelBody
 							title={ __( 'Advanced', 'photo-block' ) }
 							initialOpen={ false }
 						>
-							<PanelRow>
-								<ToggleControl
-									label={ __( 'Open in new tab', 'photo-block' ) }
-									checked={ attributes.mediaLinkNewTab }
-									onChange={ ( value ) => {
-										if ( '' === attributes.mediaLinkRel && value ) {
-											setAttributes( { mediaLinkRel: 'noopener noreferrer' } );
-										}
-										if ( 'noopener noreferrer' === attributes.mediaLinkRel && ! value ) {
-											setAttributes( { mediaLinkRel: '' } );
-										}
-										setAttributes( { mediaLinkNewTab: value } );
-									} }
-								/>
-							</PanelRow>
+							{
+								! lightboxEnabled && (
+									<PanelRow>
+										<ToggleControl
+											label={ __( 'Open in new tab', 'photo-block' ) }
+											checked={ attributes.mediaLinkNewTab }
+											onChange={ ( value ) => {
+												if ( '' === attributes.mediaLinkRel && value ) {
+													setAttributes( { mediaLinkRel: 'noopener noreferrer' } );
+												}
+												if ( 'noopener noreferrer' === attributes.mediaLinkRel && ! value ) {
+													setAttributes( { mediaLinkRel: '' } );
+												}
+												setAttributes( { mediaLinkNewTab: value } );
+											} }
+										/>
+									</PanelRow>
+								)
+							}
 							<PanelRow>
 								<TextControl
 									label={ __( 'Link Title', 'photo-block' ) }

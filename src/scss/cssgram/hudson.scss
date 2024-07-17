@@ -25,6 +25,7 @@
 @mixin photo-block-hudson($filters...) {
   @include filter-base;
   filter: brightness(1.2) contrast(.9) saturate(1.1) $filters;
+  --photo-block-image-filter: brightness(1.2) contrast(.9) saturate(1.1) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: radial-gradient(circle, rgb(166, 177, 255) 50%, rgb(52, 33, 52));

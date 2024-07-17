@@ -25,6 +25,7 @@
 @mixin photo-block-toaster($filters...) {
   @include filter-base;
   filter: contrast(1.5) brightness(.9) $filters;
+  --photo-block-image-filter: contrast(1.5) brightness(.9) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: radial-gradient(circle, rgb(128, 78, 15), rgb(59, 0, 59));

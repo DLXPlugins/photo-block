@@ -24,6 +24,7 @@
 @mixin photo-block-lark($filters...) {
   @include filter-base;
   filter: contrast(.9) $filters;
+  --photo-block-image-filter: contrast(.9) blur(var(--photo-block-blur, 0));
 
   &::after {
     background: rgba(242, 242, 242, .8);
