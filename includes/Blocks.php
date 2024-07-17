@@ -234,13 +234,10 @@ class Blocks {
 			}
 		}
 
-		$is_in_query_loop = false;
+		// First, let's determine if we're in a query loop.
+		$is_in_query_loop = Functions::is_in_query_loop( $block );
 		$context          = $block->context ?? array();
-		$current_post_id  = $context['postId'] ?? 0;
-		$maybe_query      = $context['query'] ?? array();
-		if ( $current_post_id && ! empty( $maybe_query ) ) {
-			$is_in_query_loop = true;
-		}
+		$current_post_id  = $block->context['postId'] ?? 0;
 
 		/**
 		 * Filter whether the Photo block can output. Attempt not to load in admin.
@@ -282,14 +279,33 @@ class Blocks {
 
 		// Let's get image data and modify the attributes if in query loop or data mode.
 		if ( $is_in_query_loop ) {
-
-			// todo - get featured image and caption for featured image.
+			// Get featured image from post.
+			$maybe_featured_image_id = get_post_thumbnail_id( $current_post_id );
+			if ( ! $maybe_featured_image_id ) {
+				// Try to get fallback image.
+				$has_fallback_image = $block->context['photo-block/dataHasFallbackImage'] ?? false;
+				if ( $has_fallback_image ) {
+					// Try to get image ID.
+					$fallback_id = $block->context['photo-block/dataFallbackImage']['id'] ?? 0;
+					if ( $fallback_id ) {
+						// Try to get caption of image.
+						$caption = get_post( $fallback_id )->post_excerpt;
+					}
+				}
+			} else {
+				$caption = get_post( $maybe_featured_image_id )->post_excerpt;
+			}
 		} else {
 			if ( 'single' === $mode ) {
 				$caption = $attributes['captionManual'];
 			} else {
 				$caption = $innerblocks_content;
 			}
+		}
+
+		// If no caption, return early.
+		if ( empty( $caption ) ) {
+			return;
 		}
 
 		// Begin caption overlay classes.
