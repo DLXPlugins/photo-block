@@ -7531,6 +7531,16 @@ var GlobalStylesPicker = function GlobalStylesPicker(props) {
         props.setAttributes({
           globalStyle: 'none'
         });
+        // Updatge caption block if any.
+        var _block = getBlock(props.clientId);
+        var _captionInnerBlocks = _block === null || _block === void 0 ? void 0 : _block.innerBlocks;
+        if (_captionInnerBlocks.length > 0) {
+          var _captionBlockClientId = (_block === null || _block === void 0 ? void 0 : _block.innerBlocks[0].clientId) || null;
+          // Need to apply global styles to the caption.
+          updateBlockAttributes(_captionBlockClientId, {
+            globalStyle: 'none'
+          });
+        }
       }
       setIsRemoveModalOpen(false);
     },
