@@ -356,7 +356,8 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 		width: 100%;
 	}
 }
-.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption-overlay.dlx-photo-block__caption {
+.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption-overlay.dlx-photo-block__caption,
+.dlx-photo-block__caption-overlay {
 	display: flex;
 	position: absolute;
 	top: 0;
