@@ -405,6 +405,21 @@ class Blocks {
 			$can_output = false;
 		}
 
+		/**
+		 * Filter whether the Photo block can output. Attempt not to load in admin.
+		 *
+		 * @param bool     $can_output Whether the Photo block can output.
+		 * @param array    $attributes Array of attributes for the Gutenberg block.
+		 * @param string   $innerblocks_content The inner blocks content.
+		 * @param WP_Block $block The photo block content and attributes.
+		 *
+		 * @since 1.0.0
+		 */
+		$can_output = apply_filters( 'dlx_pb_can_output', $can_output, $attributes, $innerblocks_content, $block );
+		if ( ! $can_output ) {
+			return;
+		}
+
 		// Let's get the global style, if any.
 		$has_global_style       = false;
 		$global_style_css_class = '';
@@ -460,21 +475,6 @@ class Blocks {
 					wp_print_styles( 'dlx-photo-block-global-styles' );
 				}
 			}
-		}
-
-		/**
-		 * Filter whether the Photo block can output. Attempt not to load in admin.
-		 *
-		 * @param bool     $can_output Whether the Photo block can output.
-		 * @param array    $attributes Array of attributes for the Gutenberg block.
-		 * @param string   $innerblocks_content The inner blocks content.
-		 * @param WP_Block $block The photo block content and attributes.
-		 *
-		 * @since 1.0.0
-		 */
-		$can_output = apply_filters( 'dlx_pb_can_output', $can_output, $attributes, $innerblocks_content, $block );
-		if ( ! $can_output ) {
-			return;
 		}
 
 		// Let's sanitize the attributes.

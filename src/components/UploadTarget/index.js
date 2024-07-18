@@ -101,6 +101,7 @@ const UploadTarget = ( props ) => {
 										setAttributes(
 											{
 												imageData: JSON.parse( request.responseText ),
+												photoMode: 'photo',
 											}
 										);
 										setPhotoMode( 'photo' );

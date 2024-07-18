@@ -170,6 +170,7 @@ class Global_Styles {
 				'dataScreen',
 				'altText',
 				'htmlAnchor',
+				'photoMode',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -324,6 +325,7 @@ class Global_Styles {
 				'altText',
 				'htmlAnchor',
 				'globalStyle',
+				'photoMode',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
