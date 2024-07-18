@@ -257,6 +257,7 @@ class Blocks {
 		$unique_id = $context['photo-block/uniqueId'] ?? '';
 
 		// Let's sanitize the attributes.
+		$caption_raw = $attributes['captionManual'] ?? '';
 		$attributes = Functions::sanitize_array_recursive( $attributes );
 
 		// Get caption mode.
@@ -297,7 +298,7 @@ class Blocks {
 			}
 		} else {
 			if ( 'single' === $mode ) {
-				$caption = $attributes['captionManual'];
+				$caption = $caption_raw;
 			} else {
 				$caption = $innerblocks_content;
 			}
@@ -365,7 +366,7 @@ class Blocks {
 		?>
 			<div class="<?php echo esc_attr( implode( ' ', $caption_hover_overlay_styles ) ); ?>">
 				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
-					<?php echo wp_kses_post( trim( $caption ) ); ?>
+					<div class="dlx-photo-block__caption-inner"><?php echo wp_kses_post( trim( $caption ) ); ?></div>
 				</figcaption>
 			</div>
 		<?php
