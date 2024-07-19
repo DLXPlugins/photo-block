@@ -325,6 +325,9 @@ class Blocks {
 		$caption_overlay_styles[] = 'center' === $attributes['overlayHorizontalPosition'] ? 'overlay-horizontal-center' : '';
 		$caption_overlay_styles[] = 'right' === $attributes['overlayHorizontalPosition'] ? 'overlay-horizontal-right' : '';
 
+		// Set caption position if aligned.
+		$caption_overlay_styles[] = 'align' . $attributes['captionAlign'];
+
 		// Set hover overlay options.
 		$caption_hover_overlay_styles   = array( 'dlx-photo-block__caption-wrapper' );
 		$caption_hover_overlay_styles[] = ( 'overlay' === $attributes['captionPosition'] && (bool) $attributes['overlayDisplayOnHover'] ) ? 'overlay-display-hover' : '';
@@ -361,7 +364,10 @@ class Blocks {
 		}
 		if ( 'overlay' !== $attributes['captionPosition'] ) {
 			$caption_hover_overlay_styles = array( 'dlx-photo-block__caption-wrapper' );
-			$caption_overlay_styles       = array( 'dlx-photo-block__caption' );
+			$caption_overlay_styles       = array(
+				'dlx-photo-block__caption',
+				'align' . $attributes['captionAlign'],
+			);
 		}
 		?>
 			<div class="<?php echo esc_attr( implode( ' ', $caption_hover_overlay_styles ) ); ?>">

@@ -291,6 +291,11 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 	box-sizing: border-box;
 	box-shadow: var( --photo-block-image-drop-shadow-horizontal, 0 ) var( --photo-block-image-drop-shadow-vertical, 0 ) var( --photo-block-image-drop-shadow-blur, 0 ) var( --photo-block-image-drop-shadow-spread, 0 ) var( --photo-block-image-drop-shadow-color, #000000 );
 }
+.dlx-photo-block__caption-wrapper {
+	box-sizing: border-box;
+	position: relative;
+	width: 100%;
+}
 .dlx-photo-block__caption--has-overlay {
 	position: absolute;
 	top: 0;
@@ -419,6 +424,10 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 	padding: var( --photo-block-caption-padding, 0 );
 	margin: var( --photo-block-caption-margin, 0 );
 	border-radius: var( --photo-block-caption-border-radius, 0 );
+	border-top: var( --photo-block-caption-border-top, 0 );
+	border-right: var( --photo-block-caption-border-right, 0 );
+	border-bottom: var( --photo-block-caption-border-bottom, 0 );
+	border-left: var( --photo-block-caption-border-left, 0 );
 
 	/* Set color for Text elements */
 	color: var( --photo-block-caption-text-color, inherit );

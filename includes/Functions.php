@@ -400,6 +400,7 @@ class Functions {
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height', 'width', '', '--photo-block-image-min-height' );
 		Functions::add_css_property( $css_helper, 'background-color', $attributes['photoBackgroundColor'], '--photo-block-photo-background-color' );
 		Functions::build_dimension_css( $css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-photo-border-radius' );
+		Functions::build_border_css( $css_helper, $attributes['photoBorder'], '--photo-block-image-border' );
 		$css_output .= $css_helper->get_css();
 
 		// Output image styles.
@@ -487,6 +488,7 @@ class Functions {
 		Functions::build_dimension_css( $css_helper, $attributes['captionBorderRadius'], 'border-radius', '--photo-block-caption-border-radius' );
 		Functions::build_dimension_css( $css_helper, $attributes['captionPaddingSize'], 'padding', '--photo-block-caption-padding' );
 		Functions::build_dimension_css( $css_helper, $attributes['captionMarginSize'], 'margin', '--photo-block-caption-margin' );
+		Functions::build_border_css( $css_helper, $attributes['captionBorder'], '--photo-block-caption-border' );
 
 		$attributes['dataMode'] = false;
 		if ( 'single' === $mode ) {
@@ -1728,6 +1730,170 @@ class Functions {
 						self::build_shorthand_css_units( $top, $top_unit, $right, $right_unit, $bottom, $bottom_unit, $left, $left_unit )
 					);
 					$css_helper->add_css( $css, $screen_size );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Build dimension CSS from a CSS helper and dimensions object.
+	 *
+	 * @param CSS_Helper $css_helper CSS helper object.
+	 * @param array      $dimensions Dimensions array.
+	 * @param string     $dimension_type Dimension type (margin, padding, etc).
+	 * @param string     $css_var CSS variable to use.
+	 */
+	public static function build_border_css( $css_helper, $border, $css_var = '' ) {
+		$screen_sizes = self::get_screen_sizes();
+
+		$dimensions = array(
+			'top',
+			'right',
+			'bottom',
+			'left',
+		);
+
+		foreach ( $screen_sizes as $screen_size ) {
+			// Check unit sync.
+			if ( 'desktop' === $screen_size ) {
+				if ( $border[ $screen_size ]['unitSync'] ) {
+					foreach ( $dimensions as $dimension ) {
+						$top_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['width'], 'top', 'width' );
+						$top_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['unit'], 'top', 'unit' );
+						$top_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' );
+						$top_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['borderStyle'], 'top', 'borderStyle' );
+						$css_helper->add_css(
+							sprintf(
+								'%s: %s;',
+								$css_var . '-' . $dimension,
+								$top_width . $top_unit . ' ' . $top_border_style . ' ' . $top_color
+							),
+							$screen_size
+						);
+					}
+				} else {
+					$top_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['width'], 'top', 'width' );
+					$top_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['unit'], 'top', 'unit' );
+					$top_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' );
+					$top_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['borderStyle'], 'top', 'borderStyle' );
+
+					$right_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['width'], 'right', 'width' );
+					$right_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['unit'], 'right', 'unit' );
+					$right_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['color'], 'right', 'color' );
+					$right_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['borderStyle'], 'right', 'borderStyle' );
+
+					$bottom_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['width'], 'bottom', 'width' );
+					$bottom_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['unit'], 'bottom', 'unit' );
+					$bottom_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['color'], 'bottom', 'color' );
+					$bottom_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['borderStyle'], 'bottom', 'borderStyle' );
+
+					$left_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['width'], 'left', 'width' );
+					$left_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['unit'], 'left', 'unit' );
+					$left_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['color'], 'left', 'color' );
+					$left_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['borderStyle'], 'left', 'borderStyle' );
+
+					$css_helper->add_css(
+						sprintf(
+							'%s: %s;',
+							$css_var . '-top',
+							$top_width . $top_unit . ' ' . $top_border_style . ' ' . $top_color
+						),
+						$screen_size
+					);
+					$css_helper->add_css(
+						sprintf(
+							'%s: %s;',
+							$css_var . '-right',
+							$right_width . $right_unit . ' ' . $right_border_style . ' ' . $right_color
+						),
+						$screen_size
+					);
+					$css_helper->add_css(
+						sprintf(
+							'%s: %s;',
+							$css_var . '-bottom',
+							$bottom_width . $bottom_unit . ' ' . $bottom_border_style . ' ' . $bottom_color
+						),
+						$screen_size
+					);
+					$css_helper->add_css(
+						sprintf(
+							'%s: %s;',
+							$css_var . '-left',
+							$left_width . $left_unit . ' ' . $left_border_style . ' ' . $left_color
+						),
+						$screen_size
+					);
+				}
+			} elseif ( 'tablet' === $screen_size || 'mobile' === $screen_size ) {
+				if ( true === self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['unitSync'], 'border', 'unitSync' ) ) {
+					foreach ( $dimensions as $dimension ) {
+						$top_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['width'], 'top', 'width' );
+						$top_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['unit'], 'top', 'unit' );
+						$top_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' );
+						$top_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['borderStyle'], 'top', 'borderStyle' );
+						$css_helper->add_css(
+							sprintf(
+								'%s: %s;',
+								$css_var . '-' . $dimension,
+								$top_width . $top_unit . ' ' . $top_border_style . ' ' . $top_color
+							),
+							$screen_size
+						);
+					}
+				} else {
+					$top_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['width'], 'top', 'width' );
+					$top_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['unit'], 'top', 'unit' );
+					$top_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' );
+					$top_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['borderStyle'], 'top', 'borderStyle' );
+
+					$right_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['width'], 'right', 'width' );
+					$right_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['unit'], 'right', 'unit' );
+					$right_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['color'], 'right', 'color' );
+					$right_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['borderStyle'], 'right', 'borderStyle' );
+
+					$bottom_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['width'], 'bottom', 'width' );
+					$bottom_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['unit'], 'bottom', 'unit' );
+					$bottom_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['color'], 'bottom', 'color' );
+					$bottom_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['borderStyle'], 'bottom', 'borderStyle' );
+
+					$left_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['width'], 'left', 'width' );
+					$left_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['unit'], 'left', 'unit' );
+					$left_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['color'], 'left', 'color' );
+					$left_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['borderStyle'], 'left', 'borderStyle' );
+
+					$css_helper->add_css(
+						sprintf(
+							'%s: %s;',
+							$css_var . '-top',
+							$top_width . $top_unit . ' ' . $top_border_style . ' ' . $top_color
+						),
+						$screen_size
+					);
+					$css_helper->add_css(
+						sprintf(
+							'%s: %s;',
+							$css_var . '-right',
+							$right_width . $right_unit . ' ' . $right_border_style . ' ' . $right_color
+						),
+						$screen_size
+					);
+					$css_helper->add_css(
+						sprintf(
+							'%s: %s;',
+							$css_var . '-bottom',
+							$bottom_width . $bottom_unit . ' ' . $bottom_border_style . ' ' . $bottom_color
+						),
+						$screen_size
+					);
+					$css_helper->add_css(
+						sprintf(
+							'%s: %s;',
+							$css_var . '-left',
+							$left_width . $left_unit . ' ' . $left_border_style . ' ' . $left_color
+						),
+						$screen_size
+					);
 				}
 			}
 		}
