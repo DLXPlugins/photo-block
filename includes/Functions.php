@@ -1715,14 +1715,14 @@ class Functions {
 					);
 					$css_helper->add_css( $css, $screen_size );
 				} else {
-					$top         = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['top'], $dimension_type );
-					$top_unit    = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['topUnit'], $dimension_type );
-					$right       = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['right'], $dimension_type );
-					$right_unit  = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['rightUnit'], $dimension_type );
-					$bottom      = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['bottom'], $dimension_type );
-					$bottom_unit = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['bottomUnit'], $dimension_type );
-					$left        = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['left'], $dimension_type );
-					$left_unit   = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['leftUnit'], $dimension_type );
+					$top         = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['top'], $dimension_type, 'top' );
+					$top_unit    = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['topUnit'], $dimension_type, 'topUnit' );
+					$right       = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['right'], $dimension_type, 'right' );
+					$right_unit  = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['rightUnit'], $dimension_type, 'rightUnit' );
+					$bottom      = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['bottom'], $dimension_type, 'bottom' );
+					$bottom_unit = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['bottomUnit'], $dimension_type, 'bottomUnit' );
+					$left        = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['left'], $dimension_type, 'left' );
+					$left_unit   = self::get_hierarchical_placeholder_value( $dimensions, $screen_size, $dimensions[ $screen_size ]['leftUnit'], $dimension_type, 'leftUnit' );
 
 					$css = sprintf(
 						'%s: %s;',
@@ -1978,9 +1978,23 @@ class Functions {
 		if ( null === $current_value ) {
 			$current_value = '';
 		}
+
+		// Adjust current value for margin, padding, and border.
+		if ( 'unitSync' === $sub_type ) {
+			switch ( $type ) {
+				case 'margin':
+				case 'padding':
+					if ( ( 'mobile' === $screen_size || 'tablet' === $screen_size ) && true === $current_value ) {
+						// Check to see if units are blank.
+						if ( '' === $props[ $screen_size ]['top'] ) {
+							$current_value = false;
+						}
+					}
+			}
+		}
+
 		// Check mobile screen size.
 		if ( 'mobile' === $screen_size && '' === $current_value ) {
-			// Check tablet.
 			if ( ! empty( $sub_type ) && isset( $props['tablet'][ $type ][ $sub_type ] ) && $props['tablet'][ $type ][ $sub_type ] ) {
 				return $props['tablet'][ $type ][ $sub_type ];
 			} elseif ( ! empty( $sub_type ) && isset( $props['desktop'][ $type ][ $sub_type ] ) && '' !== $props['desktop'][ $type ][ $sub_type ] ) {
@@ -1990,6 +2004,10 @@ class Functions {
 				return $props['tablet'][ $type ];
 			} elseif ( empty( $sub_type ) && isset( $props['desktop'][ $type ] ) && '' !== $props['desktop'][ $type ] ) {
 				return $props['desktop'][ $type ];
+			} elseif ( ! empty( $sub_type ) && isset( $props['tablet'][ $sub_type ] ) && '' !== $props['tablet'][ $sub_type ] ) {
+				return $props['tablet'][ $sub_type ];
+			} elseif ( ! empty( $sub_type ) && isset( $props['desktop'][ $sub_type ] ) && '' !== $props['desktop'][ $sub_type ] ) {
+				return $props['desktop'][ $sub_type ];
 			}
 		}
 
@@ -2000,6 +2018,8 @@ class Functions {
 				return $props['desktop'][ $type ][ $sub_type ];
 			} elseif ( empty( $sub_type ) && isset( $props['desktop'][ $type ] ) && '' !== $props['desktop'][ $type ] ) {
 				return $props['desktop'][ $type ];
+			} elseif ( ! empty( $sub_type ) && isset( $props['desktop'][ $sub_type ] ) && '' !== $props['desktop'][ $sub_type ] ) {
+				return $props['desktop'][ $sub_type ];
 			}
 		}
 
