@@ -424,9 +424,9 @@ class Functions {
 		if ( 'none' !== $attributes['photoObjectFit'] && 'custom' === $attributes['photoObjectPosition'] && '' !== $attributes['photoObjectPositionCustom'] ) {
 			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPositionCustom'] );
 		}
-		Functions::build_dimension_css( $image_css_helper, $attributes['photoPaddingSize'], 'padding' );
-		Functions::build_dimension_css( $image_css_helper, $attributes['photoMarginSize'], 'margin' );
-		Functions::build_dimension_css( $image_css_helper, $attributes['photoBorderRadius'], 'border-radius' );
+		Functions::build_dimension_css( $image_css_helper, $attributes['photoPaddingSize'], 'padding', '--photo-block-image-padding' );
+		Functions::build_dimension_css( $image_css_helper, $attributes['photoMarginSize'], 'margin', '--photo-block-image-margin' );
+		Functions::build_dimension_css( $image_css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-image-border-radius' );
 
 		$css_output .= $image_css_helper->get_css();
 
