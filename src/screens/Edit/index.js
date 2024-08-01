@@ -532,6 +532,29 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		styles = getStyles( attributes, deviceType, uniqueId );
 	}
 
+	const photoImg = (
+		<img
+			src={ url }
+			className={ classnames(
+				`photo-block-${ cssGramFilter } dlx-photo-block__image`,
+				{
+					'has-css-gram': cssGramFilter !== 'none',
+				}
+			) }
+			alt=""
+			onLoad={ () => {
+				setImageLoading( false );
+			} }
+			ref={ ref }
+			style={ {
+				maxWidth: `100%`,
+				height: 'auto',
+			} }
+			width={ imageData.width }
+			height={ imageData.height }
+		/>
+	);
+
 	return (
 		<>
 			{ localInspectorControls }
@@ -564,30 +587,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						/>
 					) }
 					<div className="dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper">
-						<img
-							src={ url }
-							className={ classnames(
-								`photo-block-${ cssGramFilter } dlx-photo-block__image`,
-								{
-									'has-css-gram': cssGramFilter !== 'none',
-								}
+						<div className="dlx-photo-block__screen-edit-image-inner">
+							{ photoImg }
+							{ 'overlay' === captionPosition && (
+								<div
+									className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
+									{ ...innerBlockProps }
+								/>
 							) }
-							alt=""
-							onLoad={ () => {
-								setImageLoading( false );
-							} }
-							ref={ ref }
-							style={ {
-								maxWidth: `100%`,
-								height: 'auto',
-							} }
-						/>
-						{ 'overlay' === captionPosition && (
-							<div
-								className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
-								{ ...innerBlockProps }
-							/>
-						) }
+						</div>
 					</div>
 					{ 'bottom' === captionPosition && (
 						<div

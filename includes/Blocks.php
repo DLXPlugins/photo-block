@@ -752,7 +752,7 @@ class Blocks {
 
 		// If overlay, include at same level of image.
 		if ( $has_caption && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
-			$image_markup = $image_markup . $caption_markup;
+			$image_markup = '<div class="dlx-photo-block__screen-edit-image-inner">' . $image_markup . $caption_markup . '</div>';
 		}
 
 		// Output the link HTML around the image.

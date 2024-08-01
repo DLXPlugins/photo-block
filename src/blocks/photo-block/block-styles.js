@@ -42,6 +42,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 		containerMinHeight,
 		containerMaxWidth,
 		containerMaxHeight,
+		captionPosition,
 		photoPaddingSize,
 		photoMarginSize,
 		photoBorderRadius,
@@ -56,30 +57,63 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 		captionCustomTypography,
 
 	} = attributes;
-	let styles = `
-		${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
-			--photo-block-photo-background-color: ${ photoBackgroundColor };
-			--photo-block-image-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
-			--photo-block-image-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
-			--photo-block-image-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
-			--photo-block-image-min-height: ${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
-			--photo-block-image-max-width: ${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
-			--photo-block-image-max-height: ${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
-			--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
-		}
-		${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
-			--photo-block-image-opacity: ${ photoOpacity };
-			--photo-block-image-object-fit: ${ photoObjectFit };
-			--photo-block-blur: ${ photoBlur }px;
-			--photo-block-image-width: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
-			--photo-block-image-height: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
-			--photo-block-image-object-position: ${ 'custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition };
-			--photo-block-image-padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
-			--photo-block-image-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
-			${ buildBorderCSS( photoBorder, deviceType, '--photo-block-image' ) };
-			--photo-block-image-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
-		}
-	`;
+	let styles = '';
+	if ( 'overlay' === captionPosition ) {
+		styles += `
+			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
+				--photo-block-photo-background-color: ${ photoBackgroundColor };
+				--photo-block-image-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
+				--photo-block-image-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
+				--photo-block-image-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
+				--photo-block-image-min-height: ${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
+				--photo-block-image-max-width: ${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
+				--photo-block-image-max-height: ${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
+				--photo-block-image-padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
+				--photo-block-image-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
+				${ buildBorderCSS( photoBorder, deviceType, '--photo-block-image' ) };
+				--photo-block-image-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
+				--photo-block-image-drop-shadow-horizontal: ${ photoDropShadow.horizontal }px;
+				--photo-block-image-drop-shadow-vertical: ${ photoDropShadow.vertical }px;
+				--photo-block-image-drop-shadow-blur: ${ photoDropShadow.blur }px;
+				--photo-block-image-drop-shadow-spread: ${ photoDropShadow.spread }px;
+				--photo-block-image-drop-shadow-color: ${ getColor( photoDropShadow.color, photoDropShadow.opacity ) };
+			}
+			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
+				--photo-block-image-opacity: ${ photoOpacity };
+				--photo-block-image-object-fit: ${ photoObjectFit };
+				--photo-block-blur: ${ photoBlur }px;
+				--photo-block-image-width: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
+				--photo-block-image-height: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
+				--photo-block-image-object-position: ${ 'custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition };
+			}
+		`;
+	} else {
+		styles += `
+			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
+				--photo-block-photo-background-color: ${ photoBackgroundColor };
+				--photo-block-image-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
+				--photo-block-image-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
+				--photo-block-image-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
+				--photo-block-image-min-height: ${ getValueWithUnit( deviceType, containerMinHeight, 'min-height' ) }
+				--photo-block-image-max-width: ${ getValueWithUnit( deviceType, containerMaxWidth, 'max-width' ) }
+				--photo-block-image-max-height: ${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
+				--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
+			}
+			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
+				--photo-block-image-opacity: ${ photoOpacity };
+				--photo-block-image-object-fit: ${ photoObjectFit };
+				--photo-block-blur: ${ photoBlur }px;
+				--photo-block-image-width: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
+				--photo-block-image-height: ${ 'none' !== photoObjectFit ? '100%' : 'unset' };
+				--photo-block-image-object-position: ${ 'custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition };
+				--photo-block-image-padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
+				--photo-block-image-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
+				${ buildBorderCSS( photoBorder, deviceType, '--photo-block-image' ) };
+				--photo-block-image-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
+			}
+		`;
+	}
+
 	// Apply outer margin to container.
 	styles += `${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__figure { --photo-block-figure-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
 	if ( photoDropShadow.enabled ) {

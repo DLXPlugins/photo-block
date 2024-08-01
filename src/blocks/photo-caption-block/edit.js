@@ -202,13 +202,13 @@ const PhotoCaptionBlock = ( props ) => {
 		};
 	} );
 
-	const { globalStyleCSSClassName } = useSelect( ( select ) => {
+	const globalStyleCSSClassName = useSelect( ( select ) => {
 		const maybeGlobalStyle = select( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
 		if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
 			return '';
 		}
 		return {
-			globalStyleCSSClassName: maybeGlobalStyle.css_class,
+			globalStyleCSSClassName: maybeGlobalStyle?.css_class || '',
 		};
 	} );
 
@@ -1330,24 +1330,32 @@ const PhotoCaptionBlock = ( props ) => {
 					</>
 				);
 			} else if ( '' !== caption ) {
-				return ( <figcaption className={ figClasses } id={ uniqueId }>{ htmlToReactParser.parse( caption ) }</figcaption> );
+				return (
+					<figcaption className={ figClasses } id={ uniqueId }>
+						<div className="dlx-photo-block__caption-inner">
+							{ htmlToReactParser.parse( caption ) }
+						</div>
+					</figcaption>
+				);
 			}
 			return __( 'No caption', 'photo-block' );
 		}
 		if ( 'single' === mode ) {
 			return (
 				<figcaption className={ figClasses } id={ uniqueId }>
-					<RichText
-						tagName="div"
-						placeholder={ __( 'Write caption…', 'photo-block' ) }
-						value={ captionManual }
-						onChange={ ( value ) => {
-							setAttributes( { captionManual: value } );
-						} }
-						id="search-dlx-caption"
-						name="search-dlx-caption"
-						ref={ setCaptionInputRef }
-					/>
+					<div className="dlx-photo-block__caption-inner">
+						<RichText
+							tagName="div"
+							placeholder={ __( 'Write caption…', 'photo-block' ) }
+							value={ captionManual }
+							onChange={ ( value ) => {
+								setAttributes( { captionManual: value } );
+							} }
+							id="search-dlx-caption"
+							name="search-dlx-caption"
+							ref={ setCaptionInputRef }
+						/>
+					</div>
 				</figcaption>
 			);
 		}

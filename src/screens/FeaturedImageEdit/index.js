@@ -512,25 +512,27 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 								</div>
 							)
 						}
-						{
-							( ! imageLoading && hasImage && typeof dataImages[ postId ] !== 'undefined' ) && (
-								<img
-									src={ dataImages[ postId ].url }
-									className={ classnames( `photo-block-${ cssGramFilter }`, {
-										'has-css-gram': cssGramFilter !== 'none',
-									} ) }
-									width={ dataImages[ postId ].width }
-									height={ dataImages[ postId ].height }
-									alt=""
+						<div className="dlx-photo-block__screen-edit-image-inner">
+							{
+								( ! imageLoading && hasImage && typeof dataImages[ postId ] !== 'undefined' ) && (
+									<img
+										src={ dataImages[ postId ].url }
+										className={ classnames( `photo-block-${ cssGramFilter }`, {
+											'has-css-gram': cssGramFilter !== 'none',
+										} ) }
+										width={ dataImages[ postId ].width }
+										height={ dataImages[ postId ].height }
+										alt=""
+									/>
+								)
+							}
+							{ ( 'overlay' === captionPosition && ! imageLoading && hasImage ) && (
+								<div
+									className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
+									{ ...innerBlockProps }
 								/>
-							)
-						}
-						{ ( 'overlay' === captionPosition && ! imageLoading && hasImage ) && (
-							<div
-								className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
-								{ ...innerBlockProps }
-							/>
-						) }
+							) }
+						</div>
 						{
 							( ! imageLoading && ( ! hasImage || typeof dataImages[ postId ] === 'undefined' ) ) && (
 								<>

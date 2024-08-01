@@ -27,7 +27,7 @@ figcaption.dlx-photo-block__caption {
 	z-index: 2; /* this is to make sure the caption is on top of the overlay */
 	box-sizing: border-box;
 }
-figcaption.dlx-photo-block__caption:not(.has-smart-styles) {
+figcaption.dlx-photo-block__caption:not(.has-smart-styles) .dlx-photo-block__caption-inner {
 	display: flex;
 	align-items: center;
 
@@ -56,7 +56,7 @@ figcaption.dlx-photo-block__caption:not(.has-smart-styles) {
 /**
  * Smart Styles.
  */
-figcaption.dlx-photo-block__caption.has-smart-styles {
+figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-inner {
 	font-size: var( --photo-block__caption-font-size );
 	/* Strip Margin and padding from first and last elements */
 	& > :first-child {
@@ -74,6 +74,10 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 		padding-top: 0;
 		margin-bottom: 0;
 		padding-bottom: 0;
+	}
+	.wp-block {
+		margin-left: unset;
+		margin-right: unset;
 	}
 
 	/* Set color for common elements */
@@ -257,7 +261,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 	position: relative;
 }
 .dlx-photo-block__image-wrapper {
-	display: flex;
+	display: inline-flex;
 	justify-content: center;
 	background-color: var( --photo-block-photo-background-color );
 	width: var( --photo-block-image-width );
@@ -284,12 +288,42 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 	border-bottom: var( --photo-block-image-border-bottom, 0 );
 	border-left: var( --photo-block-image-border-left, 0 );
 }
+.dlx-caption-position-overlay .dlx-photo-block__image-wrapper {
+	position: relative;
+	display: inline-flex;
+	box-sizing: border-box;
+	padding: var( --photo-block-image-padding, 0 );
+	margin: var( --photo-block-image-margin, 0 );
+	border-radius: var( --photo-block-image-border-radius, 0 );
+	border-top: var( --photo-block-image-border-top, 0 );
+	border-right: var( --photo-block-image-border-right, 0 );
+	border-bottom: var( --photo-block-image-border-bottom, 0 );
+	border-left: var( --photo-block-image-border-left, 0 );
+	box-shadow: var( --photo-block-image-drop-shadow-horizontal, 0 ) var( --photo-block-image-drop-shadow-vertical, 0 ) var( --photo-block-image-drop-shadow-blur, 0 ) var( --photo-block-image-drop-shadow-spread, 0 ) var( --photo-block-image-drop-shadow-color, #000000 );
+}
+.dlx-photo-block__screen-edit-image-inner {
+	position: relative;
+	display: inline-flex;
+}
+.dlx-caption-position-overlay .dlx-photo-block__image-wrapper img {
+	padding: unset;
+	margin: unset;
+	border-radius: unset;
+	border-top: unset;
+	border-right: unset;
+	border-bottom: unset;
+	border-left: unset;
+}
 .dlx-photo-block__figure {
-	margin: var( --photo-block-figure-margin, 0 );
+	margin: var( --photo-block-figure-margin, 0 ); 
+	width: 100%;
 }
 .dlx-photo-block.dlx-has-drop-shadow img {
 	box-sizing: border-box;
 	box-shadow: var( --photo-block-image-drop-shadow-horizontal, 0 ) var( --photo-block-image-drop-shadow-vertical, 0 ) var( --photo-block-image-drop-shadow-blur, 0 ) var( --photo-block-image-drop-shadow-spread, 0 ) var( --photo-block-image-drop-shadow-color, #000000 );
+}
+.dlx-caption-position-overlay.dlx-photo-block.dlx-has-drop-shadow img {
+	box-shadow: unset;
 }
 .dlx-photo-block__caption-wrapper {
 	box-sizing: border-box;
@@ -309,6 +343,10 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 		left: 0;
 		width: 100%;
 		height: 100%;
+		margin-top: 0;
+		margin-right: 0;
+		margin-bottom: 0;
+		margin-left: 0;
 	}
 
 	.dlx-photo-block__caption-wrapper {
@@ -361,74 +399,59 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 		width: 100%;
 	}
 }
-.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption-overlay.dlx-photo-block__caption,
-.dlx-photo-block__caption-overlay {
-	display: flex;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	transition: all 0.3s ease-in-out;
+.dlx-photo-block__caption--has-overlay {
 
 	figcaption {
+		display: flex;
+	}
+
+	figcaption .dlx-photo-block__caption-inner {
 		display: flex;
 		flex-direction: column;
 	}
 
-	&.overlay-vertical-middle {
+	.overlay-vertical-middle {
 		align-items: center;
 	}
-	&.overlay-vertical-top {
+	.overlay-vertical-top {
 		align-items: flex-start;
 	}
-	&.overlay-vertical-bottom {
+	.overlay-vertical-bottom {
 		align-items: flex-end;
 	}
-	&.overlay-horizontal-center {
+	.overlay-horizontal-center {
 		justify-content: center;
 	}
-	&.overlay-horizontal-left {
+	.overlay-horizontal-left {
 		justify-content: flex-start;
 	}
-	&.overlay-horizontal-right {
+	.overlay-horizontal-right {
 		justify-content: flex-end;
 	}
-	&.caption-vertical-middle figcaption {
+	.caption-vertical-middle figcaption .dlx-photo-block__caption-inner {
 		justify-content: center;
 	}
-	&.caption-vertical-top  figcaption {
+	.caption-vertical-top  figcaption .dlx-photo-block__caption-inner {
 		justify-content: flex-start;
 	}
-	&.caption-vertical-bottom  figcaption {
+	.caption-vertical-bottom  figcaption .dlx-photo-block__caption-inner {
 		justify-content: flex-end;
 	}
-	&.caption-horizontal-center  figcaption {
+	.caption-horizontal-center  figcaption  .dlx-photo-block__caption-inner{
 		align-items: center;
+		text-align: center;
 	}
-	&.caption-horizontal-left  figcaption {
+	.caption-horizontal-left  figcaption .dlx-photo-block__caption-inner {
 		align-items: flex-start;
+		text-align: left;
 	}
-	&.caption-horizontal-right  figcaption {
+	.caption-horizontal-right  figcaption .dlx-photo-block__caption-inner {
 		align-items: flex-end;
+		text-align: right;
 	}
 }
 .dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption {
-	background: var( --photo-block-caption-background-color );
-	width: var( --photo-block-caption-width, unset );
-	height: var( --photo-block-caption-height, unset );
-	min-width: var( --photo-block-caption-min-width, unset );
-	min-height: var( --photo-block-caption-min-height, unset );
-	max-width: var( --photo-block-caption-max-width, unset );
-	max-height: var( --photo-block-caption-max-height, unset );
-	padding: var( --photo-block-caption-padding, 0 );
-	margin: var( --photo-block-caption-margin, 0 );
-	border-radius: var( --photo-block-caption-border-radius, 0 );
-	border-top: var( --photo-block-caption-border-top, 0 );
-	border-right: var( --photo-block-caption-border-right, 0 );
-	border-bottom: var( --photo-block-caption-border-bottom, 0 );
-	border-left: var( --photo-block-caption-border-left, 0 );
-
+	display: flex;
 	/* Set color for Text elements */
 	color: var( --photo-block-caption-text-color, inherit );
 	font-family: var( --photo-block-caption-font-family, inherit );
@@ -448,6 +471,22 @@ figcaption.dlx-photo-block__caption.has-smart-styles {
 		}
 	}
 }
+.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption .dlx-photo-block__caption-inner {
+	width: var( --photo-block-caption-width, unset );
+	height: var( --photo-block-caption-height, unset );
+	min-width: var( --photo-block-caption-min-width, unset );
+	min-height: var( --photo-block-caption-min-height, unset );
+	max-width: var( --photo-block-caption-max-width, unset );
+	max-height: var( --photo-block-caption-max-height, unset );
+	background: var( --photo-block-caption-background-color );
+	padding: var( --photo-block-caption-padding, 0 );
+	margin: var( --photo-block-caption-margin, 0 );
+	border-radius: var( --photo-block-caption-border-radius, 0 );
+	border-top: var( --photo-block-caption-border-top, 0 );
+	border-right: var( --photo-block-caption-border-right, 0 );
+	border-bottom: var( --photo-block-caption-border-bottom, 0 );
+	border-left: var( --photo-block-caption-border-left, 0 );
+}	
 .dlx-photo-block__caption-overlay {
 	box-sizing: border-box;
 	border-top: var( --photo-block-caption-border-top, 0 );

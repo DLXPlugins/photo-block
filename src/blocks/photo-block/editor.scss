@@ -5,6 +5,10 @@
 svg.lucide {
 	fill: none;
 	color: currentColor;
+
+	* {
+		 color: currentColor;
+	}
 }
 .dlx-photo-block__container {
 	

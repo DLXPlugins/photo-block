@@ -424,16 +424,35 @@ class Functions {
 		if ( 'none' !== $attributes['photoObjectFit'] && 'custom' === $attributes['photoObjectPosition'] && '' !== $attributes['photoObjectPositionCustom'] ) {
 			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPositionCustom'] );
 		}
-		Functions::build_dimension_css( $image_css_helper, $attributes['photoPaddingSize'], 'padding', '--photo-block-image-padding' );
-		Functions::build_dimension_css( $image_css_helper, $attributes['photoMarginSize'], 'margin', '--photo-block-image-margin' );
-		Functions::build_dimension_css( $image_css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-image-border-radius' );
+		if ( 'overlay' !== $attributes['captionPosition'] ) {
+			Functions::build_dimension_css( $image_css_helper, $attributes['photoPaddingSize'], 'padding', '--photo-block-image-padding' );
+			Functions::build_dimension_css( $image_css_helper, $attributes['photoMarginSize'], 'margin', '--photo-block-image-margin' );
+			Functions::build_dimension_css( $image_css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-image-border-radius' );
+		}
 
 		$css_output .= $image_css_helper->get_css();
 
 		// Add photo drop shadow.
-		if ( (bool) $attributes['photoDropShadow']['enabled'] ) {
+		if ( (bool) $attributes['photoDropShadow']['enabled'] && 'overlay' !== $attributes['captionPosition'] ) {
 			$css_output .= sprintf(
 				'%8$s%1$s img {
+					box-sizing: border-box;
+					box-shadow: %2$s %3$spx %4$spx %5$spx %6$spx %7$s;
+					-webkit-box-shadow: %2$s %3$spx %4$spx %5$spx %6$spx %7$s;
+				}',
+				$unique_id,
+				( (bool) $attributes['photoDropShadow']['inset'] ? 'inset' : '' ),
+				$attributes['photoDropShadow']['horizontal'],
+				$attributes['photoDropShadow']['vertical'],
+				$attributes['photoDropShadow']['blur'],
+				$attributes['photoDropShadow']['spread'],
+				$attributes['photoDropShadow']['color'],
+				$is_class ? '.' : '#'
+			);
+		}
+		if ( (bool) $attributes['photoDropShadow']['enabled'] && 'overlay' === $attributes['captionPosition'] ) {
+			$css_output .= sprintf(
+				'%8$s%1$s .dlx-photo-block__image-wrapper {
 					box-sizing: border-box;
 					box-shadow: %2$s %3$spx %4$spx %5$spx %6$spx %7$s;
 					-webkit-box-shadow: %2$s %3$spx %4$spx %5$spx %6$spx %7$s;
