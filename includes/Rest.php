@@ -74,6 +74,31 @@ class Rest {
 			),
 		);
 
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/get-featured-image-by-post-id',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( static::class, 'rest_get_featured_image_by_post_id' ),
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+			),
+		);
+
+		// Register a rest route for getting a caption.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/get-caption-by-post-id',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( static::class, 'rest_get_caption_by_post_id' ),
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+			),
+		);
+
 		// Register a route for cropping an image.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
@@ -112,6 +137,42 @@ class Rest {
 				'callback'            => array( static::class, 'rest_save_title_text' ),
 			)
 		);
+	}
+	
+	/**
+	 * Callback function for getting an image by data.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 */
+	public static function rest_get_featured_image_by_post_id( $request ) {
+		$data_current_post_id     = absint( $request->get_param( 'postId' ) );
+		$data_image_size          = sanitize_text_field( $request->get_param( 'dataImageSize' ) );
+		$data_fallback_image      = $request->get_param( 'dataFallbackImage' );
+		$data_has_fallback_image  = (bool) $request->get_param( 'dataHasFallbackImage' );
+		$data_fallback_image_size = sanitize_text_field( $request->get_param( 'dataFallbackImageSize' ) );
+
+		// Placeholder for later.
+		$image = null;
+
+		$image_id = get_post_thumbnail_id( $data_current_post_id );
+		if ( $image_id ) {
+			$image = Functions::get_image_data( $image_id, $data_image_size );
+		}
+
+		// Return early before trying for a fallback image.
+		if ( $image ) {
+			return $image;
+		}
+
+		// Image is still false, find the fallback.
+		if ( $data_has_fallback_image && $data_fallback_image ) {
+			$image = Functions::get_image_data( $data_fallback_image['id'], $data_fallback_image_size );
+			if ( $image ) {
+				return $image;
+			}
+		}
+
+		return '';
 	}
 
 	/**
@@ -302,6 +363,52 @@ class Rest {
 
 		// Return the image URL and ID.
 		return $image_attachment;
+	}
+
+	/**
+	 * Callback function for getting an image caption by post ID.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 *
+	 * @return string The caption, empty string if none.
+	 */
+	public static function rest_get_caption_by_post_id( $request ) {
+		$post_id = absint( $request->get_param( 'postId' ) ); // Can be any image ID.
+
+		// Bail early if no image ID or if zero.
+		if ( ! $post_id ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No image ID provided.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get featured image ID.
+		$image_id = get_post_thumbnail_id( $post_id );
+		if ( ! $image_id ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'No featured image found for post.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get the image caption.
+		$image_caption = wp_get_attachment_caption( $image_id );
+		if ( false !== $image_caption ) {
+			wp_send_json_success(
+				array(
+					'caption' => wp_kses_post( $image_caption ),
+				)
+			);
+		}
+
+		wp_send_json_error(
+			array(
+				'message' => __( 'No caption found.', 'photo-block' ),
+			)
+		);
 	}
 
 	/**
