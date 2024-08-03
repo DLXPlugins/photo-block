@@ -1403,8 +1403,6 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
   -o-object-fit: var(--photo-block-image-object-fit, unset);
      object-fit: var(--photo-block-image-object-fit, unset);
   filter: var(--photo-block-image-filter, unset);
-  width: var(--photo-block-image-width, unset);
-  height: var(--photo-block-image-height, unset);
   -o-object-position: var(--photo-block-image-object-position, center);
      object-position: var(--photo-block-image-object-position, center);
   padding: var(--photo-block-image-padding, 0);
