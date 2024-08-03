@@ -471,6 +471,8 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 }
 .dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption {
 	display: flex;
+	box-sizing: border-box;
+	margin-block: 0;
 	/* Set color for Text elements */
 	color: var( --photo-block-caption-text-color, inherit );
 	font-family: var( --photo-block-caption-font-family, inherit );
