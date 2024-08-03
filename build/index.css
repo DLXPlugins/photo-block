@@ -1095,6 +1095,11 @@
 /**
  * Base Figure styles.
  */
+.wp-block.dlx-photo-block {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .dlx-photo-block__figure,
 .dlx-photo-block__screen-edit-image-wrapper {
   position: relative;
