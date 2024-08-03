@@ -1118,7 +1118,7 @@ figcaption.dlx-photo-block__caption {
   box-sizing: border-box;
 }
 
-.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption {
+.dlx-photo-block__caption-wrapper .dlx-photo-block__caption-overlay figcaption.dlx-photo-block__caption {
   display: flex;
   position: absolute;
   top: 0;
