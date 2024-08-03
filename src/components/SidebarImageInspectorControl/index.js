@@ -41,6 +41,7 @@ const SidebarImageInspectorControl = ( props ) => {
 		photoObjectPositionCustom,
 		photoDropShadow,
 		photoBackgroundColor,
+		photoBackgroundColorOpacity,
 		containerHeight,
 		containerMaxWidth,
 		containerMaxHeight,
@@ -69,13 +70,14 @@ const SidebarImageInspectorControl = ( props ) => {
 				<ColorPickerControl
 					value={ photoBackgroundColor }
 					key={ 'background-color-photo' }
-					onChange={ ( slug, newValue ) => {
+					onChange={ ( slug, newValue, color ) => {
 						setAttributes( { photoBackgroundColor: newValue } );
 					} }
 					label={ __( 'Background Color', 'highlight-and-share' ) }
 					defaultColors={ photoBlock.palette }
 					defaultColor={ 'transparent' }
 					slug={ 'background-color-photo' }
+					alpha={ true }
 				/>
 				<RangeControl
 					label={ __( 'Opacity', 'photo-block' ) }

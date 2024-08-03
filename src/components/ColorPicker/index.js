@@ -213,7 +213,7 @@ const ColorPickerControl = ( props ) => {
 										onChange={ ( opacityValue ) => {
 											const newColor = getColor( color, opacityValue );
 											setOpacity( opacityValue );
-											setColor( newColor );
+											setColor( color );
 											onChange( slug, newColor, color );
 											onOpacityChange( opacityValue );
 										} }

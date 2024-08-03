@@ -102,7 +102,7 @@
 		},
 		"photoBackgroundColor":{
 			"type": "string",
-			"default": "#FFFFFF"
+			"default": "#FFFFFF00"
 		},
 		"photoMaximumWidth": {
 			"type": "object",
