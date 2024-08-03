@@ -496,6 +496,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	z-index: 20;
 }
 .dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption .dlx-photo-block__caption-inner {
+	box-sizing: border-box;
 	width: var( --photo-block-caption-width, 100% );
 	height: var( --photo-block-caption-height, unset );
 	min-width: var( --photo-block-caption-min-width, unset );
