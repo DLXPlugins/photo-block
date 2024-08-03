@@ -296,6 +296,9 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	border-bottom: var( --photo-block-image-border-bottom, 0 );
 	border-left: var( --photo-block-image-border-left, 0 );
 }
+.dlx-photo-block__caption-wrapper.overlay-display-hover:before {
+	display: none;
+}
 .dlx-caption-position-overlay .dlx-photo-block__image-wrapper {
 	position: relative;
 	display: inline-flex;
