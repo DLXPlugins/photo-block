@@ -1313,10 +1313,13 @@ const PhotoCaptionBlock = ( props ) => {
 	/**
 	 * Get the caption for display.
 	 *
+	 * @param {string} maybeOverlayStyles The overlay styles.
+	 * @param {string} maybeUniqueId      The unique ID.
+	 *
 	 * @return {JSX.Element} The caption.
 	 */
-	const getCaption = () => {
-		const figClasses = classnames( `dlx-photo-block__caption ${ globalStyle } align${ captionAlign } ${ globalStyleCSSClassName }`, {
+	const getCaption = ( maybeOverlayStyles = '', maybeUniqueId = '' ) => {
+		const figClasses = classnames( `dlx-photo-block__caption ${ globalStyle } align${ captionAlign } ${ globalStyleCSSClassName } ${ maybeOverlayStyles }`, {
 			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ),
 		} );
 
@@ -1331,7 +1334,7 @@ const PhotoCaptionBlock = ( props ) => {
 				);
 			} else if ( '' !== caption ) {
 				return (
-					<figcaption className={ figClasses } id={ uniqueId }>
+					<figcaption className={ figClasses } id={ maybeUniqueId ?? uniqueId }>
 						<div className="dlx-photo-block__caption-inner">
 							{ htmlToReactParser.parse( caption ) }
 						</div>
@@ -1418,14 +1421,14 @@ const PhotoCaptionBlock = ( props ) => {
 				{ 'overlay' === captionPosition && (
 					<>
 						<div className={ overlayStyles } id={ uniqueId }>
-							{ getCaption() }
+							{ getCaption( overlayStyles, uniqueId ) }
 						</div>
 					</>
 				)
 				}
 				{ 'overlay' !== captionPosition && (
 					<>
-						{ getCaption() }
+						{ getCaption( '', uniqueId ) }
 					</>
 				) }
 

@@ -1118,6 +1118,15 @@ figcaption.dlx-photo-block__caption {
   box-sizing: border-box;
 }
 
+.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 figcaption.dlx-photo-block__caption:not(.has-smart-styles) .dlx-photo-block__caption-inner {
   display: flex;
   align-items: center;
@@ -1473,7 +1482,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 }
 .dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover .dlx-photo-block__caption-overlay,
 .dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover:hover .dlx-photo-block__caption-overlay {
-  transition: 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 .dlx-photo-block__caption--has-overlay .dlx-photo-block__caption-wrapper.overlay-display-hover .dlx-photo-block__caption-overlay {
   opacity: 0;
@@ -1523,22 +1532,22 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
   display: flex;
   flex-direction: column;
 }
-.dlx-photo-block__caption--has-overlay .overlay-vertical-middle {
+.dlx-photo-block__caption--has-overlay .overlay-vertical-middle figcaption {
   align-items: center;
 }
-.dlx-photo-block__caption--has-overlay .overlay-vertical-top {
+.dlx-photo-block__caption--has-overlay .overlay-vertical-top figcaption {
   align-items: flex-start;
 }
-.dlx-photo-block__caption--has-overlay .overlay-vertical-bottom {
+.dlx-photo-block__caption--has-overlay .overlay-vertical-bottom figcaption {
   align-items: flex-end;
 }
-.dlx-photo-block__caption--has-overlay .overlay-horizontal-center {
+.dlx-photo-block__caption--has-overlay .overlay-horizontal-center figcaption {
   justify-content: center;
 }
-.dlx-photo-block__caption--has-overlay .overlay-horizontal-left {
+.dlx-photo-block__caption--has-overlay .overlay-horizontal-left figcaption {
   justify-content: flex-start;
 }
-.dlx-photo-block__caption--has-overlay .overlay-horizontal-right {
+.dlx-photo-block__caption--has-overlay .overlay-horizontal-right figcaption {
   justify-content: flex-end;
 }
 .dlx-photo-block__caption--has-overlay .caption-vertical-middle figcaption .dlx-photo-block__caption-inner {
@@ -1597,6 +1606,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
   border-right: var(--photo-block-caption-border-right, 0);
   border-bottom: var(--photo-block-caption-border-bottom, 0);
   border-left: var(--photo-block-caption-border-left, 0);
+  z-index: 10;
 }
 
 .dlx-photo-block__caption-overlay {

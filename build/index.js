@@ -1794,10 +1794,15 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   /**
    * Get the caption for display.
    *
+   * @param {string} maybeOverlayStyles The overlay styles.
+   * @param {string} maybeUniqueId      The unique ID.
+   *
    * @return {JSX.Element} The caption.
    */
   var getCaption = function getCaption() {
-    var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block__caption ".concat(globalStyle, " align").concat(captionAlign, " ").concat(globalStyleCSSClassName), {
+    var maybeOverlayStyles = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    var maybeUniqueId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+    var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block__caption ".concat(globalStyle, " align").concat(captionAlign, " ").concat(globalStyleCSSClassName, " ").concat(maybeOverlayStyles), {
       'has-smart-styles': 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode
     });
 
@@ -1808,7 +1813,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       } else if ('' !== caption) {
         return /*#__PURE__*/React.createElement("figcaption", {
           className: figClasses,
-          id: uniqueId
+          id: maybeUniqueId !== null && maybeUniqueId !== void 0 ? maybeUniqueId : uniqueId
         }, /*#__PURE__*/React.createElement("div", {
           className: "dlx-photo-block__caption-inner"
         }, htmlToReactParser.parse(caption)));
@@ -1876,7 +1881,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   }, 'overlay' === captionPosition && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: overlayStyles,
     id: uniqueId
-  }, getCaption())), 'overlay' !== captionPosition && /*#__PURE__*/React.createElement(React.Fragment, null, getCaption())));
+  }, getCaption(overlayStyles, uniqueId))), 'overlay' !== captionPosition && /*#__PURE__*/React.createElement(React.Fragment, null, getCaption('', uniqueId))));
   if (null === blockUniqueId) {
     return null;
   }
