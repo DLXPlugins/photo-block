@@ -1,9 +1,9 @@
 === Photo Block ===
 Contributors: ronalfy
 Tags: image block, blocks, photo block, image, photos
-Requires at least: 5.0.0
+Requires at least: 6.0.0
 Tested up to: 6.6
-Stable tag: 0.0.10
+Stable tag: 0.0.11
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -73,10 +73,10 @@ Yes, we are planning on integrating with other services in the future depending 
 
 == Changelog ==
 
-= 0.0.10 =
+= 0.0.11 =
 * Initial release.
 
 == Upgrade Notice ==
 
-= 0.0.10 =
+= 0.0.11 =
 Initial release.
