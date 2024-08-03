@@ -372,20 +372,6 @@ const UploadTypes = ( props ) => {
 					name="dlx-photo-block.upload-types"
 					fillProps={ { ...props } }
 				/>
-				<Button
-					variant="secondary"
-					icon={ <Database /> }
-					onClick={ () => {
-						setAttributes( {
-							photoMode: 'data',
-							screen: 'data',
-						} );
-						setPhotoMode( 'data' );
-						setScreen( 'data' );
-					} }
-				>
-					{ __( 'Data', 'photo-block' ) }
-				</Button>
 			</div>
 		</>
 	);

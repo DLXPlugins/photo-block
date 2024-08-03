@@ -14,8 +14,6 @@ import InitialScreen from '../../screens/Initial';
 //import EffectsScreen from '../../screens/Effects';
 import EditScreen from '../../screens/Edit';
 import CropScreen from '../../screens/Crop';
-import DataScreen from '../../screens/Data';
-import DataEditScreen from '../../screens/DataEdit';
 
 /**
  * InitialScreen component.

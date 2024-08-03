@@ -40,8 +40,6 @@ import InitialScreen from '../../screens/Initial';
 import CaptionAppender from '../../components/CaptionAppender';
 import EditScreen from '../../screens/Edit';
 import CropScreen from '../../screens/Crop';
-import DataScreen from '../../screens/Data';
-import DataEditScreen from '../../screens/DataEdit';
 import LoadingScreen from '../../screens/Loading';
 import FeaturedImageScreen from '../../screens/FeaturedImageEdit';
 import globalStylesStore from '../../store/global-styles';
@@ -264,10 +262,6 @@ const PhotoBlock = ( props ) => {
 				return <CropScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } />;
 			case 'featuredImage':
 				return <FeaturedImageScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } clientId={ clientId } />;
-			case 'data':
-				return <DataScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } blockUniqueId={ blockUniqueId } />;
-			case 'data-edit':
-				return <DataEditScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } />;
 			case 'effects':
 				return null;
 				// return (

@@ -548,7 +548,7 @@ class Global_Styles {
 
 			// Remove file if can clear cache or cache bust version is different.
 			if ( $cache_bust !== $last_cache_bust_version || $can_clear_cache ) {
-				unlink( $upload_dir . 'global-styles.css' );
+				wp_delete_file( $upload_dir . 'global-styles.css' );
 				// Update the option.
 				update_option( 'dlx_pb_cache_bust_version', $cache_bust );
 			}
