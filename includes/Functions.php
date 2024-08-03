@@ -401,6 +401,8 @@ class Functions {
 		Functions::add_css_property( $css_helper, 'background-color', $attributes['photoBackgroundColor'], '--photo-block-photo-background-color' );
 		Functions::build_dimension_css( $css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-photo-border-radius' );
 		Functions::build_border_css( $css_helper, $attributes['photoBorder'], '--photo-block-image-border' );
+		Functions::build_dimension_css( $css_helper, $attributes['photoPaddingSize'], 'padding', '--photo-block-image-padding' );
+		Functions::build_dimension_css( $css_helper, $attributes['photoMarginSize'], 'margin', '--photo-block-image-margin' );
 		$css_output .= $css_helper->get_css();
 
 		// Output image styles.
@@ -599,7 +601,7 @@ class Functions {
 				$unique_id,
 				'.dlx-photo-block__caption-overlay:hover:before'
 			);
-			Functions::add_css_property( $caption_overlay_hover_styles, 'background', $attributes['overlayBackgroundColorHover'] );
+			Functions::add_css_property( $caption_overlay_hover_styles, 'background', $attributes['overlayBackgroundColorHover'], '--photo-block-caption-overlay-background-color-hover' );
 			$css_output .= $caption_overlay_hover_styles->get_css();
 		}
 

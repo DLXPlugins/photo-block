@@ -782,10 +782,13 @@ class Blocks {
 		);
 
 		// If caption and top or bottom position, add in caption markup.
+		$has_overlay = false;
 		if ( $has_caption && ! empty( $caption_markup ) && 'top' === $caption_position ) {
 			$image_markup = $caption_markup . $image_markup;
 		} elseif ( $has_caption && ! empty( $caption_markup ) && 'bottom' === $caption_position ) {
 			$image_markup = $image_markup . $caption_markup;
+		} elseif ( $has_caption && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
+			$has_overlay = true;
 		}
 
 		// Get figure CSS advanced classes.
@@ -793,6 +796,9 @@ class Blocks {
 		$figure_css_classes[] = 'dlx-photo-block__figure';
 		if ( $has_global_style ) {
 			$figure_css_classes[] = $global_style_css_class;
+		}
+		if ( $has_overlay ) {
+			$figure_css_classes[] = 'dlx-caption-position-overlay';
 		}
 
 		/**
