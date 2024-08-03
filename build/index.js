@@ -1412,7 +1412,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     key: 'link-color-caption',
     onChange: function onChange(slug, newValue) {
       setAttributes({
-        captionTextColor: newValue
+        captionLinkColor: newValue
       });
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Link Color', 'photo-block'),
@@ -1840,9 +1840,12 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
         ref: setCaptionInputRef
       })));
     }
-    return /*#__PURE__*/React.createElement("figcaption", _extends({
-      id: uniqueId
-    }, innerBlockProps));
+    return /*#__PURE__*/React.createElement("figcaption", {
+      id: uniqueId,
+      className: figClasses
+    }, /*#__PURE__*/React.createElement("div", _extends({
+      className: "dlx-photo-block__caption-inner"
+    }, innerBlockProps)));
   };
 
   // Set the local inspector controls.

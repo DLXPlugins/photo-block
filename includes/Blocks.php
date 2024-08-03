@@ -342,6 +342,15 @@ class Blocks {
 		} else {
 			$caption_hover_overlay_styles[] = 'overlay-fade';
 		}
+		if ( (bool) $attributes['hideOnMobile'] ) {
+			$caption_hover_overlay_styles[] = 'hide-on-mobile';
+		}
+		if ( (bool) $attributes['hideOnTablet'] ) {
+			$caption_hover_overlay_styles[] = 'hide-on-tablet';
+		}
+		if ( (bool) $attributes['hideOnDesktop'] ) {
+			$caption_hover_overlay_styles[] = 'hide-on-desktop';
+		}
 
 		/**
 		 * Filter the caption overlay styles.
@@ -826,6 +835,15 @@ class Blocks {
 		);
 		if ( $has_global_style ) {
 			$section_css_classes[] = $global_style_css_class;
+		}
+		if ( (bool) $attributes['hideOnMobile'] ) {
+			$section_css_classes[] = 'hide-on-mobile';
+		}
+		if ( (bool) $attributes['hideOnTablet'] ) {
+			$section_css_classes[] = 'hide-on-tablet';
+		}
+		if ( (bool) $attributes['hideOnDesktop'] ) {
+			$section_css_classes[] = 'hide-on-desktop';
 		}
 
 		/**

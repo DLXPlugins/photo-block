@@ -1133,7 +1133,6 @@ figcaption.dlx-photo-block__caption {
 }
 
 figcaption.dlx-photo-block__caption:not(.has-smart-styles) .dlx-photo-block__caption-inner {
-  display: flex;
   align-items: center;
 }
 figcaption.dlx-photo-block__caption:not(.has-smart-styles) .dlx-photo-block__caption-inner.aligncenter {
@@ -1543,7 +1542,6 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
   height: 100%;
 }
 .dlx-photo-block__caption--has-overlay figcaption .dlx-photo-block__caption-inner {
-  display: flex;
   flex-direction: column;
 }
 .dlx-photo-block__caption--has-overlay .overlay-vertical-middle figcaption {
@@ -1603,6 +1601,10 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 }
 .dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption a:hover {
   color: var(--photo-block-caption-link-color-hover, inherit);
+}
+
+.dlx-photo-caption-block__inner-blocks {
+  z-index: 20;
 }
 
 .dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption .dlx-photo-block__caption-inner {
@@ -1732,6 +1734,43 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 
 .dlx-photo-block__image:not(.has-css-gram) {
   filter: blur(var(--photo-block-blur, 0));
+}
+
+/* Hide on Desktop */
+@media (max-width: 768px) {
+  .dlx-photo-block__container.hide-on-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .dlx-photo-block__container.hide-on-desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dlx-photo-block__container.hide-on-tablet {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .dlx-photo-block__caption-wrapper.hide-on-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .dlx-photo-block__caption-wrapper.hide-on-desktop {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dlx-photo-block__caption-wrapper.hide-on-tablet {
+    display: none;
+  }
 }
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/photo-block/editor.scss ***!

@@ -813,7 +813,7 @@ const PhotoCaptionBlock = ( props ) => {
 							value={ captionLinkColor }
 							key={ 'link-color-caption' }
 							onChange={ ( slug, newValue ) => {
-								setAttributes( { captionTextColor: newValue } );
+								setAttributes( { captionLinkColor: newValue } );
 							} }
 							label={ __( 'Link Color', 'photo-block' ) }
 							defaultColors={ photoBlock.palette }
@@ -1362,7 +1362,11 @@ const PhotoCaptionBlock = ( props ) => {
 				</figcaption>
 			);
 		}
-		return <figcaption id={ uniqueId } { ...innerBlockProps } />;
+		return (
+			<figcaption id={ uniqueId } className={ figClasses } >
+				<div className="dlx-photo-block__caption-inner" { ...innerBlockProps } />
+			</figcaption>
+		);
 	};
 
 	// Set the local inspector controls.

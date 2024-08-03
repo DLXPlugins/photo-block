@@ -566,11 +566,11 @@ class Functions {
 				'figcaption',
 				$is_class
 			);
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-text-color', $attributes['captionTextColor'] );
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-accent-color', $attributes['captionAccentColor'] );
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-secondary-color', $attributes['captionSecondaryColor'] );
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-font-family', $attributes['captionTextFontFamily'] );
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-headings-font-family', $attributes['captionHeadingsFontFamily'] );
+			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-text-color', $attributes['captionTextColor'], '--photo-block-caption-text-color' );
+			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-accent-color', $attributes['captionAccentColor'], '--photo-block-caption-accent-color' );
+			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-secondary-color', $attributes['captionSecondaryColor'], '--photo-block-caption-secondary-color' );
+			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-font-family', $attributes['captionTextFontFamily'], '--photo-block-caption-font-family' );
+			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-headings-font-family', $attributes['captionHeadingsFontFamily'], '--photo-block-caption-headings-font-family' );
 			Functions::build_font_size_css( $smart_styles, $attributes['captionBaseFontSize'], '--dlx-photo-block__caption-font-size' );
 			$css_output .= $smart_styles->get_css();
 		}
