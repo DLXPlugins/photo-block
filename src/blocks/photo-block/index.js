@@ -19,6 +19,28 @@ registerBlockType( metadata, {
 				regExp: /^photoblock$/,
 				transform: () => createBlock( 'dlxplugins/photo-block' ),
 			},
+			{
+				type: 'block',
+				blocks: [ 'core/image' ],
+				transform: ( attributes ) => {
+					const imageData = {
+						id: attributes.id,
+						url: attributes.url,
+						alt: attributes.alt,
+						full: attributes.url,
+						width: attributes.width,
+						height: attributes.height,
+						title: '',
+						caption: attributes.caption,
+					};
+					const imageAttributes = {
+						photoMode: 'photo',
+						screen: 'loading',
+						imageData,
+					};
+					return createBlock( 'dlxplugins/photo-block', imageAttributes );
+				},
+			},
 		],
 		to: [],
 	},
