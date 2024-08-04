@@ -1662,10 +1662,20 @@ class Functions {
 			return;
 		}
 
-		$top    = ( floatval( $top ) !== 0 && '' !== $top ) ? floatval( $top ) . $top_unit . ' ' : '0 ';
-		$right  = ( floatval( $right ) !== 0 && '' !== $right ) ? floatval( $right ) . $right_unit . ' ' : '0 ';
-		$bottom = ( floatval( $bottom ) !== 0 && '' !== $bottom ) ? floatval( $bottom ) . $bottom_unit . ' ' : '0 ';
-		$left   = ( floatval( $left ) !== 0 && '' !== $left ) ? floatval( $left ) . $left_unit . ' ' : '0 ';
+		$pattern_for_numbers = '/^[-+]?[0-9]*\.?[0-9]+$/';
+
+		if ( preg_match( $pattern_for_numbers, $top ) ) {
+			$top = ( floatval( $top ) !== 0 && '' !== $top ) ? floatval( $top ) . $top_unit . ' ' : '0 ';
+		}
+		if ( preg_match( $pattern_for_numbers, $right ) ) {
+			$right = ( floatval( $right ) !== 0 && '' !== $right ) ? floatval( $right ) . $right_unit . ' ' : '0 ';
+		}
+		if ( preg_match( $pattern_for_numbers, $bottom ) ) {
+			$bottom = ( floatval( $bottom ) !== 0 && '' !== $bottom ) ? floatval( $bottom ) . $bottom_unit . ' ' : '0 ';
+		}
+		if ( preg_match( $pattern_for_numbers, $left ) ) {
+			$left = ( floatval( $left ) !== 0 && '' !== $left ) ? floatval( $left ) . $left_unit . ' ' : '0 ';
+		}
 
 		if ( $right === $left ) {
 			$left = '';
