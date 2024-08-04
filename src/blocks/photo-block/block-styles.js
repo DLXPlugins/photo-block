@@ -73,7 +73,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 				--photo-block-image-padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
 				--photo-block-image-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
 				${ buildBorderCSS( photoBorder, deviceType, '--photo-block-image' ) };
-				--photo-block-image-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
+				--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 				--photo-block-image-drop-shadow-horizontal: ${ photoDropShadow.horizontal }px;
 				--photo-block-image-drop-shadow-vertical: ${ photoDropShadow.vertical }px;
 				--photo-block-image-drop-shadow-blur: ${ photoDropShadow.blur }px;
@@ -111,7 +111,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 				--photo-block-image-padding: ${ buildDimensionsCSS( photoPaddingSize, deviceType ) };
 				--photo-block-image-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
 				${ buildBorderCSS( photoBorder, deviceType, '--photo-block-image' ) };
-				--photo-block-image-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
+				--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 			}
 		`;
 	}

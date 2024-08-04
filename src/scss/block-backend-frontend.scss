@@ -14,6 +14,7 @@
 }
 .dlx-photo-block__image-wrapper a {
 	line-height: 0;
+	display: inline-flex;
 }
 .dlx-photo-block__figure,
 .dlx-photo-block__screen-edit-image-wrapper {
@@ -294,7 +295,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	object-position: var( --photo-block-image-object-position, center );
 	padding: var( --photo-block-image-padding, 0 );
 	margin: var( --photo-block-image-margin, 0 );
-	border-radius: var( --photo-block-image-border-radius, 0 );
+	border-radius: var( --photo-block-photo-border-radius, 0 );
 	border-top: var( --photo-block-image-border-top, 0 );
 	border-right: var( --photo-block-image-border-right, 0 );
 	border-bottom: var( --photo-block-image-border-bottom, 0 );
@@ -309,7 +310,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	box-sizing: border-box;
 	padding: var( --photo-block-image-padding, 0 );
 	margin: var( --photo-block-image-margin, 0 );
-	border-radius: var( --photo-block-image-border-radius, 0 );
+	border-radius: var( --photo-block-photo-border-radius, 0 );
 	border-top: var( --photo-block-image-border-top, 0 );
 	border-right: var( --photo-block-image-border-right, 0 );
 	border-bottom: var( --photo-block-image-border-bottom, 0 );
@@ -323,7 +324,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 .dlx-caption-position-overlay .dlx-photo-block__image-wrapper img {
 	padding: unset;
 	margin: unset;
-	border-radius: unset;
+	border-radius: var(--photo-block-photo-border-radius, var(--photo-block-photo-border-radius, unset) );
 	border-top: unset;
 	border-right: unset;
 	border-bottom: unset;

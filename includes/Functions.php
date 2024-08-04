@@ -429,7 +429,7 @@ class Functions {
 		if ( 'overlay' !== $attributes['captionPosition'] ) {
 			Functions::build_dimension_css( $image_css_helper, $attributes['photoPaddingSize'], 'padding', '--photo-block-image-padding' );
 			Functions::build_dimension_css( $image_css_helper, $attributes['photoMarginSize'], 'margin', '--photo-block-image-margin' );
-			Functions::build_dimension_css( $image_css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-image-border-radius' );
+			Functions::build_dimension_css( $image_css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-photo-border-radius' );
 		}
 
 		$css_output .= $image_css_helper->get_css();
