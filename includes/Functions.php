@@ -603,7 +603,7 @@ class Functions {
 
 			$caption_overlay_hover_styles = new CSS_Helper(
 				$unique_id,
-				'.dlx-photo-block__caption-overlay:hover:before'
+				'.dlx-photo-block__caption-wrapper:hover figcaption:before'
 			);
 			Functions::add_css_property( $caption_overlay_hover_styles, 'background', $attributes['overlayBackgroundColorHover'], '--photo-block-caption-overlay-background-color-hover' );
 			$css_output .= $caption_overlay_hover_styles->get_css();

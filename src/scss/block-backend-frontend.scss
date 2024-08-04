@@ -552,7 +552,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	background: var( --photo-block-caption-overlay-background-color );
 	border-radius: var( --photo-block-caption-overlay-border-radius, 0 );
 }
-.dlx-photo-block__caption-overlay:hover:before {
+.dlx-photo-block__caption-wrapper:hover figcaption:before {
 	background: var( --photo-block-caption-overlay-background-color-hover );
 }
 .dlx-photo-block__caption-overlay.overlay-type-gradient:before {
