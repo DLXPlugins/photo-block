@@ -5,7 +5,7 @@
  * Plugin URI: https://dlxpplugins.com/plugins/photo-block/
  * Description: An easy to use, but comprehensive photo block for WordPress
  * Author: DLX Plugins and WebberZone
- * Version: 0.0.15
+ * Version: 0.0.16
  * Requires at least: 5.1
  * Requires PHP: 7.2
  * Author URI: https://dlxplugins.com
@@ -17,7 +17,7 @@
 
 namespace DLXPlugins\PhotoBlock;
 
-define( 'PHOTO_BLOCK_VERSION', '0.0.15' );
+define( 'PHOTO_BLOCK_VERSION', '0.0.16' );
 define( 'PHOTO_BLOCK_CACHE_VERSION', '1.0.0' );
 define( 'PHOTO_BLOCK_FILE', __FILE__ );
 
