@@ -421,7 +421,11 @@ class Functions {
 			Functions::add_css_property( $image_css_helper, 'height', '100%' );
 		}
 		if ( 'none' !== $attributes['photoObjectFit'] && 'none' !== $attributes['photoObjectPosition'] ) {
-			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPosition'], '--photo-block-image-object-position' );
+			if ( 'custom' === $attributes['photoObjectPosition'] && '' !== $attributes['photoObjectPositionCustom'] ) {
+				Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPositionCustom'], '--photo-block-image-object-position' );
+			} else {
+				Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPosition'], '--photo-block-image-object-position' );
+			}
 		}
 		if ( 'none' !== $attributes['photoObjectFit'] && 'custom' === $attributes['photoObjectPosition'] && '' !== $attributes['photoObjectPositionCustom'] ) {
 			Functions::add_css_property( $image_css_helper, 'object-position', $attributes['photoObjectPositionCustom'] );
