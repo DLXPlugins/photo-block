@@ -321,6 +321,10 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	position: relative;
 	display: inline-flex;
 }
+.dlx-photo-block__image-wrapper img {
+	max-width: 100%;
+	height: auto;
+}
 .dlx-caption-position-overlay .dlx-photo-block__image-wrapper img {
 	padding: unset;
 	margin: unset;
@@ -329,6 +333,8 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	border-right: unset;
 	border-bottom: unset;
 	border-left: unset;
+	max-width: 100%;
+	height: auto;
 }
 .dlx-photo-block__figure {
 	margin: var( --photo-block-figure-margin, 0 ); 

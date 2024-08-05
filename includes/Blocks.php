@@ -381,7 +381,7 @@ class Blocks {
 		?>
 			<div class="<?php echo esc_attr( implode( ' ', $caption_hover_overlay_styles ) ); ?> <?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
 				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
-					<div class="dlx-photo-block__caption-inner"><?php echo wp_kses_post( trim( $caption ) ); ?></div>
+					<div class="dlx-photo-block__caption-inner"><?php echo wp_kses( $caption, Functions::get_kses_allowed_html( true, true ) ); ?></div>
 				</figcaption>
 			</div>
 		<?php
@@ -403,7 +403,7 @@ class Blocks {
 			<?php
 		}
 		$caption = ob_get_clean();
-		$caption = wp_kses( $caption, Functions::get_kses_allowed_html() );
+		$caption = wp_kses( $caption, Functions::get_kses_allowed_html( true, true ) );
 		return $caption;
 	}
 
@@ -640,7 +640,7 @@ class Blocks {
 		if ( $attributes['lightboxCaption'] ) {
 			$caption = $attributes['lightboxCaption'];
 		} else {
-			$caption = wp_strip_all_tags( $innerblocks_content );
+			$caption = wp_kses( $innerblocks_content, Functions::get_kses_allowed_html( true, true ) );
 		}
 
 		// Get the image link type.
