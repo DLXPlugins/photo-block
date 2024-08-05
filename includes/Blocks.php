@@ -58,6 +58,23 @@ class Blocks {
 			Functions::get_plugin_version(),
 			'all'
 		);
+		if ( is_admin() ) {
+			// Load scripts in the admin in an iframe in the block editor.
+			wp_enqueue_style(
+				'dlx-photo-block-frontend-and-editor',
+				Functions::get_plugin_url( 'dist/dlx-photo-block-style.css' ),
+				array(),
+				Functions::get_plugin_version(),
+				'all'
+			);
+			wp_enqueue_style(
+				'dlx-photo-block-editor-css',
+				Functions::get_plugin_url( 'build/index.css' ),
+				array(),
+				Functions::get_plugin_version(),
+				'all'
+			);
+		}
 	}
 
 	/**
