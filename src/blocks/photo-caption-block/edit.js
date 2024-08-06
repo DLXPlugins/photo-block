@@ -308,7 +308,7 @@ const PhotoCaptionBlock = ( props ) => {
 
 	const innerBlockProps = useInnerBlocksProps(
 		{
-			className: classnames( `dlx-photo-caption-block__inner-blocks dlx-photo-block__caption ${ globalStyle }`, {
+			className: classnames( `dlx-photo-caption-block__inner-blocks dlx-photo-block__caption-inner dlx-photo-block__caption ${ globalStyle }`, {
 				'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles ),
 			} ),
 		},

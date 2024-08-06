@@ -303,7 +303,7 @@ class Blocks {
 
 		// Let's sanitize the attributes.
 		$caption_raw = $attributes['captionManual'] ?? '';
-		$attributes = Functions::sanitize_array_recursive( $attributes );
+		$attributes  = Functions::sanitize_array_recursive( $attributes );
 
 		// Get caption mode.
 		$mode = $attributes['mode'];
@@ -421,6 +421,10 @@ class Blocks {
 			$caption_overlay_styles       = array(
 				'dlx-photo-block__caption',
 				'align' . $attributes['captionAlign'],
+			);
+			$caption_overlay_styles       = array_merge(
+				$caption_overlay_styles,
+				$caption_classes
 			);
 		}
 		?>
