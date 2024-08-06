@@ -286,6 +286,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	max-width: var( --photo-block-image-max-width );
 	max-height: var( --photo-block-image-max-height );
 	border-radius: var( --photo-block-photo-border-radius );
+	margin: var( --photo-block-image-margin, 0 );
 	box-sizing: border-box;
 }
 .dlx-photo-block__image-wrapper img {
@@ -294,7 +295,6 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	filter: var( --photo-block-image-filter, unset );
 	object-position: var( --photo-block-image-object-position, center );
 	padding: var( --photo-block-image-padding, 0 );
-	margin: var( --photo-block-image-margin, 0 );
 	border-radius: var( --photo-block-photo-border-radius, 0 );
 	border-top: var( --photo-block-image-border-top, 0 );
 	border-right: var( --photo-block-image-border-right, 0 );

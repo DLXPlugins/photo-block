@@ -5,7 +5,8 @@
 		"document": true,
 		"React": "readonly",
 		"photoBlock": "readonly",
-		"photoBlockUser": "readonly"
+		"photoBlockUser": "readonly",
+		"dlxReactCrop": "readonly"
 	},
 	"env": {
 		"browser": true,

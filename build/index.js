@@ -10833,8 +10833,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/save.js");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var react_image_crop__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-image-crop */ "./node_modules/react-image-crop/dist/ReactCrop.min.js");
-/* harmony import */ var react_image_crop__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_image_crop__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var react_image_crop__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-image-crop */ "./node_modules/react-image-crop/dist/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
@@ -10870,6 +10869,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var CropScreen = function CropScreen(props) {
+  var _fullsizePhoto$url;
   var attributes = props.attributes,
     setAttributes = props.setAttributes,
     blockUniqueId = props.blockUniqueId;
@@ -10951,20 +10951,7 @@ var CropScreen = function CropScreen(props) {
     id = imageData.id,
     width = imageData.width,
     height = imageData.height;
-  var getImage = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useCallback)(function () {
-    var _fullsizePhoto$url;
-    return /*#__PURE__*/React.createElement("img", {
-      src: (_fullsizePhoto$url = fullsizePhoto === null || fullsizePhoto === void 0 ? void 0 : fullsizePhoto.url) !== null && _fullsizePhoto$url !== void 0 ? _fullsizePhoto$url : '',
-      width: fullsizePhoto === null || fullsizePhoto === void 0 ? void 0 : fullsizePhoto.width,
-      height: fullsizePhoto === null || fullsizePhoto === void 0 ? void 0 : fullsizePhoto.height,
-      style: {
-        maxWidth: '100%',
-        height: 'auto'
-      },
-      alt: "",
-      ref: setReactCropImageRef
-    });
-  }, [fullsizePhoto]);
+
   /**
    * Rotate an image.
    *
@@ -11427,7 +11414,7 @@ var CropScreen = function CropScreen(props) {
       maxWidth: '100%',
       maxHeight: '100%'
     }
-  }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Loading Full Size Image', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Spinner, null)), !shouldShowLoading && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement((react_image_crop__WEBPACK_IMPORTED_MODULE_7___default()), {
+  }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Loading Full Size Image', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Spinner, null)), !shouldShowLoading && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(react_image_crop__WEBPACK_IMPORTED_MODULE_7__["default"], {
     aspect: lockCrop ? cropAspectRatio : null,
     crop: crop,
     onChange: function onChange(newCrop) {
@@ -11436,7 +11423,17 @@ var CropScreen = function CropScreen(props) {
     ruleOfThirds: true,
     maxWidth: cropMaxWidth !== null && cropMaxWidth !== void 0 ? cropMaxWidth : undefined,
     maxHeight: cropMaxHeight !== null && cropMaxHeight !== void 0 ? cropMaxHeight : undefined
-  }, getImage()))));
+  }, /*#__PURE__*/React.createElement("img", {
+    src: (_fullsizePhoto$url = fullsizePhoto === null || fullsizePhoto === void 0 ? void 0 : fullsizePhoto.url) !== null && _fullsizePhoto$url !== void 0 ? _fullsizePhoto$url : '',
+    width: fullsizePhoto === null || fullsizePhoto === void 0 ? void 0 : fullsizePhoto.width,
+    height: fullsizePhoto === null || fullsizePhoto === void 0 ? void 0 : fullsizePhoto.height,
+    style: {
+      maxWidth: '100%',
+      height: 'auto'
+    },
+    alt: "",
+    ref: setReactCropImageRef
+  })))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CropScreen);
 
@@ -17864,7 +17861,7 @@ module.exports = URIError;
 /***/ (function(module) {
 
 /*!
- * FilePondPluginImagePreview 4.6.11
+ * FilePondPluginImagePreview 4.6.12
  * Licensed under MIT, https://opensource.org/licenses/MIT/
  * Please visit https://pqina.nl/filepond/ for details.
  */
@@ -21056,7 +21053,7 @@ module.exports = URIError;
       var userAgent = window.navigator.userAgent;
       var isFirefox = userAgent.match(/Firefox\/([0-9]+)\./);
       var firefoxVersion = isFirefox ? parseInt(isFirefox[1]) : null;
-      if (firefoxVersion <= 58) return false;
+      if (firefoxVersion !== null && firefoxVersion <= 58) return false;
 
       return 'createImageBitmap' in window && isBitmap(file);
     };
@@ -21654,7 +21651,7 @@ module.exports = URIError;
 /***/ (function(__unused_webpack_module, exports) {
 
 /*!
- * FilePond 4.30.4
+ * FilePond 4.31.1
  * Licensed under MIT, https://opensource.org/licenses/MIT/
  * Please visit https://pqina.nl/filepond/ for details.
  */
@@ -25819,7 +25816,7 @@ module.exports = URIError;
     };
 
     var getFilenameFromURL = function getFilenameFromURL(url) {
-        return url
+        return ('' + url)
             .split('/')
             .pop()
             .split('?')
@@ -27834,6 +27831,11 @@ module.exports = URIError;
                         return state.archived;
                     },
                 },
+
+                // replace source and file object
+                setFile: function setFile(file) {
+                    return (state.file = file);
+                },
             }
         );
 
@@ -28419,6 +28421,11 @@ module.exports = URIError;
                 });
 
                 item.on('load-skip', function() {
+                    item.on('metadata-update', function(change) {
+                        if (!isFile(item.file)) return;
+                        dispatch('DID_UPDATE_ITEM_METADATA', { id: id, change: change });
+                    });
+
                     dispatch('COMPLETE_LOAD_ITEM', {
                         query: id,
                         item: item,
@@ -30192,7 +30199,6 @@ module.exports = URIError;
     var create$7 = function create(_ref) {
         var root = _ref.root,
             props = _ref.props;
-
         // select
         root.ref.handleClick = function(e) {
             return root.dispatch('DID_ACTIVATE_ITEM', { id: props.id });
@@ -30272,13 +30278,22 @@ module.exports = URIError;
             var drop = function drop(e) {
                 if (!e.isPrimary) return;
 
-                document.removeEventListener('pointermove', drag);
-                document.removeEventListener('pointerup', drop);
-
                 props.dragOffset = {
                     x: e.pageX - origin.x,
                     y: e.pageY - origin.y,
                 };
+
+                reset();
+            };
+
+            var cancel = function cancel() {
+                reset();
+            };
+
+            var reset = function reset() {
+                document.removeEventListener('pointercancel', cancel);
+                document.removeEventListener('pointermove', drag);
+                document.removeEventListener('pointerup', drop);
 
                 root.dispatch('DID_DROP_ITEM', { id: props.id, dragState: dragState });
 
@@ -30290,6 +30305,7 @@ module.exports = URIError;
                 }
             };
 
+            document.addEventListener('pointercancel', cancel);
             document.addEventListener('pointermove', drag);
             document.addEventListener('pointerup', drop);
         };
@@ -30327,12 +30343,12 @@ module.exports = URIError;
                 root.element.dataset.dragState = 'drop';
             },
         },
+
         function(_ref6) {
             var root = _ref6.root,
                 actions = _ref6.actions,
                 props = _ref6.props,
                 shouldOptimize = _ref6.shouldOptimize;
-
             if (root.element.dataset.dragState === 'drop') {
                 if (root.scaleX <= 1) {
                     root.element.dataset.dragState = 'idle';
@@ -30401,8 +30417,8 @@ module.exports = URIError;
                 'dragOrigin',
                 'dragOffset',
             ],
-            styles: ['translateX', 'translateY', 'scaleX', 'scaleY', 'opacity', 'height'],
 
+            styles: ['translateX', 'translateY', 'scaleX', 'scaleY', 'opacity', 'height'],
             animations: {
                 scaleX: ITEM_SCALE_SPRING,
                 scaleY: ITEM_SCALE_SPRING,
@@ -31517,7 +31533,8 @@ module.exports = URIError;
         delete root.ref.fields[action.id];
     };
 
-    // only runs for server files (so doesn't deal with file input)
+    // only runs for server files. will refuse to update the value if the field
+    // is a file field
     var didDefineValue = function didDefineValue(_ref8) {
         var root = _ref8.root,
             action = _ref8.action;
@@ -31528,7 +31545,9 @@ module.exports = URIError;
             field.removeAttribute('value');
         } else {
             // set field value
-            field.value = action.value;
+            if (field.type != 'file') {
+                field.value = action.value;
+            }
         }
         syncFieldPositionsWithItems(root);
     };
@@ -42668,16 +42687,6 @@ var FilePond = exports.FilePond = function (_React$Component) {
 
 /***/ }),
 
-/***/ "./node_modules/react-image-crop/dist/ReactCrop.min.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/react-image-crop/dist/ReactCrop.min.js ***!
-  \*************************************************************/
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-!function(e,t){ true?module.exports=t(__webpack_require__(/*! react */ "react")):0}(this,(e=>(()=>{"use strict";var t={899:t=>{t.exports=e}},n={};function o(e){var r=n[e];if(void 0!==r)return r.exports;var i=n[e]={exports:{}};return t[e](i,i.exports,o),i.exports}o.n=e=>{var t=e&&e.__esModule?()=>e.default:()=>e;return o.d(t,{a:t}),t},o.d=(e,t)=>{for(var n in t)o.o(t,n)&&!o.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},o.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),o.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var r={};return(()=>{o.r(r),o.d(r,{Component:()=>u,areCropsEqual:()=>h,centerCrop:()=>d,clamp:()=>a,containCrop:()=>p,convertToPercentCrop:()=>c,convertToPixelCrop:()=>l,default:()=>u,defaultCrop:()=>i,makeAspectCrop:()=>s,nudgeCrop:()=>g});var e=o(899),t=o.n(e);function n(e){var t,o,r="";if("string"==typeof e||"number"==typeof e)r+=e;else if("object"==typeof e)if(Array.isArray(e))for(t=0;t<e.length;t++)e[t]&&(o=n(e[t]))&&(r&&(r+=" "),r+=o);else for(t in e)e[t]&&(r&&(r+=" "),r+=t);return r}const i={x:0,y:0,width:0,height:0,unit:"px"};function a(e,t,n){return Math.min(Math.max(e,t),n)}function h(e,t){return e.width===t.width&&e.height===t.height&&e.x===t.x&&e.y===t.y&&e.unit===t.unit}function s(e,t,n,o){const r=l(e,n,o);return e.width&&(r.height=r.width/t),e.height&&(r.width=r.height*t),r.y+r.height>o&&(r.height=o-r.y,r.width=r.height*t),r.x+r.width>n&&(r.width=n-r.x,r.height=r.width/t),"%"===e.unit?c(r,n,o):r}function d(e,t,n){const o=l(e,t,n);return o.x=(t-o.width)/2,o.y=(n-o.height)/2,"%"===e.unit?c(o,t,n):o}function c(e,t,n){return"%"===e.unit?{...i,...e,unit:"%"}:{unit:"%",x:e.x?e.x/t*100:0,y:e.y?e.y/n*100:0,width:e.width?e.width/t*100:0,height:e.height?e.height/n*100:0}}function l(e,t,n){return e.unit?"px"===e.unit?{...i,...e,unit:"px"}:{unit:"px",x:e.x?e.x*t/100:0,y:e.y?e.y*n/100:0,width:e.width?e.width*t/100:0,height:e.height?e.height*n/100:0}:{...i,...e,unit:"px"}}function p(e,t,n,o,r,i=0,a=0,h=o,s=r){const d={...e};let c=Math.min(i,o),l=Math.min(a,r),p=Math.min(h,o),g=Math.min(s,r);t&&(t>1?(c=a?a*t:c,l=c/t,p=h*t):(l=i?i/t:l,c=l*t,g=s/t)),d.y<0&&(d.height=Math.max(d.height+d.y,l),d.y=0),d.x<0&&(d.width=Math.max(d.width+d.x,c),d.x=0);const w=o-(d.x+d.width);w<0&&(d.x=Math.min(d.x,o-c),d.width+=w);const u=r-(d.y+d.height);if(u<0&&(d.y=Math.min(d.y,r-l),d.height+=u),d.width<c&&("sw"!==n&&"nw"!=n||(d.x-=c-d.width),d.width=c),d.height<l&&("nw"!==n&&"ne"!=n||(d.y-=l-d.height),d.height=l),d.width>p&&("sw"!==n&&"nw"!=n||(d.x-=p-d.width),d.width=p),d.height>g&&("nw"!==n&&"ne"!=n||(d.y-=g-d.height),d.height=g),t){const e=d.width/d.height;if(e<t){const e=Math.max(d.width/t,l);"nw"!==n&&"ne"!=n||(d.y-=e-d.height),d.height=e}else if(e>t){const e=Math.max(d.height*t,c);"sw"!==n&&"nw"!=n||(d.x-=e-d.width),d.width=e}}return d}function g(e,t,n,o){const r={...e};return"ArrowLeft"===t?"nw"===o?(r.x-=n,r.y-=n,r.width+=n,r.height+=n):"w"===o?(r.x-=n,r.width+=n):"sw"===o?(r.x-=n,r.width+=n,r.height+=n):"ne"===o?(r.y+=n,r.width-=n,r.height-=n):"e"===o?r.width-=n:"se"===o&&(r.width-=n,r.height-=n):"ArrowRight"===t&&("nw"===o?(r.x+=n,r.y+=n,r.width-=n,r.height-=n):"w"===o?(r.x+=n,r.width-=n):"sw"===o?(r.x+=n,r.width-=n,r.height-=n):"ne"===o?(r.y-=n,r.width+=n,r.height+=n):"e"===o?r.width+=n:"se"===o&&(r.width+=n,r.height+=n)),"ArrowUp"===t?"nw"===o?(r.x-=n,r.y-=n,r.width+=n,r.height+=n):"n"===o?(r.y-=n,r.height+=n):"ne"===o?(r.y-=n,r.width+=n,r.height+=n):"sw"===o?(r.x+=n,r.width-=n,r.height-=n):"s"===o?r.height-=n:"se"===o&&(r.width-=n,r.height-=n):"ArrowDown"===t&&("nw"===o?(r.x+=n,r.y+=n,r.width-=n,r.height-=n):"n"===o?(r.y+=n,r.height-=n):"ne"===o?(r.y+=n,r.width-=n,r.height-=n):"sw"===o?(r.x-=n,r.width+=n,r.height+=n):"s"===o?r.height+=n:"se"===o&&(r.width+=n,r.height+=n)),r}const w={capture:!0,passive:!1};class u extends e.PureComponent{constructor(){super(...arguments),this.docMoveBound=!1,this.mouseDownOnCrop=!1,this.dragStarted=!1,this.evData={startClientX:0,startClientY:0,startCropX:0,startCropY:0,clientX:0,clientY:0,isResize:!0},this.componentRef=(0,e.createRef)(),this.mediaRef=(0,e.createRef)(),this.initChangeCalled=!1,this.state={cropIsActive:!1,newCropIsBeingDrawn:!1},this.onCropPointerDown=e=>{const{crop:t,disabled:n}=this.props,o=this.getBox();if(!t)return;const r=l(t,o.width,o.height);if(n)return;e.cancelable&&e.preventDefault(),this.bindDocMove(),this.componentRef.current.focus({preventScroll:!0});const i=e.target.dataset.ord,a=Boolean(i);let h=e.clientX,s=e.clientY,d=r.x,c=r.y;if(i){const t=e.clientX-o.x,n=e.clientY-o.y;let a=0,l=0;"ne"===i||"e"==i?(a=t-(r.x+r.width),l=n-r.y,d=r.x,c=r.y+r.height):"se"===i||"s"===i?(a=t-(r.x+r.width),l=n-(r.y+r.height),d=r.x,c=r.y):"sw"===i||"w"==i?(a=t-r.x,l=n-(r.y+r.height),d=r.x+r.width,c=r.y):"nw"!==i&&"n"!=i||(a=t-r.x,l=n-r.y,d=r.x+r.width,c=r.y+r.height),h=d+o.x+a,s=c+o.y+l}this.evData={startClientX:h,startClientY:s,startCropX:d,startCropY:c,clientX:e.clientX,clientY:e.clientY,isResize:a,ord:i},this.mouseDownOnCrop=!0,this.setState({cropIsActive:!0})},this.onComponentPointerDown=e=>{const{crop:t,disabled:n,locked:o,keepSelection:r,onChange:i}=this.props,a=this.getBox();if(n||o||r&&t)return;e.cancelable&&e.preventDefault(),this.bindDocMove(),this.componentRef.current.focus({preventScroll:!0});const h=e.clientX-a.x,s=e.clientY-a.y,d={unit:"px",x:h,y:s,width:0,height:0};this.evData={startClientX:e.clientX,startClientY:e.clientY,startCropX:h,startCropY:s,clientX:e.clientX,clientY:e.clientY,isResize:!0},this.mouseDownOnCrop=!0,i(l(d,a.width,a.height),c(d,a.width,a.height)),this.setState({cropIsActive:!0,newCropIsBeingDrawn:!0})},this.onDocPointerMove=e=>{const{crop:t,disabled:n,onChange:o,onDragStart:r}=this.props,i=this.getBox();if(n||!t||!this.mouseDownOnCrop)return;e.cancelable&&e.preventDefault(),this.dragStarted||(this.dragStarted=!0,r&&r(e));const{evData:a}=this;let s;a.clientX=e.clientX,a.clientY=e.clientY,s=a.isResize?this.resizeCrop():this.dragCrop(),h(t,s)||o(l(s,i.width,i.height),c(s,i.width,i.height))},this.onComponentKeyDown=e=>{const{crop:t,disabled:n,onChange:o,onComplete:r}=this.props,i=this.getBox();if(n)return;const h=e.key;let s=!1;if(!t)return;const d=this.makePixelCrop(),p=(navigator.platform.match("Mac")?e.metaKey:e.ctrlKey)?u.nudgeStepLarge:e.shiftKey?u.nudgeStepMedium:u.nudgeStep;if("ArrowLeft"===h?(d.x-=p,s=!0):"ArrowRight"===h?(d.x+=p,s=!0):"ArrowUp"===h?(d.y-=p,s=!0):"ArrowDown"===h&&(d.y+=p,s=!0),s){e.cancelable&&e.preventDefault(),d.x=a(d.x,0,i.width-d.width),d.y=a(d.y,0,i.height-d.height);const t=l(d,i.width,i.height),n=c(d,i.width,i.height);o(t,n),r&&r(t,n)}},this.onHandlerKeyDown=(e,t)=>{const{aspect:n=0,crop:o,disabled:r,minWidth:i=0,minHeight:a=0,maxWidth:s,maxHeight:d,onChange:w,onComplete:m}=this.props,y=this.getBox();if(r||!o)return;if("ArrowUp"!==e.key&&"ArrowDown"!==e.key&&"ArrowLeft"!==e.key&&"ArrowRight"!==e.key)return;e.stopPropagation(),e.preventDefault();const x=(navigator.platform.match("Mac")?e.metaKey:e.ctrlKey)?u.nudgeStepLarge:e.shiftKey?u.nudgeStepMedium:u.nudgeStep,C=p(g(l(o,y.width,y.height),e.key,x,t),n,t,y.width,y.height,i,a,s,d);if(!h(o,C)){const e=c(C,y.width,y.height);w(C,e),m&&m(C,e)}},this.onDocPointerDone=e=>{const{crop:t,disabled:n,onComplete:o,onDragEnd:r}=this.props,i=this.getBox();this.unbindDocMove(),!n&&t&&this.mouseDownOnCrop&&(this.mouseDownOnCrop=!1,this.dragStarted=!1,r&&r(e),o&&o(l(t,i.width,i.height),c(t,i.width,i.height)),this.setState({cropIsActive:!1,newCropIsBeingDrawn:!1}))},this.onDragFocus=e=>{var t;null===(t=this.componentRef.current)||void 0===t||t.scrollTo(0,0)}}get document(){return document}getBox(){const e=this.mediaRef.current;if(!e)return{x:0,y:0,width:0,height:0};const{x:t,y:n,width:o,height:r}=e.getBoundingClientRect();return{x:t,y:n,width:o,height:r}}componentDidUpdate(e){const{crop:t,onComplete:n}=this.props;if(n&&!e.crop&&t){const{width:e,height:o}=this.getBox();e&&o&&n(l(t,e,o),c(t,e,o))}}componentWillUnmount(){this.resizeObserver&&this.resizeObserver.disconnect()}bindDocMove(){this.docMoveBound||(this.document.addEventListener("pointermove",this.onDocPointerMove,w),this.document.addEventListener("pointerup",this.onDocPointerDone,w),this.document.addEventListener("pointercancel",this.onDocPointerDone,w),this.docMoveBound=!0)}unbindDocMove(){this.docMoveBound&&(this.document.removeEventListener("pointermove",this.onDocPointerMove,w),this.document.removeEventListener("pointerup",this.onDocPointerDone,w),this.document.removeEventListener("pointercancel",this.onDocPointerDone,w),this.docMoveBound=!1)}getCropStyle(){const{crop:e}=this.props;if(e)return{top:`${e.y}${e.unit}`,left:`${e.x}${e.unit}`,width:`${e.width}${e.unit}`,height:`${e.height}${e.unit}`}}dragCrop(){const{evData:e}=this,t=this.getBox(),n=this.makePixelCrop(),o=e.clientX-e.startClientX,r=e.clientY-e.startClientY;return n.x=a(e.startCropX+o,0,t.width-n.width),n.y=a(e.startCropY+r,0,t.height-n.height),n}getPointRegion(e){const{evData:t}=this,n=t.clientX-e.x,o=t.clientY-e.y<t.startCropY;return n<t.startCropX?o?"nw":"sw":o?"ne":"se"}resizeCrop(){const{evData:e}=this,t=this.getBox(),{aspect:n=0,minWidth:o=0,minHeight:r=0,maxWidth:i,maxHeight:a}=this.props,h=this.getPointRegion(t),s=this.makePixelCrop(),d=e.ord?e.ord:h,c=e.clientX-e.startClientX,l=e.clientY-e.startClientY,g={unit:"px",x:0,y:0,width:0,height:0};"ne"===h?(g.x=e.startCropX,g.width=c,n?(g.height=g.width/n,g.y=e.startCropY-g.height):(g.height=Math.abs(l),g.y=e.startCropY-g.height)):"se"===h?(g.x=e.startCropX,g.y=e.startCropY,g.width=c,g.height=n?g.width/n:l):"sw"===h?(g.x=e.startCropX+c,g.y=e.startCropY,g.width=Math.abs(c),g.height=n?g.width/n:l):"nw"===h&&(g.x=e.startCropX+c,g.width=Math.abs(c),n?(g.height=g.width/n,g.y=e.startCropY-g.height):(g.height=Math.abs(l),g.y=e.startCropY+l));const w=p(g,n,h,t.width,t.height,o,r,i,a);return n||u.xyOrds.indexOf(d)>-1?(s.x=w.x,s.y=w.y,s.width=w.width,s.height=w.height):u.xOrds.indexOf(d)>-1?(s.x=w.x,s.width=w.width):u.yOrds.indexOf(d)>-1&&(s.y=w.y,s.height=w.height),s}createCropSelection(){const{ariaLabels:e=u.defaultProps.ariaLabels,disabled:n,locked:o,renderSelectionAddon:r,ruleOfThirds:i,crop:a}=this.props,h=this.getCropStyle();if(a)return t().createElement("div",{style:h,className:"ReactCrop__crop-selection",onPointerDown:this.onCropPointerDown,"aria-label":e.cropArea,tabIndex:0,onKeyDown:this.onComponentKeyDown,role:"group"},!n&&!o&&t().createElement("div",{className:"ReactCrop__drag-elements",onFocus:this.onDragFocus},t().createElement("div",{className:"ReactCrop__drag-bar ord-n","data-ord":"n"}),t().createElement("div",{className:"ReactCrop__drag-bar ord-e","data-ord":"e"}),t().createElement("div",{className:"ReactCrop__drag-bar ord-s","data-ord":"s"}),t().createElement("div",{className:"ReactCrop__drag-bar ord-w","data-ord":"w"}),t().createElement("div",{className:"ReactCrop__drag-handle ord-nw","data-ord":"nw",tabIndex:0,"aria-label":e.nwDragHandle,onKeyDown:e=>this.onHandlerKeyDown(e,"nw"),role:"button"}),t().createElement("div",{className:"ReactCrop__drag-handle ord-n","data-ord":"n",tabIndex:0,"aria-label":e.nDragHandle,onKeyDown:e=>this.onHandlerKeyDown(e,"n"),role:"button"}),t().createElement("div",{className:"ReactCrop__drag-handle ord-ne","data-ord":"ne",tabIndex:0,"aria-label":e.neDragHandle,onKeyDown:e=>this.onHandlerKeyDown(e,"ne"),role:"button"}),t().createElement("div",{className:"ReactCrop__drag-handle ord-e","data-ord":"e",tabIndex:0,"aria-label":e.eDragHandle,onKeyDown:e=>this.onHandlerKeyDown(e,"e"),role:"button"}),t().createElement("div",{className:"ReactCrop__drag-handle ord-se","data-ord":"se",tabIndex:0,"aria-label":e.seDragHandle,onKeyDown:e=>this.onHandlerKeyDown(e,"se"),role:"button"}),t().createElement("div",{className:"ReactCrop__drag-handle ord-s","data-ord":"s",tabIndex:0,"aria-label":e.sDragHandle,onKeyDown:e=>this.onHandlerKeyDown(e,"s"),role:"button"}),t().createElement("div",{className:"ReactCrop__drag-handle ord-sw","data-ord":"sw",tabIndex:0,"aria-label":e.swDragHandle,onKeyDown:e=>this.onHandlerKeyDown(e,"sw"),role:"button"}),t().createElement("div",{className:"ReactCrop__drag-handle ord-w","data-ord":"w",tabIndex:0,"aria-label":e.wDragHandle,onKeyDown:e=>this.onHandlerKeyDown(e,"w"),role:"button"})),r&&t().createElement("div",{className:"ReactCrop__selection-addon",onMouseDown:e=>e.stopPropagation()},r(this.state)),i&&t().createElement(t().Fragment,null,t().createElement("div",{className:"ReactCrop__rule-of-thirds-hz"}),t().createElement("div",{className:"ReactCrop__rule-of-thirds-vt"})))}makePixelCrop(){const e={...i,...this.props.crop||{}},t=this.getBox();return l(e,t.width,t.height)}render(){const{aspect:e,children:o,circularCrop:r,className:i,crop:a,disabled:h,locked:s,style:d,ruleOfThirds:c}=this.props,{cropIsActive:l,newCropIsBeingDrawn:p}=this.state,g=a?this.createCropSelection():null,w=function(){for(var e,t,o=0,r="";o<arguments.length;)(e=arguments[o++])&&(t=n(e))&&(r&&(r+=" "),r+=t);return r}("ReactCrop",i,{"ReactCrop--active":l,"ReactCrop--disabled":h,"ReactCrop--locked":s,"ReactCrop--new-crop":p,"ReactCrop--fixed-aspect":a&&e,"ReactCrop--circular-crop":a&&r,"ReactCrop--rule-of-thirds":a&&c,"ReactCrop--invisible-crop":!this.dragStarted&&a&&!a.width&&!a.height});return t().createElement("div",{ref:this.componentRef,className:w,style:d},t().createElement("div",{ref:this.mediaRef,className:"ReactCrop__child-wrapper",onPointerDown:this.onComponentPointerDown},o),g)}}u.xOrds=["e","w"],u.yOrds=["n","s"],u.xyOrds=["nw","ne","se","sw"],u.nudgeStep=1,u.nudgeStepMedium=10,u.nudgeStepLarge=100,u.defaultProps={ariaLabels:{cropArea:"Use the arrow keys to move the crop selection area",nwDragHandle:"Use the arrow keys to move the north west drag handle to change the crop selection area",nDragHandle:"Use the up and down arrow keys to move the north drag handle to change the crop selection area",neDragHandle:"Use the arrow keys to move the north east drag handle to change the crop selection area",eDragHandle:"Use the up and down arrow keys to move the east drag handle to change the crop selection area",seDragHandle:"Use the arrow keys to move the south east drag handle to change the crop selection area",sDragHandle:"Use the up and down arrow keys to move the south drag handle to change the crop selection area",swDragHandle:"Use the arrow keys to move the south west drag handle to change the crop selection area",wDragHandle:"Use the up and down arrow keys to move the west drag handle to change the crop selection area"}}})(),r})()));
-
-/***/ }),
-
 /***/ "./node_modules/rgb2hex/index.js":
 /*!***************************************!*\
   !*** ./node_modules/rgb2hex/index.js ***!
@@ -49609,6 +49618,459 @@ function useForm(props = {}) {
 
 /***/ }),
 
+/***/ "./node_modules/react-image-crop/dist/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/react-image-crop/dist/index.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Component: () => (/* binding */ X),
+/* harmony export */   ReactCrop: () => (/* binding */ X),
+/* harmony export */   areCropsEqual: () => (/* binding */ Y),
+/* harmony export */   centerCrop: () => (/* binding */ I),
+/* harmony export */   clamp: () => (/* binding */ v),
+/* harmony export */   cls: () => (/* binding */ S),
+/* harmony export */   containCrop: () => (/* binding */ P),
+/* harmony export */   convertToPercentCrop: () => (/* binding */ D),
+/* harmony export */   convertToPixelCrop: () => (/* binding */ y),
+/* harmony export */   "default": () => (/* binding */ X),
+/* harmony export */   defaultCrop: () => (/* binding */ M),
+/* harmony export */   makeAspectCrop: () => (/* binding */ H),
+/* harmony export */   nudgeCrop: () => (/* binding */ _)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+
+const M = {
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+  unit: "px"
+}, v = (o, e, t) => Math.min(Math.max(o, e), t), S = (...o) => o.filter((e) => e && typeof e == "string").join(" "), Y = (o, e) => o === e || o.width === e.width && o.height === e.height && o.x === e.x && o.y === e.y && o.unit === e.unit;
+function H(o, e, t, h) {
+  const i = y(o, t, h);
+  return o.width && (i.height = i.width / e), o.height && (i.width = i.height * e), i.y + i.height > h && (i.height = h - i.y, i.width = i.height * e), i.x + i.width > t && (i.width = t - i.x, i.height = i.width / e), o.unit === "%" ? D(i, t, h) : i;
+}
+function I(o, e, t) {
+  const h = y(o, e, t);
+  return h.x = (e - h.width) / 2, h.y = (t - h.height) / 2, o.unit === "%" ? D(h, e, t) : h;
+}
+function D(o, e, t) {
+  return o.unit === "%" ? { ...M, ...o, unit: "%" } : {
+    unit: "%",
+    x: o.x ? o.x / e * 100 : 0,
+    y: o.y ? o.y / t * 100 : 0,
+    width: o.width ? o.width / e * 100 : 0,
+    height: o.height ? o.height / t * 100 : 0
+  };
+}
+function y(o, e, t) {
+  return o.unit ? o.unit === "px" ? { ...M, ...o, unit: "px" } : {
+    unit: "px",
+    x: o.x ? o.x * e / 100 : 0,
+    y: o.y ? o.y * t / 100 : 0,
+    width: o.width ? o.width * e / 100 : 0,
+    height: o.height ? o.height * t / 100 : 0
+  } : { ...M, ...o, unit: "px" };
+}
+function P(o, e, t, h, i, n = 0, s = 0, w = h, a = i) {
+  const r = { ...o };
+  let c = Math.min(n, h), d = Math.min(s, i), g = Math.min(w, h), l = Math.min(a, i);
+  e && (e > 1 ? (c = s ? s * e : c, d = c / e, g = w * e) : (d = n ? n / e : d, c = d * e, l = a / e)), r.y < 0 && (r.height = Math.max(r.height + r.y, d), r.y = 0), r.x < 0 && (r.width = Math.max(r.width + r.x, c), r.x = 0);
+  const m = h - (r.x + r.width);
+  m < 0 && (r.x = Math.min(r.x, h - c), r.width += m);
+  const x = i - (r.y + r.height);
+  if (x < 0 && (r.y = Math.min(r.y, i - d), r.height += x), r.width < c && ((t === "sw" || t == "nw") && (r.x -= c - r.width), r.width = c), r.height < d && ((t === "nw" || t == "ne") && (r.y -= d - r.height), r.height = d), r.width > g && ((t === "sw" || t == "nw") && (r.x -= g - r.width), r.width = g), r.height > l && ((t === "nw" || t == "ne") && (r.y -= l - r.height), r.height = l), e) {
+    const b = r.width / r.height;
+    if (b < e) {
+      const C = Math.max(r.width / e, d);
+      (t === "nw" || t == "ne") && (r.y -= C - r.height), r.height = C;
+    } else if (b > e) {
+      const C = Math.max(r.height * e, c);
+      (t === "sw" || t == "nw") && (r.x -= C - r.width), r.width = C;
+    }
+  }
+  return r;
+}
+function _(o, e, t, h) {
+  const i = { ...o };
+  return e === "ArrowLeft" ? h === "nw" ? (i.x -= t, i.y -= t, i.width += t, i.height += t) : h === "w" ? (i.x -= t, i.width += t) : h === "sw" ? (i.x -= t, i.width += t, i.height += t) : h === "ne" ? (i.y += t, i.width -= t, i.height -= t) : h === "e" ? i.width -= t : h === "se" && (i.width -= t, i.height -= t) : e === "ArrowRight" && (h === "nw" ? (i.x += t, i.y += t, i.width -= t, i.height -= t) : h === "w" ? (i.x += t, i.width -= t) : h === "sw" ? (i.x += t, i.width -= t, i.height -= t) : h === "ne" ? (i.y -= t, i.width += t, i.height += t) : h === "e" ? i.width += t : h === "se" && (i.width += t, i.height += t)), e === "ArrowUp" ? h === "nw" ? (i.x -= t, i.y -= t, i.width += t, i.height += t) : h === "n" ? (i.y -= t, i.height += t) : h === "ne" ? (i.y -= t, i.width += t, i.height += t) : h === "sw" ? (i.x += t, i.width -= t, i.height -= t) : h === "s" ? i.height -= t : h === "se" && (i.width -= t, i.height -= t) : e === "ArrowDown" && (h === "nw" ? (i.x += t, i.y += t, i.width -= t, i.height -= t) : h === "n" ? (i.y += t, i.height -= t) : h === "ne" ? (i.y += t, i.width -= t, i.height -= t) : h === "sw" ? (i.x -= t, i.width += t, i.height += t) : h === "s" ? i.height += t : h === "se" && (i.width += t, i.height += t)), i;
+}
+const f = { capture: !0, passive: !1 };
+let $ = 0;
+const u = class u extends react__WEBPACK_IMPORTED_MODULE_0__.PureComponent {
+  constructor() {
+    super(...arguments), this.docMoveBound = !1, this.mouseDownOnCrop = !1, this.dragStarted = !1, this.evData = {
+      startClientX: 0,
+      startClientY: 0,
+      startCropX: 0,
+      startCropY: 0,
+      clientX: 0,
+      clientY: 0,
+      isResize: !0
+    }, this.componentRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.createRef)(), this.mediaRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.createRef)(), this.initChangeCalled = !1, this.instanceId = `rc-${$++}`, this.state = {
+      cropIsActive: !1,
+      newCropIsBeingDrawn: !1
+    }, this.onCropPointerDown = (e) => {
+      const { crop: t, disabled: h } = this.props, i = this.getBox();
+      if (!t)
+        return;
+      const n = y(t, i.width, i.height);
+      if (h)
+        return;
+      e.cancelable && e.preventDefault(), this.bindDocMove(), this.componentRef.current.focus({ preventScroll: !0 });
+      const s = e.target.dataset.ord, w = !!s;
+      let a = e.clientX, r = e.clientY, c = n.x, d = n.y;
+      if (s) {
+        const g = e.clientX - i.x, l = e.clientY - i.y;
+        let m = 0, x = 0;
+        s === "ne" || s == "e" ? (m = g - (n.x + n.width), x = l - n.y, c = n.x, d = n.y + n.height) : s === "se" || s === "s" ? (m = g - (n.x + n.width), x = l - (n.y + n.height), c = n.x, d = n.y) : s === "sw" || s == "w" ? (m = g - n.x, x = l - (n.y + n.height), c = n.x + n.width, d = n.y) : (s === "nw" || s == "n") && (m = g - n.x, x = l - n.y, c = n.x + n.width, d = n.y + n.height), a = c + i.x + m, r = d + i.y + x;
+      }
+      this.evData = {
+        startClientX: a,
+        startClientY: r,
+        startCropX: c,
+        startCropY: d,
+        clientX: e.clientX,
+        clientY: e.clientY,
+        isResize: w,
+        ord: s
+      }, this.mouseDownOnCrop = !0, this.setState({ cropIsActive: !0 });
+    }, this.onComponentPointerDown = (e) => {
+      const { crop: t, disabled: h, locked: i, keepSelection: n, onChange: s } = this.props, w = this.getBox();
+      if (h || i || n && t)
+        return;
+      e.cancelable && e.preventDefault(), this.bindDocMove(), this.componentRef.current.focus({ preventScroll: !0 });
+      const a = e.clientX - w.x, r = e.clientY - w.y, c = {
+        unit: "px",
+        x: a,
+        y: r,
+        width: 0,
+        height: 0
+      };
+      this.evData = {
+        startClientX: e.clientX,
+        startClientY: e.clientY,
+        startCropX: a,
+        startCropY: r,
+        clientX: e.clientX,
+        clientY: e.clientY,
+        isResize: !0
+      }, this.mouseDownOnCrop = !0, s(y(c, w.width, w.height), D(c, w.width, w.height)), this.setState({ cropIsActive: !0, newCropIsBeingDrawn: !0 });
+    }, this.onDocPointerMove = (e) => {
+      const { crop: t, disabled: h, onChange: i, onDragStart: n } = this.props, s = this.getBox();
+      if (h || !t || !this.mouseDownOnCrop)
+        return;
+      e.cancelable && e.preventDefault(), this.dragStarted || (this.dragStarted = !0, n && n(e));
+      const { evData: w } = this;
+      w.clientX = e.clientX, w.clientY = e.clientY;
+      let a;
+      w.isResize ? a = this.resizeCrop() : a = this.dragCrop(), Y(t, a) || i(
+        y(a, s.width, s.height),
+        D(a, s.width, s.height)
+      );
+    }, this.onComponentKeyDown = (e) => {
+      const { crop: t, disabled: h, onChange: i, onComplete: n } = this.props;
+      if (h)
+        return;
+      const s = e.key;
+      let w = !1;
+      if (!t)
+        return;
+      const a = this.getBox(), r = this.makePixelCrop(a), d = (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) ? u.nudgeStepLarge : e.shiftKey ? u.nudgeStepMedium : u.nudgeStep;
+      if (s === "ArrowLeft" ? (r.x -= d, w = !0) : s === "ArrowRight" ? (r.x += d, w = !0) : s === "ArrowUp" ? (r.y -= d, w = !0) : s === "ArrowDown" && (r.y += d, w = !0), w) {
+        e.cancelable && e.preventDefault(), r.x = v(r.x, 0, a.width - r.width), r.y = v(r.y, 0, a.height - r.height);
+        const g = y(r, a.width, a.height), l = D(r, a.width, a.height);
+        i(g, l), n && n(g, l);
+      }
+    }, this.onHandlerKeyDown = (e, t) => {
+      const {
+        aspect: h = 0,
+        crop: i,
+        disabled: n,
+        minWidth: s = 0,
+        minHeight: w = 0,
+        maxWidth: a,
+        maxHeight: r,
+        onChange: c,
+        onComplete: d
+      } = this.props, g = this.getBox();
+      if (n || !i)
+        return;
+      if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight")
+        e.stopPropagation(), e.preventDefault();
+      else
+        return;
+      const m = (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) ? u.nudgeStepLarge : e.shiftKey ? u.nudgeStepMedium : u.nudgeStep, x = y(i, g.width, g.height), b = _(x, e.key, m, t), C = P(
+        b,
+        h,
+        t,
+        g.width,
+        g.height,
+        s,
+        w,
+        a,
+        r
+      );
+      if (!Y(i, C)) {
+        const R = D(C, g.width, g.height);
+        c(C, R), d && d(C, R);
+      }
+    }, this.onDocPointerDone = (e) => {
+      const { crop: t, disabled: h, onComplete: i, onDragEnd: n } = this.props, s = this.getBox();
+      this.unbindDocMove(), !(h || !t) && this.mouseDownOnCrop && (this.mouseDownOnCrop = !1, this.dragStarted = !1, n && n(e), i && i(y(t, s.width, s.height), D(t, s.width, s.height)), this.setState({ cropIsActive: !1, newCropIsBeingDrawn: !1 }));
+    }, this.onDragFocus = () => {
+      var e;
+      (e = this.componentRef.current) == null || e.scrollTo(0, 0);
+    };
+  }
+  get document() {
+    return document;
+  }
+  // We unfortunately get the bounding box every time as x+y changes
+  // due to scrolling.
+  getBox() {
+    const e = this.mediaRef.current;
+    if (!e)
+      return { x: 0, y: 0, width: 0, height: 0 };
+    const { x: t, y: h, width: i, height: n } = e.getBoundingClientRect();
+    return { x: t, y: h, width: i, height: n };
+  }
+  componentDidUpdate(e) {
+    const { crop: t, onComplete: h } = this.props;
+    if (h && !e.crop && t) {
+      const { width: i, height: n } = this.getBox();
+      i && n && h(y(t, i, n), D(t, i, n));
+    }
+  }
+  componentWillUnmount() {
+    this.resizeObserver && this.resizeObserver.disconnect(), this.unbindDocMove();
+  }
+  bindDocMove() {
+    this.docMoveBound || (this.document.addEventListener("pointermove", this.onDocPointerMove, f), this.document.addEventListener("pointerup", this.onDocPointerDone, f), this.document.addEventListener("pointercancel", this.onDocPointerDone, f), this.docMoveBound = !0);
+  }
+  unbindDocMove() {
+    this.docMoveBound && (this.document.removeEventListener("pointermove", this.onDocPointerMove, f), this.document.removeEventListener("pointerup", this.onDocPointerDone, f), this.document.removeEventListener("pointercancel", this.onDocPointerDone, f), this.docMoveBound = !1);
+  }
+  getCropStyle() {
+    const { crop: e } = this.props;
+    if (e)
+      return {
+        top: `${e.y}${e.unit}`,
+        left: `${e.x}${e.unit}`,
+        width: `${e.width}${e.unit}`,
+        height: `${e.height}${e.unit}`
+      };
+  }
+  dragCrop() {
+    const { evData: e } = this, t = this.getBox(), h = this.makePixelCrop(t), i = e.clientX - e.startClientX, n = e.clientY - e.startClientY;
+    return h.x = v(e.startCropX + i, 0, t.width - h.width), h.y = v(e.startCropY + n, 0, t.height - h.height), h;
+  }
+  getPointRegion(e, t, h, i) {
+    const { evData: n } = this, s = n.clientX - e.x, w = n.clientY - e.y;
+    let a;
+    i && t ? a = t === "nw" || t === "n" || t === "ne" : a = w < n.startCropY;
+    let r;
+    return h && t ? r = t === "nw" || t === "w" || t === "sw" : r = s < n.startCropX, r ? a ? "nw" : "sw" : a ? "ne" : "se";
+  }
+  resolveMinDimensions(e, t, h = 0, i = 0) {
+    const n = Math.min(h, e.width), s = Math.min(i, e.height);
+    return !t || !n && !s ? [n, s] : t > 1 ? n ? [n, n / t] : [s * t, s] : s ? [s * t, s] : [n, n / t];
+  }
+  resizeCrop() {
+    const { evData: e } = this, { aspect: t = 0, maxWidth: h, maxHeight: i } = this.props, n = this.getBox(), [s, w] = this.resolveMinDimensions(n, t, this.props.minWidth, this.props.minHeight);
+    let a = this.makePixelCrop(n);
+    const r = this.getPointRegion(n, e.ord, s, w), c = e.ord || r;
+    let d = e.clientX - e.startClientX, g = e.clientY - e.startClientY;
+    (s && c === "nw" || c === "w" || c === "sw") && (d = Math.min(d, -s)), (w && c === "nw" || c === "n" || c === "ne") && (g = Math.min(g, -w));
+    const l = {
+      unit: "px",
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+    };
+    r === "ne" ? (l.x = e.startCropX, l.width = d, t ? (l.height = l.width / t, l.y = e.startCropY - l.height) : (l.height = Math.abs(g), l.y = e.startCropY - l.height)) : r === "se" ? (l.x = e.startCropX, l.y = e.startCropY, l.width = d, t ? l.height = l.width / t : l.height = g) : r === "sw" ? (l.x = e.startCropX + d, l.y = e.startCropY, l.width = Math.abs(d), t ? l.height = l.width / t : l.height = g) : r === "nw" && (l.x = e.startCropX + d, l.width = Math.abs(d), t ? (l.height = l.width / t, l.y = e.startCropY - l.height) : (l.height = Math.abs(g), l.y = e.startCropY + g));
+    const m = P(
+      l,
+      t,
+      r,
+      n.width,
+      n.height,
+      s,
+      w,
+      h,
+      i
+    );
+    return t || u.xyOrds.indexOf(c) > -1 ? a = m : u.xOrds.indexOf(c) > -1 ? (a.x = m.x, a.width = m.width) : u.yOrds.indexOf(c) > -1 && (a.y = m.y, a.height = m.height), a.x = v(a.x, 0, n.width - a.width), a.y = v(a.y, 0, n.height - a.height), a;
+  }
+  renderCropSelection() {
+    const {
+      ariaLabels: e = u.defaultProps.ariaLabels,
+      disabled: t,
+      locked: h,
+      renderSelectionAddon: i,
+      ruleOfThirds: n,
+      crop: s
+    } = this.props, w = this.getCropStyle();
+    if (s)
+      return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+        "div",
+        {
+          style: w,
+          className: "ReactCrop__crop-selection",
+          onPointerDown: this.onCropPointerDown,
+          "aria-label": e.cropArea,
+          tabIndex: 0,
+          onKeyDown: this.onComponentKeyDown,
+          role: "group"
+        },
+        !t && !h && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ReactCrop__drag-elements", onFocus: this.onDragFocus }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ReactCrop__drag-bar ord-n", "data-ord": "n" }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ReactCrop__drag-bar ord-e", "data-ord": "e" }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ReactCrop__drag-bar ord-s", "data-ord": "s" }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ReactCrop__drag-bar ord-w", "data-ord": "w" }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+          "div",
+          {
+            className: "ReactCrop__drag-handle ord-nw",
+            "data-ord": "nw",
+            tabIndex: 0,
+            "aria-label": e.nwDragHandle,
+            onKeyDown: (a) => this.onHandlerKeyDown(a, "nw"),
+            role: "button"
+          }
+        ), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+          "div",
+          {
+            className: "ReactCrop__drag-handle ord-n",
+            "data-ord": "n",
+            tabIndex: 0,
+            "aria-label": e.nDragHandle,
+            onKeyDown: (a) => this.onHandlerKeyDown(a, "n"),
+            role: "button"
+          }
+        ), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+          "div",
+          {
+            className: "ReactCrop__drag-handle ord-ne",
+            "data-ord": "ne",
+            tabIndex: 0,
+            "aria-label": e.neDragHandle,
+            onKeyDown: (a) => this.onHandlerKeyDown(a, "ne"),
+            role: "button"
+          }
+        ), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+          "div",
+          {
+            className: "ReactCrop__drag-handle ord-e",
+            "data-ord": "e",
+            tabIndex: 0,
+            "aria-label": e.eDragHandle,
+            onKeyDown: (a) => this.onHandlerKeyDown(a, "e"),
+            role: "button"
+          }
+        ), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+          "div",
+          {
+            className: "ReactCrop__drag-handle ord-se",
+            "data-ord": "se",
+            tabIndex: 0,
+            "aria-label": e.seDragHandle,
+            onKeyDown: (a) => this.onHandlerKeyDown(a, "se"),
+            role: "button"
+          }
+        ), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+          "div",
+          {
+            className: "ReactCrop__drag-handle ord-s",
+            "data-ord": "s",
+            tabIndex: 0,
+            "aria-label": e.sDragHandle,
+            onKeyDown: (a) => this.onHandlerKeyDown(a, "s"),
+            role: "button"
+          }
+        ), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+          "div",
+          {
+            className: "ReactCrop__drag-handle ord-sw",
+            "data-ord": "sw",
+            tabIndex: 0,
+            "aria-label": e.swDragHandle,
+            onKeyDown: (a) => this.onHandlerKeyDown(a, "sw"),
+            role: "button"
+          }
+        ), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+          "div",
+          {
+            className: "ReactCrop__drag-handle ord-w",
+            "data-ord": "w",
+            tabIndex: 0,
+            "aria-label": e.wDragHandle,
+            onKeyDown: (a) => this.onHandlerKeyDown(a, "w"),
+            role: "button"
+          }
+        )),
+        i && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ReactCrop__selection-addon", onPointerDown: (a) => a.stopPropagation() }, i(this.state)),
+        n && /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ReactCrop__rule-of-thirds-hz" }), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ReactCrop__rule-of-thirds-vt" }))
+      );
+  }
+  makePixelCrop(e) {
+    const t = { ...M, ...this.props.crop || {} };
+    return y(t, e.width, e.height);
+  }
+  render() {
+    const { aspect: e, children: t, circularCrop: h, className: i, crop: n, disabled: s, locked: w, style: a, ruleOfThirds: r } = this.props, { cropIsActive: c, newCropIsBeingDrawn: d } = this.state, g = n ? this.renderCropSelection() : null, l = S(
+      "ReactCrop",
+      i,
+      c && "ReactCrop--active",
+      s && "ReactCrop--disabled",
+      w && "ReactCrop--locked",
+      d && "ReactCrop--new-crop",
+      n && e && "ReactCrop--fixed-aspect",
+      n && h && "ReactCrop--circular-crop",
+      n && r && "ReactCrop--rule-of-thirds",
+      !this.dragStarted && n && !n.width && !n.height && "ReactCrop--invisible-crop",
+      h && "ReactCrop--no-animate"
+    );
+    return /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { ref: this.componentRef, className: l, style: a }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { ref: this.mediaRef, className: "ReactCrop__child-wrapper", onPointerDown: this.onComponentPointerDown }, t), n ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", { className: "ReactCrop__crop-mask", width: "100%", height: "100%" }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("defs", null, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("mask", { id: `hole-${this.instanceId}` }, /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", { width: "100%", height: "100%", fill: "white" }), h ? /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+      "ellipse",
+      {
+        cx: `${n.x + n.width / 2}${n.unit}`,
+        cy: `${n.y + n.height / 2}${n.unit}`,
+        rx: `${n.width / 2}${n.unit}`,
+        ry: `${n.height / 2}${n.unit}`,
+        fill: "black"
+      }
+    ) : /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement(
+      "rect",
+      {
+        x: `${n.x}${n.unit}`,
+        y: `${n.y}${n.unit}`,
+        width: `${n.width}${n.unit}`,
+        height: `${n.height}${n.unit}`,
+        fill: "black"
+      }
+    ))), /* @__PURE__ */ react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", { fill: "black", fillOpacity: 0.5, width: "100%", height: "100%", mask: `url(#hole-${this.instanceId})` })) : void 0, g);
+  }
+};
+u.xOrds = ["e", "w"], u.yOrds = ["n", "s"], u.xyOrds = ["nw", "ne", "se", "sw"], u.nudgeStep = 1, u.nudgeStepMedium = 10, u.nudgeStepLarge = 100, u.defaultProps = {
+  ariaLabels: {
+    cropArea: "Use the arrow keys to move the crop selection area",
+    nwDragHandle: "Use the arrow keys to move the north west drag handle to change the crop selection area",
+    nDragHandle: "Use the up and down arrow keys to move the north drag handle to change the crop selection area",
+    neDragHandle: "Use the arrow keys to move the north east drag handle to change the crop selection area",
+    eDragHandle: "Use the up and down arrow keys to move the east drag handle to change the crop selection area",
+    seDragHandle: "Use the arrow keys to move the south east drag handle to change the crop selection area",
+    sDragHandle: "Use the up and down arrow keys to move the south drag handle to change the crop selection area",
+    swDragHandle: "Use the arrow keys to move the south west drag handle to change the crop selection area",
+    wDragHandle: "Use the up and down arrow keys to move the west drag handle to change the crop selection area"
+  }
+};
+let X = u;
+
+
+
+/***/ }),
+
 /***/ "./src/blocks/photo-block/block.json":
 /*!*******************************************!*\
   !*** ./src/blocks/photo-block/block.json ***!
@@ -49616,7 +50078,7 @@ function useForm(props = {}) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":3,"name":"dlxplugins/photo-block","category":"media","icon":"<svg width=\'100%\' height=\'100%\' viewBox=\'0 0 1305 1305\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xml:space=\'preserve\' xmlns:serif=\'http://www.serif.com/\'><path fill=\'currentColor\' d=\'M652.492,1302.95c-359.692,0 -651.275,-291.583 -651.275,-651.275c-0,-359.692 291.583,-651.275 651.275,-651.275c359.687,0 651.275,291.583 651.275,651.275c-0,359.692 -291.588,651.275 -651.275,651.275Z\'/><path d=\'M652.492,1238.55c-324.125,0 -586.879,-262.754 -586.879,-586.879c-0,-324.125 262.754,-586.879 586.879,-586.879c324.125,-0 586.879,262.754 586.879,586.879c-0,324.125 -262.754,586.879 -586.879,586.879Z\' fill=\'#FFFFFF\' /><path fill=\'currentColor\' d=\'M345.942,498.429l-232.484,133.154c-0.246,6.671 -0.412,13.363 -0.412,20.092c-0,183.908 92.054,346.292 232.575,443.671l0.321,-596.917Zm592.429,-35.779l0.771,-268c-83.055,-52.2 -181.317,-82.421 -286.65,-82.421c-82.734,0 -161.105,18.65 -231.175,51.933l517.054,298.488Zm-571.759,378.05l-0.77,268c83.05,52.2 181.312,82.421 286.65,82.421c82.737,-0 161.104,-18.65 231.175,-51.934l-517.055,-298.487Zm264.855,-531.1l-516.7,298.883c14.916,-188.166 126.379,-349.133 284.854,-433.396l231.846,134.513Zm42.05,684.146l516.7,-298.875c-14.917,188.162 -126.375,349.129 -284.855,433.391l-231.845,-134.516Zm285.521,-188.829l232.487,-133.15c0.246,-6.671 0.413,-13.363 0.413,-20.092c-0,-183.908 -92.055,-346.292 -232.571,-443.671l-0.329,596.913Z\'/><path fill=\'currentColor\' d=\'M578.938,398.8c139.62,-40.6 285.816,39.662 326.42,179.329c40.654,139.617 -39.666,285.763 -179.333,326.421c-139.675,40.6 -285.817,-39.667 -326.421,-179.338c-40.6,-139.67 39.663,-285.812 179.334,-326.412Z\'/><path d=\'M473.954,596.729c-0.562,12.3 -10.758,22.063 -23.179,21.975c-12.687,-0.087 -24.004,-10.933 -22.854,-23.921c5.15,-58.075 50.75,-111.021 101.45,-136.596c11.6,-5.849 25.687,0.034 30.775,11.738c5.017,11.546 -0.463,24.512 -11.483,30.1c-33.117,16.783 -67.392,59.958 -74.709,96.704Z\' fill=\'#FFFFFF\' /><path  d=\'M603.883,422.104c12.884,0 23.33,10.446 23.33,23.333c-0,12.884 -10.446,23.33 -23.33,23.33c-12.887,-0 -23.329,-10.446 -23.329,-23.33c0,-12.887 10.442,-23.333 23.329,-23.333Z\' fill=\'#FFFFFF\' /></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataSource":"dataSource","photo-block/dataImageSource":"dataImageSource","photo-block/dataImageSourceCustomField":"dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta":"dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/dataPostType":"dataPostType","photo-block/dataPostId":"dataPostId","photo-block/imageSize":"imageSize","photo-block/globalStyle":"globalStyle"},"attributes":{"uniqueId":{"type":"string","default":null},"date":{"type":"string","default":""},"globalStyle":{"type":"string","default":"none"},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","title":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF00"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":false,"className":true,"customClassName":false,"alignWide":false,"defaultStylePicker":false,"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg width=\'100%\' height=\'100%\' viewBox=\'0 0 1305 1305\' version=\'1.1\' xmlns=\'http://www.w3.org/2000/svg\' xmlns:xlink=\'http://www.w3.org/1999/xlink\' xml:space=\'preserve\' xmlns:serif=\'http://www.serif.com/\'><path fill=\'currentColor\' d=\'M652.492,1302.95c-359.692,0 -651.275,-291.583 -651.275,-651.275c-0,-359.692 291.583,-651.275 651.275,-651.275c359.687,0 651.275,291.583 651.275,651.275c-0,359.692 -291.588,651.275 -651.275,651.275Z\'/><path d=\'M652.492,1238.55c-324.125,0 -586.879,-262.754 -586.879,-586.879c-0,-324.125 262.754,-586.879 586.879,-586.879c324.125,-0 586.879,262.754 586.879,586.879c-0,324.125 -262.754,586.879 -586.879,586.879Z\' fill=\'#FFFFFF\' /><path fill=\'currentColor\' d=\'M345.942,498.429l-232.484,133.154c-0.246,6.671 -0.412,13.363 -0.412,20.092c-0,183.908 92.054,346.292 232.575,443.671l0.321,-596.917Zm592.429,-35.779l0.771,-268c-83.055,-52.2 -181.317,-82.421 -286.65,-82.421c-82.734,0 -161.105,18.65 -231.175,51.933l517.054,298.488Zm-571.759,378.05l-0.77,268c83.05,52.2 181.312,82.421 286.65,82.421c82.737,-0 161.104,-18.65 231.175,-51.934l-517.055,-298.487Zm264.855,-531.1l-516.7,298.883c14.916,-188.166 126.379,-349.133 284.854,-433.396l231.846,134.513Zm42.05,684.146l516.7,-298.875c-14.917,188.162 -126.375,349.129 -284.855,433.391l-231.845,-134.516Zm285.521,-188.829l232.487,-133.15c0.246,-6.671 0.413,-13.363 0.413,-20.092c-0,-183.908 -92.055,-346.292 -232.571,-443.671l-0.329,596.913Z\'/><path fill=\'currentColor\' d=\'M578.938,398.8c139.62,-40.6 285.816,39.662 326.42,179.329c40.654,139.617 -39.666,285.763 -179.333,326.421c-139.675,40.6 -285.817,-39.667 -326.421,-179.338c-40.6,-139.67 39.663,-285.812 179.334,-326.412Z\'/><path d=\'M473.954,596.729c-0.562,12.3 -10.758,22.063 -23.179,21.975c-12.687,-0.087 -24.004,-10.933 -22.854,-23.921c5.15,-58.075 50.75,-111.021 101.45,-136.596c11.6,-5.849 25.687,0.034 30.775,11.738c5.017,11.546 -0.463,24.512 -11.483,30.1c-33.117,16.783 -67.392,59.958 -74.709,96.704Z\' fill=\'#FFFFFF\' /><path  d=\'M603.883,422.104c12.884,0 23.33,10.446 23.33,23.333c-0,12.884 -10.446,23.33 -23.33,23.33c-12.887,-0 -23.329,-10.446 -23.329,-23.33c0,-12.887 10.442,-23.333 23.329,-23.333Z\' fill=\'#FFFFFF\' /></svg>","description":"An easy-to-use and comprehensive photo block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataSource":"dataSource","photo-block/dataImageSource":"dataImageSource","photo-block/dataImageSourceCustomField":"dataImageSourceCustomField","photo-block/dataImageSourceAuthorMeta":"dataImageSourceAuthorMeta","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/dataPostType":"dataPostType","photo-block/dataPostId":"dataPostId","photo-block/imageSize":"imageSize","photo-block/globalStyle":"globalStyle"},"attributes":{"uniqueId":{"type":"string","default":null},"date":{"type":"string","default":""},"globalStyle":{"type":"string","default":"none"},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","title":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF00"},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"align":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":false,"className":true,"customClassName":false,"alignWide":false,"defaultStylePicker":false,"html":false},"example":{"attributes":{}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 

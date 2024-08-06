@@ -17,6 +17,9 @@ module.exports = ( env ) => {
 			entry: {
 				'dlx-photo-block-style': [ './src/scss/block-backend-frontend.scss' ],
 				'dlx-css-gram': [ './src/scss/cssgram/cssgram.scss' ],
+				'dlx-react-crop': [ './node_modules/react-image-crop/dist/ReactCrop.css' ],
+				'dlx-filepond': [ './src/plugins/Filepond/index.js', './node_modules/filepond/dist/filepond.css' ],
+				'dlx-filepond-image-preview': [ './node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css' ],
 			},
 			mode: env.mode,
 			devtool: 'production' === env.mode ? false : 'source-map',

@@ -61,6 +61,34 @@ class Blocks {
 		if ( is_admin() ) {
 			// Load scripts in the admin in an iframe in the block editor.
 			wp_enqueue_style(
+				'dlx-css-gram',
+				Functions::get_plugin_url( 'dist/dlx-css-gram.css' ),
+				array(),
+				Functions::get_plugin_version(),
+				'all'
+			);
+			wp_enqueue_script(
+				'dlx-filepond',
+				Functions::get_plugin_url( 'dist/dlx-filepond.js' ),
+				array(),
+				Functions::get_plugin_version(),
+				false
+			);
+			wp_enqueue_style(
+				'dlx-filepond',
+				Functions::get_plugin_url( 'dist/dlx-filepond.css' ),
+				array(),
+				Functions::get_plugin_version(),
+				'all'
+			);
+			wp_enqueue_style(
+				'dlx-react-crop',
+				Functions::get_plugin_url( 'dist/dlx-react-crop.css' ),
+				array(),
+				Functions::get_plugin_version(),
+				'all'
+			);
+			wp_enqueue_style(
 				'dlx-photo-block-frontend-and-editor',
 				Functions::get_plugin_url( 'dist/dlx-photo-block-style.css' ),
 				array(),

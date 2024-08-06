@@ -27,6 +27,7 @@
 		"@wordpress/scripts": "^26.1.0",
 		"axios": "^1.4.0",
 		"babel-loader": "^8.2.5",
+		"babel-plugin-lodash": "^3.3.4",
 		"babel-plugin-minify-mangle-names": "^0.5.1",
 		"classnames": "^2.3.1",
 		"css-loader": "^6.7.1",
@@ -45,6 +46,7 @@
 		"qs": "^6.10.5",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-image-crop": "^11.0.6",
 		"resolve-url-loader": "^5.0.0",
 		"rgb2hex": "^0.2.5",
 		"sass-loader": "^13.2.2",
@@ -58,13 +60,12 @@
 	"dependencies": {
 		"@wordpress/a11y": "^3.11.0",
 		"@wordpress/icons": "^8.4.0",
-		"filepond": "^4.30.4",
+		"filepond": "^4.31.1",
 		"filepond-plugin-file-validate-type": "^1.2.8",
 		"filepond-plugin-image-exif-orientation": "^1.0.11",
-		"filepond-plugin-image-preview": "^4.6.11",
+		"filepond-plugin-image-preview": "^4.6.12",
 		"lucide-react": "^0.359.0",
 		"react-filepond": "^7.1.2",
-		"react-hook-form": "^7.43.9",
-		"react-image-crop": "^10.0.9"
+		"react-hook-form": "^7.43.9"
 	}
 }

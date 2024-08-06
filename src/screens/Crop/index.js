@@ -1,7 +1,7 @@
 import './editor.scss';
 import 'react-image-crop/src/ReactCrop.scss';
 
-import { useContext, useState, forwardRef, useEffect, useCallback } from '@wordpress/element';
+import { useContext, useState, forwardRef, useEffect } from '@wordpress/element';
 import {
 	Spinner,
 	PanelBody,
@@ -86,21 +86,6 @@ const CropScreen = ( props ) => {
 
 	const { url, id, width, height } = imageData;
 
-	const getImage = useCallback( () => {
-		return (
-			<img
-				src={ fullsizePhoto?.url ?? '' }
-				width={ fullsizePhoto?.width }
-				height={ fullsizePhoto?.height }
-				style={ {
-					maxWidth: '100%',
-					height: 'auto',
-				} }
-				alt=""
-				ref={ setReactCropImageRef }
-			/>
-		);
-	}, [ fullsizePhoto ] );
 	/**
 	 * Rotate an image.
 	 *
@@ -632,7 +617,17 @@ const CropScreen = ( props ) => {
 							maxWidth={ cropMaxWidth ?? undefined }
 							maxHeight={ cropMaxHeight ?? undefined }
 						>
-							{ getImage() }
+							<img
+								src={ fullsizePhoto?.url ?? '' }
+								width={ fullsizePhoto?.width }
+								height={ fullsizePhoto?.height }
+								style={ {
+									maxWidth: '100%',
+									height: 'auto',
+								} }
+								alt=""
+								ref={ setReactCropImageRef }
+							/>
 						</ReactCrop>
 					</>
 				) }
