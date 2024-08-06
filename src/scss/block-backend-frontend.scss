@@ -433,6 +433,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	}
 
 	figcaption .dlx-photo-block__caption-inner {
+		display: flex;
 		flex-direction: column;
 	}
 
