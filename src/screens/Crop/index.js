@@ -78,6 +78,7 @@ const CropScreen = ( props ) => {
 	const [ cropMaxHeight, setCropMaxHeight ] = useState( null ); // Used for setting the max crop size when selecting pixel values for aspect ratio.
 	const [ reactCropImageRef, setReactCropImageRef ] = useState( null );
 	const [ isDiry, setIsDirty ] = useState( false );
+	const [ cropAspectRatio, setCropAspectRatio ] = useState( aspectRatioWidth / aspectRatioHeight );
 
 	const {
 		imageData,
@@ -319,6 +320,7 @@ const CropScreen = ( props ) => {
 			setCropMaxWidth( null );
 			setCropMaxHeight( null );
 		}
+		setCropAspectRatio( newAspectRatio );
 		setCenterCrop( reactCropImageRef.offsetWidth, reactCropImageRef?.offsetHeight, newAspectRatio, maximumWidth, maximumHeight );
 		setIsDirty( true );
 	};
@@ -583,8 +585,6 @@ const CropScreen = ( props ) => {
 			</ToolbarGroup>
 		</BlockControls>
 	);
-
-	const cropAspectRatio = aspectRatioWidth / aspectRatioHeight;
 
 	return (
 		<>

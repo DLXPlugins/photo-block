@@ -10945,6 +10945,10 @@ var CropScreen = function CropScreen(props) {
     _useState24 = _slicedToArray(_useState23, 2),
     isDiry = _useState24[0],
     setIsDirty = _useState24[1];
+  var _useState25 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(aspectRatioWidth / aspectRatioHeight),
+    _useState26 = _slicedToArray(_useState25, 2),
+    cropAspectRatio = _useState26[0],
+    setCropAspectRatio = _useState26[1];
   var imageData = attributes.imageData,
     uniqueId = attributes.uniqueId;
   var url = imageData.url,
@@ -11207,6 +11211,7 @@ var CropScreen = function CropScreen(props) {
       setCropMaxWidth(null);
       setCropMaxHeight(null);
     }
+    setCropAspectRatio(newAspectRatio);
     setCenterCrop(reactCropImageRef.offsetWidth, reactCropImageRef === null || reactCropImageRef === void 0 ? void 0 : reactCropImageRef.offsetHeight, newAspectRatio, maximumWidth, maximumHeight);
     setIsDirty(true);
   };
@@ -11403,7 +11408,6 @@ var CropScreen = function CropScreen(props) {
       });
     }
   }, isSaving ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Saving…', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Apply Crop', 'photo-block'))));
-  var cropAspectRatio = aspectRatioWidth / aspectRatioHeight;
   return /*#__PURE__*/React.createElement(React.Fragment, null, localInspectorControls, localToolbar, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit"
   }, shouldShowLoading && /*#__PURE__*/React.createElement("div", {
