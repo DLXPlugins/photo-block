@@ -322,27 +322,25 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					) }
 				</>
 				{
-					! hasGlobalStyle( globalStyle ) && (
-						<PanelRow>
-							<div className="photo-block__image-size-control">
-								<SelectControl
-									label={ __( 'Image Size', 'photo-block' ) }
-									value={ imageSize }
-									onChange={ ( size ) => {
-										setAttributes( { imageSize: size } );
-										getImageFromSize( size );
-									} }
-									options={ imageSizeOptions }
-									disabled={ 'photo' !== photoMode }
-								/>
-								{ imageSizeLoading && (
-									<>
-										<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
-									</>
-								) }
-							</div>
-						</PanelRow>
-					)
+					<PanelRow>
+						<div className="photo-block__image-size-control">
+							<SelectControl
+								label={ __( 'Image Size', 'photo-block' ) }
+								value={ imageSize }
+								onChange={ ( size ) => {
+									setAttributes( { imageSize: size } );
+									getImageFromSize( size );
+								} }
+								options={ imageSizeOptions }
+								disabled={ 'photo' !== photoMode }
+							/>
+							{ imageSizeLoading && (
+								<>
+									<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
+								</>
+							) }
+						</div>
+					</PanelRow>
 				}
 			</PanelBodyControl>
 		</>

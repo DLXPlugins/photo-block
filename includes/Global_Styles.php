@@ -171,6 +171,7 @@ class Global_Styles {
 				'altText',
 				'htmlAnchor',
 				'photoMode',
+				'imageSize',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -326,6 +327,7 @@ class Global_Styles {
 				'htmlAnchor',
 				'globalStyle',
 				'photoMode',
+				'imageSize',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
