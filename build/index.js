@@ -53,6 +53,10 @@ var getColor = function getColor(colorValue) {
 };
 var getStyles = function getStyles(attributes, deviceType, uniqueId) {
   var useClass = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  // If attributes are empty, return empty string.
+  if (attributes.length === 0) {
+    return '';
+  }
   var containerWidth = attributes.containerWidth,
     containerHeight = attributes.containerHeight,
     containerMinWidth = attributes.containerMinWidth,
@@ -498,6 +502,10 @@ __webpack_require__.r(__webpack_exports__);
 
 var getStyles = function getStyles(attributes, deviceType, uniqueId) {
   var useClass = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  // If attributes are empty, return empty string.
+  if (attributes.length === 0) {
+    return '';
+  }
   var containerWidth = attributes.containerWidth,
     containerHeight = attributes.containerHeight,
     containerMinWidth = attributes.containerMinWidth,

@@ -82,6 +82,7 @@ registerPlugin(
 					devices.forEach( ( device ) => {
 						let deviceStyles = getStyles( photoAttributes, device, globalStyle.css_class, true );
 						deviceStyles += getStylesCaption( captionAttributes, device, globalStyle.css_class, true );
+
 						switch ( device ) {
 							case 'desktop':
 								deviceStyles = '@media (min-width: 1025px) {' + deviceStyles + '}';

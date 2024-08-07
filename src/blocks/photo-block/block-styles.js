@@ -35,6 +35,10 @@ const getColor = ( colorValue, opacityValue = 1 ) => {
 };
 
 const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
+	// If attributes are empty, return empty string.
+	if ( attributes.length === 0 ) {
+		return '';
+	}
 	const {
 		containerWidth,
 		containerHeight,
