@@ -6342,7 +6342,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
       });
 
       // If there is no caption block, but there are attributes to apply, create one.
-      if (!captionBlock && captionAttributes) {
+      if (!captionBlock && captionAttributes.length > 0) {
         var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__.createBlock)('dlxplugins/photo-caption-block', captionAttributes);
         insertBlock(newBlocks, undefined, props.clientId);
         props.setAttributes({
