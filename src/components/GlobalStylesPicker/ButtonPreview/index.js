@@ -88,7 +88,7 @@ const GlobalStylesButtonPreview = ( props ) => {
 					}
 
 					// If there is a caption block and attributes to apply, apply them.
-					if ( captionBlock && captionAttributes ) {
+					if ( captionBlock && captionAttributes.length > 0 ) {
 						const captionBlockAttributes = { ...captionAttributes, ...uniqueIdAttribute };
 						updateBlockAttributes( captionBlock.clientId, captionBlockAttributes );
 					}

@@ -25,6 +25,7 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 
 	const {
 		cssGramFilter,
+		photoDropShadow,
 	} = photoAttributes;
 
 	const {
@@ -53,10 +54,14 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 		return url;
 	};
 
+	const classes = classnames( 'photo-block-preview dlx-photo-block', {
+		'dlx-has-drop-shadow': photoDropShadow.enabled,
+	} );
+
 	return (
 		<>
 			<style>{ styles }</style>
-			<div className="dlx-photo-block__screen-edit" id="photo-block-preview">
+			<div className={ classes } id="photo-block-preview">
 				<figure className="dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure">
 					{ 'top' === captionPosition && (
 						<div

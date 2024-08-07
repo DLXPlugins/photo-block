@@ -62,7 +62,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	// Apply filters to attributes.
 	useEffect( () => {
-		attributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
+		const newAttributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
+		setAttributes( {
+			...attributes,
+			...newAttributes,
+		} );
 	}, [ props.attributes ] );
 
 	const {

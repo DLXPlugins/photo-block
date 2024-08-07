@@ -178,7 +178,8 @@ const PhotoCaptionBlock = ( props ) => {
 		if ( oldAttrs.mode !== attributes.mode ) {
 			setAttributes( { mode: attributes.mode } );
 		}
-	}, [ props.attributes ] );
+		
+	}, [ props.attributes, globalStyle ] );
 
 	const {
 		setCaptionPosition,
