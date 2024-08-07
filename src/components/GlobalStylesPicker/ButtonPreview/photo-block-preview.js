@@ -9,7 +9,19 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 	if ( 'undefined' === typeof photoAttributes ) {
 		return null;
 	}
-	const styles = getStyles( photoAttributes, 'desktop', 'photo-block-preview' );
+	let styles = getStyles( photoAttributes, 'desktop', 'photo-block-preview' );
+	styles += `
+		#photo-block-preview .dlx-photo-block__image-wrapper {
+			max-width: 250px !important;
+			height: auto !important;
+			margin: 30px;
+			overflow: hidden;
+		}
+		#photo-block-preview img {
+			max-width: 250px !important;
+			height: auto !important;
+		}
+	`;
 
 	const {
 		cssGramFilter,

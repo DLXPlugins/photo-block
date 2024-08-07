@@ -57,7 +57,7 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 		}
 	);
 
-	const styles = getStyles( captionAttributes, 'desktop', 'photo-block-preview' );
+	const styles = getStyles( captionAttributes, 'desktop', 'photo-block-preview' );	
 	return (
 		<>
 			<style>

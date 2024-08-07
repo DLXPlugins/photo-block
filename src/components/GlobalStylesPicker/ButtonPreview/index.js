@@ -111,7 +111,7 @@ const GlobalStylesButtonPreview = ( props ) => {
 						offset={ 10 }
 						noArrow={ false }
 					>
-						<div className="dlx-photo-block__css-gram-image-popover-wrapper">
+						<div className="dlx-photo-block__global-styles-image-popover-wrapper">
 							<PhotoBlockPreview
 								uniqueId={ attributes.uniqueId }
 								photoAttributes={ globalStyle.content.photoAttributes }
