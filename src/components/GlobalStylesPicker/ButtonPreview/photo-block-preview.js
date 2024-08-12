@@ -2,6 +2,7 @@
 import classnames from 'classnames';
 import { useSelect } from '@wordpress/data';
 import getStyles from '../../../blocks/photo-block/block-styles';
+import getCaptionStyles from '../../../blocks/photo-caption-block/block-styles';
 import { blockStore } from '../../../store';
 import CaptionBlockPreview from './caption-block-preview';
 
@@ -10,6 +11,7 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 		return null;
 	}
 	let styles = getStyles( photoAttributes, 'desktop', 'photo-block-preview' );
+	styles += getCaptionStyles( captionAttributes, 'desktop', 'photo-block-preview' );
 	styles += `
 		#photo-block-preview .dlx-photo-block__image-wrapper {
 			max-width: 250px !important;
@@ -75,31 +77,33 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 						</div>
 					) }
 					<div className="dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper">
-						<img
-							src={ getImageUrl() }
-							className={ classnames(
-								`photo-block-${ cssGramFilter } dlx-photo-block__image`,
-								{
-									'has-css-gram': cssGramFilter !== 'none',
-								}
+						<div class="dlx-photo-block__screen-edit-image-inner">
+							<img
+								src={ getImageUrl() }
+								className={ classnames(
+									`photo-block-${ cssGramFilter } dlx-photo-block__image`,
+									{
+										'has-css-gram': cssGramFilter !== 'none',
+									}
+								) }
+								alt=""
+								style={ {
+									maxWidth: `100%`,
+									height: 'auto',
+								} }
+							/>
+							{ 'overlay' === captionPosition && (
+								<div
+									className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
+								>
+									<CaptionBlockPreview
+										photoAttributes={ photoAttributes }
+										captionAttributes={ captionAttributes }
+										uniqueId={ 'photo-block-preview' }
+									/>
+								</div>
 							) }
-							alt=""
-							style={ {
-								maxWidth: `100%`,
-								height: 'auto',
-							} }
-						/>
-						{ 'overlay' === captionPosition && (
-							<div
-								className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
-							>
-								<CaptionBlockPreview
-									photoAttributes={ photoAttributes }
-									captionAttributes={ captionAttributes }
-									uniqueId={ 'photo-block-preview' }
-								/>
-							</div>
-						) }
+						</div>
 					</div>
 					{ 'bottom' === captionPosition && (
 						<div

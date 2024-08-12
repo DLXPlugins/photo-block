@@ -4,7 +4,7 @@ import rgb2hex from 'rgb2hex';
 import { escapeEditableHTML } from '@wordpress/escape-html';
 import { isURL } from '@wordpress/url';
 
-const getStyles = ( attributes, deviceType, uniqueId, useClass = false ) => {
+const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) => {
 	// If attributes are empty, return empty string.
 	if ( attributes.length === 0 ) {
 		return '';
@@ -198,4 +198,4 @@ const getStyles = ( attributes, deviceType, uniqueId, useClass = false ) => {
 	return styles;
 };
 
-export default getStyles;
+export default getCaptionStyles;
