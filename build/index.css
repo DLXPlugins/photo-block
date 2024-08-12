@@ -3634,15 +3634,6 @@ svg.lucide * {
   padding: 25px;
   top: 24px !important;
 }
-.photo-block-global-styles-popover .components-popover__content .photo-block-click-to-share {
-  margin: 20px !important;
-  width: 235px;
-}
-.photo-block-global-styles-popover .components-popover__content ~ .components-popover__arrow {
-  top: unset !important;
-  bottom: 34px;
-  right: 10px !important;
-}
 
 .photo-block-presets-panel .components-panel__row {
   width: 100%;

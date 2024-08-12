@@ -38,6 +38,7 @@ registerPlugin(
 				let newAttributes = {};
 				if ( 'caption' === type ) {
 					newAttributes = maybeGlobalStyle.content.captionAttributes;
+					newAttributes.globalStyle = globalStyle;
 				} else {
 					newAttributes = maybeGlobalStyle.content.photoAttributes;
 				}

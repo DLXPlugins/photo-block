@@ -3,18 +3,7 @@
 	position: relative;
 	padding: 25px;
 	top: 24px !important;
-	.components-popover__content {
-		.photo-block-click-to-share {
-			margin: 20px !important;
-			width: 235px;
-
-		}
-		~ .components-popover__arrow {
-			top: unset !important;
-			bottom: 34px;
-			right: 10px !important;
-		}
-	}
+	
 }
 
 .photo-block-presets-panel {

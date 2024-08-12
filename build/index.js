@@ -6342,7 +6342,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
       });
 
       // If there is no caption block, but there are attributes to apply, create one.
-      if (!captionBlock && captionAttributes.length > 0) {
+      if (!captionBlock && (captionAttributes || captionAttributes.length > 0)) {
         var newBlocks = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__.createBlock)('dlxplugins/photo-caption-block', captionAttributes);
         insertBlock(newBlocks, undefined, props.clientId);
         props.setAttributes({
@@ -6351,7 +6351,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
       }
 
       // If there is a caption block and attributes to apply, apply them.
-      if (captionBlock && captionAttributes.length > 0) {
+      if (captionBlock && (captionAttributes || captionAttributes.length > 0)) {
         var captionBlockAttributes = _objectSpread(_objectSpread({}, captionAttributes), uniqueIdAttribute);
         updateBlockAttributes(captionBlock.clientId, captionBlockAttributes);
       }
@@ -10722,6 +10722,7 @@ var globalStyles = ((_photoBlock = photoBlock) === null || _photoBlock === void 
       var newAttributes = {};
       if ('caption' === type) {
         newAttributes = maybeGlobalStyle.content.captionAttributes;
+        newAttributes.globalStyle = globalStyle;
       } else {
         newAttributes = maybeGlobalStyle.content.photoAttributes;
       }
@@ -11846,7 +11847,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt text provides a description of the photo for screen readers and search engines.', 'photo-block')
   }), isSavingAlt && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block')))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block')))), !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__image-size-control"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Image Size', 'photo-block'),

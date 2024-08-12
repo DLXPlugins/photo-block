@@ -499,7 +499,7 @@ class Functions {
 		$css_output = '';
 		$css_helper = new CSS_Helper(
 			$unique_id,
-			'figcaption',
+			'.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption',
 			$is_class
 		);
 		$mode       = $attributes['mode'] ?? 'single';
@@ -525,7 +525,7 @@ class Functions {
 				// Fill in anchor CSS.
 				$custom_caption_font = new CSS_Helper(
 					$unique_id,
-					'figcaption',
+					'.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption',
 					$is_class
 				);
 				$custom_font_family  = $attributes['captionTypography']['captionCustomTypography'] ?? null;
@@ -567,7 +567,7 @@ class Functions {
 		if ( 'advanced' === $mode && ! (bool) $attributes['dataMode'] ) {
 			$smart_styles = new CSS_Helper(
 				$unique_id,
-				'figcaption',
+				'.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption',
 				$is_class
 			);
 			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-text-color', $attributes['captionTextColor'], '--photo-block-caption-text-color' );
@@ -603,7 +603,8 @@ class Functions {
 
 			$caption_overlay_hover_styles = new CSS_Helper(
 				$unique_id,
-				'.dlx-photo-block__caption-wrapper:hover figcaption:before'
+				'.dlx-photo-block__caption-wrapper:hover figcaption:before',
+				$is_class
 			);
 			Functions::add_css_property( $caption_overlay_hover_styles, 'background', $attributes['overlayBackgroundColorHover'], '--photo-block-caption-overlay-background-color-hover' );
 			$css_output .= $caption_overlay_hover_styles->get_css();

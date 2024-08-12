@@ -171,7 +171,6 @@ class Global_Styles {
 				'altText',
 				'htmlAnchor',
 				'photoMode',
-				'imageSize',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -197,7 +196,6 @@ class Global_Styles {
 			$caption_keys_to_ignore = array(
 				'captionManual',
 				'uniqueId',
-				'globalStyle',
 			);
 			/**
 			 * Filter the caption keys to ignore when saving presets.
@@ -218,7 +216,7 @@ class Global_Styles {
 
 		// Get the preset title.
 		$title          = isset( $form_data['globalStyleLabel'] ) ? sanitize_text_field( $form_data['globalStyleLabel'] ) : '';
-		$slug           = isset( $form_data['globalStyleSlug'] ) ? sanitize_text_field( $form_data['globalStyleSlug'] ) : '';
+		$slug           = isset( $form_data['globalStyleCSSClass'] ) ? sanitize_text_field( $form_data['globalStyleCSSClass'] ) : '';
 		$slug_sanitized = sanitize_title( $slug );
 		$css_class_name = isset( $form_data['globalStyleCSSClass'] ) ? sanitize_text_field( $form_data['globalStyleCSSClass'] ) : '';
 
@@ -327,7 +325,6 @@ class Global_Styles {
 				'htmlAnchor',
 				'globalStyle',
 				'photoMode',
-				'imageSize',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
