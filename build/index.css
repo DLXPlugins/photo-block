@@ -1735,8 +1735,26 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 .wp-block .filepond--wrapper,
 .dlx-photo-block__block-wrapper {
   justify-content: center;
-  min-width: 400px;
   margin: 0 auto;
+}
+
+.is-layout-small .dlx-photo-block__upload-types__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 15px;
+}
+.is-layout-small .dlx-photo-block__upload-types__container button {
+  width: 100%;
+  margin-right: 0 !important;
+  justify-content: center !important;
+}
+.is-layout-small .dlx-photo-block__upload-target__container {
+  display: none !important;
+}
+.is-layout-small .dlx-photo-block__upload-types-url__container {
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 .dlx-photo-block__screen-initial {

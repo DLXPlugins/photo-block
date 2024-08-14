@@ -1,36 +1,16 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useState, useRef, useContext } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import {
-	PanelBody,
-	PanelRow,
-	RangeControl,
-	TextControl,
-	TextareaControl,
-	ButtonGroup,
-	Button,
-	ToggleControl,
-	Toolbar,
-	ToolbarButton,
-	ToolbarGroup,
-	ToolbarDropdownMenu,
-	Popover,
-	PlaceHolder,
-	MenuGroup,
-	MenuItem,
-} from '@wordpress/components';
+import { useResizeObserver } from '@wordpress/compose';
 import { useDispatch, useSelect, dispatch, select } from '@wordpress/data';
 import { doAction } from '@wordpress/hooks';
 import {
-	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
-	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { generateUniqueId } from '../../utils/Functions';
 
 import { blockStore } from '../../store';
 
@@ -60,6 +40,15 @@ const PhotoBlock = ( props ) => {
 	const innerBlockCount = useSelect( ( coreSelect ) => coreSelect( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
 
 	const newUniqueId = 'photo-block-' + clientId.substr( 2, 9 ).replace( '-', '' );
+	const [ resizeListener, { width } ] = useResizeObserver();
+	let modifierClassNames;
+	if ( typeof width === 'number' ) {
+		modifierClassNames = {
+			'is-layout-large': width >= 700,
+			'is-layout-medium': width >= 450 && width < 700,
+			'is-layout-small': width < 450,
+		};
+	}
 
 	/**
 	 * Get a unique ID for the block for inline styling if necessary.
@@ -200,7 +189,8 @@ const PhotoBlock = ( props ) => {
 			globalStyleCSSClassName,
 			{
 				'dlx-has-drop-shadow': photoDropShadow.enabled,
-			}
+			},
+			modifierClassNames
 		),
 	} );
 
@@ -274,6 +264,7 @@ const PhotoBlock = ( props ) => {
 	const block = (
 		<>
 			<section className="dlx-photo-block__container dlx-photo-block__block-wrapper" id={ uniqueId }>
+				{ resizeListener }
 				{ initCurrentScreen() }
 			</section>
 		</>
