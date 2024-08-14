@@ -34,6 +34,7 @@ figcaption.dlx-photo-block__caption {
 	position: relative;
 	z-index: 2; /* this is to make sure the caption is on top of the overlay */
 	box-sizing: border-box;
+	font-style: var( --photo-block__caption-font-style, normal );
 }
 .dlx-photo-block__caption-wrapper .dlx-photo-block__caption-overlay figcaption.dlx-photo-block__caption {
 	display: flex;
