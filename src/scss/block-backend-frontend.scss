@@ -73,6 +73,7 @@ figcaption.dlx-photo-block__caption:not(.has-smart-styles) .dlx-photo-block__cap
  */
 figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-inner {
 	font-size: var( --photo-block__caption-font-size );
+	font-style: var( --photo-block__caption-font-style, normal );
 	/* Strip Margin and padding from first and last elements */
 	& > :first-child {
 		margin-top: 0;
