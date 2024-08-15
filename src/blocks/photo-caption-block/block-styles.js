@@ -165,14 +165,14 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 		styles += `
 			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
 				--photo-block-caption-overlay-background-color: ${ overlayBackgroundImage.backgroundColor };
-				--photo-block-caption-overlay-image: url('${ decodeURIComponent( encodeURIComponent( overlayBackgroundImage.url ) ) } ');
-				--photo-block-caption-overlay-background-position: ${ escapeEditableHTML( overlayBackgroundImage.backgroundPosition ) };
-				--photo-block-caption-overlay-background-repeat: ${ escapeEditableHTML( overlayBackgroundImage.backgroundRepeat ) };
-				--photo-block-caption-overlay-background-size: ${ escapeEditableHTML( overlayBackgroundImage.backgroundSize ) };
-				--photo-block-caption-overlay-opacity: ${ parseFloat( overlayBackgroundImage.backgroundOpacity ) };
+				--photo-block-caption-overlay-background-image-url: url('${ decodeURIComponent( encodeURIComponent( overlayBackgroundImage.url ) ) } ');
+				--photo-block-caption-overlay-background-image-position: ${ escapeEditableHTML( overlayBackgroundImage.backgroundPosition ) };
+				--photo-block-caption-overlay-background-image-repeat: ${ escapeEditableHTML( overlayBackgroundImage.backgroundRepeat ) };
+				--photo-block-caption-overlay-background-image-size: ${ escapeEditableHTML( overlayBackgroundImage.backgroundSize ) };
+				--photo-block-caption-overlay-background-image-opacity: ${ parseFloat( overlayBackgroundImage.backgroundOpacity ) };
 			}
 			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
-				--photo-block-caption-overlay-opacity-hover: ${ parseFloat( overlayBackgroundImage.backgroundOpacityHover ) };
+				--photo-block-caption-overlay-background-image-opacity-hover: ${ parseFloat( overlayBackgroundImage.backgroundOpacityHover ) };
 			}
 		`;
 
