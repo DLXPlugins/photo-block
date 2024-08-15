@@ -387,6 +387,7 @@ class Blocks {
 		} else {
 			$caption_hover_overlay_styles[] = 'overlay-fade';
 		}
+		$caption_hover_overlay_styles[] = 'overlay-type-' . $attributes['overlayBackgroundType'];
 		if ( (bool) $attributes['hideOnMobile'] ) {
 			$caption_hover_overlay_styles[] = 'hide-on-mobile';
 		}

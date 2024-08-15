@@ -579,11 +579,18 @@ class Functions {
 			$css_output .= $smart_styles->get_css();
 		}
 
+		// Determine if hover overlay is enabled.
+		$is_hover_overlay = (bool) $attributes['overlayDisplayOnHover'];
+
 		/* Overlay solid color styles */
 		if ( 'overlay' === $attributes['captionPosition'] && 'solid' === $attributes['overlayBackgroundType'] ) {
+			$selector = '.dlx-photo-block__caption-wrapper figcaption:before';
+			if ( $is_hover_overlay ) {
+				$selector = '.dlx-photo-block__caption-wrapper:hover figcaption:before';
+			}
 			$caption_overlay_styles = new CSS_Helper(
 				$unique_id,
-				'.dlx-photo-block__caption-overlay:before',
+				$selector,
 				$is_class
 			);
 			Functions::add_css_property( $caption_overlay_styles, 'transition', 'background 0.35s ease-in-out' );
@@ -612,9 +619,13 @@ class Functions {
 
 		/* overlay gradient styles */
 		if ( 'overlay' === $attributes['captionPosition'] && 'gradient' === $attributes['overlayBackgroundType'] ) {
+			$selector = '.dlx-photo-block__caption-wrapper figcaption:before';
+			if ( $is_hover_overlay ) {
+				$selector = '.dlx-photo-block__caption-wrapper:hover figcaption:before';
+			}
 			$caption_overlay_gradient_styles = new CSS_Helper(
 				$unique_id,
-				'.dlx-photo-block__caption-overlay:before',
+				$selector,
 				$is_class
 			);
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'transition', 'opacity 0.35s ease-in-out' );
@@ -628,7 +639,7 @@ class Functions {
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'width', '100%' );
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'height', '100%' );
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'background-image', $attributes['overlayBackgroundGradient'], '--photo-block-caption-overlay-background-gradient' );
-			Functions::add_css_property( $caption_overlay_gradient_styles, 'opacity', $attributes['overlayBackgroundGradientOpacity'] );
+			Functions::add_css_property( $caption_overlay_gradient_styles, 'opacity', $attributes['overlayBackgroundGradientOpacity'], '--photo-block-caption-overlay-background-gradient-opacity' );
 			Functions::add_css_property( $caption_overlay_gradient_styles, 'z-index', '1' );
 			Functions::build_dimension_css( $caption_overlay_gradient_styles, $attributes['overlayBorderRadius'], 'border-radius', '--photo-block-caption-overlay-border-radius' );
 			$css_output .= $caption_overlay_gradient_styles->get_css();
