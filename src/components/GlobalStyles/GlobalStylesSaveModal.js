@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {
 	Button,
 	Modal,
@@ -8,7 +8,8 @@ import {
 } from '@wordpress/components';
 import { cleanForSlug } from '@wordpress/url';
 import classnames from 'classnames';
-import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
+import { createBlock } from '@wordpress/blocks';
+import { useForm, Controller, useFormState } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
 import { useDispatch, useSelect, select } from '@wordpress/data';
 import { AlertCircle, Save } from 'lucide-react';
@@ -16,16 +17,15 @@ import CustomPresetsContext from './context';
 import Notice from '../Notice';
 import globalStylesStore from '../../store/global-styles';
 import { store as blockEditorStore } from '@wordpress/block-editor';
-import { blockStore } from '../../store';
 
 const canSaveDefaultPresets = photoBlockUser.canSetDefaultPresets;
 
 const GlobalStylesSaveModal = ( props ) => {
 	const [ presetSaveType, setPresetSaveType ] = useState( 'new' );
 	const [ isSaving, setIsSaving ] = useState( false );
-	const { title, attributes, setAttributes, clientId } = props;
+	const { title, setAttributes, clientId } = props;
 
-	const { savedPresets, setSavedPresets, savingPreset, setSavingPreset } =
+	const { setSavingPreset } =
 		useContext( CustomPresetsContext );
 
 	const {
@@ -33,6 +33,7 @@ const GlobalStylesSaveModal = ( props ) => {
 	} = useDispatch( globalStylesStore );
 
 	const {
+		insertBlock,
 		updateBlockAttributes,
 	} = useDispatch( blockEditorStore );
 
@@ -43,7 +44,6 @@ const GlobalStylesSaveModal = ( props ) => {
 			globalStyles: groupSelect( globalStylesStore ).getGlobalStyles(),
 		};
 	} );
-	const { setCaptionPosition } = useDispatch( blockEditorStore );
 
 	const getDefaultValues = () => {
 		return {
@@ -51,6 +51,7 @@ const GlobalStylesSaveModal = ( props ) => {
 			globalStyleSlug: '',
 			globalStyleCSSClass: '',
 			selectedGlobalStyle: null,
+			globalStyleApplyToBlock: true,
 		};
 	};
 	const { control, handleSubmit, setValue, trigger, setError, clearErrors, getValues } = useForm( {
@@ -90,7 +91,6 @@ const GlobalStylesSaveModal = ( props ) => {
 			photoAttributes: parentAttributes,
 			captionAttributes,
 		};
-		console.log( allAttributes );
 		return allAttributes;
 	};
 
@@ -104,6 +104,63 @@ const GlobalStylesSaveModal = ( props ) => {
 
 	const hasErrors = () => {
 		return Object.keys( errors ).length > 0;
+	};
+
+	/**
+	 * Apply Global Style to current block.
+	 *
+	 * @param {Object} globalStyle Global Style slug.
+	 */
+	const applyGlobalStyle = ( globalStyle ) => {
+		if ( ! getValues( 'globalStyleApplyToBlock' ) ) {
+			return;
+		}
+		let hasCaption = false;
+		if ( globalStyle.content?.photoAttributes?.hasCaption ) {
+			hasCaption = true;
+		}
+
+		let currenBlockClientId = props.clientId;
+
+		// Get the parent photo block.
+		let currentBlock = select( 'core/block-editor' ).getBlocksByClientId( currenBlockClientId )[ 0 ];
+		if ( 'dlxplugins/photo-caption-block' === currentBlock.name ) {
+			const newParentClientId = select( 'core/block-editor' ).getBlockParents( currenBlockClientId )[ 0 ];
+			currentBlock = select( 'core/block-editor' ).getBlocksByClientId( newParentClientId )[ 0 ];
+			currenBlockClientId = newParentClientId;
+		}
+
+		// Try to get children of the block (caption).
+		const children = select( 'core/block-editor' ).getBlocksByClientId( currenBlockClientId )[ 0 ]?.innerBlocks || [];
+
+		// Get any exising caption blocks.
+		const captionBlock = children.find( ( block ) => 'dlxplugins/photo-caption-block' === block.name );
+
+		// Get unique ID for the photo block.
+		const uniqueIdAttribute = currentBlock.attributes.uniqueId;
+		const captionAttributes = {
+			...globalStyle.content.captionAttributes,
+			...{ globalStyle: globalStyle.slug },
+		};
+
+		// Set global style for parent block.
+		updateBlockAttributes( currenBlockClientId, {
+			date: new Date().getTime(),
+			globalStyle: globalStyle.slug,
+			hasCaption,
+		} );
+
+		// If there is no caption block, but there are attributes to apply, create one.
+		if ( ! captionBlock && ( captionAttributes || captionAttributes.length > 0 ) ) {
+			const newBlocks = createBlock( 'dlxplugins/photo-caption-block', captionAttributes );
+			insertBlock( newBlocks, undefined, currenBlockClientId );
+		}
+
+		// If there is a caption block and attributes to apply, apply them.
+		if ( captionBlock && ( captionAttributes || captionAttributes.length > 0 ) ) {
+			const captionBlockAttributes = { ...captionAttributes, ...uniqueIdAttribute };
+			updateBlockAttributes( captionBlock.clientId, captionBlockAttributes );
+		}
 	};
 
 	/**
@@ -150,6 +207,7 @@ const GlobalStylesSaveModal = ( props ) => {
 						type: 'snackbar',
 					}
 				);
+				applyGlobalStyle( data, data.slug );
 				setGlobalStyle( data, data.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
@@ -201,17 +259,18 @@ const GlobalStylesSaveModal = ( props ) => {
 					setIsSaving( false );
 					return;
 				}
+				applyGlobalStyle( newData, newData.slug );
+				maybeRefreshBlocks( newData );
+				setGlobalStyle( newData, newData.slug );
+				setIsSaving( false );
+				setSavingPreset( false );
+				props.generateGlobalStyle();
 				createSuccessNotice(
 					__( 'Global style saved successfully.', 'photo-block' ),
 					{
 						type: 'snackbar',
 					}
 				);
-				maybeRefreshBlocks( newData );
-				setGlobalStyle( newData, newData.slug );
-				setIsSaving( false );
-				setSavingPreset( false );
-				props.generateGlobalStyle();
 			} )
 			.catch( ( error ) => {
 				setSavingPreset( false );
@@ -463,6 +522,24 @@ const GlobalStylesSaveModal = ( props ) => {
 							) }
 						</>
 					) }
+					<div className="photo-block-global-styles-row photo-block-global-styles-apply-option">
+						<Controller
+							name="globalStyleApplyToBlock"
+							control={ control }
+							render={ ( { field } ) => (
+								<ToggleControl
+									label={ __(
+										'Apply this global style to the selected block.',
+										'photo-block'
+									) }
+									checked={ field.value }
+									onChange={ () => {
+										field.onChange( ! field.value );
+									} }
+								/>
+							) }
+						/>
+					</div>
 					<div className="photo-block-global-styles-modal-button-group">
 						<Button
 							type="submit"

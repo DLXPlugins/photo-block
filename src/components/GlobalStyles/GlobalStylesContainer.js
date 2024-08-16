@@ -32,7 +32,7 @@ const GlobalStylesContainer = ( props ) => {
 	const [ loading, setLoading ] = useState( false );
 	const [ presetSaveType, setPresetSaveType ] = useState( 'new' );
 	const [ presetSaveLabel, setPresetSaveLabel ] = useState( '' );
-	const { setAttributes, clientId } = props;
+	const { setAttributes, attributes, clientId } = props;
 	const { uniqueId, globalStyle } = props.attributes;
 	const {
 		savingPreset,
