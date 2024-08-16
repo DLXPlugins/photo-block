@@ -180,7 +180,6 @@ const PhotoCaptionBlock = ( props ) => {
 		if ( oldAttrs.mode !== attributes.mode ) {
 			setAttributes( { mode: attributes.mode } );
 		}
-		
 	}, [ props.attributes, globalStyle ] );
 
 	const {
@@ -901,20 +900,19 @@ const PhotoCaptionBlock = ( props ) => {
 								help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
 							/>
 						</PanelRow>
-						{ canSavePresets && (
-							<PanelRow>
-								<BaseControl
-									label={ __( 'Global Styles', 'photo-block' ) }
-									id="photo-block-global-styles"
-									className="photo-block-global-styles"
-								>
-									<GlobalStyles { ...props } />
-								</BaseControl>
-							</PanelRow>
-						) }
 					</>
-				)
-			}
+				) }
+			{ canSavePresets && (
+				<PanelRow>
+					<BaseControl
+						label={ __( 'Global Styles', 'photo-block' ) }
+						id="photo-block-global-styles"
+						className="photo-block-global-styles"
+					>
+						<GlobalStyles { ...props } globalStyle={ globalStyle } />
+					</BaseControl>
+				</PanelRow>
+			) }
 		</>
 	);
 

@@ -1509,11 +1509,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       });
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide this photo on desktop devices.', 'photo-block')
-  })), canSavePresets && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
+  }))), canSavePresets && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Global Styles', 'photo-block'),
     id: "photo-block-global-styles",
     className: "photo-block-global-styles"
-  }, /*#__PURE__*/React.createElement(_components_GlobalStyles__WEBPACK_IMPORTED_MODULE_25__["default"], props)))));
+  }, /*#__PURE__*/React.createElement(_components_GlobalStyles__WEBPACK_IMPORTED_MODULE_25__["default"], _extends({}, props, {
+    globalStyle: globalStyle
+  })))));
 
   // Set the local inspector controls.
   var styleInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
@@ -4967,9 +4969,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-// import PresetButtonEdit from './PresetButtonEdit';
-// import CustomPresetEditModal from './CustomPresetEditModal';
-// import CustomPresetDeleteModal from './CustomPresetDeleteModal';
 
 // Read in localized var and determine if user can save or edit presets.
 var canSavePresets = photoBlockUser.canSavePresets;
@@ -4988,10 +4987,9 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     setPresetSaveLabel = _useState6[1];
   var setAttributes = props.setAttributes,
     attributes = props.attributes,
-    clientId = props.clientId;
-  var _props$attributes = props.attributes,
-    uniqueId = _props$attributes.uniqueId,
-    globalStyle = _props$attributes.globalStyle;
+    clientId = props.clientId,
+    globalStyle = props.globalStyle;
+  var uniqueId = props.attributes.uniqueId;
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_6__["default"]),
     savingPreset = _useContext.savingPreset,
     setSavingPreset = _useContext.setSavingPreset,
@@ -5007,11 +5005,13 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
       return {
         getGlobalStyles: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]).getGlobalStyles,
-        getGlobalStyleBySlug: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]).getGlobalStyleBySlug
+        getGlobalStyleBySlug: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]).getGlobalStyleBySlug,
+        hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]).hasGlobalStyle
       };
     }),
     getGlobalStyles = _useSelect.getGlobalStyles,
-    getGlobalStyleBySlug = _useSelect.getGlobalStyleBySlug;
+    getGlobalStyleBySlug = _useSelect.getGlobalStyleBySlug,
+    hasGlobalStyle = _useSelect.hasGlobalStyle;
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_store_global_styles__WEBPACK_IMPORTED_MODULE_8__["default"]),
     setGlobalStyle = _useDispatch.setGlobalStyle;
   var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store),
@@ -5218,7 +5218,7 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     ref: globalStyleContainer
   }, !loading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, editPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, getGlobalStylesForEditing()), canSavePresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "photo-block-global-styles-actions"
-  }, !editPresets && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+  }, !editPresets && !hasGlobalStyle(globalStyle) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: 'primary',
     onClick: function onClick(e) {
       e.preventDefault();
@@ -7861,10 +7861,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _components_CustomAttributes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/CustomAttributes */ "./src/components/CustomAttributes/index.js");
-/* harmony import */ var _GlobalStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../GlobalStyles */ "./src/components/GlobalStyles/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _components_CustomAttributes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/CustomAttributes */ "./src/components/CustomAttributes/index.js");
+/* harmony import */ var _GlobalStyles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../GlobalStyles */ "./src/components/GlobalStyles/index.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
 
 
 
@@ -7884,7 +7890,15 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
     hideOnMobile = attributes.hideOnMobile,
     hideOnTablet = attributes.hideOnTablet,
     hideOnDesktop = attributes.hideOnDesktop;
-  var stylesInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
+
+  // Get global style data.
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(function (select) {
+      return {
+        hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_7__["default"]).hasGlobalStyle
+      };
+    }),
+    hasGlobalStyle = _useSelect.hasGlobalStyle;
+  var stylesInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, !hasGlobalStyle(props.globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('HTML Anchor', 'photo-block'),
     value: htmlAnchor,
     onChange: function onChange(value) {
@@ -7911,7 +7925,7 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
       });
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Add CSS class(es) directly to the image tag.', 'photo-block')
-  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_components_CustomAttributes__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_components_CustomAttributes__WEBPACK_IMPORTED_MODULE_5__["default"], {
     attributes: attributes,
     setAttributes: setAttributes
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
@@ -7959,11 +7973,13 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
       });
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide this photo on desktop devices.', 'photo-block')
-  })), canSavePresets && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
+  }))), canSavePresets && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Global Styles', 'photo-block'),
     id: "photo-block-global-styles",
     className: "photo-block-global-styles"
-  }, /*#__PURE__*/React.createElement(_GlobalStyles__WEBPACK_IMPORTED_MODULE_5__["default"], props))));
+  }, /*#__PURE__*/React.createElement(_GlobalStyles__WEBPACK_IMPORTED_MODULE_6__["default"], _extends({}, props, {
+    globalStyle: props.globalStyle
+  })))));
   return stylesInspectorControls;
 };
 SidebarImageAdvancedInspectorControl.defaultProps = {
@@ -7971,7 +7987,7 @@ SidebarImageAdvancedInspectorControl.defaultProps = {
   setAttributes: function setAttributes() {}
 };
 SidebarImageAdvancedInspectorControl.propTypes = {
-  attributes: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().object)
+  attributes: (prop_types__WEBPACK_IMPORTED_MODULE_8___default().object)
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SidebarImageAdvancedInspectorControl);
 
@@ -12023,7 +12039,9 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, interfaceTabs);
 
   // Set the advanced inspector controls.
-  var advancedInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(_components_SidebarImageAdvancedInspectorControl__WEBPACK_IMPORTED_MODULE_16__["default"], props));
+  var advancedInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_SidebarImageAdvancedInspectorControl__WEBPACK_IMPORTED_MODULE_16__["default"], _extends({}, props, {
+    globalStyle: globalStyle
+  })));
   var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(_components_AlignmentToolbar__WEBPACK_IMPORTED_MODULE_20__["default"], props), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, isJustCropped && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo Crop', 'photo-block'),

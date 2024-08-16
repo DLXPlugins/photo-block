@@ -375,11 +375,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	// Set the advanced inspector controls.
 	const advancedInspectorControls = (
 		<>
-			{ ! hasGlobalStyle( globalStyle ) && (
-				<SidebarImageAdvancedInspectorControl
-					{ ...props }
-				/>
-			) }
+			<SidebarImageAdvancedInspectorControl
+				{ ...props }
+				globalStyle={ globalStyle }
+			/>
 		</>
 	);
 

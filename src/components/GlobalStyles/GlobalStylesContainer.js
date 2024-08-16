@@ -21,9 +21,6 @@ import CustomPresetSaveModal from './GlobalStylesSaveModal';
 import globalStylesStore from '../../store/global-styles';
 import GlobalStylesDeleteModal from './GlobalStylesDeleteModal';
 import GlobalStylesEditModal from './GlobalStylesEditModal';
-// import PresetButtonEdit from './PresetButtonEdit';
-// import CustomPresetEditModal from './CustomPresetEditModal';
-// import CustomPresetDeleteModal from './CustomPresetDeleteModal';
 
 // Read in localized var and determine if user can save or edit presets.
 const canSavePresets = photoBlockUser.canSavePresets;
@@ -32,8 +29,8 @@ const GlobalStylesContainer = ( props ) => {
 	const [ loading, setLoading ] = useState( false );
 	const [ presetSaveType, setPresetSaveType ] = useState( 'new' );
 	const [ presetSaveLabel, setPresetSaveLabel ] = useState( '' );
-	const { setAttributes, attributes, clientId } = props;
-	const { uniqueId, globalStyle } = props.attributes;
+	const { setAttributes, attributes, clientId, globalStyle } = props;
+	const { uniqueId } = props.attributes;
 	const {
 		savingPreset,
 		setSavingPreset,
@@ -51,10 +48,12 @@ const GlobalStylesContainer = ( props ) => {
 	const {
 		getGlobalStyles,
 		getGlobalStyleBySlug,
+		hasGlobalStyle,
 	} = useSelect( ( select ) => {
 		return {
 			getGlobalStyles: select( globalStylesStore ).getGlobalStyles,
 			getGlobalStyleBySlug: select( globalStylesStore ).getGlobalStyleBySlug,
+			hasGlobalStyle: select( globalStylesStore ).hasGlobalStyle,
 		};
 	} );
 
@@ -294,9 +293,9 @@ const GlobalStylesContainer = ( props ) => {
 								{ getGlobalStylesForEditing() }
 							</>
 						) }
-						{ canSavePresets && (
+						{ ( canSavePresets ) && (
 							<div className="photo-block-global-styles-actions">
-								{ ! editPresets && (
+								{ ( ! editPresets && ! hasGlobalStyle( globalStyle ) ) && (
 									<Button
 										variant={ 'primary' }
 										onClick={ ( e ) => {
