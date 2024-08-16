@@ -69,18 +69,28 @@ const GlobalStylesSaveModal = ( props ) => {
 	 */
 	const getCurrentAttributes = () => {
 		// Get the caption block attributes, if any.
-		const children = select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]?.innerBlocks || [];
+		let currentBlock = select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ];
+		let parentClientId = currentBlock.clientId;
+
+		// If the current block is a caption, select the parent block's clientId instead.
+		if ( 'dlxplugins/photo-caption-block' === currentBlock.name ) {
+			const currentBlockClientId = select( 'core/block-editor' ).getBlockParents( clientId )[ 0 ];
+			currentBlock = select( 'core/block-editor' ).getBlocksByClientId( currentBlockClientId )[ 0 ];
+			parentClientId = currentBlock.clientId;
+		}
+		const children = select( 'core/block-editor' ).getBlocksByClientId( parentClientId )[ 0 ]?.innerBlocks || [];
 		const captionBlock = children.find( ( block ) => 'dlxplugins/photo-caption-block' === block.name );
 		const captionAttributes = captionBlock ? captionBlock.attributes : {};
 
 		// Get the parent block attributes.
-		const parentAttributes = select( 'core/block-editor' ).getBlockAttributes( clientId );
+		const parentAttributes = select( 'core/block-editor' ).getBlockAttributes( parentClientId );
 
 		// Merge the parent and child attributes.
 		const allAttributes = {
 			photoAttributes: parentAttributes,
 			captionAttributes,
 		};
+		console.log( allAttributes );
 		return allAttributes;
 	};
 
@@ -264,15 +274,27 @@ const GlobalStylesSaveModal = ( props ) => {
 		photoBlocks.forEach( ( block ) => {
 			const { globalStyle, uniqueId } = block.attributes;
 			const captionPosition = incomingData.content.captionAttributes.captionPosition;
+
+			// Get the caption block attributes, if any.
+			let currentBlock = select( 'core/block-editor' ).getBlocksByClientId( parentClientId )[ 0 ];
+			let parentClientId = currentBlock.clientId;
+
+			// If the current block is a caption, select the parent block's clientId instead.
+			if ( 'dlxplugins/photo-caption-block' === currentBlock.name ) {
+				const currentBlockClientId = select( 'core/block-editor' ).getBlockParents( clientId )[ 0 ];
+				currentBlock = select( 'core/block-editor' ).getBlocksByClientId( currentBlockClientId )[ 0 ];
+				parentClientId = currentBlock.clientId;
+			}
+
 			if ( globalStyle !== 'none' && '' !== globalStyle ) {
-				updateBlockAttributes( block.clientId, {
+				updateBlockAttributes( parentClientId, {
 					date: new Date().getTime(),
 					globalStyle,
 					captionPosition,
 				} );
 
 				// Now get caption blocks and refresh.
-				const children = block.innerBlocks || [];
+				const children = currentBlock.innerBlocks || [];
 				const captionBlock = children.find( ( innerBlock ) => 'dlxplugins/photo-caption-block' === innerBlock.name );
 				if ( captionBlock ) {
 					updateBlockAttributes( captionBlock.clientId, {

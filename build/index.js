@@ -595,7 +595,6 @@ var getCaptionStyles = function getCaptionStyles(attributes, deviceType, uniqueI
   // Set overlay background color if background image.
   if ('overlay' === captionPosition && 'image' === overlayBackgroundType && (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_4__.isURL)(overlayBackgroundImage.url)) {
     styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-background-color: ").concat(overlayBackgroundImage.backgroundColor, ";\n\t\t\t\t--photo-block-caption-overlay-background-image-url: url('").concat(decodeURIComponent(encodeURIComponent(overlayBackgroundImage.url)), " ');\n\t\t\t\t--photo-block-caption-overlay-background-image-position: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundPosition), ";\n\t\t\t\t--photo-block-caption-overlay-background-image-repeat: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundRepeat), ";\n\t\t\t\t--photo-block-caption-overlay-background-image-size: ").concat((0,_wordpress_escape_html__WEBPACK_IMPORTED_MODULE_3__.escapeEditableHTML)(overlayBackgroundImage.backgroundSize), ";\n\t\t\t\t--photo-block-caption-overlay-background-image-opacity: ").concat(parseFloat(overlayBackgroundImage.backgroundOpacity), ";\n\t\t\t}\n\t\t\t").concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-background-image-opacity-hover: ").concat(parseFloat(overlayBackgroundImage.backgroundOpacityHover), ";\n\t\t\t}\n\t\t");
-
     // The overlay background container needs to match overlay border radius in order to simulate masking.
     styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(overlayBorderRadius, deviceType), ";\n\t\t\t}\n\t\t");
   }
@@ -638,17 +637,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/shuffle.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/maximize.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/shrink.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/info.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/align-left.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/align-center.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/align-right.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/separator-horizontal.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/rectangle-ellipsis.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash-2.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/check.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/shuffle.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/maximize.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/shrink.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/info.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/align-left.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/align-center.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/align-right.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/separator-horizontal.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/rectangle-ellipsis.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/trash-2.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/check.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
 /* harmony import */ var _components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/DimensionsResponsive */ "./src/components/DimensionsResponsive/index.js");
 /* harmony import */ var _components_BorderResponsive__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/BorderResponsive */ "./src/components/BorderResponsive/index.js");
@@ -665,6 +664,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _block_styles__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./block-styles */ "./src/blocks/photo-caption-block/block-styles.js");
 /* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 /* harmony import */ var _components_Notice__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../../components/Notice */ "./src/components/Notice/index.js");
+/* harmony import */ var _components_GlobalStyles__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../../components/GlobalStyles */ "./src/components/GlobalStyles/index.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -705,6 +705,8 @@ var HtmlToReactParser = (__webpack_require__(/*! html-to-react */ "./node_module
 
 
 
+
+var canSavePresets = photoBlockUser.canSavePresets;
 
 /**
  * Height units.
@@ -1225,7 +1227,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
         overlayBackgroundGradient: (0,_utils_GetRandomGradient__WEBPACK_IMPORTED_MODULE_18__["default"])()
       });
     },
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_25__["default"], null)
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_26__["default"], null)
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Generate Random Gradient', 'photo-block')), /*#__PURE__*/React.createElement(_components_GradientPicker__WEBPACK_IMPORTED_MODULE_17__["default"], {
     value: overlayBackgroundGradient,
     onChange: function onChange(newValue) {
@@ -1507,13 +1509,17 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       });
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide this photo on desktop devices.', 'photo-block')
-  }))));
+  })), canSavePresets && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Global Styles', 'photo-block'),
+    id: "photo-block-global-styles",
+    className: "photo-block-global-styles"
+  }, /*#__PURE__*/React.createElement(_components_GlobalStyles__WEBPACK_IMPORTED_MODULE_25__["default"], props)))));
 
   // Set the local inspector controls.
   var styleInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Padding, Margin, and Border', 'photo-block'),
     initialOpen: false,
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_26__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_27__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-dimensions-styles",
     uniqueId: uniqueId,
@@ -1575,7 +1581,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Container Sizing', 'photo-block'),
     initialOpen: false,
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_27__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_28__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-container-styles",
     uniqueId: uniqueId,
@@ -1654,12 +1660,12 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption settings are controlled by global styles.', 'photo-block'),
     status: "info",
     politeness: "polite",
-    icon: lucide_react__WEBPACK_IMPORTED_MODULE_28__["default"]
+    icon: lucide_react__WEBPACK_IMPORTED_MODULE_29__["default"]
   })));
   var localToolbar = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__.BlockControls, null, ('data' === photoMode || 'single' === mode || 'featuredImage' === photoMode) && 'overlay' !== captionPosition && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, {
     className: "dlx-photo-block__caption-align-toolbar-buttons"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_29__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_30__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Align Left', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -1668,7 +1674,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     isActive: captionAlign === 'left'
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_30__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_31__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Align Center', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -1677,7 +1683,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     isActive: captionAlign === 'center'
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_31__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_32__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Align Right', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -1686,21 +1692,21 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     isActive: captionAlign === 'right'
   })), !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_32__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_33__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Position', 'photo-block'),
     onClick: function onClick() {
       setCaptionPositionPopoverVisible(true);
     },
     ref: setCaptionPopoverRef
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Position', 'photo-block'))), 'data' !== photoMode && 'featuredImage' !== photoMode && !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_33__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_34__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Mode', 'photo-block'),
     onClick: function onClick() {
       setModePopoverVisible(true);
     },
     ref: setModePopoverRef
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Mode', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_34__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_35__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove Caption', 'photo-block'),
     onClick: function onClick() {
       setRemoveCaptionModalVisible(true);
@@ -1734,7 +1740,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     anchor: modePopoverRef,
     className: "photo-block__caption-position-popover"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.MenuGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.MenuItem, {
-    icon: 'single' === mode ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_35__["default"], null) : null,
+    icon: 'single' === mode ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_36__["default"], null) : null,
     onClick: function onClick() {
       if ('single' === mode) {
         return;
@@ -1743,7 +1749,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       setSwitchModeModalVisible(true);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Single Line', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.MenuItem, {
-    icon: 'advanced' === mode ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_35__["default"], null) : null,
+    icon: 'advanced' === mode ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_36__["default"], null) : null,
     onClick: function onClick() {
       if ('advanced' === mode) {
         return;
@@ -1759,7 +1765,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     anchor: captionPopoverRef,
     className: "photo-block__caption-position-popover"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.MenuGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.MenuItem, {
-    icon: 'top' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_35__["default"], null) : null,
+    icon: 'top' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_36__["default"], null) : null,
     onClick: function onClick() {
       setCaptionPosition('top');
       setAttributes({
@@ -1768,7 +1774,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       setCaptionPositionPopoverVisible(false);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.MenuItem, {
-    icon: 'overlay' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_35__["default"], null) : null,
+    icon: 'overlay' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_36__["default"], null) : null,
     onClick: function onClick() {
       setCaptionPosition('overlay');
       setAttributes({
@@ -1777,7 +1783,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       setCaptionPositionPopoverVisible(false);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.MenuItem, {
-    icon: 'bottom' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_35__["default"], null) : null,
+    icon: 'bottom' === captionPosition ? /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_36__["default"], null) : null,
     onClick: function onClick() {
       setCaptionPosition('bottom');
       setAttributes({
@@ -5697,20 +5703,30 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
   var getCurrentAttributes = function getCurrentAttributes() {
     var _select$getBlocksByCl;
     // Get the caption block attributes, if any.
-    var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
+    var currentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(clientId)[0];
+    var parentClientId = currentBlock.clientId;
+
+    // If the current block is a caption, select the parent block's clientId instead.
+    if ('dlxplugins/photo-caption-block' === currentBlock.name) {
+      var currentBlockClientId = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlockParents(clientId)[0];
+      currentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(currentBlockClientId)[0];
+      parentClientId = currentBlock.clientId;
+    }
+    var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(parentClientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
     var captionBlock = children.find(function (block) {
       return 'dlxplugins/photo-caption-block' === block.name;
     });
     var captionAttributes = captionBlock ? captionBlock.attributes : {};
 
     // Get the parent block attributes.
-    var parentAttributes = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlockAttributes(clientId);
+    var parentAttributes = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlockAttributes(parentClientId);
 
     // Merge the parent and child attributes.
     var allAttributes = {
       photoAttributes: parentAttributes,
       captionAttributes: captionAttributes
     };
+    console.log(allAttributes);
     return allAttributes;
   };
   var onSubmit = function onSubmit(formData) {
@@ -5871,15 +5887,26 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
         globalStyle = _block$attributes.globalStyle,
         uniqueId = _block$attributes.uniqueId;
       var captionPosition = incomingData.content.captionAttributes.captionPosition;
+
+      // Get the caption block attributes, if any.
+      var currentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(parentClientId)[0];
+      var parentClientId = currentBlock.clientId;
+
+      // If the current block is a caption, select the parent block's clientId instead.
+      if ('dlxplugins/photo-caption-block' === currentBlock.name) {
+        var currentBlockClientId = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlockParents(clientId)[0];
+        currentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(currentBlockClientId)[0];
+        parentClientId = currentBlock.clientId;
+      }
       if (globalStyle !== 'none' && '' !== globalStyle) {
-        updateBlockAttributes(block.clientId, {
+        updateBlockAttributes(parentClientId, {
           date: new Date().getTime(),
           globalStyle: globalStyle,
           captionPosition: captionPosition
         });
 
         // Now get caption blocks and refresh.
-        var children = block.innerBlocks || [];
+        var children = currentBlock.innerBlocks || [];
         var captionBlock = children.find(function (innerBlock) {
           return 'dlxplugins/photo-caption-block' === innerBlock.name;
         });

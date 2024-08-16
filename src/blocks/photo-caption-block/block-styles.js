@@ -175,7 +175,6 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 				--photo-block-caption-overlay-background-image-opacity-hover: ${ parseFloat( overlayBackgroundImage.backgroundOpacityHover ) };
 			}
 		`;
-
 		// The overlay background container needs to match overlay border radius in order to simulate masking.
 		styles += `
 			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {

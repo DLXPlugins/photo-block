@@ -4366,7 +4366,10 @@ svg.lucide * {
   \**********************************************************************************************************************************************************************************************************************************************************************************************/
 /* Typography Control */
 .photo-block-typography-picker {
-  padding: 10px 15px;
+  padding: 0;
+}
+.photo-block-typography-picker > .components-base-control__field {
+  overflow: hidden;
 }
 .photo-block-typography-picker .components-base-control {
   padding-bottom: 0 !important;
@@ -4387,7 +4390,7 @@ svg.lucide * {
 }
 .photo-block-typography-picker .photo-block-typography-picker__row__col-2 .photo-block-typography-picker__row_item.photo-block-units {
   display: grid;
-  grid-template-columns: 1fr 0 36px;
+  grid-template-columns: 75px 0 36px;
   -moz-column-gap: 0;
        column-gap: 0;
   align-items: end;

@@ -73,6 +73,8 @@ import CustomAttributesControl from '../../components/CustomAttributes';
 import getStyles from './block-styles';
 import globalStylesStore from '../../store/global-styles';
 import Notice from '../../components/Notice';
+import GlobalStyles from '../../components/GlobalStyles';
+const canSavePresets = photoBlockUser.canSavePresets;
 
 /**
  * Height units.
@@ -899,6 +901,17 @@ const PhotoCaptionBlock = ( props ) => {
 								help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
 							/>
 						</PanelRow>
+						{ canSavePresets && (
+							<PanelRow>
+								<BaseControl
+									label={ __( 'Global Styles', 'photo-block' ) }
+									id="photo-block-global-styles"
+									className="photo-block-global-styles"
+								>
+									<GlobalStyles { ...props } />
+								</BaseControl>
+							</PanelRow>
+						) }
 					</>
 				)
 			}
