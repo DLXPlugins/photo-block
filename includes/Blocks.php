@@ -421,7 +421,6 @@ class Blocks {
 			$caption_hover_overlay_styles = array( 'dlx-photo-block__caption-wrapper' );
 			$caption_overlay_styles       = array(
 				'dlx-photo-block__caption',
-				'align' . $attributes['captionAlign'],
 			);
 			$caption_overlay_styles       = array_merge(
 				$caption_overlay_styles,
