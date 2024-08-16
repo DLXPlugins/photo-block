@@ -30,6 +30,7 @@ const GlobalStylesSaveModal = ( props ) => {
 
 	const {
 		setGlobalStyle,
+		setGlobalStyleRefresh,
 	} = useDispatch( globalStylesStore );
 
 	const {
@@ -208,6 +209,7 @@ const GlobalStylesSaveModal = ( props ) => {
 					}
 				);
 				applyGlobalStyle( data, data.slug );
+				setGlobalStyleRefresh( new Date().getTime() );
 				setGlobalStyle( data, data.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
@@ -260,11 +262,13 @@ const GlobalStylesSaveModal = ( props ) => {
 					return;
 				}
 				applyGlobalStyle( newData, newData.slug );
-				maybeRefreshBlocks( newData );
 				setGlobalStyle( newData, newData.slug );
 				setIsSaving( false );
 				setSavingPreset( false );
 				props.generateGlobalStyle();
+				setGlobalStyleRefresh( new Date().getTime() );
+				maybeRefreshBlocks( newData );
+
 				createSuccessNotice(
 					__( 'Global style saved successfully.', 'photo-block' ),
 					{

@@ -5714,7 +5714,8 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_7__["default"]),
     setSavingPreset = _useContext.setSavingPreset;
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_store_global_styles__WEBPACK_IMPORTED_MODULE_9__["default"]),
-    setGlobalStyle = _useDispatch.setGlobalStyle;
+    setGlobalStyle = _useDispatch.setGlobalStyle,
+    setGlobalStyleRefresh = _useDispatch.setGlobalStyleRefresh;
   var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__.store),
     insertBlock = _useDispatch2.insertBlock,
     updateBlockAttributes = _useDispatch2.updateBlockAttributes;
@@ -5892,6 +5893,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
         type: 'snackbar'
       });
       applyGlobalStyle(data, data.slug);
+      setGlobalStyleRefresh(new Date().getTime());
       setGlobalStyle(data, data.slug);
       setIsSaving(false);
       setSavingPreset(false);
@@ -5939,11 +5941,12 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
         return;
       }
       applyGlobalStyle(newData, newData.slug);
-      maybeRefreshBlocks(newData);
       setGlobalStyle(newData, newData.slug);
       setIsSaving(false);
       setSavingPreset(false);
       props.generateGlobalStyle();
+      setGlobalStyleRefresh(new Date().getTime());
+      maybeRefreshBlocks(newData);
       createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Global style saved successfully.', 'photo-block'), {
         type: 'snackbar'
       });
@@ -10844,7 +10847,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../store */ "./src/store/index.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-var _photoBlock;
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -10862,17 +10864,18 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 
-var globalStyles = ((_photoBlock = photoBlock) === null || _photoBlock === void 0 ? void 0 : _photoBlock.globalStyles) || [];
 
 
 (0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__.registerPlugin)('photo-block-global-styles', {
   render: function render() {
     var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
         return {
-          getGlobalStyleBySlug: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleBySlug
+          getGlobalStyleBySlug: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleBySlug,
+          getGlobalStyleRefresh: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleRefresh
         };
       }),
-      getGlobalStyleBySlug = _useSelect.getGlobalStyleBySlug;
+      getGlobalStyleBySlug = _useSelect.getGlobalStyleBySlug,
+      getGlobalStyleRefresh = _useSelect.getGlobalStyleRefresh;
     var returnRealtimeBlockAttributes = function returnRealtimeBlockAttributes(propAttributes, globalStyle, clientId, type) {
       // Return if global style is defined, none, or empty.
       if ('undefined' === typeof globalStyle || 'none' === globalStyle || '' === globalStyle) {
@@ -10909,11 +10912,14 @@ var devices = ['desktop', 'tablet', 'mobile'];
       setStyles = _useState2[1];
     var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
         return {
-          globalStyles: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyles()
+          getGlobalStyles: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyles,
+          globalStyleRefresh: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleRefresh()
         };
       }),
-      globalStyles = _useSelect2.globalStyles;
+      getGlobalStyles = _useSelect2.getGlobalStyles,
+      globalStyleRefresh = _useSelect2.globalStyleRefresh;
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+      var globalStyles = getGlobalStyles();
       if (Object.keys(globalStyles).length === 0) {
         return;
       }
@@ -10939,7 +10945,7 @@ var devices = ['desktop', 'tablet', 'mobile'];
         });
       });
       setStyles(photoStyles);
-    }, [globalStyles]);
+    }, [getGlobalStyles, globalStyleRefresh]);
 
     // Don't return anything if no global styles.
     if ('' === styles) {
@@ -12932,7 +12938,8 @@ function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" 
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 var DEFAULT_STATE = {
-  globalStyles: ((_photoBlock = photoBlock) === null || _photoBlock === void 0 ? void 0 : _photoBlock.globalStyles) || []
+  globalStyles: ((_photoBlock = photoBlock) === null || _photoBlock === void 0 ? void 0 : _photoBlock.globalStyles) || [],
+  globalStyleRefresh: null
 };
 var actions = {
   setGlobalStyle: function setGlobalStyle(globalStyle, slug) {
@@ -12946,6 +12953,12 @@ var actions = {
     return {
       type: 'REMOVE_GLOBAL_STYLE',
       slug: slug
+    };
+  },
+  setGlobalStyleRefresh: function setGlobalStyleRefresh(refresh) {
+    return {
+      type: 'SET_GLOBAL_STYLE_REFRESH',
+      refresh: refresh
     };
   }
 };
@@ -12968,6 +12981,10 @@ var globalStylesStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createRe
         return _objectSpread(_objectSpread({}, state), {}, {
           globalStyles: newGlobalStyles
         });
+      case 'SET_GLOBAL_STYLE_REFRESH':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          globalStyleRefresh: action.refresh
+        });
       default:
         return state;
     }
@@ -12985,6 +13002,9 @@ var globalStylesStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createRe
         return false;
       }
       return Object.keys(state.globalStyles).includes(slug);
+    },
+    getGlobalStyleRefresh: function getGlobalStyleRefresh(state) {
+      return state.globalStyleRefresh;
     }
   }
 });

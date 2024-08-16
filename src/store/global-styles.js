@@ -2,6 +2,7 @@
 import { createReduxStore, register } from '@wordpress/data';
 const DEFAULT_STATE = {
 	globalStyles: photoBlock?.globalStyles || [],
+	globalStyleRefresh: null,
 };
 
 const actions = {
@@ -16,6 +17,12 @@ const actions = {
 		return {
 			type: 'REMOVE_GLOBAL_STYLE',
 			slug,
+		};
+	},
+	setGlobalStyleRefresh( refresh ) {
+		return {
+			type: 'SET_GLOBAL_STYLE_REFRESH',
+			refresh,
 		};
 	},
 };
@@ -42,6 +49,11 @@ const globalStylesStore = createReduxStore( 'dlxplugins/photo-block/global-style
 					...state,
 					globalStyles: newGlobalStyles,
 				};
+			case 'SET_GLOBAL_STYLE_REFRESH':
+				return {
+					...state,
+					globalStyleRefresh: action.refresh,
+				};
 			default:
 				return state;
 		}
@@ -59,6 +71,9 @@ const globalStylesStore = createReduxStore( 'dlxplugins/photo-block/global-style
 				return false;
 			}
 			return Object.keys( state.globalStyles ).includes( slug );
+		},
+		getGlobalStyleRefresh( state ) {
+			return state.globalStyleRefresh;
 		},
 	},
 } );

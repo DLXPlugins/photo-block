@@ -5,8 +5,6 @@ import { useDispatch, useSelect, select, dispatch } from '@wordpress/data';
 import getStyles from '../../blocks/photo-block/block-styles';
 import getStylesCaption from '../../blocks/photo-caption-block/block-styles';
 
-const globalStyles = photoBlock?.globalStyles || [];
-
 import globalStylesStore from '../../store/global-styles';
 import { blockStore } from '../../store';
 
@@ -17,9 +15,11 @@ registerPlugin(
 
 			const {
 				getGlobalStyleBySlug,
+				getGlobalStyleRefresh,
 			} = useSelect( ( select ) => {
 				return {
 					getGlobalStyleBySlug: select( globalStylesStore ).getGlobalStyleBySlug,
+					getGlobalStyleRefresh: select( globalStylesStore ).getGlobalStyleRefresh,
 				};
 			} );
 
@@ -64,14 +64,17 @@ registerPlugin(
 		render: () => {
 			const [ styles, setStyles ] = useState( '' );
 			const {
-				globalStyles,
+				getGlobalStyles,
+				globalStyleRefresh,
 			} = useSelect( ( select ) => {
 				return {
-					globalStyles: select( globalStylesStore ).getGlobalStyles(),
+					getGlobalStyles: select( globalStylesStore ).getGlobalStyles,
+					globalStyleRefresh: select( globalStylesStore ).getGlobalStyleRefresh(),
 				};
 			} );
 
 			useMemo( () => {
+				const globalStyles = getGlobalStyles();
 				if ( Object.keys( globalStyles ).length === 0 ) {
 					return;
 				}
@@ -99,7 +102,7 @@ registerPlugin(
 					} );
 				} );
 				setStyles( photoStyles );
-			}, [ globalStyles ] );
+			}, [ getGlobalStyles, globalStyleRefresh ] );
 
 			// Don't return anything if no global styles.
 			if ( '' === styles ) {

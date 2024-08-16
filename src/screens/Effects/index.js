@@ -235,7 +235,6 @@ const EffectsScreen = ( props ) => {
 						// 		// todo: error handling.
 						// 	}
 						// } ).catch( ( error ) => {
-						// 	console.log( error );
 						// } ).then( () => {
 						// 	setIsSaving( false );
 						// } );
