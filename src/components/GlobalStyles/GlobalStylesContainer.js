@@ -43,6 +43,8 @@ const GlobalStylesContainer = ( props ) => {
 		setShowEditModal,
 		showDeleteModal,
 		setShowDeleteModal,
+		refreshGlobalStyles,
+		setRefreshGlobalStyles,
 		setDefaultPreset,
 	} = useContext( CustomPresetsContext );
 
@@ -66,6 +68,8 @@ const GlobalStylesContainer = ( props ) => {
 			applyAsPreset: false,
 		};
 	};
+
+	const { createSuccessNotice, createWarningNotice } = useDispatch( 'core/notices' );
 
 	const { control, handleSubmit, setValue, trigger, setError, clearErrors, getValues } = useForm( {
 		defaultValues: getDefaultValues(),
@@ -91,6 +95,50 @@ const GlobalStylesContainer = ( props ) => {
 			</div>
 		);
 	};
+
+	const generateGlobalStyle = () => {
+		const ajaxUrl = `${ ajaxurl }`; // eslint-disable-line no-undef
+		const formDataNew = new FormData();
+		formDataNew.append( 'action', 'dlx_photo_block_generate_global_styles' );
+		formDataNew.append( 'nonce', photoBlock.globalStylesGenerateNonce );
+
+		fetch( ajaxUrl, {
+			method: 'POST',
+			body: formDataNew,
+			/* get return in json */
+			headers: {
+				Accept: 'application/json',
+			},
+		} )
+			.then( ( response ) => response.json() )
+			.then( ( json ) => {
+				const { success, data } = json;
+				if ( ! success ) {
+					setError( 'formAjaxError', {
+						type: 'ajax',
+						message: data.message,
+					} );
+					createWarningNotice(
+						__( 'There was an error saving the global style CSS file.', 'photo-block' ),
+						{
+							type: 'snackbar',
+						}
+					);
+					setRefreshGlobalStyles( false );
+					return;
+				}
+				createSuccessNotice(
+					__( 'Global style CSS File generated successfully.', 'photo-block' ),
+					{
+						type: 'snackbar',
+					}
+				);
+				setRefreshGlobalStyles( false );
+			} )
+			.catch( ( error ) => {
+			} );
+	};
+
 	const onSubmit = ( formData ) => {
 		const globalStyleSlug = formData.selectedGlobalStyle;
 		if ( 'none' === globalStyleSlug ) {
@@ -274,6 +322,25 @@ const GlobalStylesContainer = ( props ) => {
 										{ __( 'Edit Global Styles', 'photo-block' ) }
 									</Button>
 								) }
+								{ ( ! editPresets && Object.keys( savedPresets ).length > 0 ) && (
+									<Button
+										variant={ 'secondary' }
+										onClick={ ( e ) => {
+											e.preventDefault();
+											setRefreshGlobalStyles( true );
+											generateGlobalStyle();
+										} }
+										className="photo-block-global-styles-refresh-button"
+										label={ __( 'Refresh Global Style', 'photo-block' ) }
+										disabled={ refreshGlobalStyles }
+									>
+										{
+											refreshGlobalStyles
+												? __( 'Refreshing Global Styles', 'photo-block' )
+												: __( 'Refresh Global Styles', 'photo-block' )
+										}
+									</Button>
+								) }
 								{ editPresets && ! savingPreset && (
 									<Button
 										variant={ 'primary' }
@@ -295,6 +362,7 @@ const GlobalStylesContainer = ( props ) => {
 					<CustomPresetSaveModal
 						title={ __( 'Save Global Style', 'photo-block' ) }
 						{ ...props }
+						generateGlobalStyle={ generateGlobalStyle }
 					/>
 				) }
 			</div>

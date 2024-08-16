@@ -5000,6 +5000,8 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     setShowEditModal = _useContext.setShowEditModal,
     showDeleteModal = _useContext.showDeleteModal,
     setShowDeleteModal = _useContext.setShowDeleteModal,
+    refreshGlobalStyles = _useContext.refreshGlobalStyles,
+    setRefreshGlobalStyles = _useContext.setRefreshGlobalStyles,
     setDefaultPreset = _useContext.setDefaultPreset;
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(function (select) {
       return {
@@ -5020,6 +5022,9 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
       applyAsPreset: false
     };
   };
+  var _useDispatch3 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)('core/notices'),
+    createSuccessNotice = _useDispatch3.createSuccessNotice,
+    createWarningNotice = _useDispatch3.createWarningNotice;
   var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_11__.useForm)({
       defaultValues: getDefaultValues()
     }),
@@ -5048,6 +5053,40 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
       className: "photo-block-global-styles-loading-label"
     }, label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Spinner, null));
+  };
+  var generateGlobalStyle = function generateGlobalStyle() {
+    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
+    var formDataNew = new FormData();
+    formDataNew.append('action', 'dlx_photo_block_generate_global_styles');
+    formDataNew.append('nonce', photoBlock.globalStylesGenerateNonce);
+    fetch(ajaxUrl, {
+      method: 'POST',
+      body: formDataNew,
+      /* get return in json */
+      headers: {
+        Accept: 'application/json'
+      }
+    }).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      var success = json.success,
+        data = json.data;
+      if (!success) {
+        setError('formAjaxError', {
+          type: 'ajax',
+          message: data.message
+        });
+        createWarningNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('There was an error saving the global style CSS file.', 'photo-block'), {
+          type: 'snackbar'
+        });
+        setRefreshGlobalStyles(false);
+        return;
+      }
+      createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Global style CSS File generated successfully.', 'photo-block'), {
+        type: 'snackbar'
+      });
+      setRefreshGlobalStyles(false);
+    })["catch"](function (error) {});
   };
   var onSubmit = function onSubmit(formData) {
     var _select$getBlocksByCl;
@@ -5194,7 +5233,17 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     },
     className: "photo-block-global-styles-edit-button",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit Global Styles', 'photo-block')
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit Global Styles', 'photo-block')), editPresets && !savingPreset && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit Global Styles', 'photo-block')), !editPresets && Object.keys(savedPresets).length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+    variant: 'secondary',
+    onClick: function onClick(e) {
+      e.preventDefault();
+      setRefreshGlobalStyles(true);
+      generateGlobalStyle();
+    },
+    className: "photo-block-global-styles-refresh-button",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Refresh Global Style', 'photo-block'),
+    disabled: refreshGlobalStyles
+  }, refreshGlobalStyles ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Refreshing Global Styles', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Refresh Global Styles', 'photo-block')), editPresets && !savingPreset && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: 'primary',
     onClick: function onClick(e) {
       e.preventDefault();
@@ -5204,7 +5253,9 @@ var GlobalStylesContainer = function GlobalStylesContainer(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Exit Edit Mode', 'photo-block')
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Exit Edit Mode', 'photo-block')))), savingPreset && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GlobalStylesSaveModal__WEBPACK_IMPORTED_MODULE_7__["default"], _extends({
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Save Global Style', 'photo-block')
-  }, props))));
+  }, props, {
+    generateGlobalStyle: generateGlobalStyle
+  }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GlobalStylesContainer);
 
@@ -5739,39 +5790,6 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
   var hasErrors = function hasErrors() {
     return Object.keys(errors).length > 0;
   };
-  var generateGlobalStyle = function generateGlobalStyle() {
-    var ajaxUrl = "".concat(ajaxurl); // eslint-disable-line no-undef
-    var formDataNew = new FormData();
-    formDataNew.append('action', 'dlx_photo_block_generate_global_styles');
-    formDataNew.append('nonce', photoBlock.globalStylesGenerateNonce);
-    fetch(ajaxUrl, {
-      method: 'POST',
-      body: formDataNew,
-      /* get return in json */
-      headers: {
-        Accept: 'application/json'
-      }
-    }).then(function (response) {
-      return response.json();
-    }).then(function (json) {
-      var success = json.success,
-        data = json.data;
-      if (!success) {
-        setError('formAjaxError', {
-          type: 'ajax',
-          message: data.message
-        });
-        createWarningNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('There was an error saving the global style CSS file.', 'photo-block'), {
-          type: 'snackbar'
-        });
-        setIsSaving(false);
-        return;
-      }
-      createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Global style CSS File generated successfully.', 'photo-block'), {
-        type: 'snackbar'
-      });
-    })["catch"](function (error) {});
-  };
 
   /**
    * Save a new preset via Ajax.
@@ -5815,7 +5833,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       setGlobalStyle(data, data.slug);
       setIsSaving(false);
       setSavingPreset(false);
-      generateGlobalStyle();
+      props.generateGlobalStyle();
     })["catch"](function (error) {
       setIsSaving(false);
       setSavingPreset(false);
@@ -5865,7 +5883,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       setGlobalStyle(newData, newData.slug);
       setIsSaving(false);
       setSavingPreset(false);
-      generateGlobalStyle();
+      props.generateGlobalStyle();
     })["catch"](function (error) {
       setSavingPreset(false);
     });
@@ -6174,6 +6192,10 @@ var GlobalStyles = function GlobalStyles(props) {
     _useState12 = _slicedToArray(_useState11, 2),
     defaultPreset = _useState12[0],
     setDefaultPreset = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+    _useState14 = _slicedToArray(_useState13, 2),
+    refreshGlobalStyles = _useState14[0],
+    setRefreshGlobalStyles = _useState14[1];
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_context__WEBPACK_IMPORTED_MODULE_2__["default"].Provider, {
     value: {
       savedPresets: savedPresets,
@@ -6187,7 +6209,9 @@ var GlobalStyles = function GlobalStyles(props) {
       showDeleteModal: showDeleteModal,
       setShowDeleteModal: setShowDeleteModal,
       defaultPreset: defaultPreset,
-      setDefaultPreset: setDefaultPreset
+      setDefaultPreset: setDefaultPreset,
+      refreshGlobalStyles: refreshGlobalStyles,
+      setRefreshGlobalStyles: setRefreshGlobalStyles
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_GlobalStylesContainer__WEBPACK_IMPORTED_MODULE_3__["default"], props));
 };

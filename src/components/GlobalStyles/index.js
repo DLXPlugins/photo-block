@@ -10,6 +10,7 @@ const GlobalStyles = ( props ) => {
 	const [ showEditModal, setShowEditModal ] = useState( false );
 	const [ showDeleteModal, setShowDeleteModal ] = useState( false );
 	const [ defaultPreset, setDefaultPreset ] = useState( null );
+	const [ refreshGlobalStyles, setRefreshGlobalStyles ] = useState( false );
 
 	return (
 		<GlobalStylesContext.Provider
@@ -26,6 +27,8 @@ const GlobalStyles = ( props ) => {
 				setShowDeleteModal,
 				defaultPreset,
 				setDefaultPreset,
+				refreshGlobalStyles,
+				setRefreshGlobalStyles,
 			} }
 		>
 			<GlobalStylesContainer { ...props } />
