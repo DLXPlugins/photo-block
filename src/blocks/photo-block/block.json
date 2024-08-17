@@ -39,7 +39,7 @@
 	"attributes": {
 		"preview": {
 			"type": "boolean",
-			"default": true
+			"default": false
 		},
 		"uniqueId": {
 			"type": "string",
@@ -281,6 +281,10 @@
 			"type": "string",
 			"default": "none"
 		},
+		"mediaLinkOverride": {
+			"type": "boolean",
+			"default": false
+		},
 		"mediaLinkRel": {
 			"type": "string",
 			"default": ""
@@ -340,6 +344,10 @@
 		"imageSize": {
 			"type": "string",
 			"default": "large"
+		},
+		"imageSizeOverride": {
+			"type": "boolean",
+			"default": false
 		},
 		"altText": {
 			"type": "string",

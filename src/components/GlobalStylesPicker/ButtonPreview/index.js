@@ -18,6 +18,7 @@ import { useSelect, useDispatch, select } from '@wordpress/data';
 
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
+import globalStylesStore from '../../../store/global-styles';
 import { blockStore } from '../../../store/index';
 import PhotoBlockPreview from './photo-block-preview';
 /**
@@ -32,6 +33,14 @@ const GlobalStylesButtonPreview = ( props ) => {
 	const [ buttonRef, setButtonRef ] = useState( null );
 	const [ showPopOver, setShowPopOver ] = useState( false );
 	const [ blockPreview, setBlockPreview ] = useState( null );
+
+	const {
+		getGlobalStyleBySlug,
+	} = useSelect( ( newSelect ) => {
+		return {
+			getGlobalStyleBySlug: newSelect( globalStylesStore ).getGlobalStyleBySlug,
+		};
+	} );
 
 	const {
 		setHasCaption
@@ -62,9 +71,19 @@ const GlobalStylesButtonPreview = ( props ) => {
 						setHasCaption( true );
 						hasCaption = true;
 					}
+					const globalStyleObject = getGlobalStyleBySlug( globalStyle.slug );
 					props.setAttributes( {
 						globalStyle: globalStyle.slug,
 						hasCaption,
+						mediaLinkOverride: false,
+						imageSizeOverride: false,
+						imageSize: globalStyleObject.content?.photoAttributes?.imageSize || 'full',
+						mediaLinkType: globalStyleObject.content?.photoAttributes?.mediaLinkType || 'none',
+						mediaLinkTitle: globalStyleObject.content?.photoAttributes?.mediaLinkTitle || '',
+						mediaLinkUrl: globalStyleObject.content?.photoAttributes?.mediaLinkUrl || '',
+						lightboxCaption: globalStyleObject.content?.photoAttributes?.lightboxCaption || '',
+						lightboxEnabled: globalStyleObject.content?.photoAttributes?.lightboxEnabled || false,
+						lightboxShowCaption: globalStyleObject.content?.photoAttributes?.lightboxShowCaption || false,
 					} );
 
 					// Try to get children of the block (caption).

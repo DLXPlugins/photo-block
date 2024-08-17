@@ -520,6 +520,21 @@ class Blocks {
 				$photo_attributes = $global_style_content['photoAttributes'] ?? array();
 				$photo_attributes = Functions::sanitize_array_recursive( $photo_attributes );
 
+				// Override image size if overriden.
+				if ( isset( $attributes['imageSizeOverride'] ) && false !== (bool) $attributes['imageSizeOverride'] ) {
+					$photo_attributes['imageSize'] = $attributes['imageSize'];
+				}
+
+				// Override link target if overridden.
+				if ( isset( $attributes['mediaLinkOverride'] ) && false !== (bool) $attributes['mediaLinkOverride'] ) {
+					$photo_attributes['mediaLinkType']       = $attributes['mediaLinkType'];
+					$photo_attributes['mediaLinkTitle']      = $attributes['mediaLinkTitle'];
+					$photo_attributes['mediaLinkUrl']        = $attributes['mediaLinkUrl'];
+					$photo_attributes['lightboxCaption']     = $attributes['lightboxCaption'];
+					$photo_attributes['lightboxEnabled']     = $attributes['lightboxEnabled'];
+					$photo_attributes['lightboxShowCaption'] = $attributes['lightboxShowCaption'];
+				}
+
 				if ( ! empty( $photo_attributes ) ) {
 					$attributes = array_replace_recursive( $attributes, $photo_attributes );
 				}

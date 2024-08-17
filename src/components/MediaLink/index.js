@@ -37,6 +37,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 
 import { blockStore } from '../../store';
 import URLPicker from '../URLPicker';
+import globalStylesStore from '../../store/global-styles';
 
 /**
  * MediaLink component.
@@ -58,7 +59,16 @@ const MediaLink = ( props ) => {
 		};
 	} );
 
-	const { mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption } = attributes;
+	// Get global style data.
+	const {
+		hasGlobalStyle,
+	} = useSelect( ( select ) => {
+		return {
+			hasGlobalStyle: select( globalStylesStore ).hasGlobalStyle,
+		};
+	} );
+
+	const { mediaLinkOverride, mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption, globalStyle } = attributes;
 
 	return (
 		<>
@@ -83,6 +93,13 @@ const MediaLink = ( props ) => {
 							} ) }
 
 							onClick={ () => {
+								if ( hasGlobalStyle( globalStyle ) ) {
+									setAttributes(
+										{
+											mediaLinkOverride: true,
+										}
+									);
+								}
 								setAttributes( { mediaLinkType: 'none' } );
 							} }
 						>
@@ -95,6 +112,13 @@ const MediaLink = ( props ) => {
 								'is-pressed': 'image' === mediaLinkType,
 							} ) }
 							onClick={ () => {
+								if ( hasGlobalStyle( globalStyle ) ) {
+									setAttributes(
+										{
+											mediaLinkOverride: true,
+										}
+									);
+								}
 								setAttributes( { mediaLinkType: 'image' } );
 							} }
 						>
@@ -107,6 +131,13 @@ const MediaLink = ( props ) => {
 								'is-pressed': 'page' === mediaLinkType,
 							} ) }
 							onClick={ () => {
+								if ( hasGlobalStyle( globalStyle ) ) {
+									setAttributes(
+										{
+											mediaLinkOverride: true,
+										}
+									);
+								}
 								setAttributes( { mediaLinkType: 'page' } );
 							} }
 							disabled={ 'photo' !== photoMode }
@@ -120,6 +151,13 @@ const MediaLink = ( props ) => {
 								'is-pressed': 'custom' === mediaLinkType,
 							} ) }
 							onClick={ () => {
+								if ( hasGlobalStyle( globalStyle ) ) {
+									setAttributes(
+										{
+											mediaLinkOverride: true,
+										}
+									);
+								}
 								setAttributes( { mediaLinkType: 'custom' } );
 							} }
 						>

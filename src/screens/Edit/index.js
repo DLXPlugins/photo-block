@@ -57,17 +57,19 @@ import AlignmentToolbar from '../../components/AlignmentToolbar';
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
+	
 
-	let attributes = props.attributes || {};
+	const attributes = props.attributes || {};
 
 	// Apply filters to attributes.
 	useEffect( () => {
 		const newAttributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
+
 		setAttributes( {
 			...attributes,
 			...newAttributes,
 		} );
-	}, [ props.attributes ] );
+	}, [ attributes ] );
 
 	const {
 		uniqueId,
@@ -326,27 +328,28 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					) }
 				</>
 				{
-					! hasGlobalStyle( globalStyle ) && (
-						<PanelRow>
-							<div className="photo-block__image-size-control">
-								<SelectControl
-									label={ __( 'Image Size', 'photo-block' ) }
-									value={ imageSize }
-									onChange={ ( size ) => {
-										setAttributes( { imageSize: size } );
-										getImageFromSize( size );
-									} }
-									options={ imageSizeOptions }
-									disabled={ 'photo' !== photoMode }
-								/>
-								{ imageSizeLoading && (
-									<>
-										<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
-									</>
-								) }
-							</div>
-						</PanelRow>
-					)
+					<PanelRow>
+						<div className="photo-block__image-size-control">
+							<SelectControl
+								label={ __( 'Image Size', 'photo-block' ) }
+								value={ imageSize }
+								onChange={ ( size ) => {
+									if ( hasGlobalStyle( globalStyle ) ) {
+										setAttributes( { imageSizeOverride: true } );
+									}
+									setAttributes( { imageSize: size } );
+									getImageFromSize( size );
+								} }
+								options={ imageSizeOptions }
+								disabled={ 'photo' !== photoMode }
+							/>
+							{ imageSizeLoading && (
+								<>
+									<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
+								</>
+							) }
+						</div>
+					</PanelRow>
 				}
 			</PanelBodyControl>
 		</>
@@ -449,16 +452,14 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						ref={ setA11yButton }
 					/>
 					{
-						! hasGlobalStyle( globalStyle ) && (
-							<ToolbarButton
-								icon={ <Link /> }
-								label={ __( 'Set Link Options', 'photo-block' ) }
-								onClick={ () => {
-									setMediaLinkPopover( ! mediaLinkPopover );
-								} }
-								ref={ setMediaLinkRef }
-							/>
-						)
+						<ToolbarButton
+							icon={ <Link /> }
+							label={ __( 'Set Link Options', 'photo-block' ) }
+							onClick={ () => {
+								setMediaLinkPopover( ! mediaLinkPopover );
+							} }
+							ref={ setMediaLinkRef }
+						/>
 					}
 				</ToolbarGroup>
 			</BlockControls>

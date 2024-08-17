@@ -1,25 +1,23 @@
 import { useMemo, useState } from 'react';
 import { registerPlugin } from '@wordpress/plugins';
 import { addFilter } from '@wordpress/hooks';
-import { useDispatch, useSelect, select, dispatch } from '@wordpress/data';
+import { useSelect, select } from '@wordpress/data';
 import getStyles from '../../blocks/photo-block/block-styles';
 import getStylesCaption from '../../blocks/photo-caption-block/block-styles';
 
 import globalStylesStore from '../../store/global-styles';
-import { blockStore } from '../../store';
 
 registerPlugin(
 	'photo-block-global-styles',
 	{
 		render: () => {
-
 			const {
 				getGlobalStyleBySlug,
 				getGlobalStyleRefresh,
-			} = useSelect( ( select ) => {
+			} = useSelect( ( newSelect ) => {
 				return {
-					getGlobalStyleBySlug: select( globalStylesStore ).getGlobalStyleBySlug,
-					getGlobalStyleRefresh: select( globalStylesStore ).getGlobalStyleRefresh,
+					getGlobalStyleBySlug: newSelect( globalStylesStore ).getGlobalStyleBySlug,
+					getGlobalStyleRefresh: newSelect( globalStylesStore ).getGlobalStyleRefresh,
 				};
 			} );
 
@@ -30,7 +28,9 @@ registerPlugin(
 				}
 
 				// Get global style.
-				const maybeGlobalStyle = getGlobalStyleBySlug( globalStyle );
+				const maybeGlobalStyle = {
+					...getGlobalStyleBySlug( globalStyle ),
+				};
 				if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
 					return propAttributes;
 				}
@@ -40,10 +40,22 @@ registerPlugin(
 					newAttributes = maybeGlobalStyle.content.captionAttributes;
 					newAttributes.globalStyle = globalStyle;
 				} else {
+					// Ensure global styless are not applied if overriden.
+					if ( propAttributes.imageSizeOverride ) {
+						maybeGlobalStyle.content.photoAttributes.imageSize = propAttributes.imageSize;
+					}
+					if ( propAttributes.mediaLinkOverride )	{
+						maybeGlobalStyle.content.photoAttributes.mediaLinkType = propAttributes.mediaLinkType;
+						maybeGlobalStyle.content.photoAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
+						maybeGlobalStyle.content.photoAttributes.mediaLinkUrl = propAttributes.mediaLinkUrl;
+						maybeGlobalStyle.content.photoAttributes.lightboxCaption = propAttributes.lightboxCaption;
+						maybeGlobalStyle.content.photoAttributes.lightboxEnabled = propAttributes.lightboxEnabled;
+						maybeGlobalStyle.content.photoAttributes.lightboxShowCaption = propAttributes.lightboxShowCaption;
+					}
+
 					newAttributes = maybeGlobalStyle.content.photoAttributes;
 				}
 
-				// Overwrite attributes with new ones.
 				return {
 					...propAttributes,
 					...newAttributes,
@@ -66,10 +78,10 @@ registerPlugin(
 			const {
 				getGlobalStyles,
 				globalStyleRefresh,
-			} = useSelect( ( select ) => {
+			} = useSelect( ( newSelect ) => {
 				return {
-					getGlobalStyles: select( globalStylesStore ).getGlobalStyles,
-					globalStyleRefresh: select( globalStylesStore ).getGlobalStyleRefresh(),
+					getGlobalStyles: newSelect( globalStylesStore ).getGlobalStyles,
+					globalStyleRefresh: newSelect( globalStylesStore ).getGlobalStyleRefresh(),
 				};
 			} );
 
@@ -125,7 +137,20 @@ const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 
 				if ( Object.keys( globalStyle ).length > 0 ) {
 					// Get photo block global style attributes.
-					const globalStyleAttributes = globalStyle.content.photoAttributes;
+					const globalStyleAttributes = { ...globalStyle.content.photoAttributes };
+
+					// Ensure global styless are not applied if overriden.
+					if ( true === attributes.imageSizeOverride ) {
+						globalStyleAttributes.imageSize = attributes.imageSize;
+					}
+					if ( true === attributes.mediaLinkOverride )	{
+						globalStyleAttributes.mediaLinkType = attributes.mediaLinkType;
+						globalStyleAttributes.mediaLinkTitle = attributes.mediaLinkTitle;
+						globalStyleAttributes.mediaLinkUrl = attributes.mediaLinkUrl;
+						globalStyleAttributes.lightboxCaption = attributes.lightboxCaption;
+						globalStyleAttributes.lightboxEnabled = attributes.lightboxEnabled;
+						globalStyleAttributes.lightboxShowCaption = attributes.lightboxShowCaption;
+					}
 
 					return {
 						...attributes,
@@ -156,7 +181,7 @@ const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 	return attributes;
 };
 addFilter(
-    'blocks.getBlockAttributes',
-    'dlxplugins/photo-block',
-    returnBlockAttributes
+	'blocks.getBlockAttributes',
+	'dlxplugins/photo-block',
+	returnBlockAttributes
 );
