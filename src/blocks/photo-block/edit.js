@@ -261,6 +261,15 @@ const PhotoBlock = ( props ) => {
 		return null;
 	};
 
+	const { preview } = attributes;
+	if ( preview ) {
+		return (
+			<div className="dlx-photo-block__preview">
+				<img src={ photoBlock.blockPreviewImage } alt={ __( 'Block Preview', 'photo-block' ) } style={{ maxWidth: '100%', height: 'auto' } } />
+			</div>
+		);
+	}
+
 	const block = (
 		<>
 			<section className="dlx-photo-block__container dlx-photo-block__block-wrapper" id={ uniqueId }>

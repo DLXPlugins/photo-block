@@ -189,6 +189,7 @@ class Blocks {
 			'palette'                 => functions::get_theme_color_palette(),
 			'postTypes'               => $post_type_return,
 			'defaultImagePlacheolder' => Functions::get_plugin_url( 'assets/sample-image-ron-h-phoenix.jpg' ),
+			'blockPreviewImage'       => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
 		);
 
 		// Add inline script to detect user role.

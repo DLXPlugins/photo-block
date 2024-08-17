@@ -37,6 +37,10 @@
     "photo-block/globalStyle": "globalStyle"
   },
   "attributes": {
+    "preview": {
+      "type": "boolean",
+      "default": true
+    },
     "uniqueId": {
       "type": "string",
       "default": null
@@ -616,7 +620,9 @@
     "html": false
   },
   "example": {
-    "attributes": {}
+    "attributes": {
+      "preview": true
+    }
   },
   "editorScript": "dlx-photo-block-editor",
   "editorStyle": "dlx-photo-block-editor-css",
