@@ -42,9 +42,9 @@ class Global_Styles {
 	 * @return array $vars The updated localized vars.
 	 */
 	public static function add_localized_vars( $vars ) {
-		$vars['globalStylesLoadNonce']    = wp_create_nonce( 'dlx_photo_block_load_global_styles' );
-		$vars['globalStylesSaveNewNonce'] = wp_create_nonce( 'dlx_photo_block_save_new_global_styles' );
-		$vars['globalStylesCanEditor']    = current_user_can( 'edit_others_posts' );
+		$vars['globalStylesLoadNonce']     = wp_create_nonce( 'dlx_photo_block_load_global_styles' );
+		$vars['globalStylesSaveNewNonce']  = wp_create_nonce( 'dlx_photo_block_save_new_global_styles' );
+		$vars['globalStylesCanEditor']     = current_user_can( 'edit_others_posts' );
 		$vars['globalStylesGenerateNonce'] = wp_create_nonce( 'dlx_photo_block_generate_global_styles' );
 
 		// Get the default preset (if any), and return it as localized variable.
@@ -582,9 +582,9 @@ class Global_Styles {
 			$content_attributes = json_decode( $global_style->post_content, true );
 			$photo_attributes   = Functions::sanitize_array_recursive( $content_attributes['photoAttributes'] );
 			$caption_attributes = Functions::sanitize_array_recursive( $content_attributes['captionAttributes'] );
-			$css_class = sanitize_text_field( get_post_meta( $global_style->ID, '_dlx_pb_css_class', true ) );
-			$css_string .= Functions::generate_photo_block_css( $photo_attributes, $css_class, true );
-			$css_string .= Functions::generate_photo_block_caption_css( $caption_attributes, $css_class, true );
+			$css_class          = sanitize_text_field( get_post_meta( $global_style->ID, '_dlx_pb_css_class', true ) );
+			$css_string        .= Functions::generate_photo_block_css( $photo_attributes, $css_class, true );
+			$css_string        .= Functions::generate_photo_block_caption_css( $caption_attributes, $css_class, true );
 		}
 
 		/**
@@ -614,6 +614,10 @@ class Global_Styles {
 		}
 
 		$wp_filesystem->put_contents( $upload_dir . 'global-styles.css', $css_string, FS_CHMOD_FILE );
+
+		// Generate new version number for version caching.
+		$new_version = sanitize_text_field( \wp_generate_password( 12, false, false ) );
+		update_option( 'dlx_pb_global_style_version', $new_version );
 
 		// Send json response.
 		wp_send_json_success( array( 'message' => __( 'Global styles generated.', 'photo-block' ) ) );

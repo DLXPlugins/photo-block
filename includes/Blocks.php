@@ -540,15 +540,16 @@ class Blocks {
 				}
 
 				// Get global style location in uploads dir.
-				$upload_dir = wp_upload_dir();
-				$upload_url = $upload_dir['baseurl'] . '/photo-block/global-styles.css';
+				$upload_dir     = wp_upload_dir();
+				$upload_url     = $upload_dir['baseurl'] . '/photo-block/global-styles.css';
+				$upload_version = sanitize_key( get_option( 'dlx_pb_global_style_version', 0 ) );
 
 				// Register the style.
 				wp_register_style(
 					'dlx-photo-block-global-styles',
 					$upload_url,
 					array(),
-					Functions::get_plugin_version(),
+					$upload_version,
 					'all'
 				);
 
