@@ -73,6 +73,7 @@ const GlobalStylesButtonPreview = ( props ) => {
 					}
 					const globalStyleObject = getGlobalStyleBySlug( globalStyle.slug );
 					props.setAttributes( {
+						...globalStyleObject.content.photoAttributes,
 						globalStyle: globalStyle.slug,
 						hasCaption,
 						mediaLinkOverride: false,

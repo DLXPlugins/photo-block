@@ -6495,7 +6495,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
         hasCaption = true;
       }
       var globalStyleObject = getGlobalStyleBySlug(globalStyle.slug);
-      props.setAttributes({
+      props.setAttributes(_objectSpread(_objectSpread({}, globalStyleObject.content.photoAttributes), {}, {
         globalStyle: globalStyle.slug,
         hasCaption: hasCaption,
         mediaLinkOverride: false,
@@ -6507,7 +6507,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
         lightboxCaption: ((_globalStyleObject$co9 = globalStyleObject.content) === null || _globalStyleObject$co9 === void 0 ? void 0 : (_globalStyleObject$co10 = _globalStyleObject$co9.photoAttributes) === null || _globalStyleObject$co10 === void 0 ? void 0 : _globalStyleObject$co10.lightboxCaption) || '',
         lightboxEnabled: ((_globalStyleObject$co11 = globalStyleObject.content) === null || _globalStyleObject$co11 === void 0 ? void 0 : (_globalStyleObject$co12 = _globalStyleObject$co11.photoAttributes) === null || _globalStyleObject$co12 === void 0 ? void 0 : _globalStyleObject$co12.lightboxEnabled) || false,
         lightboxShowCaption: ((_globalStyleObject$co13 = globalStyleObject.content) === null || _globalStyleObject$co13 === void 0 ? void 0 : (_globalStyleObject$co14 = _globalStyleObject$co13.photoAttributes) === null || _globalStyleObject$co14 === void 0 ? void 0 : _globalStyleObject$co14.lightboxShowCaption) || false
-      });
+      }));
 
       // Try to get children of the block (caption).
       var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.select)('core/block-editor').getBlocksByClientId(props.clientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
@@ -12496,7 +12496,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
   }, [imageSize, dataFallbackImage, dataFallbackImageSize, dataHasFallbackImage]);
 
   // Set settings inspector Controls.
-  var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_GlobalStylesPicker__WEBPACK_IMPORTED_MODULE_17__["default"], props), !hasGlobalStyle(attributes.globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  var settingsInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_GlobalStylesPicker__WEBPACK_IMPORTED_MODULE_17__["default"], props), /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_10__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Photo Settings', 'photo-block'),
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
     className: "photo-block__inspector-panel",
@@ -12508,6 +12508,11 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Image Size', 'photo-block'),
     value: imageSize,
     onChange: function onChange(size) {
+      if (hasGlobalStyle(attributes.globalStyle)) {
+        setAttributes({
+          imageSizeOverride: true
+        });
+      }
       setAttributes({
         imageSize: size
       });
@@ -12518,7 +12523,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
       });
     },
     options: imageSizeOptions
-  }))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+  }))), !hasGlobalStyle(attributes.globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Fallback Image', 'photo-block'),
     initialOpen: true,
@@ -12595,7 +12600,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
         dataFallbackImage: {}
       });
     }
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Remove Fallback Image', 'photo-block')))))));
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Remove Fallback Image', 'photo-block'))))))));
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, settingsInspectorControls, !hasGlobalStyle(attributes.globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_11__["default"], {

@@ -176,125 +176,130 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 		<>
 			<GlobalStylesPicker { ...props } />
 			{
-				! hasGlobalStyle( attributes.globalStyle ) && (
-					<>
-						<PanelBodyControl
-							title={ __( 'Photo Settings', 'photo-block' ) }
-							icon={ <Image /> }
-							className="photo-block__inspector-panel"
-							id="photo-block__photo-settings"
-							uniqueId={ uniqueId }
-							initialOpen={ true }
-							scrollAfterOpen={ false }
-						>
-							<PanelRow>
-								<SelectControl
-									label={ __( 'Image Size', 'photo-block' ) }
-									value={ imageSize }
-									onChange={ ( size ) => {
-										setAttributes( { imageSize: size } );
+				<>
+					<PanelBodyControl
+						title={ __( 'Photo Settings', 'photo-block' ) }
+						icon={ <Image /> }
+						className="photo-block__inspector-panel"
+						id="photo-block__photo-settings"
+						uniqueId={ uniqueId }
+						initialOpen={ true }
+						scrollAfterOpen={ false }
+					>
+						<PanelRow>
+							<SelectControl
+								label={ __( 'Image Size', 'photo-block' ) }
+								value={ imageSize }
+								onChange={ ( size ) => {
+									if ( hasGlobalStyle( attributes.globalStyle ) ) {
+										setAttributes( { imageSizeOverride: true } );
+									}
+									setAttributes( { imageSize: size } );
 
-										// Also set fallback image size.
-										setAttributes( { dataFallbackImageSize: size } );
-									} }
-									options={ imageSizeOptions }
-								/>
-							</PanelRow>
-						</PanelBodyControl>
-						<PanelBody
-							icon={ <Image /> }
-							title={ __( 'Fallback Image', 'photo-block' ) }
-							initialOpen={ true }
-							className="photo-block__inspector-panel"
-						>
-							<div className="dlx-photo-block__data-row">
-								<ToggleControl
-									label={ __( 'Enable a Fallback Image', 'photo-block' ) }
-									checked={ dataHasFallbackImage }
-									onChange={ ( value ) => {
-										setAttributes( { dataHasFallbackImage: value } );
-									} }
-								/>
-							</div>
-							{ dataHasFallbackImage && (
-								<>
-									<div className="dlx-photo-block__data-row">
-										<SelectControl
-											label={ __( 'Select the Fallback Image Size', 'photo-block' ) }
-											value={ dataFallbackImageSize }
-											onChange={ ( size ) => {
-												setAttributes( { dataFallbackImageSize: size } );
-											} }
-											options={ imageSizeOptions }
-										/>
-									</div>
-									<div className="dlx-photo-block__data-row">
-										<MediaUploadCheck>
-											<MediaUpload
-												allowedTypes="image"
-												mode="browse"
-												multiple={ false }
-												title={ __( 'Please select a Fallback Image', 'photo-block' ) }
-												render={ ( { open } ) => (
-													<Button
-														variant="secondary"
-														icon={ <Image /> }
-														onClick={ () => {
-															open();
-														} }
-													>
-														{ __( 'Set Fallback Image', 'photo-block' ) }
-													</Button>
-												) }
-												onSelect={ ( media ) => {
-													const selectedMedia = {
-														id: media.id,
-														url: media.sizes?.large?.url ?? media.sizes.full.url,
-														width:
-															media.sizes?.large?.width ?? media.sizes.full.width,
-														height:
-															media.sizes?.large?.height ?? media.sizes.full.height,
-														alt: media.alt,
-														caption: media.caption,
-													};
-													setAttributes( {
-														dataFallbackImage: selectedMedia,
-													} );
+									// Also set fallback image size.
+									setAttributes( { dataFallbackImageSize: size } );
+								} }
+								options={ imageSizeOptions }
+							/>
+						</PanelRow>
+					</PanelBodyControl>
+					{ ! hasGlobalStyle( attributes.globalStyle ) && (
+						<>
+							<PanelBody
+								icon={ <Image /> }
+								title={ __( 'Fallback Image', 'photo-block' ) }
+								initialOpen={ true }
+								className="photo-block__inspector-panel"
+							>
+								<div className="dlx-photo-block__data-row">
+									<ToggleControl
+										label={ __( 'Enable a Fallback Image', 'photo-block' ) }
+										checked={ dataHasFallbackImage }
+										onChange={ ( value ) => {
+											setAttributes( { dataHasFallbackImage: value } );
+										} }
+									/>
+								</div>
+								{ dataHasFallbackImage && (
+									<>
+										<div className="dlx-photo-block__data-row">
+											<SelectControl
+												label={ __( 'Select the Fallback Image Size', 'photo-block' ) }
+												value={ dataFallbackImageSize }
+												onChange={ ( size ) => {
+													setAttributes( { dataFallbackImageSize: size } );
 												} }
+												options={ imageSizeOptions }
 											/>
-										</MediaUploadCheck>
-									</div>
-									{ dataFallbackImage?.url && (
-										<>
-											<div className="dlx-photo-block__data-row">
-												<img
-													src={ dataFallbackImage.url }
-													alt={ dataFallbackImage.alt }
-													width={ dataFallbackImage.width }
-													height={ dataFallbackImage.height }
-													style={ {
-														maxWidth: '175px',
-														height: 'auto',
-														border: '1px solid #ddd',
+										</div>
+										<div className="dlx-photo-block__data-row">
+											<MediaUploadCheck>
+												<MediaUpload
+													allowedTypes="image"
+													mode="browse"
+													multiple={ false }
+													title={ __( 'Please select a Fallback Image', 'photo-block' ) }
+													render={ ( { open } ) => (
+														<Button
+															variant="secondary"
+															icon={ <Image /> }
+															onClick={ () => {
+																open();
+															} }
+														>
+															{ __( 'Set Fallback Image', 'photo-block' ) }
+														</Button>
+													) }
+													onSelect={ ( media ) => {
+														const selectedMedia = {
+															id: media.id,
+															url: media.sizes?.large?.url ?? media.sizes.full.url,
+															width:
+														media.sizes?.large?.width ?? media.sizes.full.width,
+															height:
+														media.sizes?.large?.height ?? media.sizes.full.height,
+															alt: media.alt,
+															caption: media.caption,
+														};
+														setAttributes( {
+															dataFallbackImage: selectedMedia,
+														} );
 													} }
 												/>
-											</div>
-											<Button
-												isDestructive={ true }
-												variant="secondary"
-												onClick={ () => {
-													setAttributes( { dataFallbackImage: {} } );
-												} }
-											>
-												{ __( 'Remove Fallback Image', 'photo-block' ) }
-											</Button>
-										</>
-									) }
-								</>
-							) }
-						</PanelBody>
-					</>
-				)
+											</MediaUploadCheck>
+										</div>
+										{ dataFallbackImage?.url && (
+											<>
+												<div className="dlx-photo-block__data-row">
+													<img
+														src={ dataFallbackImage.url }
+														alt={ dataFallbackImage.alt }
+														width={ dataFallbackImage.width }
+														height={ dataFallbackImage.height }
+														style={ {
+															maxWidth: '175px',
+															height: 'auto',
+															border: '1px solid #ddd',
+														} }
+													/>
+												</div>
+												<Button
+													isDestructive={ true }
+													variant="secondary"
+													onClick={ () => {
+														setAttributes( { dataFallbackImage: {} } );
+													} }
+												>
+													{ __( 'Remove Fallback Image', 'photo-block' ) }
+												</Button>
+											</>
+										) }
+									</>
+								) }
+							</PanelBody>
+						</>
+					) }
+				</>
 			}
 
 		</>
@@ -442,7 +447,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
-	let styles = `
+	const styles = `
 		#${ uniqueId } .dlx-photo-block__screen-edit-image {
 			background: ${ photoBackgroundColor };
 		}
