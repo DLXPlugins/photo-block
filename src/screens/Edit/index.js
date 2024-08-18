@@ -190,7 +190,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 */
 	const handleAltChange = useCallback( debounce( async( altText ) => {
 		// Ignore manual mode, which is direct URL input. Nothing to save to.
-		if ( 'manual' === photoMode ) {
+		if ( 'manual' === photoMode || 'url' === photoMode ) {
 			return;
 		}
 
@@ -231,7 +231,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 */
 	const handleTitleChange = useCallback( debounce( async( titleText ) => {
 		// Ignore manual mode, which is direct URL input. Nothing to save to.
-		if ( 'manual' === photoMode ) {
+		if ( 'manual' === photoMode || 'url' === photoMode ) {
 			return;
 		}
 
