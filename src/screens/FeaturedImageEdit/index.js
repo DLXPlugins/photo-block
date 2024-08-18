@@ -451,18 +451,6 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 			${ photoBlur ? `filter: blur(${ photoBlur }px);` : '' }
 		}
 	`;
-	if ( photoDropShadow.enabled ) {
-		styles += `
-			#${ uniqueId } img {
-				box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${ photoDropShadow.horizontal
-}px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${ photoDropShadow.spread
-}px ${ hexToRgba( photoDropShadow.color, photoDropShadow.opacity ) };
-				-webkit-box-shadow: ${ photoDropShadow.inset ? 'inset ' : '' }${ photoDropShadow.horizontal
-}px ${ photoDropShadow.vertical }px ${ photoDropShadow.blur }px ${ photoDropShadow.spread
-}px ${ hexToRgba( photoDropShadow.color, photoDropShadow.opacity ) };
-			}
-		`;
-	}
 	const imageStyles = getStyles( attributes, deviceType, uniqueId );
 	return (
 		<>

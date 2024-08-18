@@ -78,11 +78,6 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 				--photo-block-image-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) };
 				${ buildBorderCSS( photoBorder, deviceType, '--photo-block-image' ) };
 				--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
-				--photo-block-image-drop-shadow-horizontal: ${ photoDropShadow.horizontal }px;
-				--photo-block-image-drop-shadow-vertical: ${ photoDropShadow.vertical }px;
-				--photo-block-image-drop-shadow-blur: ${ photoDropShadow.blur }px;
-				--photo-block-image-drop-shadow-spread: ${ photoDropShadow.spread }px;
-				--photo-block-image-drop-shadow-color: ${ getColor( photoDropShadow.color, photoDropShadow.opacity ) };
 			}
 			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
 				--photo-block-image-opacity: ${ photoOpacity };
@@ -93,6 +88,17 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 				--photo-block-image-object-position: ${ 'custom' === photoObjectPosition ? photoObjectPositionCustom : photoObjectPosition };
 			}
 		`;
+		if ( photoDropShadow.enabled ) {
+			styles += `
+				${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
+					--photo-block-image-drop-shadow-horizontal: ${ photoDropShadow.horizontal }px;
+					--photo-block-image-drop-shadow-vertical: ${ photoDropShadow.vertical }px;
+					--photo-block-image-drop-shadow-blur: ${ photoDropShadow.blur }px;
+					--photo-block-image-drop-shadow-spread: ${ photoDropShadow.spread }px;
+					--photo-block-image-drop-shadow-color: ${ getColor( photoDropShadow.color, photoDropShadow.opacity ) };
+				}
+			`;
+		}
 	} else {
 		styles += `
 			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
