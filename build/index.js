@@ -10944,29 +10944,29 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       }
 
       // Get global style.
-      var maybeGlobalStyle = _objectSpread({}, getGlobalStyleBySlug(globalStyle));
+      var maybeGlobalStyle = getGlobalStyleBySlug(globalStyle);
       if (Object.keys(maybeGlobalStyle).length === 0) {
         return propAttributes;
       }
       // Found a global style.
       var newAttributes = {};
       if ('caption' === type) {
-        newAttributes = maybeGlobalStyle.content.captionAttributes;
+        newAttributes = _objectSpread({}, maybeGlobalStyle.content.captionAttributes);
         newAttributes.globalStyle = globalStyle;
       } else {
+        newAttributes = _objectSpread({}, maybeGlobalStyle.content.photoAttributes);
         // Ensure global styless are not applied if overriden.
         if (propAttributes.imageSizeOverride) {
-          maybeGlobalStyle.content.photoAttributes.imageSize = propAttributes.imageSize;
+          newAttributes.imageSize = propAttributes.imageSize;
         }
         if (propAttributes.mediaLinkOverride) {
-          maybeGlobalStyle.content.photoAttributes.mediaLinkType = propAttributes.mediaLinkType;
-          maybeGlobalStyle.content.photoAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
-          maybeGlobalStyle.content.photoAttributes.mediaLinkUrl = propAttributes.mediaLinkUrl;
-          maybeGlobalStyle.content.photoAttributes.lightboxCaption = propAttributes.lightboxCaption;
-          maybeGlobalStyle.content.photoAttributes.lightboxEnabled = propAttributes.lightboxEnabled;
-          maybeGlobalStyle.content.photoAttributes.lightboxShowCaption = propAttributes.lightboxShowCaption;
+          newAttributes.mediaLinkType = propAttributes.mediaLinkType;
+          newAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
+          newAttributes.mediaLinkUrl = propAttributes.mediaLinkUrl;
+          newAttributes.lightboxCaption = propAttributes.lightboxCaption;
+          newAttributes.lightboxEnabled = propAttributes.lightboxEnabled;
+          newAttributes.lightboxShowCaption = propAttributes.lightboxShowCaption;
         }
-        newAttributes = maybeGlobalStyle.content.photoAttributes;
       }
       return _objectSpread(_objectSpread({}, propAttributes), newAttributes);
     };
@@ -11807,8 +11807,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   // Apply filters to attributes.
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     var newAttributes = (0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_8__.applyFilters)('dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo');
-    setAttributes(_objectSpread(_objectSpread({}, attributes), newAttributes));
-  }, [attributes]);
+    setAttributes(_objectSpread(_objectSpread({}, props.attributes), newAttributes));
+  }, []);
   var uniqueId = attributes.uniqueId,
     imageSize = attributes.imageSize,
     cssGramFilter = attributes.cssGramFilter,
@@ -11912,6 +11912,15 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setImageLoading(false);
     }
   }, []);
+
+  /**
+   * Get image whenever size changes.
+   */
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    if ('photo' === photoMode) {
+      getImageFromSize(imageSize);
+    }
+  }, [imageSize]);
 
   /**
    * Retrieve an image based on size from REST API.

@@ -28,32 +28,30 @@ registerPlugin(
 				}
 
 				// Get global style.
-				const maybeGlobalStyle = {
-					...getGlobalStyleBySlug( globalStyle ),
-				};
+				const maybeGlobalStyle = getGlobalStyleBySlug( globalStyle );
+
 				if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
 					return propAttributes;
 				}
 				// Found a global style.
 				let newAttributes = {};
 				if ( 'caption' === type ) {
-					newAttributes = maybeGlobalStyle.content.captionAttributes;
+					newAttributes = { ...maybeGlobalStyle.content.captionAttributes };
 					newAttributes.globalStyle = globalStyle;
 				} else {
+					newAttributes = { ...maybeGlobalStyle.content.photoAttributes };
 					// Ensure global styless are not applied if overriden.
 					if ( propAttributes.imageSizeOverride ) {
-						maybeGlobalStyle.content.photoAttributes.imageSize = propAttributes.imageSize;
+						newAttributes.imageSize = propAttributes.imageSize;
 					}
 					if ( propAttributes.mediaLinkOverride )	{
-						maybeGlobalStyle.content.photoAttributes.mediaLinkType = propAttributes.mediaLinkType;
-						maybeGlobalStyle.content.photoAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
-						maybeGlobalStyle.content.photoAttributes.mediaLinkUrl = propAttributes.mediaLinkUrl;
-						maybeGlobalStyle.content.photoAttributes.lightboxCaption = propAttributes.lightboxCaption;
-						maybeGlobalStyle.content.photoAttributes.lightboxEnabled = propAttributes.lightboxEnabled;
-						maybeGlobalStyle.content.photoAttributes.lightboxShowCaption = propAttributes.lightboxShowCaption;
+						newAttributes.mediaLinkType = propAttributes.mediaLinkType;
+						newAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
+						newAttributes.mediaLinkUrl = propAttributes.mediaLinkUrl;
+						newAttributes.lightboxCaption = propAttributes.lightboxCaption;
+						newAttributes.lightboxEnabled = propAttributes.lightboxEnabled;
+						newAttributes.lightboxShowCaption = propAttributes.lightboxShowCaption;
 					}
-
-					newAttributes = maybeGlobalStyle.content.photoAttributes;
 				}
 
 				return {

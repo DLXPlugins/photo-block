@@ -66,10 +66,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		const newAttributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
 
 		setAttributes( {
-			...attributes,
+			...props.attributes,
 			...newAttributes,
 		} );
-	}, [ attributes ] );
+	}, [] );
 
 	const {
 		uniqueId,
@@ -146,6 +146,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			setImageLoading( false );
 		}
 	}, [] );
+
+	/**
+	 * Get image whenever size changes.
+	 */
+	useEffect( () => {
+		if ( 'photo' === photoMode ) {
+			getImageFromSize( imageSize );
+		}
+	}, [ imageSize ] );
 
 	/**
 	 * Retrieve an image based on size from REST API.
