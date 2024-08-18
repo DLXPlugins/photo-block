@@ -138,7 +138,7 @@ class Rest {
 			)
 		);
 	}
-	
+
 	/**
 	 * Callback function for getting an image by data.
 	 *
@@ -369,8 +369,6 @@ class Rest {
 	 * Callback function for getting an image caption by post ID.
 	 *
 	 * @param WP_REST_Request $request The REST request object.
-	 *
-	 * @return string The caption, empty string if none.
 	 */
 	public static function rest_get_caption_by_post_id( $request ) {
 		$post_id = absint( $request->get_param( 'postId' ) ); // Can be any image ID.

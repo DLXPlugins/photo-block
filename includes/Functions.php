@@ -1562,29 +1562,29 @@ class Functions {
 			// Start getting the unit.
 			$css_unit = '';
 			if ( 'mobile' === $screen_size && '' !== $sub_type ) {
-				if ( $sub_type && $props['tablet']['unit'][ $sub_type ] !== null ) {
+				if ( $sub_type && null !== $props['tablet']['unit'][ $sub_type ] ) {
 					$css_unit = $props['tablet']['unit'][ $sub_type ];
-				} elseif ( $sub_type && $props['desktop']['unit'][ $sub_type ] !== null ) {
+				} elseif ( $sub_type && null !== $props['desktop']['unit'][ $sub_type ] ) {
 					$css_unit = $props['desktop']['unit'][ $sub_type ];
-				} elseif ( $props['tablet']['unit'] !== null ) {
+				} elseif ( null !== $props['tablet']['unit'] ) {
 					$css_unit = $props['tablet']['unit'];
-				} elseif ( $props['desktop']['unit'] !== null ) {
+				} elseif ( null !== $props['desktop']['unit'] ) {
 					$css_unit = $props['desktop']['unit'];
 				}
 			}
 
 			// Get tablet.
 			if ( 'tablet' === $screen_size && '' !== $sub_type ) {
-				if ( $sub_type && $props['desktop']['unit'][ $sub_type ] !== null ) {
+				if ( $sub_type && null !== $props['desktop']['unit'][ $sub_type ] ) {
 					$css_unit = $props['desktop']['unit'][ $sub_type ];
-				} elseif ( $props['desktop']['unit'] !== null ) {
+				} elseif ( null !== $props['desktop']['unit'] ) {
 					$css_unit = $props['desktop']['unit'];
 				}
 			}
 
 			// Get desktop.
 			if ( 'desktop' === $screen_size ) {
-				if ( $props['desktop']['unit'] !== null ) {
+				if ( null !== $props['desktop']['unit'] ) {
 					$css_unit = $props['desktop']['unit'];
 				}
 			}
@@ -1787,8 +1787,7 @@ class Functions {
 	 * Build dimension CSS from a CSS helper and dimensions object.
 	 *
 	 * @param CSS_Helper $css_helper CSS helper object.
-	 * @param array      $dimensions Dimensions array.
-	 * @param string     $dimension_type Dimension type (margin, padding, etc).
+	 * @param array      $border The border dimension.
 	 * @param string     $css_var CSS variable to use.
 	 */
 	public static function build_border_css( $css_helper, $border, $css_var = '' ) {

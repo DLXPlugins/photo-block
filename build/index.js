@@ -11966,7 +11966,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
-            if (!('manual' === photoMode)) {
+            if (!('manual' === photoMode || 'url' === photoMode)) {
               _context2.next = 2;
               break;
             }
@@ -12014,7 +12014,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
-            if (!('manual' === photoMode)) {
+            if (!('manual' === photoMode || 'url' === photoMode)) {
               _context3.next = 2;
               break;
             }
