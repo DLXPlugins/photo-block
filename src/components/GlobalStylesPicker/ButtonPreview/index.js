@@ -101,14 +101,14 @@ const GlobalStylesButtonPreview = ( props ) => {
 					};
 
 					// If there is no caption block, but there are attributes to apply, create one.
-					if ( ! captionBlock && ( captionAttributes || captionAttributes.length > 0 ) ) {
+					if ( ! captionBlock && ( Object.keys( captionAttributes ).length > 1 || captionAttributes.length > 1 ) ) {
 						const newBlocks = createBlock( 'dlxplugins/photo-caption-block', captionAttributes );
 						insertBlock( newBlocks, undefined, props.clientId );
 						props.setAttributes( { hasCaption: true } );
 					}
 
 					// If there is a caption block and attributes to apply, apply them.
-					if ( captionBlock && ( captionAttributes || captionAttributes.length > 0 ) ) {
+					if ( captionBlock && ( Object.keys( captionAttributes ).length > 1 || captionAttributes.length > 1 ) ) {
 						const captionBlockAttributes = { ...captionAttributes, ...uniqueIdAttribute };
 						updateBlockAttributes( captionBlock.clientId, captionBlockAttributes );
 					}
