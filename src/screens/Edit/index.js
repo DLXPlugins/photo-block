@@ -57,7 +57,6 @@ import AlignmentToolbar from '../../components/AlignmentToolbar';
 
 const EditScreen = forwardRef( ( props, ref ) => {
 	const { setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
-	
 
 	const attributes = props.attributes || {};
 
@@ -367,15 +366,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const interfaceTabs = (
 		<>
 			{ settingsInspectorControls }
-			{
-				! hasGlobalStyle( globalStyle ) && (
-					<SidebarImageInspectorControl
-						attributes={ attributes }
-						setAttributes={ setAttributes }
-						blockUniqueId={ blockUniqueId }
-					/>
-				)
-			}
+			<SidebarImageInspectorControl
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+				blockUniqueId={ blockUniqueId }
+				globalStyle={ globalStyle }
+			/>
 		</>
 	);
 

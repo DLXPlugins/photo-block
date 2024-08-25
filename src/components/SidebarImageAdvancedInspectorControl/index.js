@@ -10,9 +10,7 @@ import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
 import { useSelect } from '@wordpress/data';
 import CustomAttributesControl from '../../components/CustomAttributes';
-import GlobalStyles from '../GlobalStyles';
 import globalStylesStore from '../../store/global-styles';
-const canSavePresets = photoBlockUser.canSavePresets;
 
 const SidebarImageAdvancedInspectorControl = ( props ) => {
 	const { attributes, setAttributes } = props;
@@ -127,17 +125,6 @@ const SidebarImageAdvancedInspectorControl = ( props ) => {
 						/>
 					</PanelRow>
 				</>
-			) }
-			{ canSavePresets && (
-				<PanelRow>
-					<BaseControl
-						label={ __( 'Global Styles', 'photo-block' ) }
-						id="photo-block-global-styles"
-						className="photo-block-global-styles"
-					>
-						<GlobalStyles { ...props } globalStyle={ props.globalStyle } />
-					</BaseControl>
-				</PanelRow>
 			) }
 		</>
 	);
