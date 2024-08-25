@@ -10,7 +10,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import {
 	Shrink,
-	Palette,
+	Droplet,
 	Wand2,
 	Maximize,
 } from 'lucide-react';
@@ -60,7 +60,7 @@ const SidebarImageInspectorControl = ( props ) => {
 		<>
 			<PanelBodyControl
 				title={ __( 'Image Styles', 'photo-block' ) }
-				icon={ <Palette /> }
+				icon={ <Droplet /> }
 				className="photo-block__inspector-panel"
 				id="photo-block__photo-image-styles"
 				uniqueId={ uniqueId }

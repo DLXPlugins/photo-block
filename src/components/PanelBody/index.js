@@ -16,7 +16,14 @@ const PanelBodyControl = ( props ) => {
 
 	// Set up use effect to read in local storage and set panels appropriately. Runs on device type change too.
 	useEffect( () => {
-		const stored = localStorage.getItem( `photo-block-panel-body-${ uniqueId }` );
+		let stored = localStorage.getItem( `photo-block-panel-body-${ uniqueId }` );
+		if ( null === stored ) {
+			// Maybe in an iframe, get the parent.
+			const parent = window.parent;
+			if ( parent ) {
+				stored = parent.localStorage.getItem( `photo-block-panel-body-${ uniqueId }` );
+			}
+		}
 
 		// Retrieve ID from local storage if set.
 		if ( stored ) {
@@ -49,7 +56,6 @@ const PanelBodyControl = ( props ) => {
 						},
 					};
 				}
-
 				localStorage.setItem( `photo-block-panel-body-${ uniqueId }`, JSON.stringify( storageValueToSave ) );
 			} }
 			initialOpen={ isPanelOpen }
