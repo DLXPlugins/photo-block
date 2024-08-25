@@ -8,10 +8,9 @@ import {
 	Button,
 	CheckboxControl,
 } from '@wordpress/components';
-import { Trash } from 'lucide-react';
+import { CircleMinus, Palette } from 'lucide-react';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import globalStylesStore from '../../store/global-styles';
-import { blockStore } from '../../store';
 import GlobalStylesButtonPreview from './ButtonPreview';
 
 const GlobalStylesPicker = ( props ) => {
@@ -62,8 +61,8 @@ const GlobalStylesPicker = ( props ) => {
 							onClick={ () => {
 								setIsRemoveModalOpen( true );
 							} }
-							icon={ <Trash /> }
-							label={ __( 'Remove', 'photo-block' ) }
+							icon={ <CircleMinus /> }
+							label={ __( 'Remove the Global Style', 'photo-block' ) }
 						/>
 					</div>
 				</div>
@@ -170,8 +169,10 @@ const GlobalStylesPicker = ( props ) => {
 				)
 			}
 			<PanelBody
-				title={ __( 'Global Styles' ) }
+				title={ __( 'Available Global Styles' ) }
 				initialOpen={ true }
+				icon={ <Palette /> }
+				className="photo-block__inspector-panel"
 			>
 				{ getGlobalStyles() }
 			</PanelBody>
