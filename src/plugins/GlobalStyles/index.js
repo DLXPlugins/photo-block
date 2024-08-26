@@ -146,6 +146,10 @@ const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 						globalStyleAttributes.mediaLinkType = attributes.mediaLinkType;
 						globalStyleAttributes.mediaLinkTitle = attributes.mediaLinkTitle;
 						globalStyleAttributes.mediaLinkUrl = attributes.mediaLinkUrl;
+						globalStyleAttributes.mediaLinkAnchorId = attributes.mediaLinkAnchorId;
+						globalStyleAttributes.mediaLinkClass = attributes.mediaLinkClass;
+						globalStyleAttributes.mediaLinkTitle = attributes.mediaLinkTitle;
+						globalStyleAttributes.mediaLinkRel = attributes.mediaLinkRel;
 						globalStyleAttributes.mediaLinkNewTab = attributes.mediaLinkNewTab;
 						globalStyleAttributes.lightboxCaption = attributes.lightboxCaption;
 						globalStyleAttributes.lightboxEnabled = attributes.lightboxEnabled;
