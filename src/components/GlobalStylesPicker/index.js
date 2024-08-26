@@ -15,7 +15,6 @@ import GlobalStylesButtonPreview from './ButtonPreview';
 
 const GlobalStylesPicker = ( props ) => {
 	const [ isRemoveModalOpen, setIsRemoveModalOpen ] = useState( false );
-	const [ isKeepStyleSettings, setIsKeepStyleSettings ] = useState( false );
 
 	const {
 		globalStyles,
@@ -95,60 +94,40 @@ const GlobalStylesPicker = ( props ) => {
 						shouldCloseOnClickOutside={ false }
 					>
 						<form>
-							<p className="description">
+							<p>
 								{ __( 'Remove the global style from this photo.', 'photo-block' ) }
 							</p>
-							<CheckboxControl
-								label={ __( 'Keep current style settings', 'photo-block' ) }
-								checked={ isKeepStyleSettings }
-								onChange={ () => {
-									setIsKeepStyleSettings( ! isKeepStyleSettings );
-								} }
-							/>
+							<p>
+								{ __( 'The current global style will be applied to the image.', 'photo-block' ) }
+							</p>
 							<Button
 								onClick={ () => {
-									if ( isKeepStyleSettings ) {
-										if ( hasGlobalStyle( props.attributes.globalStyle ) ) {
-											const globalStyle = getGlobalStyleBySlug( props.attributes.globalStyle );
+									if ( hasGlobalStyle( props.attributes.globalStyle ) ) {
+										const globalStyle = getGlobalStyleBySlug( props.attributes.globalStyle );
 
-											// Reset global style in attributes.
-											const newGlobalStyle = {
-												globalStyle: 'none',
-											};
-											const photoAttributes = {
-												...globalStyle.content.photoAttributes,
-												...newGlobalStyle,
-											};
-											const captionAttributes = {
-												...globalStyle.content.captionAttributes,
-												...newGlobalStyle,
-											};
-
-											// Need to apply global styles to the photo.
-											updateBlockAttributes( props.clientId, photoAttributes );
-
-											// Get the caption block. No need to create caption block here.
-											const block = getBlock( props.clientId );
-											const captionInnerBlocks = block?.innerBlocks;
-											if ( captionInnerBlocks.length > 0 ) {
-												const captionBlockClientId = block?.innerBlocks[ 0 ].clientId || null;
-												// Need to apply global styles to the caption.
-												updateBlockAttributes( captionBlockClientId, captionAttributes );
-											}
-										}
-									} else {
-										props.setAttributes( {
+										// Reset global style in attributes.
+										const newGlobalStyle = {
 											globalStyle: 'none',
-										} );
-										// Updatge caption block if any.
+										};
+										const photoAttributes = {
+											...globalStyle.content.photoAttributes,
+											...newGlobalStyle,
+										};
+										const captionAttributes = {
+											...globalStyle.content.captionAttributes,
+											...newGlobalStyle,
+										};
+
+										// Need to apply global styles to the photo.
+										updateBlockAttributes( props.clientId, photoAttributes );
+
+										// Get the caption block. No need to create caption block here.
 										const block = getBlock( props.clientId );
 										const captionInnerBlocks = block?.innerBlocks;
 										if ( captionInnerBlocks.length > 0 ) {
 											const captionBlockClientId = block?.innerBlocks[ 0 ].clientId || null;
 											// Need to apply global styles to the caption.
-											updateBlockAttributes( captionBlockClientId, {
-												globalStyle: 'none',
-											} );
+											updateBlockAttributes( captionBlockClientId, captionAttributes );
 										}
 									}
 									setIsRemoveModalOpen( false );

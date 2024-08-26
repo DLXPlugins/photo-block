@@ -530,6 +530,7 @@ class Blocks {
 					$photo_attributes['mediaLinkType']       = $attributes['mediaLinkType'];
 					$photo_attributes['mediaLinkTitle']      = $attributes['mediaLinkTitle'];
 					$photo_attributes['mediaLinkUrl']        = $attributes['mediaLinkUrl'];
+					$photo_attributes['mediaLinkNewTab']     = $attributes['mediaLinkNewTab'];
 					$photo_attributes['lightboxCaption']     = $attributes['lightboxCaption'];
 					$photo_attributes['lightboxEnabled']     = $attributes['lightboxEnabled'];
 					$photo_attributes['lightboxShowCaption'] = $attributes['lightboxShowCaption'];

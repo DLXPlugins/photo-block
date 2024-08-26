@@ -47,6 +47,7 @@ registerPlugin(
 					if ( propAttributes.mediaLinkOverride )	{
 						newAttributes.mediaLinkType = propAttributes.mediaLinkType;
 						newAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
+						newAttributes.mediaLinkNewTab = propAttributes.mediaLinkNewTab;
 						newAttributes.mediaLinkUrl = propAttributes.mediaLinkUrl;
 						newAttributes.lightboxCaption = propAttributes.lightboxCaption;
 						newAttributes.lightboxEnabled = propAttributes.lightboxEnabled;
@@ -145,6 +146,7 @@ const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 						globalStyleAttributes.mediaLinkType = attributes.mediaLinkType;
 						globalStyleAttributes.mediaLinkTitle = attributes.mediaLinkTitle;
 						globalStyleAttributes.mediaLinkUrl = attributes.mediaLinkUrl;
+						globalStyleAttributes.mediaLinkNewTab = attributes.mediaLinkNewTab;
 						globalStyleAttributes.lightboxCaption = attributes.lightboxCaption;
 						globalStyleAttributes.lightboxEnabled = attributes.lightboxEnabled;
 						globalStyleAttributes.lightboxShowCaption = attributes.lightboxShowCaption;

@@ -6724,10 +6724,6 @@ var GlobalStylesPicker = function GlobalStylesPicker(props) {
     _useState2 = _slicedToArray(_useState, 2),
     isRemoveModalOpen = _useState2[0],
     setIsRemoveModalOpen = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    isKeepStyleSettings = _useState4[0],
-    setIsKeepStyleSettings = _useState4[1];
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(function (select) {
       return {
         globalStyles: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyles(),
@@ -6791,52 +6787,28 @@ var GlobalStylesPicker = function GlobalStylesPicker(props) {
     },
     className: "photo-block-global-styles-modal",
     shouldCloseOnClickOutside: false
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("p", {
-    className: "description"
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove the global style from this photo.', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.CheckboxControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Keep current style settings', 'photo-block'),
-    checked: isKeepStyleSettings,
-    onChange: function onChange() {
-      setIsKeepStyleSettings(!isKeepStyleSettings);
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove the global style from this photo.', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('The current global style will be applied to the image.', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
     onClick: function onClick() {
-      if (isKeepStyleSettings) {
-        if (hasGlobalStyle(props.attributes.globalStyle)) {
-          var globalStyle = getGlobalStyleBySlug(props.attributes.globalStyle);
+      if (hasGlobalStyle(props.attributes.globalStyle)) {
+        var globalStyle = getGlobalStyleBySlug(props.attributes.globalStyle);
 
-          // Reset global style in attributes.
-          var newGlobalStyle = {
-            globalStyle: 'none'
-          };
-          var photoAttributes = _objectSpread(_objectSpread({}, globalStyle.content.photoAttributes), newGlobalStyle);
-          var captionAttributes = _objectSpread(_objectSpread({}, globalStyle.content.captionAttributes), newGlobalStyle);
-
-          // Need to apply global styles to the photo.
-          updateBlockAttributes(props.clientId, photoAttributes);
-
-          // Get the caption block. No need to create caption block here.
-          var block = getBlock(props.clientId);
-          var captionInnerBlocks = block === null || block === void 0 ? void 0 : block.innerBlocks;
-          if (captionInnerBlocks.length > 0) {
-            var captionBlockClientId = (block === null || block === void 0 ? void 0 : block.innerBlocks[0].clientId) || null;
-            // Need to apply global styles to the caption.
-            updateBlockAttributes(captionBlockClientId, captionAttributes);
-          }
-        }
-      } else {
-        props.setAttributes({
+        // Reset global style in attributes.
+        var newGlobalStyle = {
           globalStyle: 'none'
-        });
-        // Updatge caption block if any.
-        var _block = getBlock(props.clientId);
-        var _captionInnerBlocks = _block === null || _block === void 0 ? void 0 : _block.innerBlocks;
-        if (_captionInnerBlocks.length > 0) {
-          var _captionBlockClientId = (_block === null || _block === void 0 ? void 0 : _block.innerBlocks[0].clientId) || null;
+        };
+        var photoAttributes = _objectSpread(_objectSpread({}, globalStyle.content.photoAttributes), newGlobalStyle);
+        var captionAttributes = _objectSpread(_objectSpread({}, globalStyle.content.captionAttributes), newGlobalStyle);
+
+        // Need to apply global styles to the photo.
+        updateBlockAttributes(props.clientId, photoAttributes);
+
+        // Get the caption block. No need to create caption block here.
+        var block = getBlock(props.clientId);
+        var captionInnerBlocks = block === null || block === void 0 ? void 0 : block.innerBlocks;
+        if (captionInnerBlocks.length > 0) {
+          var captionBlockClientId = (block === null || block === void 0 ? void 0 : block.innerBlocks[0].clientId) || null;
           // Need to apply global styles to the caption.
-          updateBlockAttributes(_captionBlockClientId, {
-            globalStyle: 'none'
-          });
+          updateBlockAttributes(captionBlockClientId, captionAttributes);
         }
       }
       setIsRemoveModalOpen(false);
@@ -7534,7 +7506,7 @@ var MediaLink = function MediaLink(props) {
   }))))), 'none' !== mediaLinkType && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Advanced', 'photo-block'),
     initialOpen: false
-  }, !lightboxEnabled && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+  }, (!lightboxEnabled || 'image' !== mediaLinkType) && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Open in new tab', 'photo-block'),
     checked: attributes.mediaLinkNewTab,
     onChange: function onChange(value) {
@@ -10993,6 +10965,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         if (propAttributes.mediaLinkOverride) {
           newAttributes.mediaLinkType = propAttributes.mediaLinkType;
           newAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
+          newAttributes.mediaLinkNewTab = propAttributes.mediaLinkNewTab;
           newAttributes.mediaLinkUrl = propAttributes.mediaLinkUrl;
           newAttributes.lightboxCaption = propAttributes.lightboxCaption;
           newAttributes.lightboxEnabled = propAttributes.lightboxEnabled;
@@ -11076,6 +11049,7 @@ var returnBlockAttributes = function returnBlockAttributes(attributes, blockType
             globalStyleAttributes.mediaLinkType = attributes.mediaLinkType;
             globalStyleAttributes.mediaLinkTitle = attributes.mediaLinkTitle;
             globalStyleAttributes.mediaLinkUrl = attributes.mediaLinkUrl;
+            globalStyleAttributes.mediaLinkNewTab = attributes.mediaLinkNewTab;
             globalStyleAttributes.lightboxCaption = attributes.lightboxCaption;
             globalStyleAttributes.lightboxEnabled = attributes.lightboxEnabled;
             globalStyleAttributes.lightboxShowCaption = attributes.lightboxShowCaption;

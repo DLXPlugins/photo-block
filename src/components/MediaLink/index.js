@@ -266,7 +266,7 @@ const MediaLink = ( props ) => {
 							initialOpen={ false }
 						>
 							{
-								! lightboxEnabled && (
+								( ! lightboxEnabled || 'image' !== mediaLinkType ) && (
 									<PanelRow>
 										<ToggleControl
 											label={ __( 'Open in new tab', 'photo-block' ) }
