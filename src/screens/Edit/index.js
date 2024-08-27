@@ -371,6 +371,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				setAttributes={ setAttributes }
 				blockUniqueId={ blockUniqueId }
 				globalStyle={ globalStyle }
+				{ ...props }
 			/>
 		</>
 	);
