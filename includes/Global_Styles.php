@@ -29,7 +29,7 @@ class Global_Styles {
 		add_action( 'wp_ajax_dlx_photo_block_generate_global_styles', array( static::class, 'generate_global_styles' ) );
 
 		// Filter for adding localized vars to output.
-		add_filter( 'photo_block_localized_vars', array( static::class, 'add_localized_vars' ) );
+		add_filter( 'dlx_photo_block_localized_vars', array( static::class, 'add_localized_vars' ) );
 
 		return $self;
 	}
@@ -91,7 +91,7 @@ class Global_Styles {
 	 */
 	public static function ajax_load_global_styles() {
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_load_global_styles' ) || ! current_user_can( 'edit_posts' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_SPECIAL_CHARS ) ), 'dlx_photo_block_load_global_styles' ) || ! current_user_can( 'edit_posts' ) ) {
 			wp_send_json_error( array() );
 		}
 
@@ -148,12 +148,12 @@ class Global_Styles {
 	 */
 	public static function ajax_save_global_styles() {
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'publish_posts' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_SPECIAL_CHARS ) ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'publish_posts' ) ) {
 			wp_send_json_error( array( 'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ) ) );
 		}
 
 		// Get attributes JSON.
-		$attributes = json_decode( filter_input( INPUT_POST, 'attributes', FILTER_DEFAULT ), true );
+		$attributes = json_decode( sanitize_text_field( filter_input( INPUT_POST, 'attributes', FILTER_SANITIZE_SPECIAL_CHARS ), true ) );
 
 		// Get photo attributes and strip out data.
 		$photo_attributes = array();
@@ -212,7 +212,7 @@ class Global_Styles {
 		$caption_attributes = Functions::sanitize_array_recursive( $caption_attributes );
 
 		// Get form data.
-		$form_data = json_decode( filter_input( INPUT_POST, 'formData', FILTER_DEFAULT ), true );
+		$form_data = json_decode( sanitize_text_field( filter_input( INPUT_POST, 'formData', FILTER_SANITIZE_SPECIAL_CHARS ) ), true );
 
 		// Get the preset title.
 		$title          = isset( $form_data['globalStyleLabel'] ) ? sanitize_text_field( $form_data['globalStyleLabel'] ) : '';
@@ -295,10 +295,10 @@ class Global_Styles {
 	 */
 	public static function ajax_override_global_style() {
 		// Get preset post ID.
-		$global_style_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
+		$global_style_id = absint( filter_input( INPUT_POST, 'editId', FILTER_SANITIZE_SPECIAL_CHARS ) );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_SPECIAL_CHARS ) ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ),
@@ -307,7 +307,7 @@ class Global_Styles {
 		}
 
 		// Get attributes JSON.
-		$attributes = json_decode( filter_input( INPUT_POST, 'attributes', FILTER_DEFAULT ), true );
+		$attributes = json_decode( sanitize_text_field( filter_input( INPUT_POST, 'attributes', FILTER_SANITIZE_SPECIAL_CHARS ) ), true );
 
 		// Get photo attributes and strip out data.
 		$photo_attributes = array();
@@ -406,10 +406,10 @@ class Global_Styles {
 	 */
 	public static function ajax_save_edited_global_style() {
 		// Get preset post ID.
-		$global_style_id = absint( filter_input( INPUT_POST, 'editId', FILTER_DEFAULT ) );
+		$global_style_id = absint( filter_input( INPUT_POST, 'editId', FILTER_VALIDATE_INT ) );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_save_global_styles_' . $global_style_id ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_SPECIAL_CHARS ) ), 'dlx_photo_block_save_global_styles_' . $global_style_id ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ),
@@ -418,10 +418,10 @@ class Global_Styles {
 		}
 
 		// Get the preset title.
-		$title = sanitize_text_field( filter_input( INPUT_POST, 'title', FILTER_DEFAULT ) );
+		$title = sanitize_text_field( filter_input( INPUT_POST, 'title', FILTER_SANITIZE_SPECIAL_CHARS ) );
 
 		// Get the default CSS class.
-		$css_class_name = sanitize_text_field( filter_input( INPUT_POST, 'cssClass', FILTER_DEFAULT ) );
+		$css_class_name = sanitize_text_field( filter_input( INPUT_POST, 'cssClass', FILTER_SANITIZE_SPECIAL_CHARS ) );
 
 		// Update the post title.
 		wp_update_post(
@@ -461,7 +461,7 @@ class Global_Styles {
 		$group_id = absint( filter_input( INPUT_POST, 'editId', FILTER_VALIDATE_INT ) );
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_delete_global_styles_' . $group_id ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_SPECIAL_CHARS ) ), 'dlx_photo_block_delete_global_styles_' . $group_id ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ),
@@ -519,7 +519,7 @@ class Global_Styles {
 	 */
 	public static function generate_global_styles() {
 		// Verify nonce.
-		if ( ! wp_verify_nonce( filter_input( INPUT_POST, 'nonce', FILTER_DEFAULT ), 'dlx_photo_block_generate_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_SPECIAL_CHARS ) ), 'dlx_photo_block_generate_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'You do not have permissions to save global styles.', 'photo-block' ),
@@ -533,7 +533,7 @@ class Global_Styles {
 
 		if ( file_exists( $upload_dir . 'global-styles.css' ) ) {
 			// Check to see if we need to cache bust based on constant and option.
-			$cache_bust              = defined( 'PHOTO_BLOCK_CACHE_VERSION' ) ? PHOTO_BLOCK_CACHE_VERSION : false;
+			$cache_bust              = defined( 'DLX_PHOTO_BLOCK_CACHE_VERSION' ) ? DLX_PHOTO_BLOCK_CACHE_VERSION : false;
 			$last_cache_bust_version = get_option( 'dlx_pb_cache_bust_version', false );
 
 			/**
@@ -543,7 +543,7 @@ class Global_Styles {
 			 *
 			 * @since 1.0.0
 			 */
-			$can_clear_cache = apply_filters( 'dlx_pb_clear_global_styles_cache', false );
+			$can_clear_cache = apply_filters( 'dlx_photo_block_clear_global_styles_cache', false );
 
 			// Remove file if can clear cache or cache bust version is different.
 			if ( $cache_bust !== $last_cache_bust_version || $can_clear_cache ) {

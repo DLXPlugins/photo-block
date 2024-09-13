@@ -75,10 +75,10 @@ class Functions {
 				case 'url':
 					return esc_url( $attributes[ $attribute ] );
 				case 'default':
-					return new \WP_Error( 'photo_block_unknown_type', __( 'Unknown type.', 'highlight-and-share' ) );
+					return new \WP_Error( 'dlx_photo_block_unknown_type', __( 'Unknown type.', 'photo-block' ) );
 			}
 		}
-		return new \WP_Error( 'photo_block_attribute_not_found', __( 'Attribute not found.', 'highlight-and-share' ) );
+		return new \WP_Error( 'dlx_photo_block_attribute_not_found', __( 'Attribute not found.', 'photo-block' ) );
 	}
 
 	/**
@@ -120,7 +120,7 @@ class Functions {
 		 *
 		 * @param array $valid_mime_types The valid mime types.
 		 */
-		$valid_mime_types = apply_filters( 'photo_block_valid_mime_types', $valid_mime_types );
+		$valid_mime_types = apply_filters( 'dlx_photo_block_valid_mime_types', $valid_mime_types );
 
 		return $valid_mime_types;
 	}
@@ -187,7 +187,7 @@ class Functions {
 		 *
 		 * @param array $file_extensions The valid mime types.
 		 */
-		$file_extensions = apply_filters( 'photo_block_file_extensions', $file_extensions );
+		$file_extensions = apply_filters( 'dlx_photo_block_file_extensions', $file_extensions );
 
 		return $file_extensions;
 	}
@@ -477,7 +477,7 @@ class Functions {
 		/**
 		 * Filter CSS output for the photo block.
 		 */
-		$css_output = apply_filters( 'photo_block_css_output', $css_output, $attributes, $unique_id, $is_class );
+		$css_output = apply_filters( 'dlx_photo_block_css_output', $css_output, $attributes, $unique_id, $is_class );
 
 		// Strip whitespace from CSS output.
 		$css_output = preg_replace( '/\s+/', ' ', $css_output );
@@ -1199,7 +1199,7 @@ class Functions {
 		 *   @type string $color The color hex value.
 		 * }
 		 */
-		$color_palette = apply_filters( 'photo_block_color_palette', $color_palette );
+		$color_palette = apply_filters( 'dlx_photo_block_color_palette', $color_palette );
 		return $color_palette;
 	}
 
@@ -1244,7 +1244,7 @@ class Functions {
 	 * @return string plugin slug.
 	 */
 	public static function get_plugin_slug() {
-		return dirname( plugin_basename( PHOTO_BLOCK_FILE ) );
+		return dirname( plugin_basename( DLX_PHOTO_BLOCK_FILE ) );
 	}
 
 	/**
@@ -1253,7 +1253,7 @@ class Functions {
 	 * @return string base file for the plugin.
 	 */
 	public static function get_plugin_file() {
-		return plugin_basename( PHOTO_BLOCK_FILE );
+		return plugin_basename( DLX_PHOTO_BLOCK_FILE );
 	}
 
 	/**
@@ -1262,7 +1262,7 @@ class Functions {
 	 * @return float version for the plugin.
 	 */
 	public static function get_plugin_version() {
-		return PHOTO_BLOCK_VERSION;
+		return DLX_PHOTO_BLOCK_VERSION;
 	}
 
 	/**
@@ -1278,7 +1278,7 @@ class Functions {
 		 *
 		 * @param string Plugin URI.
 		 */
-		return apply_filters( 'photo_block_plugin_uri', 'https://dlxplugins.com/plugins/photo-block/' );
+		return apply_filters( 'dlx_photo_block_plugin_uri', 'https://dlxplugins.com/plugins/photo-block/' );
 	}
 
 	/**
@@ -1294,7 +1294,7 @@ class Functions {
 		 *
 		 * @param string Plugin Support URI.
 		 */
-		return apply_filters( 'photo_block_plugin_support_uri', 'https://dlxplugins.com/support/' );
+		return apply_filters( 'dlx_photo_block_plugin_support_uri', 'https://dlxplugins.com/support/' );
 	}
 
 	/**
@@ -1310,7 +1310,7 @@ class Functions {
 		 *
 		 * @param string Plugin Docs URI.
 		 */
-		return apply_filters( 'photo_block_plugin_docs_uri', 'https://photoblock.dlxplugins.com/' );
+		return apply_filters( 'dlx_photo_block_plugin_docs_uri', 'https://photoblock.dlxplugins.com/' );
 	}
 
 	/**
@@ -1485,7 +1485,7 @@ class Functions {
 	 * @return string The new path.
 	 */
 	public static function get_plugin_dir( $path = '' ) {
-		$dir = rtrim( plugin_dir_path( PHOTO_BLOCK_FILE ), '/' );
+		$dir = rtrim( plugin_dir_path( DLX_PHOTO_BLOCK_FILE ), '/' );
 		if ( ! empty( $path ) && is_string( $path ) ) {
 			$dir .= '/' . ltrim( $path, '/' );
 		}
@@ -1500,7 +1500,7 @@ class Functions {
 	 * @return string URL to to the file.
 	 */
 	public static function get_plugin_url( $path = '' ) {
-		$dir = rtrim( plugin_dir_url( PHOTO_BLOCK_FILE ), '/' );
+		$dir = rtrim( plugin_dir_url( DLX_PHOTO_BLOCK_FILE ), '/' );
 		if ( ! empty( $path ) && is_string( $path ) ) {
 			$dir .= '/' . ltrim( $path, '/' );
 		}

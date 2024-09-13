@@ -145,7 +145,7 @@ class Blocks {
 		 *
 		 * @param array $caption_innerblocks_supported Array of supported innerBlocks.
 		 */
-		$caption_innerblocks_supported = apply_filters( 'photo_block_caption_innerblocks_supported', $caption_innerblocks_supported );
+		$caption_innerblocks_supported = apply_filters( 'dlx_photo_block_caption_innerblocks_supported', $caption_innerblocks_supported );
 
 		// Get post types.
 		$post_types       = get_post_types(
@@ -204,7 +204,7 @@ class Blocks {
 		 *
 		 * @param array $localized_vars Array of localized variables.
 		 */
-		$localized_vars = apply_filters( 'photo_block_localized_vars', $localized_vars );
+		$localized_vars = apply_filters( 'dlx_photo_block_localized_vars', $localized_vars );
 
 		wp_localize_script(
 			'dlx-photo-block-editor',
@@ -294,7 +294,7 @@ class Blocks {
 		 * @param WP_Block $block The caption block content and attributes.
 		 * @param array    $context The block context variables.
 		 */
-		$can_output = apply_filters( 'dlx_pb_can_output_caption', $can_output, $attributes, $innerblocks_content, $block, $context );
+		$can_output = apply_filters( 'dlx_photo_block_can_output_caption', $can_output, $attributes, $innerblocks_content, $block, $context );
 		if ( ! $can_output ) {
 			return;
 		}
@@ -408,7 +408,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$caption_overlay_styles = apply_filters( 'dlx_pb_caption_overlay_styles', $caption_overlay_styles, $attributes, $context );
+		$caption_overlay_styles = apply_filters( 'dlx_photo_block_caption_overlay_styles', $caption_overlay_styles, $attributes, $context );
 
 		ob_start();
 		?>
@@ -490,7 +490,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$can_output = apply_filters( 'dlx_pb_can_output', $can_output, $attributes, $innerblocks_content, $block );
+		$can_output = apply_filters( 'dlx_photo_block_can_output', $can_output, $attributes, $innerblocks_content, $block );
 		if ( ! $can_output ) {
 			return;
 		}
@@ -640,7 +640,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$image_classes   = apply_filters( 'dlx_pb_image_classes', $image_classes, $attributes, $context );
+		$image_classes   = apply_filters( 'dlx_photo_block_image_classes', $image_classes, $attributes, $context );
 		$image_classes[] = '' !== $global_style_css_class ? $global_style_css_class : '';
 
 		// Determine if lazy loading is on.
@@ -713,7 +713,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$image_markup = apply_filters( 'dlx_pb_image_markup_pre', $image_markup, $attributes['photoMode'], $attributes, $context );
+		$image_markup = apply_filters( 'dlx_photo_block_image_markup_pre', $image_markup, $attributes['photoMode'], $attributes, $context );
 
 		// Get the caption.
 		if ( $attributes['lightboxCaption'] ) {
@@ -760,7 +760,7 @@ class Blocks {
 						);
 						wp_add_inline_script(
 							'dlx-photo-block-fancybox-js-inline',
-							'document.addEventListener("DOMContentLoaded", function() { if ( typeof jQuery !== "undefined" && typeof jQuery.fancybox !== "undefined" ) { jQuery("#' . $unique_id . '[data-fancybox]").fancybox() } else if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . $unique_id . ' [data-fancybox]"); }  });'
+							'document.addEventListener("DOMContentLoaded", function() { if ( typeof jQuery !== "undefined" && typeof jQuery.fancybox !== "undefined" ) { jQuery("#' . esc_js( $unique_id ) . '[data-fancybox]").fancybox() } else if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . esc_js( $unique_id ) . ' [data-fancybox]"); }  });'
 						);
 
 						// Get caption.
@@ -790,7 +790,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$media_link_url = apply_filters( 'dlx_pb_media_link_url', $media_link_url, $attributes, $context );
+		$media_link_url = apply_filters( 'dlx_photo_block_media_link_url', $media_link_url, $attributes, $context );
 
 		// Fill in the link attributes.
 		if ( 'none' !== $media_link_type ) {
@@ -898,7 +898,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$figure_css_classes = apply_filters( 'dlx_pb_figure_css_classes', $figure_css_classes, $attributes, $context );
+		$figure_css_classes = apply_filters( 'dlx_photo_block_figure_css_classes', $figure_css_classes, $attributes, $context );
 
 		// Output figure markup.
 		$image_markup = sprintf(
@@ -934,7 +934,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$section_css_classes = apply_filters( 'dlx_pb_section_css_classes', $section_css_classes, $attributes, $context );
+		$section_css_classes = apply_filters( 'dlx_photo_block_section_css_classes', $section_css_classes, $attributes, $context );
 
 		// Wrap figure in section tag, gather classes from block props.
 		$image_markup = sprintf(
@@ -955,7 +955,7 @@ class Blocks {
 		 *
 		 * @since 1.0.0
 		 */
-		$image_markup = apply_filters( 'dlx_pb_image_markup', $image_markup, $attributes, $context );
+		$image_markup = apply_filters( 'dlx_photo_block_image_markup', $image_markup, $attributes, $context );
 
 		// Begin frontend styles.
 		$css_output = '';

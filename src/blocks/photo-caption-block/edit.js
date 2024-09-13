@@ -559,7 +559,7 @@ const PhotoCaptionBlock = ( props ) => {
 								onOpacityChange={ ( newOpacity ) => {
 									setAttributes( { overlayBackgroundColorOpacity: newOpacity } );
 								} }
-								label={ __( 'Overlay Color', 'highlight-and-share' ) }
+								label={ __( 'Overlay Color', 'photo-block' ) }
 								defaultColors={ photoBlock.palette }
 								defaultColor={ 'rgba(0,0,0,0.5)' }
 								slug={ 'overlay-background-color' }
@@ -575,7 +575,7 @@ const PhotoCaptionBlock = ( props ) => {
 								onOpacityChange={ ( newOpacity ) => {
 									setAttributes( { overlayBackgroundColorOpacityHover: newOpacity } );
 								} }
-								label={ __( 'Overlay Color (on Hover)', 'highlight-and-share' ) }
+								label={ __( 'Overlay Color (on Hover)', 'photo-block' ) }
 								defaultColors={ photoBlock.palette }
 								defaultColor={ 'rgba(0,0,0,0.5)' }
 								slug={ 'overlay-background-color-hover' }

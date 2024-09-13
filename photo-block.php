@@ -17,9 +17,9 @@
 
 namespace DLXPlugins\PhotoBlock;
 
-define( 'PHOTO_BLOCK_VERSION', '0.0.31' );
-define( 'PHOTO_BLOCK_CACHE_VERSION', '1.0.0' );
-define( 'PHOTO_BLOCK_FILE', __FILE__ );
+define( 'DLX_PHOTO_BLOCK_VERSION', '0.0.31' );
+define( 'DLX_PHOTO_BLOCK_CACHE_VERSION', '1.0.0' );
+define( 'DLX_PHOTO_BLOCK_FILE', __FILE__ );
 
 // Support for site-level autoloading.
 if ( file_exists( __DIR__ . '/lib/autoload.php' ) ) {
