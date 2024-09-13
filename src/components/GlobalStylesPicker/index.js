@@ -19,7 +19,7 @@ const GlobalStylesPicker = ( props ) => {
 	const {
 		globalStyles,
 		getGlobalStyleBySlug,
-		hasGlobalStyle
+		hasGlobalStyle,
 	} = useSelect( ( select ) => {
 		return {
 			globalStyles: select( globalStylesStore ).getGlobalStyles(),
@@ -65,22 +65,24 @@ const GlobalStylesPicker = ( props ) => {
 						/>
 					</div>
 				</div>
-			)
+			);
 		}
 		return (
-			<div className="photo-block-global-styles-picker-button-group">
-				{
-					Object.values( globalStyles ).map( ( globalStyle ) => {
-						return (
-							<GlobalStylesButtonPreview
-								key={ globalStyle.slug }
-								globalStyle={ globalStyle }
-								{ ...props }
-							/>
-						);
-					} )
-				}
-			</div>
+			<>
+				<div className="photo-block-global-styles-picker-button-group">
+					{
+						Object.values( globalStyles ).map( ( globalStyle ) => {
+							return (
+								<GlobalStylesButtonPreview
+									key={ globalStyle.slug }
+									globalStyle={ globalStyle }
+									{ ...props }
+								/>
+							);
+						} )
+					}
+				</div>
+			</>
 		);
 	};
 	return (

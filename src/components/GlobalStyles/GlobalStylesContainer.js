@@ -355,6 +355,73 @@ const GlobalStylesContainer = ( props ) => {
 								) }
 							</div>
 						) }
+						{
+							( ! hasGlobalStyle( globalStyle ) ) && (
+								<div className="photo-block-global-styles-clear-block-styles">
+									<Button
+										variant="primary"
+										isDestructive={ true }
+										label={ __( 'Clear Block Styles', 'photo-block' ) }
+										onClick={ () => {
+											// Create new photo block and extract attributes.
+											const newBlock = createBlock( 'dlxplugins/photo-block' );
+											const newCaption = createBlock( 'dlxplugins/photo-caption-block' );
+
+											// Save old attributes we need.
+											const oldPhotoAttributes = {
+												uniqueId: attributes.uniqueId,
+												screen: attributes.screen,
+												imageData: attributes.imageData,
+												globalStyle: attributes.globalStyle,
+												dataScreen: attributes.dataScreen,
+												altText: attributes.altText,
+												htmlAnchor: attributes.htmlAnchor,
+												photoMode: attributes.photoMode,
+											};
+
+											// Get the caption block and its attributes.
+											const children = select( 'core/block-editor' ).getBlocksByClientId( clientId )[ 0 ]?.innerBlocks || [];
+
+											// Get caption attributes.
+											let oldCaptionAttributes = {};
+
+											// Check if children has attributes.
+											if ( children.length > 0 ) {
+												oldCaptionAttributes = {
+													uniqueId: children[ 0 ].attributes.uniqueId,
+													globalStyle: children[ 0 ].attributes.globalStyle,
+													captionManual: children[ 0 ].attributes.captionManual,
+												};
+											}
+											// Set the old blocks with new attributes. Get current block by ID.
+											updateBlockAttributes(
+												clientId,
+												{
+													...newBlock.attributes,
+													...oldPhotoAttributes,
+												}
+											);
+
+											if ( children.length > 0 ) {
+												// Get caption client ID and update those too.
+												const captionBlock = children[ 0 ];
+												if ( captionBlock ) {
+													updateBlockAttributes(
+														captionBlock.clientId,
+														{
+															...newCaption.attributes,
+															...oldCaptionAttributes,
+														}
+													);
+												}
+											}
+										} }
+									>
+										{ __( 'Clear Block Styles', 'photo-block' ) }
+									</Button>
+								</div>
+							)
+						}
 					</>
 				) }
 				{ savingPreset && (
