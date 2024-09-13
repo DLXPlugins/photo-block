@@ -2,9 +2,9 @@
 
 /*
  * Plugin Name: Photo Block
- * Plugin URI: https://dlxpplugins.com/plugins/photo-block/
+ * Plugin URI: https://dlxplugins.com/plugins/photo-block/
  * Description: An easy to use, but comprehensive photo block for WordPress
- * Author: DLX Plugins and WebberZone
+ * Author: DLX Plugins
  * Version: 0.0.31
  * Requires at least: 5.1
  * Requires PHP: 7.2
@@ -12,7 +12,7 @@
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: photo-block
- * Contributors: ronalfy, webberzone, ajay
+ * Contributors: ronalfy
  */
 
 namespace DLXPlugins\PhotoBlock;
