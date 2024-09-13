@@ -446,10 +446,19 @@ class Blocks {
 		}
 
 		if ( ! $has_global_style ) {
+			wp_register_style(
+				'dlx-photo-block-caption-' . $unique_id,
+				'',
+				array(),
+				Functions::get_plugin_version(),
+				'all'
+			);
+			wp_add_inline_style(
+				'dlx-photo-block-caption-' . $unique_id,
+				esc_html( $css_output )
+			);
+			wp_print_styles( 'dlx-photo-block-caption-' . $unique_id );
 			?>
-			<style type="text/css">
-				<?php echo esc_html( $css_output ); ?>
-			</style>
 			<?php
 		}
 		$caption = ob_get_clean();
@@ -974,11 +983,18 @@ class Blocks {
 
 		// Output styles.
 		if ( ! $has_global_style ) {
-			?>
-			<style type="text/css">
-				<?php echo esc_html( $css_output ); ?>
-			</style>
-			<?php
+			wp_register_style(
+				'dlx-photo-block-' . $unique_id,
+				'',
+				array(),
+				Functions::get_plugin_version(),
+				'all'
+			);
+			wp_add_inline_style(
+				'dlx-photo-block-' . $unique_id,
+				esc_html( $css_output )
+			);
+			wp_print_styles( 'dlx-photo-block-' . $unique_id );
 		}
 
 		// Output image markup.
