@@ -24,7 +24,6 @@ const PhotoBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } ) =
 			height: auto !important;
 		}
 	`;
-
 	const {
 		cssGramFilter,
 		photoDropShadow,

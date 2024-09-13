@@ -310,7 +310,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 		<InspectorControls>
 			{ settingsInspectorControls }
 			<>
-				<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } globalstyle={ attributes.globalStyle } />
+				<SidebarImageInspectorControl attributes={ attributes } setAttributes={ setAttributes } globalstyle={ attributes.globalStyle } { ...props } />
 			</>
 		</InspectorControls>
 	);
