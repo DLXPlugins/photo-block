@@ -326,6 +326,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 .dlx-photo-block__image-wrapper img {
 	max-width: 100%;
 	height: auto;
+	box-sizing: border-box;
 }
 .dlx-caption-position-overlay .dlx-photo-block__image-wrapper img {
 	padding: unset;
