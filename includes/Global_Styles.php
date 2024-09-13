@@ -295,7 +295,7 @@ class Global_Styles {
 	 */
 	public static function ajax_override_global_style() {
 		// Get preset post ID.
-		$global_style_id = absint( filter_input( INPUT_POST, 'editId', FILTER_SANITIZE_SPECIAL_CHARS ) );
+		$global_style_id = absint( filter_input( INPUT_POST, 'editId', FILTER_VALIDATE_INT ) );
 
 		// Verify nonce.
 		if ( ! wp_verify_nonce( sanitize_text_field( filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_SPECIAL_CHARS ) ), 'dlx_photo_block_save_new_global_styles' ) || ! current_user_can( 'edit_others_posts' ) ) {
@@ -307,7 +307,7 @@ class Global_Styles {
 		}
 
 		// Get attributes JSON.
-		$attributes = json_decode( sanitize_text_field( filter_input( INPUT_POST, 'attributes', FILTER_SANITIZE_SPECIAL_CHARS ) ), true );
+		$attributes = json_decode( sanitize_text_field( wp_unslash( $_POST['attributes'] ) ), true );
 
 		// Get photo attributes and strip out data.
 		$photo_attributes = array();

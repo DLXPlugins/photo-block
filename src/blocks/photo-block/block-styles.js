@@ -60,8 +60,12 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 		photoBlur,
 		photoObjectFit,
 		captionCustomTypography,
+		isStackedOnMobile,
 
 	} = attributes;
+	if ( 'undefined' !== typeof isStackedOnMobile ) {
+		return '';
+	}
 	let styles = '';
 	if ( 'overlay' === captionPosition ) {
 		styles += `
