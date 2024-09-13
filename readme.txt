@@ -24,15 +24,25 @@ Photo Block allows you to use an advanced photo block in the block editor. It su
 7. Global Styles allow you to save your hard work and apply it to other photo blocks.
 8. Query Loop block support with the block acting as a featured image.
 
-Quick Links:
+## Quick Links:
 
 * <a href="https://dlxplugins.com/plugins/photo-block/">Photo Block Home</a>
 * <a href="https://docs.dlxplugins.com/v/photo-block/">Photo Block Documentation</a>
 * <a href="https://dlxplugins.com/support/">Photo Block Support</a>
+* <a href="https://github.com/DLXPlugins/photo-block">Source Code Including Uncompressed Scripts</a>
 
-Development:
+## Development:
 
 Development happens on GitHub. Please <a href="https://github.com/DLXPlugins/photo-block">check out the GitHub code repository for AlertsDLX</a>.
+
+## Libraries and Credits
+
+1. <a href="https://pqina.nl/filepond/">Filepond<a> - React Image uploader.
+2. <a href="https://una.github.io/CSSgram/">CSSgram</a> - CSS Image Effects.
+3. <a href="https://lucide.dev/icons">Lucide</a> - React Icon Library.
+4. <a href="https://www.npmjs.com/package/react-image-crop">React Image Crop</a> - React Image Cropper.
+5. <a href="https://react-hook-form.com/">React Hook Form</a> - React Forms.
+6. <a href="https://fancyapps.com/>Fancybox</a> - Lightbox Library.
 
 == Installation ==
 
