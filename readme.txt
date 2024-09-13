@@ -42,7 +42,7 @@ Development happens on GitHub. Please <a href="https://github.com/DLXPlugins/pho
 3. <a href="https://lucide.dev/icons">Lucide</a> - React Icon Library.
 4. <a href="https://www.npmjs.com/package/react-image-crop">React Image Crop</a> - React Image Cropper.
 5. <a href="https://react-hook-form.com/">React Hook Form</a> - React Forms.
-6. <a href="https://fancyapps.com/>Fancybox</a> - Lightbox Library.
+6. <a href="https://fancyapps.com/">Fancybox</a> - Lightbox Library.
 
 == Installation ==
 
