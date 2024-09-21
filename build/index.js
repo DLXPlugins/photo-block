@@ -6511,7 +6511,10 @@ var CaptionBlockPreview = function CaptionBlockPreview(_ref) {
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("style", null, styles), /*#__PURE__*/React.createElement("div", {
     className: overlayStyles,
     id: "photo-block-preview"
-  }, getCaption()));
+  }, 'overlay' === captionPosition && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: 'dlx-photo-block__caption-overlay',
+    id: uniqueId
+  }, getCaption())), 'overlay' !== captionPosition && /*#__PURE__*/React.createElement(React.Fragment, null, getCaption())));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CaptionBlockPreview);
 

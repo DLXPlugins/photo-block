@@ -69,7 +69,19 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 				className={ overlayStyles }
 				id="photo-block-preview"
 			>
-				{ getCaption() }
+				{ 'overlay' === captionPosition && (
+					<>
+						<div className={ 'dlx-photo-block__caption-overlay' } id={ uniqueId }>
+							{ getCaption() }
+						</div>
+					</>
+				)
+				}
+				{ 'overlay' !== captionPosition && (
+					<>
+						{ getCaption( ) }
+					</>
+				) }
 			</div>
 		</>
 	);
