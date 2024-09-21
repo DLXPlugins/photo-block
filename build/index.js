@@ -5847,6 +5847,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     setIsSaving = _useState4[1];
   var title = props.title,
     setAttributes = props.setAttributes,
+    attributes = props.attributes,
     clientId = props.clientId;
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context__WEBPACK_IMPORTED_MODULE_7__["default"]),
     setSavingPreset = _useContext.setSavingPreset;
@@ -5943,7 +5944,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
       return;
     }
     var hasCaption = false;
-    if ((_globalStyle$content = globalStyle.content) !== null && _globalStyle$content !== void 0 && (_globalStyle$content$ = _globalStyle$content.photoAttributes) !== null && _globalStyle$content$ !== void 0 && _globalStyle$content$.hasCaption) {
+    if ((_globalStyle$content = globalStyle.content) !== null && _globalStyle$content !== void 0 && (_globalStyle$content$ = _globalStyle$content.photoAttributes) !== null && _globalStyle$content$ !== void 0 && _globalStyle$content$.hasCaption || attributes.hasCaption) {
       hasCaption = true;
     }
     var currenBlockClientId = props.clientId;
@@ -6481,7 +6482,9 @@ var CaptionBlockPreview = function CaptionBlockPreview(_ref) {
     return /*#__PURE__*/React.createElement("figcaption", {
       id: 'photo-block-preview',
       className: figClasses
-    }, "This is a sample caption");
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "dlx-photo-block__caption-inner"
+    }, "This is a sample caption"));
   };
   var overlayStyles = classnames__WEBPACK_IMPORTED_MODULE_0___default()('dlx-photo-block__caption-wrapper', "overlay-type-".concat(overlayBackgroundType), {
     'is-overlay': 'overlay' === captionPosition,
@@ -6615,7 +6618,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
       var _globalStyle$content, _globalStyle$content$, _globalStyleObject$co, _globalStyleObject$co2, _globalStyleObject$co3, _globalStyleObject$co4, _globalStyleObject$co5, _globalStyleObject$co6, _globalStyleObject$co7, _globalStyleObject$co8, _globalStyleObject$co9, _globalStyleObject$co10, _globalStyleObject$co11, _globalStyleObject$co12, _globalStyleObject$co13, _globalStyleObject$co14, _select$getBlocksByCl;
       // Try to see if photo has caption.
       var hasCaption = false;
-      if ((_globalStyle$content = globalStyle.content) !== null && _globalStyle$content !== void 0 && (_globalStyle$content$ = _globalStyle$content.photoAttributes) !== null && _globalStyle$content$ !== void 0 && _globalStyle$content$.hasCaption) {
+      if ((_globalStyle$content = globalStyle.content) !== null && _globalStyle$content !== void 0 && (_globalStyle$content$ = _globalStyle$content.photoAttributes) !== null && _globalStyle$content$ !== void 0 && _globalStyle$content$.hasCaption || attributes.hasCaption) {
         setHasCaption(true);
         hasCaption = true;
       }
@@ -6683,6 +6686,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
     className: "dlx-photo-block__global-styles-image-popover-wrapper"
   }, /*#__PURE__*/React.createElement(_photo_block_preview__WEBPACK_IMPORTED_MODULE_9__["default"], {
     uniqueId: attributes.uniqueId,
+    globalStyle: globalStyle.slug,
     photoAttributes: globalStyle.content.photoAttributes,
     captionAttributes: globalStyle.content.captionAttributes
   })))));
@@ -6710,6 +6714,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _blocks_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../blocks/photo-caption-block/block-styles */ "./src/blocks/photo-caption-block/block-styles.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../store */ "./src/store/index.js");
 /* harmony import */ var _caption_block_preview__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./caption-block-preview */ "./src/components/GlobalStylesPicker/ButtonPreview/caption-block-preview.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../store/global-styles */ "./src/store/global-styles.js");
+
 
 
 
@@ -6717,7 +6723,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var PhotoBlockPreview = function PhotoBlockPreview(_ref) {
-  var photoAttributes = _ref.photoAttributes,
+  var globalStyle = _ref.globalStyle,
+    photoAttributes = _ref.photoAttributes,
     captionAttributes = _ref.captionAttributes,
     uniqueId = _ref.uniqueId;
   if ('undefined' === typeof photoAttributes) {
@@ -6725,7 +6732,7 @@ var PhotoBlockPreview = function PhotoBlockPreview(_ref) {
   }
   var styles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_2__["default"])(photoAttributes, 'desktop', 'photo-block-preview');
   styles += (0,_blocks_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_3__["default"])(captionAttributes, 'desktop', 'photo-block-preview');
-  styles += "\n\t\t#photo-block-preview .dlx-photo-block__image-wrapper {\n\t\t\tmax-width: 250px !important;\n\t\t\theight: auto !important;\n\t\t\tmargin: 30px;\n\t\t\toverflow: hidden;\n\t\t}\n\t\t#photo-block-preview img {\n\t\t\tmax-width: 250px !important;\n\t\t\theight: auto !important;\n\t\t}\n\t";
+  styles += "\n\t\t#photo-block-preview .dlx-photo-block__screen-edit-image-wrapper {\n\t\t\tpadding: 16px;\n\t\t}\n\t\t#photo-block-preview .dlx-photo-block__screen-edit-image-inner {\n\t\t\tmin-width: 250px;\n\t\t\tmax-width: 250px;\n\t\t\tmax-height: 250px;\n\t\t}\n\t\t#photo-block-preview .dlx-photo-block__image-wrapper {\n\t\t\tmin-width: 250px;\n\t\t\tmax-width: 250px;\n\t\t\tmax-height: 250px;\n\t\t}\n\t";
   var cssGramFilter = photoAttributes.cssGramFilter,
     photoDropShadow = photoAttributes.photoDropShadow;
   var captionPosition = captionAttributes.captionPosition;
@@ -6735,6 +6742,16 @@ var PhotoBlockPreview = function PhotoBlockPreview(_ref) {
       };
     }),
     imageData = _useSelect.imageData;
+  var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(function (newSelect) {
+      var maybeGlobalStyle = newSelect(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).getGlobalStyleBySlug(globalStyle);
+      if (Object.keys(maybeGlobalStyle).length === 0) {
+        return '';
+      }
+      return {
+        globalStyleCSSClassName: maybeGlobalStyle.css_class
+      };
+    }),
+    globalStyleCSSClassName = _useSelect2.globalStyleCSSClassName;
 
   /**
    * Return an image URL. If in data mode, use a placeholder image.
@@ -6753,22 +6770,7 @@ var PhotoBlockPreview = function PhotoBlockPreview(_ref) {
   var classes = classnames__WEBPACK_IMPORTED_MODULE_0___default()('photo-block-preview dlx-photo-block', {
     'dlx-has-drop-shadow': photoDropShadow.enabled
   });
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("style", null, styles), /*#__PURE__*/React.createElement("div", {
-    className: classes,
-    id: "photo-block-preview"
-  }, /*#__PURE__*/React.createElement("figure", {
-    className: "dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure"
-  }, 'top' === captionPosition && /*#__PURE__*/React.createElement("div", {
-    className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
-  }, /*#__PURE__*/React.createElement(_caption_block_preview__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    photoAttributes: photoAttributes,
-    captionAttributes: captionAttributes,
-    uniqueId: 'photo-block-preview'
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper"
-  }, /*#__PURE__*/React.createElement("div", {
-    "class": "dlx-photo-block__screen-edit-image-inner"
-  }, /*#__PURE__*/React.createElement("img", {
+  var photoImg = /*#__PURE__*/React.createElement("img", {
     src: getImageUrl(),
     className: classnames__WEBPACK_IMPORTED_MODULE_0___default()("photo-block-".concat(cssGramFilter, " dlx-photo-block__image"), {
       'has-css-gram': cssGramFilter !== 'none'
@@ -6777,9 +6779,33 @@ var PhotoBlockPreview = function PhotoBlockPreview(_ref) {
     style: {
       maxWidth: "100%",
       height: 'auto'
-    }
-  }), 'overlay' === captionPosition && /*#__PURE__*/React.createElement("div", {
+    },
+    width: imageData.width,
+    height: imageData.height
+  });
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("style", null, styles), /*#__PURE__*/React.createElement("div", {
+    className: classes,
+    id: "photo-block-preview"
+  }, /*#__PURE__*/React.createElement("figure", {
+    className: "dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure ".concat(globalStyleCSSClassName)
+  }, 'top' === captionPosition && /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
+  }, /*#__PURE__*/React.createElement(_caption_block_preview__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    photoAttributes: photoAttributes,
+    captionAttributes: captionAttributes,
+    uniqueId: 'photo-block-preview'
+  })), 'top' === captionPosition && /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
+  }, /*#__PURE__*/React.createElement(_caption_block_preview__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    photoAttributes: photoAttributes,
+    captionAttributes: captionAttributes,
+    uniqueId: 'photo-block-preview'
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__screen-edit-image dlx-photo-block__image-wrapper"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__screen-edit-image-inner"
+  }, photoImg, 'overlay' === captionPosition && /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
   }, /*#__PURE__*/React.createElement(_caption_block_preview__WEBPACK_IMPORTED_MODULE_5__["default"], {
     photoAttributes: photoAttributes,
     captionAttributes: captionAttributes,
@@ -12387,10 +12413,6 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setImageLoading(false);
     },
     ref: ref,
-    style: {
-      maxWidth: "100%",
-      height: 'auto'
-    },
     width: imageData.width,
     height: imageData.height
   });

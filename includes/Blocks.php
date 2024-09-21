@@ -833,13 +833,13 @@ class Blocks {
 		$caption_position = $attributes['captionPosition'] ?? 'below';
 
 		// Build caption markup if there's a caption.
-		if ( $has_caption && ! empty( $innerblocks_content ) ) {
+		if ( ! empty( $innerblocks_content ) ) {
 
 			$caption_markup = wp_kses( $innerblocks_content, Functions::get_kses_allowed_html( true, true ) );
 		}
 
 		// If overlay, include at same level of image.
-		if ( $has_caption && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
+		if ( ! empty( $innerblocks_content ) && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
 			$image_markup = '<div class="dlx-photo-block__screen-edit-image-inner">' . $image_markup . $caption_markup . '</div>';
 		}
 
@@ -871,11 +871,11 @@ class Blocks {
 
 		// If caption and top or bottom position, add in caption markup.
 		$has_overlay = false;
-		if ( $has_caption && ! empty( $caption_markup ) && 'top' === $caption_position ) {
+		if ( ! empty( $innerblocks_content ) && ! empty( $caption_markup ) && 'top' === $caption_position ) {
 			$image_markup = $caption_markup . $image_markup;
-		} elseif ( $has_caption && ! empty( $caption_markup ) && 'bottom' === $caption_position ) {
+		} elseif ( ! empty( $innerblocks_content )  && ! empty( $caption_markup ) && 'bottom' === $caption_position ) {
 			$image_markup = $image_markup . $caption_markup;
-		} elseif ( $has_caption && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
+		} elseif ( ! empty( $innerblocks_content )  && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
 			$has_overlay = true;
 		}
 

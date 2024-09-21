@@ -23,7 +23,7 @@ const canSaveDefaultPresets = photoBlockUser.canSetDefaultPresets;
 const GlobalStylesSaveModal = ( props ) => {
 	const [ presetSaveType, setPresetSaveType ] = useState( 'new' );
 	const [ isSaving, setIsSaving ] = useState( false );
-	const { title, setAttributes, clientId } = props;
+	const { title, setAttributes, attributes, clientId } = props;
 
 	const { setSavingPreset } =
 		useContext( CustomPresetsContext );
@@ -117,7 +117,7 @@ const GlobalStylesSaveModal = ( props ) => {
 			return;
 		}
 		let hasCaption = false;
-		if ( globalStyle.content?.photoAttributes?.hasCaption ) {
+		if ( globalStyle.content?.photoAttributes?.hasCaption || attributes.hasCaption ) {
 			hasCaption = true;
 		}
 

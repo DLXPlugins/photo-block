@@ -27,7 +27,9 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 		} );
 
 		return (
-			<figcaption id={ 'photo-block-preview' } className={ figClasses }>This is a sample caption</figcaption>
+			<figcaption id={ 'photo-block-preview' } className={ figClasses }>
+				<div className="dlx-photo-block__caption-inner">This is a sample caption</div>
+			</figcaption>
 		);
 	};
 

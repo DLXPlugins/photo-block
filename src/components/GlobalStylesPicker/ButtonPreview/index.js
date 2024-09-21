@@ -73,7 +73,7 @@ const GlobalStylesButtonPreview = ( props ) => {
 					onClick={ () => {
 						// Try to see if photo has caption.
 						let hasCaption = false;
-						if ( globalStyle.content?.photoAttributes?.hasCaption ) {
+						if ( globalStyle.content?.photoAttributes?.hasCaption || attributes.hasCaption ) {
 							setHasCaption( true );
 							hasCaption = true;
 						}
@@ -140,6 +140,7 @@ const GlobalStylesButtonPreview = ( props ) => {
 							<div className="dlx-photo-block__global-styles-image-popover-wrapper">
 								<PhotoBlockPreview
 									uniqueId={ attributes.uniqueId }
+									globalStyle={ globalStyle.slug }
 									photoAttributes={ globalStyle.content.photoAttributes }
 									captionAttributes={ globalStyle.content.captionAttributes }
 								/>
