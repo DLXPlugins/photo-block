@@ -407,6 +407,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								label={ __( 'Undo Crop', 'photo-block' ) }
 								onClick={ () => {
 									setAttributes( { imageData: originalImageData } );
+									setJustCropped( false );
 									setImageData( originalImageData );
 									setScreen( 'edit' );
 								} }

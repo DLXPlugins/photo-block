@@ -12317,6 +12317,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setAttributes({
         imageData: originalImageData
       });
+      setJustCropped(false);
       setImageData(originalImageData);
       setScreen('edit');
     }
