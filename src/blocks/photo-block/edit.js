@@ -131,6 +131,7 @@ const PhotoBlock = ( props ) => {
 		align,
 		globalStyle,
 		photoDropShadow,
+		photoPosition,
 	} = props.attributes;
 
 	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
@@ -184,6 +185,7 @@ const PhotoBlock = ( props ) => {
 		className: classnames(
 			`dlx-photo-block`,
 			`align${ align }`,
+			`dlx-photo-position-${ photoPosition }`,
 			`dlx-screen-${ currentScreen }`,
 			`dlx-caption-position-${ captionPosition }`,
 			globalStyleCSSClassName,

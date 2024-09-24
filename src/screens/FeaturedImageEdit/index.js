@@ -27,7 +27,11 @@ import {
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
 import { useDispatch, useSelect } from '@wordpress/data';
-
+import {
+	positionLeft,
+	positionRight,
+	positionCenter,
+} from '@wordpress/icons';
 import SendCommand from '../../utils/SendCommand';
 import useDeviceType from '../../hooks/useDeviceType';
 import PanelBodyControl from '../../components/PanelBody';
@@ -70,6 +74,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 		photoOpacity,
 		photoBlur,
 		photoDropShadow,
+		photoPosition,
 		photoBackgroundColor,
 		cssGramFilter,
 		lightboxEnabled,
@@ -326,6 +331,32 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 						<AlignmentToolbar { ...props } />
 					)
 				}
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ positionLeft	 }
+						label={ __( 'Positon Left', 'photo-block' ) }
+						onClick={ () => {
+							setAttributes( { photoPosition: 'left' } );
+						} }
+						isPressed={ 'left' === photoPosition }
+					/>
+					<ToolbarButton
+						icon={ positionCenter }
+						label={ __( 'Positon Center', 'photo-block' ) }
+						onClick={ () => {
+							setAttributes( { photoPosition: 'center' } );
+						} }
+						isPressed={ 'center' === photoPosition }
+					/>
+					<ToolbarButton
+						icon={ positionRight }
+						label={ __( 'Positon Right', 'photo-block' ) }
+						onClick={ () => {
+							setAttributes( { photoPosition: 'right' } );
+						} }
+						isPressed={ 'right' === photoPosition }
+					/>
+				</ToolbarGroup>
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <Link /> }

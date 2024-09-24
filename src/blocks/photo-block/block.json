@@ -341,6 +341,10 @@
 			"type": "string",
 			"default": "center"
 		},
+		"photoPosition": {
+			"type": "string",
+			"default": "center"
+		},
 		"imageSize": {
 			"type": "string",
 			"default": "large"

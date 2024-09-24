@@ -1114,6 +1114,18 @@
   align-items: center;
 }
 
+.dlx-photo-position-left .dlx-photo-block__figure {
+  align-items: flex-start;
+}
+
+.dlx-photo-position-right .dlx-photo-block__figure {
+  align-items: flex-end;
+}
+
+.dlx-photo-position-center .dlx-photo-block__figure {
+  align-items: center;
+}
+
 .dlx-photo-block__image {
   box-sizing: border-box;
 }

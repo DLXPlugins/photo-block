@@ -911,6 +911,7 @@ class Blocks {
 		$section_css_classes = array(
 			'dlx-photo-block__container',
 			'align' . esc_attr( $attributes['align'] ),
+			'dlx-photo-position-' . esc_attr( $attributes['photoPosition'] ),
 		);
 		if ( $has_global_style ) {
 			$section_css_classes[] = $global_style_css_class;

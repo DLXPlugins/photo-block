@@ -41,6 +41,11 @@ import {
 	Layers,
 	Undo2,
 } from 'lucide-react';
+import {
+	positionLeft,
+	positionRight,
+	positionCenter,
+} from '@wordpress/icons';
 import { applyFilters } from '@wordpress/hooks';
 import classnames from 'classnames';
 import { blockStore } from '../../store';
@@ -75,6 +80,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		imageSize,
 		cssGramFilter,
 		globalStyle,
+		photoPosition,
 	} = attributes;
 
 	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
@@ -400,6 +406,32 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					)
 				}
 				<ToolbarGroup>
+					<ToolbarButton
+						icon={ positionLeft	 }
+						label={ __( 'Positon Left', 'photo-block' ) }
+						onClick={ () => {
+							setAttributes( { photoPosition: 'left' } );
+						} }
+						isPressed={ 'left' === photoPosition }
+					/>
+					<ToolbarButton
+						icon={ positionCenter }
+						label={ __( 'Positon Center', 'photo-block' ) }
+						onClick={ () => {
+							setAttributes( { photoPosition: 'center' } );
+						} }
+						isPressed={ 'center' === photoPosition }
+					/>
+					<ToolbarButton
+						icon={ positionRight }
+						label={ __( 'Positon Right', 'photo-block' ) }
+						onClick={ () => {
+							setAttributes( { photoPosition: 'right' } );
+						} }
+						isPressed={ 'right' === photoPosition }
+					/>
+				</ToolbarGroup>
+				<ToolbarGroup>
 					{
 						isJustCropped && (
 							<ToolbarButton
@@ -427,15 +459,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					>
 						{ __( 'Crop', 'photo-block' ) }
 					</ToolbarButton>
-					{ /* <ToolbarButton
-						icon={ <Stars /> }
-						label={ __( 'Effects', 'photo-block' ) }
-						onClick={ () => {
-							setScreen( 'effects' );
-						} }
-					>
-						{ __( 'Effects', 'photo-block' ) }
-					</ToolbarButton> */ }
 				</ToolbarGroup>
 				<ToolbarGroup>
 					<ToolbarButton
