@@ -39,6 +39,7 @@ const DEFAULT_STATE = {
 	aspectRatioHeightPixels: 0,
 	aspectRatioToolbarSelection: '16:9',
 	aspectRatioUnit: 'ratio',
+	hideCaption: false,
 };
 
 const actions = {
@@ -152,6 +153,12 @@ const actions = {
 			aspectRatioUnit,
 		};
 	},
+	setHideCaption( hideCaption ) {
+		return {
+			type: 'SET_HIDE_CAPTION',
+			hideCaption,
+		};
+	},
 };
 
 const createBlockStore = ( uniqueId ) => {
@@ -250,6 +257,11 @@ const createBlockStore = ( uniqueId ) => {
 						...state,
 						justCropped: action.justCropped,
 					};
+				case 'SET_HIDE_CAPTION':
+					return {
+						...state,
+						hideCaption: action.hideCaption,
+					};
 				default:
 					return state;
 			}
@@ -315,6 +327,12 @@ const createBlockStore = ( uniqueId ) => {
 			},
 			getAspectRatioUnit( state ) {
 				return state.aspectRatioUnit;
+			},
+			getHideCaption( state, hideCaption ) {
+				if ( true === hideCaption ) {
+					return true;
+				}
+				return state.hideCaption;
 			},
 		},
 	} );

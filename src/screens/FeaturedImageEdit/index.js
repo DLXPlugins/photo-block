@@ -22,7 +22,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	Image,
 	Link,
-	Layers,
+	CaptionsOff,
 } from 'lucide-react';
 import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
@@ -63,6 +63,8 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	const [ mediaLinkRef, setMediaLinkRef ] = useState( null );
 	const [ imageLoading, setImageLoading ] = useState( true );
 	const [ hasImage, setHasImage ] = useState( false );
+
+	const innerBlockCount = useSelect( ( coreSelect ) => coreSelect( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
 	const {
 		uniqueId,
 		dataFallbackImage,
@@ -82,17 +84,18 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	} = attributes;
 
 	const {
-		setImageData,
-		setScreen,
+		setHideCaption,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	// Get current block data.
 	const {
 		captionPosition,
+		hideCaption,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
+			hideCaption: select( blockStore( blockUniqueId ) ).getHideCaption( attributes.hideCaption ),
 		};
 	} );
 
@@ -357,6 +360,21 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 						isPressed={ 'right' === photoPosition }
 					/>
 				</ToolbarGroup>
+				{
+					innerBlockCount === 0 && (
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ <CaptionsOff /> }
+								label={ hideCaption ? __( 'Show Caption', 'photo-block' ) : __( 'Hide Caption', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { hideCaption: ! hideCaption } );
+									setHideCaption( ! hideCaption );
+								} }
+								isPressed={ true === hideCaption }
+							/>
+						</ToolbarGroup>
+					)
+				}
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ <Link /> }

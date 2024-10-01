@@ -41,6 +41,28 @@ registerBlockType( metadata, {
 					return createBlock( 'dlxplugins/photo-block', imageAttributes );
 				},
 			},
+			{
+				type: 'block',
+				blocks: [ 'core/post-featured-image' ],
+				transform: ( attributes ) => {
+					const imageData = {
+						id: attributes.id,
+						url: attributes.url,
+						alt: attributes.alt,
+						full: attributes.url,
+						width: attributes.width,
+						height: attributes.height,
+						title: '',
+						caption: attributes.caption,
+					};
+					const imageAttributes = {
+						photoMode: 'featuredImage',
+						screen: 'loading',
+						imageData,
+					};
+					return createBlock( 'dlxplugins/photo-block', imageAttributes );
+				},
+			}
 		],
 		to: [],
 	},

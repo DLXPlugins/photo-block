@@ -36,9 +36,8 @@ import {
 	Image,
 	Accessibility,
 	Link,
-	Settings,
-	Paintbrush,
-	Layers,
+	Captions,
+	CaptionsOff,
 	Undo2,
 } from 'lucide-react';
 import {
@@ -64,6 +63,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const { setAttributes, innerBlockProps, clientId, blockUniqueId } = props;
 
 	const attributes = props.attributes || {};
+
+	const innerBlockCount = useSelect( ( coreSelect ) => coreSelect( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
 
 	// Apply filters to attributes.
 	useEffect( () => {
@@ -107,6 +108,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		setScreen,
 		setImageData,
 		setJustCropped,
+		setHideCaption,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const { createSuccessNotice, createInfoNotice } = useDispatch( 'core/notices' );
@@ -118,6 +120,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		photoMode,
 		originalImageData,
 		isJustCropped,
+		hideCaption,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
@@ -125,6 +128,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 			originalImageData: select( blockStore( blockUniqueId ) ).getOriginalImageData(),
 			isJustCropped: select( blockStore( blockUniqueId ) ).getJustCropped(),
+			hideCaption: select( blockStore( blockUniqueId ) ).getHideCaption( attributes.hideCaption ),
 		};
 	} );
 
@@ -405,32 +409,51 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<AlignmentToolbar { ...props } />
 					)
 				}
-				<ToolbarGroup>
-					<ToolbarButton
-						icon={ positionLeft	 }
-						label={ __( 'Positon Left', 'photo-block' ) }
-						onClick={ () => {
-							setAttributes( { photoPosition: 'left' } );
-						} }
-						isPressed={ 'left' === photoPosition }
-					/>
-					<ToolbarButton
-						icon={ positionCenter }
-						label={ __( 'Positon Center', 'photo-block' ) }
-						onClick={ () => {
-							setAttributes( { photoPosition: 'center' } );
-						} }
-						isPressed={ 'center' === photoPosition }
-					/>
-					<ToolbarButton
-						icon={ positionRight }
-						label={ __( 'Positon Right', 'photo-block' ) }
-						onClick={ () => {
-							setAttributes( { photoPosition: 'right' } );
-						} }
-						isPressed={ 'right' === photoPosition }
-					/>
-				</ToolbarGroup>
+				{
+					! hasGlobalStyle( globalStyle ) && (
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ positionLeft	 }
+								label={ __( 'Positon Left', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { photoPosition: 'left' } );
+								} }
+								isPressed={ 'left' === photoPosition }
+							/>
+							<ToolbarButton
+								icon={ positionCenter }
+								label={ __( 'Positon Center', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { photoPosition: 'center' } );
+								} }
+								isPressed={ 'center' === photoPosition }
+							/>
+							<ToolbarButton
+								icon={ positionRight }
+								label={ __( 'Positon Right', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { photoPosition: 'right' } );
+								} }
+								isPressed={ 'right' === photoPosition }
+							/>
+						</ToolbarGroup>
+					)
+				}
+				{
+					innerBlockCount === 0 && (
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ <CaptionsOff /> }
+								label={ hideCaption ? __( 'Show Caption', 'photo-block' ) : __( 'Hide Caption', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { hideCaption: ! hideCaption } );
+									setHideCaption( ! hideCaption );
+								} }
+								isPressed={ true === hideCaption }
+							/>
+						</ToolbarGroup>
+					)
+				}
 				<ToolbarGroup>
 					{
 						isJustCropped && (

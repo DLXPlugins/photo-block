@@ -157,14 +157,9 @@ const PhotoBlock = ( props ) => {
 	// Get current block data.
 	const {
 		currentScreen,
-		isUploading,
-		isProcessingUpload,
-		isUploadError,
-		filepondInstance,
-		hasCaption,
+		hideCaption,
 		captionPosition,
 		inQueryLoop,
-		photoMode,
 		blockUniqueId,
 	} = useSelect( ( select ) => {
 		return {
@@ -178,6 +173,7 @@ const PhotoBlock = ( props ) => {
 			inQueryLoop: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).inQueryLoop(),
 			photoMode: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).getPhotoMode(),
 			blockUniqueId: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).getBlockUniqueId(),
+			hideCaption: select( blockStore( uniqueId ? uniqueId : newUniqueId ) ).getHideCaption( attributes.hideCaption ),
 		};
 	} );
 
@@ -221,7 +217,7 @@ const PhotoBlock = ( props ) => {
 		{
 			allowedBlocks: [ 'dlxplugins/photo-caption-block' ],
 			templateInsertUpdatesSelection: true,
-			renderAppender: () => ( isSelected ? <CaptionAppender numBlocks={ innerBlockCount } clientId={ clientId } blockUniqueId={ blockUniqueId } /> : null ),
+			renderAppender: () => ( ( isSelected && ! hideCaption ) ? <CaptionAppender numBlocks={ innerBlockCount } clientId={ clientId } blockUniqueId={ blockUniqueId } /> : null ),
 		}
 	);
 
