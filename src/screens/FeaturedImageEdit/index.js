@@ -91,11 +91,13 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	const {
 		captionPosition,
 		hideCaption,
+		inQueryLoop,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
 			hideCaption: select( blockStore( blockUniqueId ) ).getHideCaption( attributes.hideCaption ),
+			inQueryLoop: select( blockStore( blockUniqueId ) ).inQueryLoop(),
 		};
 	} );
 
@@ -157,7 +159,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	 */
 	useEffect( () => {
 		// Post ID may not be valid when loaded in.
-		if ( 0 === postId ) {
+		if ( ! inQueryLoop && ! attributes.inQueryLoop && ! postId ) {
 			return;
 		}
 		// Check for array key in stored data.
@@ -576,7 +578,9 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 						{
 							( ! imageLoading && ( ! hasImage || typeof dataImages[ postId ] === 'undefined' ) ) && (
 								<>
-									Image not found.
+									<div className="dlx-photo-block__preview">
+										<img src={ photoBlock.blockPreviewImage } alt={ __( 'Block Preview', 'photo-block' ) } style={ { maxWidth: '100%', height: 'auto' } } />
+									</div>
 								</>
 							)
 						}

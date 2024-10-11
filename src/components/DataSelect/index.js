@@ -129,7 +129,7 @@ export const DataSelect = ( props ) => {
 		// If data type is current post, get the current post ID.
 		if ( 'currentPost' === dataSource ) {
 			// Determine if we're in a query block.
-			if ( inQueryLoop ) {
+			if ( inQueryLoop || attributes.inQueryLoop ) {
 				currentPostId = postId;
 			} else {
 				currentPostId = wp.data.select( 'core/editor' ).getCurrentPostId();

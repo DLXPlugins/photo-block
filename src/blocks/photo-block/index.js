@@ -21,6 +21,59 @@ registerBlockType( metadata, {
 			},
 			{
 				type: 'block',
+				blocks: [ 'kadence/image' ],
+				transform: ( attributes ) => {
+					const inQueryLoop = attributes.inQueryBlock || false;
+					const newAttributes = {
+						uniqueId: attributes.uniqueID,
+						photoMode: 'featuredImage',
+						inQueryLoop,
+						screen: 'featuredImage',
+						photoOpacity: attributes.overlayOpacity * 100, // Assuming overlayOpacity is 0-1, converting to percentage
+						photoDropShadow: {
+							enabled: attributes.displayDropShadow,
+							color: attributes.dropShadow[ 0 ]?.color,
+							blur: attributes.dropShadow[ 0 ]?.blur,
+							opacity: attributes.dropShadow[ 0 ]?.opacity,
+							horizontal: attributes.dropShadow[ 0 ]?.hOffset,
+							vertical: attributes.dropShadow[ 0 ]?.vOffset,
+						},
+						photoBackgroundColor: attributes.backgroundColor,
+						mediaLinkUrl: attributes.link,
+						mediaLinkNewTab: attributes.linkTarget,
+						imageData: {
+							id: 0,
+							url: '',
+							alt: '',
+							full: '',
+							width: '',
+							height: '',
+							attachment_link: '',
+							title: '',
+							caption: '',
+						},
+					};
+					if ( ! inQueryLoop ) {
+						newAttributes.imageData = {
+							id: attributes.id,
+							url: attributes.url,
+							alt: attributes.alt,
+							full: attributes.url,
+							width: attributes.width,
+							height: attributes.height,
+							title: '',
+							caption: attributes.caption,
+						};
+						newAttributes.photoMode = 'photo';
+						newAttributes.screen = 'edit';
+					}
+					return createBlock( 'dlxplugins/photo-block', {
+						...newAttributes,
+					} );
+				},
+			},
+			{
+				type: 'block',
 				blocks: [ 'core/image' ],
 				transform: ( attributes ) => {
 					const imageData = {
@@ -62,7 +115,7 @@ registerBlockType( metadata, {
 					};
 					return createBlock( 'dlxplugins/photo-block', imageAttributes );
 				},
-			}
+			},
 		],
 		to: [],
 	},

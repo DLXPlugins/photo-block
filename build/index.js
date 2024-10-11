@@ -302,7 +302,9 @@ var PhotoBlock = function PhotoBlock(props) {
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     // Check context to see if we're in a query loop.
-    if (isInsideQueryLoop) {
+    console.log('isInsideQueryLoop', isInsideQueryLoop);
+    console.log('attributes.inQueryLoop', attributes.inQueryLoop);
+    if (isInsideQueryLoop || attributes.inQueryLoop) {
       setInQueryLoop(true);
       setAttributes({
         inQueryLoop: true
@@ -573,6 +575,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./src/blocks/photo-block/edit.js");
 /* harmony import */ var _components_Icons_PhotoBlockIcon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Icons/PhotoBlockIcon */ "./src/components/Icons/PhotoBlockIcon.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 
 
@@ -591,6 +599,58 @@ __webpack_require__.r(__webpack_exports__);
       regExp: /^photoblock$/,
       transform: function transform() {
         return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-block');
+      }
+    }, {
+      type: 'block',
+      blocks: ['kadence/image'],
+      transform: function transform(attributes) {
+        var _attributes$dropShado, _attributes$dropShado2, _attributes$dropShado3, _attributes$dropShado4, _attributes$dropShado5;
+        var inQueryLoop = attributes.inQueryBlock || false;
+        var newAttributes = {
+          uniqueId: attributes.uniqueID,
+          photoMode: 'featuredImage',
+          inQueryLoop: inQueryLoop,
+          screen: 'featuredImage',
+          photoOpacity: attributes.overlayOpacity * 100,
+          // Assuming overlayOpacity is 0-1, converting to percentage
+          photoDropShadow: {
+            enabled: attributes.displayDropShadow,
+            color: (_attributes$dropShado = attributes.dropShadow[0]) === null || _attributes$dropShado === void 0 ? void 0 : _attributes$dropShado.color,
+            blur: (_attributes$dropShado2 = attributes.dropShadow[0]) === null || _attributes$dropShado2 === void 0 ? void 0 : _attributes$dropShado2.blur,
+            opacity: (_attributes$dropShado3 = attributes.dropShadow[0]) === null || _attributes$dropShado3 === void 0 ? void 0 : _attributes$dropShado3.opacity,
+            horizontal: (_attributes$dropShado4 = attributes.dropShadow[0]) === null || _attributes$dropShado4 === void 0 ? void 0 : _attributes$dropShado4.hOffset,
+            vertical: (_attributes$dropShado5 = attributes.dropShadow[0]) === null || _attributes$dropShado5 === void 0 ? void 0 : _attributes$dropShado5.vOffset
+          },
+          photoBackgroundColor: attributes.backgroundColor,
+          mediaLinkUrl: attributes.link,
+          mediaLinkNewTab: attributes.linkTarget,
+          imageData: {
+            id: 0,
+            url: '',
+            alt: '',
+            full: '',
+            width: '',
+            height: '',
+            attachment_link: '',
+            title: '',
+            caption: ''
+          }
+        };
+        if (!inQueryLoop) {
+          newAttributes.imageData = {
+            id: attributes.id,
+            url: attributes.url,
+            alt: attributes.alt,
+            full: attributes.url,
+            width: attributes.width,
+            height: attributes.height,
+            title: '',
+            caption: attributes.caption
+          };
+          newAttributes.photoMode = 'photo';
+          newAttributes.screen = 'edit';
+        }
+        return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-block', _objectSpread({}, newAttributes));
       }
     }, {
       type: 'block',
@@ -1119,7 +1179,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
    */
   var getPostId = function getPostId() {
     var currentPostId = 0;
-    if (inQueryLoop) {
+    if (inQueryLoop || attributes.inQueryLoop) {
       currentPostId = postId;
     } else {
       currentPostId = wp.data.select('core/editor').getCurrentPostId();
@@ -12234,11 +12294,20 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
    */
   var getImageFromSize = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(size) {
+      var imageId;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             setImageSizeLoading(true);
-            _context.next = 3;
+            imageId = (imageData === null || imageData === void 0 ? void 0 : imageData.id) || 0;
+            if (!(0 === imageId)) {
+              _context.next = 5;
+              break;
+            }
+            setImageSizeLoading(false);
+            return _context.abrupt("return");
+          case 5:
+            _context.next = 7;
             return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_11__["default"])(photoBlock.restNonce, {}, "".concat(photoBlock.restUrl + '/get-image-by-size', "/id=").concat(imageData.id, "/size=").concat(size), 'GET').then(function (response) {
               setImageData(_objectSpread(_objectSpread({}, imageData), response.data));
               setAttributes({
@@ -12250,7 +12319,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
             }).then(function () {
               setImageSizeLoading(false);
             });
-          case 3:
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -12764,11 +12833,13 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
       return {
         imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_15__.blockStore)(blockUniqueId)).getImageData(),
         captionPosition: select((0,_store__WEBPACK_IMPORTED_MODULE_15__.blockStore)(blockUniqueId)).getCaptionPosition(),
-        hideCaption: select((0,_store__WEBPACK_IMPORTED_MODULE_15__.blockStore)(blockUniqueId)).getHideCaption(attributes.hideCaption)
+        hideCaption: select((0,_store__WEBPACK_IMPORTED_MODULE_15__.blockStore)(blockUniqueId)).getHideCaption(attributes.hideCaption),
+        inQueryLoop: select((0,_store__WEBPACK_IMPORTED_MODULE_15__.blockStore)(blockUniqueId)).inQueryLoop()
       };
     }),
     captionPosition = _useSelect.captionPosition,
-    hideCaption = _useSelect.hideCaption;
+    hideCaption = _useSelect.hideCaption,
+    inQueryLoop = _useSelect.inQueryLoop;
   var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useSelect)(function (select) {
       return {
         hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_18__["default"]).hasGlobalStyle
@@ -12820,7 +12891,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     // Post ID may not be valid when loaded in.
-    if (0 === postId) {
+    if (!inQueryLoop && !attributes.inQueryLoop && !postId) {
       return;
     }
     // Check for array key in stored data.
@@ -13131,7 +13202,16 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     alt: ""
   }), 'overlay' === captionPosition && !imageLoading && hasImage && /*#__PURE__*/React.createElement("div", _extends({
     className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption dlx-photo-block__caption--overlay"
-  }, innerBlockProps))), !imageLoading && (!hasImage || typeof dataImages[postId] === 'undefined') && /*#__PURE__*/React.createElement(React.Fragment, null, "Image not found.")), 'bottom' === captionPosition && !imageLoading && /*#__PURE__*/React.createElement("div", _extends({
+  }, innerBlockProps))), !imageLoading && (!hasImage || typeof dataImages[postId] === 'undefined') && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__preview"
+  }, /*#__PURE__*/React.createElement("img", {
+    src: photoBlock.blockPreviewImage,
+    alt: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Block Preview', 'photo-block'),
+    style: {
+      maxWidth: '100%',
+      height: 'auto'
+    }
+  })))), 'bottom' === captionPosition && !imageLoading && /*#__PURE__*/React.createElement("div", _extends({
     className: "dlx-photo-block__screen-edit-caption dlx-photo-block__caption"
   }, innerBlockProps)))));
 });
@@ -13329,7 +13409,7 @@ var LoadingScreen = function LoadingScreen(props) {
    */
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     // If vars aren't undefined or null, set data screen as we're in a query loop.
-    if (inQueryLoop) {
+    if (inQueryLoop || attributes.inQueryLoop) {
       /**
        * Filter: Determine if we're in the premium version of the plugin.
        */

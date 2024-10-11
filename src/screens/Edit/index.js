@@ -172,6 +172,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 */
 	const getImageFromSize = async( size ) => {
 		setImageSizeLoading( true );
+		const imageId = imageData?.id || 0;
+		if ( 0 === imageId ) {
+			setImageSizeLoading( false );
+			return;
+		}
 		await SendCommand(
 			photoBlock.restNonce,
 			{},

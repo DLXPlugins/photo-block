@@ -329,7 +329,7 @@ const PhotoCaptionBlock = ( props ) => {
 	 */
 	const getPostId = () => {
 		let currentPostId = 0;
-		if ( inQueryLoop ) {
+		if ( inQueryLoop || attributes.inQueryLoop ) {
 			currentPostId = postId;
 		} else {
 			currentPostId = wp.data.select( 'core/editor' ).getCurrentPostId();

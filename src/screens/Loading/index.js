@@ -77,11 +77,12 @@ const LoadingScreen = ( props ) => {
 	 */
 	useEffect( () => {
 		// If vars aren't undefined or null, set data screen as we're in a query loop.
-		if ( inQueryLoop ) {
+		if ( inQueryLoop || attributes.inQueryLoop ) {
 			/**
 			 * Filter: Determine if we're in the premium version of the plugin.
 			 */
 			const isPremium = applyFilters( 'dlx_photo_block_is_premium', false );
+
 			if ( ! isPremium ) {
 				// Check if attribute imageData is found, and if so, set the image data.
 				if ( attributes.imageData.id !== 0 && attributes.imageData.id !== '' ) {
