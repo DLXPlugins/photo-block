@@ -74,6 +74,56 @@ registerBlockType( metadata, {
 			},
 			{
 				type: 'block',
+				blocks: [ 'generateblocks/image' ],
+				transform: ( attributes ) => {
+					const dynamicType = attributes?.dynamicContentType || 'none';
+					let inQueryLoop = false;
+					if ( dynamicType === 'featured-image' ) {
+						inQueryLoop = true;
+					}
+					const newAttributes = {
+						uniqueId: attributes.uniqueId,
+						mediaLinkNewTab: attributes.openInNewWindow,
+						imageSize: attributes.sizeSlug,
+						hideOnDesktop: attributes.hideOnDesktop,
+						hideOnTablet: attributes.hideOnTablet,
+						hideOnMobile: attributes.hideOnMobile,
+						photoMode: 'featuredImage',
+						inQueryLoop,
+						screen: 'featuredImage',
+						imageData: {
+							id: 0,
+							url: '',
+							alt: '',
+							full: '',
+							width: '',
+							height: '',
+							attachment_link: '',
+							title: '',
+							caption: '',
+						},
+					};
+					if ( ! inQueryLoop ) {
+						newAttributes.imageData = {
+							id: attributes.mediaId,
+							url: attributes.mediaUrl,
+							alt: attributes.alt,
+							full: attributes.mediaUrl,
+							width: attributes?.width || '',
+							height: attributes?.height || '',
+							title: '',
+							caption: attributes?.caption || '',
+						};
+						newAttributes.photoMode = 'photo';
+						newAttributes.screen = 'edit';
+					}
+					return createBlock( 'dlxplugins/photo-block', {
+						...newAttributes,
+					} );
+				},
+			},
+			{
+				type: 'block',
 				blocks: [ 'core/image' ],
 				transform: ( attributes ) => {
 					const imageData = {

@@ -302,8 +302,6 @@ var PhotoBlock = function PhotoBlock(props) {
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     // Check context to see if we're in a query loop.
-    console.log('isInsideQueryLoop', isInsideQueryLoop);
-    console.log('attributes.inQueryLoop', attributes.inQueryLoop);
     if (isInsideQueryLoop || attributes.inQueryLoop) {
       setInQueryLoop(true);
       setAttributes({
@@ -646,6 +644,53 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
             height: attributes.height,
             title: '',
             caption: attributes.caption
+          };
+          newAttributes.photoMode = 'photo';
+          newAttributes.screen = 'edit';
+        }
+        return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-block', _objectSpread({}, newAttributes));
+      }
+    }, {
+      type: 'block',
+      blocks: ['generateblocks/image'],
+      transform: function transform(attributes) {
+        var dynamicType = (attributes === null || attributes === void 0 ? void 0 : attributes.dynamicContentType) || 'none';
+        var inQueryLoop = false;
+        if (dynamicType === 'featured-image') {
+          inQueryLoop = true;
+        }
+        var newAttributes = {
+          uniqueId: attributes.uniqueId,
+          mediaLinkNewTab: attributes.openInNewWindow,
+          imageSize: attributes.sizeSlug,
+          hideOnDesktop: attributes.hideOnDesktop,
+          hideOnTablet: attributes.hideOnTablet,
+          hideOnMobile: attributes.hideOnMobile,
+          photoMode: 'featuredImage',
+          inQueryLoop: inQueryLoop,
+          screen: 'featuredImage',
+          imageData: {
+            id: 0,
+            url: '',
+            alt: '',
+            full: '',
+            width: '',
+            height: '',
+            attachment_link: '',
+            title: '',
+            caption: ''
+          }
+        };
+        if (!inQueryLoop) {
+          newAttributes.imageData = {
+            id: attributes.mediaId,
+            url: attributes.mediaUrl,
+            alt: attributes.alt,
+            full: attributes.mediaUrl,
+            width: (attributes === null || attributes === void 0 ? void 0 : attributes.width) || '',
+            height: (attributes === null || attributes === void 0 ? void 0 : attributes.height) || '',
+            title: '',
+            caption: (attributes === null || attributes === void 0 ? void 0 : attributes.caption) || ''
           };
           newAttributes.photoMode = 'photo';
           newAttributes.screen = 'edit';

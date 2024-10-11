@@ -76,8 +76,6 @@ const PhotoBlock = ( props ) => {
 	 */
 	useEffect( () => {
 		// Check context to see if we're in a query loop.
-		console.log( 'isInsideQueryLoop', isInsideQueryLoop );
-		console.log( 'attributes.inQueryLoop', attributes.inQueryLoop );
 		if ( isInsideQueryLoop || attributes.inQueryLoop ) {
 			setInQueryLoop( true );
 			setAttributes( { inQueryLoop: true } );
