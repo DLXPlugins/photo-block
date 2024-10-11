@@ -517,7 +517,7 @@ class Functions {
 
 		$attributes['dataMode'] = false;
 		if ( 'single' === $mode ) {
-			Functions::add_css_property( $css_helper, 'color', $attributes['captionTextColor'], '--photo-block-caption-text-color' );
+			Functions::add_css_property( $css_helper, 'color', 'overlay' === $attributes['captionPosition'] ? $attributes['captionTextColorOverlay'] : $attributes['captionTextColor'], '--photo-block-caption-text-color' );
 			Functions::build_typography_css( $css_helper, $attributes['captionTypography'] );
 			Functions::add_css_property( $css_helper, 'text-align', $attributes['captionAlign'], '--photo-block-caption-text-align' );
 
@@ -570,7 +570,7 @@ class Functions {
 				'.dlx-photo-block__caption-wrapper figcaption.dlx-photo-block__caption',
 				$is_class
 			);
-			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-text-color', $attributes['captionTextColor'], '--photo-block-caption-text-color' );
+			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-text-color', 'overlay' === $attributes['captionPosition'] ? $attributes['captionTextColorOverlay'] : $attributes['captionTextColor'], '--photo-block-caption-text-color' );
 			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-accent-color', $attributes['captionAccentColor'], '--photo-block-caption-accent-color' );
 			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-secondary-color', $attributes['captionSecondaryColor'], '--photo-block-caption-secondary-color' );
 			Functions::add_css_property( $smart_styles, '--dlx-photo-block__caption-font-family', $attributes['captionTextFontFamily'], '--photo-block-caption-font-family' );

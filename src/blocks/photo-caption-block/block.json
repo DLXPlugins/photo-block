@@ -102,6 +102,10 @@
 			"type": "string",
 			"default": "#333"
 		},
+		"captionTextColorOverlay": {
+			"type": "string",
+			"default": "#FFFFFF"
+		},
 		"captionAccentColor": {
 			"type": "string",
 			"default": "#e17713"

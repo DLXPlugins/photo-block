@@ -1,6 +1,6 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"title": "Photo Block - A Powerful Image Block",
+	"title": "Photo Block",
 	"apiVersion": 2,
 	"name": "dlxplugins/photo-block",
 	"category": "media",

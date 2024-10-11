@@ -21,6 +21,7 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 		captionBorderRadius,
 		captionBorder,
 		captionTextColor,
+		captionTextColorOverlay,
 		captionTypography,
 		captionAlign,
 		captionLinkColor,
@@ -74,7 +75,7 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 	if ( 'single' === mode || 'data' === photoMode || 'featuredImage' === photoMode ) {
 		styles += `
 			figcaption${ useClass ? '.' : '#' }${ uniqueId } {
-				--photo-block-caption-text-color: ${ captionTextColor };
+				--photo-block-caption-text-color: ${ 'overlay' === captionPosition ? captionTextColorOverlay : captionTextColor };
 				--photo-block-caption-font-size: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontSize, 'fontSize' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].fontSizeUnit, 'fontSizeUnit' ) };
 				--photo-block-caption-font-weight: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].fontWeight, 'fontWeight' ) };
 				--photo-block-caption-line-height: ${ geHierarchicalPlaceholderValue( captionTypography, deviceType, captionTypography[ deviceType ].lineHeight, 'lineHeight' ) }${ getHierarchicalValueUnit( captionTypography, deviceType, captionTypography[ deviceType ].lineHeightUnit, 'lineHeightUnit' ) };
@@ -109,7 +110,7 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 	if ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode && enableSmartStyles ) {
 		styles += `
 			figcaption${ useClass ? '.' : '#' }${ uniqueId } {
-				--photo-block-caption-text-color: ${ captionTextColor };
+				--photo-block-caption-text-color: ${ 'overlay' === captionPosition ? captionTextColorOverlay : captionTextColor };
 				--photo-block-caption-link-color: ${ captionAccentColor };
 				--photo-block-caption-link-color-hover: ${ captionSecondaryColor };
 				--photo-block-caption-font-family: ${ captionTextFontFamily };

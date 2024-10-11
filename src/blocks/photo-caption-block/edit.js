@@ -275,7 +275,7 @@ const PhotoCaptionBlock = ( props ) => {
 		captionTextFontFamily,
 		captionHeadingsFontFamily,
 		captionTypography,
-		captionCustomTypography,
+		captionTextColorOverlay,
 		captionBorder,
 		captionBorderRadius,
 		containerWidth,
@@ -745,17 +745,36 @@ const PhotoCaptionBlock = ( props ) => {
 									alpha={ true }
 									opacity={ captionBackgroundColorOpacity }
 								/>
-								<ColorPickerControl
-									value={ captionTextColor }
-									key={ 'text-color-caption' }
-									onChange={ ( slug, newValue ) => {
-										setAttributes( { captionTextColor: newValue } );
-									} }
-									label={ __( 'Text Color', 'photo-block' ) }
-									defaultColors={ photoBlock.palette }
-									defaultColor={ 'transparent' }
-									slug={ 'text-color-caption' }
-								/>
+								{
+									'overlay' !== captionPosition && (
+										<ColorPickerControl
+											value={ captionTextColor }
+											key={ 'text-color-caption' }
+											onChange={ ( slug, newValue ) => {
+												setAttributes( { captionTextColor: newValue } );
+											} }
+											label={ __( 'Text Color', 'photo-block' ) }
+											defaultColors={ photoBlock.palette }
+											defaultColor={ 'transparent' }
+											slug={ 'text-color-caption' }
+										/>
+									)
+								}
+								{
+									'overlay' === captionPosition && (
+										<ColorPickerControl
+											value={ captionTextColorOverlay }
+											key={ 'text-color-caption-overlay' }
+											onChange={ ( slug, newValue ) => {
+												setAttributes( { captionTextColorOverlay: newValue } );
+											} }
+											label={ __( 'Text Color', 'photo-block' ) }
+											defaultColors={ photoBlock.palette }
+											defaultColor={ 'transparent' }
+											slug={ 'text-color-caption-overlay' }
+										/>
+									)
+								}
 								<ColorPickerControl
 									value={ captionAccentColor }
 									key={ 'accent-color-caption' }
@@ -800,17 +819,36 @@ const PhotoCaptionBlock = ( props ) => {
 							alpha={ true }
 							opacity={ captionBackgroundColorOpacity }
 						/>
-						<ColorPickerControl
-							value={ captionTextColor }
-							key={ 'text-color-caption' }
-							onChange={ ( slug, newValue ) => {
-								setAttributes( { captionTextColor: newValue } );
-							} }
-							label={ __( 'Text Color', 'photo-block' ) }
-							defaultColors={ photoBlock.palette }
-							defaultColor={ 'transparent' }
-							slug={ 'text-color-caption' }
-						/>
+						{
+							'overlay' !== captionPosition && (
+								<ColorPickerControl
+									value={ captionTextColor }
+									key={ 'text-color-caption' }
+									onChange={ ( slug, newValue ) => {
+										setAttributes( { captionTextColor: newValue } );
+									} }
+									label={ __( 'Text Color', 'photo-block' ) }
+									defaultColors={ photoBlock.palette }
+									defaultColor={ 'transparent' }
+									slug={ 'text-color-caption' }
+								/>
+							)
+						}
+						{
+							'overlay' === captionPosition && (
+								<ColorPickerControl
+									value={ captionTextColorOverlay }
+									key={ 'text-color-caption-overlay' }
+									onChange={ ( slug, newValue ) => {
+										setAttributes( { captionTextColorOverlay: newValue } );
+									} }
+									label={ __( 'Text Color', 'photo-block' ) }
+									defaultColors={ photoBlock.palette }
+									defaultColor={ 'transparent' }
+									slug={ 'text-color-caption-overlay' }
+								/>
+							)
+						}
 						<ColorPickerControl
 							value={ captionLinkColor }
 							key={ 'link-color-caption' }
