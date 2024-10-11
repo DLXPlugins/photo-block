@@ -76,48 +76,41 @@ const LoadingScreen = ( props ) => {
 	 * Set up the initial screen.
 	 */
 	useEffect( () => {
-		// Determine if we're in a query loop based on context.
-		const { query, queryId, postId } = context;
-
 		// If vars aren't undefined or null, set data screen as we're in a query loop.
-		if ( typeof query !== 'undefined' && typeof postId !== 'undefined' ) {
-			if ( 0 !== postId && 'none' !== query && 'undefined' !== query ) {
-				setInQueryLoop( true );
-				/**
-				 * Filter: Determine if we're in the premium version of the plugin.
-				 */
-				const isPremium = applyFilters( 'dlx_photo_block_is_premium', false );
-				if ( ! isPremium ) {
-					// Check if attribute imageData is found, and if so, set the image data.
-					if ( attributes.imageData.id !== 0 && attributes.imageData.id !== '' ) {
-						setImageData( attributes.imageData );
-					}
-					setAttributes( { photoMode: 'featuredImage' } );
-					setPhotoMode( 'featurdImage' );
-					setDataScreen( 'featuredImage' );
-					setScreen( 'featuredImage' );
-
-					
-					return;
+		if ( inQueryLoop ) {
+			/**
+			 * Filter: Determine if we're in the premium version of the plugin.
+			 */
+			const isPremium = applyFilters( 'dlx_photo_block_is_premium', false );
+			if ( ! isPremium ) {
+				// Check if attribute imageData is found, and if so, set the image data.
+				if ( attributes.imageData.id !== 0 && attributes.imageData.id !== '' ) {
+					setImageData( attributes.imageData );
 				}
+				setAttributes( { photoMode: 'featuredImage' } );
+				setPhotoMode( 'featurdImage' );
+				setDataScreen( 'featuredImage' );
+				setScreen( 'featuredImage' );
 
-				/**
-				 * Action: Load the initial screen if in a data request.
-				 *
-				 * @param {Object}  props     - The block props.
-				 * @param {boolean} isPremium - Whether or not the user is using the premium version.
-				 * @param {Object}  query     - The query object.
-				 */
-				doAction(
-					'dlx_photo_block_loading_screen_data_premium',
-					{
-						...props,
-						isPremium,
-						query,
-					}
-				);
 				return;
 			}
+
+			/**
+			 * Action: Load the initial screen if in a data request.
+			 *
+			 * @param {Object}  props     - The block props.
+			 * @param {boolean} isPremium - Whether or not the user is using the premium version.
+			 * @param {Object}  query     - The query object.
+			 */
+			doAction(
+				'dlx_photo_block_loading_screen_data_premium',
+				{
+					...props,
+					isPremium,
+					query,
+				}
+			);
+			return;
 		}
 
 		// Set the photo mode.

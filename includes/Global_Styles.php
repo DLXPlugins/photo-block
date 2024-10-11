@@ -486,7 +486,7 @@ class Global_Styles {
 	 */
 	public static function register_post_type() {
 		$labels = array(
-			'name'               => __( 'Global Styles', 'photo-block' ),
+			'name'               => __( 'Global Styles (Photo Block)', 'photo-block' ),
 			'singular_name'      => __( 'Global Styles', 'photo-block' ),
 			'add_new'            => __( 'Add New', 'photo-block' ),
 			'add_new_item'       => __( 'Add New Global Style', 'photo-block' ),

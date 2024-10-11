@@ -24,20 +24,19 @@
 	"providesContext": {
 		"photo-block/uniqueId": "uniqueId",
 		"photo-block/photoMode": "photoMode",
-		"photo-block/dataSource": "dataSource",
-		"photo-block/dataImageSource": "dataImageSource",
-		"photo-block/dataImageSourceCustomField": "dataImageSourceCustomField",
-		"photo-block/dataImageSourceAuthorMeta": "dataImageSourceAuthorMeta",
 		"photo-block/dataHasFallbackImage": "dataHasFallbackImage",
 		"photo-block/dataFallbackImageSize": "dataFallbackImageSize",
 		"photo-block/dataFallbackImage": "dataFallbackImage",
-		"photo-block/dataPostType": "dataPostType",
-		"photo-block/dataPostId": "dataPostId",
 		"photo-block/imageSize": "imageSize",
-		"photo-block/globalStyle": "globalStyle"
+		"photo-block/globalStyle": "globalStyle",
+		"photo-block/inQueryLoop": "inQueryLoop"
 	},
 	"attributes": {
 		"preview": {
+			"type": "boolean",
+			"default": false
+		},
+		"inQueryLoop": {
 			"type": "boolean",
 			"default": false
 		},

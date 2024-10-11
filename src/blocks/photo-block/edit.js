@@ -10,6 +10,7 @@ import { doAction } from '@wordpress/hooks';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 
 import { blockStore } from '../../store';
@@ -39,6 +40,26 @@ const PhotoBlock = ( props ) => {
 
 	const innerBlockCount = useSelect( ( coreSelect ) => coreSelect( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
 
+	const isInsideQueryLoop = useSelect( ( blockSelect ) => {
+		const supportedBlocks = [
+			'core/query',
+			'generateblocks/query-loop',
+			'kadence/query',
+		];
+		const { getBlockParents, getBlockName } = blockSelect(blockEditorStore);
+		const parentBlocks = getBlockParents( clientId );
+		const found = parentBlocks.some( ( blockId ) => {
+			const blockName = getBlockName( blockId );
+			return supportedBlocks.includes( blockName );
+		} );
+
+		if ( found ) {
+			return true;
+		}
+
+		return false;
+	}, [ clientId ] );
+
 	const newUniqueId = 'photo-block-' + clientId.substr( 2, 9 ).replace( '-', '' );
 	const [ resizeListener, { width } ] = useResizeObserver();
 	let modifierClassNames;
@@ -55,10 +76,9 @@ const PhotoBlock = ( props ) => {
 	 */
 	useEffect( () => {
 		// Check context to see if we're in a query loop.
-		const pid = context?.postId || null;
-		const queryLoop = context.query;
-		if ( 0 !== pid && null !== pid && 'none' !== queryLoop && typeof queryLoop !== 'undefined' ) {
+		if ( isInsideQueryLoop ) {
 			setInQueryLoop( true );
+			setAttributes( { inQueryLoop: true } );
 		}
 
 		let realUniqueId = null;

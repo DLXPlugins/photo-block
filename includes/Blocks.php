@@ -582,7 +582,7 @@ class Blocks {
 		ob_start();
 
 		// First, let's determine if we're in a query loop.
-		$is_in_query_loop = Functions::is_in_query_loop( $block );
+		$is_in_query_loop = (bool) $attributes['inQueryLoop'] ?? false;
 		$context          = $block->context ?? array();
 		$current_post_id  = $block->context['postId'] ?? 0;
 
