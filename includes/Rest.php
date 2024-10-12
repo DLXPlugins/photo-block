@@ -125,6 +125,19 @@ class Rest {
 			)
 		);
 
+		// Register a route for searching posts/pages.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/search/pages',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'publish_posts' );
+				},
+				'callback'            => array( static::class, 'rest_get_pages' ),
+			)
+		);
+
 		// Register a route for saving alt-text for image.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
@@ -535,5 +548,59 @@ class Rest {
 
 		// Return the image URL and ID.
 		return $attachment_data;
+	}
+
+	/**
+	 * Returns the 20 most recent posts for the user
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 **/
+	public static function rest_get_pages( $request ) {
+		$search = sanitize_text_field( urldecode( $request->get_param( 'search' ) ) );
+
+		$post_types_to_search = array(
+			'post',
+			'page',
+		);
+		/**
+		 * Filter the post types to search.
+		 *
+		 * @param array $post_types_to_search The post types to search.
+		 */
+		$post_types_to_search = apply_filters( 'photo_block_rest_post_types_to_search', $post_types_to_search );
+
+		// Get search query.
+		$args = array(
+			'post_type'      => $post_types_to_search,
+			'post_status'    => 'publish',
+			'posts_per_page' => 20,
+			's'              => $search,
+			'orderby'        => 'relevance',
+			'order'          => 'DESC',
+		);
+		if ( empty( $search ) ) {
+			$args['orderby'] = 'date';
+			$args['order']   = 'DESC';
+		}
+
+		// Perform Search Query.
+		$app_query = new \WP_Query( $args );
+
+		// Return array of found posts/pages.
+		$app_data = array();
+		if ( $app_query->have_posts() ) {
+			while ( $app_query->have_posts() ) {
+				$app_query->the_post();
+				$app_data[] = array(
+					'value'     => get_the_ID(),
+					'label'     => html_entity_decode( get_the_title() ),
+					'permalink' => get_the_permalink(),
+					'slug'      => get_post_field( 'post_name', get_the_ID() ),
+					'type'      => get_post_type(),
+				);
+			}
+		}
+
+		wp_send_json_success( $app_data );
 	}
 }
