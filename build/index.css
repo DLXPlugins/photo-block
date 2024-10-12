@@ -1617,7 +1617,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
   /* Set color for Text elements */
   color: var(--photo-block-caption-text-color, inherit);
   font-family: var(--photo-block-caption-font-family, inherit);
-  font-size: var(--photo-block-caption-font-size, inherit);
+  font-size: var(--photo-block-caption-font-size, 16px);
   font-weight: var(--photo-block-caption-font-weight, inherit);
   line-height: var(--photo-block-caption-line-height, inherit);
   text-transform: var(--photo-block-caption-text-transform, inherit);
