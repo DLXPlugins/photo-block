@@ -31,6 +31,7 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 		captionTextFontFamily,
 		captionHeadingsFontFamily,
 		captionBaseFontSize,
+		overlayDisplayOnHover,
 		overlayBackgroundType,
 		overlayBackgroundColor,
 		overlayBackgroundColorHover,
@@ -122,10 +123,14 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 
 	// Set overlay background color if gradient.
 	if ( 'overlay' === captionPosition && 'solid' === overlayBackgroundType ) {
+		if ( ! overlayDisplayOnHover ) {
+			styles += `
+				${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
+					--photo-block-caption-overlay-background-color: ${ overlayBackgroundColor };
+				}
+			`;
+		}
 		styles += `
-			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:before {
-				--photo-block-caption-overlay-background-color: ${ overlayBackgroundColor };
-			}
 			${ useClass ? '.' : '#' }${ uniqueId }.dlx-photo-block__caption-overlay:hover:before {
 				--photo-block-caption-overlay-background-color-hover: ${ overlayBackgroundColorHover };
 			}

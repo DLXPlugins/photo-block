@@ -798,6 +798,7 @@ var getCaptionStyles = function getCaptionStyles(attributes, deviceType, uniqueI
     captionTextFontFamily = attributes.captionTextFontFamily,
     captionHeadingsFontFamily = attributes.captionHeadingsFontFamily,
     captionBaseFontSize = attributes.captionBaseFontSize,
+    overlayDisplayOnHover = attributes.overlayDisplayOnHover,
     overlayBackgroundType = attributes.overlayBackgroundType,
     overlayBackgroundColor = attributes.overlayBackgroundColor,
     overlayBackgroundColorHover = attributes.overlayBackgroundColorHover,
@@ -834,7 +835,10 @@ var getCaptionStyles = function getCaptionStyles(attributes, deviceType, uniqueI
 
   // Set overlay background color if gradient.
   if ('overlay' === captionPosition && 'solid' === overlayBackgroundType) {
-    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-background-color: ").concat(overlayBackgroundColor, ";\n\t\t\t}\n\t\t\t").concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-background-color-hover: ").concat(overlayBackgroundColorHover, ";\n\t\t\t}\n\t\t");
+    if (!overlayDisplayOnHover) {
+      styles += "\n\t\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t\t--photo-block-caption-overlay-background-color: ").concat(overlayBackgroundColor, ";\n\t\t\t\t}\n\t\t\t");
+    }
+    styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:hover:before {\n\t\t\t\t--photo-block-caption-overlay-background-color-hover: ").concat(overlayBackgroundColorHover, ";\n\t\t\t}\n\t\t");
 
     // The overlay background container needs to match overlay border radius in order to simulate masking.
     styles += "\n\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, ".dlx-photo-block__caption-overlay:before {\n\t\t\t\t--photo-block-caption-overlay-border-radius: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(overlayBorderRadius, deviceType), ";\n\t\t\t}\n\t\t");
@@ -1436,7 +1440,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
         overlayBackgroundType: 'image'
       });
     }
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Image', 'photo-block')))), 'solid' === overlayBackgroundType && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_ColorPicker__WEBPACK_IMPORTED_MODULE_16__["default"], {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Image', 'photo-block')))), 'solid' === overlayBackgroundType && /*#__PURE__*/React.createElement(React.Fragment, null, !overlayDisplayOnHover && /*#__PURE__*/React.createElement(_components_ColorPicker__WEBPACK_IMPORTED_MODULE_16__["default"], {
     value: overlayBackgroundColor,
     key: 'overlay-background-color',
     onChange: function onChange(slug, newValue) {
@@ -11153,6 +11157,7 @@ var UploadTypes = function UploadTypes(props) {
       console.error('Error fetching image data:', error);
     });
   };
+  console.log(imageData === null || imageData === void 0 ? void 0 : imageData.id);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-types__container"
   }, imageData.url !== '' && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -11175,6 +11180,7 @@ var UploadTypes = function UploadTypes(props) {
     allowedTypes: "image",
     mode: "browse",
     multiple: false,
+    value: (imageData === null || imageData === void 0 ? void 0 : imageData.id) || 0,
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Please select a Photo', 'photo-block'),
     render: function render(_ref2) {
       var open = _ref2.open;

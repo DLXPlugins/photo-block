@@ -550,22 +550,26 @@ const PhotoCaptionBlock = ( props ) => {
 					</BaseControl>
 					{ 'solid' === overlayBackgroundType && (
 						<>
-							<ColorPickerControl
-								value={ overlayBackgroundColor }
-								key={ 'overlay-background-color' }
-								onChange={ ( slug, newValue ) => {
-									setAttributes( { overlayBackgroundColor: newValue } );
-								} }
-								onOpacityChange={ ( newOpacity ) => {
-									setAttributes( { overlayBackgroundColorOpacity: newOpacity } );
-								} }
-								label={ __( 'Overlay Color', 'photo-block' ) }
-								defaultColors={ photoBlock.palette }
-								defaultColor={ 'rgba(0,0,0,0.5)' }
-								slug={ 'overlay-background-color' }
-								alpha={ true }
-								opacity={ overlayBackgroundColorOpacity }
-							/>
+							{
+								! overlayDisplayOnHover && (
+									<ColorPickerControl
+										value={ overlayBackgroundColor }
+										key={ 'overlay-background-color' }
+										onChange={ ( slug, newValue ) => {
+											setAttributes( { overlayBackgroundColor: newValue } );
+										} }
+										onOpacityChange={ ( newOpacity ) => {
+											setAttributes( { overlayBackgroundColorOpacity: newOpacity } );
+										} }
+										label={ __( 'Overlay Color', 'photo-block' ) }
+										defaultColors={ photoBlock.palette }
+										defaultColor={ 'rgba(0,0,0,0.5)' }
+										slug={ 'overlay-background-color' }
+										alpha={ true }
+										opacity={ overlayBackgroundColorOpacity }
+									/>
+								)
+							}
 							<ColorPickerControl
 								value={ overlayBackgroundColorHover }
 								key={ 'overlay-background-color-hover' }

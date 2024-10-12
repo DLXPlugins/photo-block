@@ -310,7 +310,7 @@ const UploadTypes = ( props ) => {
 				console.error( 'Error fetching image data:', error );
 			} );
 	};
-
+console.log( imageData?.id );
 	return (
 		<>
 			<div className="dlx-photo-block__upload-types__container">
@@ -343,6 +343,7 @@ const UploadTypes = ( props ) => {
 						allowedTypes="image"
 						mode="browse"
 						multiple={ false }
+						value={ imageData?.id || 0 }
 						title={ __( 'Please select a Photo', 'photo-block' ) }
 						render={ ( { open } ) => (
 							<Button
