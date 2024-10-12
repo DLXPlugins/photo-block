@@ -310,7 +310,6 @@ const UploadTypes = ( props ) => {
 				console.error( 'Error fetching image data:', error );
 			} );
 	};
-console.log( imageData?.id );
 	return (
 		<>
 			<div className="dlx-photo-block__upload-types__container">

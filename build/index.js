@@ -11157,7 +11157,6 @@ var UploadTypes = function UploadTypes(props) {
       console.error('Error fetching image data:', error);
     });
   };
-  console.log(imageData === null || imageData === void 0 ? void 0 : imageData.id);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-types__container"
   }, imageData.url !== '' && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
