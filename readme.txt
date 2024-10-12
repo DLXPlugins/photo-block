@@ -9,31 +9,31 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/DLXPlugins
 
-Add a fully-featured photo block to the Block Editor, with advanced caption support.
+Enhance your Block Editor with a fully customizable photo block, featuring advanced caption control, responsive styling, and global styles.
 
 == Description ==
 
-Photo Block allows you to use an advanced photo block in the block editor. It supports many properties, such as:
+Photo Block empowers your WordPress site with a versatile, fully-featured photo block that goes beyond the basics. Easily customize your photos with advanced layout options, responsive design, eye-catching caption overlays, and global styles. Whether you're a blogger, photographer, or website designer, Photo Block provides the tools to create stunning image displays with minimal effort.
 
-1. Set the image size, padding, margin, and style for device breakpoints.
-2. Set a caption with advanced layout and typography settings.
-3. Set a caption to overlay and add a hover effect to your photo.
-4. Align a caption to the top, bottom, or overlay the photo.
-5. Advanced cropping and repositioning of the photo.
-6. Add an image via upload, download from a URL, or select from the media library.
-7. Global Styles allow you to save your hard work and apply it to other photo blocks.
-8. Query Loop block support with the block acting as a featured image.
+1. **Responsive Styling**: Customize image sizes, padding, margins, border, and style settings for different screen sizes—ensuring your photos look perfect on any device.
+2. **Advanced Caption Control**: A fully featured caption block is included, allowing you to position and overlay captions to match your photo style.
+3. **Smart Cropping**: Crop your images to any aspect ratio you desire with the built-in image cropping tool.
+5. **Flexible Image Sources**: Upload, link via URL, or choose from your media library. Photo Block supports multiple image sources for maximum convenience.
+6. **Global Styles**: Save your design settings and easily apply them to other photo blocks, which allows you to maintain a consistent look across your site. With global styles, you can add the block, upload the photo, and apply advanced customization in just 4 clicks.
+7. **Query Loop Support**: Seamlessly integrate Photo Block into a Query Loop block as a featured image for dynamic content.
 
 ## Quick Links:
 
-* <a href="https://dlxplugins.com/plugins/photo-block/">Photo Block Home</a>
-* <a href="https://docs.dlxplugins.com/v/photo-block/">Photo Block Documentation</a>
-* <a href="https://dlxplugins.com/support/">Photo Block Support</a>
-* <a href="https://github.com/DLXPlugins/photo-block">Source Code Including Uncompressed Scripts</a>
+* <a href="https://dlxplugins.com/plugins/photo-block/">Plugin Home</a>
+* <a href="https://docs.dlxplugins.com/v/photo-block/">Documentation</a>
+* <a href="https://dlxplugins.com/support/">Support</a>
+* <a href="https://github.com/DLXPlugins/photo-block">Source Code</a> (Including Uncompressed Scripts)
 
 ## Development:
 
-Development happens on GitHub. Please <a href="https://github.com/DLXPlugins/photo-block">check out the GitHub code repository for AlertsDLX</a>.
+Development happens on GitHub. <a href="https://github.com/DLXPlugins/photo-block">Check out the GitHub code repository for Photo Block</a>.
+
+To assist or help this plugin financially, <a href="https://github.com/sponsors/DLXPlugins">please consider a GitHub sponsorship</a>.
 
 ## Libraries and Credits
 
@@ -46,28 +46,33 @@ Development happens on GitHub. Please <a href="https://github.com/DLXPlugins/pho
 
 == Installation ==
 
-1. Search for Photo Block on the Add Plugins screen.
-2. Install and activate.
+1. Search for “Photo Block” on the Add Plugins screen in WordPress.
+2. Install and activate the plugin from your admin dashboard.
+3. Once activated, use the block in any page or post by adding "Photo Block" from the block selector.
 
 > <a href="https://docs.dlxplugins.com/v/photo-block/">In-depth Documentation</a> - Please check out our thorough documentation ❤️️
 
 == Frequently Asked Questions ==
 
-= How does this block differs from the main image block? =
+= How does this block differs from the core image block? =
 
-Photo Block marries the image block, other advanced image blocks, and only has the features you need for a fully featured photo block.
-
-You can set layout settings, dimensions, and even set a caption overlay, all from within the same block.
-
-With Global Styles, you can configure a photo block to your tastes, and replicate the style across other photo blocks.
+Photo Block offers more advanced customization options like responsive layouts, a fully-featurd caption, caption overlays, and the ability to reuse styles across multiple blocks using global styles. It’s built for power users who want more control over their image presentation.
 
 = Does this work with data? =
 
-It does work within the Query Loop block, and can act as a featured image. For other data needs, there is a plan to add data as a separate add-on.
+Photo Block works within the Query Loop block as a featured image.
+
+As of release, it is compatible with:
+
+* Core Query Block
+* GenerateBlocks Query Loop
+* Kadence Query Loop
+
+If you have a specific block suite query loop you'd like to see Photo Block integrated with, please let us know!
 
 = Does this work with the Classic Editor? =
 
-No, this plugin is specificalliy for the block editor.
+No, this plugin is specificalliy built for the block editor.
 
 = Does it work on mobile devices? =
 
@@ -75,11 +80,19 @@ You can set different styles for different device breakpoints.
 
 = How can I get help? =
 
-Please leave a note on <a href="https://dlxplugins.com/support/">our support page</a>.
+Please leave a detailed note on <a href="https://dlxplugins.com/support/">our support page</a>.
 
 = Are you planning on integrating with other services? =
 
-Yes, we are planning on integrating with other services in the future depending on this block's popularity.
+Yes, we are planning on integrating with other services in the future depending on this block's popularity and usage.
+
+= Are you planning on adding any premium features? =
+
+Yes, we are planning on adding premium features in the future depending on this block's popularity and usage. The goal at this time is to keep the plugin free, open-source, and address any bugs or feature requests that come up.
+
+= I have a feature request. =
+
+Please leave a detailed note on <a href="https://dlxplugins.com/support/">our support page</a>.
 
 == Changelog ==
 
