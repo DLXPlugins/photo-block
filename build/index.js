@@ -1379,7 +1379,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       });
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Display the overlay only when the image is hovered over.', 'photo-block')
-  }), overlayDisplayAnimation && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.SelectControl, {
+  }), overlayDisplayOnHover && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Display Animation', 'photo-block'),
     value: overlayDisplayAnimation,
     options: [{

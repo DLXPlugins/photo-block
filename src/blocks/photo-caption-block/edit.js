@@ -485,7 +485,7 @@ const PhotoCaptionBlock = ( props ) => {
 						help={ __( 'Display the overlay only when the image is hovered over.', 'photo-block' ) }
 					/>
 					{
-						overlayDisplayAnimation && (
+						overlayDisplayOnHover && (
 							<SelectControl
 								label={ __( 'Display Animation', 'photo-block' ) }
 								value={ overlayDisplayAnimation }
