@@ -94,6 +94,14 @@ Yes, we are planning on adding premium features in the future depending on this 
 
 Please leave a detailed note on <a href="https://dlxplugins.com/support/">our support page</a>.
 
+== Screenshots ==
+1. Adding a photo with Photo Block is easy in the block editor.
+2. Responsive controls such as padding, margins, and border settings are available.
+3. Advanced responsive sizing controls with object fit will ensure the image looks the way you want with minimal effort.
+4. Global Styles allow you to save your design settings and easily apply them to other photo blocks.
+5. The caption block is fully featured, allowing you to position and overlay captions to match your photo style.
+6. The caption block features responsive styles, overlay options, typography settings, and more.
+
 == Changelog ==
 
 = 0.0.42 =
