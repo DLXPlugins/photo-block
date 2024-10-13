@@ -152,7 +152,7 @@ const GlobalStylesSaveModal = ( props ) => {
 		} );
 
 		// If there is no caption block, but there are attributes to apply, create one.
-		if ( ! captionBlock && ( captionAttributes || captionAttributes.length > 0 ) ) {
+		if ( ! captionBlock && ( Object.keys( globalStyle.content.captionAttributes ).length > 1 || globalStyle.content.captionAttributes.length > 1 ) ) {
 			const newBlocks = createBlock( 'dlxplugins/photo-caption-block', captionAttributes );
 			insertBlock( newBlocks, undefined, currenBlockClientId );
 		}
