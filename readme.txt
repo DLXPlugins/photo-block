@@ -96,11 +96,21 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Screenshots ==
 1. Adding a photo with Photo Block is easy in the block editor.
-2. Responsive controls such as padding, margins, and border settings are available.
-3. Advanced responsive sizing controls with object fit will ensure the image looks the way you want with minimal effort.
-4. Global Styles allow you to save your design settings and easily apply them to other photo blocks.
-5. The caption block is fully featured, allowing you to position and overlay captions to match your photo style.
-6. The caption block features responsive styles, overlay options, typography settings, and more.
+2. Crop, replace, and adjust the accessibility options for your photo.
+3. Global Styles allow you to save your design settings and easily apply them to other photo blocks.
+4. The caption block is fully featured, allowing you to position and overlay captions to match your photo style.
+5. Select a global style, adjust the images's title and alt attributes, sand select the image size.
+6. Adjust the image's background color, opacity, blur, and drop shadow.
+7. Select form 26 different CSS styles using CSS Gram.
+8. Adjust the padding, margin, and border of the photo.
+9. Set sizing for the photo, and set the object fit (if desired).
+10. Set the caption overlay's positio, and enable an overlay on hover.
+11. Set the overlay type to None, Solid, Gradient, or Image.
+12. Set the caption's typography, background color, and text color.
+13. Set the caption's padding, margin, and border.
+14. Set the caption's sizing using available block options.
+15. Global Styles panel, which allows you to save and edit global styles.
+16. Save or overwrite a global style using the Global Styles modal.
 
 == Changelog ==
 
