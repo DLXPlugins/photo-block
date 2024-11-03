@@ -114,6 +114,7 @@ class Functions {
 			'image/png',
 			'image/gif',
 			'image/webp',
+			'image/avif',
 		);
 		/**
 		 * Filter the valid mime types for the photo block.
