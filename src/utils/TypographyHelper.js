@@ -217,44 +217,46 @@ export function geHierarchicalPlaceholderValue( props, screenSize, value, type, 
 }
 
 /**
- * Get a value placeholder based on hierarchy. If the value is not set, get the value from the parent.
+ * Get the hierarchical value unit.
  *
- * @param {Object} props      Values object.
- * @param {string} screenSize mobile|tablet|desktop.
- * @param {string} value      Current value.
- * @param {string} type       Type of value (fontSizeUnit, etc.).
- * @param {string} subType    Sub type of value (top: width, unit, color).
+ * @param {Object}  values     The values object.
+ * @param {string}  device     The device type.
+ * @param {string}  value      The value to check.
+ * @param {string}  valueKey   The value key to check.
+ * @param {boolean} returnUnit Whether to return the unit.
  *
- * @return {string} Value default or hierarchical value.
+ * @return {string} The hierarchical value unit.
  */
-export function getHierarchicalValueUnit( props, screenSize, value, type, subType = '' ) {
-	// Check mobile screen size.
-	if ( 'mobile' === screenSize && null === value ) {
-		if ( subType && props.tablet[ type ][ subType ] !== null ) {
-			return props.tablet[ type ][ subType ];
-		} else if ( subType && props.desktop[ type ][ subType ] !== null ) {
-			return props.desktop[ type ][ subType ];
-		} else if ( props.tablet[ type ] !== null ) {
-			return props.tablet[ type ];
-		} else if ( props.desktop[ type ] !== null ) {
-			return props.desktop[ type ];
+export const getHierarchicalValueUnit = ( values, device, value, valueKey ) => {
+	// If value is directly provided and valid, return it.
+	if ( value && '' !== value ) {
+		return value;
+	}
+
+	// Get device-specific value.
+	const deviceValue = values[ device ]?.[ valueKey ];
+	if ( deviceValue && '' !== deviceValue ) {
+		return deviceValue;
+	}
+
+	// Fallback hierarchy: Desktop -> Tablet -> Mobile.
+	const deviceHierarchy = {
+		mobile: [ 'desktop', 'tablet' ],
+		tablet: [ 'desktop', 'mobile' ],
+		desktop: [ 'tablet', 'mobile' ],
+	};
+
+	// Check hierarchy for the current device.
+	for ( const fallbackDevice of deviceHierarchy[ device ] ) {
+		const fallbackValue = values[ fallbackDevice ]?.[ valueKey ];
+		if ( fallbackValue && '' !== fallbackValue ) {
+			return fallbackValue;
 		}
 	}
 
-	if ( 'tablet' === screenSize && null === value ) {
-		if ( subType && props.desktop[ type ][ subType ] !== null ) {
-			return props.desktop[ type ][ subType ];
-		} else if ( props.desktop[ type ] !== null ) {
-			return props.desktop[ type ];
-		}
-	}
-
-	if ( null === value || typeof value === 'undefined' ) {
-		return 'px';
-	}
-
-	return value;
-}
+	// Default to 'px' if no valid unit is found.
+	return 'px';
+};
 
 /**
  * Get a value based on hierarchy. If the value is not set, get the value from the parent.
