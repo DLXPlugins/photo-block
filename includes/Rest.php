@@ -371,11 +371,15 @@ class Rest {
 		// Get the Image data.
 		$image_attachment = Functions::get_image_data( $id, $size );
 		if ( empty( $image_attachment ) ) {
-			return new \WP_Error( 'no_image', __( 'No image was found.', 'photo-block' ), array( 'status' => 400 ) );
+			wp_send_json_error(
+				array(
+					'message' => __( 'No image was found.', 'photo-block' ),
+				)
+			);
 		}
 
 		// Return the image URL and ID.
-		return $image_attachment;
+		wp_send_json_success( $image_attachment );
 	}
 
 	/**
