@@ -67,64 +67,6 @@ registerPlugin(
 	}
 );
 
-const devices = [ 'desktop', 'tablet', 'mobile' ];
-
-registerPlugin(
-	'photo-block-print-global-styles',
-	{
-		render: () => {
-			const [ styles, setStyles ] = useState( '' );
-			const {
-				getGlobalStyles,
-				globalStyleRefresh,
-			} = useSelect( ( newSelect ) => {
-				return {
-					getGlobalStyles: newSelect( globalStylesStore ).getGlobalStyles,
-					globalStyleRefresh: newSelect( globalStylesStore ).getGlobalStyleRefresh(),
-				};
-			} );
-
-			useMemo( () => {
-				const globalStyles = getGlobalStyles();
-				if ( Object.keys( globalStyles ).length === 0 ) {
-					return;
-				}
-				let photoStyles = '';
-				const globalStylesCSS = Object.values( globalStyles ).map( ( globalStyle ) => {
-					const photoAttributes = globalStyle.content.photoAttributes;
-					const captionAttributes = globalStyle.content.captionAttributes;
-
-					devices.forEach( ( device ) => {
-						let deviceStyles = getStyles( photoAttributes, device, globalStyle.css_class, true );
-						deviceStyles += getStylesCaption( captionAttributes, device, globalStyle.css_class, true );
-
-						switch ( device ) {
-							case 'desktop':
-								deviceStyles = '@media (min-width: 1025px) {' + deviceStyles + '}';
-								break;
-							case 'tablet':
-								deviceStyles = '@media (min-width: 768px) and (max-width: 1024px) {' + deviceStyles + '}';
-								break;
-							case 'mobile':
-								deviceStyles = '@media (max-width: 767px) {' + deviceStyles + '}';
-								break;
-						}
-						photoStyles += deviceStyles;
-					} );
-				} );
-				setStyles( photoStyles );
-			}, [ getGlobalStyles, globalStyleRefresh ] );
-
-			// Don't return anything if no global styles.
-			if ( '' === styles ) {
-				return null;
-			}
-
-			return <style>{ styles }</style>;
-		},
-	}
-);
-
 const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 	const { name } = blockType;
 	// Get attributes from settings.

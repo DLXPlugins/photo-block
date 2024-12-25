@@ -1,7 +1,7 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import { useResizeObserver } from '@wordpress/compose';
@@ -24,6 +24,8 @@ import CropScreen from '../../screens/Crop';
 import LoadingScreen from '../../screens/Loading';
 import FeaturedImageScreen from '../../screens/FeaturedImageEdit';
 import globalStylesStore from '../../store/global-styles';
+import getStyles from './block-styles';
+import getStylesCaption from '../photo-caption-block/block-styles';
 
 // For storing unique IDs.
 const uniqueIds = [];
@@ -297,9 +299,41 @@ const PhotoBlock = ( props ) => {
 		</>
 	);
 
+	const {
+		getGlobalStyles,
+		globalStyleRefresh,
+	} = useSelect((select) => ({
+		...select(globalStylesStore),
+		getGlobalStyles: select(globalStylesStore).getGlobalStyles,
+		globalStyleRefresh: select(globalStylesStore).getGlobalStyleRefresh(),
+	}));
+
+	const blockStyles = useMemo(() => {
+		const globalStyles = getGlobalStyles();
+		if (Object.keys(globalStyles).length === 0) {
+			return '';
+		}
+
+		let photoStyles = '';
+		Object.values(globalStyles).forEach((globalStyle) => {
+			const photoAttributes = globalStyle.content.photoAttributes;
+			const captionAttributes = globalStyle.content.captionAttributes;
+
+			['desktop', 'tablet', 'mobile'].forEach((device) => {
+				let deviceStyles = getStyles(photoAttributes, device, globalStyle.css_class, true);
+				deviceStyles += getStylesCaption(captionAttributes, device, globalStyle.css_class, true);
+				photoStyles += deviceStyles;
+			});
+		});
+		return photoStyles;
+	}, [getGlobalStyles, globalStyleRefresh]);
+
 	return (
 		<>
-			<div { ...blockProps }>{ block }</div>
+			{blockStyles && <style>{blockStyles}</style>}
+			<div {...blockProps}>
+				{block}
+			</div>
 		</>
 	);
 };
