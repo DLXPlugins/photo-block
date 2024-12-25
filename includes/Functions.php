@@ -1538,6 +1538,52 @@ class Functions {
 	}
 
 	/**
+	 * Get the unit from the parent.
+	 *
+	 * @param array  $props Props array.
+	 * @param string $screen_size Screen size.
+	 * @param string $sub_type Sub type.
+	 * @param string $default_unit Default unit.
+	 *
+	 * @return string Unit.
+	 */
+	public static function get_unit_from_parent( $props, $screen_size, $sub_type = '', $default_unit = '' ) {
+		$screen_sizes         = self::get_screen_sizes();
+		$screen_size_position = array_search( $screen_size, $screen_sizes, true );
+
+		// Get current unit.
+		$current_unit = null;
+
+		if ( isset( $props[ $screen_size ]['unit'] ) ) {
+			$current_unit = $props[ $screen_size ]['unit'];
+		} elseif ( isset( $props[ $screen_size ]['unit'][ $sub_type ] ) ) {
+			$current_unit = $props[ $screen_size ]['unit'][ $sub_type ];
+		}
+
+		if ( null === $current_unit ) {
+			$screen_size_position = $screen_size_position + 1;
+			while ( $screen_size_position < count( $screen_sizes ) ) {
+				if ( isset( $props[ $screen_sizes[ $screen_size_position ] ]['unit'] ) ) {
+					$current_unit = $props[ $screen_sizes[ $screen_size_position ] ]['unit'];
+				} elseif ( isset( $props[ $screen_sizes[ $screen_size_position ] ]['unit'][ $sub_type ] ) ) {
+					$current_unit = $props[ $screen_sizes[ $screen_size_position ] ]['unit'][ $sub_type ];
+				}
+				if ( null !== $current_unit ) {
+					break;
+				}
+				++$screen_size_position;
+			}
+		}
+
+		// If we still don't have a unit, return the default.
+		if ( null === $current_unit ) {
+			return $default_unit;
+		}
+
+		return $current_unit;
+	}
+
+	/**
 	 * Adds a unit value into CSS helper.
 	 *
 	 * @param CSS_Helper $css_helper    CSS Helper object.
@@ -1561,34 +1607,7 @@ class Functions {
 			$css_value     = self::get_hierarchical_placeholder_value( $props, $screen_size, $current_value, self::to_dashes( $type ), $sub_type, $css_var );
 
 			// Start getting the unit.
-			$css_unit = '';
-			if ( 'mobile' === $screen_size && '' !== $sub_type ) {
-				if ( $sub_type && null !== $props['tablet']['unit'][ $sub_type ] ) {
-					$css_unit = $props['tablet']['unit'][ $sub_type ];
-				} elseif ( $sub_type && null !== $props['desktop']['unit'][ $sub_type ] ) {
-					$css_unit = $props['desktop']['unit'][ $sub_type ];
-				} elseif ( null !== $props['tablet']['unit'] ) {
-					$css_unit = $props['tablet']['unit'];
-				} elseif ( null !== $props['desktop']['unit'] ) {
-					$css_unit = $props['desktop']['unit'];
-				}
-			}
-
-			// Get tablet.
-			if ( 'tablet' === $screen_size && '' !== $sub_type ) {
-				if ( $sub_type && null !== $props['desktop']['unit'][ $sub_type ] ) {
-					$css_unit = $props['desktop']['unit'][ $sub_type ];
-				} elseif ( null !== $props['desktop']['unit'] ) {
-					$css_unit = $props['desktop']['unit'];
-				}
-			}
-
-			// Get desktop.
-			if ( 'desktop' === $screen_size ) {
-				if ( null !== $props['desktop']['unit'] ) {
-					$css_unit = $props['desktop']['unit'];
-				}
-			}
+			$css_unit = self::get_unit_from_parent( $props, $screen_size, $sub_type, '' );
 
 			// Add to CSS Helper.
 			if ( ( '' === $css_value || '0' === $css_value ) ) {
