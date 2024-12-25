@@ -278,20 +278,24 @@ const UploadTypes = ( props ) => {
 			'GET'
 		)
 			.then( ( response ) => {
+				const { success, data } = response;
+				if ( ! success ) {
+					return;
+				}
 				setPhotoMode( 'photo' );
 				setScreen( 'edit' );
 				attributes.screen = 'edit';
 				setAttributes( {
-					imageData: response.data,
+					imageData: data.data,
 					screen: 'edit',
 					photoMode: 'photo',
 					hasCaption: true,
 				} );
-				setImageData( response.data );
+				setImageData( data.data );
 
-				if ( response.data.caption !== '' ) {
+				if ( data.data.caption !== '' ) {
 					const newBlock = createBlock( 'dlxplugins/photo-caption-block', {
-						captionManual: response.data.caption,
+						captionManual: data.data.caption,
 						uniqueId: blockUniqueId,
 					} );
 
