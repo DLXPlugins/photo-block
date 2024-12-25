@@ -109,6 +109,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		setImageData,
 		setJustCropped,
 		setHideCaption,
+		setPhotoMode,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const { createSuccessNotice, createInfoNotice } = useDispatch( 'core/notices' );
@@ -185,8 +186,20 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			'GET'
 		)
 			.then( ( response ) => {
-				setImageData( { ...imageData, ...response.data } );
-				setAttributes( { imageData: { ...imageData, ...response.data } } );
+				const { success, data } = response;
+				if ( ! success ) {
+					// Image could not be found.
+					// If a URL is found in imageData, set photoMode to url.
+					if ( imageData.url ) {
+						setAttributes( { photoMode: 'url' } );
+						setPhotoMode( 'url' );
+					}
+					// Set image ID to 0 in image data.
+					setImageData( { ...imageData, id: 0 } );
+					return;
+				}
+				setImageData( { ...imageData, ...data.data } );
+				setAttributes( { imageData: { ...imageData, ...data.data } } );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.
