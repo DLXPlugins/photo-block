@@ -13,7 +13,7 @@ Enhance your Block Editor with a fully customizable photo block, featuring advan
 
 == Description ==
 
-Photo Block adds a time-saving block to the Block Editor, allowing for advanced iamge customization with only a few clicks. Made for writers and layout builders, this block is extremely versatile with full caption support, responsive styling, and global styles.
+Photo Block adds a time-saving block to the Block Editor, allowing for advanced image customization with only a few clicks. Made for writers and layout builders, this block is extremely versatile with full caption support, responsive styling, and global styles.
 
 === Core Features ===
 
