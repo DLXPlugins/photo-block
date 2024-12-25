@@ -1,9 +1,9 @@
-=== Photo Block ===
+=== Photo Block - The Only Image Block You'll Need ===
 Contributors: ronalfy
-Tags: image block, blocks, photo block, image, photos
-Requires at least: 6.0.0
+Tags: image block, blocks, photo block, responsive block
+Requires at least: 6.5
 Tested up to: 6.7
-Stable tag: 1.0.1
+Stable tag: 1.0.5
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,13 +13,15 @@ Enhance your Block Editor with a fully customizable photo block, featuring advan
 
 == Description ==
 
-Photo Block empowers your WordPress site with a versatile, fully-featured photo block that goes beyond the basics. Easily customize your photos with advanced layout options, responsive design, eye-catching caption overlays, and global styles. Whether you're a blogger, photographer, or website designer, Photo Block provides the tools to create stunning image displays with minimal effort.
+Photo Block adds a time-saving block to the Block Editor, allowing for advanced iamge customization with only a few clicks. Made for writers and layout builders, this block is extremely versatile with full caption support, responsive styling, and global styles.
 
-1. **Responsive Styling**: Customize image sizes, padding, margins, border, and style settings for different screen sizes—ensuring your photos look perfect on any device.
+=== Core Features ===
+
+1. **Responsive Controls**: Customize image sizes, padding, margins, border, and style settings for different screen sizes—ensuring your photos look perfect on any device.
 2. **Advanced Caption Control**: A fully featured caption block is included, allowing you to position and overlay captions to match your photo style.
-3. **Smart Cropping**: Crop your images to any aspect ratio you desire with the built-in image cropping tool.
-5. **Flexible Image Sources**: Upload, link via URL, or choose from your media library. Photo Block supports multiple image sources for maximum convenience.
-6. **Global Styles**: Save your design settings and easily apply them to other photo blocks, which allows you to maintain a consistent look across your site. With global styles, you can add the block, upload the photo, and apply advanced customization in just 4 clicks.
+3. **Intuitive Cropping**: Crop your image using built-in tools, setting the aspect ratio, rotation, and more.
+5. **Flexible Image Sources**: Upload directly from the block, use the WordPress media library, download from a URL, or provide a URL to an image.
+6. **Global Styles**: Global styles allow you to save your design settings and easily apply them to other photo blocks, which allows you to maintain a consistent look across your site. With global styles, you can add the block, upload the photo, and apply advanced customization in just 4 clicks.
 7. **Query Loop Support**: Seamlessly integrate Photo Block into a Query Loop block as a featured image for dynamic content.
 
 ## Quick Links:
@@ -114,6 +116,12 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.0.5 =
+* Released 2024-12-25
+* Bug fix: Fixing issue with units not displaying on the frontend or in the block editor.
+* Bug fix: Fixing issue with global styles not applying to the iframe when viewing a block as tablet or mobile in the block editor.
+* Bug fix: Copying an image from site to site was not working, so a check was added in to make sure the image mode is set to URL if an image ID isn't found.
+
 = 1.0.1 =
 * Released 2024-11-03
 * Ensuring compatibility with WP 6.7.
@@ -123,5 +131,5 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.0.1 =
-This release ensures compatibility with WordPress 6.7.
+= 1.0.5 =
+Bug fix: Fixing issue with units not displaying on the frontend or in the block editor. Fixing issue with global styles not applying to the iframe when viewing a block as tablet or mobile in the block editor.
