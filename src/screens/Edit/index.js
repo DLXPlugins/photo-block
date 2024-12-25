@@ -186,7 +186,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			'GET'
 		)
 			.then( ( response ) => {
-				const { success, data } = response;
+				const { success, data } = response.data;
 				if ( ! success ) {
 					// Image could not be found.
 					// If a URL is found in imageData, set photoMode to url.
@@ -198,8 +198,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					setImageData( { ...imageData, id: 0 } );
 					return;
 				}
-				setImageData( { ...imageData, ...data.data } );
-				setAttributes( { imageData: { ...imageData, ...data.data } } );
+				setImageData( { ...imageData, ...data } );
+				setAttributes( { imageData: { ...imageData, ...data } } );
 			} )
 			.catch( ( error ) => {
 				// todo: error checking/display.

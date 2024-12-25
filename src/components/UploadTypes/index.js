@@ -278,7 +278,7 @@ const UploadTypes = ( props ) => {
 			'GET'
 		)
 			.then( ( response ) => {
-				const { success, data } = response;
+				const { success, data } = response.data;
 				if ( ! success ) {
 					return;
 				}
@@ -286,16 +286,16 @@ const UploadTypes = ( props ) => {
 				setScreen( 'edit' );
 				attributes.screen = 'edit';
 				setAttributes( {
-					imageData: data.data,
+					imageData: data,
 					screen: 'edit',
 					photoMode: 'photo',
 					hasCaption: true,
 				} );
-				setImageData( data.data );
+				setImageData( data );
 
-				if ( data.data.caption !== '' ) {
+				if ( data.caption !== '' ) {
 					const newBlock = createBlock( 'dlxplugins/photo-caption-block', {
-						captionManual: data.data.caption,
+						captionManual: data.caption,
 						uniqueId: blockUniqueId,
 					} );
 
