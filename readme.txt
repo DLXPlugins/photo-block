@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.7
-Stable tag: 1.0.9
+Stable tag: 1.0.14
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -116,9 +116,11 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
-= 1.0.9 =
-* Released 2024-12-29
-* Bug fix: Fixed fatal JS error when block-level font-families are not set, which made inserting a caption impossible with some themes.
+= 1.0.14 =
+* Released 2025-01-07
+* Bug fix: Uploading in smaller columns didn't show a preview.
+* Bug fix: Cropping was causing a larger view area when loading an image.
+* Bug fix: Block icon previews were not displaying properly on .org.
 
 = 1.0.7 =
 * Released 2024-12-25
@@ -139,5 +141,5 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.0.9 =
-Bug fix: Fixed fatal JS error when block-level font-families are not set, which made inserting a caption impossible with some themes.
+= 1.0.14 =
+Fixing bugs with cropping, and uploading in smaller columns. Fixing block.json preview icons.
