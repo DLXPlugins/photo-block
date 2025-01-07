@@ -5,12 +5,14 @@
 	.dlx-photo-block__screen-edit-spinner {
 		width: 100%;
 		text-align: center;
-		display: flex;
 		flex-direction: column;
+		display: flex;
 		align-items: center;
 		justify-content: center;
+		max-height: 200px;
 	}
 	.dlx-photo-block__screen-edit-spinner__logo {
+		display: flex;
 		width: 100%;
 		text-align: center;
 		margin: 0 0 16px 0;
@@ -31,6 +33,7 @@
 }
 .dlx-photo-block__screen-edit {
 	width: 100%;
+	align-items: flex-start;
 }
 .aligncenter .dlx-photo-block__screen-edit {
 	justify-content: center;

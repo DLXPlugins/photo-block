@@ -2,30 +2,10 @@
  * This is the initial screen of the block. It is the first screen that the user sees when they add the block to the editor.
  */
 
-import { useContext } from '@wordpress/element';
 import {
 	InspectorControls,
 } from '@wordpress/block-editor';
-import {
-	Spinner,
-	PanelBody,
-	PanelRow,
-	RangeControl,
-	TextControl,
-	TextareaControl,
-	ButtonGroup,
-	Button,
-	ToggleControl,
-	Toolbar,
-	ToolbarItem,
-	ToolbarButton,
-	ToolbarGroup,
-	ToolbarDropdownMenu,
-	Popover,
-	PlaceHolder,
-	MenuGroup,
-	MenuItem,
-} from '@wordpress/components';
+import classnames from 'classnames';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import UploadTypes from '../../components/UploadTypes';
@@ -68,7 +48,17 @@ const InitialScreen = ( props ) => {
 				{ ( isUploading || isProcessingUpload || isUploadError ) && (
 					<UploadStatus blockUniqueId={ blockUniqueId } />
 				) }
-				<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } />
+				<div
+					className={
+						classnames(
+							{
+								'dlx-photo-block__is-uploading': isUploading || isProcessingUpload || isUploadError,
+							}
+						)
+					}
+				>
+					<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } />
+				</div>
 			</div>
 		</>
 	);

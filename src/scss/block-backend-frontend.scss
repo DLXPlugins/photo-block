@@ -654,6 +654,9 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
 	.dlx-photo-block__upload-target__container {
 		display: none !important;
 	}
+	.dlx-photo-block__is-uploading .dlx-photo-block__upload-target__container {
+		display: block !important;
+	}
 	.dlx-photo-block__upload-types-url__container {
 		display: grid;
 		grid-template-columns: 1fr;

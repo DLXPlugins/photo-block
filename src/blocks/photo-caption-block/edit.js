@@ -389,13 +389,17 @@ const PhotoCaptionBlock = ( props ) => {
 	useEffect( () => {
 		if ( blockLevelFontFamilies ) {
 			const themeFontFamilies = [];
-			const { theme } = blockLevelFontFamilies;
-			theme.forEach( ( font ) => {
-				themeFontFamilies.push( {
-					label: font.name,
-					value: font.fontFamily,
+			const { theme } = blockLevelFontFamilies; // This may be undefined.
+
+			if ( theme ) {
+				theme.forEach( ( font ) => {
+					themeFontFamilies.push( {
+						label: font.name,
+						value: font.fontFamily,
+					} );
 				} );
-			} );
+			}
+
 			const mergedFontFamilies = blockFontFamilies.concat( themeFontFamilies );
 			/**
 			 * Filter: Filter the font families available for the block.

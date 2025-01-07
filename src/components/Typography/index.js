@@ -154,7 +154,7 @@ const TypographyControl = ( props ) => {
 		};
 	};
 
-	const [ blockLevelFontFamilies ] = useSettings( 'typography.fontFamilies' );
+	const [ blockLevelFontFamilies ] = useSettings( 'typography.fontFamilies' ); // This may be undefined.
 	
 	const {
 		control,

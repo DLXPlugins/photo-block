@@ -3,11 +3,9 @@
  */
 import './editor.scss';
 
-import { Button } from '@wordpress/components';
+import { Button, Spinner } from '@wordpress/components';
 
 import { XCircle, Redo2 } from 'lucide-react';
-
-import { forwardRef, useContext } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
@@ -17,6 +15,7 @@ import { blockStore } from '../../store';
  * Upload Status component.
  *
  * @param {Object} props - Component props.
+ * @return {JSX.Element} The Upload Status component.
  */
 const UploadStatus = ( props ) => {
 	// Read in context values.

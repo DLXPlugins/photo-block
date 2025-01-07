@@ -590,16 +590,16 @@ const CropScreen = ( props ) => {
 		<>
 			{ localInspectorControls }
 			{ localToolbar }
-			<div className="dlx-photo-block__screen-edit">
+			<div
+				className="dlx-photo-block__screen-edit"
+				style={ {
+					maxWidth: '100%',
+					maxHeight: '200px',
+				} }
+			>
 				{ shouldShowLoading && (
 					<div
 						className="dlx-photo-block__screen-edit-spinner"
-						style={ {
-							minWidth: width,
-							minHeight: height,
-							maxWidth: '100%',
-							maxHeight: '100%',
-						} }
 					>
 						<h3>{ __( 'Loading Full Size Image', 'photo-block' ) }</h3>
 						<Spinner />

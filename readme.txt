@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.7
-Stable tag: 1.0.7
+Stable tag: 1.0.9
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -116,6 +116,10 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.0.9 =
+* Released 2024-12-29
+* Bug fix: Fixed fatal JS error when block-level font-families are not set, which made inserting a caption impossible with some themes.
+
 = 1.0.7 =
 * Released 2024-12-25
 * Hot fix: Fix applied in 1.0.5 for fixing copying made images in URL mode upon rendering.
@@ -135,5 +139,5 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.0.7 =
-Bug fix: Fix applied for issue with copying made images in URL mode upon rendering.
+= 1.0.9 =
+Bug fix: Fixed fatal JS error when block-level font-families are not set, which made inserting a caption impossible with some themes.
