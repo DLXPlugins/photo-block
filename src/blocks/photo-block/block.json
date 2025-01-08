@@ -103,7 +103,7 @@
 				"enabled": false
 			}
 		},
-		"photoBackgroundColor":{
+		"photoBackgroundColor": {
 			"type": "string",
 			"default": "#FFFFFF00"
 		},
@@ -360,7 +360,7 @@
 			"type": "boolean",
 			"default": false
 		},
-		"captionPosition":{
+		"captionPosition": {
 			"type": "string",
 			"default": "bottom"
 		},
@@ -536,7 +536,6 @@
 					},
 					"unitSync": true
 				}
-
 			}
 		},
 		"photoBorderRadius": {
