@@ -180,16 +180,24 @@ class Blocks {
 			);
 		}
 
+		// Get options.
+		$options = Options::get_options();
+
 		// Get localised vars to return for JS parsing.
 		$localized_vars = array(
-			'restUrl'                 => rest_url( 'dlxplugins/photo-block/v1' ),
-			'restNonce'               => wp_create_nonce( 'wp_rest' ),
-			'captionInnerBlocks'      => $caption_innerblocks_supported,
-			'imageSizes'              => Functions::get_all_image_sizes(),
-			'palette'                 => functions::get_theme_color_palette(),
-			'postTypes'               => $post_type_return,
-			'defaultImagePlacheolder' => Functions::get_plugin_url( 'assets/sample-image-ron-h-phoenix.jpg' ),
-			'blockPreviewImage'       => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
+			'restUrl'                                => rest_url( 'dlxplugins/photo-block/v1' ),
+			'restNonce'                              => wp_create_nonce( 'wp_rest' ),
+			'captionInnerBlocks'                     => $caption_innerblocks_supported,
+			'imageSizes'                             => Functions::get_all_image_sizes(),
+			'palette'                                => functions::get_theme_color_palette(),
+			'postTypes'                              => $post_type_return,
+			'defaultImagePlacheolder'                => Functions::get_plugin_url( 'assets/sample-image-ron-h-phoenix.jpg' ),
+			'blockPreviewImage'                      => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
+			'hideCaptionAppender'                    => (bool) $options['hideCaptionAppender'],
+			'screenshotOneAPIKey'                    => current_user_can( 'edit_others_posts' ) ? $options['screenshotOneAPIKey'] : '',
+			'screenshotOneAPIValid'                  => current_user_can( 'edit_others_posts' ) ? (bool) $options['screenshotOneAPIValid'] : false,
+			'screenshotOneDefaultImageFormat'        => $options['screenshotOneDefaultImageFormat'] ?? 'jpg',
+			'screenshotOneEnableAnimatedScreenshots' => (bool) $options['screenshotOneEnableAnimatedScreenshots'],
 		);
 
 		// Add inline script to detect user role.
@@ -197,6 +205,8 @@ class Blocks {
 			'canUploadFiles'       => current_user_can( 'upload_files' ), /* contributor and above */
 			'canSavePresets'       => current_user_can( 'edit_others_posts' ), /* author and above */
 			'canSetDefaultPresets' => current_user_can( 'edit_others_posts' ), /* editor and above */
+			'canModifySettings'    => current_user_can( 'edit_others_posts' ), /* editor and above */
+			'restNonce'            => wp_create_nonce( 'wp_rest' ),
 		);
 
 		/**
@@ -873,9 +883,9 @@ class Blocks {
 		$has_overlay = false;
 		if ( ! empty( $innerblocks_content ) && ! empty( $caption_markup ) && 'top' === $caption_position ) {
 			$image_markup = $caption_markup . $image_markup;
-		} elseif ( ! empty( $innerblocks_content )  && ! empty( $caption_markup ) && 'bottom' === $caption_position ) {
+		} elseif ( ! empty( $innerblocks_content ) && ! empty( $caption_markup ) && 'bottom' === $caption_position ) {
 			$image_markup = $image_markup . $caption_markup;
-		} elseif ( ! empty( $innerblocks_content )  && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
+		} elseif ( ! empty( $innerblocks_content ) && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
 			$has_overlay = true;
 		}
 

@@ -74,6 +74,9 @@ class PhotoBlock {
 		Blocks::run();
 		Global_Styles::run();
 		Rest::run();
+
+		add_action( 'admin_init', array( Options::class, 'register_settings' ) );
+		add_action( 'rest_api_init', array( Options::class, 'register_settings' ) );
 	}
 }
 
