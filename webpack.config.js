@@ -2,6 +2,7 @@ const path = require( 'path' );
 const defaultConfig = require( './node_modules/@wordpress/scripts/config/webpack.config' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
+const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
 module.exports = ( env ) => {
 	return [
 		{
@@ -20,6 +21,8 @@ module.exports = ( env ) => {
 				'dlx-react-crop': [ './node_modules/react-image-crop/dist/ReactCrop.css' ],
 				'dlx-filepond': [ './src/plugins/Filepond/index.js', './node_modules/filepond/dist/filepond.css' ],
 				'dlx-filepond-image-preview': [ './node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css' ],
+				'dlx-pb-admin': [ './src/admin/index.js' ],
+				'dlx-pb-admin-css': [ './src/scss/admin.scss' ],
 			},
 			mode: env.mode,
 			devtool: 'production' === env.mode ? false : 'source-map',
@@ -91,7 +94,7 @@ module.exports = ( env ) => {
 					},
 				],
 			},
-			plugins: [ new RemoveEmptyScriptsPlugin(), new MiniCssExtractPlugin() ],
+			plugins: [ new RemoveEmptyScriptsPlugin(), new MiniCssExtractPlugin(), new DependencyExtractionWebpackPlugin() ],
 		},
 	];
 };

@@ -1205,6 +1205,26 @@ class Functions {
 	}
 
 	/**
+	 * Return the URL to the admin screen
+	 *
+	 * @param string $tab     Tab path to load.
+	 * @param string $sub_tab Subtab path to load.
+	 *
+	 * @return string URL to admin screen. Output is not escaped.
+	 */
+	public static function get_settings_url( $tab = '', $sub_tab = '' ) {
+		$options_url = admin_url( 'options-general.php?page=photo-block' );
+		if ( ! empty( $tab ) ) {
+			$options_url = add_query_arg( array( 'tab' => sanitize_title( $tab ) ), $options_url );
+			if ( ! empty( $sub_tab ) ) {
+				$options_url = add_query_arg( array( 'subtab' => sanitize_title( $sub_tab ) ), $options_url );
+			}
+		}
+		return $options_url;
+	}
+
+
+	/**
 	 * Take a _ separated field and convert to camelcase.
 	 *
 	 * @param string $field Field to convert to camelcase.

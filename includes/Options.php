@@ -34,26 +34,6 @@ class Options {
 	private static $setting_registered = false;
 
 	/**
-	 * Register the settings.
-	 */
-	public static function register_settings() {
-		if ( ! self::$setting_registered ) {
-			register_setting(
-				'photo_block_options_group',
-				self::$options_key,
-				array(
-					'type'              => 'string',
-					'description'       => __( 'Config Photo Block options', 'photo-block' ),
-					'sanitize_callback' => array( static::class, 'sanitize_options' ),
-					'show_in_rest'      => true,
-					'default'           => self::get_defaults(),
-				)
-			);
-			self::$setting_registered = true;
-		}
-	}
-
-	/**
 	 * Get the options for Photo Block.
 	 *
 	 * @since 3.0.0
@@ -68,15 +48,12 @@ class Options {
 		if ( ! is_array( $options ) || empty( $options ) || true === $force ) {
 			$options = get_option( self::$options_key, array() );
 		}
-		if ( false === $options || empty( $options ) || ! is_string( $options ) ) {
+		if ( false === $options || empty( $options ) ) {
 			$options = self::get_defaults();
 		} else {
-			$options_decoded = json_decode( $options, true );
-			$options         = wp_parse_args( $options_decoded, self::get_defaults() );
+			$options = wp_parse_args( $options, self::get_defaults() );
 		}
-		if ( is_string( $options ) ) {
-			$options = json_decode( $options, true );
-		}
+		$options       = Functions::sanitize_array_recursive( $options );
 		self::$options = $options;
 
 		// Return a key if set.
@@ -103,27 +80,12 @@ class Options {
 		}
 
 		// Get into option format.
-		$new_options = array();
-		foreach ( $options as $index => $option_pair ) {
-			// This ensures that we can process REST requests (indexed array) or standard update option (associative array).
-			if ( is_array( $option_pair ) && is_numeric( $index ) ) {
-				// Get array key.
-				$key                 = sanitize_key( array_key_first( $option_pair ) );
-				$value               = current( $option_pair );
-				$new_options[ $key ] = $value;
-			} else {
-				if ( is_bool( $option_pair ) ) {
-					$new_options[ $index ] = $option_pair ? 'true' : 'false';
-				} else {
-					$new_options[ $index ] = $option_pair;
-				}
-			}
-		}
+		$options = Functions::sanitize_array_recursive( $options );
 
 		// Get current options.
 		$current_options = self::get_options();
 		// Merge the current options with the new options.
-		$options = wp_parse_args( $new_options, $current_options );
+		$options = wp_parse_args( $options, $current_options );
 
 		// Remove any erronous values (values that are not flat).
 		$options = array_filter(
@@ -132,10 +94,6 @@ class Options {
 				return is_scalar( $value );
 			}
 		);
-
-		// Sanitize the options.
-		$options = Functions::sanitize_array_recursive( $options );
-		$options = \wp_json_encode( $options );
 
 		// Return the sanitized options.
 		return $options;
@@ -147,6 +105,8 @@ class Options {
 	 * @param array $options array of options.
 	 */
 	public static function update_options( $options = array() ) {
+		$options       = self::sanitize_options( $options );
+		self::$options = $options;
 		update_option( self::$options_key, $options );
 	}
 
@@ -155,13 +115,23 @@ class Options {
 	 *
 	 * @since 3.0.0
 	 */
-	private static function get_defaults() {
+	public static function get_defaults() {
 		$defaults = array(
 			'hideCaptionAppender'                    => false,
-			'screenshotOneAPIKey'                    => '',
+			'screenshotOneEnabled'                   => false,
+			'screenshotOneAccessKey'                 => '',
+			'screenshotOneSecretKey'                 => '',
 			'screenshotOneAPIValid'                  => false,
+			'screenshotOneEnableSignedRequests'      => false,
 			'screenshotOneDefaultImageFormat'        => 'jpg',
 			'screenshotOneEnableAnimatedScreenshots' => false,
+			'screenshotOneTotalLimit'                => 0,
+			'screenshotOneAvailableRequests'         => 0,
+			'screenshotOneMaxImageWidth'             => 1400,
+			'screenshotOneMaxImageHeight'            => 1200,
+			'screenshotOneViewportWidth'             => 1200,
+			'screenshotOneViewportHeight'            => 1024,
+			'screenshotOneBlockCookieBanners'        => true,
 		);
 
 		/**
@@ -174,7 +144,6 @@ class Options {
 		$defaults = apply_filters( 'photo_block_options_defaults', $defaults );
 
 		$defaults = Functions::sanitize_array_recursive( $defaults );
-		$defaults = \wp_json_encode( $defaults );
 
 		return $defaults;
 	}

@@ -194,7 +194,7 @@ class Blocks {
 			'defaultImagePlacheolder'                => Functions::get_plugin_url( 'assets/sample-image-ron-h-phoenix.jpg' ),
 			'blockPreviewImage'                      => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
 			'hideCaptionAppender'                    => (bool) $options['hideCaptionAppender'],
-			'screenshotOneAPIKey'                    => current_user_can( 'edit_others_posts' ) ? $options['screenshotOneAPIKey'] : '',
+			'screenshotOneAccessKey'                 => current_user_can( 'edit_others_posts' ) ? $options['screenshotOneAccessKey'] : '',
 			'screenshotOneAPIValid'                  => current_user_can( 'edit_others_posts' ) ? (bool) $options['screenshotOneAPIValid'] : false,
 			'screenshotOneDefaultImageFormat'        => $options['screenshotOneDefaultImageFormat'] ?? 'jpg',
 			'screenshotOneEnableAnimatedScreenshots' => (bool) $options['screenshotOneEnableAnimatedScreenshots'],
