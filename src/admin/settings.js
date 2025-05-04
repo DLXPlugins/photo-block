@@ -66,6 +66,7 @@ const Settings = ( props ) => {
 			screenshotOneViewportWidth: dlxPBAdmin.screenshotOneViewportWidth,
 			screenshotOneViewportHeight: dlxPBAdmin.screenshotOneViewportHeight,
 			screenshotOneBlockCookieBanners: dlxPBAdmin.screenshotOneBlockCookieBanners,
+			screenshotOneBlockAds: dlxPBAdmin.screenshotOneBlockAds,
 		},
 	} );
 	const formValues = useWatch( { control } );
@@ -586,6 +587,23 @@ const Settings = ( props ) => {
 																			} }
 																			label={ __( 'Block Cookie Banners', 'photo-block' ) }
 																			help={ __( 'If enabled, ScreenshotOne will block cookie banners from showing.', 'photo-block' ) }
+																		/>
+																	) }
+																/>
+															</div>
+															<div className="dlx-admin__row">
+																<Controller
+																	name="screenshotOneBlockAds"
+																	control={ control }
+																	render={ ( { field } ) => (
+																		<ToggleControl
+																			{ ...field }
+																			checked={ field.value }
+																			onChange={ ( value ) => {
+																				field.onChange( value );
+																			} }
+																			label={ __( 'Block Ads', 'photo-block' ) }
+																			help={ __( 'If enabled, ScreenshotOne will block ads from showing.', 'photo-block' ) }
 																		/>
 																	) }
 																/>

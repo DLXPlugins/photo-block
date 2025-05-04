@@ -2346,6 +2346,61 @@ svg.lucide * {
   font-size: 1.2rem;
   margin-bottom: 10px;
 }
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/screens/ScreenshotOne/editor.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************/
+.dlx-photo-block__screenshot-one__logo {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.dlx-photo-block__screenshot-one__logo__mark {
+  margin-right: 0.5em;
+}
+
+.dlx-photo-block__screenshot-one__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dlx-photo-block__screenshot-one__actions button.components-button {
+  margin-right: 8px;
+}
+.dlx-photo-block__screenshot-one__actions button.components-button.has-icon {
+  padding: 15px 20px;
+}
+.dlx-photo-block__screenshot-one__actions button.components-button:last-of-type {
+  margin-right: 0;
+}
+
+.dlx-photo-block__screenshot-one__container .components-panel__body {
+  border: 1px solid #e0e0e0;
+}
+.dlx-photo-block__screenshot-one__container .components-panel__body-toggle {
+  border: 0;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: none;
+  color: #1e1e1e;
+  font-weight: 500;
+  height: auto;
+  outline: none;
+  padding: 16px 48px 16px 16px;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
+.dlx-photo-block__panel-row {
+  margin-bottom: 16px;
+}
+
+.dlx-photo-block__panel-advanced {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/CaptionAppender/editor.scss ***!
   \***************************************************************************************************************************************************************************************************************************************************************************************************/

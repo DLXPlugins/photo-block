@@ -247,6 +247,7 @@ class Admin {
 				'screenshotOneViewportWidth'             => $options['screenshotOneViewportWidth'],
 				'screenshotOneViewportHeight'            => $options['screenshotOneViewportHeight'],
 				'screenshotOneBlockCookieBanners'        => $options['screenshotOneBlockCookieBanners'],
+				'screenshotOneBlockAds'                  => $options['screenshotOneBlockAds'],
 			)
 		);
 		\wp_set_script_translations( 'dlx-pb-admin', 'photo-block' );

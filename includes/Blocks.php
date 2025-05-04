@@ -185,19 +185,15 @@ class Blocks {
 
 		// Get localised vars to return for JS parsing.
 		$localized_vars = array(
-			'restUrl'                                => rest_url( 'dlxplugins/photo-block/v1' ),
-			'restNonce'                              => wp_create_nonce( 'wp_rest' ),
-			'captionInnerBlocks'                     => $caption_innerblocks_supported,
-			'imageSizes'                             => Functions::get_all_image_sizes(),
-			'palette'                                => functions::get_theme_color_palette(),
-			'postTypes'                              => $post_type_return,
-			'defaultImagePlacheolder'                => Functions::get_plugin_url( 'assets/sample-image-ron-h-phoenix.jpg' ),
-			'blockPreviewImage'                      => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
-			'hideCaptionAppender'                    => (bool) $options['hideCaptionAppender'],
-			'screenshotOneAccessKey'                 => current_user_can( 'edit_others_posts' ) ? $options['screenshotOneAccessKey'] : '',
-			'screenshotOneAPIValid'                  => current_user_can( 'edit_others_posts' ) ? (bool) $options['screenshotOneAPIValid'] : false,
-			'screenshotOneDefaultImageFormat'        => $options['screenshotOneDefaultImageFormat'] ?? 'jpg',
-			'screenshotOneEnableAnimatedScreenshots' => (bool) $options['screenshotOneEnableAnimatedScreenshots'],
+			'restUrl'                 => rest_url( 'dlxplugins/photo-block/v1' ),
+			'restNonce'               => wp_create_nonce( 'wp_rest' ),
+			'captionInnerBlocks'      => $caption_innerblocks_supported,
+			'imageSizes'              => Functions::get_all_image_sizes(),
+			'palette'                 => functions::get_theme_color_palette(),
+			'postTypes'               => $post_type_return,
+			'defaultImagePlacheolder' => Functions::get_plugin_url( 'assets/sample-image-ron-h-phoenix.jpg' ),
+			'blockPreviewImage'       => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
+			'settings'                => $options,
 		);
 
 		// Add inline script to detect user role.

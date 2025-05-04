@@ -15,8 +15,8 @@ import {
 
 import { blockStore } from '../../store';
 
-
 import InitialScreen from '../../screens/Initial';
+import ScreenshotOne from '../../screens/ScreenshotOne';
 //import EffectsScreen from '../../screens/Effects';
 import CaptionAppender from '../../components/CaptionAppender';
 import EditScreen from '../../screens/Edit';
@@ -31,7 +31,6 @@ import getStylesCaption from '../photo-caption-block/block-styles';
 const uniqueIds = [];
 
 const PhotoBlock = ( props ) => {
-
 	const {
 		attributes,
 		setAttributes,
@@ -48,7 +47,7 @@ const PhotoBlock = ( props ) => {
 			'generateblocks/query-loop',
 			'kadence/query',
 		];
-		const { getBlockParents, getBlockName } = blockSelect(blockEditorStore);
+		const { getBlockParents, getBlockName } = blockSelect( blockEditorStore );
 		const parentBlocks = getBlockParents( clientId );
 		const found = parentBlocks.some( ( blockId ) => {
 			const blockName = getBlockName( blockId );
@@ -221,8 +220,6 @@ const PhotoBlock = ( props ) => {
 		}
 	}, [ captionPosition ] );
 
-	
-
 	// Store the filepond upload ref.
 	const imageRef = useRef( null );
 
@@ -272,6 +269,8 @@ const PhotoBlock = ( props ) => {
 				return <CropScreen attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } />;
 			case 'featuredImage':
 				return <FeaturedImageScreen attributes={ attributes } setAttributes={ setAttributes } context={ context } innerBlockProps={ captionInnerBlockProps } blockUniqueId={ blockUniqueId } clientId={ clientId } />;
+			case 'screenshotOne':
+				return <ScreenshotOne attributes={ attributes } setAttributes={ setAttributes } blockUniqueId={ blockUniqueId } clientId={ clientId } />;
 			case 'effects':
 				return null;
 				// return (
@@ -285,7 +284,7 @@ const PhotoBlock = ( props ) => {
 	if ( preview ) {
 		return (
 			<div className="dlx-photo-block__preview">
-				<img src={ photoBlock.blockPreviewImage } alt={ __( 'Block Preview', 'photo-block' ) } style={{ maxWidth: '100%', height: 'auto' } } />
+				<img src={ photoBlock.blockPreviewImage } alt={ __( 'Block Preview', 'photo-block' ) } style={ { maxWidth: '100%', height: 'auto' } } />
 			</div>
 		);
 	}
@@ -302,37 +301,37 @@ const PhotoBlock = ( props ) => {
 	const {
 		getGlobalStyles,
 		globalStyleRefresh,
-	} = useSelect((select) => ({
-		...select(globalStylesStore),
-		getGlobalStyles: select(globalStylesStore).getGlobalStyles,
-		globalStyleRefresh: select(globalStylesStore).getGlobalStyleRefresh(),
-	}));
+	} = useSelect( ( select ) => ( {
+		...select( globalStylesStore ),
+		getGlobalStyles: select( globalStylesStore ).getGlobalStyles,
+		globalStyleRefresh: select( globalStylesStore ).getGlobalStyleRefresh(),
+	} ) );
 
-	const blockStyles = useMemo(() => {
+	const blockStyles = useMemo( () => {
 		const globalStyles = getGlobalStyles();
-		if (Object.keys(globalStyles).length === 0) {
+		if ( Object.keys( globalStyles ).length === 0 ) {
 			return '';
 		}
 
 		let photoStyles = '';
-		Object.values(globalStyles).forEach((globalStyle) => {
+		Object.values( globalStyles ).forEach( ( globalStyle ) => {
 			const photoAttributes = globalStyle.content.photoAttributes;
 			const captionAttributes = globalStyle.content.captionAttributes;
 
-			['desktop', 'tablet', 'mobile'].forEach((device) => {
-				let deviceStyles = getStyles(photoAttributes, device, globalStyle.css_class, true);
-				deviceStyles += getStylesCaption(captionAttributes, device, globalStyle.css_class, true);
+			[ 'desktop', 'tablet', 'mobile' ].forEach( ( device ) => {
+				let deviceStyles = getStyles( photoAttributes, device, globalStyle.css_class, true );
+				deviceStyles += getStylesCaption( captionAttributes, device, globalStyle.css_class, true );
 				photoStyles += deviceStyles;
-			});
-		});
+			} );
+		} );
 		return photoStyles;
-	}, [getGlobalStyles, globalStyleRefresh]);
+	}, [ getGlobalStyles, globalStyleRefresh ] );
 
 	return (
 		<>
-			{blockStyles && <style>{blockStyles}</style>}
-			<div {...blockProps}>
-				{block}
+			{ blockStyles && <style>{ blockStyles }</style> }
+			<div { ...blockProps }>
+				{ block }
 			</div>
 		</>
 	);

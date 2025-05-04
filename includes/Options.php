@@ -132,6 +132,7 @@ class Options {
 			'screenshotOneViewportWidth'             => 1200,
 			'screenshotOneViewportHeight'            => 1024,
 			'screenshotOneBlockCookieBanners'        => true,
+			'screenshotOneBlockAds'                  => true,
 		);
 
 		/**
