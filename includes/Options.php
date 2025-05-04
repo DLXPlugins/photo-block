@@ -129,8 +129,8 @@ class Options {
 			'screenshotOneAvailableRequests'         => 0,
 			'screenshotOneMaxImageWidth'             => 1400,
 			'screenshotOneMaxImageHeight'            => 1200,
-			'screenshotOneViewportWidth'             => 1200,
-			'screenshotOneViewportHeight'            => 1024,
+			'screenshotOneViewportWidth'             => 1400,
+			'screenshotOneViewportHeight'            => 1200,
 			'screenshotOneBlockCookieBanners'        => true,
 			'screenshotOneBlockAds'                  => true,
 		);

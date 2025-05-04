@@ -1,8 +1,5 @@
 import './editor.scss';
-import { useState } from '@wordpress/element';
-import {
-	InspectorControls,
-} from '@wordpress/block-editor';
+import { useState, useEffect } from '@wordpress/element';
 import { Button, TextControl, PanelBody, ToggleControl, SelectControl, Spinner } from '@wordpress/components';
 import { ArrowBigLeftDash } from 'lucide-react';
 import classnames from 'classnames';
@@ -23,12 +20,15 @@ import SendCommand from '../../utils/SendCommand';
  * @return {Function} Component.
  */
 const ScreenshotOne = ( props ) => {
-	const { blockUniqueId, clientId } = props;
+	const { blockUniqueId, clientId, attributes, setAttributes } = props;
 
 	const [ loading, setLoading ] = useState( false );
+	const [ urlInputField, setUrlInputField ] = useState( null );
 
 	const {
 		setScreen,
+		setImageData,
+		setPhotoMode,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const {
@@ -57,20 +57,46 @@ const ScreenshotOne = ( props ) => {
 
 	const formValues = useWatch( { control } );
 
-	const onSubmit = async ( formValues ) => {
+	useEffect( () => {
+		if ( urlInputField ) {
+			urlInputField.focus();
+		}
+	}, [ urlInputField ] );
+
+	const onSubmit = async ( submitData ) => {
 		setLoading( true );
 
-		if ( isURL( formValues.screenshotOneUrl ) ) {
+		if ( isURL( submitData.screenshotOneUrl ) ) {
 			const response = await SendCommand(
 				photoBlock.restNonce,
-				{ ...formValues },
+				{ ...submitData },
 				photoBlock.restUrl + '/image/screenshot-one',
 				'POST',
 			).finally( () => {
 				setLoading( false );
 			} );
 
-			console.log( response );
+			const { data } = response;
+			if ( data.success ) {
+				setAttributes( {
+					imageData: data.data.attachment,
+					photoMode: 'photo',
+				} );
+				setImageData( data.data.attachment );
+				setPhotoMode( 'photo' );
+				setScreen( 'edit' );
+				attributes.screen = 'edit';
+				setAttributes( {
+					imageData: data.data.attachment,
+					screen: 'edit',
+					photoMode: 'photo',
+					hasCaption: false,
+				} );
+			} else {
+				setError( 'screenshotOneUrl', {
+					message: data.message,
+				} );
+			}
 		}
 	};
 
@@ -97,6 +123,7 @@ const ScreenshotOne = ( props ) => {
 											name="search-url"
 											{ ...field }
 											disabled={ loading }
+											ref={ setUrlInputField }
 										/>
 										{ errors?.screenshotOneUrl?.type === 'required' && (
 											<Notice status="error" isDismissible={ false }>
@@ -200,6 +227,7 @@ const ScreenshotOne = ( props ) => {
 													label={ __( 'Block Cookie Banners', 'photo-block' ) }
 													{ ...field }
 													checked={ field.value }
+													disabled={ loading }
 												/>
 											) }
 										/>
@@ -237,13 +265,23 @@ const ScreenshotOne = ( props ) => {
 							variant="primary"
 							className="dlx-photo-block__screenshot-one__actions__generate"
 							type="submit"
-							iconPosition="right"
-							icon={ loading ? <Spinner /> : <ScreenshotOneMark /> }
+							iconPosition="left"
+							icon={ <ScreenshotOneMark /> }
 							disabled={ loading }
 						>
 							{ loading ? __( 'Generating…', 'photo-block' ) : __( 'Generate', 'photo-block' ) }
 						</Button>
 					</div>
+					{ loading && (
+						<div className="dlx-photo-block__screenshot-one__loading">
+							<Notice
+								message={ __( 'Generating screenshot…', 'photo-block' ) }
+								status="info"
+								isDismissible={ false }
+								icon={ () => <Spinner /> }
+							/>
+						</div>
+					) }
 				</form>
 			</div>
 		</>

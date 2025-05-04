@@ -51,6 +51,22 @@
 .dlx-photo-block__panel-advanced {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-areas:
+		"row1 row1"
+		"row2 row3"
+		"row4 row5";
 	gap: 16px;
 	margin-top: 16px;
+}
+
+.dlx-photo-block__screenshot-one__loading {
+	.photo-block-admin__notice-message {
+		margin-left: 12px;
+	}
+}
+.dlx-photo-block__screenshot-one__actions__generate {
+	svg {
+		margin-right: 8px;
+	}
 }

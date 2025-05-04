@@ -118,6 +118,11 @@ const PhotoBlock = ( props ) => {
 			// If we're a brand new block, set the unique ID.
 			if ( null === uniqueId ) {
 				setBlockUniqueId( permUniqueId );
+
+				if ( photoBlock.settings.hideCaptionAppender ) {
+					setAttributes( { hideCaption: true } );
+					setHideCaption( true );
+				}
 			}
 			// We need this for duplicated state so one block doesn't affect another.
 			props.attributes.uniqueId = permUniqueId;
@@ -172,6 +177,7 @@ const PhotoBlock = ( props ) => {
 		setHasCaption,
 		setImageData,
 		setPhotoMode,
+		setHideCaption,
 		setInQueryLoop,
 	} = useDispatch( blockStore( uniqueId ? uniqueId : newUniqueId ) );
 

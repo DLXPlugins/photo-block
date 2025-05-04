@@ -232,6 +232,9 @@ class Rest {
 			'tmp_name' => $temp_file,
 		);
 
+		// Sanitioze filename.
+		$file_array['name'] = sanitize_file_name( $file_array['name'] );
+
 		// Save the image to the media library.
 		if ( ! function_exists( 'media_handle_sideload' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/image.php';

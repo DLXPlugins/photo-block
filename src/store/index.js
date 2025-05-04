@@ -39,7 +39,7 @@ const DEFAULT_STATE = {
 	aspectRatioHeightPixels: 0,
 	aspectRatioToolbarSelection: '16:9',
 	aspectRatioUnit: 'ratio',
-	hideCaption: false,
+	hideCaption: photoBlock.settings.hideCaptionAppender,
 };
 
 const actions = {
