@@ -211,9 +211,56 @@ class Rest {
 		// Get screenshot one API usage.
 		$screenshot_one_image_request = $screenshot_one_api->get_image( $screenshot_params );
 
+		if ( is_wp_error( $screenshot_one_image_request ) ) {
+			wp_send_json_error(
+				array(
+					'message' => $screenshot_one_image_request->get_error_message(),
+				)
+			);
+		}
+
+		// Get the image data.
+		$image_data = $screenshot_one_image_request;
+
+		// Create a temporary file.
+		$temp_file = wp_tempnam();
+		file_put_contents( $temp_file, $image_data );
+
+		// Prepare file array for media_handle_sideload.
+		$file_array = array(
+			'name'     => 'site-screenshot-' . time() . '.' . $params['screenshotOneDefaultImageFormat'],
+			'tmp_name' => $temp_file,
+		);
+
+		// Save the image to the media library.
+		if ( ! function_exists( 'media_handle_sideload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+		}
+
+		// Upload the file to the media library.
+		$attachment_id = media_handle_sideload( $file_array );
+
+		// Remove the temporary file.
+		unlink( $temp_file );
+
+		// Check for errors.
+		if ( is_wp_error( $attachment_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => $attachment_id->get_error_message(),
+				)
+			);
+		}
+
+		// Get the attachment data.
+		$attachment_data = Functions::get_image_data( $attachment_id, 'full' );
+
 		wp_send_json_success(
 			array(
-				'message' => __( 'Screenshot one image request.', 'photo-block' ),
+				'message'    => __( 'Screenshot saved successfully.', 'photo-block' ),
+				'attachment' => $attachment_data,
 			)
 		);
 

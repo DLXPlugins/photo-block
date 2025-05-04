@@ -142,7 +142,11 @@ class ScreenshotOne_API {
 			return new \WP_Error( 'photo_block', esc_html__( 'The API path supplied is not supported by the ScreenshotOne API.', 'photo-block' ), array() );
 		}
 		// If an incorrect response code was returned, return WP_Error.
-		$response_body           = json_decode( wp_remote_retrieve_body( $response ), true );
+		$response_body       = wp_remote_retrieve_body( $response );
+		$maybe_response_body = json_decode( $response_body, true );
+		if ( is_array( $maybe_response_body ) ) {
+			$response_body = $maybe_response_body;
+		}
 		$retrieved_response_code = absint( $response['response']['code'] );
 
 		if ( $retrieved_response_code !== $response_code ) {
@@ -280,26 +284,42 @@ class ScreenshotOne_API {
 	 *
 	 * @param array $params Parameters.
 	 *
-	 * @return array
+	 * @return array|WP_Error
 	 */
 	public function get_image( $params ) {
-		$params_to_include = array(
+
+		// Build the query parameters.
+		$query_params = array(
+			'access_key'           => $this->api_key,
 			'url'                  => $params['screenshotOneUrl'],
 			'format'               => $params['screenshotOneDefaultImageFormat'],
-			'width'                => $params['screenshotOneMaxImageWidth'],
-			'height'               => $params['screenshotOneMaxImageHeight'],
+			'image_width'          => $params['screenshotOneMaxImageWidth'],
+			'image_height'         => $params['screenshotOneMaxImageHeight'],
 			'viewport_width'       => $params['screenshotOneViewportWidth'],
 			'viewport_height'      => $params['screenshotOneViewportHeight'],
-			'block_cookie_banners' => (bool) $params['screenshotOneBlockCookieBanners'],
-			'block_ads'            => (bool) $params['screenshotOneBlockAds'],
+			'block_cookie_banners' => $params['screenshotOneBlockCookieBanners'] ? 'true' : 'false',
+			'block_ads'            => $params['screenshotOneBlockAds'] ? 'true' : 'false',
 		);
+
+		// Build the query string maintaining parameter order.
+		$query_string = http_build_query( $query_params );
+
+		// Generate the signature using HMAC SHA256.
+		$signature = hash_hmac( 'sha256', $query_string, $this->secret_key );
+
+		// Add signature to query parameters.
+		$query_params['signature'] = $signature;
+
+		// Build final query string with signature.
+		$final_query_string = http_build_query( $query_params );
+
 		return $this->make_request(
-			'/take',
+			'/take?' . $final_query_string,
 			'json',
 			array(
-				'body' => $params_to_include,
+				'body' => array(),
 			),
-			'GET',
+			'GET'
 		);
 	}
 }
