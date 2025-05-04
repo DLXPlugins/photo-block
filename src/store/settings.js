@@ -16,7 +16,6 @@ const DEFAULT_STATE = {
 	screenshotOneBlockCookieBanners: photoBlock.settings.screenshotOneBlockCookieBanners,
 	screenshotOneBlockAds: photoBlock.settings.screenshotOneBlockAds,
 };
-console.log( DEFAULT_STATE );
 const actions = {
 	/**
 	 * Set the settings in the settings store.
