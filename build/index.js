@@ -11024,8 +11024,6 @@ var UploadTypes = function UploadTypes(props) {
     isScreenshotOneEnabled = _useSelect.isScreenshotOneEnabled;
   var _useDispatch2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_8__.useDispatch)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.store),
     insertBlock = _useDispatch2.insertBlock;
-  var _useContext = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useContext)(_contexts_ScreenshotOne__WEBPACK_IMPORTED_MODULE_12__["default"]),
-    setIsScreenshotOneTypeSelected = _useContext.setIsScreenshotOneTypeSelected;
 
   // Get current block data.
   var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_8__.useSelect)(function (select) {
@@ -11327,7 +11325,7 @@ var UploadTypes = function UploadTypes(props) {
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('URL', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Slot, {
     name: "dlx-photo-block.upload-types",
     fillProps: _objectSpread({}, props)
-  }), isScreenshotOneEnabled && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+  }), isScreenshotOneEnabled() && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_23__["default"], null),
     onClick: function onClick() {

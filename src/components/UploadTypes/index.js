@@ -61,8 +61,6 @@ const UploadTypes = ( props ) => {
 		insertBlock,
 	} = useDispatch( blockEditorStore );
 
-	const { setIsScreenshotOneTypeSelected } = useContext( ScreenshotOneContext );
-
 	// Get current block data.
 	const {
 		imageData,
@@ -380,7 +378,7 @@ const UploadTypes = ( props ) => {
 					name="dlx-photo-block.upload-types"
 					fillProps={ { ...props } }
 				/>
-				{ isScreenshotOneEnabled && (
+				{ ( isScreenshotOneEnabled() ) && (
 					<Button
 						variant="secondary"
 						icon={ <MonitorCheck /> }
