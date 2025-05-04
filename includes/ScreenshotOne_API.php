@@ -101,19 +101,23 @@ class ScreenshotOne_API {
 		$request_url = $api_url . $path;
 
 		// Get body from options and unset it if empty.
-		$args['body'] = rgar( $options, 'body' ) ?? array();
+		$args['body'] = array_key_exists( 'body', $options ) ? $options['body'] : array();
 		if ( empty( $args['body'] ) ) {
 			unset( $args['body'] );
 		}
 
 		$args['headers'] = array(
-			'Authorization' => 'Bearer ' . rgar( $options, 'api_key' ),
+			'Authorization' => 'Bearer ' . array_key_exists( 'api_key', $options ) ? $options['api_key'] : '',
 			'Accept'        => 'application/json;ver=1.0',
 		);
 
 		if ( isset( $options['type'] ) ) {
 			$args['headers']['X-Request-Type'] = $options['type'];
 			unset( $options['type'] );
+		}
+
+		if ( 'json' === $method ) {
+			$args['headers']['Content-Type'] = 'application/json';
 		}
 
 		if ( 'GET' === $method ) {
@@ -268,6 +272,34 @@ class ScreenshotOne_API {
 			),
 			'GET',
 			$this->api_url
+		);
+	}
+
+	/**
+	 * Get image.
+	 *
+	 * @param array $params Parameters.
+	 *
+	 * @return array
+	 */
+	public function get_image( $params ) {
+		$params_to_include = array(
+			'url'                  => $params['screenshotOneUrl'],
+			'format'               => $params['screenshotOneDefaultImageFormat'],
+			'width'                => $params['screenshotOneMaxImageWidth'],
+			'height'               => $params['screenshotOneMaxImageHeight'],
+			'viewport_width'       => $params['screenshotOneViewportWidth'],
+			'viewport_height'      => $params['screenshotOneViewportHeight'],
+			'block_cookie_banners' => (bool) $params['screenshotOneBlockCookieBanners'],
+			'block_ads'            => (bool) $params['screenshotOneBlockAds'],
+		);
+		return $this->make_request(
+			'/take',
+			'json',
+			array(
+				'body' => $params_to_include,
+			),
+			'GET',
 		);
 	}
 }

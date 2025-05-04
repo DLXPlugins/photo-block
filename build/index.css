@@ -2036,6 +2036,9 @@ svg.lucide * {
 .photo-block-admin__notice.photo-block-admin__notice-type--warning svg path {
   fill: var(--photo-block-admin--color-notice--warning-alt);
 }
+.photo-block-admin__notice p {
+  margin: 0;
+}
 /*!************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/UploadTarget/editor.scss ***!
   \************************************************************************************************************************************************************************************************************************************************************************************************/
@@ -2368,7 +2371,7 @@ svg.lucide * {
   margin-right: 8px;
 }
 .dlx-photo-block__screenshot-one__actions button.components-button.has-icon {
-  padding: 15px 20px;
+  padding: 18px 20px;
 }
 .dlx-photo-block__screenshot-one__actions button.components-button:last-of-type {
   margin-right: 0;

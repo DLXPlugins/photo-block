@@ -125,6 +125,20 @@ class Rest {
 			)
 		);
 
+		// Register a route for saving alt-text for image.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/image/screenshot-one',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+				'sanitize_callback'   => array( static::class, 'rest_sanitize_screenshot_one' ),
+				'callback'            => array( static::class, 'rest_save_screenshot_one' ),
+			)
+		);
+
 		// Register a route for searching posts/pages.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
@@ -150,6 +164,61 @@ class Rest {
 				'callback'            => array( static::class, 'rest_save_title_text' ),
 			)
 		);
+	}
+
+	/**
+	 * Sanitize the screenshot one request.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 */
+	public static function rest_sanitize_screenshot_one( $request ) {
+		$screenshot_one_url = esc_url_raw( filter_var( $request->get_param( 'screenshotOneUrl' ), FILTER_VALIDATE_URL ) );
+		if ( ! $screenshot_one_url ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Invalid screenshot one URL.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get all parameters from the request.
+		$params = $request->get_params();
+		$params = Functions::sanitize_array_recursive( $params );
+
+		// Set URL param.
+		$params['screenshotOneUrl'] = $screenshot_one_url;
+
+		// Return sanitized parameters.
+		return $params;
+	}
+
+	/**
+	 * Save the screenshot one request.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 */
+	public static function rest_save_screenshot_one( $request ) {
+		$params = $request->get_params();
+
+		// Get options.
+		$options = Options::get_options();
+
+		$screenshot_params = self::rest_sanitize_screenshot_one( $request );
+
+		// Get screenshot one API.
+		$screenshot_one_api = new ScreenshotOne_API( $options['screenshotOneAccessKey'], $options['screenshotOneSecretKey'] );
+
+		// Get screenshot one API usage.
+		$screenshot_one_image_request = $screenshot_one_api->get_image( $screenshot_params );
+
+		wp_send_json_success(
+			array(
+				'message' => __( 'Screenshot one image request.', 'photo-block' ),
+			)
+		);
+
+		// Return screenshot one API usage.
+		return $screenshot_one_image_request;
 	}
 
 	/**

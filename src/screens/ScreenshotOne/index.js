@@ -3,16 +3,19 @@ import { useState } from '@wordpress/element';
 import {
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { Button, TextControl, PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
+import { Button, TextControl, PanelBody, ToggleControl, SelectControl, Spinner } from '@wordpress/components';
 import { ArrowBigLeftDash } from 'lucide-react';
 import classnames from 'classnames';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { useForm, Controller, useWatch } from 'react-hook-form';
+import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 import { __ } from '@wordpress/i18n';
+import { isURL } from '@wordpress/url';
 import { blockStore } from '../../store';
 import settingsStore from '../../store/settings';
 import ScreenshotOneMark from '../../components/Icons/ScreenshotOneMark';
 import ScreenshotOneText from '../../components/Icons/ScreenshotOneText';
+import Notice from '../../components/Notice';
+import SendCommand from '../../utils/SendCommand';
 /**
  * ScreenshotOne component.
  *
@@ -22,6 +25,8 @@ import ScreenshotOneText from '../../components/Icons/ScreenshotOneText';
 const ScreenshotOne = ( props ) => {
 	const { blockUniqueId, clientId } = props;
 
+	const [ loading, setLoading ] = useState( false );
+
 	const {
 		setScreen,
 	} = useDispatch( blockStore( blockUniqueId ) );
@@ -30,7 +35,7 @@ const ScreenshotOne = ( props ) => {
 		getSetting,
 	} = useSelect( settingsStore );
 
-	const { control, handleSubmit } = useForm( {
+	const { control, handleSubmit, trigger, setError } = useForm( {
 		defaultValues: {
 			screenshotOneUrl: '',
 			screenshotOneAPIValid: getSetting( 'screenshotOneAPIValid' ),
@@ -46,10 +51,27 @@ const ScreenshotOne = ( props ) => {
 		},
 	} );
 
+	const { errors } = useFormState( {
+		control,
+	} );
+
 	const formValues = useWatch( { control } );
 
-	const onSubmit = ( formValues ) => {
-		console.log( formValues );
+	const onSubmit = async ( formValues ) => {
+		setLoading( true );
+
+		if ( isURL( formValues.screenshotOneUrl ) ) {
+			const response = await SendCommand(
+				photoBlock.restNonce,
+				{ ...formValues },
+				photoBlock.restUrl + '/image/screenshot-one',
+				'POST',
+			).finally( () => {
+				setLoading( false );
+			} );
+
+			console.log( response );
+		}
 	};
 
 	const screenshotOneInterface = (
@@ -65,14 +87,28 @@ const ScreenshotOne = ( props ) => {
 							<Controller
 								control={ control }
 								name="screenshotOneUrl"
+								rules={ { required: true } }
 								render={ ( { field } ) => (
-									<TextControl
-										label={ __( 'Add Screenshot URL', 'photo-block' ) }
-										type="url"
-										help={ __( 'Add a screenshot URL to generate a screenshot.', 'photo-block' ) }
-										name="search-url"
-										{ ...field }
-									/>
+									<>
+										<TextControl
+											label={ __( 'Add Screenshot URL', 'photo-block' ) }
+											type="url"
+											help={ __( 'Add a screenshot URL to generate a screenshot.', 'photo-block' ) }
+											name="search-url"
+											{ ...field }
+											disabled={ loading }
+										/>
+										{ errors?.screenshotOneUrl?.type === 'required' && (
+											<Notice status="error" isDismissible={ false }>
+												<p className="dlx-photo-block__screenshot-one__url-error">{ __( 'This field is required', 'photo-block' ) }</p>
+											</Notice>
+										) }
+										{ errors?.screenshotOneUrl?.type === 'inValidUrl' && (
+											<Notice status="error" isDismissible={ false }>
+												<p className="dlx-photo-block__screenshot-one__url-error">{ errors.screenshotOneUrl.message }</p>
+											</Notice>
+										) }
+									</>
 								) }
 							/>
 						</div>
@@ -92,6 +128,7 @@ const ScreenshotOne = ( props ) => {
 														{ value: 'webp', label: 'WebP' },
 													] }
 													{ ...field }
+													disabled={ loading }
 												/>
 											) }
 										/>
@@ -105,6 +142,7 @@ const ScreenshotOne = ( props ) => {
 													label={ __( 'Max Image Width', 'photo-block' ) }
 													{ ...field }
 													type="number"
+													disabled={ loading }
 												/>
 											) }
 										/>
@@ -118,6 +156,7 @@ const ScreenshotOne = ( props ) => {
 													label={ __( 'Max Image Height', 'photo-block' ) }
 													{ ...field }
 													type="number"
+													disabled={ loading }
 												/>
 											) }
 										/>
@@ -131,6 +170,7 @@ const ScreenshotOne = ( props ) => {
 													label={ __( 'Viewport Width', 'photo-block' ) }
 													{ ...field }
 													type="number"
+													disabled={ loading }
 												/>
 											) }
 										/>
@@ -144,6 +184,7 @@ const ScreenshotOne = ( props ) => {
 													label={ __( 'Viewport Height', 'photo-block' ) }
 													{ ...field }
 													type="number"
+													disabled={ loading }
 												/>
 											) }
 										/>
@@ -172,6 +213,7 @@ const ScreenshotOne = ( props ) => {
 													label={ __( 'Block Ads', 'photo-block' ) }
 													{ ...field }
 													checked={ field.value }
+													disabled={ loading }
 												/>
 											) }
 										/>
@@ -194,14 +236,12 @@ const ScreenshotOne = ( props ) => {
 						<Button
 							variant="primary"
 							className="dlx-photo-block__screenshot-one__actions__generate"
-							onClick={ () => {
-								// todo: generate
-							} }
 							type="submit"
 							iconPosition="right"
-							icon={ <ScreenshotOneMark /> }
+							icon={ loading ? <Spinner /> : <ScreenshotOneMark /> }
+							disabled={ loading }
 						>
-							{ __( 'Generate', 'photo-block' ) }
+							{ loading ? __( 'Generating…', 'photo-block' ) : __( 'Generate', 'photo-block' ) }
 						</Button>
 					</div>
 				</form>
