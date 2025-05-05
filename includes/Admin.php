@@ -242,6 +242,7 @@ class Admin {
 				'screenshotOneEnableAnimatedScreenshots' => $options['screenshotOneEnableAnimatedScreenshots'],
 				'screenshotOneTotalLimit'                => $options['screenshotOneTotalLimit'],
 				'screenshotOneAvailableRequests'         => $options['screenshotOneAvailableRequests'],
+				'screenshotOneUsedRequests'              => $options['screenshotOneUsedRequests'],
 				'screenshotOneMaxImageWidth'             => $options['screenshotOneMaxImageWidth'],
 				'screenshotOneMaxImageHeight'            => $options['screenshotOneMaxImageHeight'],
 				'screenshotOneViewportWidth'             => $options['screenshotOneViewportWidth'],
@@ -321,6 +322,7 @@ class Admin {
 		$options['screenshotOneAPIValid']          = true;
 		$options['screenshotOneTotalLimit']        = absint( $usage['total'] );
 		$options['screenshotOneAvailableRequests'] = absint( $usage['available'] );
+		$options['screenshotOneUsedRequests']      = absint( $usage['used'] );
 
 		// Save the API key.
 		Options::update_options( $options );
@@ -330,6 +332,7 @@ class Admin {
 				'screenshotOneAPIValid'          => true,
 				'screenshotOneTotalLimit'        => $options['screenshotOneTotalLimit'],
 				'screenshotOneAvailableRequests' => $options['screenshotOneAvailableRequests'],
+				'screenshotOneUsedRequests'      => $options['screenshotOneUsedRequests'],
 			)
 		);
 	}

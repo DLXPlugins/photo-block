@@ -127,6 +127,7 @@ class Options {
 			'screenshotOneEnableAnimatedScreenshots' => false,
 			'screenshotOneTotalLimit'                => 0,
 			'screenshotOneAvailableRequests'         => 0,
+			'screenshotOneUsedRequests'              => 0,
 			'screenshotOneMaxImageWidth'             => 1400,
 			'screenshotOneMaxImageHeight'            => 1200,
 			'screenshotOneViewportWidth'             => 1400,

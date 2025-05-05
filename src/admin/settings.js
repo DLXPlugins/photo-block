@@ -38,6 +38,7 @@ const Settings = ( props ) => {
 	const [ refreshAccessKeyLoading, setRefreshAccessKeyLoading ] = useState( false );
 	const [ revokeAccessKeyLoading, setRevokeAccessKeyLoading ] = useState( false );
 	const [ screenshotOneTotalLimit, setScreenshotOneTotalLimit ] = useState( dlxPBAdmin.screenshotOneTotalLimit );
+	const [ screenshotOneUsedRequests, setScreenshotOneUsedRequests ] = useState( dlxPBAdmin.screenshotOneUsedRequests );
 	const [ screenshotOneAvailableRequests, setScreenshotOneAvailableRequests ] = useState( dlxPBAdmin.screenshotOneAvailableRequests );
 
 	const {
@@ -89,6 +90,8 @@ const Settings = ( props ) => {
 			nonce: dlxPBAdmin.savescreenshotOneAccessKeyNonce,
 			apiKey: getValues( 'screenshotOneAccessKey' ),
 			secretKey: getValues( 'screenshotOneSecretKey' ),
+		} ).finally( () => {
+			setSaveAccessKeyLoading( false );
 		} );
 
 		const { success, data } = response.data;
@@ -96,6 +99,7 @@ const Settings = ( props ) => {
 			setValue( 'screenshotOneAPIValid', true );
 			setScreenshotOneTotalLimit( data.screenshotOneTotalLimit );
 			setScreenshotOneAvailableRequests( data.screenshotOneAvailableRequests );
+			setScreenshotOneUsedRequests( data.screenshotOneUsedRequests );
 		} else {
 			setValue( 'screenshotOneAPIValid', false );
 			setError( 'screenshotOneAccessKey', { type: 'apiKeyError', message: data } );
@@ -118,6 +122,7 @@ const Settings = ( props ) => {
 				screenshotOneSecretKey: '',
 				screenshotOneTotalLimit: 0,
 				screenshotOneAvailableRequests: 0,
+				screenshotOneUsedRequests: 0,
 				screenshotOneEnabled: false,
 			} );
 		} else {
@@ -239,8 +244,8 @@ const Settings = ( props ) => {
 																		{
 																			sprintf(
 																				/* translators: 1: Available requests, 2: Total limit */
-																				__( 'You have used %1$s of %2$s available requests.', 'photo-block' ),
-																				screenshotOneTotalLimit - screenshotOneAvailableRequests,
+																				__( 'You have have %1$s monthly uses left out of of %2$s available requests.', 'photo-block' ),
+																				screenshotOneAvailableRequests,
 																				screenshotOneTotalLimit
 																			)
 																		}
