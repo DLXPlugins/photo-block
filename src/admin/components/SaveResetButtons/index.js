@@ -79,22 +79,22 @@ const SaveResetButtons = ( props ) => {
 
 	const getSaveText = () => {
 		if ( saving ) {
-			return __( 'Saving…', 'archive-pages-pro' );
+			return __( 'Saving…', 'photo-block' );
 		}
 		if ( isSaved ) {
-			return __( 'Saved', 'archive-pages-pro' );
+			return __( 'Saved', 'photo-block' );
 		}
-		return __( 'Save Options', 'archive-pages-pro' );
+		return __( 'Save Options', 'photo-block' );
 	};
 
 	const getResetText = () => {
 		if ( resetting ) {
-			return __( 'Resetting to Defaults…', 'archive-pages-pro' );
+			return __( 'Resetting to Defaults…', 'photo-block' );
 		}
 		if ( isReset ) {
-			return __( 'Options Restored to Defaults', 'archive-pages-pro' );
+			return __( 'Options Restored to Defaults', 'photo-block' );
 		}
-		return __( 'Reset to Defaults', 'archive-pages-pro' );
+		return __( 'Reset to Defaults', 'photo-block' );
 	};
 
 	return (
@@ -147,17 +147,17 @@ const SaveResetButtons = ( props ) => {
 			<div className="dlx-pb-admin-notices-bottom">
 				<SnackPop
 					ajaxOptions={ savePromise }
-					loadingMessage={ __( 'Saving Options…', 'archive-pages-pro' ) }
+					loadingMessage={ __( 'Saving Options…', 'photo-block' ) }
 				/>
 				<SnackPop
 					ajaxOptions={ resetPromise }
-					loadingMessage={ __( 'Resetting to defaults…', 'archive-pages-pro' ) }
+					loadingMessage={ __( 'Resetting to defaults…', 'photo-block' ) }
 				/>
 				{ hasErrors() && (
 					<Notice
 						message={ __(
 							'There are form validation errors. Please correct them above.',
-							'archive-pages-pro',
+							'photo-block',
 						) }
 						status="error"
 						politeness="polite"

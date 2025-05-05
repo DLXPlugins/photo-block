@@ -116,7 +116,7 @@ class Admin {
 		// Send success message.
 		wp_send_json_success(
 			array(
-				'message'     => __( 'Options saved.', 'archive-pages-pro' ),
+				'message'     => __( 'Options saved.', 'photo-block' ),
 				'type'        => 'success',
 				'dismissable' => true,
 			)
@@ -157,7 +157,7 @@ class Admin {
 		// Send success message.
 		wp_send_json_success(
 			array(
-				'message'     => __( 'Options reset.', 'archive-pages-pro' ),
+				'message'     => __( 'Options reset.', 'photo-block' ),
 				'type'        => 'success',
 				'dismissable' => true,
 				'formData'    => $default_options,
@@ -177,10 +177,10 @@ class Admin {
 		if ( ! wp_verify_nonce( $nonce, $nonce_action ) || ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error(
 				array(
-					'message'     => __( 'Nonce or permission verification failed.', 'archive-pages-pro' ),
+					'message'     => __( 'Nonce or permission verification failed.', 'photo-block' ),
 					'type'        => 'error',
 					'dismissable' => true,
-					'title'       => __( 'Error', 'archive-pages-pro' ),
+					'title'       => __( 'Error', 'photo-block' ),
 				)
 			);
 		}

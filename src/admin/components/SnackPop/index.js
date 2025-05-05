@@ -98,7 +98,7 @@ const SnackPop = ( props ) => {
 				setNotificationOptions( {
 					type: 'critical',
 					message: error.message,
-					title: __( 'An Error Has Occurred', 'archive-pages-pro' ),
+					title: __( 'An Error Has Occurred', 'photo-block' ),
 					isDismissable: false,
 					isBusy: false,
 					isPersistent: true,
@@ -140,7 +140,7 @@ const SnackPop = ( props ) => {
 		const actions = [];
 		if ( notificationOptions.type === 'success' ) {
 			actions.push( {
-				label: __( 'Back to Top', 'archive-pages-pro' ),
+				label: __( 'Back to Top', 'photo-block' ),
 				url: '#dlx-pb-admin-header',
 				variant: 'link',
 				className: 'dlx-pb-admin__notice-action dlx-pb-admin__notice-action--to-top',
@@ -206,7 +206,7 @@ const SnackPop = ( props ) => {
 								setIsModalVisible( false );
 							} }
 						>
-							{ __( 'OK', 'archive-pages-pro' ) }
+							{ __( 'OK', 'photo-block' ) }
 						</Button>
 					</div>
 				</Modal>
