@@ -244,7 +244,7 @@ const Settings = ( props ) => {
 																		{
 																			sprintf(
 																				/* translators: 1: Available requests, 2: Total limit */
-																				__( 'You have have %1$s monthly uses left out of of %2$s available requests.', 'photo-block' ),
+																				__( 'You have %1$s monthly uses left out of of %2$s available requests.', 'photo-block' ),
 																				screenshotOneAvailableRequests,
 																				screenshotOneTotalLimit
 																			)
