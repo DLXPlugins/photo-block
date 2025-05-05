@@ -62,12 +62,13 @@ const Settings = ( props ) => {
 			screenshotOneSecretKey: dlxPBAdmin.screenshotOneSecretKey,
 			screenshotOneDefaultImageFormat: dlxPBAdmin.screenshotOneDefaultImageFormat,
 			screenshotOneEnableAnimatedScreenshots: dlxPBAdmin.screenshotOneEnableAnimatedScreenshots,
-			screenshotOneMaxImageWidth: dlxPBAdmin.screenshotOneMaxImageWidth,
-			screenshotOneMaxImageHeight: dlxPBAdmin.screenshotOneMaxImageHeight,
-			screenshotOneViewportWidth: dlxPBAdmin.screenshotOneViewportWidth,
-			screenshotOneViewportHeight: dlxPBAdmin.screenshotOneViewportHeight,
+			screenshotOneMaxImageWidth: dlxPBAdmin.screenshotOneMaxImageWidth || 1400,
+			screenshotOneMaxImageHeight: dlxPBAdmin.screenshotOneMaxImageHeight || 1200,
+			screenshotOneViewportWidth: dlxPBAdmin.screenshotOneViewportWidth || 1400,
+			screenshotOneViewportHeight: dlxPBAdmin.screenshotOneViewportHeight || 1200,
 			screenshotOneBlockCookieBanners: dlxPBAdmin.screenshotOneBlockCookieBanners,
 			screenshotOneBlockAds: dlxPBAdmin.screenshotOneBlockAds,
+			screenshotOneIgnoreHostErrors: dlxPBAdmin.screenshotOneIgnoreHostErrors,
 		},
 	} );
 	const formValues = useWatch( { control } );
@@ -136,8 +137,7 @@ const Settings = ( props ) => {
 	 * Save the ScreenshotOne API key.
 	 */
 	const onHandleSaveAPIKey = async() => {
-		trigger( 'screenshotOneAccessKey' );
-		trigger( 'screenshotOneSecretKey' );
+		await trigger( [ 'screenshotOneAccessKey', 'screenshotOneSecretKey' ] );
 		if ( errors.screenshotOneAccessKey || errors.screenshotOneSecretKey ) {
 			return;
 		}
@@ -275,7 +275,7 @@ const Settings = ( props ) => {
 																			}
 																		)
 																	}
-																	disabled={ getValues( 'screenshotOneAPIValid' ) }
+																	disabled={ saveAccessKeyLoading }
 																	type="password"
 																	onChange={ ( newValue ) => {
 																		field.onChange( newValue );
@@ -327,7 +327,7 @@ const Settings = ( props ) => {
 																			}
 																		)
 																	}
-																	disabled={ getValues( 'screenshotOneAPIValid' ) }
+																	disabled={ saveAccessKeyLoading }
 																	onChange={ ( newValue ) => {
 																		field.onChange( newValue );
 																		clearErrors( 'screenshotOneSecretKey' );
@@ -609,6 +609,23 @@ const Settings = ( props ) => {
 																			} }
 																			label={ __( 'Block Ads', 'photo-block' ) }
 																			help={ __( 'If enabled, ScreenshotOne will block ads from showing.', 'photo-block' ) }
+																		/>
+																	) }
+																/>
+															</div>
+															<div className="dlx-admin__row">
+																<Controller
+																	name="screenshotOneIgnoreHostErrors"
+																	control={ control }
+																	render={ ( { field } ) => (
+																		<ToggleControl
+																			{ ...field }
+																			checked={ field.value }
+																			onChange={ ( value ) => {
+																				field.onChange( value );
+																			} }
+																			label={ __( 'Ignore Host Errors', 'photo-block' ) }
+																			help={ __( 'If enabled, ScreenshotOne will ignore host errors. For example, if you need a screenshot of a 404 or error page.', 'photo-block' ) }
 																		/>
 																	) }
 																/>

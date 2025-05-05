@@ -15,6 +15,7 @@ const DEFAULT_STATE = {
 	screenshotOneViewportHeight: photoBlock.settings.screenshotOneViewportHeight,
 	screenshotOneBlockCookieBanners: photoBlock.settings.screenshotOneBlockCookieBanners,
 	screenshotOneBlockAds: photoBlock.settings.screenshotOneBlockAds,
+	screenshotOneIgnoreHostErrors: photoBlock.settings.screenshotOneIgnoreHostErrors,
 };
 const actions = {
 	/**

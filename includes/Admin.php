@@ -249,6 +249,7 @@ class Admin {
 				'screenshotOneViewportHeight'            => $options['screenshotOneViewportHeight'],
 				'screenshotOneBlockCookieBanners'        => $options['screenshotOneBlockCookieBanners'],
 				'screenshotOneBlockAds'                  => $options['screenshotOneBlockAds'],
+				'screenshotOneIgnoreHostErrors'          => $options['screenshotOneIgnoreHostErrors'],
 			)
 		);
 		\wp_set_script_translations( 'dlx-pb-admin', 'photo-block' );
@@ -360,7 +361,7 @@ class Admin {
 		$options['screenshotOneAvailableRequests'] = 0;
 
 		// Update options.
-		// Options::update_options( $options );
+		Options::update_options( $options );
 
 		wp_send_json_success();
 	}

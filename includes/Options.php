@@ -134,6 +134,7 @@ class Options {
 			'screenshotOneViewportHeight'            => 1200,
 			'screenshotOneBlockCookieBanners'        => true,
 			'screenshotOneBlockAds'                  => true,
+			'screenshotOneIgnoreHostErrors'          => false,
 		);
 
 		/**

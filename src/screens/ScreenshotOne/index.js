@@ -48,6 +48,7 @@ const ScreenshotOne = ( props ) => {
 			screenshotOneViewportHeight: getSetting( 'screenshotOneViewportHeight' ),
 			screenshotOneBlockCookieBanners: getSetting( 'screenshotOneBlockCookieBanners' ),
 			screenshotOneBlockAds: getSetting( 'screenshotOneBlockAds' ),
+			screenshotOneIgnoreHostErrors: getSetting( 'screenshotOneIgnoreHostErrors' ),
 		},
 	} );
 
@@ -95,7 +96,7 @@ const ScreenshotOne = ( props ) => {
 			} else {
 				setError( 'screenshotOneUrl', {
 					type: 'apiError',
-					message: data.data.message,
+					message: data.data.message.error_message,
 				} );
 			}
 		}
@@ -248,6 +249,21 @@ const ScreenshotOne = ( props ) => {
 													{ ...field }
 													checked={ field.value }
 													disabled={ loading }
+												/>
+											) }
+										/>
+									</div>
+									<div className="dlx-photo-block__panel-row">
+										<Controller
+											control={ control }
+											name="screenshotOneIgnoreHostErrors"
+											render={ ( { field } ) => (
+												<ToggleControl
+													label={ __( 'Ignore Host Errors', 'photo-block' ) }
+													{ ...field }
+													checked={ field.value }
+													disabled={ loading }
+													help={ __( 'If enabled, ScreenshotOne will ignore host errors. For example, if you need a screenshot of a 404 or error page.', 'photo-block' ) }
 												/>
 											) }
 										/>

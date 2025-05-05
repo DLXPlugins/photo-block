@@ -13799,7 +13799,8 @@ var ScreenshotOne = function ScreenshotOne(props) {
         screenshotOneViewportWidth: getSetting('screenshotOneViewportWidth'),
         screenshotOneViewportHeight: getSetting('screenshotOneViewportHeight'),
         screenshotOneBlockCookieBanners: getSetting('screenshotOneBlockCookieBanners'),
-        screenshotOneBlockAds: getSetting('screenshotOneBlockAds')
+        screenshotOneBlockAds: getSetting('screenshotOneBlockAds'),
+        screenshotOneIgnoreHostErrors: getSetting('screenshotOneIgnoreHostErrors')
       }
     }),
     control = _useForm.control,
@@ -13854,7 +13855,7 @@ var ScreenshotOne = function ScreenshotOne(props) {
             } else {
               setError('screenshotOneUrl', {
                 type: 'apiError',
-                message: data.data.message
+                message: data.data.message.error_message
               });
             }
           case 7:
@@ -14029,6 +14030,21 @@ var ScreenshotOne = function ScreenshotOne(props) {
       }, field, {
         checked: field.value,
         disabled: loading
+      }));
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "dlx-photo-block__panel-row"
+  }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_13__.Controller, {
+    control: control,
+    name: "screenshotOneIgnoreHostErrors",
+    render: function render(_ref10) {
+      var field = _ref10.field;
+      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, _extends({
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Ignore Host Errors', 'photo-block')
+      }, field, {
+        checked: field.value,
+        disabled: loading,
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('If enabled, ScreenshotOne will ignore host errors. For example, if you need a screenshot of a 404 or error page.', 'photo-block')
       }));
     }
   })))))), /*#__PURE__*/React.createElement("div", {
@@ -14575,7 +14591,8 @@ var DEFAULT_STATE = {
   screenshotOneViewportWidth: photoBlock.settings.screenshotOneViewportWidth,
   screenshotOneViewportHeight: photoBlock.settings.screenshotOneViewportHeight,
   screenshotOneBlockCookieBanners: photoBlock.settings.screenshotOneBlockCookieBanners,
-  screenshotOneBlockAds: photoBlock.settings.screenshotOneBlockAds
+  screenshotOneBlockAds: photoBlock.settings.screenshotOneBlockAds,
+  screenshotOneIgnoreHostErrors: photoBlock.settings.screenshotOneIgnoreHostErrors
 };
 var actions = {
   /**

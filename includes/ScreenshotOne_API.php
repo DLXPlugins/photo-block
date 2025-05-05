@@ -299,6 +299,7 @@ class ScreenshotOne_API {
 			'viewport_height'      => $params['screenshotOneViewportHeight'],
 			'block_cookie_banners' => $params['screenshotOneBlockCookieBanners'] ? 'true' : 'false',
 			'block_ads'            => $params['screenshotOneBlockAds'] ? 'true' : 'false',
+			'ignore_host_errors'   => $params['screenshotOneIgnoreHostErrors'] ? 'true' : 'false',
 		);
 
 		// Build the query string maintaining parameter order.
