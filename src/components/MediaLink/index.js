@@ -187,7 +187,7 @@ const MediaLink = ( props ) => {
 									icon={ <ExternalLink /> }
 									iconSize={ 18 }
 									iconPosition="right"
-									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
+									label={ __( 'Open in new tab', 'photo-block' ) }
 									href={ imageData.full }
 									target="_blank"
 									rel="noopener noreferrer"
@@ -205,7 +205,7 @@ const MediaLink = ( props ) => {
 									icon={ <ExternalLink /> }
 									iconSize={ 18 }
 									iconPosition="right"
-									label={ __( 'Open in new tab', 'archive-pages-pro' ) }
+									label={ __( 'Open in new tab', 'photo-block' ) }
 									href={ imageData.attachment_link }
 									target="_blank"
 									rel="noopener noreferrer"

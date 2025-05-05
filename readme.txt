@@ -1,9 +1,9 @@
-=== Photo Block - The Only Image Block You'll Need ===
+=== Photo Block - A Powerful Image Block ===
 Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
-Tested up to: 6.7
-Stable tag: 1.0.14
+Tested up to: 6.8
+Stable tag: 1.1.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -23,6 +23,7 @@ Photo Block adds a time-saving block to the Block Editor, allowing for advanced 
 5. **Flexible Image Sources**: Upload directly from the block, use the WordPress media library, download from a URL, or provide a URL to an image.
 6. **Global Styles**: Global styles allow you to save your design settings and easily apply them to other photo blocks, which allows you to maintain a consistent look across your site. With global styles, you can add the block, upload the photo, and apply advanced customization in just 4 clicks.
 7. **Query Loop Support**: Seamlessly integrate Photo Block into a Query Loop block as a featured image for dynamic content.
+8. **ScreenshotOne Support**: Use the <a href="https://screenshotone.com/">ScreenshotOne</a> service to generate website screenshots right from Photo Block.
 
 ## Quick Links:
 
@@ -116,6 +117,14 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.1.0 =
+* Released 2025-05-05
+* New feature: ScreenshotOne compatibility released. You can now take website screenshots from within Photo Block.
+* New feature: New admin panel to set block and ScreenshotOne defaults.
+* New feature: Disable the caption appender by default.
+* New feature: File size and URL is shown in the sidebar when available.
+* Bug fix: Opacity wasn't rendering on the frontend.
+
 = 1.0.14 =
 * Released 2025-01-07
 * Bug fix: Uploading in smaller columns didn't show a preview.
@@ -141,5 +150,5 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.0.14 =
-Fixing bugs with cropping, and uploading in smaller columns. Fixing block.json preview icons.
+= 1.1.0 =
+This release adds ScreenshotOne compatibility, allowing you to take website screenshots from within Photo Block, along with a new admin panel for block and ScreenshotOne defaults. The update also includes bug fixes for opacity rendering and adds the ability to disable caption appenders by default.
