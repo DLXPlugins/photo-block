@@ -1,0 +1,43 @@
+/*
+ *
+ * photo-block-reyes
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-reyes filter
+// @mixin photo-block-reyes
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-reyes;
+//   }
+//   or
+//   img {
+//     @include photo-block-reyes(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-reyes(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-reyes($filters...) {
+  @include filter-base;
+  filter: sepia(.22) brightness(1.1) contrast(.85) saturate(.75) $filters;
+  --photo-block-image-filter: sepia(.22) brightness(1.1) contrast(.85) saturate(.75) blur(var(--photo-block-blur, 0));
+
+   &::after {
+    background: rgb(239, 205, 173);
+    mix-blend-mode: soft-light;
+    opacity: .5;
+  }
+  
+  @content;
+}
+
+// photo-block-reyes Instagram filter
+%photo-block-reyes,
+.photo-block-reyes {
+  @include photo-block-reyes;
+}

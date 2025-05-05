@@ -1,0 +1,41 @@
+/*
+ * photo-block-clarendon
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-clarendon filter
+// @mixin photo-block-clarendon
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-clarendon;
+//   }
+//   or
+//   img {
+//     @include photo-block-clarendon(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-clarendon(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-clarendon($filters...) {
+  @include filter-base;
+  filter: contrast(1.2) saturate(1.35) $filters;
+  --photo-block-image-filter: contrast(1.2) saturate(1.35) blur(var(--photo-block-blur, 0));
+
+  &:before {
+    background: rgba(127, 187, 227, .2);
+    mix-blend-mode: overlay;
+  }
+
+  @content;
+}
+
+// photo-block-clarendon Instagram filter
+%photo-block-clarendon,
+.photo-block-clarendon {
+  @include photo-block-clarendon;
+}

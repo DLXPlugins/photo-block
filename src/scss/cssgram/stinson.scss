@@ -1,0 +1,43 @@
+/*
+ *
+ * photo-block-stinson
+ *
+ */
+
+@import 'shared';
+
+// mixin to extend photo-block-stinson filter
+// @mixin photo-block-stinson
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-stinson;
+//   }
+//   or
+//   img {
+//     @include photo-block-stinson(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-stinson(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-stinson($filters...) {
+  @include filter-base;
+  filter: contrast(0.75) saturate(0.85) brightness(1.15) $filters;
+  --photo-block-image-filter: contrast(0.75) saturate(0.85) brightness(1.15) blur(var(--photo-block-blur, 0));
+
+  &::before {
+    background: rgba(240, 149, 128, .2);
+    mix-blend-mode: soft-light;
+  }
+
+  @content;
+}
+
+// photo-block-stinson Instagram filter
+%photo-block-stinson,
+.photo-block-stinson {
+  @include photo-block-stinson;
+}

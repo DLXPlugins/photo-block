@@ -1,0 +1,48 @@
+/*
+ * photo-block-kelvin
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-kelvin filter
+// @mixin photo-block-kelvin
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-kelvin;
+//   }
+//   or
+//   img {
+//     @include photo-block-kelvin(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-kelvin(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-kelvin($filters...) {
+  @include filter-base;
+
+  @if length($filters) > 0 {
+    filter: $filters blur(var(--photo-block-blur, 0));
+  }
+
+  &::after{
+    background: rgb(183, 125, 33);
+    mix-blend-mode: overlay;
+  }
+
+  &::before {
+    background: rgb(56, 44, 52);
+    mix-blend-mode: color-dodge;
+  }
+
+  @content;
+}
+
+// photo-block-kelvin Instagram filter
+%photo-block-kelvin,
+.photo-block-kelvin {
+  @include photo-block-kelvin;
+}

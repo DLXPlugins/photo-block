@@ -1,0 +1,42 @@
+/*
+ *
+ * photo-block-earlybird
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-earlybird filter
+// @mixin photo-block-earlybird
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-earlybird;
+//   }
+//   or
+//   img {
+//     @include photo-block-earlybird(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-earlybird(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-earlybird($filters...) {
+  @include filter-base;
+  filter: contrast(.9) sepia(.2) $filters;
+  --photo-block-image-filter: contrast(.9) sepia(.2) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: radial-gradient(circle, rgb(208, 186, 142) 20%, rgb(54, 3, 9) 85%, rgb(29, 2, 16) 100%);
+    mix-blend-mode: overlay;
+  }
+
+  @content;
+}
+
+// photo-block-earlybird Instagram filter
+%photo-block-earlybird,
+.photo-block-earlybird {
+  @include photo-block-earlybird;
+}

@@ -1,0 +1,48 @@
+/*
+ *
+ * photo-block-rise
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-rise filter
+// @mixin photo-block-rise
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-rise;
+//   }
+//   or
+//   img {
+//     @include photo-block-rise(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-rise(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-rise($filters...) {
+  @include filter-base;
+  filter: brightness(1.05) sepia(.2) contrast(.9) saturate(.9) $filters;
+  --photo-block-image-filter: brightness(1.05) sepia(.2) contrast(.9) saturate(.9) blur(var(--photo-block-blur, 0));
+
+  &::after{
+    background: radial-gradient(circle, rgba(232, 197, 152, .8), transparent 90%);
+    mix-blend-mode: overlay;
+    opacity: .6;
+  }
+
+  &::before{
+    background: radial-gradient(circle, rgba(236, 205, 169, .15) 55%, rgba(50, 30, 7, .4));
+    mix-blend-mode: multiply;
+  }
+
+  @content;
+}
+
+// photo-block-rise Instagram filter
+%photo-block-rise,
+.photo-block-rise {
+  @include photo-block-rise;
+}

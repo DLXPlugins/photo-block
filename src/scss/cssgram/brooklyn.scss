@@ -1,0 +1,42 @@
+/*
+ *
+ * photo-block-brooklyn
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-brooklyn filter
+// @mixin photo-block-brooklyn
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-brooklyn;
+//   }
+//   or
+//   img {
+//     @include photo-block-brooklyn(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-brooklyn(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-brooklyn($filters...) {
+  @include filter-base;
+  filter: contrast(.9) brightness(1.1) $filters;
+  --photo-block-image-filter: contrast(.9) brightness(1.1) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: radial-gradient(circle, rgba(168, 223, 193, .4) 70%, rgb(196, 183, 200));
+    mix-blend-mode: overlay;
+  }
+
+  @content;
+}
+
+// photo-block-brooklyn Instagram filter
+%photo-block-brooklyn,
+.photo-block-brooklyn {
+  @include photo-block-brooklyn;
+}

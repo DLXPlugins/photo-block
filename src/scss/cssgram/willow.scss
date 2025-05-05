@@ -1,0 +1,49 @@
+/*
+ * photo-block-willow
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-willow filter
+// @mixin photo-block-willow
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-willow;
+//   }
+//   or
+//   img {
+//     @include photo-block-willow(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-willow(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-willow($filters...) {
+  @include filter-base;
+  filter: grayscale(.5) contrast(.95) brightness(.9) $filters;
+  --photo-block-image-filter: grayscale(.5) contrast(.95) brightness(.9) blur(var(--photo-block-blur, 0));
+
+  &::before {
+    background-color: radial-gradient(40%, circle, rgb(212, 169, 175) 55%, black 150%);
+    mix-blend-mode: overlay;
+  }
+
+  &::after {
+    background-color: rgb(216, 205, 203);
+    mix-blend-mode: color;
+  }
+
+  @content;
+}
+
+// photo-block-willow Instagram filter
+%photo-block-willow,
+.photo-block-willow {
+  @include photo-block-willow;
+}
+@mixin photo-block-willow($filters...) {
+
+}

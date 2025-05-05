@@ -1,0 +1,44 @@
+/*
+ *
+ * photo-block-maven
+ *
+ */
+
+@import 'shared';
+
+// mixin to extend photo-block-maven filter
+// @mixin photo-block-maven
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-maven;
+//   }
+//   or
+//   img {
+//     @include photo-block-maven(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-maven(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+
+@mixin photo-block-maven($filters...) {
+  @include filter-base;
+  filter: sepia(.25) brightness(.95) contrast(.95) saturate(1.5) $filters;
+  --photo-block-image-filter: sepia(.25) brightness(.95) contrast(.95) saturate(1.5) blur(var(--photo-block-blur, 0));
+
+  &:after{
+    background: rgba(3, 230, 26, .20);
+    mix-blend-mode: hue;
+  }
+
+  @content;
+}
+
+// photo-block-maven Instagram filter
+%photo-block-maven,
+.photo-block-maven {
+  @include photo-block-maven;
+}

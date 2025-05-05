@@ -1,0 +1,37 @@
+/*
+ *
+ * photo-block-inkwell
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-inkwell filter
+// @mixin photo-block-inkwell
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-inkwell;
+//   }
+//   or
+//   img {
+//     @include photo-block-inkwell(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-inkwell(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-inkwell($filters...) {
+  @include filter-base;
+  filter: sepia(.3) contrast(1.1) brightness(1.1) grayscale(1) $filters;
+  --photo-block-image-filter: sepia(.3) contrast(1.1) brightness(1.1) grayscale(1) blur(var(--photo-block-blur, 0));
+
+  @content;
+}
+
+// photo-block-inkwell Instagram filter
+%photo-block-inkwell,
+.photo-block-inkwell {
+  @include photo-block-inkwell;
+}

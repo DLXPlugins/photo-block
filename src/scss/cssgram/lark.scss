@@ -1,0 +1,46 @@
+/*
+ * photo-block-lark
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-lark filter
+// @mixin photo-block-lark
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-lark;
+//   }
+//   or
+//   img {
+//     @include photo-block-lark(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-lark(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-lark($filters...) {
+  @include filter-base;
+  filter: contrast(.9) $filters;
+  --photo-block-image-filter: contrast(.9) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: rgba(242, 242, 242, .8);
+    mix-blend-mode: darken;
+  }
+
+  &::before {
+    background: rgb(34, 37, 63);
+    mix-blend-mode: color-dodge;
+  }
+
+  @content;
+}
+
+// photo-block-lark Instagram filter
+%photo-block-lark,
+.photo-block-lark {
+  @include photo-block-lark;
+}

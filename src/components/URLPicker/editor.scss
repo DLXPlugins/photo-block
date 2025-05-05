@@ -1,0 +1,182 @@
+@keyframes photo-block-pub-spin {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+/* Admin Interface Wrapper */
+#photo-block-pub-content {
+	padding-top: 18px;
+}
+/* Admin loading icon */
+.photo-block-pub-load-static-svg {
+	svg {
+		animation: photo-block-pub-spin;
+		animation-duration: 1.5s;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+	}
+}
+
+/* Url Wrapper Input */
+.photo-block-url-input {
+	display: inline-block;
+	max-width: 400px;
+	width: 100%;
+	flex-wrap: wrap;
+	position: relative;
+	.components-base-control {
+		.components-base-control__label {
+			font-size: 16px;
+			display: block;
+			width: 100%;
+		}
+	}
+	.photo-block-suggestions-wrapper {
+		width: 100%;
+		position: relative;
+		top: 100%;
+		left: 0;
+		max-height: 250px;
+		overflow-y: auto;
+		.photo-block-url-input__suggestion {
+			position: relative;
+			border: 1px solid #ddd;
+			border-radius: 0;
+			width: 100%;
+			height: auto;
+			background: #FFF;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			text-align: left;
+			padding: 5px 20px 5px 40px;
+			transition: all 0.4s ease-in-out;
+
+			svg {
+				position: absolute;
+				width: 24px;
+				height: 24px;
+				top: calc(50% - 8px);
+				left: 10px;
+				path {
+					fill: unset;
+				}
+			}
+
+			&:hover {
+				background: #f1f1f1;
+				border-color: var( --wp-admin-theme-color );
+			}
+
+			&.is-selected {
+				background: #f1f1f1;
+				border-color: var( --wp-admin-theme-color );
+			}
+
+			.photo-block-search-item {
+				display: block;
+				margin-right: 8px;
+				white-space: pre-wrap;
+				overflow-wrap: break-word;
+			}
+			.photo-block-search-item-title {
+				display: block;
+				margin-bottom: 0.2em;
+				font-weight: 500;
+				position: relative;
+				overflow: hidden;
+   				text-overflow: ellipsis;
+			}
+			.photo-block-search-item-info {
+				word-break: break-all;
+				display: block;
+				color: #757575;
+				font-size: .9em;
+				line-height: 1.3;
+			}
+		}
+	}
+}
+.photo-block-pub-url-search-wrapper {
+	position: relative;
+
+	.photo-block-pub-url-input__search-button.components-button {
+		position: absolute;
+		right: 0;
+		top: calc(50% - 18px);
+	}
+	.photo-block-pub-url-input__apply-button.components-button {
+		position: absolute;
+		right: 0;
+		top: calc(50% - 18px);
+	}
+}
+.photo-block-pub-url-input__wrapper {
+	
+	label {
+		display: block;
+		width: 100%;
+		font-weight: 600;
+		margin-bottom: 5px;
+	}
+	.photo-block-pub-url-input__suggestion {
+		
+	}
+	.photo-block-pub-url-input__suggestion-item {
+		.components-button {
+			margin-left: 8px;
+		}
+	}
+	.photo-block-pub-url-input__input-wrapper {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-gap: 10px;
+		width: 100%;
+		margin-bottom: 10px;
+		input[type="text"] {
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			font-size: 13px;
+			padding: 11px 36px 11px 16px;
+			width: 100%;
+			margin: 0;
+		}
+		.photo-block-pub-url-input__input {
+			line-height: 1;
+		}
+		.components-spinner {
+			position: absolute;
+			right: 14px;
+			height: 24px;
+			top: calc(50% - 12px);
+			margin: 0;
+		}
+		.photo-block-pub-url-input__input ~ .components-button {
+			box-shadow: unset;
+			border: unset;
+			background: unset;
+		}
+	}
+}
+
+.photo-block-pub-url-input__input ~ .components-button,
+.photo-block-pub-url-input__suggestion-item .components-button {
+	position: relative;
+
+	.components-tooltip {
+		display: inline-block;
+		background: #333;
+		color: #FFF;
+		padding: 8px 12px;
+		border-radius: 3px;
+		font-size: 12px;
+		position: absolute;
+		top: calc(50% - 8px);
+		right: 10px;
+		min-width: 150px;
+		height: auto;
+		transition: opacity .2s ease-in-out;
+		cursor: pointer;
+	}
+}

@@ -13,15 +13,17 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import 'filepond/dist/filepond.min.css';
 
 import {
-	forwardRef,
 	useContext,
+	useState,
 } from '@wordpress/element';
 
 import { Upload } from 'lucide-react';
 
 import { __ } from '@wordpress/i18n';
 
-import UploaderContext from '../../contexts/UploaderContext';
+import { useDispatch, useSelect } from '@wordpress/data';
+
+import { blockStore } from '../../store';
 
 // Register filepond plugins.
 registerPlugin(
@@ -31,16 +33,33 @@ registerPlugin(
 );
 
 import { redoSvg, processSvg } from '../../blocks/photo-block/icons/filepond';
-const UploadTarget = forwardRef( ( props, ref ) => {
+const UploadTarget = ( props ) => {
+
+	const { blockUniqueId } = props;
+
 	const {
-		setImageFile,
-		isUploading,
+		setImageData,
+		setFilepondInstance,
 		setIsUploading,
-		isProcessingUpload,
 		setIsProcessingUpload,
+		setPhotoMode,
 		setIsUploadError,
 		setScreen,
-	} = useContext( UploaderContext );
+	} = useDispatch( blockStore( blockUniqueId ) );
+
+	const {
+		currentScreen,
+		isUploading,
+		isProcessingUpload,
+		isUploadError,
+	} = useSelect( ( select ) => {
+		return {
+			currentScreen: select( blockStore( blockUniqueId ) ).getCurrentScreen(),
+			isUploading: select( blockStore( blockUniqueId ) ).isUploading(),
+			isProcessingUpload: select( blockStore( blockUniqueId ) ).isProcessingUpload(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
+		};
+	} );
 
 	const { setAttributes } = props;
 
@@ -65,7 +84,12 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 							) => {
 								// todo - Need error checking and handling here.
 								const formData = new FormData();
-								formData.append( 'file', file, file.name );
+								// If file is not an object, treat as full URL.
+								if ( 'object' !== typeof file ) {
+									formData.append( 'url', file );
+								} else {
+									formData.append( 'file', file, file.name );
+								}
 								const request = new XMLHttpRequest();
 								request.open( 'POST', photoBlock.restUrl + '/add-image' );
 								request.setRequestHeader( 'X-WP-Nonce', photoBlock.restNonce );
@@ -76,10 +100,12 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 									if ( request.status >= 200 && request.status < 300 ) {
 										setAttributes(
 											{
-												photo: JSON.parse( request.responseText ),
+												imageData: JSON.parse( request.responseText ),
+												photoMode: 'photo',
 											}
 										);
-										setImageFile( JSON.parse( request.responseText ) );
+										setPhotoMode( 'photo' );
+										setImageData( JSON.parse( request.responseText ) );
 										load( request.responseText );
 									} else {
 										error( 'oh no' );
@@ -97,10 +123,9 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 						credits={ false }
 						stylePanelLayout="integrated"
 						labelIdle=""
-						labelFileLoading={ false }
 						allowRemove={ false }
 						allowRevert={ false }
-						ref={ ref }
+						ref={ setFilepondInstance }
 						labelFileTypeNotAllowed={ __( 'Invalid file type', 'photo-block' ) }
 						labelTapToCancel={ __( 'Click to cancel', 'photo-block' ) }
 						acceptedFileTypes={ [ 'image/*' ] }
@@ -137,12 +162,12 @@ const UploadTarget = forwardRef( ( props, ref ) => {
 							<Upload />
 						</div>
 						<div className="dlx-photo-block__upload-target__label-text">
-							{ __( 'Drag Photo Here or Upload', 'photo-block' ) }
+							{ __( 'Drag Photo Here or Click to Upload', 'photo-block' ) }
 						</div>
 					</div>
 				) }
 			</div>
 		</>
 	);
-} );
+};
 export default UploadTarget;

@@ -1,0 +1,22 @@
+.dlx-photo-block__custom-attributes-control__attribute {
+	display: grid;
+	grid-template-columns: 1fr 1fr 32px;
+	grid-gap: 4px;
+	align-items: end;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	.components-base-control {
+		margin-bottom: 0;
+	}
+	.components-base-control__field {
+		margin-bottom: 0;
+	}
+	.components-button {
+		max-height: 30px;
+	}
+}

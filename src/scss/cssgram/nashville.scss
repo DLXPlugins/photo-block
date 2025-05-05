@@ -1,0 +1,47 @@
+/*
+ *
+ * photo-block-nashville
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-nashville filter
+// @mixin photo-block-nashville
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-nashville;
+//   }
+//   or
+//   img {
+//     @include photo-block-nashville(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-nashville(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-nashville($filters...) {
+  @include filter-base;
+  filter: sepia(.2) contrast(1.2) brightness(1.05) saturate(1.2) $filters;
+  --photo-block-image-filter: sepia(.2) contrast(1.2) brightness(1.05) saturate(1.2) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: rgba(0, 70, 150, .4);
+    mix-blend-mode: lighten;
+  }
+
+  &::before {
+    background: rgba(247, 176, 153, .56);
+    mix-blend-mode: darken;
+  }
+
+  @content;
+}
+
+// photo-block-nashville Instagram filter
+%photo-block-nashville,
+.photo-block-nashville {
+  @include photo-block-nashville;
+}

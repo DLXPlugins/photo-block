@@ -1,0 +1,16 @@
+.dlx-photo-block__drop-shadow-control__settings__offset {
+	h3 {
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+}
+.dlx-photo-block__drop-shadow-control__settings__offset__wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 15px;
+
+	.components-base-control__field {
+		position: relative;
+		margin-bottom: 0;
+	}
+}

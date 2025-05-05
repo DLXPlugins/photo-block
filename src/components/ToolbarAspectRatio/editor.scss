@@ -1,0 +1,47 @@
+.dlx-photo-block__component-aspect-ratio {
+	display: flex;
+	height: 100%;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 10px 8px;
+	box-sizing: border-box;
+	text-align: center;
+
+	.components-base-control__field {
+		margin: 0;
+	}
+	.components-text-control__input {
+		display: inline-block;
+		max-width: 72px;
+	}
+	&.dlx-photo-block__component-aspect-ratio--active {
+		.components-text-control__input {
+			max-width: 48px;
+		}
+	}
+	label {
+		position: absolute;
+		left: -9999px;
+		clip: rect( 0 0 0 0 );
+	}
+
+	button.dlx-photo-block__component-aspect-ratio-switch {
+		min-width: unset;
+		height: 30px;
+		margin-left: 4px;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+	.dlx-photo-block__component-aspect-ratio-splitter {
+		button {
+			min-width: unset;
+			height: 30px;
+			margin-left: 4px;
+			margin-right: 4px;
+		}
+	}
+	button.dlx-photo-block__component-aspect-ratio-apply.components-button {
+		margin-left: 8px;
+		max-height: 30px;
+	}
+}

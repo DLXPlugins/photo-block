@@ -1,0 +1,44 @@
+/*
+ *
+ * photo-block-perpetua
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-perpetua filter
+// @mixin photo-block-perpetua
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-perpetua;
+//   }
+//   or
+//   img {
+//     @include photo-block-perpetua(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-perpetua(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-perpetua($filters...) {
+  @include filter-base;
+  @if length($filters) > 0 {
+    filter: $filters;
+  }
+
+  &::after {
+    background: linear-gradient(to bottom, rgb(0, 91, 154), rgb(230, 193, 61));
+    mix-blend-mode: soft-light;
+    opacity: .5;
+  }
+
+  @content;
+}
+
+// photo-block-perpetua Instagram filter
+%photo-block-perpetua,
+.photo-block-perpetua {
+  @include photo-block-perpetua;
+}

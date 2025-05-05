@@ -12,3 +12,18 @@
 		}
 	}
 }
+
+.dlx-photo-block__loading-spinner {
+	display: none;
+}
+.is-layout-small .dlx-photo-block__loading-spinner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 12px;
+
+	h2 {
+		font-size: 1.2rem;
+		margin-bottom: 10px;
+	}
+}

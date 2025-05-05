@@ -1,0 +1,41 @@
+/*
+ * Lo-fi
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-lofi filter
+// @mixin photo-block-lofi
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-lofi;
+//   }
+//   or
+//   img {
+//     @include photo-block-lofi(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-lofi(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-lofi($filters...) {
+  @include filter-base;
+  filter: saturate(1.1) contrast(1.5) $filters;
+  --photo-block-image-filter: saturate(1.1) contrast(1.5) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: radial-gradient(circle, transparent 70%, rgb(34, 34, 34) 150%);
+    mix-blend-mode: multiply;
+  }
+
+  @content;
+}
+
+// photo-block-lofi Instagram filter
+%photo-block-lofi,
+.photo-block-lofi {
+  @include photo-block-lofi;
+}

@@ -3,9 +3,9 @@
   "title": "Photo Block",
   "apiVersion": 2,
   "name": "dlxplugins/photo-block",
-  "category": "common",
-  "icon": "<svg aria-hidden='true' focusable='false' data-prefix='fas' data-icon='share-alt' className='svg-inline--fa fa-share-alt fa-w-14' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'><path fill='currentColor' d='M352 320c-22.608 0-43.387 7.819-59.79 20.895l-102.486-64.054a96.551 96.551 0 0 0 0-41.683l102.486-64.054C308.613 184.181 329.392 192 352 192c53.019 0 96-42.981 96-96S405.019 0 352 0s-96 42.981-96 96c0 7.158.79 14.13 2.276 20.841L155.79 180.895C139.387 167.819 118.608 160 96 160c-53.019 0-96 42.981-96 96s42.981 96 96 96c22.608 0 43.387-7.819 59.79-20.895l102.486 64.054A96.301 96.301 0 0 0 256 416c0 53.019 42.981 96 96 96s96-42.981 96-96-42.981-96-96-96z'></path></svg>",
-  "description": "An easy-to-use and comprehensive photo block.",
+  "category": "media",
+  "icon": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1305 1305' width='16' height='16'><path fill='#333333' d='M652.492 1302.95c-359.692 0-651.275-291.583-651.275-651.275C1.217 291.983 292.8.4 652.492.4c359.687 0 651.275 291.583 651.275 651.275 0 359.692-291.588 651.275-651.275 651.275Z'/><path fill='#FFF' d='M652.492 1238.55c-324.125 0-586.879-262.754-586.879-586.879S328.367 64.792 652.492 64.792s586.879 262.754 586.879 586.879-262.754 586.879-586.879 586.879Z'/><path fill='#333333' d='M345.942 498.429 113.458 631.583c-.246 6.671-.412 13.363-.412 20.092 0 183.908 92.054 346.292 232.575 443.671l.321-596.917Zm592.429-35.779.771-268c-83.055-52.2-181.317-82.421-286.65-82.421-82.734 0-161.105 18.65-231.175 51.933L938.371 462.65ZM366.612 840.7l-.77 268c83.05 52.2 181.312 82.421 286.65 82.421 82.737 0 161.104-18.65 231.175-51.934L366.612 840.7Zm264.855-531.1-516.7 298.883c14.916-188.166 126.379-349.133 284.854-433.396L631.467 309.6Zm42.05 684.146 516.7-298.875C1175.3 883.033 1063.842 1044 905.362 1128.262L673.517 993.746Zm285.521-188.829 232.487-133.15c.246-6.671.413-13.363.413-20.092 0-183.908-92.055-346.292-232.571-443.671l-.329 596.913ZM578.938 398.8c139.62-40.6 285.816 39.662 326.42 179.329 40.654 139.617-39.666 285.763-179.333 326.421-139.675 40.6-285.817-39.667-326.421-179.338-40.6-139.67 39.663-285.812 179.334-326.412Z'/><path fill='#FFF' d='M473.954 596.729c-.562 12.3-10.758 22.063-23.179 21.975-12.687-.087-24.004-10.933-22.854-23.921 5.15-58.075 50.75-111.021 101.45-136.596 11.6-5.849 25.687.034 30.775 11.738 5.017 11.546-.463 24.512-11.483 30.1-33.117 16.783-67.392 59.958-74.709 96.704ZM603.883 422.104c12.884 0 23.33 10.446 23.33 23.333 0 12.884-10.446 23.33-23.33 23.33-12.887 0-23.329-10.446-23.329-23.33 0-12.887 10.442-23.333 23.329-23.333Z'/></svg>",
+  "description": "An easy-to-use and comprehensive image block.",
   "keywords": [
     "photo",
     "block",
@@ -15,39 +15,358 @@
   ],
   "version": "1.0.0",
   "textdomain": "photo-block",
+  "usesContext": [
+    "postType",
+    "postId",
+    "queryId",
+    "query"
+  ],
+  "providesContext": {
+    "photo-block/uniqueId": "uniqueId",
+    "photo-block/photoMode": "photoMode",
+    "photo-block/dataHasFallbackImage": "dataHasFallbackImage",
+    "photo-block/dataFallbackImageSize": "dataFallbackImageSize",
+    "photo-block/dataFallbackImage": "dataFallbackImage",
+    "photo-block/imageSize": "imageSize",
+    "photo-block/globalStyle": "globalStyle",
+    "photo-block/inQueryLoop": "inQueryLoop"
+  },
   "attributes": {
+    "preview": {
+      "type": "boolean",
+      "default": false
+    },
+    "inQueryLoop": {
+      "type": "boolean",
+      "default": false
+    },
     "uniqueId": {
+      "type": "string",
+      "default": null
+    },
+    "date": {
       "type": "string",
       "default": ""
     },
-    "photo": {
+    "globalStyle": {
+      "type": "string",
+      "default": "none"
+    },
+    "defaultsApplied": {
+      "type": "boolean",
+      "default": false
+    },
+    "imageData": {
+      "type": "object",
+      "default": {
+        "id": 0,
+        "url": "",
+        "alt": "",
+        "full": "",
+        "width": "",
+        "height": "",
+        "attachment_link": "",
+        "title": "",
+        "caption": ""
+      }
+    },
+    "photoOpacity": {
+      "type": "number",
+      "default": 100
+    },
+    "photoBlur": {
+      "type": "number",
+      "default": 0
+    },
+    "photoObjectFit": {
+      "type": "string",
+      "default": "inherit"
+    },
+    "photoObjectPosition": {
+      "type": "string",
+      "default": "none"
+    },
+    "photoObjectPositionCustom": {
+      "type": "string",
+      "default": ""
+    },
+    "photoDropShadow": {
+      "type": "object",
+      "default": {
+        "color": "#000000",
+        "opacity": 1,
+        "blur": 0,
+        "spread": 0,
+        "horizontal": 0,
+        "vertical": 0,
+        "inset": false,
+        "enabled": false
+      }
+    },
+    "photoBackgroundColor": {
+      "type": "string",
+      "default": "#FFFFFF00"
+    },
+    "photoMaximumWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "100",
+          "unit": "%"
+        }
+      }
+    },
+    "containerWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerHeight": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerMinWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerMaxWidth": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerMinHeight": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "containerMaxHeight": {
+      "type": "object",
+      "default": {
+        "mobile": {
+          "width": "",
+          "unit": null
+        },
+        "tablet": {
+          "width": "",
+          "unit": null
+        },
+        "desktop": {
+          "width": "",
+          "unit": "px"
+        }
+      }
+    },
+    "photoMode": {
+      "type": "string",
+      "default": "none"
+    },
+    "cssGramFilter": {
+      "type": "string",
+      "default": "none"
+    },
+    "aspectRatio": {
+      "type": "string",
+      "default": "original"
+    },
+    "aspectRatioUnit": {
+      "type": "string",
+      "default": "ratio"
+    },
+    "aspectRatioWidthPixels": {
+      "type": "string",
+      "default": "1280"
+    },
+    "aspectRatioHeightPixels": {
+      "type": "string",
+      "default": "720"
+    },
+    "aspectRatioWidth": {
+      "type": "string",
+      "default": "16"
+    },
+    "aspectRatioHeight": {
+      "type": "string",
+      "default": "9"
+    },
+    "dataHasFallbackImage": {
+      "type": "boolean",
+      "default": false
+    },
+    "dataFallbackImageSize": {
+      "type": "string",
+      "default": "large"
+    },
+    "dataFallbackImage": {
       "type": "object",
       "default": {
         "id": "",
         "url": "",
         "alt": "",
-        "caption": "",
-        "link": "",
-        "linkTarget": "",
-        "width": "",
-        "height": ""
+        "full": "",
+        "attachment_link": ""
       }
     },
-    "screen": {
+    "mediaLinkType": {
       "type": "string",
-      "default": "initial"
+      "default": "none"
+    },
+    "mediaLinkOverride": {
+      "type": "boolean",
+      "default": false
+    },
+    "mediaLinkRel": {
+      "type": "string",
+      "default": ""
+    },
+    "mediaLinkAnchorId": {
+      "type": "string",
+      "default": ""
+    },
+    "mediaLinkUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "mediaLinkClass": {
+      "type": "string",
+      "default": ""
+    },
+    "mediaLinkTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "mediaLinkNewTab": {
+      "type": "boolean",
+      "default": false
+    },
+    "dataMediaLinkRel": {
+      "type": "string",
+      "default": ""
+    },
+    "dataMediaLinkUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "dataMediaLinkClass": {
+      "type": "string",
+      "default": ""
+    },
+    "dataMediaLinkNewTab": {
+      "type": "boolean",
+      "default": false
+    },
+    "mediaLibraryAspectRatio": {
+      "type": "string",
+      "default": "16:9"
+    },
+    "mediaLibrarySuggestedWidth": {
+      "type": "string",
+      "default": "1280"
+    },
+    "mediaLibrarySuggestedHeight": {
+      "type": "string",
+      "default": "720"
     },
     "align": {
       "type": "string",
       "default": "center"
     },
-    "caption": {
+    "photoPosition": {
       "type": "string",
-      "default": ""
+      "default": "center"
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "large"
+    },
+    "imageSizeOverride": {
+      "type": "boolean",
+      "default": false
     },
     "altText": {
       "type": "string",
       "default": ""
+    },
+    "hasCaption": {
+      "type": "boolean",
+      "default": false
+    },
+    "captionPosition": {
+      "type": "string",
+      "default": "bottom"
+    },
+    "hideCaption": {
+      "type": "boolean",
+      "default": false
     },
     "overlayText": {
       "type": "string",
@@ -57,7 +376,7 @@
       "type": "string",
       "default": ""
     },
-    "paddingSize": {
+    "photoPaddingSize": {
       "type": "object",
       "default": {
         "mobile": {
@@ -65,28 +384,37 @@
           "right": "",
           "bottom": "",
           "left": "",
-          "unit": null,
-          "unitSync": null
+          "topUnit": null,
+          "rightUnit": null,
+          "bottomUnit": null,
+          "leftUnit": null,
+          "unitSync": true
         },
         "tablet": {
           "top": "",
           "right": "",
           "bottom": "",
           "left": "",
-          "unit": null,
-          "unitSync": null
+          "topUnit": null,
+          "rightUnit": null,
+          "bottomUnit": null,
+          "leftUnit": null,
+          "unitSync": true
         },
         "desktop": {
-          "top": "20",
-          "right": "20",
-          "bottom": "20",
-          "left": "20",
-          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "0",
+          "left": "0",
+          "topUnit": "px",
+          "rightUnit": "px",
+          "bottomUnit": "px",
+          "leftUnit": "px",
           "unitSync": true
         }
       }
     },
-    "marginSize": {
+    "photoMarginSize": {
       "type": "object",
       "default": {
         "mobile": {
@@ -94,57 +422,123 @@
           "right": "",
           "bottom": "",
           "left": "",
-          "unit": null,
-          "unitSync": null
+          "topUnit": null,
+          "rightUnit": null,
+          "bottomUnit": null,
+          "leftUnit": null,
+          "unitSync": true
         },
         "tablet": {
           "top": "",
           "right": "",
           "bottom": "",
           "left": "",
-          "unit": null,
-          "unitSync": null
+          "topUnit": null,
+          "rightUnit": null,
+          "bottomUnit": null,
+          "leftUnit": null,
+          "unitSync": true
         },
         "desktop": {
-          "top": "20",
-          "right": "",
-          "bottom": "20",
-          "left": "",
-          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "0",
+          "left": "0",
+          "topUnit": "px",
+          "rightUnit": "px",
+          "bottomUnit": "px",
+          "leftUnit": "px",
           "unitSync": true
         }
       }
     },
-    "borderWidth": {
+    "photoBorder": {
       "type": "object",
       "default": {
         "mobile": {
-          "top": "",
-          "right": "",
-          "bottom": "",
-          "left": "",
-          "unit": null,
-          "unitSync": null
+          "top": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "right": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "bottom": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "left": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "unitSync": true
         },
         "tablet": {
-          "top": "",
-          "right": "",
-          "bottom": "",
-          "left": "",
-          "unit": null,
-          "unitSync": null
+          "top": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "right": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "bottom": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "left": {
+            "width": "",
+            "unit": null,
+            "color": "",
+            "borderStyle": ""
+          },
+          "unitSync": true
         },
         "desktop": {
-          "top": "1",
-          "right": "1",
-          "bottom": "1",
-          "left": "1",
-          "unit": "px",
+          "top": {
+            "width": "0",
+            "unit": "px",
+            "color": "#000000",
+            "borderStyle": "solid"
+          },
+          "right": {
+            "width": "0",
+            "unit": "px",
+            "color": "#000000",
+            "borderStyle": "solid"
+          },
+          "bottom": {
+            "width": "0",
+            "unit": "px",
+            "color": "#000000",
+            "borderStyle": "solid"
+          },
+          "left": {
+            "width": "0",
+            "unit": "px",
+            "color": "#000000",
+            "borderStyle": "solid"
+          },
           "unitSync": true
         }
       }
     },
-    "borderRadiusSize": {
+    "photoBorderRadius": {
       "type": "object",
       "default": {
         "mobile": {
@@ -152,84 +546,98 @@
           "right": "",
           "bottom": "",
           "left": "",
-          "unit": null,
-          "unitSync": null
+          "topUnit": null,
+          "rightUnit": null,
+          "bottomUnit": null,
+          "leftUnit": null,
+          "unitSync": true
         },
         "tablet": {
           "top": "",
           "right": "",
           "bottom": "",
           "left": "",
-          "unit": null,
-          "unitSync": null
+          "topUnit": null,
+          "rightUnit": null,
+          "bottomUnit": null,
+          "leftUnit": null,
+          "unitSync": true
         },
         "desktop": {
-          "top": "",
-          "right": "",
-          "bottom": "",
-          "left": "",
-          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "0",
+          "left": "0",
+          "topUnit": "px",
+          "rightUnit": "px",
+          "bottomUnit": "px",
+          "leftUnit": "px",
           "unitSync": true
         }
       }
     },
-    "typographyCaption": {
-      "type": "object",
-      "default": {
-        "mobile": {
-          "fontFamily": "",
-          "fontFamilySlug": "",
-          "fontSize": "",
-          "fontSizeUnit": "px",
-          "fontWeight": "",
-          "lineHeight": "",
-          "lineHeightUnit": "em",
-          "textTransform": "",
-          "letterSpacing": "",
-          "letterSpacingUnit": "px",
-          "fontFallback": "",
-          "fontType": "web"
-        },
-        "tablet": {
-          "fontFamily": "",
-          "fontFamilySlug": "",
-          "fontSize": "",
-          "fontSizeUnit": "px",
-          "fontWeight": "",
-          "lineHeight": "",
-          "lineHeightUnit": "em",
-          "textTransform": "",
-          "letterSpacing": "",
-          "letterSpacingUnit": "px",
-          "fontFallback": "",
-          "fontType": "web"
-        },
-        "desktop": {
-          "fontFamily": "Arial",
-          "fontFamilySlug": "arial",
-          "fontSize": "24",
-          "fontSizeUnit": "px",
-          "fontWeight": "normal",
-          "lineHeight": "1.3",
-          "lineHeightUnit": "em",
-          "textTransform": "none",
-          "letterSpacing": "0",
-          "letterSpacingUnit": "px",
-          "fontFallback": "serif",
-          "fontType": "web"
-        }
-      }
+    "hideOnMobile": {
+      "type": "boolean",
+      "default": false
+    },
+    "hideOnTablet": {
+      "type": "boolean",
+      "default": false
+    },
+    "hideOnDesktop": {
+      "type": "boolean",
+      "default": false
+    },
+    "customAttributes": {
+      "type": "array",
+      "default": []
+    },
+    "skipLazyLoading": {
+      "type": "boolean",
+      "default": false
+    },
+    "lightboxEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "lightboxShowCaption": {
+      "type": "boolean",
+      "default": false
+    },
+    "lightboxCaption": {
+      "type": "string",
+      "default": ""
+    },
+    "imageProtectionEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "htmlAnchor": {
+      "type": "string",
+      "default": ""
+    },
+    "figureCSSClasses": {
+      "type": "string",
+      "default": ""
+    },
+    "imageCSSClasses": {
+      "type": "string",
+      "default": ""
     }
   },
   "supports": {
-    "anchor": true,
-    "align": true,
+    "anchor": false,
+    "align": false,
     "className": true,
-    "alignWide": true,
-    "defaultStylePicker": false
+    "customClassName": false,
+    "alignWide": false,
+    "defaultStylePicker": false,
+    "html": false
   },
   "example": {
-    "attributes": {}
+    "attributes": {
+      "preview": true
+    }
   },
   "editorScript": "dlx-photo-block-editor",
   "editorStyle": "dlx-photo-block-editor-css",

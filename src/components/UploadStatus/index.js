@@ -3,30 +3,42 @@
  */
 import './editor.scss';
 
-import { Button } from '@wordpress/components';
+import { Button, Spinner } from '@wordpress/components';
 
 import { XCircle, Redo2 } from 'lucide-react';
 
-import { forwardRef, useContext } from '@wordpress/element';
-
 import { __ } from '@wordpress/i18n';
-import UploaderContext from '../../contexts/UploaderContext';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { blockStore } from '../../store';
 
 /**
  * Upload Status component.
  *
  * @param {Object} props - Component props.
- * @param {Object} ref   - Filepond uploader reference.
+ * @return {JSX.Element} The Upload Status component.
  */
-const UploadStatus = forwardRef( ( props, ref ) => {
+const UploadStatus = ( props ) => {
 	// Read in context values.
+
+	const { blockUniqueId } = props;
+
 	const {
-		imageFile,
 		setIsUploading,
-		setIsProcessingUpload,
-		isUploadError,
 		setIsUploadError,
-	} = useContext( UploaderContext );
+		setIsProcessingUpload,
+	} = useDispatch( blockStore( blockUniqueId ) );
+	const {
+		imageData,
+		isUploadError,
+		filepondInstance,
+	} = useSelect( ( select ) => {
+		return {
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
+			isUploadError: select( blockStore( blockUniqueId ) ).isUploadError(),
+			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
+		};
+	} );
+
 	return (
 		<>
 			<div className="dlx-photo-block__upload-status">
@@ -37,7 +49,7 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 						setIsUploadError( false );
 						setIsUploading( false );
 						setIsProcessingUpload( false );
-						ref.current.removeFile(); // start over. Go back to initial view.
+						filepondInstance.removeFile(); // start over. Go back to initial view.
 					} }
 				>
 					{ __( 'Cancel', 'photo-block' ) }
@@ -49,7 +61,7 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 						onClick={ () => {
 							setIsUploading( true );
 							setIsUploadError( false );
-							ref.current.addFile( imageFile.file ); // Start upload process again.
+							filepondInstance.addFile( imageData.file ); // Start upload process again.
 						} }
 					>
 						{ __( 'Retry Image', 'photo-block' ) }
@@ -58,5 +70,5 @@ const UploadStatus = forwardRef( ( props, ref ) => {
 			</div>
 		</>
 	);
-} );
+};
 export default UploadStatus;

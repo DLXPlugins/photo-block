@@ -1,0 +1,40 @@
+/*
+ * 1977
+ *
+ */
+@import 'shared';
+
+// mixin to extend 1977 filter
+// @mixin photo-block-1977
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-1977;
+//   }
+//   or
+//   img {
+//     @include photo-block-1977(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-1977(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-1977($filters...) {
+  @include filter-base;
+  filter: contrast(1.1) brightness(1.1) saturate(1.3) $filters;
+  --photo-block-image-filter: contrast(1.1) brightness(1.1) saturate(1.3) blur(var(--photo-block-blur, 0));
+
+  &:after{
+    background: rgba(243, 106, 188, .3);
+    mix-blend-mode: screen;
+  }
+  @content;
+}
+
+// 1977 Instagram filter
+%photo-block-1977,
+.photo-block-1977 {
+  @include photo-block-1977;
+}

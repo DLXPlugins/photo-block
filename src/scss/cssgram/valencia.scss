@@ -1,0 +1,43 @@
+/*
+ *
+ * photo-block-valencia
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-valencia filter
+// @mixin photo-block-valencia
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-valencia;
+//   }
+//   or
+//   img {
+//     @include photo-block-valencia(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-valencia(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-valencia($filters...) {
+  @include filter-base;
+  filter: contrast(1.08) brightness(1.08) sepia(0.08) $filters;
+  --photo-block-image-filter: contrast(1.08) brightness(1.08) sepia(0.08) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: rgb(58, 3, 57);
+    mix-blend-mode: exclusion;
+    opacity: .5;
+  }
+
+  @content;
+}
+
+// photo-block-valencia Instagram filter
+%photo-block-valencia,
+.photo-block-valencia {
+  @include photo-block-valencia;
+}

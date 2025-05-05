@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '26db11e3551d4a65a397bd1f474ac327695093bc',
+    'reference' => 'd96b8e7dfed522f7e2dc90fac7221e2d6f3d5011',
     'name' => 'dlxplugins/photo-block',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '26db11e3551d4a65a397bd1f474ac327695093bc',
+      'reference' => 'd96b8e7dfed522f7e2dc90fac7221e2d6f3d5011',
     ),
   ),
 );

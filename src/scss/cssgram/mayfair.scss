@@ -1,0 +1,43 @@
+/*
+ *
+ * photo-block-mayfair
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-mayfair filter
+// @mixin photo-block-mayfair
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-mayfair;
+//   }
+//   or
+//   img {
+//     @include photo-block-mayfair(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-mayfair(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-mayfair($filters...) {
+  @include filter-base;
+  filter: contrast(1.1) saturate(1.1) $filters;
+  --photo-block-image-filter: contrast(1.1) saturate(1.1) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, .8), rgba(255, 200, 200, .6), rgb(17, 17, 17) 60%);
+    mix-blend-mode: overlay;
+    opacity: .4;
+  }
+
+  @content;
+}
+
+// photo-block-mayfair Instagram filter
+%photo-block-mayfair,
+.photo-block-mayfair {
+  @include photo-block-mayfair;
+}

@@ -1,0 +1,42 @@
+/*
+ *
+ * X-Pro II
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-xpro2 filter
+// @mixin photo-block-xpro2
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-xpro2;
+//   }
+//   or
+//   img {
+//     @include photo-block-xpro2(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-xpro2(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-xpro2($filters...) {
+  @include filter-base;
+  filter: sepia(.3) $filters;
+  --photo-block-image-filter: sepia(.3) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: radial-gradient(circle, rgb(230, 231, 224) 40%, rgba(43, 42, 161, .6) 110%);
+    mix-blend-mode: color-burn;
+  }
+
+  @content;
+}
+
+// photo-block-xpro2 Instagram filter
+%photo-block-xpro2,
+.photo-block-xpro2 {
+  @include photo-block-xpro2;
+}

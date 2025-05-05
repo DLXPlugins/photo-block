@@ -1,0 +1,43 @@
+/*
+ *
+ * photo-block-walden
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-walden filter
+// @mixin photo-block-walden
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-walden;
+//   }
+//   or
+//   img {
+//     @include photo-block-walden(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-walden(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-walden($filters...) {
+  @include filter-base;
+  filter: brightness(1.1) hue-rotate(-10deg) sepia(.3) saturate(1.6) $filters;
+  --photo-block-image-filter: brightness(1.1) hue-rotate(-10deg) sepia(.3) saturate(1.6) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: rgb(0, 68, 204);
+    mix-blend-mode: screen;
+    opacity: .3;
+  }
+
+  @content;
+}
+
+// photo-block-walden Instagram filter
+%photo-block-walden,
+.photo-block-walden {
+  @include photo-block-walden;
+}

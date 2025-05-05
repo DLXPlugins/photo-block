@@ -1,0 +1,42 @@
+/*
+ *
+ * photo-block-gingham
+ *
+ */
+@import 'shared';
+
+// mixin to extend photo-block-gingham filter
+// @mixin photo-block-gingham
+// @param $filters... {filter} - Zero to many css filters to be added
+// @example
+//   img {
+//     @include photo-block-gingham;
+//   }
+//   or
+//   img {
+//     @include photo-block-gingham(blur(2px));
+//   }
+//   or
+//   img {
+//     @include photo-block-gingham(blur(2px)) {
+//       /*...*/
+//     };
+//   }
+@mixin photo-block-gingham($filters...) {
+  @include filter-base;
+  filter: brightness(1.05) hue-rotate(-10deg) $filters;
+  --photo-block-image-filter: brightness(1.05) hue-rotate(-10deg) blur(var(--photo-block-blur, 0));
+
+  &::after {
+    background: rgb(230, 230, 250);
+    mix-blend-mode: soft-light;
+  }
+
+  @content;
+}
+
+// photo-block-gingham Instagram filter
+%photo-block-gingham,
+.photo-block-gingham {
+  @include photo-block-gingham;
+}

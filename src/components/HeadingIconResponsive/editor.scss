@@ -1,0 +1,49 @@
+.components-base-control {
+	.dlx-photo-block__heading-icon-responsive-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content:  space-between;
+	}
+	.dlx-photo-block__heading-icon-responsive {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		margin: 0;
+		padding: 0;
+	}
+	.dlx-photo-block__heading-icon svg {
+		font-size: inherit;
+		width: 14px;
+		height: 14px;
+		margin-right: 8px;
+		vertical-align: middle;
+	}
+	.dlx-photo-block__heading {
+		line-height: 1;
+	}
+
+	.dlx-photo-block__heading-icon-responsive-icons {
+		.components-button.has-icon {
+			position: relative;
+			min-width: unset;
+			box-shadow: unset;
+			
+			&.is-active {
+				&:after {
+					position: absolute;
+					content: "";
+					width: 100%;
+					height: 2px;
+					background: var(--wp-components-color-accent, var(--wp-admin-theme-color, #007cba));
+					bottom: -2px;
+					left: 0;
+				}
+			}
+		}
+		svg {
+			width: 14px;
+			height: 14px;
+		}
+	}
+	
+}
