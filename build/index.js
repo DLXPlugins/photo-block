@@ -12670,7 +12670,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt text provides a description of the photo for screen readers and search engines.', 'photo-block')
   }), isSavingAlt && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block')))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block')))), /*#__PURE__*/React.createElement("div", {
     className: "photo-block__image-size-control"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Image Size', 'photo-block'),
@@ -12690,7 +12690,22 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     disabled: 'photo' !== photoMode
   }), imageSizeLoading && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Loading image size…', 'photo-block')))))));
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Loading image size…', 'photo-block'))), /*#__PURE__*/React.createElement("div", {
+    className: "photo-block__image-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "photo-block__image-info-item"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+    disabled: true,
+    value: imageData.url,
+    className: "photo-block__image-info-item-text",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('URL', 'photo-block'),
+    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('The URL of the image.', 'photo-block')
+  })), imageData.file_size && /*#__PURE__*/React.createElement("div", {
+    className: "photo-block__image-info-item"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
+    id: "photo-block__image-info-file-size",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('File Size', 'photo-block')
+  }, /*#__PURE__*/React.createElement("p", null, imageData.file_size)))))));
   var interfaceTabs = /*#__PURE__*/React.createElement(React.Fragment, null, settingsInspectorControls, /*#__PURE__*/React.createElement(_components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_15__["default"], _extends({
     attributes: attributes,
     setAttributes: setAttributes,
@@ -14169,7 +14184,8 @@ var DEFAULT_STATE = {
     width: '',
     height: '',
     attachment_link: '',
-    caption: ''
+    caption: '',
+    file_size: ''
   },
   imageData: {
     id: 0,
@@ -14179,7 +14195,8 @@ var DEFAULT_STATE = {
     width: '',
     height: '',
     attachment_link: '',
-    caption: ''
+    caption: '',
+    file_size: ''
   },
   currentScreen: 'loading',
   /* can be loading, initial, edit, crop, data, featuredImage, effects. */

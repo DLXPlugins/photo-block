@@ -273,6 +273,13 @@ class Functions {
 		}
 		$full_image_attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
 
+		// Get file size of current image size.
+		$file_path = str_replace( wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $image_attachment[0] );
+		$file_size = file_exists( $file_path ) ? filesize( $file_path ) : filesize( get_attached_file( $attachment_id ) );
+
+		// Get file size in human readable format.
+		$file_size_kb = size_format( $file_size, 1 );
+
 		$return = array(
 			'id'              => $attachment_id,
 			'url'             => $image_attachment[0],
@@ -283,6 +290,7 @@ class Functions {
 			'full'            => $full_image_attachment[0],
 			'attachment_link' => get_attachment_link( $attachment_id ),
 			'title'           => get_the_title( $attachment_id ),
+			'file_size'       => $file_size_kb,
 		);
 
 		return $return;
