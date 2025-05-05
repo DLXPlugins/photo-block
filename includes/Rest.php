@@ -266,9 +266,6 @@ class Rest {
 				'attachment' => $attachment_data,
 			)
 		);
-
-		// Return screenshot one API usage.
-		return $screenshot_one_image_request;
 	}
 
 	/**
