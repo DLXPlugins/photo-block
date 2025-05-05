@@ -98,7 +98,7 @@ class ScreenshotOne_API {
 			 */
 			'timeout'   => 30,
 		);
-		$request_url = $api_url . $path;
+		$request_url = esc_url_raw( $api_url . $path );
 
 		// Get body from options and unset it if empty.
 		$args['body'] = array_key_exists( 'body', $options ) ? $options['body'] : array();
