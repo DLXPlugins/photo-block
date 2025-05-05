@@ -94,7 +94,8 @@ const ScreenshotOne = ( props ) => {
 				} );
 			} else {
 				setError( 'screenshotOneUrl', {
-					message: data.message,
+					type: 'apiError',
+					message: data.data.message,
 				} );
 			}
 		}
@@ -131,6 +132,11 @@ const ScreenshotOne = ( props ) => {
 											</Notice>
 										) }
 										{ errors?.screenshotOneUrl?.type === 'inValidUrl' && (
+											<Notice status="error" isDismissible={ false }>
+												<p className="dlx-photo-block__screenshot-one__url-error">{ errors.screenshotOneUrl.message }</p>
+											</Notice>
+										) }
+										{ errors?.screenshotOneUrl?.type === 'apiError' && (
 											<Notice status="error" isDismissible={ false }>
 												<p className="dlx-photo-block__screenshot-one__url-error">{ errors.screenshotOneUrl.message }</p>
 											</Notice>
