@@ -420,7 +420,7 @@ class Functions {
 			'img',
 			$is_class
 		);
-		Functions::add_css_property( $image_css_helper, 'opacity', (float) $attributes['photoOpacity'] );
+		Functions::add_css_property( $image_css_helper, 'opacity', (float) $attributes['photoOpacity'], '--photo-block-image-opacity' );
 		if ( $attributes['photoBlur'] && $attributes['photoBlur'] > 0 ) {
 			Functions::add_css_property( $image_css_helper, 'filter', (int) $attributes['photoBlur'] . 'px', '--photo-block-blur' );
 		}
