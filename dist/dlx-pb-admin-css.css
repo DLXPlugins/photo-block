@@ -199,56 +199,6 @@
   outline: 2px solid transparent;
 }
 
-.components-badge {
-  box-sizing: border-box;
-  background-color: color-mix(in srgb, #fff 90%, var(--base-color));
-  color: color-mix(in srgb, #000 50%, var(--base-color));
-  padding: 0 8px;
-  min-height: 24px;
-  max-width: 100%;
-  border-radius: 2px;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-}
-.components-badge *,
-.components-badge *::before,
-.components-badge *::after {
-  box-sizing: inherit;
-}
-.components-badge:where(.is-default) {
-  background-color: #f0f0f0;
-  color: #2f2f2f;
-}
-.components-badge.has-icon {
-  padding-inline-start: 4px;
-}
-.components-badge.is-info {
-  --base-color: #3858e9;
-}
-.components-badge.is-warning {
-  --base-color: #f0b849;
-}
-.components-badge.is-error {
-  --base-color: #cc1818;
-}
-.components-badge.is-success {
-  --base-color: #4ab866;
-}
-
-.components-badge__icon {
-  flex-shrink: 0;
-}
-
-.components-badge__content {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .components-button-group {
   display: inline-block;
 }
@@ -285,6 +235,7 @@
   display: inline-flex;
   text-decoration: none;
   font-family: inherit;
+  font-weight: normal;
   font-size: 13px;
   margin: 0;
   border: 0;
@@ -382,22 +333,17 @@
   transform: none;
 }
 .components-button.is-secondary {
-  box-shadow: inset 0 0 0 1px var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9)), 0 0 0 currentColor;
+  box-shadow: inset 0 0 0 1px var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
   outline: 1px solid transparent;
   white-space: nowrap;
   color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
   background: transparent;
 }
-.components-button.is-secondary:hover:not(:disabled, [aria-disabled=true], .is-pressed) {
-  box-shadow: inset 0 0 0 1px var(--wp-components-color-accent-darker-20, var(--wp-admin-theme-color-darker-20, #183ad6));
-  color: var(--wp-components-color-accent-darker-20, var(--wp-admin-theme-color-darker-20, #183ad6));
-  background: color-mix(in srgb, var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9)) 4%, transparent);
+.components-button.is-secondary:hover:not(:disabled, [aria-disabled=true]) {
+  box-shadow: inset 0 0 0 1px var(--wp-components-color-accent-darker-10, var(--wp-admin-theme-color-darker-10, #2145e6));
 }
 .components-button.is-secondary:disabled:not(:focus), .components-button.is-secondary[aria-disabled=true]:not(:focus), .components-button.is-secondary[aria-disabled=true]:hover:not(:focus) {
   box-shadow: inset 0 0 0 1px #ddd;
-}
-.components-button.is-secondary:focus:not(:disabled) {
-  box-shadow: 0 0 0 currentColor inset, 0 0 0 var(--wp-admin-border-width-focus) var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 }
 .components-button.is-tertiary {
   white-space: nowrap;
@@ -405,11 +351,12 @@
   background: transparent;
 }
 .components-button.is-tertiary:hover:not(:disabled, [aria-disabled=true]) {
-  background: color-mix(in srgb, var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9)) 4%, transparent);
-  color: var(--wp-components-color-accent-darker-20, var(--wp-admin-theme-color-darker-20, #183ad6));
+  /* stylelint-disable-next-line declaration-property-value-disallowed-list -- Allow tertiary buttons to use colors from the user admin color scheme. */
+  background: rgba(var(--wp-admin-theme-color--rgb), 0.04);
 }
 .components-button.is-tertiary:active:not(:disabled, [aria-disabled=true]) {
-  background: color-mix(in srgb, var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9)) 8%, transparent);
+  /* stylelint-disable-next-line declaration-property-value-disallowed-list -- Allow tertiary buttons to use colors from the user admin color scheme. */
+  background: rgba(var(--wp-admin-theme-color--rgb), 0.08);
 }
 p + .components-button.is-tertiary {
   margin-left: -6px;
@@ -438,10 +385,10 @@ p + .components-button.is-tertiary {
 .components-button.is-destructive:not(.is-primary):not(.is-secondary):not(.is-tertiary):not(.is-link):disabled, .components-button.is-destructive:not(.is-primary):not(.is-secondary):not(.is-tertiary):not(.is-link)[aria-disabled=true] {
   color: #949494;
 }
-.components-button.is-destructive.is-tertiary:hover:not(:disabled, [aria-disabled=true]), .components-button.is-destructive.is-secondary:hover:not(:disabled, [aria-disabled=true]) {
+.components-button.is-destructive.is-tertiary:hover:not(:disabled, [aria-disabled=true]) {
   background: rgba(204, 24, 24, 0.04);
 }
-.components-button.is-destructive.is-tertiary:active:not(:disabled, [aria-disabled=true]), .components-button.is-destructive.is-secondary:active:not(:disabled, [aria-disabled=true]) {
+.components-button.is-destructive.is-tertiary:active:not(:disabled, [aria-disabled=true]) {
   background: rgba(204, 24, 24, 0.08);
 }
 .components-button.is-link {
@@ -665,7 +612,7 @@ p + .components-button.is-tertiary {
   border-color: var(--wp-admin-theme-color);
 }
 .components-checkbox-control__input[type=checkbox][aria-checked=mixed]::before {
-  content: "\f460";
+  content: "";
   float: left;
   display: inline-block;
   vertical-align: middle;
@@ -809,8 +756,8 @@ svg.components-checkbox-control__indeterminate {
 .components-circular-option-picker__option {
   display: inline-block;
   vertical-align: top;
-  height: 100% !important;
-  aspect-ratio: 1;
+  height: 100%;
+  width: 100%;
   border: none;
   border-radius: 50%;
   background: transparent;
@@ -978,6 +925,13 @@ input.components-combobox-control__input[type=text]:focus {
   outline: 2px solid transparent;
 }
 
+.components-combobox-control__reset.components-button {
+  display: flex;
+  height: 16px;
+  min-width: 16px;
+  padding: 0;
+}
+
 .components-color-palette__custom-color-wrapper {
   position: relative;
   z-index: 0;
@@ -1002,14 +956,16 @@ input.components-combobox-control__input[type=text]:focus {
 .components-color-palette__custom-color-button::after {
   content: "";
   position: absolute;
-  inset: 1px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
   /*rtl:begin:ignore*/
   background-image: repeating-linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%, #e0e0e0), repeating-linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%, #e0e0e0);
   background-position: 0 0, 24px 24px;
   /*rtl:end:ignore*/
-  background-size: 48px 48px;
-  border-radius: 3px 3px 0 0;
+  background-size: calc(2 * 24px) calc(2 * 24px);
 }
 
 .components-color-palette__custom-color-text-wrapper {
@@ -1048,7 +1004,7 @@ input.components-combobox-control__input[type=text]:focus {
   background-image: repeating-linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%, #e0e0e0), repeating-linear-gradient(45deg, #e0e0e0 25%, transparent 25%, transparent 75%, #e0e0e0 75%, #e0e0e0);
   background-position: 0 0, 12px 12px;
   /*rtl:end:ignore*/
-  background-size: 24px 24px;
+  background-size: calc(2 * 12px) calc(2 * 12px);
 }
 .components-custom-gradient-picker__gradient-bar .components-custom-gradient-picker__gradient-bar-background {
   position: absolute;
@@ -1071,7 +1027,7 @@ input.components-combobox-control__input[type=text]:focus {
   position: relative;
   height: inherit;
   width: inherit;
-  min-width: 16px !important;
+  min-width: 16px;
   border-radius: 50%;
   background: #fff;
   padding: 2px;
@@ -1133,7 +1089,8 @@ input.components-combobox-control__input[type=text]:focus {
 }
 
 body.is-dragging-components-draggable {
-  cursor: move; /* Fallback for IE/Edge < 14 */
+  cursor: move;
+  /* Fallback for IE/Edge < 14 */
   cursor: grabbing !important;
 }
 
@@ -1189,22 +1146,22 @@ body.is-dragging-components-draggable {
   opacity: 0;
   transform: scale(0.9);
 }
-.components-drop-zone.is-active.is-dragging-over-element .components-drop-zone__content {
+.components-drop-zone.is-active:not(.has-dragged-out) .components-drop-zone__content {
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
 }
 @media (prefers-reduced-motion) {
-  .components-drop-zone.is-active.is-dragging-over-element .components-drop-zone__content {
+  .components-drop-zone.is-active:not(.has-dragged-out) .components-drop-zone__content {
     transition: none;
   }
 }
-.components-drop-zone.is-active.is-dragging-over-element .components-drop-zone__content-inner {
+.components-drop-zone.is-active:not(.has-dragged-out) .components-drop-zone__content-inner {
   opacity: 1;
   transform: scale(1);
   transition: opacity 0.1s ease-in-out 0.1s, transform 0.1s ease-in-out 0.1s;
 }
 @media (prefers-reduced-motion) {
-  .components-drop-zone.is-active.is-dragging-over-element .components-drop-zone__content-inner {
+  .components-drop-zone.is-active:not(.has-dragged-out) .components-drop-zone__content-inner {
     transition: none;
   }
 }
@@ -1306,7 +1263,7 @@ body.is-dragging-components-draggable {
 }
 .components-dropdown-menu__menu .components-menu-item__button,
 .components-dropdown-menu__menu .components-menu-item__button.components-button {
-  min-height: 40px;
+  min-height: 36px;
   height: auto;
   text-align: left;
   padding-left: 8px;
@@ -1336,6 +1293,10 @@ body.is-dragging-components-draggable {
 
 .components-color-list-picker__color-picker {
   margin: 8px 0;
+}
+
+.components-color-list-picker__swatch-button {
+  padding: 6px;
 }
 
 .components-color-list-picker__swatch-color {
@@ -1563,8 +1524,6 @@ body.is-dragging-components-draggable {
 }
 .components-form-token-field__token.is-borderless .components-form-token-field__token-text {
   background: transparent;
-}
-.components-form-token-field__token.is-borderless:not(.is-disabled) .components-form-token-field__token-text {
   color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 }
 .components-form-token-field__token.is-borderless .components-form-token-field__remove-token {
@@ -1573,6 +1532,7 @@ body.is-dragging-components-draggable {
   position: absolute;
   top: 1px;
   right: 0;
+  padding: 0;
 }
 .components-form-token-field__token.is-borderless.is-success .components-form-token-field__token-text {
   color: #4ab866;
@@ -1584,10 +1544,14 @@ body.is-dragging-components-draggable {
 .components-form-token-field__token.is-borderless.is-validating .components-form-token-field__token-text {
   color: #1e1e1e;
 }
+.components-form-token-field__token.is-disabled .components-form-token-field__remove-token {
+  cursor: default;
+}
 
 .components-form-token-field__token-text,
 .components-form-token-field__remove-token.components-button {
   display: inline-block;
+  line-height: 24px;
   height: auto;
   background: #ddd;
   min-width: unset;
@@ -1606,19 +1570,20 @@ body.is-dragging-components-draggable {
 .components-form-token-field__token-text {
   border-radius: 1px 0 0 1px;
   padding: 0 0 0 8px;
-  line-height: 24px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .components-form-token-field__remove-token.components-button {
+  cursor: pointer;
   border-radius: 0 1px 1px 0;
+  padding: 0 2px;
   color: #1e1e1e;
   line-height: 10px;
   overflow: initial;
 }
-.components-form-token-field__remove-token.components-button:hover:not(:disabled) {
+.components-form-token-field__remove-token.components-button:hover {
   color: #1e1e1e;
 }
 
@@ -1647,6 +1612,7 @@ body.is-dragging-components-draggable {
   padding: 8px 12px;
   min-height: 32px;
   margin: 0;
+  cursor: pointer;
   box-sizing: border-box;
 }
 .components-form-token-field__suggestion.is-selected {
@@ -1659,9 +1625,6 @@ body.is-dragging-components-draggable {
 }
 .components-form-token-field__suggestion[aria-disabled=true].is-selected {
   background-color: rgba(var(--wp-components-color-accent--rgb, var(--wp-admin-theme-color--rgb)), 0.04);
-}
-.components-form-token-field__suggestion:not(.is-empty) {
-  cursor: pointer;
 }
 
 @media (min-width: 600px) {
@@ -1690,25 +1653,25 @@ body.is-dragging-components-draggable {
 .components-guide .components-modal__header .components-button:hover svg {
   fill: #fff;
 }
-.components-guide .components-guide__container {
+.components-guide__container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-top: -60px;
   min-height: 100%;
 }
-.components-guide .components-guide__page {
+.components-guide__page {
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
 }
 @media (min-width: 600px) {
-  .components-guide .components-guide__page {
+  .components-guide__page {
     min-height: 300px;
   }
 }
-.components-guide .components-guide__footer {
+.components-guide__footer {
   align-content: center;
   display: flex;
   height: 36px;
@@ -1718,19 +1681,21 @@ body.is-dragging-components-draggable {
   position: relative;
   width: 100%;
 }
-.components-guide .components-guide__page-control {
+.components-guide__page-control {
   margin: 0;
   text-align: center;
 }
-.components-guide .components-guide__page-control li {
+.components-guide__page-control li {
   display: inline-block;
   margin: 0;
 }
-.components-guide .components-guide__page-control .components-button {
+.components-guide__page-control .components-button {
+  height: 30px;
+  min-width: 20px;
   margin: -6px 0;
   color: #e0e0e0;
 }
-.components-guide .components-guide__page-control li[aria-current=step] .components-button {
+.components-guide__page-control li[aria-current=step] .components-button {
   color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
 }
 
@@ -1906,7 +1871,6 @@ body.is-dragging-components-draggable {
 
 .components-menu-items-choice,
 .components-menu-items-choice.components-button {
-  min-height: 40px;
   height: auto;
 }
 .components-menu-items-choice svg,
@@ -2854,13 +2818,6 @@ body.rtl .components-panel__body-toggle.components-button .dashicons-arrow-right
 .components-resizable-box__container.has-show-handle .components-resizable-box__handle {
   display: block;
 }
-.components-resizable-box__handle > div {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  outline: none;
-}
 
 .components-resizable-box__container > img {
   width: inherit;
@@ -2975,6 +2932,7 @@ See https://bugs.webkit.org/show_bug.cgi?id=187903. */
 .components-resizable-box__side-handle.components-resizable-box__handle-bottom:active::before {
       animation: none;
     }
+
     .components-resizable-box__side-handle.components-resizable-box__handle-left:hover::before,
 .components-resizable-box__side-handle.components-resizable-box__handle-right:hover::before,
 .components-resizable-box__side-handle.components-resizable-box__handle-left:active::before,
@@ -3076,6 +3034,7 @@ body.lockscroll {
 }
 @media (min-width: 600px) {
   .components-snackbar {
+    width: -moz-fit-content;
     width: fit-content;
   }
 }
@@ -3102,15 +3061,23 @@ body.lockscroll {
 .components-snackbar__action.components-button {
   margin-left: 32px;
   color: #fff;
+  height: auto;
   flex-shrink: 0;
+  line-height: 1.4;
+  padding: 0;
 }
-.components-snackbar__action.components-button:focus {
+.components-snackbar__action.components-button:not(:disabled):not([aria-disabled=true]):not(.is-secondary) {
+  text-decoration: underline;
+  background-color: transparent;
+}
+.components-snackbar__action.components-button:not(:disabled):not([aria-disabled=true]):not(.is-secondary):focus {
+  color: #fff;
   box-shadow: none;
   outline: 1px dotted #fff;
 }
-.components-snackbar__action.components-button:hover {
+.components-snackbar__action.components-button:not(:disabled):not([aria-disabled=true]):not(.is-secondary):hover {
   text-decoration: none;
-  color: currentColor;
+  color: #fff;
 }
 
 .components-snackbar__content {
@@ -3145,7 +3112,7 @@ body.lockscroll {
 .components-tab-panel__tabs-item {
   position: relative;
   border-radius: 0;
-  height: 48px !important;
+  height: 48px;
   background: transparent;
   border: none;
   box-shadow: none;
