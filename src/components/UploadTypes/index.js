@@ -14,18 +14,16 @@ import { applyFilters } from '@wordpress/hooks';
 import { MediaUpload, MediaUploadCheck, store as blockEditorStore } from '@wordpress/block-editor';
 
 import {
-	Database,
 	Link,
 	Image as LucideImage,
 	Upload,
 	Download,
 	AlertCircle,
-	Save,
 	Loader2,
 	XCircle,
 	ImagePlus,
 	ArrowBigLeftDash,
-
+	MonitorCheck,
 } from 'lucide-react';
 
 import { useContext, useState, useEffect } from '@wordpress/element';
@@ -37,6 +35,8 @@ import { blockStore } from '../../store';
 import SendCommand from '../../utils/SendCommand';
 
 import WPNotice from '../../components/Notice';
+import ScreenshotOneContext from '../../contexts/ScreenshotOne';
+import settingsStore from '../../store/settings';
 
 /**
  * UploadTypes component.
@@ -45,18 +45,20 @@ import WPNotice from '../../components/Notice';
  * @return {Function} Component.
  */
 const UploadTypes = ( props ) => {
-	const { attributes, setAttributes, context, blockUniqueId, clientId } = props;
+	const { attributes, setAttributes, blockUniqueId } = props;
 
 	const {
 		setImageData,
 		setPhotoMode,
 		setScreen,
-		setHasCaption,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
 	const {
+		isScreenshotOneEnabled,
+	} = useSelect( settingsStore );
+
+	const {
 		insertBlock,
-		updateBlockAttributes,
 	} = useDispatch( blockEditorStore );
 
 	// Get current block data.
@@ -376,6 +378,17 @@ const UploadTypes = ( props ) => {
 					name="dlx-photo-block.upload-types"
 					fillProps={ { ...props } }
 				/>
+				{ ( isScreenshotOneEnabled() ) && (
+					<Button
+						variant="secondary"
+						icon={ <MonitorCheck /> }
+						onClick={ () => {
+							setScreen( 'screenshotOne' );
+						} }
+					>
+						{ __( 'ScreenshotOne', 'photo-block' ) }
+					</Button>
+				) }
 			</div>
 		</>
 	);

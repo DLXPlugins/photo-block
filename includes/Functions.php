@@ -273,6 +273,13 @@ class Functions {
 		}
 		$full_image_attachment = wp_get_attachment_image_src( $attachment_id, 'full' );
 
+		// Get file size of current image size.
+		$file_path = str_replace( wp_get_upload_dir()['baseurl'], wp_get_upload_dir()['basedir'], $image_attachment[0] );
+		$file_size = file_exists( $file_path ) ? filesize( $file_path ) : filesize( get_attached_file( $attachment_id ) );
+
+		// Get file size in human readable format.
+		$file_size_kb = size_format( $file_size, 1 );
+
 		$return = array(
 			'id'              => $attachment_id,
 			'url'             => $image_attachment[0],
@@ -283,6 +290,7 @@ class Functions {
 			'full'            => $full_image_attachment[0],
 			'attachment_link' => get_attachment_link( $attachment_id ),
 			'title'           => get_the_title( $attachment_id ),
+			'file_size'       => $file_size_kb,
 		);
 
 		return $return;
@@ -1203,6 +1211,26 @@ class Functions {
 		$color_palette = apply_filters( 'dlx_photo_block_color_palette', $color_palette );
 		return $color_palette;
 	}
+
+	/**
+	 * Return the URL to the admin screen
+	 *
+	 * @param string $tab     Tab path to load.
+	 * @param string $sub_tab Subtab path to load.
+	 *
+	 * @return string URL to admin screen. Output is not escaped.
+	 */
+	public static function get_settings_url( $tab = '', $sub_tab = '' ) {
+		$options_url = admin_url( 'options-general.php?page=photo-block' );
+		if ( ! empty( $tab ) ) {
+			$options_url = add_query_arg( array( 'tab' => sanitize_title( $tab ) ), $options_url );
+			if ( ! empty( $sub_tab ) ) {
+				$options_url = add_query_arg( array( 'subtab' => sanitize_title( $sub_tab ) ), $options_url );
+			}
+		}
+		return $options_url;
+	}
+
 
 	/**
 	 * Take a _ separated field and convert to camelcase.

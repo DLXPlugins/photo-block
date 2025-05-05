@@ -10,6 +10,7 @@ const DEFAULT_STATE = {
 		height: '',
 		attachment_link: '',
 		caption: '',
+		file_size: '',
 	},
 	imageData: {
 		id: 0,
@@ -20,6 +21,7 @@ const DEFAULT_STATE = {
 		height: '',
 		attachment_link: '',
 		caption: '',
+		file_size: '',
 	},
 	currentScreen: 'loading', /* can be loading, initial, edit, crop, data, featuredImage, effects. */
 	isUploading: false,
@@ -39,7 +41,7 @@ const DEFAULT_STATE = {
 	aspectRatioHeightPixels: 0,
 	aspectRatioToolbarSelection: '16:9',
 	aspectRatioUnit: 'ratio',
-	hideCaption: false,
+	hideCaption: photoBlock.settings.hideCaptionAppender,
 };
 
 const actions = {

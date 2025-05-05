@@ -1,17 +1,18 @@
 /**
  * This is the initial screen of the block. It is the first screen that the user sees when they add the block to the editor.
  */
-
+import { useState } from '@wordpress/element';
 import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import classnames from 'classnames';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import UploadTypes from '../../components/UploadTypes';
 import UploadTarget from '../../components/UploadTarget';
 import UploadStatus from '../../components/UploadStatus';
 import { blockStore } from '../../store';
+import ScreenshotOneContext from '../../contexts/ScreenshotOne';
 
 /**
  * InitialScreen component.
@@ -33,12 +34,14 @@ const InitialScreen = ( props ) => {
 		};
 	} );
 
+	const [ isScreenshotOneTypeSelected, setIsScreenshotOneTypeSelected ] = useState( false );
+
 	// Set the local inspector controls.
 	const localInspectorControls = (
 		<InspectorControls />
 	);
 
-	return (
+	const initialDefaultInterface = (
 		<>
 			{ localInspectorControls }
 			<div className="dlx-photo-block__screen-initial">
@@ -61,6 +64,33 @@ const InitialScreen = ( props ) => {
 				</div>
 			</div>
 		</>
+	);
+
+	const screenshotOneInterface = (
+		<>
+			<div className="dlx-photo-block__screen-initial">
+				{ __( 'ScreenshotOne', 'photo-block' ) }
+			</div>
+		</>
+	);
+
+	return (
+		<ScreenshotOneContext.Provider value={ { isScreenshotOneTypeSelected, setIsScreenshotOneTypeSelected } }>
+			{
+				! isScreenshotOneTypeSelected && (
+					<>
+						{ initialDefaultInterface }
+					</>
+				)
+			}
+			{
+				isScreenshotOneTypeSelected && (
+					<>
+						{ screenshotOneInterface }
+					</>
+				)
+			}
+		</ScreenshotOneContext.Provider>
 	);
 };
 export default InitialScreen;

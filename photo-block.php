@@ -74,6 +74,7 @@ class PhotoBlock {
 		Blocks::run();
 		Global_Styles::run();
 		Rest::run();
+		Admin::run();
 	}
 }
 

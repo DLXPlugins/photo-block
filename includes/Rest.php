@@ -125,6 +125,20 @@ class Rest {
 			)
 		);
 
+		// Register a route for saving alt-text for image.
+		register_rest_route(
+			'dlxplugins/photo-block/v1',
+			'/image/screenshot-one',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'upload_files' );
+				},
+				'sanitize_callback'   => array( static::class, 'rest_sanitize_screenshot_one' ),
+				'callback'            => array( static::class, 'rest_save_screenshot_one' ),
+			)
+		);
+
 		// Register a route for searching posts/pages.
 		register_rest_route(
 			'dlxplugins/photo-block/v1',
@@ -150,6 +164,111 @@ class Rest {
 				'callback'            => array( static::class, 'rest_save_title_text' ),
 			)
 		);
+	}
+
+	/**
+	 * Sanitize the screenshot one request.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 */
+	public static function rest_sanitize_screenshot_one( $request ) {
+		$screenshot_one_url = esc_url_raw( filter_var( $request->get_param( 'screenshotOneUrl' ), FILTER_VALIDATE_URL ) );
+		if ( ! $screenshot_one_url ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Invalid screenshot one URL.', 'photo-block' ),
+				)
+			);
+		}
+
+		// Get all parameters from the request.
+		$params = $request->get_params();
+		$params = Functions::sanitize_array_recursive( $params );
+
+		// Set URL param.
+		$params['screenshotOneUrl'] = $screenshot_one_url;
+
+		// Return sanitized parameters.
+		return $params;
+	}
+
+	/**
+	 * Save the screenshot one request.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 */
+	public static function rest_save_screenshot_one( $request ) {
+		$params = $request->get_params();
+
+		// Get options.
+		$options = Options::get_options();
+
+		$screenshot_params = self::rest_sanitize_screenshot_one( $request );
+
+		// Get screenshot one API.
+		$screenshot_one_api = new ScreenshotOne_API( $options['screenshotOneAccessKey'], $options['screenshotOneSecretKey'] );
+
+		// Get screenshot one API usage.
+		$screenshot_one_image_request = $screenshot_one_api->get_image( $screenshot_params );
+
+		if ( is_wp_error( $screenshot_one_image_request ) ) {
+			wp_send_json_error(
+				array(
+					'message' => $screenshot_one_image_request->get_error_message(),
+				)
+			);
+		}
+
+		// Get the image data.
+		$image_data = $screenshot_one_image_request;
+
+		// Create a temporary file.
+		$temp_file = wp_tempnam();
+		file_put_contents( $temp_file, $image_data );
+
+		// Prepare file array for media_handle_sideload.
+		$file_array = array(
+			'name'     => 'site-screenshot-' . time() . '.' . $params['screenshotOneDefaultImageFormat'],
+			'tmp_name' => $temp_file,
+		);
+
+		// Sanitioze filename.
+		$file_array['name'] = sanitize_file_name( $file_array['name'] );
+
+		// Save the image to the media library.
+		if ( ! function_exists( 'media_handle_sideload' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+		}
+
+		// Upload the file to the media library.
+		$attachment_id = media_handle_sideload( $file_array );
+
+		// Remove the temporary file.
+		unlink( $temp_file );
+
+		// Check for errors.
+		if ( is_wp_error( $attachment_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => $attachment_id->get_error_message(),
+				)
+			);
+		}
+
+		// Get the attachment data.
+		$attachment_data = Functions::get_image_data( $attachment_id, 'full' );
+
+		wp_send_json_success(
+			array(
+				'message'    => __( 'Screenshot saved successfully.', 'photo-block' ),
+				'attachment' => $attachment_data,
+			)
+		);
+
+		// Return screenshot one API usage.
+		return $screenshot_one_image_request;
 	}
 
 	/**

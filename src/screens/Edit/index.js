@@ -12,14 +12,10 @@ import {
 	ToolbarGroup,
 	ToolbarButton,
 	Popover,
-	TabPanel,
-	PanelBody,
 	TextControl,
 	TextareaControl,
-	PanelRow,
 	SelectControl,
-	ButtonGroup,
-	Button,
+	BaseControl,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -364,28 +360,44 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					) }
 				</>
 				{
-					<PanelRow>
-						<div className="photo-block__image-size-control">
-							<SelectControl
-								label={ __( 'Image Size', 'photo-block' ) }
-								value={ imageSize }
-								onChange={ ( size ) => {
-									if ( hasGlobalStyle( globalStyle ) ) {
-										setAttributes( { imageSizeOverride: true } );
-									}
-									setAttributes( { imageSize: size } );
-									getImageFromSize( size );
-								} }
-								options={ imageSizeOptions }
-								disabled={ 'photo' !== photoMode }
-							/>
-							{ imageSizeLoading && (
-								<>
-									<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
-								</>
+					<div className="photo-block__image-size-control">
+						<SelectControl
+							label={ __( 'Image Size', 'photo-block' ) }
+							value={ imageSize }
+							onChange={ ( size ) => {
+								if ( hasGlobalStyle( globalStyle ) ) {
+									setAttributes( { imageSizeOverride: true } );
+								}
+								setAttributes( { imageSize: size } );
+								getImageFromSize( size );
+							} }
+							options={ imageSizeOptions }
+							disabled={ 'photo' !== photoMode }
+						/>
+						{ imageSizeLoading && (
+							<>
+								<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
+							</>
+						) }
+						<div className="photo-block__image-info">
+							<div className="photo-block__image-info-item">
+								<TextControl
+									disabled={ true }
+									value={ imageData.url }
+									className="photo-block__image-info-item-text"
+									label={ __( 'URL', 'photo-block' ) }
+									help={ __( 'The URL of the image.', 'photo-block' ) }
+								/>
+							</div>
+							{ imageData.file_size && (
+								<div className="photo-block__image-info-item">
+									<BaseControl id="photo-block__image-info-file-size" label={ __( 'File Size', 'photo-block' ) }>
+										<p>{ imageData.file_size }</p>
+									</BaseControl>
+								</div>
 							) }
 						</div>
-					</PanelRow>
+					</div>
 				}
 			</PanelBodyControl>
 		</>

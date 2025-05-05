@@ -180,6 +180,13 @@ class Blocks {
 			);
 		}
 
+		// Get options.
+		$options = Options::get_options();
+
+		// Strip out access and secret keys.
+		unset( $options['screenshotOneAccessKey'] );
+		unset( $options['screenshotOneSecretKey'] );
+
 		// Get localised vars to return for JS parsing.
 		$localized_vars = array(
 			'restUrl'                 => rest_url( 'dlxplugins/photo-block/v1' ),
@@ -190,6 +197,7 @@ class Blocks {
 			'postTypes'               => $post_type_return,
 			'defaultImagePlacheolder' => Functions::get_plugin_url( 'assets/sample-image-ron-h-phoenix.jpg' ),
 			'blockPreviewImage'       => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
+			'settings'                => $options,
 		);
 
 		// Add inline script to detect user role.
@@ -197,6 +205,8 @@ class Blocks {
 			'canUploadFiles'       => current_user_can( 'upload_files' ), /* contributor and above */
 			'canSavePresets'       => current_user_can( 'edit_others_posts' ), /* author and above */
 			'canSetDefaultPresets' => current_user_can( 'edit_others_posts' ), /* editor and above */
+			'canModifySettings'    => current_user_can( 'edit_others_posts' ), /* editor and above */
+			'restNonce'            => wp_create_nonce( 'wp_rest' ),
 		);
 
 		/**
@@ -873,9 +883,9 @@ class Blocks {
 		$has_overlay = false;
 		if ( ! empty( $innerblocks_content ) && ! empty( $caption_markup ) && 'top' === $caption_position ) {
 			$image_markup = $caption_markup . $image_markup;
-		} elseif ( ! empty( $innerblocks_content )  && ! empty( $caption_markup ) && 'bottom' === $caption_position ) {
+		} elseif ( ! empty( $innerblocks_content ) && ! empty( $caption_markup ) && 'bottom' === $caption_position ) {
 			$image_markup = $image_markup . $caption_markup;
-		} elseif ( ! empty( $innerblocks_content )  && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
+		} elseif ( ! empty( $innerblocks_content ) && ! empty( $caption_markup ) && 'overlay' === $caption_position ) {
 			$has_overlay = true;
 		}
 
