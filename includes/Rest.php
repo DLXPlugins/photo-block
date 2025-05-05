@@ -246,7 +246,7 @@ class Rest {
 		$attachment_id = media_handle_sideload( $file_array );
 
 		// Remove the temporary file.
-		unlink( $temp_file );
+		wp_delete_file( $temp_file );
 
 		// Check for errors.
 		if ( is_wp_error( $attachment_id ) ) {

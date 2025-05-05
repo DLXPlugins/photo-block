@@ -766,7 +766,10 @@ class Blocks {
 						);
 						wp_register_script(
 							'dlx-photo-block-fancybox-js-inline',
-							false
+							false,
+							array(),
+							Functions::get_plugin_version(),
+							true
 						);
 						wp_add_inline_script(
 							'dlx-photo-block-fancybox-js-inline',

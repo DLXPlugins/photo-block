@@ -274,7 +274,7 @@ class Admin {
 				<div class="dlx-pb-logo-wrapper">
 					<div class="dlx-pb-logo">
 						<h2 id="dlx-pb-admin-header">
-							<img src="<?php echo esc_url( Functions::get_plugin_url( 'assets/admin-logo.png' ) ); ?>" alt="Photo Block" />
+							<img src="<?php echo esc_url( Functions::get_plugin_url( 'assets/admin-logo.png' ) ); ?>" alt="Photo Block" /><?php // phpcs:ignorePluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>
 						</h2>
 					</div>
 					<div class="header__btn-wrap">

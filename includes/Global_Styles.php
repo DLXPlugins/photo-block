@@ -153,7 +153,7 @@ class Global_Styles {
 		}
 
 		// Get attributes JSON.
-		$attributes = json_decode( sanitize_text_field( wp_unslash( $_POST['attributes'] ) ), true );
+		$attributes = json_decode( sanitize_text_field( wp_unslash( $_POST['attributes'] ) ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 
 		// Get photo attributes and strip out data.
 		$photo_attributes = array();
@@ -213,7 +213,8 @@ class Global_Styles {
 		$caption_attributes = Functions::sanitize_array_recursive( $caption_attributes );
 
 		// Get form data.
-		$form_data = json_decode( sanitize_text_field( wp_unslash( $_POST['formData'] ) ), true );
+		$form_data = json_decode( sanitize_text_field( wp_unslash( $_POST['formData'] ) ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+
 
 		// Get the preset title.
 		$title          = isset( $form_data['globalStyleLabel'] ) ? sanitize_text_field( $form_data['globalStyleLabel'] ) : '';
@@ -308,7 +309,7 @@ class Global_Styles {
 		}
 
 		// Get attributes JSON.
-		$attributes = json_decode( sanitize_text_field( wp_unslash( $_POST['attributes'] ) ), true );
+		$attributes = json_decode( sanitize_text_field( wp_unslash( $_POST['attributes'] ) ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 
 		// Get photo attributes and strip out data.
 		$photo_attributes = array();
