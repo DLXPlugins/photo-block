@@ -198,6 +198,7 @@ class Blocks {
 			'defaultImagePlacheolder' => Functions::get_plugin_url( 'assets/sample-image-ron-h-phoenix.jpg' ),
 			'blockPreviewImage'       => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
 			'settings'                => $options,
+			'supportedQueryBlocks'    => Functions::get_supported_query_blocks(),
 		);
 
 		// Add inline script to detect user role.

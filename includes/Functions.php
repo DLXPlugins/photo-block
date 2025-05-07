@@ -844,6 +844,30 @@ class Functions {
 	}
 
 	/**
+	 * Get the supported query blocks.
+	 *
+	 * @return array Array of supported query blocks.
+	 */
+	public static function get_supported_query_blocks() {
+		// Supported query blocks.
+		$supported_query_blocks = array(
+			'core/query',
+			'generateblocks/query',
+			'generateblocks/query-loop',
+			'kadence/query',
+		);
+
+		/**
+		 * Filter the supported query blocks.
+		 *
+		 * @param array $supported_query_blocks Array of supported query blocks.
+		 */
+		$supported_query_blocks = apply_filters( 'dlx_photo_block_supported_query_blocks', $supported_query_blocks );
+
+		return $supported_query_blocks;
+	}
+
+	/**
 	 * Get an image from a dynamic source.
 	 *
 	 * @param string $image_data_source The image data source.

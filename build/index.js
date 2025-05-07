@@ -281,7 +281,7 @@ var PhotoBlock = function PhotoBlock(props) {
     return coreSelect('core/block-editor').getBlock(clientId).innerBlocks;
   }).length;
   var isInsideQueryLoop = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (blockSelect) {
-    var supportedBlocks = ['core/query', 'generateblocks/query-loop', 'kadence/query'];
+    var supportedBlocks = photoBlock.supportedQueryBlocks;
     var _blockSelect = blockSelect(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_7__.store),
       getBlockParents = _blockSelect.getBlockParents,
       getBlockName = _blockSelect.getBlockName;
@@ -648,6 +648,53 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       regExp: /^photoblock$/,
       transform: function transform() {
         return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-block');
+      }
+    }, {
+      type: 'block',
+      blocks: ['generateblocks/media'],
+      transform: function transform(attributes) {
+        var _attributes$htmlAttri, _attributes$linkHtmlA;
+        // Try to get the featured image from the media block.
+        var maybeFeaturedImage = (attributes === null || attributes === void 0 || (_attributes$htmlAttri = attributes.htmlAttributes) === null || _attributes$htmlAttri === void 0 ? void 0 : _attributes$htmlAttri.src) || '';
+        var inQueryLoop = false;
+
+        // If src has featured_image string, then we can use it as a featured image.
+        if (maybeFeaturedImage.includes('featured_image')) {
+          inQueryLoop = true;
+        }
+        var newAttributes = {
+          uniqueId: (attributes === null || attributes === void 0 ? void 0 : attributes.uniqueId) || '',
+          mediaLinkNewTab: (attributes === null || attributes === void 0 || (_attributes$linkHtmlA = attributes.linkHtmlAttributes) === null || _attributes$linkHtmlA === void 0 ? void 0 : _attributes$linkHtmlA.target) === '_blank',
+          imageSize: 'large',
+          /* GB 2.0 doesn't store image size */
+          photoMode: 'featuredImage',
+          inQueryLoop: inQueryLoop,
+          screen: 'featuredImage',
+          imageData: {
+            id: 0,
+            url: '',
+            alt: '',
+            full: '',
+            width: '',
+            height: '',
+            attachment_link: '',
+            title: '',
+            caption: ''
+          }
+        };
+        if (!inQueryLoop) {
+          var _attributes$htmlAttri2, _attributes$htmlAttri3, _attributes$htmlAttri4, _attributes$htmlAttri5;
+          newAttributes.imageData = {
+            id: attributes.mediaId,
+            url: attributes === null || attributes === void 0 || (_attributes$htmlAttri2 = attributes.htmlAttributes) === null || _attributes$htmlAttri2 === void 0 ? void 0 : _attributes$htmlAttri2.src,
+            alt: (attributes === null || attributes === void 0 || (_attributes$htmlAttri3 = attributes.htmlAttributes) === null || _attributes$htmlAttri3 === void 0 ? void 0 : _attributes$htmlAttri3.alt) || '',
+            full: attributes === null || attributes === void 0 || (_attributes$htmlAttri4 = attributes.htmlAttributes) === null || _attributes$htmlAttri4 === void 0 ? void 0 : _attributes$htmlAttri4.src,
+            title: (attributes === null || attributes === void 0 || (_attributes$htmlAttri5 = attributes.htmlAttributes) === null || _attributes$htmlAttri5 === void 0 ? void 0 : _attributes$htmlAttri5.title) || ''
+          };
+          newAttributes.photoMode = 'photo';
+          newAttributes.screen = 'edit';
+        }
+        return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-block', _objectSpread({}, newAttributes));
       }
     }, {
       type: 'block',

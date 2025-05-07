@@ -21,6 +21,53 @@ registerBlockType( metadata, {
 			},
 			{
 				type: 'block',
+				blocks: [ 'generateblocks/media' ],
+				transform: ( attributes ) => {		// Try to get the featured image from the media block.
+					const maybeFeaturedImage = attributes?.htmlAttributes?.src || '';
+					let inQueryLoop = false;
+
+					// If src has featured_image string, then we can use it as a featured image.
+					if ( maybeFeaturedImage.includes( 'featured_image' ) ) {
+						inQueryLoop = true;
+					}
+
+					const newAttributes = {
+						uniqueId: attributes?.uniqueId || '',
+						mediaLinkNewTab: attributes?.linkHtmlAttributes?.target === '_blank',
+						imageSize: 'large', /* GB 2.0 doesn't store image size */
+						photoMode: 'featuredImage',
+						inQueryLoop,
+						screen: 'featuredImage',
+						imageData: {
+							id: 0,
+							url: '',
+							alt: '',
+							full: '',
+							width: '',
+							height: '',
+							attachment_link: '',
+							title: '',
+							caption: '',
+						},
+					};
+					if ( ! inQueryLoop ) {
+						newAttributes.imageData = {
+							id: attributes.mediaId,
+							url: attributes?.htmlAttributes?.src,
+							alt: attributes?.htmlAttributes?.alt || '',
+							full: attributes?.htmlAttributes?.src,
+							title: attributes?.htmlAttributes?.title || '',
+						};
+						newAttributes.photoMode = 'photo';
+						newAttributes.screen = 'edit';
+					}
+					return createBlock( 'dlxplugins/photo-block', {
+						...newAttributes,
+					} );
+				},
+			},
+			{
+				type: 'block',
 				blocks: [ 'kadence/image' ],
 				transform: ( attributes ) => {
 					const inQueryLoop = attributes.inQueryBlock || false;

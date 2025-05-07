@@ -42,11 +42,7 @@ const PhotoBlock = ( props ) => {
 	const innerBlockCount = useSelect( ( coreSelect ) => coreSelect( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
 
 	const isInsideQueryLoop = useSelect( ( blockSelect ) => {
-		const supportedBlocks = [
-			'core/query',
-			'generateblocks/query-loop',
-			'kadence/query',
-		];
+		const supportedBlocks = photoBlock.supportedQueryBlocks;
 		const { getBlockParents, getBlockName } = blockSelect( blockEditorStore );
 		const parentBlocks = getBlockParents( clientId );
 		const found = parentBlocks.some( ( blockId ) => {
