@@ -221,7 +221,6 @@ class Global_Styles {
 		// Get form data.
 		$form_data = json_decode( sanitize_text_field( wp_unslash( $_POST['formData'] ) ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 
-
 		// Get the preset title.
 		$title          = isset( $form_data['globalStyleLabel'] ) ? sanitize_text_field( $form_data['globalStyleLabel'] ) : '';
 		$slug           = isset( $form_data['globalStyleCSSClass'] ) ? sanitize_text_field( $form_data['globalStyleCSSClass'] ) : '';
