@@ -63,7 +63,7 @@ class ScreenshotOne_API {
 	 * @param string    $context       Context for API call (for routing).
 	 * @param array     $options       Request options.
 	 * @param string    $method        Request method. Defaults to GET.
-	 * @param string    $return_key    Array key from response to return. Defaults to null (return full response).
+	 * @param string    $api_url       API URL.
 	 * @param int|array $response_code Expected HTTP response code.
 	 *
 	 * @return array|WP_Error

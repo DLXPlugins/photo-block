@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -117,6 +117,10 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.1.1 =
+* Released 2025-05-07
+* There were a few critical errors when requesting a new ScreenshotOne image.
+
 = 1.1.0 =
 * Released 2025-05-05
 * New feature: ScreenshotOne compatibility released. You can now take website screenshots from within Photo Block.
@@ -150,5 +154,5 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.1.0 =
-This release adds ScreenshotOne compatibility, allowing you to take website screenshots from within Photo Block, along with a new admin panel for block and ScreenshotOne defaults. The update also includes bug fixes for opacity rendering and adds the ability to disable caption appenders by default.
+= 1.1.1 =
+Resolves a few critical errors when using the ScreenshotOne integration.
