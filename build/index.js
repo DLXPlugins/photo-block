@@ -838,7 +838,21 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
         return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-block', imageAttributes);
       }
     }],
-    to: []
+    to: [{
+      type: 'block',
+      blocks: ['core/image'],
+      transform: function transform(attributes) {
+        var newAttributes = {
+          id: attributes.imageData.id,
+          url: attributes.imageData.url,
+          alt: attributes.imageData.alt,
+          sizeSlug: attributes.imageSize,
+          title: attributes.imageData.title,
+          caption: attributes.imageData.caption
+        };
+        return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('core/image', newAttributes);
+      }
+    }]
   }
 });
 

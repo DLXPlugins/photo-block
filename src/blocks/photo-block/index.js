@@ -214,6 +214,22 @@ registerBlockType( metadata, {
 				},
 			},
 		],
-		to: [],
+		to: [
+			{
+				type: 'block',
+				blocks: [ 'core/image' ],
+				transform: ( attributes ) => {
+					const newAttributes = {
+						id: attributes.imageData.id,
+						url: attributes.imageData.url,
+						alt: attributes.imageData.alt,
+						sizeSlug: attributes.imageSize,
+						title: attributes.imageData.title,
+						caption: attributes.imageData.caption,
+					};
+					return createBlock( 'core/image', newAttributes );
+				},
+			},
+		],
 	},
 } );
