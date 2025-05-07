@@ -172,6 +172,9 @@ class Global_Styles {
 				'htmlAnchor',
 				'photoMode',
 				'hideCaption',
+				'hideOnMobile',
+				'hideOnTablet',
+				'hideOnDesktop',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -197,6 +200,9 @@ class Global_Styles {
 			$caption_keys_to_ignore = array(
 				'captionManual',
 				'uniqueId',
+				'hideOnMobile',
+				'hideOnTablet',
+				'hideOnDesktop',
 			);
 			/**
 			 * Filter the caption keys to ignore when saving presets.
