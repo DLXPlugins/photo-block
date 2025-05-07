@@ -691,6 +691,10 @@
       "type": "array",
       "default": []
     },
+    "hideCaption": {
+      "type": "boolean",
+      "default": false
+    },
     "hideOnMobile": {
       "type": "boolean",
       "default": false

@@ -420,6 +420,11 @@ class Blocks {
 		 */
 		$caption_overlay_styles = apply_filters( 'dlx_photo_block_caption_overlay_styles', $caption_overlay_styles, $attributes, $context );
 
+		// Zero out caption if hide caption is true.
+		if ( (bool) $attributes['hideCaption'] && 'overlay' === $attributes['captionPosition'] ) {
+			$caption = '';
+		}
+
 		ob_start();
 		?>
 		<?php

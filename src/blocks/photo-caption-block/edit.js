@@ -1,9 +1,8 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useState, useRef } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { escapeEditableHTML } from '@wordpress/escape-html';
 import { applyFilters } from '@wordpress/hooks';
 import {
 	BaseControl,
@@ -53,6 +52,12 @@ import {
 	AlignCenter,
 	AlignRight,
 	Shuffle,
+	AlignVerticalJustifyStart,
+	AlignVerticalJustifyEnd,
+	AlignVerticalJustifyCenter,
+	AlignHorizontalJustifyStart,
+	AlignHorizontalJustifyEnd,
+	AlignHorizontalJustifyCenter,
 } from 'lucide-react';
 
 const HtmlToReactParser = require( 'html-to-react' ).Parser;
@@ -303,6 +308,7 @@ const PhotoCaptionBlock = ( props ) => {
 		overlayDisplayAnimation,
 		htmlAnchor,
 		captionCSSClasses,
+		hideCaption,
 		hideOnMobile,
 		hideOnTablet,
 		hideOnDesktop,
@@ -422,60 +428,172 @@ const PhotoCaptionBlock = ( props ) => {
 					title={ __( 'Overlay Settings', 'photo-block' ) }
 					initialOpen={ true }
 				>
-					<SelectControl
-						label={ __( 'Overlay Vertical Position' ) }
-						value={ overlayVerticalPosition }
-						options={ [
-							{ label: __( 'Top', 'photo-block' ), value: 'top' },
-							{ label: __( 'Middle', 'photo-block' ), value: 'middle' },
-							{ label: __( 'Bottom', 'photo-block' ), value: 'bottom' },
-						] }
-						onChange={ ( value ) => {
-							setAttributes( {
-								overlayVerticalPosition: value,
-							} );
-						} }
-					/>
-					<SelectControl
+					<BaseControl
+						id="dlx-photo-block__overlay-vertical-position"
+						label={ __( 'Overlay Vertical Position', 'photo-block' ) }
+					>
+						<ButtonGroup>
+							<Button
+								variant="secondary"
+								icon={ <AlignVerticalJustifyStart /> }
+								isPressed={ 'top' === overlayVerticalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayVerticalPosition: 'top',
+									} );
+								} }
+								label={ __( 'PositionTop', 'photo-block' ) }
+							/>
+							<Button
+								variant="secondary"
+								icon={ <AlignVerticalJustifyCenter /> }
+								isPressed={ 'middle' === overlayVerticalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayVerticalPosition: 'middle',
+									} );
+								} }
+								label={ __( 'Position Middle', 'photo-block' ) }
+							/>
+							<Button
+								variant="secondary"
+								icon={ <AlignVerticalJustifyEnd /> }
+								isPressed={ 'bottom' === overlayVerticalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayVerticalPosition: 'bottom',
+									} );
+								} }
+								label={ __( 'Position Bottom', 'photo-block' ) }
+							/>
+						</ButtonGroup>
+					</BaseControl>
+					<BaseControl
+						id="dlx-photo-block__overlay-horizontal-position"
 						label={ __( 'Overlay Horizontal Position', 'photo-block' ) }
-						value={ overlayHorizontalPosition }
-						options={ [
-							{ label: __( 'Left', 'photo-block' ), value: 'left' },
-							{ label: __( 'Center', 'photo-block' ), value: 'center' },
-							{ label: __( 'Right', 'photo-block' ), value: 'right' },
-						] }
-						onChange={ ( value ) => {
-							setAttributes( {
-								overlayHorizontalPosition: value,
-							} );
-						} }
-					/>
-					<SelectControl
+					>
+						<ButtonGroup>
+							<Button
+								variant="secondary"
+								icon={ <AlignHorizontalJustifyStart /> }
+								isPressed={ 'left' === overlayHorizontalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayHorizontalPosition: 'left',
+									} );
+								} }
+								label={ __( 'Position Left', 'photo-block' ) }
+							/>
+							<Button
+								variant="secondary"
+								icon={ <AlignHorizontalJustifyCenter /> }
+								isPressed={ 'center' === overlayHorizontalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayHorizontalPosition: 'center',
+									} );
+								} }
+								label={ __( 'Position Center', 'photo-block' ) }
+							/>
+							<Button
+								variant="secondary"
+								icon={ <AlignHorizontalJustifyEnd /> }
+								isPressed={ 'right' === overlayHorizontalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayHorizontalPosition: 'right',
+									} );
+								} }
+								label={ __( 'Position Right', 'photo-block' ) }
+							/>
+						</ButtonGroup>
+					</BaseControl>
+					<BaseControl
+						id="dlx-photo-caption-vertical-position"
 						label={ __( 'Caption Vertical Position', 'photo-block' ) }
-						value={ overlayCaptionVerticalPosition }
-						options={ [
-							{ label: __( 'Top', 'photo-block' ), value: 'top' },
-							{ label: __( 'Middle', 'photo-block' ), value: 'middle' },
-							{ label: __( 'Bottom', 'photo-block' ), value: 'bottom' },
-						] }
-						onChange={ ( value ) => {
-							setAttributes( {
-								overlayCaptionVerticalPosition: value,
-							} );
-						} }
-					/>
-					<SelectControl
+					>
+						<ButtonGroup>
+							<Button
+								variant="secondary"
+								icon={ <AlignVerticalJustifyStart /> }
+								isPressed={ 'top' === overlayCaptionVerticalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayCaptionVerticalPosition: 'top',
+									} );
+								} }
+								label={ __( 'PositionTop', 'photo-block' ) }
+							/>
+							<Button
+								variant="secondary"
+								icon={ <AlignVerticalJustifyCenter /> }
+								isPressed={ 'middle' === overlayCaptionVerticalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayCaptionVerticalPosition: 'middle',
+									} );
+								} }
+								label={ __( 'Position Middle', 'photo-block' ) }
+							/>
+							<Button
+								variant="secondary"
+								icon={ <AlignVerticalJustifyEnd /> }
+								isPressed={ 'bottom' === overlayCaptionVerticalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayCaptionVerticalPosition: 'bottom',
+									} );
+								} }
+								label={ __( 'Position Bottom', 'photo-block' ) }
+							/>
+						</ButtonGroup>
+					</BaseControl>
+					<BaseControl
+						id="dlx-photo-caption-horizontal-position"
 						label={ __( 'Caption Horizontal Position', 'photo-block' ) }
-						value={ overlayCaptionHorizontalPosition }
-						options={ [
-							{ label: __( 'Left', 'photo-block' ), value: 'left' },
-							{ label: __( 'Center', 'photo-block' ), value: 'center' },
-							{ label: __( 'Right', 'photo-block' ), value: 'right' },
-						] }
+					>
+						<ButtonGroup>
+							<Button
+								variant="secondary"
+								icon={ <AlignHorizontalJustifyStart /> }
+								isPressed={ 'left' === overlayCaptionHorizontalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayCaptionHorizontalPosition: 'left',
+									} );
+								} }
+								label={ __( 'Position Left', 'photo-block' ) }
+							/>
+							<Button
+								variant="secondary"
+								icon={ <AlignHorizontalJustifyCenter /> }
+								isPressed={ 'center' === overlayCaptionHorizontalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayCaptionHorizontalPosition: 'center',
+									} );
+								} }
+								label={ __( 'Position Center', 'photo-block' ) }
+							/>
+							<Button
+								variant="secondary"
+								icon={ <AlignHorizontalJustifyEnd /> }
+								isPressed={ 'right' === overlayCaptionHorizontalPosition }
+								onClick={ () => {
+									setAttributes( {
+										overlayCaptionHorizontalPosition: 'right',
+									} );
+								} }
+								label={ __( 'Position Right', 'photo-block' ) }
+							/>
+						</ButtonGroup>
+					</BaseControl>
+					<ToggleControl
+						label={ __( 'Hide Caption in Overlay', 'photo-block' ) }
+						help={ __( 'Hide the caption when the overlay is displayed. This is useful if you would like an overlay, but not a caption.', 'photo-block' ) }
+						checked={ hideCaption }
 						onChange={ ( value ) => {
-							setAttributes( {
-								overlayCaptionHorizontalPosition: value,
-							} );
+							setAttributes( { hideCaption: value } );
 						} }
 					/>
 					<ToggleControl
@@ -489,7 +607,7 @@ const PhotoCaptionBlock = ( props ) => {
 						help={ __( 'Display the overlay only when the image is hovered over.', 'photo-block' ) }
 					/>
 					{
-						overlayDisplayOnHover && (
+						( overlayDisplayOnHover && ! hideCaption ) && (
 							<SelectControl
 								label={ __( 'Display Animation', 'photo-block' ) }
 								value={ overlayDisplayAnimation }
@@ -1400,6 +1518,13 @@ const PhotoCaptionBlock = ( props ) => {
 				);
 			}
 			return __( 'No caption', 'photo-block' );
+		}
+		if ( hideCaption ) {
+			return (
+				<figcaption className={ figClasses } id={ uniqueId }>
+					<div className="dlx-photo-block__caption-inner"></div>
+				</figcaption>
+			);
 		}
 		if ( 'single' === mode ) {
 			return (

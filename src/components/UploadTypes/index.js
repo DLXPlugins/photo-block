@@ -23,10 +23,9 @@ import {
 	XCircle,
 	ImagePlus,
 	ArrowBigLeftDash,
-	MonitorCheck,
 } from 'lucide-react';
 
-import { useContext, useState, useEffect } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
@@ -35,8 +34,8 @@ import { blockStore } from '../../store';
 import SendCommand from '../../utils/SendCommand';
 
 import WPNotice from '../../components/Notice';
-import ScreenshotOneContext from '../../contexts/ScreenshotOne';
 import settingsStore from '../../store/settings';
+import ScreenshotOneMark from '../Icons/ScreenshotOneMark';
 
 /**
  * UploadTypes component.
@@ -381,7 +380,7 @@ const UploadTypes = ( props ) => {
 				{ ( isScreenshotOneEnabled() ) && (
 					<Button
 						variant="secondary"
-						icon={ <MonitorCheck /> }
+						icon={ <ScreenshotOneMark width={ 24 } height={ 24 } /> }
 						onClick={ () => {
 							setScreen( 'screenshotOne' );
 						} }
