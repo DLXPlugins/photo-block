@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.1.1
+Stable tag: 1.1.5
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -117,6 +117,15 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.1.5 =
+* Released 2025-05-07
+* New feature: Ability to hide the caption text in overlays. This can be used to create advanced effects.
+* New feature: Overlay select boxes have been replaced with more compact ButtonGroup components.
+* New feature: Now works in GenerateBlocks 2.0 query loops.
+* New Feature: Added in transforms to the regular Image block.
+* Bug fix: Exclude per-device hide behavior from saving in Global Styles.
+* Bug fix: Fixed ScreenshotOne icon during the initial view.
+
 = 1.1.1 =
 * Released 2025-05-07
 * There were a few critical errors when requesting a new ScreenshotOne image.
@@ -154,5 +163,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.1.1 =
-Resolves a few critical errors when using the ScreenshotOne integration.
+= 1.1.5 =
+Adds caption hiding in overlays, improves overlay UI, adds GenerateBlocks 2.0 query loop support, adds Image block transforms, and fixes global styles and ScreenshotOne icon issues.
+
+
