@@ -318,7 +318,8 @@ class ScreenshotOne_API {
 			'/take?' . $final_query_string,
 			'json',
 			array(
-				'body' => array(),
+				'api_key' => $this->api_key,
+				'body'    => array(),
 			),
 			'GET'
 		);

@@ -222,6 +222,9 @@ class Rest {
 		// Get the image data.
 		$image_data = $screenshot_one_image_request;
 
+		// Include WordPress filesystem functions.
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+
 		// Create a temporary file.
 		$temp_file = wp_tempnam();
 		file_put_contents( $temp_file, $image_data );
