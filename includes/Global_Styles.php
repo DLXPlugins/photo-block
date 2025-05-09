@@ -125,6 +125,9 @@ class Global_Styles {
 			foreach ( $global_styles as $global_style ) {
 				// Format content that is JSON into an array.
 				$content = json_decode( $global_style->post_content, true ); // Decode JSON here, then $content will be re-encoded in the return array.
+				if ( null === $content ) {
+					continue;
+				}
 				if ( isset( $content['attributes'] ) ) {
 					$content = $content['attributes'];
 				} else {
