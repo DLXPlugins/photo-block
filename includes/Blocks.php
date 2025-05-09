@@ -740,6 +740,9 @@ class Blocks {
 
 		// Get the image link type.
 		$media_link_type = $attributes['mediaLinkType'] ?? 'none';
+		if ( $is_in_query_loop ) {
+			$media_link_type = $attributes['dataMediaLinkSource'] ?? 'none';
+		}
 		$media_link_url  = '';
 		$media_link_atts = array();
 
@@ -793,10 +796,55 @@ class Blocks {
 				}
 				break;
 			case 'imageAttachmentPage':
-				$media_link_url = wp_get_attachment_url( $image_id );
+				$media_link_url = get_permalink( $image_id );
 				break;
 			case 'custom':
 				$media_link_url = $attributes['mediaLinkUrl'] ?? '';
+				break;
+			case 'imageData':
+				if ( $is_in_query_loop ) {
+					// Image file of current post.
+					$media_link_url = wp_get_attachment_url( $image_id );
+				} else {
+					// Image file of featured image.
+					$media_link_url = $attributes['imageData']['url'] ?? '';
+				}
+				$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
+				if ( $lightbox_enabled ) {
+					$media_link_atts['data-fancybox'] = 'true';
+					$media_link_atts['data-caption']  = esc_attr( $caption );
+
+					// Register the lightbox script/style. Check wp_footer.
+					wp_register_script(
+						'dlx-photo-block-fancybox-js',
+						Functions::get_plugin_url( 'assets/fancybox/fancybox.js' ),
+						array(),
+						Functions::get_plugin_version(),
+						true
+					);
+					wp_register_script(
+						'dlx-photo-block-fancybox-js-inline',
+						false,
+						array(),
+						Functions::get_plugin_version(),
+						true
+					);
+					wp_add_inline_script(
+						'dlx-photo-block-fancybox-js-inline',
+						'document.addEventListener("DOMContentLoaded", function() { if ( typeof jQuery !== "undefined" && typeof jQuery.fancybox !== "undefined" ) { jQuery("#' . esc_js( $unique_id ) . '[data-fancybox]").fancybox() } else if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . esc_js( $unique_id ) . ' [data-fancybox]"); }  });'
+					);
+
+					// Get caption.
+					$caption_enabled = (bool) $attributes['lightboxShowCaption'] ?? false;
+					$caption_custom  = $attributes['lightboxCaption'] ?? '';
+					if ( $caption_enabled && ! empty( $caption_custom ) ) {
+						// todo - need to get regular single-line caption if available.
+						$media_link_atts['data-caption'] = $caption_custom;
+					}
+				}
+				break;
+			case 'postPermalink':
+				$media_link_url = get_permalink( $current_post_id );
 				break;
 		}
 

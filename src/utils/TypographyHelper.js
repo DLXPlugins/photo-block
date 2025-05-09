@@ -55,6 +55,9 @@ const shorthandCSSUnits = ( top, topUnit, right, rightUnit, bottom, bottomUnit, 
  * @return {string} CSS value for screen size.
  */
 export const getValueWithUnit = ( screenSize, valueObject, cssValue = 'width' ) => {
+	if ( typeof valueObject === 'undefined' ) {
+		return '';
+	}
 	const width = geHierarchicalPlaceholderValue( valueObject, screenSize, valueObject[ screenSize ].width, 'width' ); // Width is misleading as it can also be height.
 	const unit = getHierarchicalValueUnit( valueObject, screenSize, valueObject[ screenSize ].unit, 'unit' );
 
@@ -80,6 +83,9 @@ export const getValueWithUnit = ( screenSize, valueObject, cssValue = 'width' ) 
  * @return {string} CSS rules.
  */
 export function buildDimensionsCSS( props, screenSize ) {
+	if ( typeof screenSize === 'undefined' || typeof props === 'undefined' ) {
+		return '';
+	}
 	screenSize = screenSize.toLowerCase();
 	const dimensions = props[ screenSize ];
 
@@ -131,6 +137,9 @@ export function buildDimensionsCSS( props, screenSize ) {
  * @return {string} CSS rules.
  */
 export function buildBorderCSS( props, screenSize, prefix ) {
+	if ( typeof screenSize === 'undefined' || typeof props === 'undefined' ) {
+		return '';
+	}
 	screenSize = screenSize.toLowerCase();
 	const border = props[ screenSize ];
 

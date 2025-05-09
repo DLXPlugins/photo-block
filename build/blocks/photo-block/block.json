@@ -258,6 +258,10 @@
       "type": "string",
       "default": "9"
     },
+    "dataMediaLinkSource": {
+      "type": "string",
+      "default": "none"
+    },
     "dataHasFallbackImage": {
       "type": "boolean",
       "default": false
