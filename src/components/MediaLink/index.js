@@ -68,7 +68,7 @@ const MediaLink = ( props ) => {
 		};
 	} );
 
-	const { mediaLinkOverride, mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption, globalStyle } = attributes;
+	const { mediaLinkOverride, mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption, customLinkLightboxCaption, customLinkLightboxEnabled, customLinkLightboxShowCaption, globalStyle } = attributes;
 
 	return (
 		<>
@@ -214,6 +214,50 @@ const MediaLink = ( props ) => {
 									{ __( 'Attachment Page', 'photo-block' ) }
 								</Button>
 							</div>
+						</>
+					) }
+					{ ( 'custom' !== mediaLinkType && mediaLinkUrl && /\.(jpg|jpeg|gif|png|webp|avif)$/i.test( mediaLinkUrl ) ) && (
+						<>
+							<PanelBody
+								title={ __( 'Lightbox', 'photo-block' ) }
+								initialOpen={ false }
+							>
+								<PanelRow>
+									<ToggleControl
+										label={ __( 'Enable lightbox', 'photo-block' ) }
+										checked={ customLinkLightboxEnabled }
+										onChange={ ( value ) => {
+											setAttributes( { customLinkLightboxEnabled: value } );
+										} }
+										help={ __( 'Popup the photo when clicked.', 'photo-block' ) }
+									/>
+								</PanelRow>
+								{ customLinkLightboxEnabled && (
+									<>
+										<PanelRow>
+											<ToggleControl
+												label={ __( 'Show caption', 'photo-block' ) }
+												checked={ customLinkLightboxShowCaption }
+												onChange={ ( value ) => {
+													setAttributes( { customLinkLightboxShowCaption: value } );
+												} }
+											/>
+										</PanelRow>
+										{ customLinkLightboxShowCaption && (
+											<PanelRow>
+												<TextControl
+													label={ __( 'Custom Caption (optional)', 'photo-block' ) }
+													value={ customLinkLightboxCaption }
+													onChange={ ( value ) => {
+														setAttributes( { customLinkLightboxCaption: value } );
+													} }
+													help={ __( 'Leave blank for no caption.', 'photo-block' ) }
+												/>
+											</PanelRow>
+										) }
+									</>
+								) }
+							</PanelBody>
 						</>
 					) }
 					{ 'image' === mediaLinkType && (

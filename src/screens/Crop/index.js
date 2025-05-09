@@ -77,7 +77,7 @@ const CropScreen = ( props ) => {
 	const [ cropMaxWidth, setCropMaxWidth ] = useState( null ); // Used for setting the max crop size when selecting pixel values for aspect ratio.
 	const [ cropMaxHeight, setCropMaxHeight ] = useState( null ); // Used for setting the max crop size when selecting pixel values for aspect ratio.
 	const [ reactCropImageRef, setReactCropImageRef ] = useState( null );
-	const [ isDiry, setIsDirty ] = useState( false );
+	const [ isDirty, setIsDirty ] = useState( false );
 	const [ cropAspectRatio, setCropAspectRatio ] = useState( aspectRatioWidth / aspectRatioHeight );
 
 	const {
@@ -329,7 +329,59 @@ const CropScreen = ( props ) => {
 	const localInspectorControls = (
 		<InspectorControls>
 			<PanelBody title={ __( 'Crop Settings', 'photo-block' ) }>
-				<PanelRow>Crop options here</PanelRow>
+				<PanelRow>
+					<Button
+						icon={ isSaving ? <Loader2 /> : <Save /> }
+						className={ classnames( 'dlx-photo-block__save-button', {
+							'is-saving': isSaving,
+						} ) }
+						variant="primary"
+						disabled={ ! isDirty }
+						label={ __( 'Save and Apply Crop', 'photo-block' ) }
+						onClick={ () => {
+							if ( isSaving ) {
+								return;
+							}
+							setIsSaving( true );
+							setOriginalImageData( imageData ); // Save original image data.
+
+							const croppedImage = cropImage( crop, imageData.id, rotateDegrees );
+							croppedImage.then( ( imageResponse ) => {
+								const { data } = imageResponse;
+								if ( data.success ) {
+									setImageData( data.data.attachment );
+									setAttributes( {
+										photoMode: 'photo',
+										imageData: data.data.attachment,
+									} );
+									setJustCropped( true );
+									setPhotoMode( 'photo' );
+									setScreen( 'edit' );
+								} else {
+								// todo: error handling.
+								}
+							} ).catch( ( error ) => {
+							} ).then( () => {
+								setIsSaving( false );
+							} );
+						} }
+					>
+						{ isSaving ? __( 'Saving…', 'photo-block' ) : __( 'Save and Apply Crop', 'photo-block' ) }
+					</Button>
+				</PanelRow>
+				<PanelRow>
+					<Button
+						label={ __( 'Cancel Crop', 'photo-block' ) }
+						icon={ <ArrowBigLeftDash />
+						}
+						variant="secondary"
+						onClick={ () => {
+							setScreen( 'edit' );
+						} }
+					>
+						{ __( 'Cancel Crop', 'photo-block' ) }
+					</Button>
+				</PanelRow>
 			</PanelBody>
 		</InspectorControls>
 	);
@@ -550,7 +602,7 @@ const CropScreen = ( props ) => {
 						'is-saving': isSaving,
 					} ) }
 					variant="primary"
-					disabled={ ! isDiry }
+					disabled={ ! isDirty }
 					label={ __( 'Apply Crop', 'photo-block' ) }
 					onClick={ () => {
 						if ( isSaving ) {

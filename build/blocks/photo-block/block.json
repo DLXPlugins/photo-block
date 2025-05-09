@@ -612,6 +612,18 @@
       "type": "string",
       "default": ""
     },
+    "customLinkLightboxEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "customLinkLightboxCaption": {
+      "type": "string",
+      "default": ""
+    },
+    "customLinkLightboxShowCaption": {
+      "type": "boolean",
+      "default": false
+    },
     "imageProtectionEnabled": {
       "type": "boolean",
       "default": false
