@@ -69,6 +69,7 @@ const Settings = ( props ) => {
 			screenshotOneBlockCookieBanners: dlxPBAdmin.screenshotOneBlockCookieBanners,
 			screenshotOneBlockAds: dlxPBAdmin.screenshotOneBlockAds,
 			screenshotOneIgnoreHostErrors: dlxPBAdmin.screenshotOneIgnoreHostErrors,
+			debugModeEnabled: dlxPBAdmin.debugModeEnabled,
 		},
 	} );
 	const formValues = useWatch( { control } );
@@ -636,6 +637,30 @@ const Settings = ( props ) => {
 											</>
 										)
 									}
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									{ __( 'Advanced Settings', 'photo-block' ) }
+								</th>
+								<td>
+									<div className="dlx-admin__row">
+										<Controller
+											name="debugModeEnabled"
+											control={ control }
+											render={ ( { field } ) => (
+												<ToggleControl 
+													{ ...field }
+													checked={ field.value }
+													onChange={ ( value ) => {
+														field.onChange( value );
+													} }
+													label={ __( 'Debug Mode', 'photo-block' ) }
+													help={ __( 'If enabled, ScreenshotOne will output debug information to the error log and make public any private post types.', 'photo-block' ) }
+												/>
+											) }
+										/>
+									</div>
 								</td>
 							</tr>
 						</tbody>

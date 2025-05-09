@@ -504,19 +504,24 @@ class Global_Styles {
 			'not_found'          => __( 'No presets found', 'photo-block' ),
 			'not_found_in_trash' => __( 'No presets found in Trash', 'photo-block' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => __( 'Global Styles', 'photo-block' ),
+			'menu_name'          => __( 'Global Styles (Photo Block)', 'photo-block' ),
 		);
+
+		// Get Debug Mode option.
+		$debug_mode_enabled = (bool) Options::get_options( false, 'debugModeEnabled' );
 
 		$args = array(
 			'labels'                  => $labels,
 			'public'                  => false,
 			'publicly_queryable'      => false,
-			'show_ui'                 => false,
-			'show_in_menu'            => false,
+			'show_ui'                 => $debug_mode_enabled,
+			'show_in_menu'            => $debug_mode_enabled,
 			'query_var'               => false,
 			'rewrite'                 => false,
 			'dlx_photo_block_archive' => false,
 			'hierarchical'            => false,
+			'menu_icon'               => 'dashicons-format-image',
+			'menu_position'           => 100,
 		);
 
 		register_post_type( 'dlx_pb_global_styles', $args );

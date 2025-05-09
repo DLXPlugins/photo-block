@@ -1181,7 +1181,8 @@ var Settings = function Settings(props) {
         screenshotOneViewportHeight: dlxPBAdmin.screenshotOneViewportHeight || 1200,
         screenshotOneBlockCookieBanners: dlxPBAdmin.screenshotOneBlockCookieBanners,
         screenshotOneBlockAds: dlxPBAdmin.screenshotOneBlockAds,
-        screenshotOneIgnoreHostErrors: dlxPBAdmin.screenshotOneIgnoreHostErrors
+        screenshotOneIgnoreHostErrors: dlxPBAdmin.screenshotOneIgnoreHostErrors,
+        debugModeEnabled: dlxPBAdmin.debugModeEnabled
       }
     }),
     control = _useForm.control,
@@ -1780,7 +1781,25 @@ var Settings = function Settings(props) {
         help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('If enabled, ScreenshotOne will ignore host errors. For example, if you need a screenshot of a 404 or error page.', 'photo-block')
       }));
     }
-  })))))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_SaveResetButtons__WEBPACK_IMPORTED_MODULE_8__["default"], {
+  })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+    scope: "row"
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Advanced Settings', 'photo-block')), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "dlx-admin__row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_9__.Controller, {
+    name: "debugModeEnabled",
+    control: control,
+    render: function render(_ref15) {
+      var field = _ref15.field;
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({}, field, {
+        checked: field.value,
+        onChange: function onChange(value) {
+          field.onChange(value);
+        },
+        label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Debug Mode', 'photo-block'),
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('If enabled, ScreenshotOne will output debug information to the error log and make public any private post types.', 'photo-block')
+      }));
+    }
+  })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_SaveResetButtons__WEBPACK_IMPORTED_MODULE_8__["default"], {
     formValues: formValues,
     setError: setError,
     reset: reset,

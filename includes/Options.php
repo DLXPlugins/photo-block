@@ -135,6 +135,7 @@ class Options {
 			'screenshotOneBlockCookieBanners'        => true,
 			'screenshotOneBlockAds'                  => true,
 			'screenshotOneIgnoreHostErrors'          => false,
+			'debugModeEnabled'                       => false,
 		);
 
 		/**

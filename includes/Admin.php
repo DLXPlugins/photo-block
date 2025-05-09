@@ -250,6 +250,7 @@ class Admin {
 				'screenshotOneBlockCookieBanners'        => $options['screenshotOneBlockCookieBanners'],
 				'screenshotOneBlockAds'                  => $options['screenshotOneBlockAds'],
 				'screenshotOneIgnoreHostErrors'          => $options['screenshotOneIgnoreHostErrors'],
+				'debugModeEnabled'                       => $options['debugModeEnabled'],
 			)
 		);
 		\wp_set_script_translations( 'dlx-pb-admin', 'photo-block' );
