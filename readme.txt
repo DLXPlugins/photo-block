@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.1.14
+Stable tag: 1.2.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,6 +15,8 @@ Enhance your Block Editor with a fully customizable photo block, featuring advan
 
 Photo Block adds a time-saving block to the Block Editor, allowing for advanced image customization with only a few clicks. Made for writers and layout builders, this block is extremely versatile with full caption support, responsive styling, and global styles.
 
+> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Demo</a> ❤️
+
 === Core Features ===
 
 1. **Responsive Controls**: Customize image sizes, padding, margins, border, and style settings for different screen sizes—ensuring your photos look perfect on any device.
@@ -24,6 +26,8 @@ Photo Block adds a time-saving block to the Block Editor, allowing for advanced 
 6. **Global Styles**: Global styles allow you to save your design settings and easily apply them to other photo blocks, which allows you to maintain a consistent look across your site. With global styles, you can add the block, upload the photo, and apply advanced customization in just 4 clicks.
 7. **Query Loop Support**: Seamlessly integrate Photo Block into a Query Loop block as a featured image for dynamic content.
 8. **ScreenshotOne Support**: Use the <a href="https://screenshotone.com/">ScreenshotOne</a> service to generate website screenshots right from Photo Block.
+
+> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Demo</a> ❤️
 
 ## Quick Links:
 
@@ -117,6 +121,13 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.2.0 =
+* Released 2025-05-09
+* New Feature: Custom links can now pop-up into lightboxes if they are of type jpg, jpeg, gif, png, webp, or avif.
+* New Feature: Added Debug mode, which will make the hidden Global Styles post type visiible for inspecting.
+* Bug fix: Global Styles would sometimes save the wrong block information, causing a fatal error.
+* Bug fix: Fixed Featured Image so that it can be set as a post permalink (this wasn't saving before).
+
 = 1.1.5 =
 * Released 2025-05-07
 * New feature: Ability to hide the caption text in overlays. This can be used to create advanced effects.
@@ -163,7 +174,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.1.5 =
-Adds caption hiding in overlays, improves overlay UI, adds GenerateBlocks 2.0 query loop support, adds Image block transforms, and fixes global styles and ScreenshotOne icon issues.
+= 1.2.0 =
+Custom links can now be popped into a lightbox. Debug mode added if things go wrong with Global Styles. Fatal error involving Global Styles fixed. Post permalink can now be selected when doing a featured image in a query loop.
 
 
