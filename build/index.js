@@ -8158,7 +8158,7 @@ var MediaLink = function MediaLink(props) {
     target: "_blank",
     rel: "noopener noreferrer",
     disabled: 'photo' !== photoMode
-  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Attachment Page', 'photo-block')))), 'custom' !== mediaLinkType && mediaLinkUrl && /\.(jpg|jpeg|gif|png|webp|avif)$/i.test(mediaLinkUrl) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Attachment Page', 'photo-block')))), 'custom' === mediaLinkType && mediaLinkUrl && /\.(jpg|jpeg|gif|png|webp|avif)$/i.test(mediaLinkUrl) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Lightbox', 'photo-block'),
     initialOpen: false
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {

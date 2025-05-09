@@ -216,7 +216,7 @@ const MediaLink = ( props ) => {
 							</div>
 						</>
 					) }
-					{ ( 'custom' !== mediaLinkType && mediaLinkUrl && /\.(jpg|jpeg|gif|png|webp|avif)$/i.test( mediaLinkUrl ) ) && (
+					{ ( 'custom' === mediaLinkType && mediaLinkUrl && /\.(jpg|jpeg|gif|png|webp|avif)$/i.test( mediaLinkUrl ) ) && (
 						<>
 							<PanelBody
 								title={ __( 'Lightbox', 'photo-block' ) }

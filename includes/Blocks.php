@@ -790,7 +790,7 @@ class Blocks {
 						$caption_custom  = $attributes['lightboxCaption'] ?? '';
 						if ( $caption_enabled && ! empty( $caption_custom ) ) {
 							// todo - need to get regular single-line caption if available.
-							$media_link_atts['data-caption'] = $caption_custom;
+							$media_link_atts['data-caption'] = esc_attr( $caption_custom );
 						}
 					}
 				}
@@ -800,6 +800,40 @@ class Blocks {
 				break;
 			case 'custom':
 				$media_link_url = $attributes['mediaLinkUrl'] ?? '';
+				// Get lightbox attributes.
+				$custom_link_lightbox_enabled = (bool) $attributes['customLinkLightboxEnabled'] ?? false;
+				if ( $custom_link_lightbox_enabled && preg_match( '/\.(jpg|jpeg|gif|png|webp|avif)$/i', $media_link_url ) ) {
+					$media_link_atts['data-fancybox'] = 'true';
+					$media_link_atts['data-caption']  = esc_attr( $caption );
+
+					// Register the lightbox script/style. Check wp_footer.
+					wp_register_script(
+						'dlx-photo-block-fancybox-js',
+						Functions::get_plugin_url( 'assets/fancybox/fancybox.js' ),
+						array(),
+						Functions::get_plugin_version(),
+						true
+					);
+					wp_register_script(
+						'dlx-photo-block-fancybox-js-inline',
+						false,
+						array(),
+						Functions::get_plugin_version(),
+						true
+					);
+					wp_add_inline_script(
+						'dlx-photo-block-fancybox-js-inline',
+						'document.addEventListener("DOMContentLoaded", function() { if ( typeof jQuery !== "undefined" && typeof jQuery.fancybox !== "undefined" ) { jQuery("#' . esc_js( $unique_id ) . '[data-fancybox]").fancybox() } else if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . esc_js( $unique_id ) . ' [data-fancybox]"); }  });'
+					);
+
+					// Get caption.
+					$custom_link_lightbox_caption_enabled = (bool) $attributes['customLinkLightboxShowCaption'] ?? false;
+					$custom_link_lightbox_caption_custom  = $attributes['customLinkLightboxCaption'] ?? '';
+					if ( $custom_link_lightbox_caption_enabled && ! empty( $custom_link_lightbox_caption_custom ) ) {
+						// todo - need to get regular single-line caption if available.
+						$media_link_atts['data-caption'] = esc_attr( $custom_link_lightbox_caption_custom );
+					}
+				}
 				break;
 			case 'imageData':
 				if ( $is_in_query_loop ) {
