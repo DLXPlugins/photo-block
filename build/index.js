@@ -6360,9 +6360,16 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
 
     // If the current block is a caption, select the parent block's clientId instead.
     if ('dlxplugins/photo-caption-block' === currentBlock.name) {
-      var currentBlockClientId = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.select)('core/block-editor').getBlockParents(clientId)[0];
+      // Select the last parent block.
+      var currentBlockClientId = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.select)('core/block-editor').getBlockParents(clientId).pop();
       currentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.select)('core/block-editor').getBlocksByClientId(currentBlockClientId)[0];
       parentClientId = currentBlock.clientId;
+    }
+    if ('dlxplugins/photo-block' !== currentBlock.name) {
+      return {
+        photoAttributes: {},
+        captionAttributes: {}
+      };
     }
     var children = ((_select$getBlocksByCl = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.select)('core/block-editor').getBlocksByClientId(parentClientId)[0]) === null || _select$getBlocksByCl === void 0 ? void 0 : _select$getBlocksByCl.innerBlocks) || [];
     var captionBlock = children.find(function (block) {
