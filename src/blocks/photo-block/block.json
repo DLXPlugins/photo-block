@@ -468,24 +468,28 @@
 						"width": "",
 						"unit": null,
 						"color": "",
+						"opacity": 1,
 						"borderStyle": ""
 					},
 					"right": {
 						"width": "",
 						"unit": null,
 						"color": "",
+						"opacity": 1,
 						"borderStyle": ""
 					},
 					"bottom": {
 						"width": "",
 						"unit": null,
 						"color": "",
+						"opacity": 1,
 						"borderStyle": ""
 					},
 					"left": {
 						"width": "",
 						"unit": null,
 						"color": "",
+						"opacity": 1,
 						"borderStyle": ""
 					},
 					"unitSync": true
@@ -495,24 +499,28 @@
 						"width": "",
 						"unit": null,
 						"color": "",
+						"opacity": 1,
 						"borderStyle": ""
 					},
 					"right": {
 						"width": "",
 						"unit": null,
 						"color": "",
+						"opacity": 1,
 						"borderStyle": ""
 					},
 					"bottom": {
 						"width": "",
 						"unit": null,
 						"color": "",
+						"opacity": 1,
 						"borderStyle": ""
 					},
 					"left": {
 						"width": "",
 						"unit": null,
 						"color": "",
+						"opacity": 1,
 						"borderStyle": ""
 					},
 					"unitSync": true
@@ -522,24 +530,28 @@
 						"width": "0",
 						"unit": "px",
 						"color": "#000000",
+						"opacity": 1,
 						"borderStyle": "solid"
 					},
 					"right": {
 						"width": "0",
 						"unit": "px",
 						"color": "#000000",
+						"opacity": 1,
 						"borderStyle": "solid"
 					},
 					"bottom": {
 						"width": "0",
 						"unit": "px",
 						"color": "#000000",
+						"opacity": 1,
 						"borderStyle": "solid"
 					},
 					"left": {
 						"width": "0",
 						"unit": "px",
 						"color": "#000000",
+						"opacity": 1,
 						"borderStyle": "solid"
 					},
 					"unitSync": true

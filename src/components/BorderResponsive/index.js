@@ -28,6 +28,12 @@ import BorderStyleDottedIcon from '../Icons/BorderStyleDotted';
 import BorderStyleDoubleIcon from '../Icons/BorderStyleDouble';
 import useUnits from '../../hooks/useUnits';
 
+import rgb2hex from 'rgb2hex';
+
+const isRgba = ( color ) => {
+	return color.startsWith( 'rgba' );
+};
+
 const BorderResponsiveControl = ( props ) => {
 	const {
 		label,
@@ -73,7 +79,15 @@ const BorderResponsiveControl = ( props ) => {
 			{ label: '%', value: '%' },
 			{ label: 'EM', value: 'em' },
 			{ label: 'REM', value: 'rem' },
-		  ];
+		];
+
+	const getColor = ( colorValue ) => {
+		if ( isRgba( colorValue ) ) {
+			const hexParams = rgb2hex( colorValue );
+			return hexParams.hex;
+		}
+		return colorValue;
+	};
 
 	const getDefaultValues = () => {
 		return {
@@ -81,25 +95,29 @@ const BorderResponsiveControl = ( props ) => {
 				top: {
 					width: props.values.mobile.top.width,
 					unit: props.values.mobile.top.unit,
-					color: props.values.mobile.top.color,
+					opacity: props.values.mobile.top.opacity,
+					color: getColor( props.values.mobile.top.color ),
 					borderStyle: props.values.mobile.top.borderStyle,
 				},
 				right: {
 					width: props.values.mobile.right.width,
 					unit: props.values.mobile.right.unit,
-					color: props.values.mobile.right.color,
+					opacity: props.values.mobile.right.opacity,
+					color: getColor( props.values.mobile.right.color ),
 					borderStyle: props.values.mobile.right.borderStyle,
 				},
 				bottom: {
 					width: props.values.mobile.bottom.width,
 					unit: props.values.mobile.bottom.unit,
-					color: props.values.mobile.bottom.color,
+					opacity: props.values.mobile.bottom.opacity,
+					color: getColor( props.values.mobile.bottom.color ),
 					borderStyle: props.values.mobile.bottom.borderStyle,
 				},
 				left: {
 					width: props.values.mobile.left.width,
 					unit: props.values.mobile.left.unit,
-					color: props.values.mobile.left.color,
+					opacity: props.values.mobile.left.opacity,
+					color: getColor( props.values.mobile.left.color ),
 					borderStyle: props.values.mobile.left.borderStyle,
 				},
 				unitSync: props.values.mobile.unitSync,
@@ -108,25 +126,29 @@ const BorderResponsiveControl = ( props ) => {
 				top: {
 					width: props.values.tablet.top.width,
 					unit: props.values.tablet.top.unit,
-					color: props.values.tablet.top.color,
+					opacity: props.values.tablet.top.opacity,
+					color: getColor( props.values.tablet.top.color ),
 					borderStyle: props.values.tablet.top.borderStyle,
 				},
 				right: {
 					width: props.values.tablet.right.width,
 					unit: props.values.tablet.right.unit,
-					color: props.values.tablet.right.color,
+					opacity: props.values.tablet.right.opacity,
+					color: getColor( props.values.tablet.right.color ),
 					borderStyle: props.values.tablet.right.borderStyle,
 				},
 				bottom: {
 					width: props.values.tablet.bottom.width,
 					unit: props.values.tablet.bottom.unit,
-					color: props.values.tablet.bottom.color,
+					opacity: props.values.tablet.bottom.opacity,
+					color: getColor( props.values.tablet.bottom.color ),
 					borderStyle: props.values.tablet.bottom.borderStyle,
 				},
 				left: {
 					width: props.values.tablet.left.width,
 					unit: props.values.tablet.left.unit,
-					color: props.values.tablet.left.color,
+					opacity: props.values.tablet.left.opacity,
+					color: getColor( props.values.tablet.left.color ),
 					borderStyle: props.values.tablet.left.borderStyle,
 				},
 				unitSync: props.values.tablet.unitSync,
@@ -135,25 +157,29 @@ const BorderResponsiveControl = ( props ) => {
 				top: {
 					width: props.values.desktop.top.width,
 					unit: props.values.desktop.top.unit,
-					color: props.values.desktop.top.color,
+					opacity: props.values.desktop.top.opacity,
+					color: getColor( props.values.desktop.top.color ),
 					borderStyle: props.values.desktop.top.borderStyle,
 				},
 				right: {
 					width: props.values.desktop.right.width,
 					unit: props.values.desktop.right.unit,
-					color: props.values.desktop.right.color,
+					opacity: props.values.desktop.right.opacity,
+					color: getColor( props.values.desktop.right.color ),
 					borderStyle: props.values.desktop.right.borderStyle,
 				},
 				bottom: {
 					width: props.values.desktop.bottom.width,
 					unit: props.values.desktop.bottom.unit,
-					color: props.values.desktop.bottom.color,
+					opacity: props.values.desktop.bottom.opacity,
+					color: getColor( props.values.desktop.bottom.color ),
 					borderStyle: props.values.desktop.bottom.borderStyle,
 				},
 				left: {
 					width: props.values.desktop.left.width,
 					unit: props.values.desktop.left.unit,
-					color: props.values.desktop.left.color,
+					opacity: props.values.desktop.left.opacity,
+					color: getColor( props.values.desktop.left.color ),
 					borderStyle: props.values.desktop.left.borderStyle,
 				},
 				unitSync: props.values.desktop.unitSync,
@@ -207,6 +233,22 @@ const BorderResponsiveControl = ( props ) => {
 			setValue( deviceType, oldValues );
 			syncUnits( value );
 		}
+	};
+
+	/**
+	 * When someone hits the sync button, we need to sync the values.
+	 */
+	const syncValues = () => {
+		const currentValues = getValues( deviceType );
+
+		// Get the top value.
+		const topValues = currentValues.top;
+
+		// Set the values.
+		setValue( `${ deviceType }.top`, topValues );
+		setValue( `${ deviceType }.right`, topValues );
+		setValue( `${ deviceType }.bottom`, topValues );
+		setValue( `${ deviceType }.left`, topValues );
 	};
 
 	/**
@@ -447,6 +489,28 @@ const BorderResponsiveControl = ( props ) => {
 		);
 	};
 
+	/**
+	 * Get the opacity value.
+	 *
+	 * @param {string} value The value to get the opacity for.
+	 * @return {number} The opacity value.
+	 */
+	const getOpacity = ( value ) => {
+		let opacity = geHierarchicalPlaceholderValue(
+			values,
+			deviceType,
+			value,
+			'top',
+			'opacity'
+		);
+		console.log( 'opacity', opacity );
+		if ( typeof opacity === 'undefined' ) {
+			opacity = 1;
+		} else {
+			opacity = parseFloat( opacity );
+		}
+		return opacity;
+	};
 	const getSyncInterface = () => {
 		if ( ! isSync() ) {
 			return null;
@@ -461,27 +525,36 @@ const BorderResponsiveControl = ( props ) => {
 					<Controller
 						name={ `${ deviceType }.top.color` }
 						control={ control }
-						render={ ( { field: { onChange, value } } ) => (
-							<ColorPickerControl
-								value={ geHierarchicalPlaceholderValue(
-									values,
-									deviceType,
-									value,
-									'top',
-									'color'
-								) }
-								onChange={ ( slug, newValue ) => {
-									onChange( newValue );
-									onDimensionChange( newValue, 'color' );
-								} }
-								label={ __( 'Border Color', 'photo-block' ) }
-								defaultColors={ photoBlock.palette }
-								defaultColor={ '#FFFFFF' }
-								slug={ 'border-color-sync' }
-								hideLabelFromVision={ true }
-								alpha={ true }
-							/>
-						) }
+						render={ ( { field: { onChange, value } } ) => {
+							return (
+								<ColorPickerControl
+									value={ getColor(
+										geHierarchicalPlaceholderValue(
+											values,
+											deviceType,
+											value,
+											'top',
+											'color'
+										)
+									) }
+									opacity={ getOpacity( getValues( `${ deviceType }.top.opacity` ) ) }
+									onChange={ ( slug, newValue ) => {
+										onChange( newValue );
+										onDimensionChange( newValue, 'color' );
+									} }
+									onOpacityChange={ ( newValue ) => {
+										setValue( `${ deviceType }.top.opacity`, newValue );
+										onDimensionChange( newValue, 'opacity' );
+									} }
+									label={ __( 'Border Color', 'photo-block' ) }
+									defaultColors={ photoBlock.palette }
+									defaultColor={ '#FFFFFF' }
+									slug={ 'border-color-sync' }
+									hideLabelFromVision={ true }
+									alpha={ true }
+								/>
+							);
+						} }
 					/>
 					<Button
 						className="dlx-photo-block__border-responsive-sync-interface-border-style"
@@ -703,26 +776,40 @@ const BorderResponsiveControl = ( props ) => {
 							<Controller
 								name={ `${ deviceType }.top.color` }
 								control={ control }
-								render={ ( { field: { onChange, value } } ) => (
-									<ColorPickerControl
-										value={ geHierarchicalPlaceholderValue(
-											values,
-											deviceType,
-											value,
-											'top',
-											'color'
-										) }
-										onChange={ ( slug, newValue ) => {
-											onChange( newValue );
-										} }
-										label={ __( 'Border Color', 'photo-block' ) }
-										defaultColors={ photoBlock.palette }
-										defaultColor={ '#000000' }
-										slug={ 'border-color-top' }
-										hideLabelFromVision={ true }
-										alpha={ true }
-									/>
-								) }
+								render={ ( { field: { onChange, value } } ) => {
+									return (
+										<ColorPickerControl
+											value={ getColor(
+												geHierarchicalPlaceholderValue(
+													values,
+													deviceType,
+													value,
+													'top',
+													'color'
+												)
+											) }
+											opacity={ getOpacity( getValues( `${ deviceType }.top.opacity` ) ) }
+											onOpacityChange={ ( newValue ) => {
+												setValue( `${ deviceType }.top.opacity`, newValue );
+												if ( isSync() ) {
+													onDimensionChange( newValue, 'opacity' );
+												}
+											} }
+											onChange={ ( slug, color ) => {
+												onChange( color );
+												if ( isSync() ) {
+													onDimensionChange( color, 'color' );
+												}
+											} }
+											label={ __( 'Border Color', 'photo-block' ) }
+											defaultColors={ photoBlock.palette }
+											defaultColor={ '#000000' }
+											slug={ 'border-color-top' }
+											hideLabelFromVision={ true }
+											alpha={ true }
+										/>
+									);
+								} }
 							/>
 							<Button
 								className="dlx-photo-block__border-responsive-sync-interface-border-style"
@@ -800,15 +887,21 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<ColorPickerControl
-										value={ geHierarchicalPlaceholderValue(
-											values,
-											deviceType,
-											value,
-											'right',
-											'color'
+										value={ getColor(
+											geHierarchicalPlaceholderValue(
+												values,
+												deviceType,
+												value,
+												'right',
+												'color'
+											)
 										) }
-										onChange={ ( slug, newValue ) => {
-											onChange( newValue );
+										opacity={ getOpacity( getValues( `${ deviceType }.right.opacity` ) ) }
+										onChange={ ( slug, color ) => {
+											onChange( color );
+										} }
+										onOpacityChange={ ( newValue ) => {
+											setValue( `${ deviceType }.right.opacity`, newValue );
 										} }
 										label={ __( 'Border Color', 'photo-block' ) }
 										defaultColors={ photoBlock.palette }
@@ -895,15 +988,21 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<ColorPickerControl
-										value={ geHierarchicalPlaceholderValue(
-											values,
-											deviceType,
-											value,
-											'bottom',
-											'color'
+										value={ getColor(
+											geHierarchicalPlaceholderValue(
+												values,
+												deviceType,
+												value,
+												'bottom',
+												'color'
+											)
 										) }
-										onChange={ ( slug, newValue ) => {
-											onChange( newValue );
+										opacity={ getOpacity( getValues( `${ deviceType }.bottom.opacity` ) ) }
+										onOpacityChange={ ( newValue ) => {
+											setValue( `${ deviceType }.bottom.opacity`, newValue );
+										} }
+										onChange={ ( slug, color ) => {
+											onChange( color );
 										} }
 										label={ __( 'Border Color', 'photo-block' ) }
 										defaultColors={ photoBlock.palette }
@@ -992,15 +1091,21 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<ColorPickerControl
-										value={ geHierarchicalPlaceholderValue(
-											values,
-											deviceType,
-											value,
-											'left',
-											'color'
+										value={ getColor(
+											geHierarchicalPlaceholderValue(
+												values,
+												deviceType,
+												value,
+												'left',
+												'color'
+											)
 										) }
-										onChange={ ( slug, newValue ) => {
-											onChange( newValue );
+										opacity={ getOpacity( getValues( `${ deviceType }.left.opacity` ) ) }
+										onOpacityChange={ ( newValue ) => {
+											setValue( `${ deviceType }.left.opacity`, newValue );
+										} }
+										onChange={ ( slug, color ) => {
+											onChange( color );
 										} }
 										label={ __( 'Border Color', 'photo-block' ) }
 										defaultColors={ photoBlock.palette }
@@ -1090,6 +1195,7 @@ const BorderResponsiveControl = ( props ) => {
 								const oldValues = getValues( deviceType );
 								oldValues.unitSync = true;
 								setValue( deviceType, oldValues );
+								syncValues();
 							} }
 							isPressed={ false }
 							icon={ <Link /> }

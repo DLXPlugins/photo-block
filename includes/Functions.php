@@ -742,7 +742,7 @@ class Functions {
 				return $hex;
 			}
 		}
-		if ( 'transparent' === $hex ) {
+		if ( 'transparent' === $hex || null === $hex ) {
 			return 'rgba(0,0,0,0)';
 		}
 		// Get into 6 character format.
@@ -1947,7 +1947,7 @@ class Functions {
 					foreach ( $dimensions as $dimension ) {
 						$top_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['width'], 'top', 'width' );
 						$top_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['unit'], 'top', 'unit' );
-						$top_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' );
+						$top_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['opacity'], 'top', 'opacity' ) );
 						$top_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['borderStyle'], 'top', 'borderStyle' );
 						$css_helper->add_css(
 							sprintf(
@@ -1961,22 +1961,22 @@ class Functions {
 				} else {
 					$top_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['width'], 'top', 'width' );
 					$top_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['unit'], 'top', 'unit' );
-					$top_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' );
+					$top_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['opacity'], 'top', 'opacity' ) );
 					$top_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['borderStyle'], 'top', 'borderStyle' );
 
 					$right_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['width'], 'right', 'width' );
 					$right_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['unit'], 'right', 'unit' );
-					$right_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['color'], 'right', 'color' );
+					$right_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['color'], 'right', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['opacity'], 'right', 'opacity' ) );
 					$right_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['borderStyle'], 'right', 'borderStyle' );
 
 					$bottom_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['width'], 'bottom', 'width' );
 					$bottom_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['unit'], 'bottom', 'unit' );
-					$bottom_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['color'], 'bottom', 'color' );
+					$bottom_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['color'], 'bottom', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['opacity'], 'bottom', 'opacity' ) );
 					$bottom_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['borderStyle'], 'bottom', 'borderStyle' );
 
 					$left_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['width'], 'left', 'width' );
 					$left_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['unit'], 'left', 'unit' );
-					$left_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['color'], 'left', 'color' );
+					$left_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['color'], 'left', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['opacity'], 'left', 'opacity' ) );
 					$left_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['borderStyle'], 'left', 'borderStyle' );
 
 					$css_helper->add_css(
@@ -2017,7 +2017,7 @@ class Functions {
 					foreach ( $dimensions as $dimension ) {
 						$top_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['width'], 'top', 'width' );
 						$top_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['unit'], 'top', 'unit' );
-						$top_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' );
+						$top_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['opacity'], 'top', 'opacity' ) );
 						$top_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['borderStyle'], 'top', 'borderStyle' );
 						$css_helper->add_css(
 							sprintf(
@@ -2031,22 +2031,22 @@ class Functions {
 				} else {
 					$top_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['width'], 'top', 'width' );
 					$top_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['unit'], 'top', 'unit' );
-					$top_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' );
+					$top_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['color'], 'top', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['opacity'], 'top', 'opacity' ) );
 					$top_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['top']['borderStyle'], 'top', 'borderStyle' );
 
 					$right_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['width'], 'right', 'width' );
 					$right_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['unit'], 'right', 'unit' );
-					$right_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['color'], 'right', 'color' );
+					$right_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['color'], 'right', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['opacity'], 'right', 'opacity' ) );
 					$right_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['right']['borderStyle'], 'right', 'borderStyle' );
 
 					$bottom_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['width'], 'bottom', 'width' );
 					$bottom_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['unit'], 'bottom', 'unit' );
-					$bottom_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['color'], 'bottom', 'color' );
+					$bottom_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['color'], 'bottom', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['opacity'], 'bottom', 'opacity' ) );
 					$bottom_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['bottom']['borderStyle'], 'bottom', 'borderStyle' );
 
 					$left_width        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['width'], 'left', 'width' );
 					$left_unit         = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['unit'], 'left', 'unit' );
-					$left_color        = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['color'], 'left', 'color' );
+					$left_color        = Functions::hex_to_rgba( self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['color'], 'left', 'color' ), self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['opacity'], 'left', 'opacity' ) );
 					$left_border_style = self::get_hierarchical_placeholder_value( $border, $screen_size, $border[ $screen_size ]['left']['borderStyle'], 'left', 'borderStyle' );
 
 					$css_helper->add_css(

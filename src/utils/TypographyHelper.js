@@ -1,6 +1,6 @@
-import React from 'react';
 import shorthandCSS from './ShorthandCSS';
-
+import rgb2hex from 'rgb2hex';
+import hexToRgba from 'hex-to-rgba';
 const shorthandCSSUnits = ( top, topUnit, right, rightUnit, bottom, bottomUnit, left, leftUnit ) => {
 	if ( '' === top && '' === right && '' === bottom && '' === left ) {
 		return;
@@ -127,6 +127,43 @@ export function buildDimensionsCSS( props, screenSize ) {
 	return '';
 }
 
+const isRgba = ( color ) => {
+	return color.startsWith( 'rgba' );
+};
+
+/**
+ * Return a color based on passed alpha value.
+ *
+ * @param {string} colorValue   hex, rgb, rgba, or CSS var.
+ * @param {number} opacityValue The opacity (from 0 - 1).
+ * @return {string} The color in hex, rgba, or CSS var format.
+ */
+const getColor = ( colorValue, opacityValue = 1 ) => {
+	// Test for CSS var values in color value.
+	if ( colorValue.indexOf( 'var(' ) === 0 ) {
+		return colorValue;
+	}
+	opacityValue = parseFloat( opacityValue );
+
+	// Test for RGBA at the beginning, and return value.
+	if ( colorValue.indexOf( 'rgba' ) === 0 ) {
+		// Calculate hex value from rgba.
+		const hex = rgb2hex( colorValue ).hex;
+		return hexToRgba( hex, opacityValue );
+	}
+
+	// Test for RGB at the beginning, and return hex if found.
+	if ( colorValue.indexOf( 'rgb' ) === 0 ) {
+		return hexToRgba( rgb2hex( colorValue ).hex, opacityValue );
+	}
+
+	if ( opacityValue < 1 ) {
+		return hexToRgba( colorValue, opacityValue );
+	}
+
+	return colorValue;
+};
+
 /**
  * Build CSS rules for border and screen size.
  *
@@ -146,7 +183,10 @@ export function buildBorderCSS( props, screenSize, prefix ) {
 	if ( true === getHierarchicalValueUnit( props, screenSize, border.unitSync, 'unitSync' ) ) {
 		const topValue = geHierarchicalPlaceholderValue( props, screenSize, border.top.width, 'top', 'width' );
 		const topUnit = geHierarchicalPlaceholderValue( props, screenSize, border.top.unit, 'top', 'unit' );
-		const topColor = geHierarchicalPlaceholderValue( props, screenSize, border.top.color, 'top', 'color' );
+		const topColor = getColor(
+			geHierarchicalPlaceholderValue( props, screenSize, border.top.color, 'top', 'color' ),
+			geHierarchicalPlaceholderValue( props, screenSize, border.top.opacity, 'top', 'opacity' )
+		);
 		const topBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.top.borderStyle, 'top', 'borderStyle' );
 
 		let CSSRule = '';
@@ -158,21 +198,32 @@ export function buildBorderCSS( props, screenSize, prefix ) {
 
 	const top = geHierarchicalPlaceholderValue( props, screenSize, border.top.width, 'top', 'width' );
 	const topUnit = geHierarchicalPlaceholderValue( props, screenSize, border.top.unit, 'top', 'unit' );
-	const topColor = geHierarchicalPlaceholderValue( props, screenSize, border.top.color, 'top', 'color' );
+	const topColor = getColor(
+		geHierarchicalPlaceholderValue( props, screenSize, border.top.color, 'top', 'color' ),
+		geHierarchicalPlaceholderValue( props, screenSize, border.top.opacity, 'top', 'opacity' )
+	);
 	const topBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.top.borderStyle, 'top', 'borderStyle' );
 	const right = geHierarchicalPlaceholderValue( props, screenSize, border.right.width, 'right', 'width' );
 	const rightUnit = geHierarchicalPlaceholderValue( props, screenSize, border.right.unit, 'right', 'unit' );
-	const rightColor = geHierarchicalPlaceholderValue( props, screenSize, border.right.color, 'right', 'color' );
+	const rightColor = getColor(
+		geHierarchicalPlaceholderValue( props, screenSize, border.right.color, 'right', 'color' ),
+		geHierarchicalPlaceholderValue( props, screenSize, border.right.opacity, 'right', 'opacity' )
+	);
 	const rightBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.right.borderStyle, 'right', 'borderStyle' );
 	const bottom = geHierarchicalPlaceholderValue( props, screenSize, border.bottom.width, 'bottom', 'width' );
 	const bottomUnit = geHierarchicalPlaceholderValue( props, screenSize, border.bottom.unit, 'bottom', 'unit' );
-	const bottomColor = geHierarchicalPlaceholderValue( props, screenSize, border.bottom.color, 'bottom', 'color' );
+	const bottomColor = getColor(
+		geHierarchicalPlaceholderValue( props, screenSize, border.bottom.color, 'bottom', 'color' ),
+		geHierarchicalPlaceholderValue( props, screenSize, border.bottom.opacity, 'bottom', 'opacity' )
+	);
 	const bottomBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.bottom.borderStyle, 'bottom', 'borderStyle' );
 	const left = geHierarchicalPlaceholderValue( props, screenSize, border.left.width, 'left', 'width' );
 	const leftUnit = geHierarchicalPlaceholderValue( props, screenSize, border.left.unit, 'left', 'unit' );
-	const leftColor = geHierarchicalPlaceholderValue( props, screenSize, border.left.color, 'left', 'color' );
+	const leftColor = getColor(
+		geHierarchicalPlaceholderValue( props, screenSize, border.left.color, 'left', 'color' ),
+		geHierarchicalPlaceholderValue( props, screenSize, border.left.opacity, 'left', 'opacity' )
+	);
 	const leftBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.left.borderStyle, 'left', 'borderStyle' );
-
 	let CSSRule = '';
 	CSSRule += `${ prefix }-border-top: ${ top }${ topUnit } ${ topBorderStyle } ${ topColor };`;
 	CSSRule += `${ prefix }-border-right: ${ right }${ rightUnit } ${ rightBorderStyle } ${ rightColor };`;

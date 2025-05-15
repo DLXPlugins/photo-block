@@ -2949,11 +2949,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/unlink.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/unlink.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
 /* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
 /* harmony import */ var _HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../HeadingIconResponsive */ "./src/components/HeadingIconResponsive/index.js");
 /* harmony import */ var _ColorPicker__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../ColorPicker */ "./src/components/ColorPicker/index.js");
@@ -2963,6 +2963,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Icons_BorderStyleDotted__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../Icons/BorderStyleDotted */ "./src/components/Icons/BorderStyleDotted.js");
 /* harmony import */ var _Icons_BorderStyleDouble__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../Icons/BorderStyleDouble */ "./src/components/Icons/BorderStyleDouble.js");
 /* harmony import */ var _hooks_useUnits__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../hooks/useUnits */ "./src/hooks/useUnits.js");
+/* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! rgb2hex */ "./node_modules/rgb2hex/index.js");
+/* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(rgb2hex__WEBPACK_IMPORTED_MODULE_14__);
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -2985,6 +2987,10 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
+
+var isRgba = function isRgba(color) {
+  return color.startsWith('rgba');
+};
 var BorderResponsiveControl = function BorderResponsiveControl(props) {
   var label = props.label,
     onValuesChange = props.onValuesChange,
@@ -3056,31 +3062,42 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     label: 'REM',
     value: 'rem'
   }];
+  var getColor = function getColor(colorValue) {
+    if (isRgba(colorValue)) {
+      var hexParams = rgb2hex__WEBPACK_IMPORTED_MODULE_14___default()(colorValue);
+      return hexParams.hex;
+    }
+    return colorValue;
+  };
   var getDefaultValues = function getDefaultValues() {
     return {
       mobile: {
         top: {
           width: props.values.mobile.top.width,
           unit: props.values.mobile.top.unit,
-          color: props.values.mobile.top.color,
+          opacity: props.values.mobile.top.opacity,
+          color: getColor(props.values.mobile.top.color),
           borderStyle: props.values.mobile.top.borderStyle
         },
         right: {
           width: props.values.mobile.right.width,
           unit: props.values.mobile.right.unit,
-          color: props.values.mobile.right.color,
+          opacity: props.values.mobile.right.opacity,
+          color: getColor(props.values.mobile.right.color),
           borderStyle: props.values.mobile.right.borderStyle
         },
         bottom: {
           width: props.values.mobile.bottom.width,
           unit: props.values.mobile.bottom.unit,
-          color: props.values.mobile.bottom.color,
+          opacity: props.values.mobile.bottom.opacity,
+          color: getColor(props.values.mobile.bottom.color),
           borderStyle: props.values.mobile.bottom.borderStyle
         },
         left: {
           width: props.values.mobile.left.width,
           unit: props.values.mobile.left.unit,
-          color: props.values.mobile.left.color,
+          opacity: props.values.mobile.left.opacity,
+          color: getColor(props.values.mobile.left.color),
           borderStyle: props.values.mobile.left.borderStyle
         },
         unitSync: props.values.mobile.unitSync
@@ -3089,25 +3106,29 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         top: {
           width: props.values.tablet.top.width,
           unit: props.values.tablet.top.unit,
-          color: props.values.tablet.top.color,
+          opacity: props.values.tablet.top.opacity,
+          color: getColor(props.values.tablet.top.color),
           borderStyle: props.values.tablet.top.borderStyle
         },
         right: {
           width: props.values.tablet.right.width,
           unit: props.values.tablet.right.unit,
-          color: props.values.tablet.right.color,
+          opacity: props.values.tablet.right.opacity,
+          color: getColor(props.values.tablet.right.color),
           borderStyle: props.values.tablet.right.borderStyle
         },
         bottom: {
           width: props.values.tablet.bottom.width,
           unit: props.values.tablet.bottom.unit,
-          color: props.values.tablet.bottom.color,
+          opacity: props.values.tablet.bottom.opacity,
+          color: getColor(props.values.tablet.bottom.color),
           borderStyle: props.values.tablet.bottom.borderStyle
         },
         left: {
           width: props.values.tablet.left.width,
           unit: props.values.tablet.left.unit,
-          color: props.values.tablet.left.color,
+          opacity: props.values.tablet.left.opacity,
+          color: getColor(props.values.tablet.left.color),
           borderStyle: props.values.tablet.left.borderStyle
         },
         unitSync: props.values.tablet.unitSync
@@ -3116,38 +3137,42 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         top: {
           width: props.values.desktop.top.width,
           unit: props.values.desktop.top.unit,
-          color: props.values.desktop.top.color,
+          opacity: props.values.desktop.top.opacity,
+          color: getColor(props.values.desktop.top.color),
           borderStyle: props.values.desktop.top.borderStyle
         },
         right: {
           width: props.values.desktop.right.width,
           unit: props.values.desktop.right.unit,
-          color: props.values.desktop.right.color,
+          opacity: props.values.desktop.right.opacity,
+          color: getColor(props.values.desktop.right.color),
           borderStyle: props.values.desktop.right.borderStyle
         },
         bottom: {
           width: props.values.desktop.bottom.width,
           unit: props.values.desktop.bottom.unit,
-          color: props.values.desktop.bottom.color,
+          opacity: props.values.desktop.bottom.opacity,
+          color: getColor(props.values.desktop.bottom.color),
           borderStyle: props.values.desktop.bottom.borderStyle
         },
         left: {
           width: props.values.desktop.left.width,
           unit: props.values.desktop.left.unit,
-          color: props.values.desktop.left.color,
+          opacity: props.values.desktop.left.opacity,
+          color: getColor(props.values.desktop.left.color),
           borderStyle: props.values.desktop.left.borderStyle
         },
         unitSync: props.values.desktop.unitSync
       }
     };
   };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_14__.useForm)({
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_15__.useForm)({
       defaultValues: getDefaultValues()
     }),
     control = _useForm.control,
     setValue = _useForm.setValue,
     getValues = _useForm.getValues;
-  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_14__.useWatch)({
+  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_15__.useWatch)({
     control: control
   });
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
@@ -3190,6 +3215,22 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       setValue(deviceType, _oldValues2);
       syncUnits(value);
     }
+  };
+
+  /**
+   * When someone hits the sync button, we need to sync the values.
+   */
+  var syncValues = function syncValues() {
+    var currentValues = getValues(deviceType);
+
+    // Get the top value.
+    var topValues = currentValues.top;
+
+    // Set the values.
+    setValue("".concat(deviceType, ".top"), topValues);
+    setValue("".concat(deviceType, ".right"), topValues);
+    setValue("".concat(deviceType, ".bottom"), topValues);
+    setValue("".concat(deviceType, ".left"), topValues);
   };
 
   /**
@@ -3349,7 +3390,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, null, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".").concat(unitVar, ".borderStyle"),
       control: control,
       render: function render(_ref) {
@@ -3392,6 +3433,23 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       }
     }))));
   };
+
+  /**
+   * Get the opacity value.
+   *
+   * @param {string} value The value to get the opacity for.
+   * @return {number} The opacity value.
+   */
+  var getOpacity = function getOpacity(value) {
+    var opacity = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'opacity');
+    console.log('opacity', opacity);
+    if (typeof opacity === 'undefined') {
+      opacity = 1;
+    } else {
+      opacity = parseFloat(opacity);
+    }
+    return opacity;
+  };
   var getSyncInterface = function getSyncInterface() {
     if (!isSync()) {
       return null;
@@ -3400,7 +3458,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       className: classnames__WEBPACK_IMPORTED_MODULE_4___default()('dlx-photo-block__border-responsive-sync-interface')
     }, /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-sync-interface-unit"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".top.color"),
       control: control,
       render: function render(_ref2) {
@@ -3408,10 +3466,15 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange = _ref2$field.onChange,
           value = _ref2$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'color'),
+          value: getColor((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'color')),
+          opacity: getOpacity(getValues("".concat(deviceType, ".top.opacity"))),
           onChange: function onChange(slug, newValue) {
             _onChange(newValue);
             onDimensionChange(newValue, 'color');
+          },
+          onOpacityChange: function onOpacityChange(newValue) {
+            setValue("".concat(deviceType, ".top.opacity"), newValue);
+            onDimensionChange(newValue, 'opacity');
           },
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
           defaultColors: photoBlock.palette,
@@ -3440,7 +3503,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, null, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".top.borderStyle"),
       control: control,
       render: function render(_ref3) {
@@ -3493,7 +3556,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           }
         }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Double', 'photo-block')));
       }
-    }))))), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }))))), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".top.width"),
       control: control,
       render: function render(_ref4) {
@@ -3518,7 +3581,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".top.unit"),
       control: control,
       render: function render(_ref5) {
@@ -3539,7 +3602,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       }
     })), /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-sync-interface-range-sync"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".top.width"),
       control: control,
       render: function render(_ref6) {
@@ -3572,7 +3635,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         syncUnits((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".top.unit")), 'top', 'unit'));
       },
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Modify all values separately.', 'photo-block'),
-      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null)
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null)
     })));
   };
 
@@ -3589,7 +3652,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       className: classnames__WEBPACK_IMPORTED_MODULE_4___default()('dlx-photo-block__border-responsive-manual-interface')
     }, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-top"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".top.color"),
       control: control,
       render: function render(_ref7) {
@@ -3597,9 +3660,19 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange5 = _ref7$field.onChange,
           value = _ref7$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'color'),
-          onChange: function onChange(slug, newValue) {
-            _onChange5(newValue);
+          value: getColor((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'color')),
+          opacity: getOpacity(getValues("".concat(deviceType, ".top.opacity"))),
+          onOpacityChange: function onOpacityChange(newValue) {
+            setValue("".concat(deviceType, ".top.opacity"), newValue);
+            if (isSync()) {
+              onDimensionChange(newValue, 'opacity');
+            }
+          },
+          onChange: function onChange(slug, color) {
+            _onChange5(color);
+            if (isSync()) {
+              onDimensionChange(color, 'color');
+            }
           },
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
           defaultColors: photoBlock.palette,
@@ -3624,7 +3697,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       },
       anchorRef: borderStyleTopButtonRef,
       noArrow: false
-    }, getPopoverButtonGroup('top', setShowBorderStylePopoverTop)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, getPopoverButtonGroup('top', setShowBorderStylePopoverTop)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".top.width"),
       control: control,
       render: function render(_ref8) {
@@ -3646,7 +3719,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".top.unit"),
       control: control,
       render: function render(_ref9) {
@@ -3666,7 +3739,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       }
     })), /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-right"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".right.color"),
       control: control,
       render: function render(_ref0) {
@@ -3674,9 +3747,13 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange8 = _ref0$field.onChange,
           value = _ref0$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'right', 'color'),
-          onChange: function onChange(slug, newValue) {
-            _onChange8(newValue);
+          value: getColor((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'right', 'color')),
+          opacity: getOpacity(getValues("".concat(deviceType, ".right.opacity"))),
+          onChange: function onChange(slug, color) {
+            _onChange8(color);
+          },
+          onOpacityChange: function onOpacityChange(newValue) {
+            setValue("".concat(deviceType, ".right.opacity"), newValue);
           },
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
           defaultColors: photoBlock.palette,
@@ -3701,7 +3778,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       },
       anchorRef: borderStyleRightButtonRef,
       noArrow: false
-    }, getPopoverButtonGroup('right', setShowBorderStylePopoverRight)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, getPopoverButtonGroup('right', setShowBorderStylePopoverRight)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".right.width"),
       control: control,
       render: function render(_ref1) {
@@ -3723,7 +3800,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".right.unit"),
       control: control,
       render: function render(_ref10) {
@@ -3743,7 +3820,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       }
     })), /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-bottom"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".bottom.color"),
       control: control,
       render: function render(_ref11) {
@@ -3751,9 +3828,13 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange1 = _ref11$field.onChange,
           value = _ref11$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'bottom', 'color'),
-          onChange: function onChange(slug, newValue) {
-            _onChange1(newValue);
+          value: getColor((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'bottom', 'color')),
+          opacity: getOpacity(getValues("".concat(deviceType, ".bottom.opacity"))),
+          onOpacityChange: function onOpacityChange(newValue) {
+            setValue("".concat(deviceType, ".bottom.opacity"), newValue);
+          },
+          onChange: function onChange(slug, color) {
+            _onChange1(color);
           },
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
           defaultColors: photoBlock.palette,
@@ -3778,7 +3859,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       },
       anchorRef: borderStyleBottomButtonRef,
       noArrow: false
-    }, getPopoverButtonGroup('bottom', setShowBorderStylePopoverBottom)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, getPopoverButtonGroup('bottom', setShowBorderStylePopoverBottom)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".bottom.width"),
       control: control,
       render: function render(_ref12) {
@@ -3802,7 +3883,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".bottom.unit"),
       control: control,
       render: function render(_ref13) {
@@ -3822,7 +3903,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       }
     })), /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-manual-interface-item dlx-photo-block__border-responsive-manual-interface-item-left"
-    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".left.color"),
       control: control,
       render: function render(_ref14) {
@@ -3830,9 +3911,13 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange12 = _ref14$field.onChange,
           value = _ref14$field.value;
         return /*#__PURE__*/React.createElement(_ColorPicker__WEBPACK_IMPORTED_MODULE_7__["default"], {
-          value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'left', 'color'),
-          onChange: function onChange(slug, newValue) {
-            _onChange12(newValue);
+          value: getColor((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'left', 'color')),
+          opacity: getOpacity(getValues("".concat(deviceType, ".left.opacity"))),
+          onOpacityChange: function onOpacityChange(newValue) {
+            setValue("".concat(deviceType, ".left.opacity"), newValue);
+          },
+          onChange: function onChange(slug, color) {
+            _onChange12(color);
           },
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Color', 'photo-block'),
           defaultColors: photoBlock.palette,
@@ -3857,7 +3942,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       },
       anchorRef: borderStyleLeftButtonRef,
       noArrow: false
-    }, getPopoverButtonGroup('left', setShowBorderStylePopoverLeft)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }, getPopoverButtonGroup('left', setShowBorderStylePopoverLeft)), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".left.width"),
       control: control,
       render: function render(_ref15) {
@@ -3881,7 +3966,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_14__.Controller, {
+    }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_15__.Controller, {
       name: "".concat(deviceType, ".left.unit"),
       control: control,
       render: function render(_ref16) {
@@ -3906,9 +3991,10 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         var oldValues = getValues(deviceType);
         oldValues.unitSync = true;
         setValue(deviceType, oldValues);
+        syncValues();
       },
       isPressed: false,
-      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null),
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Edit all values together', 'photo-block')
     }))));
   };
@@ -15634,12 +15720,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getHierarchicalValueUnitSync: () => (/* binding */ getHierarchicalValueUnitSync),
 /* harmony export */   getValueWithUnit: () => (/* binding */ getValueWithUnit)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ShorthandCSS__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShorthandCSS */ "./src/utils/ShorthandCSS.js");
+/* harmony import */ var _ShorthandCSS__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShorthandCSS */ "./src/utils/ShorthandCSS.js");
+/* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rgb2hex */ "./node_modules/rgb2hex/index.js");
+/* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(rgb2hex__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var hex_to_rgba__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! hex-to-rgba */ "./node_modules/hex-to-rgba/build/index.js");
+/* harmony import */ var hex_to_rgba__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(hex_to_rgba__WEBPACK_IMPORTED_MODULE_2__);
 function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
 
 
 var shorthandCSSUnits = function shorthandCSSUnits(top, topUnit, right, rightUnit, bottom, bottomUnit, left, leftUnit) {
@@ -15727,7 +15816,7 @@ function buildDimensionsCSS(props, screenSize) {
   if ('desktop' === screenSize) {
     var unitSync = dimensions.unitSync;
     if (unitSync) {
-      return (0,_ShorthandCSS__WEBPACK_IMPORTED_MODULE_1__["default"])(dimensions.top, dimensions.top, dimensions.top, dimensions.top, dimensions.topUnit);
+      return (0,_ShorthandCSS__WEBPACK_IMPORTED_MODULE_0__["default"])(dimensions.top, dimensions.top, dimensions.top, dimensions.top, dimensions.topUnit);
     }
     var top = dimensions.top;
     var topUnit = dimensions.topUnit;
@@ -15743,7 +15832,7 @@ function buildDimensionsCSS(props, screenSize) {
     if (true === getHierarchicalValueUnit(props, screenSize, dimensions.unitSync)) {
       var topValue = geHierarchicalPlaceholderValue(props, screenSize, dimensions.top, 'top');
       var _topUnit = geHierarchicalPlaceholderValue(props, screenSize, dimensions.topUnit, 'topUnit');
-      return (0,_ShorthandCSS__WEBPACK_IMPORTED_MODULE_1__["default"])(topValue, topValue, topValue, topValue, _topUnit);
+      return (0,_ShorthandCSS__WEBPACK_IMPORTED_MODULE_0__["default"])(topValue, topValue, topValue, topValue, _topUnit);
     }
     var _top = geHierarchicalPlaceholderValue(props, screenSize, dimensions.top, 'top');
     var _topUnit2 = geHierarchicalPlaceholderValue(props, screenSize, dimensions.topUnit, 'topUnit');
@@ -15757,6 +15846,41 @@ function buildDimensionsCSS(props, screenSize) {
   }
   return '';
 }
+var isRgba = function isRgba(color) {
+  return color.startsWith('rgba');
+};
+
+/**
+ * Return a color based on passed alpha value.
+ *
+ * @param {string} colorValue   hex, rgb, rgba, or CSS var.
+ * @param {number} opacityValue The opacity (from 0 - 1).
+ * @return {string} The color in hex, rgba, or CSS var format.
+ */
+var getColor = function getColor(colorValue) {
+  var opacityValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  // Test for CSS var values in color value.
+  if (colorValue.indexOf('var(') === 0) {
+    return colorValue;
+  }
+  opacityValue = parseFloat(opacityValue);
+
+  // Test for RGBA at the beginning, and return value.
+  if (colorValue.indexOf('rgba') === 0) {
+    // Calculate hex value from rgba.
+    var hex = rgb2hex__WEBPACK_IMPORTED_MODULE_1___default()(colorValue).hex;
+    return hex_to_rgba__WEBPACK_IMPORTED_MODULE_2___default()(hex, opacityValue);
+  }
+
+  // Test for RGB at the beginning, and return hex if found.
+  if (colorValue.indexOf('rgb') === 0) {
+    return hex_to_rgba__WEBPACK_IMPORTED_MODULE_2___default()(rgb2hex__WEBPACK_IMPORTED_MODULE_1___default()(colorValue).hex, opacityValue);
+  }
+  if (opacityValue < 1) {
+    return hex_to_rgba__WEBPACK_IMPORTED_MODULE_2___default()(colorValue, opacityValue);
+  }
+  return colorValue;
+};
 
 /**
  * Build CSS rules for border and screen size.
@@ -15776,7 +15900,7 @@ function buildBorderCSS(props, screenSize, prefix) {
   if (true === getHierarchicalValueUnit(props, screenSize, border.unitSync, 'unitSync')) {
     var topValue = geHierarchicalPlaceholderValue(props, screenSize, border.top.width, 'top', 'width');
     var _topUnit3 = geHierarchicalPlaceholderValue(props, screenSize, border.top.unit, 'top', 'unit');
-    var _topColor = geHierarchicalPlaceholderValue(props, screenSize, border.top.color, 'top', 'color');
+    var _topColor = getColor(geHierarchicalPlaceholderValue(props, screenSize, border.top.color, 'top', 'color'), geHierarchicalPlaceholderValue(props, screenSize, border.top.opacity, 'top', 'opacity'));
     var _topBorderStyle = geHierarchicalPlaceholderValue(props, screenSize, border.top.borderStyle, 'top', 'borderStyle');
     var _CSSRule = '';
     _CSSRule += "".concat(prefix, "-border-top: ").concat(topValue).concat(_topUnit3, " ").concat(_topBorderStyle, " ").concat(_topColor, ";");
@@ -15786,19 +15910,19 @@ function buildBorderCSS(props, screenSize, prefix) {
   }
   var top = geHierarchicalPlaceholderValue(props, screenSize, border.top.width, 'top', 'width');
   var topUnit = geHierarchicalPlaceholderValue(props, screenSize, border.top.unit, 'top', 'unit');
-  var topColor = geHierarchicalPlaceholderValue(props, screenSize, border.top.color, 'top', 'color');
+  var topColor = getColor(geHierarchicalPlaceholderValue(props, screenSize, border.top.color, 'top', 'color'), geHierarchicalPlaceholderValue(props, screenSize, border.top.opacity, 'top', 'opacity'));
   var topBorderStyle = geHierarchicalPlaceholderValue(props, screenSize, border.top.borderStyle, 'top', 'borderStyle');
   var right = geHierarchicalPlaceholderValue(props, screenSize, border.right.width, 'right', 'width');
   var rightUnit = geHierarchicalPlaceholderValue(props, screenSize, border.right.unit, 'right', 'unit');
-  var rightColor = geHierarchicalPlaceholderValue(props, screenSize, border.right.color, 'right', 'color');
+  var rightColor = getColor(geHierarchicalPlaceholderValue(props, screenSize, border.right.color, 'right', 'color'), geHierarchicalPlaceholderValue(props, screenSize, border.right.opacity, 'right', 'opacity'));
   var rightBorderStyle = geHierarchicalPlaceholderValue(props, screenSize, border.right.borderStyle, 'right', 'borderStyle');
   var bottom = geHierarchicalPlaceholderValue(props, screenSize, border.bottom.width, 'bottom', 'width');
   var bottomUnit = geHierarchicalPlaceholderValue(props, screenSize, border.bottom.unit, 'bottom', 'unit');
-  var bottomColor = geHierarchicalPlaceholderValue(props, screenSize, border.bottom.color, 'bottom', 'color');
+  var bottomColor = getColor(geHierarchicalPlaceholderValue(props, screenSize, border.bottom.color, 'bottom', 'color'), geHierarchicalPlaceholderValue(props, screenSize, border.bottom.opacity, 'bottom', 'opacity'));
   var bottomBorderStyle = geHierarchicalPlaceholderValue(props, screenSize, border.bottom.borderStyle, 'bottom', 'borderStyle');
   var left = geHierarchicalPlaceholderValue(props, screenSize, border.left.width, 'left', 'width');
   var leftUnit = geHierarchicalPlaceholderValue(props, screenSize, border.left.unit, 'left', 'unit');
-  var leftColor = geHierarchicalPlaceholderValue(props, screenSize, border.left.color, 'left', 'color');
+  var leftColor = getColor(geHierarchicalPlaceholderValue(props, screenSize, border.left.color, 'left', 'color'), geHierarchicalPlaceholderValue(props, screenSize, border.left.opacity, 'left', 'opacity'));
   var leftBorderStyle = geHierarchicalPlaceholderValue(props, screenSize, border.left.borderStyle, 'left', 'borderStyle');
   var CSSRule = '';
   CSSRule += "".concat(prefix, "-border-top: ").concat(top).concat(topUnit, " ").concat(topBorderStyle, " ").concat(topColor, ";");
@@ -50215,7 +50339,7 @@ let X = u;
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1305 1305\' width=\'36\' height=\'36\'><path fill=\'#333333\' d=\'M652.492 1302.95c-359.692 0-651.275-291.583-651.275-651.275C1.217 291.983 292.8.4 652.492.4c359.687 0 651.275 291.583 651.275 651.275 0 359.692-291.588 651.275-651.275 651.275Z\'/><path fill=\'#FFF\' d=\'M652.492 1238.55c-324.125 0-586.879-262.754-586.879-586.879S328.367 64.792 652.492 64.792s586.879 262.754 586.879 586.879-262.754 586.879-586.879 586.879Z\'/><path fill=\'#3858e9\' d=\'M345.942 498.429 113.458 631.583c-.246 6.671-.412 13.363-.412 20.092 0 183.908 92.054 346.292 232.575 443.671l.321-596.917Zm592.429-35.779.771-268c-83.055-52.2-181.317-82.421-286.65-82.421-82.734 0-161.105 18.65-231.175 51.933L938.371 462.65ZM366.612 840.7l-.77 268c83.05 52.2 181.312 82.421 286.65 82.421 82.737 0 161.104-18.65 231.175-51.934L366.612 840.7Zm264.855-531.1-516.7 298.883c14.916-188.166 126.379-349.133 284.854-433.396L631.467 309.6Zm42.05 684.146 516.7-298.875C1175.3 883.033 1063.842 1044 905.362 1128.262L673.517 993.746Zm285.521-188.829 232.487-133.15c.246-6.671.413-13.363.413-20.092 0-183.908-92.055-346.292-232.571-443.671l-.329 596.913ZM578.938 398.8c139.62-40.6 285.816 39.662 326.42 179.329 40.654 139.617-39.666 285.763-179.333 326.421-139.675 40.6-285.817-39.667-326.421-179.338-40.6-139.67 39.663-285.812 179.334-326.412Z\'/><path fill=\'#FFF\' d=\'M473.954 596.729c-.562 12.3-10.758 22.063-23.179 21.975-12.687-.087-24.004-10.933-22.854-23.921 5.15-58.075 50.75-111.021 101.45-136.596 11.6-5.849 25.687.034 30.775 11.738 5.017 11.546-.463 24.512-11.483 30.1-33.117 16.783-67.392 59.958-74.709 96.704ZM603.883 422.104c12.884 0 23.33 10.446 23.33 23.333 0 12.884-10.446 23.33-23.33 23.33-12.887 0-23.329-10.446-23.329-23.33 0-12.887 10.442-23.333 23.329-23.333Z\'/></svg>","description":"An easy-to-use and comprehensive image block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/imageSize":"imageSize","photo-block/globalStyle":"globalStyle","photo-block/inQueryLoop":"inQueryLoop"},"attributes":{"preview":{"type":"boolean","default":false},"inQueryLoop":{"type":"boolean","default":false},"uniqueId":{"type":"string","default":null},"date":{"type":"string","default":""},"globalStyle":{"type":"string","default":"none"},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","title":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoBackgroundColorOpacity":{"type":"number","default":0},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"dataMediaLinkSource":{"type":"string","default":"none"},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkOverride":{"type":"boolean","default":false},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"align":{"type":"string","default":"center"},"photoPosition":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageSizeOverride":{"type":"boolean","default":false},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"hideCaption":{"type":"boolean","default":false},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","borderStyle":""},"right":{"width":"","unit":null,"color":"","borderStyle":""},"bottom":{"width":"","unit":null,"color":"","borderStyle":""},"left":{"width":"","unit":null,"color":"","borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"customLinkLightboxEnabled":{"type":"boolean","default":false},"customLinkLightboxCaption":{"type":"string","default":""},"customLinkLightboxShowCaption":{"type":"boolean","default":false},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":false,"className":true,"customClassName":false,"alignWide":false,"defaultStylePicker":false,"html":false},"example":{"attributes":{"preview":true}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1305 1305\' width=\'36\' height=\'36\'><path fill=\'#333333\' d=\'M652.492 1302.95c-359.692 0-651.275-291.583-651.275-651.275C1.217 291.983 292.8.4 652.492.4c359.687 0 651.275 291.583 651.275 651.275 0 359.692-291.588 651.275-651.275 651.275Z\'/><path fill=\'#FFF\' d=\'M652.492 1238.55c-324.125 0-586.879-262.754-586.879-586.879S328.367 64.792 652.492 64.792s586.879 262.754 586.879 586.879-262.754 586.879-586.879 586.879Z\'/><path fill=\'#3858e9\' d=\'M345.942 498.429 113.458 631.583c-.246 6.671-.412 13.363-.412 20.092 0 183.908 92.054 346.292 232.575 443.671l.321-596.917Zm592.429-35.779.771-268c-83.055-52.2-181.317-82.421-286.65-82.421-82.734 0-161.105 18.65-231.175 51.933L938.371 462.65ZM366.612 840.7l-.77 268c83.05 52.2 181.312 82.421 286.65 82.421 82.737 0 161.104-18.65 231.175-51.934L366.612 840.7Zm264.855-531.1-516.7 298.883c14.916-188.166 126.379-349.133 284.854-433.396L631.467 309.6Zm42.05 684.146 516.7-298.875C1175.3 883.033 1063.842 1044 905.362 1128.262L673.517 993.746Zm285.521-188.829 232.487-133.15c.246-6.671.413-13.363.413-20.092 0-183.908-92.055-346.292-232.571-443.671l-.329 596.913ZM578.938 398.8c139.62-40.6 285.816 39.662 326.42 179.329 40.654 139.617-39.666 285.763-179.333 326.421-139.675 40.6-285.817-39.667-326.421-179.338-40.6-139.67 39.663-285.812 179.334-326.412Z\'/><path fill=\'#FFF\' d=\'M473.954 596.729c-.562 12.3-10.758 22.063-23.179 21.975-12.687-.087-24.004-10.933-22.854-23.921 5.15-58.075 50.75-111.021 101.45-136.596 11.6-5.849 25.687.034 30.775 11.738 5.017 11.546-.463 24.512-11.483 30.1-33.117 16.783-67.392 59.958-74.709 96.704ZM603.883 422.104c12.884 0 23.33 10.446 23.33 23.333 0 12.884-10.446 23.33-23.33 23.33-12.887 0-23.329-10.446-23.329-23.33 0-12.887 10.442-23.333 23.329-23.333Z\'/></svg>","description":"An easy-to-use and comprehensive image block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/imageSize":"imageSize","photo-block/globalStyle":"globalStyle","photo-block/inQueryLoop":"inQueryLoop"},"attributes":{"preview":{"type":"boolean","default":false},"inQueryLoop":{"type":"boolean","default":false},"uniqueId":{"type":"string","default":null},"date":{"type":"string","default":""},"globalStyle":{"type":"string","default":"none"},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","title":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoBackgroundColorOpacity":{"type":"number","default":0},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"dataMediaLinkSource":{"type":"string","default":"none"},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkOverride":{"type":"boolean","default":false},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"align":{"type":"string","default":"center"},"photoPosition":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageSizeOverride":{"type":"boolean","default":false},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"hideCaption":{"type":"boolean","default":false},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"right":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"bottom":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"left":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"right":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"bottom":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"left":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"customLinkLightboxEnabled":{"type":"boolean","default":false},"customLinkLightboxCaption":{"type":"string","default":""},"customLinkLightboxShowCaption":{"type":"boolean","default":false},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":false,"className":true,"customClassName":false,"alignWide":false,"defaultStylePicker":false,"html":false},"example":{"attributes":{"preview":true}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 
