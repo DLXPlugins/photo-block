@@ -947,7 +947,7 @@ class Blocks {
 		// Output the link HTML around the image.
 		if ( '' !== $media_link_url ) {
 			$image_markup = sprintf(
-				'<a data-fancybox data-caption-"%4$s" href="%1$s" %2$s>%3$s</a>',
+				'<a %4$s data-caption-"%4$s" href="%1$s" %2$s>%3$s</a>',
 				esc_url( $media_link_url ),
 				implode(
 					' ',
@@ -959,7 +959,8 @@ class Blocks {
 					)
 				),
 				$image_markup,
-				esc_attr( $caption )
+				esc_attr( $caption ),
+				( 'image' === $media_link_type && $lightbox_enabled ) ? 'data-fancybox' : ''
 			);
 		}
 
@@ -1096,7 +1097,13 @@ class Blocks {
 				'dlx-photo-block-' . $unique_id,
 				esc_html( $css_output )
 			);
-			wp_print_styles( 'dlx-photo-block-' . $unique_id );
+			add_action(
+				'wp_footer',
+				function () use ( $unique_id ) {
+					wp_print_styles( 'dlx-photo-block-' . $unique_id );
+				},
+				100
+			);
 		}
 
 		// Output image markup.

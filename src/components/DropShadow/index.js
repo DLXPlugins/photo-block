@@ -4,18 +4,8 @@
 import './editor.scss';
 
 import {
-	PanelBody,
-	PanelRow,
 	TextControl,
-	TextareaControl,
-	ButtonGroup,
-	Button,
 	ToggleControl,
-	Toolbar,
-	ToolbarButton,
-	Popover,
-	Tooltip,
-	PlaceHolder,
 	BaseControl,
 	RangeControl,
 } from '@wordpress/components';
