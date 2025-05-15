@@ -70,7 +70,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 	if ( 'overlay' === captionPosition ) {
 		styles += `
 			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
-				--photo-block-photo-background-color: ${ photoBackgroundColor };
+				--photo-block-photo-background-color: ${ getColor( photoBackgroundColor, photoBackgroundColorOpacity ) };
 				--photo-block-photo-background-Color-opacity: ${ photoBackgroundColorOpacity };
 				--photo-block-image-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
 				--photo-block-image-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
@@ -106,7 +106,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 	} else {
 		styles += `
 			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
-				--photo-block-photo-background-color: ${ photoBackgroundColor };
+				--photo-block-photo-background-color: ${ getColor( photoBackgroundColor, photoBackgroundColorOpacity ) };
 				--photo-block-image-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
 				--photo-block-image-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
 				--photo-block-image-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }
