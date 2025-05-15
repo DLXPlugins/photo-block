@@ -15,6 +15,8 @@ import {
 	Maximize,
 	Globe,
 } from 'lucide-react';
+import { useMemo } from '@wordpress/element';
+import rgb2hex from 'rgb2hex';
 import PropTypes from 'prop-types';
 import { useSelect } from '@wordpress/data';
 import ColorPickerControl from '../../components/ColorPicker';
@@ -29,6 +31,10 @@ import GlobalStyles from '../GlobalStyles';
 import globalStylesStore from '../../store/global-styles';
 
 const canSavePresets = photoBlockUser.canSavePresets;
+
+const isRgba = ( color ) => {
+	return color.startsWith( 'rgba' );
+};
 
 /**
  * Height units.
@@ -71,6 +77,14 @@ const SidebarImageInspectorControl = ( props ) => {
 		};
 	} );
 
+	const photoBackgroundColorRgb = useMemo( () => {
+		if ( isRgba( attributes.photoBackgroundColor ) ) {
+			const hexParams = rgb2hex( attributes.photoBackgroundColor );
+			return hexParams.hex;
+		}
+		return attributes.photoBackgroundColor;
+	}, [ attributes.photoBackgroundColor ] );
+
 	const stylesInspectorControls = (
 		<>
 			{ ! hasGlobalStyle( globalStyle ) && (
@@ -85,11 +99,17 @@ const SidebarImageInspectorControl = ( props ) => {
 						scrollAfterOpen={ false }
 					>
 						<ColorPickerControl
-							value={ photoBackgroundColor }
+							value={ photoBackgroundColorRgb }
 							key={ 'background-color-photo' }
-							onChange={ ( slug, newValue, color ) => {
-								setAttributes( { photoBackgroundColor: newValue } );
+							onChange={ ( slug, newColorValue ) => {
+								setAttributes( { photoBackgroundColor: newColorValue } );
 							} }
+							onOpacityChange={ ( newValue ) => {
+								setAttributes( {
+									photoBackgroundColorOpacity: newValue,
+								} );
+							} }
+							opacity={ photoBackgroundColorOpacity }
 							label={ __( 'Background Color', 'photo-block' ) }
 							defaultColors={ photoBlock.palette }
 							defaultColor={ 'transparent' }

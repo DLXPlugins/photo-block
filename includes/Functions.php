@@ -407,7 +407,13 @@ class Functions {
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerHeight'], 'height', 'width', '', '--photo-block-image-height' );
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMaxHeight'], 'max-height', 'width', '', '--photo-block-image-max-height' );
 		Functions::add_hierarchical_unit( $css_helper, $attributes['containerMinHeight'], 'min-height', 'width', '', '--photo-block-image-min-height' );
-		Functions::add_css_property( $css_helper, 'background-color', $attributes['photoBackgroundColor'], '--photo-block-photo-background-color' );
+
+		// Convert the photo background color to rgba.
+		$photo_background_color = Functions::hex_to_rgba( $attributes['photoBackgroundColor'], $attributes['photoBackgroundColorOpacity'] );
+		if ( is_wp_error( $photo_background_color ) ) {
+			$photo_background_color = $attributes['photoBackgroundColor'];
+		}
+		Functions::add_css_property( $css_helper, 'background-color', $photo_background_color, '--photo-block-photo-background-color' );
 		Functions::build_dimension_css( $css_helper, $attributes['photoBorderRadius'], 'border-radius', '--photo-block-photo-border-radius' );
 		Functions::build_border_css( $css_helper, $attributes['photoBorder'], '--photo-block-image-border' );
 		Functions::build_dimension_css( $css_helper, $attributes['photoPaddingSize'], 'padding', '--photo-block-image-padding' );
@@ -449,6 +455,10 @@ class Functions {
 
 		// Add photo drop shadow.
 		if ( (bool) $attributes['photoDropShadow']['enabled'] && 'overlay' !== $attributes['captionPosition'] ) {
+			$drop_shadow_color = Functions::hex_to_rgba( $attributes['photoDropShadow']['color'], $attributes['photoDropShadow']['opacity'] );
+			if ( is_wp_error( $drop_shadow_color ) ) {
+				$drop_shadow_color = 'rgba(0,0,0,1)';
+			}
 			$css_output .= sprintf(
 				'%8$s%1$s img {
 					box-sizing: border-box;
@@ -461,11 +471,15 @@ class Functions {
 				$attributes['photoDropShadow']['vertical'],
 				$attributes['photoDropShadow']['blur'],
 				$attributes['photoDropShadow']['spread'],
-				$attributes['photoDropShadow']['color'],
+				$drop_shadow_color,
 				$is_class ? '.' : '#'
 			);
 		}
 		if ( (bool) $attributes['photoDropShadow']['enabled'] && 'overlay' === $attributes['captionPosition'] ) {
+			$drop_shadow_color = Functions::hex_to_rgba( $attributes['photoDropShadow']['color'], $attributes['photoDropShadow']['opacity'] );
+			if ( is_wp_error( $drop_shadow_color ) ) {
+				$drop_shadow_color = 'rgba(0,0,0,1)';
+			}
 			$css_output .= sprintf(
 				'%8$s%1$s .dlx-photo-block__image-wrapper {
 					box-sizing: border-box;
@@ -478,7 +492,7 @@ class Functions {
 				$attributes['photoDropShadow']['vertical'],
 				$attributes['photoDropShadow']['blur'],
 				$attributes['photoDropShadow']['spread'],
-				$attributes['photoDropShadow']['color'],
+				$drop_shadow_color,
 				$is_class ? '.' : '#'
 			);
 		}
@@ -698,6 +712,60 @@ class Functions {
 			$css_output .= $caption_overlay_image_hover_styles->get_css();
 		}
 		return $css_output;
+	}
+
+	/**
+	 * Convert rgba color to hex.
+	 *
+	 * @param string $rgba The rgba color value.
+	 * @return string|WP_Error The hex color value or WP_Error if invalid.
+	 */
+	public static function rgba_to_hex( $rgba ) {
+		preg_match( '/rgba?\((\d+),\s*(\d+),\s*(\d+)/', $rgba, $matches );
+		if ( ! $matches ) {
+			return new \WP_Error( 'invalid_rgba', 'Invalid rgba color value.' );
+		}
+		return '#' . dechex( $matches[1] ) . dechex( $matches[2] ) . dechex( $matches[3] );
+	}
+
+	/**
+	 * Convert hex color to rgba.
+	 *
+	 * @param string $hex      Hex color, with or without leading "#".
+	 * @param float  $opacity  Opacity value between 0 and 1.
+	 * @return string|WP_Error RGBA color string or WP_Error if invalid.
+	 */
+	public static function hex_to_rgba( $hex, $opacity = 1.0 ) {
+		if ( strstr( $hex, 'rgba' ) ) {
+			$hex = self::rgba_to_hex( $hex );
+			if ( is_wp_error( $hex ) ) {
+				return $hex;
+			}
+		}
+		if ( 'transparent' === $hex ) {
+			return 'rgba(0,0,0,0)';
+		}
+		// Get into 6 character format.
+		$hex = ltrim( $hex, '#' );
+		if ( strlen( $hex ) === 8 ) {
+			$hex = substr( $hex, 0, 6 );
+		}
+		$opacity = max( 0, min( 1, (float) $opacity ) ); // Clamp between 0 and 1.
+
+		// Round the opacity to 2 decimal places.
+		$opacity = round( $opacity, 2 );
+		if ( strlen( $hex ) === 3 ) {
+			$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+		}
+
+		if ( strlen( $hex ) !== 6 ) {
+			return new \WP_Error( 'invalid_hex', 'Invalid hex color value.' );
+		}
+
+		$rgb  = array_map( 'hexdec', str_split( $hex, 2 ) );
+		$rgba = sprintf( 'rgba(%d,%d,%d,%.2f)', $rgb[0], $rgb[1], $rgb[2], $opacity );
+
+		return $rgba;
 	}
 
 	/**

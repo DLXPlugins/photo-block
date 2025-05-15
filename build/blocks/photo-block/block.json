@@ -105,7 +105,11 @@
     },
     "photoBackgroundColor": {
       "type": "string",
-      "default": "#FFFFFF00"
+      "default": "#FFFFFF"
+    },
+    "photoBackgroundColorOpacity": {
+      "type": "number",
+      "default": 0
     },
     "photoMaximumWidth": {
       "type": "object",

@@ -2,7 +2,7 @@
  * Upload data row including Upload|Media Library|URL|Data.
  */
 import './editor.scss';
-
+import { useMemo } from '@wordpress/element';
 import {
 	TextControl,
 	ToggleControl,
@@ -12,7 +12,15 @@ import {
 
 import { __ } from '@wordpress/i18n';
 
+import hexToRgba from 'hex-to-rgba';
+import rgb2hex from 'rgb2hex';
+
 import ColorPickerControl from '../ColorPicker';
+
+const isRgba = ( color ) => {
+	return color.startsWith( 'rgba' );
+};
+
 /**
  * DropShadow component.
  *
@@ -22,6 +30,14 @@ import ColorPickerControl from '../ColorPicker';
 const DropShadowControl = ( props ) => {
 	const { attributes, setAttributes } = props;
 
+	const newColor = useMemo( () => {
+		if ( isRgba( attributes.photoDropShadow.color ) ) {
+			const hexParams = rgb2hex( attributes.photoDropShadow.color );
+			return hexParams.hex;
+		}
+		return attributes.photoDropShadow.color;
+	}, [ attributes.photoDropShadow.color ] );
+
 	return (
 		<>
 			<BaseControl className="dlx-photo-block__drop-shadow-control">
@@ -30,8 +46,8 @@ const DropShadowControl = ( props ) => {
 					<div className="dlx-photo-block__drop-shadow-control__settings__color">
 						<ColorPickerControl
 							label={ __( 'Color', 'photo-block' ) }
-							value={ attributes.photoDropShadow.color }
-							valueOpacity={ attributes.photoDropShadow.opacity || 1 }
+							value={ newColor }
+							opacity={ attributes.photoDropShadow.opacity || 1 }
 							onChange={ ( slug, color ) => {
 								setAttributes( {
 									photoDropShadow: {

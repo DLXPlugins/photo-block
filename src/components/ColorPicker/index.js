@@ -53,6 +53,14 @@ const ColorPickerControl = ( props ) => {
 	const getColor = ( colorValue, opacityValue = 1 ) => {
 		// Test for CSS var values in color value.
 		if ( colorValue.indexOf( 'var(' ) === 0 ) {
+			// Extract the var portion.
+			const regex = /var\(\s?([^(,|\)]*)/;
+			const match = colorValue.match( regex );
+			if ( match ) {
+				const varName = match[ 1 ];
+				const varValue = getComputedStyle( document.documentElement ).getPropertyValue( varName );
+				return getColor( varValue, opacityValue );
+			}
 			return colorValue;
 		}
 
