@@ -2606,6 +2606,124 @@ var AlignmentToolbar = function AlignmentToolbar(props) {
 
 /***/ }),
 
+/***/ "./src/components/AspectRatioResponsive/index.js":
+/*!*******************************************************!*\
+  !*** ./src/components/AspectRatioResponsive/index.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/AspectRatioResponsive/editor.scss");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var _utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/TypographyHelper */ "./src/utils/TypographyHelper.js");
+/* harmony import */ var _HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../HeadingIconResponsive */ "./src/components/HeadingIconResponsive/index.js");
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+/**
+ * Upload data row including Upload|Media Library|URL|Data.
+ */
+
+
+
+
+
+
+
+var AspectRatioResponsiveControl = function AspectRatioResponsiveControl(props) {
+  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)('desktop'),
+    _useState2 = _slicedToArray(_useState, 2),
+    screenSize = _useState2[0],
+    setScreenSize = _useState2[1];
+  var getDefaultValues = function getDefaultValues() {
+    var _props$values$mobile, _props$values$tablet, _props$values$desktop;
+    return {
+      mobile: (_props$values$mobile = props.values.mobile) !== null && _props$values$mobile !== void 0 ? _props$values$mobile : '',
+      tablet: (_props$values$tablet = props.values.tablet) !== null && _props$values$tablet !== void 0 ? _props$values$tablet : '',
+      desktop: (_props$values$desktop = props.values.desktop) !== null && _props$values$desktop !== void 0 ? _props$values$desktop : ''
+    };
+  };
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useForm)({
+      defaultValues: getDefaultValues()
+    }),
+    control = _useForm.control,
+    setValue = _useForm.setValue,
+    getValues = _useForm.getValues,
+    setError = _useForm.setError,
+    clearErrors = _useForm.clearErrors;
+  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useWatch)({
+    control: control
+  });
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useFormState)({
+      control: control
+    }),
+    errors = _useFormState.errors;
+  var onValuesChange = props.onValuesChange;
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    onValuesChange(formValues);
+  }, [formValues]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    setScreenSize(props.screenSize);
+    setValue(props.screenSize, getValues(props.screenSize));
+  }, [props.screenSize]);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
+    className: "dlx-photo-block__max-width-responsive-control"
+  }, /*#__PURE__*/React.createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    screenSize: screenSize,
+    heading: props.label
+  }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_6__.Controller, {
+    control: control,
+    name: "".concat(screenSize),
+    pattern: /^(\d+)\s?(?:\/|:)\s?(\d+)$/,
+    render: function render(_ref) {
+      var _ref$field = _ref.field,
+        _onChange = _ref$field.onChange,
+        value = _ref$field.value;
+      return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
+        type: 'text',
+        value: value,
+        onChange: function onChange(newValue) {
+          clearErrors(screenSize);
+          _onChange(newValue);
+        },
+        onBlur: function onBlur() {
+          var newValue = getValues(screenSize);
+          // Get into n / n format.
+          var regex = /^(\d+)\s?(?:\/|:)\s?(\d+)$/;
+          var match = newValue.match(regex);
+          if (match) {
+            _onChange("".concat(match[1], " / ").concat(match[2]));
+          } else {
+            setError(screenSize, {
+              message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Invalid aspect ratio', 'photo-block')
+            });
+            _onChange('');
+          }
+        },
+        placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize))
+      });
+    }
+  }), errors[screenSize] && /*#__PURE__*/React.createElement("p", {
+    className: "dlx-photo-block__max-width-responsive-control__error"
+  }, errors[screenSize].message)));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AspectRatioResponsiveControl);
+
+/***/ }),
+
 /***/ "./src/components/BackgroundSelector/index.js":
 /*!****************************************************!*\
   !*** ./src/components/BackgroundSelector/index.js ***!
@@ -8874,29 +8992,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/droplet.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/wand-sparkles.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/maximize.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/shrink.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/globe.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/droplet.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/wand-sparkles.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/maximize.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/shrink.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/globe.js");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rgb2hex */ "./node_modules/rgb2hex/index.js");
 /* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rgb2hex__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_21__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_22__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _components_ColorPicker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/ColorPicker */ "./src/components/ColorPicker/index.js");
 /* harmony import */ var _components_DropShadow__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/DropShadow */ "./src/components/DropShadow/index.js");
 /* harmony import */ var _components_CSSGramButtonGroup__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/CSSGramButtonGroup */ "./src/components/CSSGramButtonGroup/index.js");
-/* harmony import */ var _components_SizeResponsive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/SizeResponsive */ "./src/components/SizeResponsive/index.js");
-/* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
-/* harmony import */ var _components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/DimensionsResponsive */ "./src/components/DimensionsResponsive/index.js");
-/* harmony import */ var _components_BorderResponsive__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/BorderResponsive */ "./src/components/BorderResponsive/index.js");
-/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/PanelBody */ "./src/components/PanelBody/index.js");
-/* harmony import */ var _GlobalStyles__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../GlobalStyles */ "./src/components/GlobalStyles/index.js");
-/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
+/* harmony import */ var _components_AspectRatioResponsive__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/AspectRatioResponsive */ "./src/components/AspectRatioResponsive/index.js");
+/* harmony import */ var _components_SizeResponsive__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/SizeResponsive */ "./src/components/SizeResponsive/index.js");
+/* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
+/* harmony import */ var _components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/DimensionsResponsive */ "./src/components/DimensionsResponsive/index.js");
+/* harmony import */ var _components_BorderResponsive__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/BorderResponsive */ "./src/components/BorderResponsive/index.js");
+/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../components/PanelBody */ "./src/components/PanelBody/index.js");
+/* harmony import */ var _GlobalStyles__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../GlobalStyles */ "./src/components/GlobalStyles/index.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -8910,6 +9029,7 @@ function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) 
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+
 
 
 
@@ -8950,6 +9070,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     photoDropShadow = attributes.photoDropShadow,
     photoBackgroundColor = attributes.photoBackgroundColor,
     photoBackgroundColorOpacity = attributes.photoBackgroundColorOpacity,
+    photoAspectRatio = attributes.photoAspectRatio,
     containerHeight = attributes.containerHeight,
     containerMaxWidth = attributes.containerMaxWidth,
     containerMaxHeight = attributes.containerMaxHeight,
@@ -8961,14 +9082,14 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     photoBorderRadius = attributes.photoBorderRadius,
     photoBorder = attributes.photoBorder,
     containerWidth = attributes.containerWidth;
-  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_10__["default"])('Desktop'),
+  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_11__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 1),
     deviceType = _useDeviceType2[0];
 
   // Get global style data.
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
       return {
-        hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_15__["default"]).hasGlobalStyle
+        hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_16__["default"]).hasGlobalStyle
       };
     }),
     hasGlobalStyle = _useSelect.hasGlobalStyle;
@@ -8979,9 +9100,9 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     }
     return attributes.photoBackgroundColor;
   }, [attributes.photoBackgroundColor]);
-  var stylesInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  var stylesInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_14__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Image Styles', 'photo-block'),
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_16__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-image-styles",
     uniqueId: uniqueId,
@@ -9042,10 +9163,10 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Drop Shadow', 'photo-block'),
     attributes: attributes,
     setAttributes: setAttributes
-  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_14__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('CSS Styles', 'photo-block'),
     className: "photo-block__inspector-panel",
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_17__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
     id: "photo-block__photo-css-gram",
     uniqueId: uniqueId,
     initialOpen: false,
@@ -9054,15 +9175,15 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     attributes: attributes,
     setAttributes: setAttributes,
     blockUniqueId: blockUniqueId
-  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_14__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Padding, Margin, and Border', 'photo-block'),
     initialOpen: false,
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_18__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-dimensions-styles",
     uniqueId: uniqueId,
     scrollAfterOpen: false
-  }, /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_12__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Padding', 'photo-block'),
     values: photoPaddingSize,
     onValuesChange: function onValuesChange(values) {
@@ -9076,7 +9197,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Padding', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Padding', 'photo-block'),
     allowNegatives: false
-  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_12__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Margin', 'photo-block'),
     values: photoMarginSize,
     onValuesChange: function onValuesChange(values) {
@@ -9090,7 +9211,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Margin', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Margin', 'photo-block'),
     allowNegatives: true
-  }), /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }), /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_13__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Border', 'photo-block'),
     values: photoBorder,
     onValuesChange: function onValuesChange(values) {
@@ -9104,7 +9225,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Border', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Border', 'photo-block'),
     allowNegatives: false
-  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_12__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Border Radius', 'photo-block'),
     values: photoBorderRadius,
     onValuesChange: function onValuesChange(values) {
@@ -9119,10 +9240,10 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Border Radius', 'photo-block'),
     isBorderRadius: true,
     allowNegatives: false
-  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_14__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Container Sizing', 'photo-block'),
     initialOpen: false,
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_19__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-container-styles",
     uniqueId: uniqueId,
@@ -9192,9 +9313,18 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
       });
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter a custom object position in CSS format.', 'photo-block')
-  })), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement(_components_AspectRatioResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Aspect Ratio', 'photo-block'),
+    screenSize: deviceType,
+    values: photoAspectRatio,
+    onValuesChange: function onValuesChange(newValues) {
+      setAttributes({
+        photoAspectRatio: newValues
+      });
+    }
+  }), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-width"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_10__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Width', 'photo-block'),
     values: containerWidth,
     screenSize: deviceType,
@@ -9205,7 +9335,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-height"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_10__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Height', 'photo-block'),
     values: containerHeight,
     screenSize: deviceType,
@@ -9217,7 +9347,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-min-width"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_10__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Min Width', 'photo-block'),
     values: containerMinWidth,
     screenSize: deviceType,
@@ -9228,7 +9358,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-min-height"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_10__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Min Height', 'photo-block'),
     values: containerMinHeight,
     screenSize: deviceType,
@@ -9240,7 +9370,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-max-width"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_10__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Max Width', 'photo-block'),
     values: containerMaxWidth,
     screenSize: deviceType,
@@ -9251,7 +9381,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__containermax-height"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_10__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Max Height', 'photo-block'),
     values: containerMaxHeight,
     screenSize: deviceType,
@@ -9261,10 +9391,10 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
         containerMaxHeight: newValues
       });
     }
-  })))), canSavePresets && /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  })))), canSavePresets && /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_14__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Global Styles', 'photo-block'),
     initialOpen: false,
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
     className: "photo-block__inspector-panel",
     id: "photo-block__photo-global-styles",
     uniqueId: uniqueId,
@@ -9273,7 +9403,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Global Styles', 'photo-block'),
     id: "photo-block-global-styles",
     className: "photo-block-global-styles"
-  }, /*#__PURE__*/React.createElement(_GlobalStyles__WEBPACK_IMPORTED_MODULE_14__["default"], _extends({}, props, {
+  }, /*#__PURE__*/React.createElement(_GlobalStyles__WEBPACK_IMPORTED_MODULE_15__["default"], _extends({}, props, {
     globalStyle: props.globalStyle
   }))))));
   return /*#__PURE__*/React.createElement(React.Fragment, null, stylesInspectorControls);
@@ -9283,7 +9413,7 @@ SidebarImageInspectorControl.defaultProps = {
   setAttributes: function setAttributes() {}
 };
 SidebarImageInspectorControl.propTypes = {
-  attributes: (prop_types__WEBPACK_IMPORTED_MODULE_21___default().object)
+  attributes: (prop_types__WEBPACK_IMPORTED_MODULE_22___default().object)
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SidebarImageInspectorControl);
 
@@ -40885,6 +41015,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/AspectRatioResponsive/editor.scss":
+/*!**********************************************************!*\
+  !*** ./src/components/AspectRatioResponsive/editor.scss ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./src/components/BackgroundSelector/editor.scss":
 /*!*******************************************************!*\
   !*** ./src/components/BackgroundSelector/editor.scss ***!
@@ -50419,7 +50562,7 @@ let X = u;
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1305 1305\' width=\'36\' height=\'36\'><path fill=\'#333333\' d=\'M652.492 1302.95c-359.692 0-651.275-291.583-651.275-651.275C1.217 291.983 292.8.4 652.492.4c359.687 0 651.275 291.583 651.275 651.275 0 359.692-291.588 651.275-651.275 651.275Z\'/><path fill=\'#FFF\' d=\'M652.492 1238.55c-324.125 0-586.879-262.754-586.879-586.879S328.367 64.792 652.492 64.792s586.879 262.754 586.879 586.879-262.754 586.879-586.879 586.879Z\'/><path fill=\'#3858e9\' d=\'M345.942 498.429 113.458 631.583c-.246 6.671-.412 13.363-.412 20.092 0 183.908 92.054 346.292 232.575 443.671l.321-596.917Zm592.429-35.779.771-268c-83.055-52.2-181.317-82.421-286.65-82.421-82.734 0-161.105 18.65-231.175 51.933L938.371 462.65ZM366.612 840.7l-.77 268c83.05 52.2 181.312 82.421 286.65 82.421 82.737 0 161.104-18.65 231.175-51.934L366.612 840.7Zm264.855-531.1-516.7 298.883c14.916-188.166 126.379-349.133 284.854-433.396L631.467 309.6Zm42.05 684.146 516.7-298.875C1175.3 883.033 1063.842 1044 905.362 1128.262L673.517 993.746Zm285.521-188.829 232.487-133.15c.246-6.671.413-13.363.413-20.092 0-183.908-92.055-346.292-232.571-443.671l-.329 596.913ZM578.938 398.8c139.62-40.6 285.816 39.662 326.42 179.329 40.654 139.617-39.666 285.763-179.333 326.421-139.675 40.6-285.817-39.667-326.421-179.338-40.6-139.67 39.663-285.812 179.334-326.412Z\'/><path fill=\'#FFF\' d=\'M473.954 596.729c-.562 12.3-10.758 22.063-23.179 21.975-12.687-.087-24.004-10.933-22.854-23.921 5.15-58.075 50.75-111.021 101.45-136.596 11.6-5.849 25.687.034 30.775 11.738 5.017 11.546-.463 24.512-11.483 30.1-33.117 16.783-67.392 59.958-74.709 96.704ZM603.883 422.104c12.884 0 23.33 10.446 23.33 23.333 0 12.884-10.446 23.33-23.33 23.33-12.887 0-23.329-10.446-23.329-23.33 0-12.887 10.442-23.333 23.329-23.333Z\'/></svg>","description":"An easy-to-use and comprehensive image block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/imageSize":"imageSize","photo-block/globalStyle":"globalStyle","photo-block/inQueryLoop":"inQueryLoop"},"attributes":{"preview":{"type":"boolean","default":false},"inQueryLoop":{"type":"boolean","default":false},"uniqueId":{"type":"string","default":null},"date":{"type":"string","default":""},"globalStyle":{"type":"string","default":"none"},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","title":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoBackgroundColorOpacity":{"type":"number","default":0},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"dataMediaLinkSource":{"type":"string","default":"none"},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkOverride":{"type":"boolean","default":false},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"align":{"type":"string","default":"center"},"photoPosition":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageSizeOverride":{"type":"boolean","default":false},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"hideCaption":{"type":"boolean","default":false},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"right":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"bottom":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"left":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"right":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"bottom":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"left":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"customLinkLightboxEnabled":{"type":"boolean","default":false},"customLinkLightboxCaption":{"type":"string","default":""},"customLinkLightboxShowCaption":{"type":"boolean","default":false},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":false,"className":true,"customClassName":false,"alignWide":false,"defaultStylePicker":false,"html":false},"example":{"attributes":{"preview":true}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","title":"Photo Block","apiVersion":2,"name":"dlxplugins/photo-block","category":"media","icon":"<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1305 1305\' width=\'36\' height=\'36\'><path fill=\'#333333\' d=\'M652.492 1302.95c-359.692 0-651.275-291.583-651.275-651.275C1.217 291.983 292.8.4 652.492.4c359.687 0 651.275 291.583 651.275 651.275 0 359.692-291.588 651.275-651.275 651.275Z\'/><path fill=\'#FFF\' d=\'M652.492 1238.55c-324.125 0-586.879-262.754-586.879-586.879S328.367 64.792 652.492 64.792s586.879 262.754 586.879 586.879-262.754 586.879-586.879 586.879Z\'/><path fill=\'#3858e9\' d=\'M345.942 498.429 113.458 631.583c-.246 6.671-.412 13.363-.412 20.092 0 183.908 92.054 346.292 232.575 443.671l.321-596.917Zm592.429-35.779.771-268c-83.055-52.2-181.317-82.421-286.65-82.421-82.734 0-161.105 18.65-231.175 51.933L938.371 462.65ZM366.612 840.7l-.77 268c83.05 52.2 181.312 82.421 286.65 82.421 82.737 0 161.104-18.65 231.175-51.934L366.612 840.7Zm264.855-531.1-516.7 298.883c14.916-188.166 126.379-349.133 284.854-433.396L631.467 309.6Zm42.05 684.146 516.7-298.875C1175.3 883.033 1063.842 1044 905.362 1128.262L673.517 993.746Zm285.521-188.829 232.487-133.15c.246-6.671.413-13.363.413-20.092 0-183.908-92.055-346.292-232.571-443.671l-.329 596.913ZM578.938 398.8c139.62-40.6 285.816 39.662 326.42 179.329 40.654 139.617-39.666 285.763-179.333 326.421-139.675 40.6-285.817-39.667-326.421-179.338-40.6-139.67 39.663-285.812 179.334-326.412Z\'/><path fill=\'#FFF\' d=\'M473.954 596.729c-.562 12.3-10.758 22.063-23.179 21.975-12.687-.087-24.004-10.933-22.854-23.921 5.15-58.075 50.75-111.021 101.45-136.596 11.6-5.849 25.687.034 30.775 11.738 5.017 11.546-.463 24.512-11.483 30.1-33.117 16.783-67.392 59.958-74.709 96.704ZM603.883 422.104c12.884 0 23.33 10.446 23.33 23.333 0 12.884-10.446 23.33-23.33 23.33-12.887 0-23.329-10.446-23.329-23.33 0-12.887 10.442-23.333 23.329-23.333Z\'/></svg>","description":"An easy-to-use and comprehensive image block.","keywords":["photo","block","image","picture","photos"],"version":"1.0.0","textdomain":"photo-block","usesContext":["postType","postId","queryId","query"],"providesContext":{"photo-block/uniqueId":"uniqueId","photo-block/photoMode":"photoMode","photo-block/dataHasFallbackImage":"dataHasFallbackImage","photo-block/dataFallbackImageSize":"dataFallbackImageSize","photo-block/dataFallbackImage":"dataFallbackImage","photo-block/imageSize":"imageSize","photo-block/globalStyle":"globalStyle","photo-block/inQueryLoop":"inQueryLoop"},"attributes":{"preview":{"type":"boolean","default":false},"inQueryLoop":{"type":"boolean","default":false},"uniqueId":{"type":"string","default":null},"date":{"type":"string","default":""},"globalStyle":{"type":"string","default":"none"},"defaultsApplied":{"type":"boolean","default":false},"imageData":{"type":"object","default":{"id":0,"url":"","alt":"","full":"","width":"","height":"","attachment_link":"","title":"","caption":""}},"photoOpacity":{"type":"number","default":100},"photoBlur":{"type":"number","default":0},"photoObjectFit":{"type":"string","default":"inherit"},"photoObjectPosition":{"type":"string","default":"none"},"photoObjectPositionCustom":{"type":"string","default":""},"photoDropShadow":{"type":"object","default":{"color":"#000000","opacity":1,"blur":0,"spread":0,"horizontal":0,"vertical":0,"inset":false,"enabled":false}},"photoBackgroundColor":{"type":"string","default":"#FFFFFF"},"photoBackgroundColorOpacity":{"type":"number","default":0},"photoAspectRatio":{"type":"object","default":{"mobile":null,"tablet":null,"desktop":null}},"photoMaximumWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"100","unit":"%"}}},"containerWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxWidth":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMinHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"containerMaxHeight":{"type":"object","default":{"mobile":{"width":"","unit":null},"tablet":{"width":"","unit":null},"desktop":{"width":"","unit":"px"}}},"photoMode":{"type":"string","default":"none"},"cssGramFilter":{"type":"string","default":"none"},"aspectRatio":{"type":"string","default":"original"},"aspectRatioUnit":{"type":"string","default":"ratio"},"aspectRatioWidthPixels":{"type":"string","default":"1280"},"aspectRatioHeightPixels":{"type":"string","default":"720"},"aspectRatioWidth":{"type":"string","default":"16"},"aspectRatioHeight":{"type":"string","default":"9"},"dataMediaLinkSource":{"type":"string","default":"none"},"dataHasFallbackImage":{"type":"boolean","default":false},"dataFallbackImageSize":{"type":"string","default":"large"},"dataFallbackImage":{"type":"object","default":{"id":"","url":"","alt":"","full":"","attachment_link":""}},"mediaLinkType":{"type":"string","default":"none"},"mediaLinkOverride":{"type":"boolean","default":false},"mediaLinkRel":{"type":"string","default":""},"mediaLinkAnchorId":{"type":"string","default":""},"mediaLinkUrl":{"type":"string","default":""},"mediaLinkClass":{"type":"string","default":""},"mediaLinkTitle":{"type":"string","default":""},"mediaLinkNewTab":{"type":"boolean","default":false},"dataMediaLinkRel":{"type":"string","default":""},"dataMediaLinkUrl":{"type":"string","default":""},"dataMediaLinkClass":{"type":"string","default":""},"dataMediaLinkNewTab":{"type":"boolean","default":false},"mediaLibraryAspectRatio":{"type":"string","default":"16:9"},"mediaLibrarySuggestedWidth":{"type":"string","default":"1280"},"mediaLibrarySuggestedHeight":{"type":"string","default":"720"},"align":{"type":"string","default":"center"},"photoPosition":{"type":"string","default":"center"},"imageSize":{"type":"string","default":"large"},"imageSizeOverride":{"type":"boolean","default":false},"altText":{"type":"string","default":""},"hasCaption":{"type":"boolean","default":false},"captionPosition":{"type":"string","default":"bottom"},"hideCaption":{"type":"boolean","default":false},"overlayText":{"type":"string","default":""},"overlayTextPosition":{"type":"string","default":""},"photoPaddingSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoMarginSize":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"photoBorder":{"type":"object","default":{"mobile":{"top":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"right":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"bottom":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"left":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"unitSync":true},"tablet":{"top":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"right":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"bottom":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"left":{"width":"","unit":null,"color":"","opacity":1,"borderStyle":""},"unitSync":true},"desktop":{"top":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"right":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"bottom":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"left":{"width":"0","unit":"px","color":"#000000","opacity":1,"borderStyle":"solid"},"unitSync":true}}},"photoBorderRadius":{"type":"object","default":{"mobile":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"tablet":{"top":"","right":"","bottom":"","left":"","topUnit":null,"rightUnit":null,"bottomUnit":null,"leftUnit":null,"unitSync":true},"desktop":{"top":"0","right":"0","bottom":"0","left":"0","topUnit":"px","rightUnit":"px","bottomUnit":"px","leftUnit":"px","unitSync":true}}},"hideOnMobile":{"type":"boolean","default":false},"hideOnTablet":{"type":"boolean","default":false},"hideOnDesktop":{"type":"boolean","default":false},"customAttributes":{"type":"array","default":[]},"skipLazyLoading":{"type":"boolean","default":false},"lightboxEnabled":{"type":"boolean","default":false},"lightboxShowCaption":{"type":"boolean","default":false},"lightboxCaption":{"type":"string","default":""},"customLinkLightboxEnabled":{"type":"boolean","default":false},"customLinkLightboxCaption":{"type":"string","default":""},"customLinkLightboxShowCaption":{"type":"boolean","default":false},"imageProtectionEnabled":{"type":"boolean","default":false},"htmlAnchor":{"type":"string","default":""},"figureCSSClasses":{"type":"string","default":""},"imageCSSClasses":{"type":"string","default":""}},"supports":{"anchor":false,"align":false,"className":true,"customClassName":false,"alignWide":false,"defaultStylePicker":false,"html":false},"example":{"attributes":{"preview":true}},"editorScript":"dlx-photo-block-editor","editorStyle":"dlx-photo-block-editor-css","style":"dlx-photo-block-frontend-and-editor"}');
 
 /***/ }),
 

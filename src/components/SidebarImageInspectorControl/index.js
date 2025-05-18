@@ -22,6 +22,7 @@ import { useSelect } from '@wordpress/data';
 import ColorPickerControl from '../../components/ColorPicker';
 import DropShadowControl from '../../components/DropShadow';
 import CSSGramButtonGroup from '../../components/CSSGramButtonGroup';
+import AspectRatioResponsiveControl from '../../components/AspectRatioResponsive';
 import SizeResponsiveControl from '../../components/SizeResponsive';
 import useDeviceType from '../../hooks/useDeviceType';
 import DimensionsResponsiveControl from '../../components/DimensionsResponsive';
@@ -53,6 +54,7 @@ const SidebarImageInspectorControl = ( props ) => {
 		photoDropShadow,
 		photoBackgroundColor,
 		photoBackgroundColorOpacity,
+		photoAspectRatio,
 		containerHeight,
 		containerMaxWidth,
 		containerMaxHeight,
@@ -305,6 +307,14 @@ const SidebarImageInspectorControl = ( props ) => {
 								/>
 							</PanelRow>
 						) }
+						<AspectRatioResponsiveControl
+							label={ __( 'Aspect Ratio', 'photo-block' ) }
+							screenSize={ deviceType }
+							values={ photoAspectRatio }
+							onValuesChange={ ( newValues ) => {
+								setAttributes( { photoAspectRatio: newValues } );
+							} }
+						/>
 						<div className="dlx-photo-block__container-width">
 							<SizeResponsiveControl
 								label={ __( 'Width', 'photo-block' ) }

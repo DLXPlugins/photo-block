@@ -111,6 +111,14 @@
 			"type": "number",
 			"default": 0
 		},
+		"photoAspectRatio": {
+			"type": "object",
+			"default": {
+				"mobile": null,
+				"tablet": null,
+				"desktop": null
+			}
+		},
 		"photoMaximumWidth": {
 			"type": "object",
 			"default": {
