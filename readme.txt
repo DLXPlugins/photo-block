@@ -128,6 +128,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 * Bug fix: Background color, drop shadow color weren't honoring opacity.
 * Bug fix: Selecting a color with a CSS variable will now properly reflect the color in the block editor.
 * Bug fix: Drop shadows weren't working with feautred images.
+* Bug fix: Lazy loading wasn't honoring settings.
 
 = 1.2.0 =
 * Released 2025-05-09
