@@ -438,6 +438,9 @@ class Functions {
 		if ( $attributes['photoBlur'] && $attributes['photoBlur'] > 0 ) {
 			Functions::add_css_property( $image_css_helper, 'filter', (int) $attributes['photoBlur'] . 'px', '--photo-block-blur' );
 		}
+		if ( $attributes['photoAspectRatio'] ) {
+			Functions::build_aspect_ratio_css( $image_css_helper, $attributes['photoAspectRatio'], '--photo-block-image-aspect-ratio' );
+		}
 		if ( 'none' !== $attributes['photoObjectFit'] ) {
 			Functions::add_css_property( $image_css_helper, 'object-fit', $attributes['photoObjectFit'], '--photo-block-image-object-fit' );
 			Functions::add_css_property( $image_css_helper, 'width', '100%' );
@@ -2225,5 +2228,47 @@ class Functions {
 
 		// Nothing found, return empty value.
 		return '';
+	}
+
+	/**
+	 * Build aspect ratio CSS for responsive images.
+	 *
+	 * @param CSS_Helper $css_helper The CSS helper instance.
+	 * @param array      $aspect_ratio The aspect ratio values for different devices.
+	 * @param string     $css_var The CSS variable name to use.
+	 * @return void
+	 */
+	public static function build_aspect_ratio_css( $css_helper, $aspect_ratio, $css_var ) {
+		// If no aspect ratio is set, return early.
+		if ( empty( $aspect_ratio ) ) {
+			return;
+		}
+
+		// Loop through each device type.
+		foreach ( $aspect_ratio as $device => $ratio ) {
+			// Skip if no ratio is set for this device.
+			if ( empty( $ratio ) ) {
+				continue;
+			}
+
+			// Validate the aspect ratio format (e.g., "16:9" or "16/9").
+			if ( ! preg_match( '/^(?:(?:(\d+)\s?(?:\/|:)\s?(\d+))|unset|\s*)$/', $ratio ) ) {
+				continue;
+			}
+
+			// Convert ratio to CSS format (e.g., "16/9" -> "16 / 9").
+			$css_ratio = str_replace( ':', ' / ', $ratio );
+			$css_ratio = str_replace( '/', ' / ', $css_ratio );
+
+			// Add the CSS property for this device.
+			$css_helper->add_css(
+				sprintf(
+					'%s: %s;',
+					$css_var,
+					trim( $css_ratio )
+				),
+				$device
+			);
+		}
 	}
 }

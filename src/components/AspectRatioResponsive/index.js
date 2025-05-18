@@ -8,16 +8,18 @@ import {
 	BaseControl,
 } from '@wordpress/components';
 
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 
 import { geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
 import HeadingIconResponsive from '../HeadingIconResponsive';
+import { getAspectRatio, aspectRatioRegex } from '../../utils/AspectRatioHelper';
 
 const AspectRatioResponsiveControl = ( props ) => {
 	const [ screenSize, setScreenSize ] = useState( 'desktop' );
+	const aspectRatioRef = useRef( null );
 	const getDefaultValues = () => {
 		return {
 			mobile: props.values.mobile ?? '',
@@ -62,7 +64,7 @@ const AspectRatioResponsiveControl = ( props ) => {
 				<Controller
 					control={ control }
 					name={ `${ screenSize }` }
-					pattern={ /^(\d+)\s?(?:\/|:)\s?(\d+)$/ }
+					pattern={ aspectRatioRegex }
 					render={ ( { field: { onChange, value } } ) => (
 						<TextControl
 							type={ 'text' }
@@ -73,23 +75,26 @@ const AspectRatioResponsiveControl = ( props ) => {
 							} }
 							onBlur={ () => {
 								const newValue = getValues( screenSize );
-								// Get into n / n format.
-								const regex = /^(\d+)\s?(?:\/|:)\s?(\d+)$/;
-								const match = newValue.match( regex );
-								if ( match ) {
-									onChange( `${ match[ 1 ] } / ${ match[ 2 ] }` );
+								const aspectRatio = getAspectRatio( newValue );
+								if ( aspectRatio || '' === aspectRatio ) {
+									onChange( aspectRatio );
 								} else {
 									setError( screenSize, {
 										message: __( 'Invalid aspect ratio', 'photo-block' ),
 									} );
+									aspectRatioRef.current.focus();
 									onChange( '' );
 								}
 							} }
+							className="dlx-photo-block__max-width-responsive-control__input"
 							placeholder={ geHierarchicalPlaceholderValue(
 								props.values,
 								screenSize,
 								getValues( screenSize )
 							) }
+							ref={ ( ref ) => {
+								aspectRatioRef.current = ref;
+							} }
 						/>
 					) }
 				/>

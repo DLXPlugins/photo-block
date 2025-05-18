@@ -113,6 +113,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var hex_to_rgba__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(hex_to_rgba__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rgb2hex */ "./node_modules/rgb2hex/index.js");
 /* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(rgb2hex__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils_AspectRatioHelper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/AspectRatioHelper */ "./src/utils/AspectRatioHelper.js");
+
 
 
 
@@ -166,6 +168,7 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
     photoDropShadow = attributes.photoDropShadow,
     photoObjectPosition = attributes.photoObjectPosition,
     photoOpacity = attributes.photoOpacity,
+    photoAspectRatio = attributes.photoAspectRatio,
     photoBackgroundColor = attributes.photoBackgroundColor,
     photoBackgroundColorOpacity = attributes.photoBackgroundColorOpacity,
     photoObjectPositionCustom = attributes.photoObjectPositionCustom,
@@ -191,6 +194,11 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
   styles += "".concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__figure { --photo-block-figure-margin: ").concat((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_0__.buildDimensionsCSS)(photoMarginSize, deviceType), "; }");
   if (photoDropShadow.enabled) {
     styles += "\n\t\t\t.dlx-has-drop-shadow ".concat(useClass ? '.' : '#').concat(uniqueId, " img {\n\t\t\t\t--photo-block-image-drop-shadow-horizontal: ").concat(photoDropShadow.horizontal, "px;\n\t\t\t\t--photo-block-image-drop-shadow-vertical: ").concat(photoDropShadow.vertical, "px;\n\t\t\t\t--photo-block-image-drop-shadow-blur: ").concat(photoDropShadow.blur, "px;\n\t\t\t\t--photo-block-image-drop-shadow-spread: ").concat(photoDropShadow.spread, "px;\n\t\t\t\t--photo-block-image-drop-shadow-color: ").concat(getColor(photoDropShadow.color, photoDropShadow.opacity), ";\n\t\t\t}\n\t\t");
+  }
+  if (photoAspectRatio) {
+    if (photoAspectRatio[deviceType] && _utils_AspectRatioHelper__WEBPACK_IMPORTED_MODULE_3__.aspectRatioRegex.test(photoAspectRatio[deviceType])) {
+      styles += "\n\t\t\t\t".concat(useClass ? '.' : '#').concat(uniqueId, " .dlx-photo-block__image-wrapper img {\n\t\t\t\t\t--photo-block-image-aspect-ratio: ").concat((0,_utils_AspectRatioHelper__WEBPACK_IMPORTED_MODULE_3__.getAspectRatio)(photoAspectRatio[deviceType]), " !important;\n\t\t\t\t}\n\t\t\t");
+    }
   }
   return styles;
 };
@@ -2365,10 +2373,12 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
 
   // Set the local inspector controls.
   var localInspectorControls = /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.InspectorControls, null, interfaceTabs);
-  var styles = '';
-  if (!hasGlobalStyle(globalStyle)) {
-    styles = (0,_block_styles__WEBPACK_IMPORTED_MODULE_21__["default"])(attributes, deviceType, uniqueId);
-  }
+  var styles = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useMemo)(function () {
+    if (!hasGlobalStyle(globalStyle)) {
+      return (0,_block_styles__WEBPACK_IMPORTED_MODULE_21__["default"])(attributes, deviceType, uniqueId);
+    }
+    return '';
+  }, [attributes, deviceType, uniqueId, hasGlobalStyle, globalStyle]);
 
   /**
    * Get overlay container classes.
@@ -2624,9 +2634,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
+/* harmony import */ var react_hook_form__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-hook-form */ "./node_modules/react-hook-form/dist/index.esm.mjs");
 /* harmony import */ var _utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../utils/TypographyHelper */ "./src/utils/TypographyHelper.js");
 /* harmony import */ var _HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../HeadingIconResponsive */ "./src/components/HeadingIconResponsive/index.js");
+/* harmony import */ var _utils_AspectRatioHelper__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../utils/AspectRatioHelper */ "./src/utils/AspectRatioHelper.js");
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -2643,11 +2654,13 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
+
 var AspectRatioResponsiveControl = function AspectRatioResponsiveControl(props) {
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)('desktop'),
     _useState2 = _slicedToArray(_useState, 2),
     screenSize = _useState2[0],
     setScreenSize = _useState2[1];
+  var aspectRatioRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
   var getDefaultValues = function getDefaultValues() {
     var _props$values$mobile, _props$values$tablet, _props$values$desktop;
     return {
@@ -2656,7 +2669,7 @@ var AspectRatioResponsiveControl = function AspectRatioResponsiveControl(props) 
       desktop: (_props$values$desktop = props.values.desktop) !== null && _props$values$desktop !== void 0 ? _props$values$desktop : ''
     };
   };
-  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useForm)({
+  var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useForm)({
       defaultValues: getDefaultValues()
     }),
     control = _useForm.control,
@@ -2664,10 +2677,10 @@ var AspectRatioResponsiveControl = function AspectRatioResponsiveControl(props) 
     getValues = _useForm.getValues,
     setError = _useForm.setError,
     clearErrors = _useForm.clearErrors;
-  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useWatch)({
+  var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useWatch)({
     control: control
   });
-  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useFormState)({
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useFormState)({
       control: control
     }),
     errors = _useFormState.errors;
@@ -2684,10 +2697,10 @@ var AspectRatioResponsiveControl = function AspectRatioResponsiveControl(props) 
   }, /*#__PURE__*/React.createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_5__["default"], {
     screenSize: screenSize,
     heading: props.label
-  }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_6__.Controller, {
+  }), /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
     control: control,
     name: "".concat(screenSize),
-    pattern: /^(\d+)\s?(?:\/|:)\s?(\d+)$/,
+    pattern: _utils_AspectRatioHelper__WEBPACK_IMPORTED_MODULE_6__.aspectRatioRegex,
     render: function render(_ref) {
       var _ref$field = _ref.field,
         _onChange = _ref$field.onChange,
@@ -2701,19 +2714,22 @@ var AspectRatioResponsiveControl = function AspectRatioResponsiveControl(props) 
         },
         onBlur: function onBlur() {
           var newValue = getValues(screenSize);
-          // Get into n / n format.
-          var regex = /^(\d+)\s?(?:\/|:)\s?(\d+)$/;
-          var match = newValue.match(regex);
-          if (match) {
-            _onChange("".concat(match[1], " / ").concat(match[2]));
+          var aspectRatio = (0,_utils_AspectRatioHelper__WEBPACK_IMPORTED_MODULE_6__.getAspectRatio)(newValue);
+          if (aspectRatio || '' === aspectRatio) {
+            _onChange(aspectRatio);
           } else {
             setError(screenSize, {
               message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Invalid aspect ratio', 'photo-block')
             });
+            aspectRatioRef.current.focus();
             _onChange('');
           }
         },
-        placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize))
+        className: "dlx-photo-block__max-width-responsive-control__input",
+        placeholder: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_4__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize)),
+        ref: function ref(_ref2) {
+          aspectRatioRef.current = _ref2;
+        }
       });
     }
   }), errors[screenSize] && /*#__PURE__*/React.createElement("p", {
@@ -3560,7 +3576,6 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
    */
   var getOpacity = function getOpacity(value) {
     var opacity = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_8__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'opacity');
-    console.log('opacity', opacity);
     if (typeof opacity === 'undefined') {
       opacity = 1;
     } else {
@@ -13376,10 +13391,12 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }), isSavingAlt && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block'))))));
-  var styles = '';
-  if (!hasGlobalStyle(globalStyle)) {
-    styles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_17__["default"])(attributes, deviceType, uniqueId);
-  }
+  var styles = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useMemo)(function () {
+    if (!hasGlobalStyle(globalStyle)) {
+      return (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_17__["default"])(attributes, deviceType, uniqueId);
+    }
+    return '';
+  }, [attributes, deviceType, uniqueId, hasGlobalStyle, globalStyle]);
   var photoImg = /*#__PURE__*/React.createElement("img", {
     src: url,
     className: classnames__WEBPACK_IMPORTED_MODULE_9___default()("photo-block-".concat(cssGramFilter, " dlx-photo-block__image"), {
@@ -15184,6 +15201,43 @@ var settingsStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxS
 });
 (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.register)(settingsStore);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (settingsStore);
+
+/***/ }),
+
+/***/ "./src/utils/AspectRatioHelper.js":
+/*!****************************************!*\
+  !*** ./src/utils/AspectRatioHelper.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   aspectRatioRegex: () => (/* binding */ aspectRatioRegex),
+/* harmony export */   getAspectRatio: () => (/* binding */ getAspectRatio)
+/* harmony export */ });
+var aspectRatioRegex = /^(?:(?:(\d+)\s?(?:\/|:)\s?(\d+))|unset|\s*)$/;
+
+/**
+ * Get the aspect ratio from a string.
+ *
+ * @param {string} aspectRatio - The aspect ratio to get.
+ * @return {string} The aspect ratio.
+ */
+var getAspectRatio = function getAspectRatio(aspectRatio) {
+  if ('unset' === aspectRatio || '' === aspectRatio) {
+    return aspectRatio;
+  }
+  if (0 === aspectRatio || '0' === aspectRatio) {
+    return '';
+  }
+  var match = aspectRatio.match(aspectRatioRegex);
+  if (match) {
+    return "".concat(parseInt(match[1]), " / ").concat(parseInt(match[2]));
+  }
+  return null;
+};
+
 
 /***/ }),
 

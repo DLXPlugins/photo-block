@@ -1,6 +1,7 @@
 import { getValueWithUnit, buildDimensionsCSS, buildBorderCSS } from '../../utils/TypographyHelper';
 import hexToRgba from 'hex-to-rgba';
 import rgb2hex from 'rgb2hex';
+import { getAspectRatio, aspectRatioRegex } from '../../utils/AspectRatioHelper';
 
 /**
  * Return a color based on passed alpha value.
@@ -53,6 +54,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 		photoDropShadow,
 		photoObjectPosition,
 		photoOpacity,
+		photoAspectRatio,
 		photoBackgroundColor,
 		photoBackgroundColorOpacity,
 		photoObjectPositionCustom,
@@ -142,6 +144,15 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 				--photo-block-image-drop-shadow-color: ${ getColor( photoDropShadow.color, photoDropShadow.opacity ) };
 			}
 		`;
+	}
+	if ( photoAspectRatio ) {
+		if ( photoAspectRatio[ deviceType ] && aspectRatioRegex.test( photoAspectRatio[ deviceType ] ) ) {
+			styles += `
+				${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
+					--photo-block-image-aspect-ratio: ${ getAspectRatio( photoAspectRatio[ deviceType ] ) } !important;
+				}
+			`;
+		}
 	}
 	return styles;
 };

@@ -1,7 +1,7 @@
 import './editor.scss';
 
 import classnames from 'classnames';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
 import {
@@ -1557,10 +1557,12 @@ const PhotoCaptionBlock = ( props ) => {
 		<InspectorControls>{ interfaceTabs }</InspectorControls>
 	);
 
-	let styles = '';
-	if ( ! hasGlobalStyle( globalStyle ) ) {
-		styles = getStyles( attributes, deviceType, uniqueId );
-	}
+	const styles = useMemo( () => {
+		if ( ! hasGlobalStyle( globalStyle ) ) {
+			return getStyles( attributes, deviceType, uniqueId );
+		}
+		return '';
+	}, [ attributes, deviceType, uniqueId, hasGlobalStyle, globalStyle ] );
 
 	/**
 	 * Get overlay container classes.

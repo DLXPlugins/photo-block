@@ -5,6 +5,7 @@ import {
 	useState,
 	useEffect,
 	forwardRef,
+	useMemo,
 	useCallback,
 } from '@wordpress/element';
 import {
@@ -661,10 +662,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
-	let styles = '';
-	if ( ! hasGlobalStyle( globalStyle ) ) {
-		styles = getStyles( attributes, deviceType, uniqueId );
-	}
+	const styles = useMemo( () => {
+		if ( ! hasGlobalStyle( globalStyle ) ) {
+			return getStyles( attributes, deviceType, uniqueId );
+		}
+		return '';
+	}, [ attributes, deviceType, uniqueId, hasGlobalStyle, globalStyle ] );
 
 	const photoImg = (
 		<img

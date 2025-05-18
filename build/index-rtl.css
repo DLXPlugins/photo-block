@@ -1427,6 +1427,7 @@ figcaption.dlx-photo-block__caption.has-smart-styles .dlx-photo-block__caption-i
   border-left: var(--photo-block-image-border-right, 0);
   border-bottom: var(--photo-block-image-border-bottom, 0);
   border-right: var(--photo-block-image-border-left, 0);
+  aspect-ratio: var(--photo-block-image-aspect-ratio, unset);
 }
 
 .dlx-photo-block__caption-wrapper.overlay-display-hover:before {
@@ -2999,9 +3000,8 @@ svg.lucide * {
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/AspectRatioResponsive/editor.scss ***!
   \*********************************************************************************************************************************************************************************************************************************************************************************************************/
-.dlx-photo-block__image-max-width {
-  margin: 0;
-  margin-bottom: 16px;
+.dlx-photo-block__max-width-responsive-control__input {
+  margin-top: 12px;
 }
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/@wordpress/scripts/node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/components/HeadingIconResponsive/editor.scss ***!

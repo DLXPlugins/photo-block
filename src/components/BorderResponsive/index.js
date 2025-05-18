@@ -503,7 +503,6 @@ const BorderResponsiveControl = ( props ) => {
 			'top',
 			'opacity'
 		);
-		console.log( 'opacity', opacity );
 		if ( typeof opacity === 'undefined' ) {
 			opacity = 1;
 		} else {
