@@ -516,6 +516,15 @@ class Blocks {
 		$global_style_css_class = '';
 		$global_style_slug      = $attributes['globalStyle'] ?? false;
 
+		// Set aspect ratio, if not set.
+		if ( ! isset( $attributes['photoAspectRatio'] ) || empty( $attributes['photoAspectRatio'] ) ) {
+			$attributes['photoAspectRatio'] = array(
+				'desktop' => 'unset',
+				'tablet'  => 'unset',
+				'mobile'  => 'unset',
+			);
+		}
+
 		if ( 'none' !== $global_style_slug && '' !== $global_style_slug ) {
 			// Try to get global style from cache.
 			$global_style = wp_cache_get( 'dlx_pb_global_style_' . $global_style_slug, 'dlx_photo_block' ); // can be WP_Post or null.
