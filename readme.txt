@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.2.0
+Stable tag: 1.2.5
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,7 +15,7 @@ Enhance your Block Editor with a fully customizable photo block, featuring advan
 
 Photo Block adds a time-saving block to the Block Editor, allowing for advanced image customization with only a few clicks. Made for writers and layout builders, this block is extremely versatile with full caption support, responsive styling, and global styles.
 
-> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Demo</a> ❤️
+> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
 
 === Core Features ===
 
@@ -27,7 +27,7 @@ Photo Block adds a time-saving block to the Block Editor, allowing for advanced 
 7. **Query Loop Support**: Seamlessly integrate Photo Block into a Query Loop block as a featured image for dynamic content.
 8. **ScreenshotOne Support**: Use the <a href="https://screenshotone.com/">ScreenshotOne</a> service to generate website screenshots right from Photo Block.
 
-> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Demo</a> ❤️
+> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
 
 ## Quick Links:
 
@@ -121,6 +121,14 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.2.5 =
+* Released 2025-05-18
+* New Feature: Set aspect ratio per responsive breakpoint.
+* New Feature: Image size and a Copy shortcut show next to the image URL field in the sidebar.
+* Bug fix: Background color, drop shadow color weren't honoring opacity.
+* Bug fix: Selecting a color with a CSS variable will now properly reflect the color in the block editor.
+* Bug fix: Drop shadows weren't working with feautred images.
+
 = 1.2.0 =
 * Released 2025-05-09
 * New Feature: Custom links can now pop-up into lightboxes if they are of type jpg, jpeg, gif, png, webp, or avif.
@@ -174,7 +182,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.2.0 =
-Custom links can now be popped into a lightbox. Debug mode added if things go wrong with Global Styles. Fatal error involving Global Styles fixed. Post permalink can now be selected when doing a featured image in a query loop.
+= 1.2.5 =
+Adding aspect ratio. Adding file dimensions and copy shortcut for image attributes. Fixed background color and drop shadow opacity values not rendering. Fixed drop shadow not working for featured images.
 
 
