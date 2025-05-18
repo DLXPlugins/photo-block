@@ -660,7 +660,7 @@ class Blocks {
 		$image_classes[] = '' !== $global_style_css_class ? $global_style_css_class : '';
 
 		// Determine if lazy loading is on.
-		$skip_lazy_loading = $attributes['skipLazyLoading'] ?? false;
+		$skip_lazy_loading = (bool) $attributes['skipLazyLoading'] ?? false;
 
 		// Get data-attr attributes.
 		$image_data_attributes = array();
@@ -702,17 +702,22 @@ class Blocks {
 			case 'featuredImage':
 			case 'image':
 			case 'photo':
+				$image_args = array(
+					'class'   => 'dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ),
+					'loading' => $skip_lazy_loading ? 'auto' : 'lazy',
+					'alt'     => $image_alt,
+					'title'   => $image_title,
+				);
+				if ( $skip_lazy_loading ) {
+					$image_args['data-skip-lazy'] = 'true';
+				}
+
 				$image_markup = wp_get_attachment_image(
 					$image_id,
 					$image_size,
 					false,
 					array_merge(
-						array(
-							'class'   => 'dlx-photo-block__image ' . esc_attr( implode( ' ', $image_classes ) ),
-							'loading' => $skip_lazy_loading ? false : 'lazy',
-							'alt'     => $image_alt,
-							'title'   => $image_title,
-						),
+						$image_args,
 						$image_data_attributes
 					)
 				);

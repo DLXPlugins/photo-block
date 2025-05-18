@@ -16,6 +16,7 @@ import {
 	TextareaControl,
 	SelectControl,
 	BaseControl,
+	Button,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -35,6 +36,7 @@ import {
 	Captions,
 	CaptionsOff,
 	Undo2,
+	ClipboardCheck,
 } from 'lucide-react';
 import {
 	positionLeft,
@@ -388,14 +390,59 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									label={ __( 'URL', 'photo-block' ) }
 									help={ __( 'The URL of the image.', 'photo-block' ) }
 								/>
+								<Button
+									variant="secondary"
+									icon={ <ClipboardCheck /> }
+									label={ __( 'Copy URL', 'photo-block' ) }
+									onClick={ () => {
+										if ( navigator.clipboard && window.isSecureContext ) {
+											navigator.clipboard.writeText( imageData.url ).then( () => {
+												createSuccessNotice( __( 'URL copied to clipboard.', 'photo-block' ), {
+													type: 'snackbar',
+												} );
+											} ).catch( ( error ) => {
+												console.error( error );
+											} );
+										} else {
+											// Fallback for older browsers
+											const textArea = document.createElement( 'textarea' );
+											textArea.value = imageData.url;
+											document.body.appendChild( textArea );
+											textArea.select();
+											try {
+												document.execCommand( 'copy' );
+												createSuccessNotice( __( 'URL copied to clipboard.', 'photo-block' ), {
+													type: 'snackbar',
+												} );
+											} catch ( error ) {
+												console.error( error );
+											}
+											document.body.removeChild( textArea );
+										}
+									} }
+									className="photo-block__copy-url-button"
+								/>
 							</div>
-							{ imageData.file_size && (
-								<div className="photo-block__image-info-item">
-									<BaseControl id="photo-block__image-info-file-size" label={ __( 'File Size', 'photo-block' ) }>
-										<p>{ imageData.file_size }</p>
-									</BaseControl>
-								</div>
-							) }
+							{
+								( imageData.dimensions && imageData.file_size ) && (
+									<div className="photo-block__image-info-items">
+										{ imageData.file_size && (
+											<div className="photo-block__image-info-item">
+												<BaseControl id="photo-block__image-info-file-size" label={ __( 'File Size', 'photo-block' ) }>
+													<p>{ imageData.file_size }</p>
+												</BaseControl>
+											</div>
+										) }
+										{ imageData.dimensions && (
+											<div className="photo-block__image-info-item">
+												<BaseControl id="photo-block__image-info-dimensions" label={ __( 'Dimensions', 'photo-block' ) }>
+													<p>{ imageData.dimensions.width } x { imageData.dimensions.height }</p>
+												</BaseControl>
+											</div>
+										) }
+									</div>
+								)
+							}
 						</div>
 					</div>
 				}

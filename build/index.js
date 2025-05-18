@@ -12615,14 +12615,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/image.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/captions-off.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/undo-2.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/crop.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/position-left.js");
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/position-center.js");
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/position-right.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/clipboard-check.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/captions-off.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/undo-2.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/crop.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/accessibility.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/link.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/position-left.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/position-center.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/position-right.js");
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
 /* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
@@ -13057,12 +13058,50 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     className: "photo-block__image-info-item-text",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('URL', 'photo-block'),
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('The URL of the image.', 'photo-block')
-  })), imageData.file_size && /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    variant: "secondary",
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_22__["default"], null),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Copy URL', 'photo-block'),
+    onClick: function onClick() {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(imageData.url).then(function () {
+          createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('URL copied to clipboard.', 'photo-block'), {
+            type: 'snackbar'
+          });
+        })["catch"](function (error) {
+          console.error(error);
+        });
+      } else {
+        // Fallback for older browsers
+        var textArea = document.createElement('textarea');
+        textArea.value = imageData.url;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('URL copied to clipboard.', 'photo-block'), {
+            type: 'snackbar'
+          });
+        } catch (error) {
+          console.error(error);
+        }
+        document.body.removeChild(textArea);
+      }
+    },
+    className: "photo-block__copy-url-button"
+  })), imageData.dimensions && imageData.file_size && /*#__PURE__*/React.createElement("div", {
+    className: "photo-block__image-info-items"
+  }, imageData.file_size && /*#__PURE__*/React.createElement("div", {
     className: "photo-block__image-info-item"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
     id: "photo-block__image-info-file-size",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('File Size', 'photo-block')
-  }, /*#__PURE__*/React.createElement("p", null, imageData.file_size)))))));
+  }, /*#__PURE__*/React.createElement("p", null, imageData.file_size))), imageData.dimensions && /*#__PURE__*/React.createElement("div", {
+    className: "photo-block__image-info-item"
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
+    id: "photo-block__image-info-dimensions",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Dimensions', 'photo-block')
+  }, /*#__PURE__*/React.createElement("p", null, imageData.dimensions.width, " x ", imageData.dimensions.height))))))));
   var interfaceTabs = /*#__PURE__*/React.createElement(React.Fragment, null, settingsInspectorControls, /*#__PURE__*/React.createElement(_components_SidebarImageInspectorControl__WEBPACK_IMPORTED_MODULE_15__["default"], _extends({
     attributes: attributes,
     setAttributes: setAttributes,
@@ -13078,7 +13117,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     globalStyle: globalStyle
   })));
   var localToolbar = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, null, !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(_components_AlignmentToolbar__WEBPACK_IMPORTED_MODULE_20__["default"], props), !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_22__["default"],
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_23__["default"],
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Positon Left', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -13087,7 +13126,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     },
     isPressed: 'left' === photoPosition
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_23__["default"],
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_24__["default"],
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Positon Center', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -13096,7 +13135,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     },
     isPressed: 'center' === photoPosition
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_24__["default"],
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_25__["default"],
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Positon Right', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -13105,7 +13144,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     },
     isPressed: 'right' === photoPosition
   })), innerBlockCount === 0 && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_25__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_26__["default"], null),
     label: hideCaption ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Show Caption', 'photo-block') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Hide Caption', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -13115,7 +13154,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     },
     isPressed: true === hideCaption
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, isJustCropped && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_26__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_27__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo Crop', 'photo-block'),
     onClick: function onClick() {
       setAttributes({
@@ -13126,7 +13165,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setScreen('edit');
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Undo Crop', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_27__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_28__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Crop', 'photo-block'),
     onClick: function onClick() {
       setJustCropped(false);
@@ -13141,14 +13180,14 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setJustCropped(false);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_28__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_29__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Set Accessibility Options', 'photo-block'),
     onClick: function onClick() {
       setA11yPopover(!a11yPopover);
     },
     ref: setA11yButton
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_29__["default"], null),
+    icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_30__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Set Link Options', 'photo-block'),
     onClick: function onClick() {
       setMediaLinkPopover(!mediaLinkPopover);
@@ -14564,7 +14603,8 @@ var DEFAULT_STATE = {
     height: '',
     attachment_link: '',
     caption: '',
-    file_size: ''
+    file_size: '',
+    dimensions: ''
   },
   imageData: {
     id: 0,
@@ -14575,7 +14615,8 @@ var DEFAULT_STATE = {
     height: '',
     attachment_link: '',
     caption: '',
-    file_size: ''
+    file_size: '',
+    dimensions: ''
   },
   currentScreen: 'loading',
   /* can be loading, initial, edit, crop, data, featuredImage, effects. */
@@ -39375,6 +39416,45 @@ const CircleX = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 
 
 //# sourceMappingURL=circle-x.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/lucide-react/dist/esm/icons/clipboard-check.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/lucide-react/dist/esm/icons/clipboard-check.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ClipboardCheck)
+/* harmony export */ });
+/* harmony import */ var _createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createLucideIcon.js */ "./node_modules/lucide-react/dist/esm/createLucideIcon.js");
+/**
+ * @license lucide-react v0.359.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+const ClipboardCheck = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])("ClipboardCheck", [
+  ["rect", { width: "8", height: "4", x: "8", y: "2", rx: "1", ry: "1", key: "tgr4d6" }],
+  [
+    "path",
+    {
+      d: "M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2",
+      key: "116196"
+    }
+  ],
+  ["path", { d: "m9 14 2 2 4-4", key: "df797q" }]
+]);
+
+
+//# sourceMappingURL=clipboard-check.js.map
 
 
 /***/ }),

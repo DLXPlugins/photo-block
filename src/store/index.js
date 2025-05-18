@@ -11,6 +11,7 @@ const DEFAULT_STATE = {
 		attachment_link: '',
 		caption: '',
 		file_size: '',
+		dimensions: '',
 	},
 	imageData: {
 		id: 0,
@@ -22,6 +23,7 @@ const DEFAULT_STATE = {
 		attachment_link: '',
 		caption: '',
 		file_size: '',
+		dimensions: '',
 	},
 	currentScreen: 'loading', /* can be loading, initial, edit, crop, data, featuredImage, effects. */
 	isUploading: false,
