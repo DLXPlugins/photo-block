@@ -222,6 +222,29 @@ const PhotoBlock = ( props ) => {
 		}
 	}, [ captionPosition ] );
 
+	const { removeBlock } = useDispatch( 'core/block-editor' );
+
+	// Get all caption block IDs for the selected phpoto block.
+	const captionBlockIds = useSelect(
+		( select ) => {
+			const innerBlocks = select( 'core/block-editor' ).getBlocks( clientId );
+			return innerBlocks
+				.filter( ( block ) => block.name === 'dlxplugins/photo-caption-block' )
+				.map( ( block ) => block.clientId );
+		},
+		[ clientId ]
+	);
+
+	/**
+	 * Prevent multiple caption blocks from being added.
+	 */
+	useEffect( () => {
+		if ( captionBlockIds.length > 1 ) {
+			// Remove all but the last caption block
+			captionBlockIds.slice( 0, -1 ).forEach( removeBlock );
+		}
+	}, [ captionBlockIds, removeBlock ] );
+
 	// Store the filepond upload ref.
 	const imageRef = useRef( null );
 
@@ -238,7 +261,7 @@ const PhotoBlock = ( props ) => {
 		{
 			allowedBlocks: [ 'dlxplugins/photo-caption-block' ],
 			templateInsertUpdatesSelection: true,
-			renderAppender: () => ( ( isSelected && ! hideCaption ) ? <CaptionAppender numBlocks={ innerBlockCount } clientId={ clientId } blockUniqueId={ blockUniqueId } /> : null ),
+			renderAppender: () => ( ( isSelected && ! hideCaption && ! innerBlockCount ) ? <CaptionAppender numBlocks={ innerBlockCount } clientId={ clientId } blockUniqueId={ blockUniqueId } /> : null ),
 		}
 	);
 

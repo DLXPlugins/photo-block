@@ -240,6 +240,14 @@ const PhotoCaptionBlock = ( props ) => {
 	const [ isCaptionVisible, setIsCaptionVisible ] = useState( false ); // Make sure caption is positioned correctly before visible render.
 	const [ captionInputRef, setCaptionInputRef ] = useState( null );
 
+	const allBlockNames = wp.data.select( 'core/blocks' )
+		.getBlockTypes()
+		.map( ( block ) => {
+			if ( 'dlxplugins/photo-block' !== block.name && 'dlxplugins/photo-caption-block' !== block.name ) {
+				return block.name;
+			}
+		} );
+
 	// Set caption position context based on captionPosition attribute. After setting, show the caption.
 	useEffect( () => {
 		setCaptionPosition( attributes.captionPosition ); // Caption position can be top|bottom|overlay
@@ -266,6 +274,7 @@ const PhotoCaptionBlock = ( props ) => {
 		mode,
 		captionManual,
 		enableSmartStyles,
+		enableAllBlocks,
 		captionBaseFontSize,
 		captionBackgroundColor,
 		captionBackgroundColorOpacity,
@@ -321,7 +330,7 @@ const PhotoCaptionBlock = ( props ) => {
 			} ),
 		},
 		{
-			allowedBlocks: photoBlock.captionInnerBlocks,
+			allowedBlocks: enableAllBlocks ? allBlockNames : photoBlock.captionInnerBlocks,
 			template: [ [ 'core/paragraph', { align: 'center', placeholder: __( 'Enter your caption here.', 'photo-block' ) } ] ],
 			templateInsertUpdatesSelection: true,
 			templateLock: false,
@@ -820,6 +829,16 @@ const PhotoCaptionBlock = ( props ) => {
 									setAttributes( { enableSmartStyles: newValue } );
 								} }
 								help={ __( 'Enable smart styles to style the individual elements of the caption.', 'photo-block' ) }
+							/>
+						</PanelRow>
+						<PanelRow>
+							<ToggleControl
+								label={ __( 'Allow All Blocks Inside Multiline Captions', 'photo-block' ) }
+								checked={ enableAllBlocks }
+								onChange={ ( newValue ) => {
+									setAttributes( { enableAllBlocks: newValue } );
+								} }
+								help={ __( 'Not all internal blocks are styled in multi-line captions. However, this adds flexibility to the caption.', 'photo-block' ) }
 							/>
 						</PanelRow>
 						{ enableSmartStyles && (

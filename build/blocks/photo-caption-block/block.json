@@ -68,6 +68,10 @@
       "type": "boolean",
       "default": true
     },
+    "enableAllBlocks": {
+      "type": "boolean",
+      "default": false
+    },
     "captionBaseFontSize": {
       "type": "object",
       "default": {
