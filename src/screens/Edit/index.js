@@ -13,11 +13,14 @@ import {
 	ToolbarGroup,
 	ToolbarButton,
 	Popover,
+	ToolbarDropdownMenu,
 	TextControl,
 	TextareaControl,
 	SelectControl,
 	BaseControl,
 	Button,
+	MenuGroup,
+	MenuItem,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -34,8 +37,10 @@ import {
 	Image,
 	Accessibility,
 	Link,
-	Captions,
 	CaptionsOff,
+	AlignLeft,
+	AlignCenter,
+	AlignRight,
 	Undo2,
 	ClipboardCheck,
 } from 'lucide-react';
@@ -81,6 +86,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		cssGramFilter,
 		globalStyle,
 		photoPosition,
+		align,
 	} = attributes;
 
 	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
@@ -479,6 +485,25 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		</>
 	);
 
+	/**
+	 * Get the center icon.
+	 * @return {JSX.Element} The center icon.
+	 */
+	const getCenterIcon = () => {
+		switch ( align ) {
+			case 'none':
+				return <AlignNone />;
+			case 'left':
+				return <AlignLeft />;
+			case 'center':
+				return <AlignCenter />;
+			case 'right':
+				return <AlignRight />;
+			case 'wide':
+				return 'align-full-width';
+		}
+	};
+
 	const localToolbar = (
 		<>
 			<BlockControls>
@@ -490,30 +515,73 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				{
 					! hasGlobalStyle( globalStyle ) && (
 						<ToolbarGroup>
-							<ToolbarButton
-								icon={ positionLeft	 }
-								label={ __( 'Positon Left', 'photo-block' ) }
-								onClick={ () => {
-									setAttributes( { photoPosition: 'left' } );
-								} }
-								isPressed={ 'left' === photoPosition }
-							/>
-							<ToolbarButton
-								icon={ positionCenter }
-								label={ __( 'Positon Center', 'photo-block' ) }
-								onClick={ () => {
-									setAttributes( { photoPosition: 'center' } );
-								} }
-								isPressed={ 'center' === photoPosition }
-							/>
-							<ToolbarButton
-								icon={ positionRight }
-								label={ __( 'Positon Right', 'photo-block' ) }
-								onClick={ () => {
-									setAttributes( { photoPosition: 'right' } );
-								} }
-								isPressed={ 'right' === photoPosition }
-							/>
+							<ToolbarDropdownMenu
+								icon={ getCenterIcon() }
+								label={ __( 'Align', 'photo-block' ) }
+								className="dlx-photo-block__alignment-dropdown"
+							>
+								{ ( { onClose } ) => (
+									<>
+										<MenuGroup className="dlx-photo-block__alignment-dropdown-group">
+
+											<MenuItem
+												icon="align-left"
+												isSelected={ 'left' === align }
+												onClick={ () => {
+													setAttributes( { align: 'left' } );
+													onClose();
+												} }
+												iconPosition="left"
+												label={ __( 'Align Left', 'photo-block' ) }
+												role="menuitemradio"
+												className={
+													classnames( {
+														'is-active': 'left' === align,
+													} )
+												}
+											>
+												{ __( 'Left', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem
+												icon="align-center"
+												isSelected={ 'center' === align }
+												onClick={ () => {
+													setAttributes( { align: 'center' } );
+													onClose();
+												} }
+												iconPosition="left"
+												label={ __( 'Align Center', 'photo-block' ) }
+												role="menuitemradio"
+												className={
+													classnames( {
+														'is-active': 'center' === align,
+													} )
+												}
+											>
+												{ __( 'Center', 'photo-block' ) }
+											</MenuItem>
+											<MenuItem
+												icon="align-right"
+												isSelected={ 'right' === align }
+												onClick={ () => {
+													setAttributes( { align: 'right' } );
+													onClose();
+												} }
+												iconPosition="left"
+												label={ __( 'Align Right', 'photo-block' ) }
+												role="menuitemradio"
+												className={
+													classnames( {
+														'is-active': 'right' === align,
+													} )
+												}
+											>
+												{ __( 'Right', 'photo-block' ) }
+											</MenuItem>
+										</MenuGroup>
+									</>
+								) }
+							</ToolbarDropdownMenu>
 						</ToolbarGroup>
 					)
 				}
