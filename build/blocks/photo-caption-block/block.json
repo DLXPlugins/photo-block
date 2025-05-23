@@ -7,7 +7,7 @@
     "dlxplugins/photo-block"
   ],
   "category": "common",
-  "description": "A caption for a photo block.",
+  "description": "A comprehensive caption block.",
   "icon": "<svg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' id='fi_15413386'><path fill='#3858e9' d='m23 4h-14a5 5 0 0 0 -5 5v14a5 5 0 0 0 5 5h14a5 5 0 0 0 5-5v-14a5 5 0 0 0 -5-5zm-14 14h2a1 1 0 0 1 0 2h-2a1 1 0 0 1 0-2zm8 6h-8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2zm6 0h-2a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2zm0-4h-8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2z'></path></svg>",
   "keywords": [
     "photo",

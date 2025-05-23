@@ -1311,14 +1311,13 @@ const PhotoCaptionBlock = ( props ) => {
 					<ToolbarGroup>
 						<ToolbarButton
 							icon={ <SeparatorHorizontal /> }
+							showTooltip={ true }
 							label={ __( 'Caption Position', 'photo-block' ) }
 							onClick={ () => {
 								setCaptionPositionPopoverVisible( true );
 							} }
 							ref={ setCaptionPopoverRef }
-						>
-							{ __( 'Position', 'photo-block' ) }
-						</ToolbarButton>
+						/>
 					</ToolbarGroup>
 				)
 			}
@@ -1339,13 +1338,12 @@ const PhotoCaptionBlock = ( props ) => {
 			<ToolbarGroup>
 				<ToolbarButton
 					icon={ <Trash2 /> }
+					showTooltip={ true }
 					label={ __( 'Remove Caption', 'photo-block' ) }
 					onClick={ () => {
 						setRemoveCaptionModalVisible( true );
 					} }
-				>
-					{ __( 'Remove', 'photo-block' ) }
-				</ToolbarButton>
+				/>
 			</ToolbarGroup>
 			{ switchModeModalVisible && (
 				<Modal
