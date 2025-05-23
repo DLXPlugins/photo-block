@@ -1397,6 +1397,16 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     templateLock: false,
     renderAppender: _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_6__.InnerBlocks.DefaultBlockAppender
   });
+
+  // Get the parent photo block's client ID.
+  var parentClientId = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useSelect)(function (select) {
+    return select('core/block-editor').getBlockHierarchyRootClientId(clientId);
+  }, [clientId]);
+
+  // Get the parent photo block.
+  var parentBlock = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.useSelect)(function (select) {
+    return parentClientId && select('core/block-editor').getBlock(parentClientId);
+  }, [parentClientId]);
   /**
    * Get a post ID either from the block or attribute.
    *
@@ -2418,9 +2428,29 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
             captionManual: value
           });
         },
+        disableLineBreaks: true,
         id: "search-dlx-caption",
         name: "search-dlx-caption",
-        ref: setCaptionInputRef
+        ref: setCaptionInputRef,
+        onKeyDown: function onKeyDown(event) {
+          if (event.key === 'Enter') {
+            var _captionInputRef$owne;
+            /**
+             * If the cursor is at the end of the caption, select the next block or parent block if next block isn't available.
+             */
+            var selection = captionInputRef === null || captionInputRef === void 0 || (_captionInputRef$owne = captionInputRef.ownerDocument) === null || _captionInputRef$owne === void 0 || (_captionInputRef$owne = _captionInputRef$owne.defaultView) === null || _captionInputRef$owne === void 0 ? void 0 : _captionInputRef$owne.getSelection();
+            if ((selection === null || selection === void 0 ? void 0 : selection.anchorOffset) === captionManual.length) {
+              // Select the next block after the parent Photo block.
+              var nextBlockClientId = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.select)('core/block-editor').getNextBlockClientId(parentClientId);
+              if (nextBlockClientId) {
+                (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.dispatch)('core/block-editor').selectBlock(nextBlockClientId);
+              } else {
+                // Select the parent photo block.
+                (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_7__.dispatch)('core/block-editor').selectBlock(parentClientId);
+              }
+            }
+          }
+        }
       })));
     }
     return /*#__PURE__*/React.createElement("figcaption", {

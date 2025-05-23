@@ -38,6 +38,8 @@ import {
 import {
 	useDispatch,
 	useSelect,
+	dispatch,
+	select,
 } from '@wordpress/data';
 
 import {
@@ -336,6 +338,18 @@ const PhotoCaptionBlock = ( props ) => {
 			templateLock: false,
 			renderAppender: InnerBlocks.DefaultBlockAppender,
 		}
+	);
+
+	// Get the parent photo block's client ID.
+	const parentClientId = useSelect(
+		( select ) => select( 'core/block-editor' ).getBlockHierarchyRootClientId( clientId ),
+		[ clientId ]
+	);
+
+	// Get the parent photo block.
+	const parentBlock = useSelect(
+		( select ) => parentClientId && select( 'core/block-editor' ).getBlock( parentClientId ),
+		[ parentClientId ]
 	);
 	/**
 	 * Get a post ID either from the block or attribute.
@@ -1556,9 +1570,28 @@ const PhotoCaptionBlock = ( props ) => {
 							onChange={ ( value ) => {
 								setAttributes( { captionManual: value } );
 							} }
+							disableLineBreaks={ true }
 							id="search-dlx-caption"
 							name="search-dlx-caption"
 							ref={ setCaptionInputRef }
+							onKeyDown={ ( event ) => {
+								if ( event.key === 'Enter' ) {
+									/**
+									 * If the cursor is at the end of the caption, select the next block or parent block if next block isn't available.
+									 */
+									const selection = captionInputRef?.ownerDocument?.defaultView?.getSelection();
+									if ( selection?.anchorOffset === captionManual.length ) {
+										// Select the next block after the parent Photo block.
+										const nextBlockClientId = select( 'core/block-editor' ).getNextBlockClientId( parentClientId );
+										if ( nextBlockClientId ) {
+											dispatch( 'core/block-editor' ).selectBlock( nextBlockClientId );
+										} else {
+											// Select the parent photo block.
+											dispatch( 'core/block-editor' ).selectBlock( parentClientId );
+										}
+									}
+								}
+							} }
 						/>
 					</div>
 				</figcaption>
