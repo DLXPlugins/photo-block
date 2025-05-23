@@ -60,6 +60,7 @@ import {
 	AlignHorizontalJustifyStart,
 	AlignHorizontalJustifyEnd,
 	AlignHorizontalJustifyCenter,
+	ArrowUpLeft,
 } from 'lucide-react';
 
 const HtmlToReactParser = require( 'html-to-react' ).Parser;
@@ -1277,33 +1278,56 @@ const PhotoCaptionBlock = ( props ) => {
 	const localToolbar = (
 		<BlockControls>
 			{
+				(
+					<>
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ <ArrowUpLeft /> }
+								label={ __( 'Select Parent Photo Block', 'photo-block' ) }
+								onClick={ () => {
+									const photoBlock = select( 'core/block-editor' ).getBlockParentsByBlockName( clientId, 'dlxplugins/photo-block' );
+									if ( photoBlock ) {
+										dispatch( 'core/block-editor' ).selectBlock( photoBlock[ 0 ] );
+									}
+								} }
+								showTooltip={ true }
+							>
+								{ __( 'Photo', 'photo-block' ) }
+							</ToolbarButton>
+						</ToolbarGroup>
+					</>
+				)
+			}
+			{
 				( ( 'data' === photoMode || 'single' === mode || 'featuredImage' === photoMode ) && 'overlay' !== captionPosition ) && (
-					<ToolbarGroup className="dlx-photo-block__caption-align-toolbar-buttons">
-						<ToolbarButton
-							icon={ <AlignLeft /> }
-							label={ __( 'Align Left', 'photo-block' ) }
-							onClick={ () => {
-								setAttributes( { captionAlign: 'left' } );
-							} }
-							isActive={ captionAlign === 'left' }
-						/>
-						<ToolbarButton
-							icon={ <AlignCenter /> }
-							label={ __( 'Align Center', 'photo-block' ) }
-							onClick={ () => {
-								setAttributes( { captionAlign: 'center' } );
-							} }
-							isActive={ captionAlign === 'center' }
-						/>
-						<ToolbarButton
-							icon={ <AlignRight /> }
-							label={ __( 'Align Right', 'photo-block' ) }
-							onClick={ () => {
-								setAttributes( { captionAlign: 'right' } );
-							} }
-							isActive={ captionAlign === 'right' }
-						/>
-					</ToolbarGroup>
+					<>
+						<ToolbarGroup className="dlx-photo-block__caption-align-toolbar-buttons">
+							<ToolbarButton
+								icon={ <AlignLeft /> }
+								label={ __( 'Align Left', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { captionAlign: 'left' } );
+								} }
+								isActive={ captionAlign === 'left' }
+							/>
+							<ToolbarButton
+								icon={ <AlignCenter /> }
+								label={ __( 'Align Center', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { captionAlign: 'center' } );
+								} }
+								isActive={ captionAlign === 'center' }
+							/>
+							<ToolbarButton
+								icon={ <AlignRight /> }
+								label={ __( 'Align Right', 'photo-block' ) }
+								onClick={ () => {
+									setAttributes( { captionAlign: 'right' } );
+								} }
+								isActive={ captionAlign === 'right' }
+							/>
+						</ToolbarGroup>
+					</>
 				)
 			}
 			{
@@ -1368,7 +1392,7 @@ const PhotoCaptionBlock = ( props ) => {
 									{ __( 'Switch to a single-line caption format.', 'photo-block' ) }
 								</p>
 							</>
-						)	}
+						) }
 						<ButtonGroup>
 							<Button
 								variant="primary"
