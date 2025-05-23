@@ -836,14 +836,23 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
           full: attributes.url,
           width: attributes.width,
           height: attributes.height,
-          title: '',
-          caption: attributes.caption
+          title: ''
         };
         var imageAttributes = {
           photoMode: 'photo',
           screen: 'loading',
+          hasCaption: false,
           imageData: imageData
         };
+        if (attributes.caption) {
+          var captionInnerBlocks = [];
+          var captionBlock = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-caption-block', {
+            captionManual: attributes.caption
+          });
+          imageAttributes.hasCaption = true;
+          captionInnerBlocks.push(captionBlock);
+          return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-block', imageAttributes, captionInnerBlocks);
+        }
         return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('dlxplugins/photo-block', imageAttributes);
       }
     }, {
@@ -871,14 +880,28 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     to: [{
       type: 'block',
       blocks: ['core/image'],
-      transform: function transform(attributes) {
+      transform: function transform(attributes, innerBlocks) {
+        // Get inner caption block if it exists.
+        var captionBlock = null;
+        if (innerBlocks.length > 0) {
+          captionBlock = innerBlocks[0];
+          if ('dlxplugins/photo-caption-block' === captionBlock.name) {
+            // This only works for single-line captions.
+            var captionAttributes = captionBlock.attributes;
+            if ('' !== captionAttributes.captionManual) {
+              attributes.caption = captionAttributes.captionManual;
+            }
+          }
+        } else {
+          attributes.caption = '';
+        }
         var newAttributes = {
           id: attributes.imageData.id,
           url: attributes.imageData.url,
           alt: attributes.imageData.alt,
           sizeSlug: attributes.imageSize,
           title: attributes.imageData.title,
-          caption: attributes.imageData.caption
+          caption: attributes.caption
         };
         return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__.createBlock)('core/image', newAttributes);
       }

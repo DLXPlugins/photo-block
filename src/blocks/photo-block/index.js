@@ -1,6 +1,6 @@
 import metadata from './block.json';
 import { registerBlockType, createBlock } from '@wordpress/blocks';
-import { InnerBlocks } from '@wordpress/block-editor';
+import { InnerBlocks, getBlock } from '@wordpress/block-editor';
 import Edit from './edit';
 import PhotoBlockIcon from '../../components/Icons/PhotoBlockIcon';
 
@@ -181,13 +181,22 @@ registerBlockType( metadata, {
 						width: attributes.width,
 						height: attributes.height,
 						title: '',
-						caption: attributes.caption,
 					};
 					const imageAttributes = {
 						photoMode: 'photo',
 						screen: 'loading',
+						hasCaption: false,
 						imageData,
 					};
+					if ( attributes.caption ) {
+						const captionInnerBlocks = [];
+						const captionBlock = createBlock( 'dlxplugins/photo-caption-block', {
+							captionManual: attributes.caption,
+						} );
+						imageAttributes.hasCaption = true;
+						captionInnerBlocks.push( captionBlock );
+						return createBlock( 'dlxplugins/photo-block', imageAttributes, captionInnerBlocks );
+					}
 					return createBlock( 'dlxplugins/photo-block', imageAttributes );
 				},
 			},
@@ -218,14 +227,29 @@ registerBlockType( metadata, {
 			{
 				type: 'block',
 				blocks: [ 'core/image' ],
-				transform: ( attributes ) => {
+				transform: ( attributes, innerBlocks ) => {
+					// Get inner caption block if it exists.
+					let captionBlock = null;
+					if ( innerBlocks.length > 0 ) {
+						captionBlock = innerBlocks[ 0 ];
+						if ( 'dlxplugins/photo-caption-block' === captionBlock.name ) {
+							// This only works for single-line captions.
+							const captionAttributes = captionBlock.attributes;
+							if ( '' !== captionAttributes.captionManual ) {
+								attributes.caption = captionAttributes.captionManual;
+							}
+						}
+					} else {
+						attributes.caption = '';
+					}
+
 					const newAttributes = {
 						id: attributes.imageData.id,
 						url: attributes.imageData.url,
 						alt: attributes.imageData.alt,
 						sizeSlug: attributes.imageSize,
 						title: attributes.imageData.title,
-						caption: attributes.imageData.caption,
+						caption: attributes.caption,
 					};
 					return createBlock( 'core/image', newAttributes );
 				},
