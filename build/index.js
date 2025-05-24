@@ -13037,8 +13037,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     imageSize = attributes.imageSize,
     cssGramFilter = attributes.cssGramFilter,
     globalStyle = attributes.globalStyle,
-    photoPosition = attributes.photoPosition,
-    align = attributes.align;
+    photoPosition = attributes.photoPosition;
   var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(function (newSelect) {
       var maybeGlobalStyle = newSelect(_store_global_styles__WEBPACK_IMPORTED_MODULE_19__["default"]).getGlobalStyleBySlug(globalStyle);
       if (Object.keys(maybeGlobalStyle).length === 0) {
@@ -13463,7 +13462,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
    * @return {JSX.Element} The center icon.
    */
   var getCenterIcon = function getCenterIcon() {
-    switch (align) {
+    switch (photoPosition) {
       case 'none':
         return /*#__PURE__*/React.createElement(AlignNone, null);
       case 'left':
@@ -13485,11 +13484,11 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.MenuGroup, {
       className: "dlx-photo-block__alignment-dropdown-group"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.MenuItem, {
-      icon: "align-left",
-      isSelected: 'left' === align,
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_23__["default"], null),
+      isSelected: 'left' === photoPosition,
       onClick: function onClick() {
         setAttributes({
-          align: 'left'
+          photoPosition: 'left'
         });
         onClose();
       },
@@ -13497,14 +13496,14 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Align Left', 'photo-block'),
       role: "menuitemradio",
       className: classnames__WEBPACK_IMPORTED_MODULE_9___default()({
-        'is-active': 'left' === align
+        'is-active': 'left' === photoPosition
       })
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Left', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.MenuItem, {
-      icon: "align-center",
-      isSelected: 'center' === align,
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_24__["default"], null),
+      isSelected: 'center' === photoPosition,
       onClick: function onClick() {
         setAttributes({
-          align: 'center'
+          photoPosition: 'center'
         });
         onClose();
       },
@@ -13512,14 +13511,14 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Align Center', 'photo-block'),
       role: "menuitemradio",
       className: classnames__WEBPACK_IMPORTED_MODULE_9___default()({
-        'is-active': 'center' === align
+        'is-active': 'center' === photoPosition
       })
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Center', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.MenuItem, {
-      icon: "align-right",
-      isSelected: 'right' === align,
+      icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_25__["default"], null),
+      isSelected: 'right' === photoPosition,
       onClick: function onClick() {
         setAttributes({
-          align: 'right'
+          photoPosition: 'right'
         });
         onClose();
       },
@@ -13527,7 +13526,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Align Right', 'photo-block'),
       role: "menuitemradio",
       className: classnames__WEBPACK_IMPORTED_MODULE_9___default()({
-        'is-active': 'right' === align
+        'is-active': 'right' === photoPosition
       })
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Right', 'photo-block'))));
   })), innerBlockCount === 0 && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {

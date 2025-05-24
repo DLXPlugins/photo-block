@@ -86,7 +86,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		cssGramFilter,
 		globalStyle,
 		photoPosition,
-		align,
 	} = attributes;
 
 	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
@@ -490,7 +489,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 * @return {JSX.Element} The center icon.
 	 */
 	const getCenterIcon = () => {
-		switch ( align ) {
+		switch ( photoPosition ) {
 			case 'none':
 				return <AlignNone />;
 			case 'left':
@@ -525,10 +524,10 @@ const EditScreen = forwardRef( ( props, ref ) => {
 										<MenuGroup className="dlx-photo-block__alignment-dropdown-group">
 
 											<MenuItem
-												icon="align-left"
-												isSelected={ 'left' === align }
+												icon={ <AlignLeft /> }
+												isSelected={ 'left' === photoPosition }
 												onClick={ () => {
-													setAttributes( { align: 'left' } );
+													setAttributes( { photoPosition: 'left' } );
 													onClose();
 												} }
 												iconPosition="left"
@@ -536,17 +535,17 @@ const EditScreen = forwardRef( ( props, ref ) => {
 												role="menuitemradio"
 												className={
 													classnames( {
-														'is-active': 'left' === align,
+														'is-active': 'left' === photoPosition,
 													} )
 												}
 											>
 												{ __( 'Left', 'photo-block' ) }
 											</MenuItem>
 											<MenuItem
-												icon="align-center"
-												isSelected={ 'center' === align }
+												icon={ <AlignCenter /> }
+												isSelected={ 'center' === photoPosition }
 												onClick={ () => {
-													setAttributes( { align: 'center' } );
+													setAttributes( { photoPosition: 'center' } );
 													onClose();
 												} }
 												iconPosition="left"
@@ -554,17 +553,17 @@ const EditScreen = forwardRef( ( props, ref ) => {
 												role="menuitemradio"
 												className={
 													classnames( {
-														'is-active': 'center' === align,
+														'is-active': 'center' === photoPosition,
 													} )
 												}
 											>
 												{ __( 'Center', 'photo-block' ) }
 											</MenuItem>
 											<MenuItem
-												icon="align-right"
-												isSelected={ 'right' === align }
+												icon={ <AlignRight /> }
+												isSelected={ 'right' === photoPosition }
 												onClick={ () => {
-													setAttributes( { align: 'right' } );
+													setAttributes( { photoPosition: 'right' } );
 													onClose();
 												} }
 												iconPosition="left"
@@ -572,7 +571,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 												role="menuitemradio"
 												className={
 													classnames( {
-														'is-active': 'right' === align,
+														'is-active': 'right' === photoPosition,
 													} )
 												}
 											>
