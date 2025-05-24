@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.2.5
+Stable tag: 1.2.8
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -121,6 +121,19 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.2.8 =
+* Released 2025-05-24
+* ❤️ Please <a href="https://wordpress.org/support/plugin/photo-block/reviews/#new-post">Rate the Plugin</a> to help spread the word! Upcoming features include a better cropping experience, and better animated gif support.
+* Bug fix: Replacing an existing image with a caption from the media library adds a second caption.
+* Bug fix: Enter on non-multiline caption should proceed to next block or select the parent photo block.
+* Bug fix: Make sure transferring from image block to photo block brings along caption.
+* Bug fix/Feature: Allow all blocks within multi-line captions.
+* Bug fix: Prevent captions from duplicating.
+* New feature: Consolidate image alignment options to free up some space in the block toolbar.
+* New feature: Concolidate caption toolbar options to free up space.
+* New feature: Provide a "Back to Caption" button when in caption multiline mode with child blocks.
+* New feature: Provide a "Back to Photo" button in the caption block.
+
 = 1.2.5 =
 * Released 2025-05-18
 * New Feature: Set aspect ratio per responsive breakpoint.
@@ -183,7 +196,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.2.5 =
-Adding aspect ratio. Adding file dimensions and copy shortcut for image attributes. Fixed background color and drop shadow opacity values not rendering. Fixed drop shadow not working for featured images.
+= 1.2.8 =
+This update includes several important bug fixes and enhancements to improve the captioning experience. It resolves issues like duplicate captions when replacing images, captions not transferring properly from core image blocks, and unexpected behavior when pressing Enter in non-multiline captions. Captions now support all block types and are protected against duplication. On the UI side, alignment and toolbar options have been consolidated to declutter the interface, and new buttons make it easier to switch between photo and caption views when working with nested content. 
 
 
