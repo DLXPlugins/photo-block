@@ -1599,17 +1599,14 @@ const PhotoCaptionBlock = ( props ) => {
 							onKeyDown={ ( event ) => {
 								if ( event.key === 'Enter' ) {
 									/**
-									 * If the cursor is at the end of the caption, select the next block or parent block if next block isn't available.
+									 * If the cursor is at the end of the caption, select the parent photo block.
 									 */
 									const selection = captionInputRef?.ownerDocument?.defaultView?.getSelection();
 									if ( selection?.anchorOffset === captionManual.length ) {
-										// Select the next block after the parent Photo block.
-										const nextBlockClientId = select( 'core/block-editor' ).getNextBlockClientId( parentClientId );
-										if ( nextBlockClientId ) {
-											dispatch( 'core/block-editor' ).selectBlock( nextBlockClientId );
-										} else {
-											// Select the parent photo block.
-											dispatch( 'core/block-editor' ).selectBlock( parentClientId );
+										// Caption parents.
+										const captionParents = select( 'core/block-editor' ).getBlockParentsByBlockName( clientId, 'dlxplugins/photo-block' );
+										if ( captionParents ) {
+											dispatch( 'core/block-editor' ).selectBlock( captionParents[ 0 ] );
 										}
 									}
 								}
