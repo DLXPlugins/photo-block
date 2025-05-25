@@ -129,6 +129,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 * Bug fix: Make sure transferring from image block to photo block brings along caption.
 * Bug fix/Feature: Allow all blocks within multi-line captions.
 * Bug fix: Prevent captions from duplicating.
+* Bug fix: Single-line captions should select parent block on Enter keypress.
 * New feature: Consolidate image alignment options to free up some space in the block toolbar.
 * New feature: Concolidate caption toolbar options to free up space.
 * New feature: Provide a "Back to Caption" button when in caption multiline mode with child blocks.
