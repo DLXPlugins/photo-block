@@ -644,8 +644,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					<ToolbarButton
 						icon={ <Accessibility /> }
 						label={ __( 'Set Accessibility Options', 'photo-block' ) }
-						onClick={ () => {
-							setA11yPopover( ! a11yPopover );
+						onMouseDown={ () => {
+							setA11yPopover( true );
 						} }
 						ref={ setA11yButton }
 					/>
@@ -653,8 +653,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<ToolbarButton
 							icon={ <Link /> }
 							label={ __( 'Set Link Options', 'photo-block' ) }
-							onClick={ () => {
-								setMediaLinkPopover( ! mediaLinkPopover );
+							onMouseDown={ () => {
+								setMediaLinkPopover( true );
 							} }
 							ref={ setMediaLinkRef }
 						/>

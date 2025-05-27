@@ -8420,10 +8420,7 @@ var MediaLink = function MediaLink(props) {
     position: "bottom center",
     className: "dlx-photo-block__media-link-popover",
     expandOnMobile: true,
-    focusOnMount: true,
-    onClose: function onClose() {
-      props.onClose();
-    },
+    onClose: props.onClose,
     anchor: anchorRef
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__media-link-container"
@@ -13589,15 +13586,15 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_29__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Set Accessibility Options', 'photo-block'),
-    onClick: function onClick() {
-      setA11yPopover(!a11yPopover);
+    onMouseDown: function onMouseDown() {
+      setA11yPopover(true);
     },
     ref: setA11yButton
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_30__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Set Link Options', 'photo-block'),
-    onClick: function onClick() {
-      setMediaLinkPopover(!mediaLinkPopover);
+    onMouseDown: function onMouseDown() {
+      setMediaLinkPopover(true);
     },
     ref: setMediaLinkRef
   }))), mediaLinkPopover && /*#__PURE__*/React.createElement(_components_MediaLink__WEBPACK_IMPORTED_MODULE_12__["default"], {

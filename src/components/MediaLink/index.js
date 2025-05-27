@@ -76,10 +76,7 @@ const MediaLink = ( props ) => {
 				position="bottom center"
 				className="dlx-photo-block__media-link-popover"
 				expandOnMobile={ true }
-				focusOnMount={ true }
-				onClose={ () => {
-					props.onClose();
-				} }
+				onClose={ props.onClose }
 				anchor={ anchorRef }
 			>
 				<div className="dlx-photo-block__media-link-container">
