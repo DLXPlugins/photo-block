@@ -390,6 +390,115 @@ class Functions {
 	}
 
 	/**
+	 * Get the default attributes for the photo block.
+	 *
+	 * @param bool $force_refresh If true, the defaults will be refreshed from the block metadata.
+	 *
+	 * @return array The default attributes.
+	 */
+	public static function get_photo_block_defaults( $force_refresh = false ) {
+		// Check if the defaults are already cached.
+		$defaults = wp_cache_get( 'dlx_photo_block_default_attributes', 'photo-block' );
+		if ( ! $force_refresh && $defaults ) {
+			return $defaults;
+		}
+		wp_cache_delete( 'dlx_photo_block_default_attributes', 'photo-block' );
+
+		// If not, get the defaults from the block metadata.
+		$block_meta = \WP_Block_Type_Registry::get_instance()->get_registered( 'dlxplugins/photo-block' );
+		$defaults   = array();
+
+		if ( $block_meta && isset( $block_meta->attributes ) ) {
+			foreach ( $block_meta->attributes as $key => $attribute ) {
+				if ( isset( $attribute['default'] ) ) {
+					$defaults[ $key ] = $attribute['default'];
+				} else {
+					// Handle nested defaults based on type.
+					switch ( $attribute['type'] ) {
+						case 'string':
+							$defaults[ $key ] = '';
+							break;
+						case 'number':
+							$defaults[ $key ] = 0;
+							break;
+						case 'boolean':
+							$defaults[ $key ] = false;
+							break;
+						case 'array':
+							$defaults[ $key ] = array();
+							break;
+						case 'object':
+							// For objects, we need to check if there are nested defaults.
+							if ( isset( $attribute['properties'] ) ) {
+								$defaults[ $key ] = self::get_nested_defaults( $attribute['properties'] );
+							} else {
+								$defaults[ $key ] = array();
+							}
+							break;
+						default:
+							$defaults[ $key ] = null;
+					}
+				}
+			}
+		}
+
+		/**
+		 * Filter the default attributes for the photo block.
+		 *
+		 * @param array $defaults The default attributes.
+		 * @param \WP_Block_Type_Registry $block_meta The block metadata.
+		 * @return array The default attributes.
+		 */
+		$defaults = apply_filters( 'dlx_photo_block_default_attributes', $defaults, $block_meta );
+
+		// Now do some caching since this lookup was likely expensive.
+		wp_cache_set( 'dlx_photo_block_default_attributes', $defaults, 'photo-block' );
+		return $defaults;
+	}
+
+	/**
+	 * Get nested defaults for object properties.
+	 *
+	 * @param array $properties The properties to get defaults for.
+	 * @return array The nested defaults.
+	 */
+	private static function get_nested_defaults( $properties ) {
+		$defaults = array();
+		foreach ( $properties as $key => $property ) {
+			if ( isset( $property['default'] ) ) {
+				$defaults[ $key ] = $property['default'];
+			} else {
+				// Handle nested defaults based on type.
+				switch ( $property['type'] ) {
+					case 'string':
+						$defaults[ $key ] = '';
+						break;
+					case 'number':
+						$defaults[ $key ] = 0;
+						break;
+					case 'boolean':
+						$defaults[ $key ] = false;
+						break;
+					case 'array':
+						$defaults[ $key ] = array();
+						break;
+					case 'object':
+						// For objects, we need to check if there are nested defaults.
+						if ( isset( $property['properties'] ) ) {
+							$defaults[ $key ] = self::get_nested_defaults( $property['properties'] );
+						} else {
+							$defaults[ $key ] = array();
+						}
+						break;
+					default:
+						$defaults[ $key ] = null;
+				}
+			}
+		}
+		return $defaults;
+	}
+
+	/**
 	 * Generate the main photo block's CSS.
 	 *
 	 * @param array  $attributes The block attributes.
@@ -399,6 +508,10 @@ class Functions {
 	 * @return string The generated CSS.
 	 */
 	public static function generate_photo_block_css( $attributes, $unique_id, $is_class = false ) {
+		// Get Photo Block defaults.
+		$defaults   = self::get_photo_block_defaults();
+		$attributes = wp_parse_args( $attributes, $defaults );
+
 		// Placeholder for all CSS styles generated.
 		$css_output = '';
 
@@ -529,6 +642,10 @@ class Functions {
 	 * @return string The generated CSS.
 	 */
 	public static function generate_photo_block_caption_css( $attributes, $unique_id, $is_class = false ) {
+		// Get the defaults.
+		$defaults   = self::get_photo_caption_block_defaults();
+		$attributes = wp_parse_args( $attributes, $defaults );
+
 		// Begin styles.
 		$css_output = '';
 		$css_helper = new CSS_Helper(
@@ -2273,5 +2390,72 @@ class Functions {
 				$device
 			);
 		}
+	}
+
+	/**
+	 * Get the default attributes for the photo caption block.
+	 *
+	 * @param bool $force_refresh If true, the defaults will be refreshed from the block metadata.
+	 *
+	 * @return array The default attributes.
+	 */
+	public static function get_photo_caption_block_defaults( $force_refresh = false ) {
+		// Check if the defaults are already cached.
+		$defaults = wp_cache_get( 'dlx_photo_caption_block_default_attributes', 'photo-block' );
+		if ( ! $force_refresh && $defaults ) {
+			return $defaults;
+		}
+		wp_cache_delete( 'dlx_photo_caption_block_default_attributes', 'photo-block' );
+
+		// If not, get the defaults from the block metadata.
+		$block_meta = \WP_Block_Type_Registry::get_instance()->get_registered( 'dlxplugins/photo-caption-block' );
+		$defaults   = array();
+
+		if ( $block_meta && isset( $block_meta->attributes ) ) {
+			foreach ( $block_meta->attributes as $key => $attribute ) {
+				if ( isset( $attribute['default'] ) ) {
+					$defaults[ $key ] = $attribute['default'];
+				} else {
+					// Handle nested defaults based on type.
+					switch ( $attribute['type'] ) {
+						case 'string':
+							$defaults[ $key ] = '';
+							break;
+						case 'number':
+							$defaults[ $key ] = 0;
+							break;
+						case 'boolean':
+							$defaults[ $key ] = false;
+							break;
+						case 'array':
+							$defaults[ $key ] = array();
+							break;
+						case 'object':
+							// For objects, we need to check if there are nested defaults.
+							if ( isset( $attribute['properties'] ) ) {
+								$defaults[ $key ] = self::get_nested_defaults( $attribute['properties'] );
+							} else {
+								$defaults[ $key ] = array();
+							}
+							break;
+						default:
+							$defaults[ $key ] = null;
+					}
+				}
+			}
+		}
+
+		/**
+		 * Filter the default attributes for the photo caption block.
+		 *
+		 * @param array $defaults The default attributes.
+		 * @param \WP_Block_Type_Registry $block_meta The block metadata.
+		 * @return array The default attributes.
+		 */
+		$defaults = apply_filters( 'dlx_photo_caption_block_default_attributes', $defaults, $block_meta );
+
+		// Now do some caching since this lookup was likely expensive.
+		wp_cache_set( 'dlx_photo_caption_block_default_attributes', $defaults, 'photo-block' );
+		return $defaults;
 	}
 }

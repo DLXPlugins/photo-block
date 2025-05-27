@@ -65,7 +65,7 @@ class Global_Styles {
 			if ( $posts ) {
 				$global_styles = array();
 				foreach ( $posts as $post ) {
-					$content   = json_decode( $post->post_content, true );
+					$content = json_decode( $post->post_content, true );
 					if ( null === $content ) {
 						continue;
 					}
@@ -603,7 +603,9 @@ class Global_Styles {
 			$caption_attributes = Functions::sanitize_array_recursive( $content_attributes['captionAttributes'] );
 			$css_class          = sanitize_text_field( get_post_meta( $global_style->ID, '_dlx_pb_css_class', true ) );
 			$css_string        .= Functions::generate_photo_block_css( $photo_attributes, $css_class, true );
-			$css_string        .= Functions::generate_photo_block_caption_css( $caption_attributes, $css_class, true );
+			if ( ! empty( $caption_attributes ) ) {
+				$css_string .= Functions::generate_photo_block_caption_css( $caption_attributes, $css_class, true );
+			}
 		}
 
 		/**

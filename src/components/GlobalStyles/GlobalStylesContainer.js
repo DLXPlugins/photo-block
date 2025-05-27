@@ -68,7 +68,7 @@ const GlobalStylesContainer = ( props ) => {
 		};
 	};
 
-	const { createSuccessNotice, createWarningNotice } = useDispatch( 'core/notices' );
+	const { createSuccessNotice, createWarningNotice, createErrorNotice } = useDispatch( 'core/notices' );
 
 	const { control, handleSubmit, setValue, trigger, setError, clearErrors, getValues } = useForm( {
 		defaultValues: getDefaultValues(),
@@ -113,11 +113,11 @@ const GlobalStylesContainer = ( props ) => {
 			.then( ( json ) => {
 				const { success, data } = json;
 				if ( ! success ) {
-					setError( 'formAjaxError', {
+					setError( 'globalStyleAjaxError', {
 						type: 'ajax',
 						message: data.message,
 					} );
-					createWarningNotice(
+					createErrorNotice(
 						__( 'There was an error saving the global style CSS file.', 'photo-block' ),
 						{
 							type: 'snackbar',
@@ -132,9 +132,20 @@ const GlobalStylesContainer = ( props ) => {
 						type: 'snackbar',
 					}
 				);
-				setRefreshGlobalStyles( false );
 			} )
 			.catch( ( error ) => {
+				setError( 'globalStyleAjaxError', {
+					type: 'ajax',
+					message: error.message,
+				} );
+				createErrorNotice(
+					__( 'There was san error saving the global style CSS file.', 'photo-block' ),
+					{
+						type: 'snackbar',
+					}
+				);
+			} ).finally( () => {
+				setRefreshGlobalStyles( false );
 			} );
 	};
 

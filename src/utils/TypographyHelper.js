@@ -190,10 +190,11 @@ export function buildBorderCSS( props, screenSize, prefix ) {
 		const topBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.top.borderStyle, 'top', 'borderStyle' );
 
 		let CSSRule = '';
-		CSSRule += `${ prefix }-border-top: ${ topValue }${ topUnit } ${ topBorderStyle } ${ topColor };`;
-		CSSRule += `${ prefix }-border-right: ${ topValue }${ topUnit } ${ topBorderStyle } ${ rightColor };`;
-		CSSRule += `${ prefix }-border-bottom: ${ topValue }${ topUnit } ${ topBorderStyle } ${ bottomColor };`;
-		CSSRule += `${ prefix }-border-left: ${ topValue }${ topUnit } ${ topBorderStyle } ${ leftColor };`;
+		CSSRule += `${ prefix }-border-top: ${ topValue }${ topUnit ? topUnit : 'px' } ${ topBorderStyle } ${ topColor };`;
+		CSSRule += `${ prefix }-border-right: ${ topValue }${ topUnit ? topUnit : 'px' } ${ topBorderStyle } ${ topColor };`;
+		CSSRule += `${ prefix }-border-bottom: ${ topValue }${ topUnit ? topUnit : 'px' } ${ topBorderStyle } ${ topColor };`;
+		CSSRule += `${ prefix }-border-left: ${ topValue }${ topUnit ? topUnit : 'px' } ${ topBorderStyle } ${ topColor };`;
+		return CSSRule;
 	}
 
 	const top = geHierarchicalPlaceholderValue( props, screenSize, border.top.width, 'top', 'width' );
@@ -225,10 +226,10 @@ export function buildBorderCSS( props, screenSize, prefix ) {
 	);
 	const leftBorderStyle = geHierarchicalPlaceholderValue( props, screenSize, border.left.borderStyle, 'left', 'borderStyle' );
 	let CSSRule = '';
-	CSSRule += `${ prefix }-border-top: ${ top }${ topUnit } ${ topBorderStyle } ${ topColor };`;
-	CSSRule += `${ prefix }-border-right: ${ right }${ rightUnit } ${ rightBorderStyle } ${ rightColor };`;
-	CSSRule += `${ prefix }-border-bottom: ${ bottom }${ bottomUnit } ${ bottomBorderStyle } ${ bottomColor };`;
-	CSSRule += `${ prefix }-border-left: ${ left }${ leftUnit } ${ leftBorderStyle } ${ leftColor };`;
+	CSSRule += `${ prefix }-border-top: ${ top }${ topUnit ? topUnit : '' } ${ topBorderStyle } ${ topColor };`;
+	CSSRule += `${ prefix }-border-right: ${ right }${ rightUnit ? rightUnit : '' } ${ rightBorderStyle } ${ rightColor };`;
+	CSSRule += `${ prefix }-border-bottom: ${ bottom }${ bottomUnit ? bottomUnit : '' } ${ bottomBorderStyle } ${ bottomColor };`;
+	CSSRule += `${ prefix }-border-left: ${ left }${ leftUnit ? leftUnit : '' } ${ leftBorderStyle } ${ leftColor };`;
 	return CSSRule;
 }
 
