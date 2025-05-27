@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.2.8
+Stable tag: 1.2.11
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -61,9 +61,15 @@ To assist or help this plugin financially, <a href="https://github.com/sponsors/
 
 == Frequently Asked Questions ==
 
+= Do you have a demo? =
+
+Yes. <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a free demo</a> via InstaWP (no email or login required).
+
 = How does this block differs from the core image block? =
 
 Photo Block offers more advanced customization options like responsive layouts, a fully-featurd caption, caption overlays, and the ability to reuse styles across multiple blocks using global styles. It’s built for power users who want more control over their image presentation.
+
+Please see the <a href="https://docs.dlxplugins.com/photo-block">Photo Block documentation</a> for a full list of features.
 
 = Does this work with data? =
 
@@ -121,9 +127,15 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.2.11 =
+* Released 2025-05-27
+* ⭐️ Please <a href="https://wordpress.org/support/plugin/photo-block/reviews/#new-post">Rate the Plugin</a> ❤️ to help spread the word and encourage future development.
+* Bug fix: Setting block defaults for Photos and Captions. This will make generating and setting styles more reliable.
+* Bug fix: Errors in global style generation will now be visible.
+* Bug fix: Popover states in the block toolbar refused to close.
+
 = 1.2.8 =
 * Released 2025-05-24
-* ❤️ Please <a href="https://wordpress.org/support/plugin/photo-block/reviews/#new-post">Rate the Plugin</a> to help spread the word! Upcoming features include a better cropping experience, and better animated gif support.
 * Bug fix: Replacing an existing image with a caption from the media library adds a second caption.
 * Bug fix: Enter on non-multiline caption should proceed to next block or select the parent photo block.
 * Bug fix: Make sure transferring from image block to photo block brings along caption.
@@ -197,7 +209,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.2.8 =
-This update includes several important bug fixes and enhancements to improve the captioning experience. It resolves issues like duplicate captions when replacing images, captions not transferring properly from core image blocks, and unexpected behavior when pressing Enter in non-multiline captions. Captions now support all block types and are protected against duplication. On the UI side, alignment and toolbar options have been consolidated to declutter the interface, and new buttons make it easier to switch between photo and caption views when working with nested content. 
+= 1.2.11 =
+This update fixes several global style issues, notably block editor output, and frontend style generation that could error out if a default wasn't set.
 
 
