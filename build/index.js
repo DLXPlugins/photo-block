@@ -608,11 +608,25 @@ var PhotoBlock = function PhotoBlock(props) {
     Object.values(globalStyles).forEach(function (globalStyle) {
       var photoAttributes = globalStyle.content.photoAttributes;
       var captionAttributes = globalStyle.content.captionAttributes;
-      ['desktop', 'tablet', 'mobile'].forEach(function (device) {
-        var deviceStyles = (0,_block_styles__WEBPACK_IMPORTED_MODULE_17__["default"])(photoAttributes, device, globalStyle.css_class, true);
-        deviceStyles += (0,_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_18__["default"])(captionAttributes, device, globalStyle.css_class, true);
-        photoStyles += deviceStyles;
-      });
+
+      // Desktop styles (base styles)
+      var deviceStyles = (0,_block_styles__WEBPACK_IMPORTED_MODULE_17__["default"])(photoAttributes, 'desktop', globalStyle.css_class, true);
+      deviceStyles += (0,_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_18__["default"])(captionAttributes, 'desktop', globalStyle.css_class, true);
+      photoStyles += deviceStyles;
+
+      // Tablet styles
+      deviceStyles = (0,_block_styles__WEBPACK_IMPORTED_MODULE_17__["default"])(photoAttributes, 'tablet', globalStyle.css_class, true);
+      deviceStyles += (0,_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_18__["default"])(captionAttributes, 'tablet', globalStyle.css_class, true);
+      if (deviceStyles) {
+        photoStyles += "@media screen and (max-width: 1024px) { ".concat(deviceStyles, " }");
+      }
+
+      // Mobile styles
+      deviceStyles = (0,_block_styles__WEBPACK_IMPORTED_MODULE_17__["default"])(photoAttributes, 'mobile', globalStyle.css_class, true);
+      deviceStyles += (0,_photo_caption_block_block_styles__WEBPACK_IMPORTED_MODULE_18__["default"])(captionAttributes, 'mobile', globalStyle.css_class, true);
+      if (deviceStyles) {
+        photoStyles += "@media screen and (max-width: 768px) { ".concat(deviceStyles, " }");
+      }
     });
     return photoStyles;
   }, [getGlobalStyles, globalStyleRefresh]);
@@ -16248,12 +16262,10 @@ var shorthandCSSUnits = function shorthandCSSUnits(top, topUnit, right, rightUni
  *
  * @param {string} screenSize  desktop|tablet|mobile.
  * @param {Object} valueObject Value object with unit.
- * @param {string} cssValue    CSS value. (e.g., width, height). Empty string if width is empty.
  *
  * @return {string} CSS value for screen size.
  */
 var getValueWithUnit = function getValueWithUnit(screenSize, valueObject) {
-  var cssValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'width';
   if (typeof valueObject === 'undefined') {
     return '';
   }
@@ -16319,9 +16331,6 @@ function buildDimensionsCSS(props, screenSize) {
   }
   return '';
 }
-var isRgba = function isRgba(color) {
-  return color.startsWith('rgba');
-};
 
 /**
  * Return a color based on passed alpha value.
@@ -16419,32 +16428,47 @@ function buildBorderCSS(props, screenSize, prefix) {
  */
 function geHierarchicalPlaceholderValue(props, screenSize, value, type) {
   var subType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
-  // Check mobile screen size.
-  if ('mobile' === screenSize && '' === value) {
-    // Check tablet.
-    if (subType && props.tablet[type][subType] !== '') {
-      return props.tablet[type][subType];
-    } else if (subType && props.desktop[type][subType] !== '') {
-      // Check desktop.
-      return props.desktop[type][subType];
-    } else if (props.tablet[type] !== '') {
-      return props.tablet[type];
-    } else if (props.desktop[type] !== '') {
-      return props.desktop[type];
-    }
-  }
-
-  // Check tablet screen size.
-  if ('tablet' === screenSize && '' === value) {
-    if (subType && props.desktop[type][subType] !== '') {
-      // Check desktop.
-      return props.desktop[type][subType];
-    } else if (props.desktop[type] !== '') {
-      return props.desktop[type];
-    }
-  }
+  // If value is set, return it immediately.
   if ('' !== value) {
     return value;
+  }
+
+  // Define the hierarchy chain for each device.
+  var hierarchyChain = {
+    mobile: ['tablet', 'desktop'],
+    tablet: ['desktop'],
+    desktop: []
+  };
+
+  // Get the chain for current device.
+  var chain = hierarchyChain[screenSize];
+
+  // Check each device in the chain.
+  var _iterator = _createForOfIteratorHelper(chain),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var device = _step.value;
+      if (subType) {
+        var _props$device;
+        // Check for nested property.
+        var deviceValue = (_props$device = props[device]) === null || _props$device === void 0 || (_props$device = _props$device[type]) === null || _props$device === void 0 ? void 0 : _props$device[subType];
+        if (deviceValue !== undefined && deviceValue !== '') {
+          return deviceValue;
+        }
+      } else {
+        var _props$device2;
+        // Check for direct property.
+        var _deviceValue = (_props$device2 = props[device]) === null || _props$device2 === void 0 ? void 0 : _props$device2[type];
+        if (_deviceValue !== undefined && _deviceValue !== '') {
+          return _deviceValue;
+        }
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
   }
   return '';
 }
@@ -16452,41 +16476,36 @@ function geHierarchicalPlaceholderValue(props, screenSize, value, type) {
 /**
  * Get the hierarchical value unit.
  *
- * @param {Object}  values     The values object.
- * @param {string}  device     The device type.
- * @param {string}  value      The value to check.
- * @param {string}  valueKey   The value key to check.
- * @param {boolean} returnUnit Whether to return the unit.
+ * @param {Object} values   The values object.
+ * @param {string} device   The device type.
+ * @param {string} value    The value to check.
+ * @param {string} valueKey The value key to check.
  *
  * @return {string} The hierarchical value unit.
  */
 var getHierarchicalValueUnit = function getHierarchicalValueUnit(values, device, value, valueKey) {
-  var _values$device;
   // If value is directly provided and valid, return it.
   if (value && '' !== value) {
     return value;
   }
 
-  // Get device-specific value.
-  var deviceValue = (_values$device = values[device]) === null || _values$device === void 0 ? void 0 : _values$device[valueKey];
-  if (deviceValue && '' !== deviceValue) {
-    return deviceValue;
-  }
-
-  // Fallback hierarchy: Desktop -> Tablet -> Mobile.
-  var deviceHierarchy = {
-    mobile: ['desktop', 'tablet'],
-    tablet: ['desktop', 'mobile'],
-    desktop: ['tablet', 'mobile']
+  // Define the hierarchy chain for each device.
+  var hierarchyChain = {
+    mobile: ['tablet', 'desktop'],
+    tablet: ['desktop'],
+    desktop: []
   };
 
-  // Check hierarchy for the current device.
-  var _iterator = _createForOfIteratorHelper(deviceHierarchy[device]),
-    _step;
+  // Get the chain for current device.
+  var chain = hierarchyChain[device];
+
+  // Check each device in the chain.
+  var _iterator2 = _createForOfIteratorHelper(chain),
+    _step2;
   try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
       var _values$fallbackDevic;
-      var fallbackDevice = _step.value;
+      var fallbackDevice = _step2.value;
       var fallbackValue = (_values$fallbackDevic = values[fallbackDevice]) === null || _values$fallbackDevic === void 0 ? void 0 : _values$fallbackDevic[valueKey];
       if (fallbackValue && '' !== fallbackValue) {
         return fallbackValue;
@@ -16495,9 +16514,9 @@ var getHierarchicalValueUnit = function getHierarchicalValueUnit(values, device,
 
     // Default to 'px' if no valid unit is found.
   } catch (err) {
-    _iterator.e(err);
+    _iterator2.e(err);
   } finally {
-    _iterator.f();
+    _iterator2.f();
   }
   return 'px';
 };

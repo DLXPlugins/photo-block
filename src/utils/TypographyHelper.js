@@ -50,11 +50,10 @@ const shorthandCSSUnits = ( top, topUnit, right, rightUnit, bottom, bottomUnit, 
  *
  * @param {string} screenSize  desktop|tablet|mobile.
  * @param {Object} valueObject Value object with unit.
- * @param {string} cssValue    CSS value. (e.g., width, height). Empty string if width is empty.
  *
  * @return {string} CSS value for screen size.
  */
-export const getValueWithUnit = ( screenSize, valueObject, cssValue = 'width' ) => {
+export const getValueWithUnit = ( screenSize, valueObject ) => {
 	if ( typeof valueObject === 'undefined' ) {
 		return '';
 	}
@@ -126,10 +125,6 @@ export function buildDimensionsCSS( props, screenSize ) {
 
 	return '';
 }
-
-const isRgba = ( color ) => {
-	return color.startsWith( 'rgba' );
-};
 
 /**
  * Return a color based on passed alpha value.
@@ -245,33 +240,36 @@ export function buildBorderCSS( props, screenSize, prefix ) {
  * @return {string} Value placeholder.
  */
 export function geHierarchicalPlaceholderValue( props, screenSize, value, type, subType = '' ) {
-	// Check mobile screen size.
-	if ( 'mobile' === screenSize && '' === value ) {
-		// Check tablet.
-		if ( subType && props.tablet[ type ][ subType ] !== '' ) {
-			return props.tablet[ type ][ subType ];
-		} else if ( subType && props.desktop[ type ][ subType ] !== '' ) {
-			// Check desktop.
-			return props.desktop[ type ][ subType ];
-		} else if ( props.tablet[ type ] !== '' ) {
-			return props.tablet[ type ];
-		} else if ( props.desktop[ type ] !== '' ) {
-			return props.desktop[ type ];
-		}
-	}
-
-	// Check tablet screen size.
-	if ( 'tablet' === screenSize && '' === value ) {
-		if ( subType && props.desktop[ type ][ subType ] !== '' ) {
-			// Check desktop.
-			return props.desktop[ type ][ subType ];
-		} else if ( props.desktop[ type ] !== '' ) {
-			return props.desktop[ type ];
-		}
-	}
-
+	// If value is set, return it immediately.
 	if ( '' !== value ) {
 		return value;
+	}
+
+	// Define the hierarchy chain for each device.
+	const hierarchyChain = {
+		mobile: [ 'tablet', 'desktop' ],
+		tablet: [ 'desktop' ],
+		desktop: [],
+	};
+
+	// Get the chain for current device.
+	const chain = hierarchyChain[ screenSize ];
+
+	// Check each device in the chain.
+	for ( const device of chain ) {
+		if ( subType ) {
+			// Check for nested property.
+			const deviceValue = props[ device ]?.[ type ]?.[ subType ];
+			if ( deviceValue !== undefined && deviceValue !== '' ) {
+				return deviceValue;
+			}
+		} else {
+			// Check for direct property.
+			const deviceValue = props[ device ]?.[ type ];
+			if ( deviceValue !== undefined && deviceValue !== '' ) {
+				return deviceValue;
+			}
+		}
 	}
 
 	return '';
@@ -280,11 +278,10 @@ export function geHierarchicalPlaceholderValue( props, screenSize, value, type, 
 /**
  * Get the hierarchical value unit.
  *
- * @param {Object}  values     The values object.
- * @param {string}  device     The device type.
- * @param {string}  value      The value to check.
- * @param {string}  valueKey   The value key to check.
- * @param {boolean} returnUnit Whether to return the unit.
+ * @param {Object} values   The values object.
+ * @param {string} device   The device type.
+ * @param {string} value    The value to check.
+ * @param {string} valueKey The value key to check.
  *
  * @return {string} The hierarchical value unit.
  */
@@ -294,21 +291,18 @@ export const getHierarchicalValueUnit = ( values, device, value, valueKey ) => {
 		return value;
 	}
 
-	// Get device-specific value.
-	const deviceValue = values[ device ]?.[ valueKey ];
-	if ( deviceValue && '' !== deviceValue ) {
-		return deviceValue;
-	}
-
-	// Fallback hierarchy: Desktop -> Tablet -> Mobile.
-	const deviceHierarchy = {
-		mobile: [ 'desktop', 'tablet' ],
-		tablet: [ 'desktop', 'mobile' ],
-		desktop: [ 'tablet', 'mobile' ],
+	// Define the hierarchy chain for each device.
+	const hierarchyChain = {
+		mobile: [ 'tablet', 'desktop' ],
+		tablet: [ 'desktop' ],
+		desktop: [],
 	};
 
-	// Check hierarchy for the current device.
-	for ( const fallbackDevice of deviceHierarchy[ device ] ) {
+	// Get the chain for current device.
+	const chain = hierarchyChain[ device ];
+
+	// Check each device in the chain.
+	for ( const fallbackDevice of chain ) {
 		const fallbackValue = values[ fallbackDevice ]?.[ valueKey ];
 		if ( fallbackValue && '' !== fallbackValue ) {
 			return fallbackValue;

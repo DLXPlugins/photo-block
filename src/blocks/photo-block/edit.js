@@ -343,11 +343,24 @@ const PhotoBlock = ( props ) => {
 			const photoAttributes = globalStyle.content.photoAttributes;
 			const captionAttributes = globalStyle.content.captionAttributes;
 
-			[ 'desktop', 'tablet', 'mobile' ].forEach( ( device ) => {
-				let deviceStyles = getStyles( photoAttributes, device, globalStyle.css_class, true );
-				deviceStyles += getStylesCaption( captionAttributes, device, globalStyle.css_class, true );
-				photoStyles += deviceStyles;
-			} );
+			// Desktop styles (base styles)
+			let deviceStyles = getStyles( photoAttributes, 'desktop', globalStyle.css_class, true );
+			deviceStyles += getStylesCaption( captionAttributes, 'desktop', globalStyle.css_class, true );
+			photoStyles += deviceStyles;
+
+			// Tablet styles
+			deviceStyles = getStyles( photoAttributes, 'tablet', globalStyle.css_class, true );
+			deviceStyles += getStylesCaption( captionAttributes, 'tablet', globalStyle.css_class, true );
+			if ( deviceStyles ) {
+				photoStyles += `@media screen and (max-width: 1024px) { ${ deviceStyles } }`;
+			}
+
+			// Mobile styles
+			deviceStyles = getStyles( photoAttributes, 'mobile', globalStyle.css_class, true );
+			deviceStyles += getStylesCaption( captionAttributes, 'mobile', globalStyle.css_class, true );
+			if ( deviceStyles ) {
+				photoStyles += `@media screen and (max-width: 768px) { ${ deviceStyles } }`;
+			}
 		} );
 		return photoStyles;
 	}, [ getGlobalStyles, globalStyleRefresh ] );
