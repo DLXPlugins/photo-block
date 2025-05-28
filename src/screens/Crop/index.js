@@ -6,19 +6,12 @@ import {
 	Spinner,
 	PanelBody,
 	PanelRow,
-	RangeControl,
-	TextControl,
-	TextareaControl,
-	ButtonGroup,
 	Button,
-	ToggleControl,
-	Toolbar,
 	ToolbarItem,
 	ToolbarButton,
 	ToolbarGroup,
 	ToolbarDropdownMenu,
-	Popover,
-	PlaceHolder,
+	Modal,
 	MenuGroup,
 	MenuItem,
 } from '@wordpress/components';
@@ -387,303 +380,315 @@ const CropScreen = ( props ) => {
 	);
 
 	const localToolbar = (
-		<BlockControls>
-			<ToolbarButton
-				label={ __( 'Back', 'photo-block' ) }
-				icon={ <ArrowBigLeftDash />
-				}
-				variant="secondary"
-				onClick={ () => {
-					setScreen( 'edit' );
-				} }
-				className="dlx-photo-block__toolbar-back-button"
-			>
-				{ __( 'Back', 'photo-block' ) }
-			</ToolbarButton>
-			<ToolbarGroup>
-				<ToolbarDropdownMenu
-					icon={ <AspectRatioIcon /> }
-					label={ __( 'Ratio', 'photo-block' ) + ' ' + aspectRatioToolbarSelection }
-					className="dlx-photo-block__aspect-ratio-dropdown"
-				>
-					{ ( { onClose } ) => (
-						<>
-							<MenuGroup className="dlx-photo-block__aspect-ratio-group">
-								<MenuItem
-									icon={ 'original' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ 'original' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( 'original' );
-										handleAspectRatioChange( fullsizePhoto?.width, fullsizePhoto?.height );
-										onClose();
-									} }
-									className="is-active"
-								>
-									{ __( 'Original', 'photo-block' ) }
-								</MenuItem>
-								<MenuItem
-									icon={ 'square' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ 'square' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( 'square' );
-										handleAspectRatioChange( 1, 1 );
-										onClose();
-									} }
-								>
-									{ __( 'Square', 'photo-block' ) }
-								</MenuItem>
-								<MenuItem
-									icon={ 'custom' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ 'custom' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( 'custom' );
-										onClose();
-										setIsDirty( true );
-									} }
-								>
-									{ __( 'Custom', 'photo-block' ) }
-								</MenuItem>
-							</MenuGroup>
-							<MenuGroup
-								label={ __( 'Landscape', 'photo-block' ) }
-								className="dlx-photo-block__aspect-ratio-group"
-							>
-								<MenuItem
-									icon={ '16:10' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ '16:10' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( '16:10' );
-										handleAspectRatioChange( 16, 10 );
-										onClose();
-									} }
-								>
-									{ __( '16:10', 'photo-block' ) }
-								</MenuItem>
-								<MenuItem
-									icon={ '16:9' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ '16:9' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( '16:9' );
-										handleAspectRatioChange( 16, 9 );
-										onClose();
-									} }
-								>
-									{ __( '16:9', 'photo-block' ) }
-								</MenuItem>
-								<MenuItem
-									icon={ '4:3' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ '4:3' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( '4:3' );
-										handleAspectRatioChange( 4, 3 );
-										onClose();
-									} }
-								>
-									{ __( '4:3', 'photo-block' ) }
-								</MenuItem>
-								<MenuItem
-									icon={ '3:2' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ '3:2' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( '3:2' );
-										handleAspectRatioChange( 3, 2 );
-										onClose();
-									} }
-								>
-									{ __( '3:2', 'photo-block' ) }
-								</MenuItem>
-							</MenuGroup>
-							<MenuGroup
-								label={ __( 'Portrait', 'photo-block' ) }
-								className="dlx-photo-block__aspect-ratio-group"
-							>
-								<MenuItem
-									icon={ '10:16' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ '10:16' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( '10:16' );
-										handleAspectRatioChange( 10, 16 );
-										onClose();
-									} }
-								>
-									{ __( '10:16', 'photo-block' ) }
-								</MenuItem>
-								<MenuItem
-									icon={ '9:16' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ '9:16' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( '9:16' );
-										handleAspectRatioChange( 9, 16 );
-										onClose();
-									} }
-								>
-									{ __( '9:16', 'photo-block' ) }
-								</MenuItem>
-								<MenuItem
-									icon={ '3:4' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ '3:4' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( '3:4' );
-										handleAspectRatioChange( 3, 4 );
-										onClose();
-									} }
-								>
-									{ __( '3:4', 'photo-block' ) }
-								</MenuItem>
-								<MenuItem
-									icon={ '2:3' === aspectRatioToolbarSelection ? <Check /> : null }
-									isSelected={ '2:3' === aspectRatioToolbarSelection }
-									onClick={ () => {
-										setAspectRatioToolbarSelection( '2:3' );
-										handleAspectRatioChange( 2, 3 );
-										onClose();
-									} }
-								>
-									{ __( '2:3', 'photo-block' ) }
-								</MenuItem>
-							</MenuGroup>
-						</>
-					) }
-				</ToolbarDropdownMenu>
-				<ToolbarButton
-					className="dlx-photo-block__lock-crop-button"
-					icon={ <Lock /> }
-					label={ lockCrop ? __( 'UnLock Aspect Ratio', 'photo-block' ) : __( 'Lock Aspect Ratio', 'photo-block' ) }
-					isActive={ lockCrop }
-					onClick={ () => {
-						setLockCrop( ! lockCrop );
-					} }
-				/>
-				<ToolbarButton
-					icon={ <RotateCcw /> }
-					label={ __( 'Rotate Left', 'photo-block' ) }
-					onClick={ () => {
-						const degrees = getDegrees( -90 );
-						setRotateDegrees( degrees );
-						rotateImage( imageData.url, degrees ).then( ( newImage ) => {
-							setFullsizePhoto( newImage );
-							setModifiedPhoto( newImage );
-						} );
-					} }
-				/>
-				<ToolbarButton
-					icon={ <RotateCw /> }
-					label={ __( 'Rotate Right', 'photo-block' ) }
-					onClick={ () => {
-						const degrees = getDegrees( 90 );
-						setRotateDegrees( degrees );
-						rotateImage( imageData.url, degrees ).then( ( newImage ) => {
-							setFullsizePhoto( newImage );
-							setModifiedPhoto( newImage );
-						} );
-					} }
-				/>
-			</ToolbarGroup>
-			{ 'custom' === aspectRatioToolbarSelection && (
+		<>
+			<div className="dlx-photo-block__toolbar-container">
 				<ToolbarGroup>
-					<ToolbarItem
-						as={ forwardRef( ( args, ref ) => (
-							<ToolbarAspectRatio
-								forwardRef={ ref }
-								onChange={ ( values ) => {
-									handleAspectRatioChange( values.width, values.height );
-								} }
-								fullsizePhoto={ fullsizePhoto }
-								uniqueId={ uniqueId }
-							/>
-						) ) }
+					<ToolbarButton
+						label={ __( 'Close', 'photo-block' ) }
+						icon={ <X />
+						}
+						variant="secondary"
+						onClick={ () => {
+							setScreen( 'edit' );
+						} }
+						className="dlx-photo-block__toolbar-back-button"
+					>
+						{ __( 'Close Without Saving', 'photo-block' ) }
+					</ToolbarButton>
+					<ToolbarDropdownMenu
+						icon={ <AspectRatioIcon /> }
+						label={ __( 'Ratio', 'photo-block' ) + ' ' + aspectRatioToolbarSelection }
+						className="dlx-photo-block__aspect-ratio-dropdown"
+					>
+						{ ( { onClose } ) => (
+							<>
+								<MenuGroup className="dlx-photo-block__aspect-ratio-group">
+									<MenuItem
+										icon={ 'original' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ 'original' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( 'original' );
+											handleAspectRatioChange( fullsizePhoto?.width, fullsizePhoto?.height );
+											onClose();
+										} }
+										className="is-active"
+									>
+										{ __( 'Original', 'photo-block' ) }
+									</MenuItem>
+									<MenuItem
+										icon={ 'square' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ 'square' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( 'square' );
+											handleAspectRatioChange( 1, 1 );
+											onClose();
+										} }
+									>
+										{ __( 'Square', 'photo-block' ) }
+									</MenuItem>
+									<MenuItem
+										icon={ 'custom' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ 'custom' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( 'custom' );
+											onClose();
+											setIsDirty( true );
+										} }
+									>
+										{ __( 'Custom', 'photo-block' ) }
+									</MenuItem>
+								</MenuGroup>
+								<MenuGroup
+									label={ __( 'Landscape', 'photo-block' ) }
+									className="dlx-photo-block__aspect-ratio-group"
+								>
+									<MenuItem
+										icon={ '16:10' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ '16:10' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( '16:10' );
+											handleAspectRatioChange( 16, 10 );
+											onClose();
+										} }
+									>
+										{ __( '16:10', 'photo-block' ) }
+									</MenuItem>
+									<MenuItem
+										icon={ '16:9' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ '16:9' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( '16:9' );
+											handleAspectRatioChange( 16, 9 );
+											onClose();
+										} }
+									>
+										{ __( '16:9', 'photo-block' ) }
+									</MenuItem>
+									<MenuItem
+										icon={ '4:3' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ '4:3' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( '4:3' );
+											handleAspectRatioChange( 4, 3 );
+											onClose();
+										} }
+									>
+										{ __( '4:3', 'photo-block' ) }
+									</MenuItem>
+									<MenuItem
+										icon={ '3:2' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ '3:2' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( '3:2' );
+											handleAspectRatioChange( 3, 2 );
+											onClose();
+										} }
+									>
+										{ __( '3:2', 'photo-block' ) }
+									</MenuItem>
+								</MenuGroup>
+								<MenuGroup
+									label={ __( 'Portrait', 'photo-block' ) }
+									className="dlx-photo-block__aspect-ratio-group"
+								>
+									<MenuItem
+										icon={ '10:16' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ '10:16' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( '10:16' );
+											handleAspectRatioChange( 10, 16 );
+											onClose();
+										} }
+									>
+										{ __( '10:16', 'photo-block' ) }
+									</MenuItem>
+									<MenuItem
+										icon={ '9:16' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ '9:16' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( '9:16' );
+											handleAspectRatioChange( 9, 16 );
+											onClose();
+										} }
+									>
+										{ __( '9:16', 'photo-block' ) }
+									</MenuItem>
+									<MenuItem
+										icon={ '3:4' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ '3:4' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( '3:4' );
+											handleAspectRatioChange( 3, 4 );
+											onClose();
+										} }
+									>
+										{ __( '3:4', 'photo-block' ) }
+									</MenuItem>
+									<MenuItem
+										icon={ '2:3' === aspectRatioToolbarSelection ? <Check /> : null }
+										isSelected={ '2:3' === aspectRatioToolbarSelection }
+										onClick={ () => {
+											setAspectRatioToolbarSelection( '2:3' );
+											handleAspectRatioChange( 2, 3 );
+											onClose();
+										} }
+									>
+										{ __( '2:3', 'photo-block' ) }
+									</MenuItem>
+								</MenuGroup>
+							</>
+						) }
+					</ToolbarDropdownMenu>
+					<ToolbarButton
+						className="dlx-photo-block__lock-crop-button"
+						icon={ <Lock /> }
+						label={ lockCrop ? __( 'UnLock Aspect Ratio', 'photo-block' ) : __( 'Lock Aspect Ratio', 'photo-block' ) }
+						isActive={ lockCrop }
+						onClick={ () => {
+							setLockCrop( ! lockCrop );
+						} }
+					/>
+					<ToolbarButton
+						icon={ <RotateCcw /> }
+						label={ __( 'Rotate Left', 'photo-block' ) }
+						onClick={ () => {
+							const degrees = getDegrees( -90 );
+							setRotateDegrees( degrees );
+							rotateImage( imageData.url, degrees ).then( ( newImage ) => {
+								setFullsizePhoto( newImage );
+								setModifiedPhoto( newImage );
+							} );
+						} }
+					/>
+					<ToolbarButton
+						icon={ <RotateCw /> }
+						label={ __( 'Rotate Right', 'photo-block' ) }
+						onClick={ () => {
+							const degrees = getDegrees( 90 );
+							setRotateDegrees( degrees );
+							rotateImage( imageData.url, degrees ).then( ( newImage ) => {
+								setFullsizePhoto( newImage );
+								setModifiedPhoto( newImage );
+							} );
+						} }
 					/>
 				</ToolbarGroup>
-			) }
-			<ToolbarGroup>
-				<ToolbarButton
-					icon={ isSaving ? <Loader2 /> : <Save /> }
-					className={ classnames( 'dlx-photo-block__save-button', {
-						'is-saving': isSaving,
-					} ) }
-					variant="primary"
-					disabled={ ! isDirty }
-					label={ __( 'Apply Crop', 'photo-block' ) }
-					onClick={ () => {
-						if ( isSaving ) {
-							return;
-						}
-						setIsSaving( true );
-						setOriginalImageData( imageData ); // Save original image data.
-
-						const croppedImage = cropImage( crop, imageData.id, rotateDegrees );
-						croppedImage.then( ( imageResponse ) => {
-							const { data } = imageResponse;
-							if ( data.success ) {
-								setImageData( data.data.attachment );
-								setAttributes( {
-									photoMode: 'photo',
-									imageData: data.data.attachment,
-								} );
-								setJustCropped( true );
-								setPhotoMode( 'photo' );
-								setScreen( 'edit' );
-							} else {
-								// todo: error handling.
+				{ 'custom' === aspectRatioToolbarSelection && (
+					<ToolbarGroup>
+						<ToolbarItem
+							as={ forwardRef( ( args, ref ) => (
+								<ToolbarAspectRatio
+									forwardRef={ ref }
+									onChange={ ( values ) => {
+										handleAspectRatioChange( values.width, values.height );
+									} }
+									fullsizePhoto={ fullsizePhoto }
+									uniqueId={ uniqueId }
+								/>
+							) ) }
+						/>
+					</ToolbarGroup>
+				) }
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ isSaving ? <Loader2 /> : <Save /> }
+						className={ classnames( 'dlx-photo-block__save-button', {
+							'is-saving': isSaving,
+						} ) }
+						variant="primary"
+						disabled={ ! isDirty }
+						label={ __( 'Apply Crop', 'photo-block' ) }
+						onClick={ () => {
+							if ( isSaving ) {
+								return;
 							}
-						} ).catch( ( error ) => {
-						} ).then( () => {
-							setIsSaving( false );
-						} );
-					} }
-				>
-					{ isSaving ? __( 'Saving…', 'photo-block' ) : __( 'Apply Crop', 'photo-block' ) }
-				</ToolbarButton>
-			</ToolbarGroup>
-		</BlockControls>
+							setIsSaving( true );
+							setOriginalImageData( imageData ); // Save original image data.
+
+							const croppedImage = cropImage( crop, imageData.id, rotateDegrees );
+							croppedImage.then( ( imageResponse ) => {
+								const { data } = imageResponse;
+								if ( data.success ) {
+									setImageData( data.data.attachment );
+									setAttributes( {
+										photoMode: 'photo',
+										imageData: data.data.attachment,
+									} );
+									setJustCropped( true );
+									setPhotoMode( 'photo' );
+									setScreen( 'edit' );
+								} else {
+								// todo: error handling.
+								}
+							} ).catch( ( error ) => {
+							} ).then( () => {
+								setIsSaving( false );
+							} );
+						} }
+					>
+						{ isSaving ? __( 'Saving…', 'photo-block' ) : __( 'Apply Crop', 'photo-block' ) }
+					</ToolbarButton>
+				</ToolbarGroup>
+			</div>
+		</>
 	);
 
 	return (
 		<>
-			{ localInspectorControls }
-			{ localToolbar }
-			<div
-				className="dlx-photo-block__screen-edit"
-				style={ {
-					maxWidth: '100%',
-					maxHeight: '200px',
+			<Modal
+				title={ __( 'Crop Image', 'photo-block' ) }
+				contentLabel={ __( 'Crop Image and Rotate', 'photo-block' ) }
+				onRequestClose={ () => {
+					setScreen( 'edit' );
 				} }
+				isDismissible={ true }
+				size={ 'fill' }
+				shouldCloseOnClickOutside={ false }
+				shouldCloseOnEsc={ true }
+				className="dlx-photo-block__crop-modal"
+				__experimentalHideHeader={ true }
 			>
-				{ shouldShowLoading && (
-					<div
-						className="dlx-photo-block__screen-edit-spinner"
-					>
-						<h3>{ __( 'Loading Full Size Image', 'photo-block' ) }</h3>
-						<Spinner />
-					</div>
-				) }
-				{ ! shouldShowLoading && (
-					<>
-						<ReactCrop
-							aspect={ lockCrop ? cropAspectRatio : null }
-							crop={ crop }
-							onChange={ ( newCrop ) => {
-								setCrop( newCrop );
-							} }
-							ruleOfThirds={ true }
-							maxWidth={ cropMaxWidth ?? undefined }
-							maxHeight={ cropMaxHeight ?? undefined }
+				{ localInspectorControls }
+				{ localToolbar }
+				<div
+					className="dlx-photo-block__screen-edit"
+					style={ {
+						maxWidth: '100%',
+						maxHeight: '200px',
+					} }
+				>
+					{ shouldShowLoading && (
+						<div
+							className="dlx-photo-block__screen-edit-spinner"
 						>
-							<img
-								src={ fullsizePhoto?.url ?? '' }
-								width={ fullsizePhoto?.width }
-								height={ fullsizePhoto?.height }
-								style={ {
-									maxWidth: '100%',
-									height: 'auto',
+							<h3>{ __( 'Loading Full Size Image', 'photo-block' ) }</h3>
+							<Spinner />
+						</div>
+					) }
+					{ ! shouldShowLoading && (
+						<>
+							<ReactCrop
+								aspect={ lockCrop ? cropAspectRatio : null }
+								crop={ crop }
+								onChange={ ( newCrop ) => {
+									setCrop( newCrop );
 								} }
-								alt=""
-								ref={ setReactCropImageRef }
-							/>
-						</ReactCrop>
-					</>
-				) }
-			</div>
+								ruleOfThirds={ true }
+								maxWidth={ cropMaxWidth ?? undefined }
+								maxHeight={ cropMaxHeight ?? undefined }
+							>
+								<img
+									src={ fullsizePhoto?.url ?? '' }
+									width={ fullsizePhoto?.width }
+									height={ fullsizePhoto?.height }
+									alt=""
+									ref={ setReactCropImageRef }
+								/>
+							</ReactCrop>
+						</>
+					) }
+				</div>
+			</Modal>
 		</>
 	);
 };
