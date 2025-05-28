@@ -40,3 +40,32 @@
 .dlx-photo-block__aspect-ratio-dropdown button {
 	text-transform: capitalize;
 }
+.ReactCrop--fixed-aspect {
+	margin: 0 auto;
+}
+.dlx-photo-block__toolbar-container {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 10px;
+	background: #ededed
+}
+.dlx-photo-block__screen-edit {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.dlx-photo-block__crop-modal {
+	.components-modal__content.hide-header {
+		padding: 0;
+	}
+}
+.dlx-photo-block__screen-edit .ReactCrop__child-wrapper img {
+	width: auto;
+	max-width: 100%;
+	max-height: calc(100vh - 210px);
+	height: auto;
+	border: 1px solid #333;
+	border-radius: 4px;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}

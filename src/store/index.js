@@ -41,7 +41,7 @@ const DEFAULT_STATE = {
 	aspectRatioHeight: 9,
 	aspectRatioWidthPixels: 0,
 	aspectRatioHeightPixels: 0,
-	aspectRatioToolbarSelection: '16:9',
+	aspectRatioToolbarSelection: 'square',
 	aspectRatioUnit: 'ratio',
 	hideCaption: photoBlock.settings.hideCaptionAppender,
 };
