@@ -26,6 +26,9 @@ class Blocks {
 
 		// Add inline styles to fancybox.
 		add_action( 'wp_enqueue_scripts', array( static::class, 'add_fancybox_inline_styles' ), 999 );
+
+		// For adding the render callbacks to the blocks.
+		add_action( 'block_type_metadata_settings', array( static::class, 'add_render_callbacks_to_blocks' ), 20, 2 );
 	}
 
 	/**
@@ -33,18 +36,49 @@ class Blocks {
 	 */
 	public static function register_block() {
 
-		register_block_type(
-			Functions::get_plugin_dir( 'build/blocks/photo-block/block.json' ),
-			array(
-				'render_callback' => array( static::class, 'block_frontend' ),
-			)
-		);
-		register_block_type(
-			Functions::get_plugin_dir( 'build/blocks/photo-caption-block/block.json' ),
-			array(
-				'render_callback' => array( static::class, 'caption_frontend' ),
-			)
-		);
+		if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
+			/**
+			 * For WP 6.8+. This registers the blocks from the blocks-manifest.php file.
+			 */
+			wp_register_block_types_from_metadata_collection( Functions::get_plugin_dir( '/build' ), Functions::get_plugin_dir( '/build/blocks-manifest.php' ) );
+			return;
+		} elseif ( function_exists( 'wp_register_block_metadata_collection' ) ) {
+			/**
+			 * For WP 6.7. This registers the block collection.
+			 */
+			wp_register_block_metadata_collection( Functions::get_plugin_dir( '/build' ), Functions::get_plugin_dir( '/build/blocks-manifest.php' ) );
+		}
+
+		$manifest_data = require Functions::get_plugin_dir( '/build/blocks-manifest.php' );
+		foreach ( array_keys( $manifest_data ) as $block_type ) {
+			switch ( $block_type ) {
+				case 'photo-block':
+					register_block_type( Functions::get_plugin_dir( "/build/blocks/{$block_type}" ) );
+					break;
+				case 'photo-caption-block':
+					register_block_type( Functions::get_plugin_dir( "/build/blocks/{$block_type}" ) );
+					break;
+			}
+		}
+	}
+
+	/**
+	 * Add the render callbacks to the blocks.
+	 *
+	 * @param array $settings The block settings.
+	 * @param array $block_meta_data The block metadata.
+	 * @return array The block settings.
+	 */
+	public static function add_render_callbacks_to_blocks( $settings, $block_meta_data ) {
+		switch ( $block_meta_data['name'] ) {
+			case 'dlxplugins/photo-block':
+				$settings['render_callback'] = array( static::class, 'block_frontend' );
+				break;
+			case 'dlxplugins/photo-caption-block':
+				$settings['render_callback'] = array( static::class, 'caption_frontend' );
+				break;
+		}
+		return $settings;
 	}
 
 	/**
@@ -247,6 +281,10 @@ class Blocks {
 	 * @param WP_Block $block               The caption block content and attributes.
 	 */
 	public static function caption_frontend( $attributes, $innerblocks_content, $block ) {
+		if ( is_admin() ) {
+			return;
+		}
+
 		// Determine if we want to execute this markup. Ignore for REST and admin requests.
 		$can_output = true;
 		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {
@@ -490,6 +528,10 @@ class Blocks {
 	 * @param WP_Block $block               The photo block content and attributes.
 	 */
 	public static function block_frontend( $attributes, $innerblocks_content, $block ) {
+		if ( is_admin() ) {
+			return;
+		}
+
 		// Determine if we want to execute this markup. Ignore for REST and admin requests.
 		$can_output = true;
 		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {

@@ -17738,7 +17738,7 @@ function cloneChildren(childs) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getFeed = void 0;
+exports.getFeed = getFeed;
 var stringify_js_1 = __webpack_require__(/*! ./stringify.js */ "./node_modules/domutils/lib/stringify.js");
 var legacy_js_1 = __webpack_require__(/*! ./legacy.js */ "./node_modules/domutils/lib/legacy.js");
 /**
@@ -17756,7 +17756,6 @@ function getFeed(doc) {
             ? getAtomFeed(feedRoot)
             : getRssFeed(feedRoot);
 }
-exports.getFeed = getFeed;
 /**
  * Parse an Atom feed.
  *
@@ -17939,7 +17938,10 @@ function isValidFeed(value) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.uniqueSort = exports.compareDocumentPosition = exports.DocumentPosition = exports.removeSubsets = void 0;
+exports.DocumentPosition = void 0;
+exports.removeSubsets = removeSubsets;
+exports.compareDocumentPosition = compareDocumentPosition;
+exports.uniqueSort = uniqueSort;
 var domhandler_1 = __webpack_require__(/*! domhandler */ "./node_modules/domhandler/lib/index.js");
 /**
  * Given an array of nodes, remove any member that is contained by another
@@ -17975,7 +17977,6 @@ function removeSubsets(nodes) {
     }
     return nodes;
 }
-exports.removeSubsets = removeSubsets;
 /**
  * @category Helpers
  * @see {@link http://dom.spec.whatwg.org/#dom-node-comparedocumentposition}
@@ -17987,7 +17988,7 @@ var DocumentPosition;
     DocumentPosition[DocumentPosition["FOLLOWING"] = 4] = "FOLLOWING";
     DocumentPosition[DocumentPosition["CONTAINS"] = 8] = "CONTAINS";
     DocumentPosition[DocumentPosition["CONTAINED_BY"] = 16] = "CONTAINED_BY";
-})(DocumentPosition = exports.DocumentPosition || (exports.DocumentPosition = {}));
+})(DocumentPosition || (exports.DocumentPosition = DocumentPosition = {}));
 /**
  * Compare the position of one node against another node in any other document,
  * returning a bitmask with the values from {@link DocumentPosition}.
@@ -18053,7 +18054,6 @@ function compareDocumentPosition(nodeA, nodeB) {
     }
     return DocumentPosition.PRECEDING;
 }
-exports.compareDocumentPosition = compareDocumentPosition;
 /**
  * Sort an array of nodes based on their relative position in the document,
  * removing any duplicate nodes. If the array contains nodes that do not belong
@@ -18077,7 +18077,6 @@ function uniqueSort(nodes) {
     });
     return nodes;
 }
-exports.uniqueSort = uniqueSort;
 //# sourceMappingURL=helpers.js.map
 
 /***/ }),
@@ -18134,7 +18133,12 @@ Object.defineProperty(exports, "hasChildren", ({ enumerable: true, get: function
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getElementsByTagType = exports.getElementsByTagName = exports.getElementById = exports.getElements = exports.testElement = void 0;
+exports.testElement = testElement;
+exports.getElements = getElements;
+exports.getElementById = getElementById;
+exports.getElementsByTagName = getElementsByTagName;
+exports.getElementsByClassName = getElementsByClassName;
+exports.getElementsByTagType = getElementsByTagType;
 var domhandler_1 = __webpack_require__(/*! domhandler */ "./node_modules/domhandler/lib/index.js");
 var querying_js_1 = __webpack_require__(/*! ./querying.js */ "./node_modules/domutils/lib/querying.js");
 /**
@@ -18219,7 +18223,6 @@ function testElement(options, node) {
     var test = compileTest(options);
     return test ? test(node) : true;
 }
-exports.testElement = testElement;
 /**
  * Returns all nodes that match `options`.
  *
@@ -18235,7 +18238,6 @@ function getElements(options, nodes, recurse, limit) {
     var test = compileTest(options);
     return test ? (0, querying_js_1.filter)(test, nodes, recurse, limit) : [];
 }
-exports.getElements = getElements;
 /**
  * Returns the node with the supplied ID.
  *
@@ -18251,7 +18253,6 @@ function getElementById(id, nodes, recurse) {
         nodes = [nodes];
     return (0, querying_js_1.findOne)(getAttribCheck("id", id), nodes, recurse);
 }
-exports.getElementById = getElementById;
 /**
  * Returns all nodes with the supplied `tagName`.
  *
@@ -18267,7 +18268,21 @@ function getElementsByTagName(tagName, nodes, recurse, limit) {
     if (limit === void 0) { limit = Infinity; }
     return (0, querying_js_1.filter)(Checks["tag_name"](tagName), nodes, recurse, limit);
 }
-exports.getElementsByTagName = getElementsByTagName;
+/**
+ * Returns all nodes with the supplied `className`.
+ *
+ * @category Legacy Query Functions
+ * @param className Class name to search for.
+ * @param nodes Nodes to search through.
+ * @param recurse Also consider child nodes.
+ * @param limit Maximum number of nodes to return.
+ * @returns All nodes with the supplied `className`.
+ */
+function getElementsByClassName(className, nodes, recurse, limit) {
+    if (recurse === void 0) { recurse = true; }
+    if (limit === void 0) { limit = Infinity; }
+    return (0, querying_js_1.filter)(getAttribCheck("class", className), nodes, recurse, limit);
+}
 /**
  * Returns all nodes with the supplied `type`.
  *
@@ -18283,7 +18298,6 @@ function getElementsByTagType(type, nodes, recurse, limit) {
     if (limit === void 0) { limit = Infinity; }
     return (0, querying_js_1.filter)(Checks["tag_type"](type), nodes, recurse, limit);
 }
-exports.getElementsByTagType = getElementsByTagType;
 //# sourceMappingURL=legacy.js.map
 
 /***/ }),
@@ -18297,7 +18311,12 @@ exports.getElementsByTagType = getElementsByTagType;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.prepend = exports.prependChild = exports.append = exports.appendChild = exports.replaceElement = exports.removeElement = void 0;
+exports.removeElement = removeElement;
+exports.replaceElement = replaceElement;
+exports.appendChild = appendChild;
+exports.append = append;
+exports.prependChild = prependChild;
+exports.prepend = prepend;
 /**
  * Remove an element from the dom
  *
@@ -18320,7 +18339,6 @@ function removeElement(elem) {
     elem.prev = null;
     elem.parent = null;
 }
-exports.removeElement = removeElement;
 /**
  * Replace an element in the dom
  *
@@ -18344,7 +18362,6 @@ function replaceElement(elem, replacement) {
         elem.parent = null;
     }
 }
-exports.replaceElement = replaceElement;
 /**
  * Append a child to an element.
  *
@@ -18365,7 +18382,6 @@ function appendChild(parent, child) {
         child.prev = null;
     }
 }
-exports.appendChild = appendChild;
 /**
  * Append an element after another.
  *
@@ -18392,7 +18408,6 @@ function append(elem, next) {
         parent.children.push(next);
     }
 }
-exports.append = append;
 /**
  * Prepend a child to an element.
  *
@@ -18413,7 +18428,6 @@ function prependChild(parent, child) {
         child.next = null;
     }
 }
-exports.prependChild = prependChild;
 /**
  * Prepend an element before another.
  *
@@ -18436,7 +18450,6 @@ function prepend(elem, prev) {
     prev.next = elem;
     elem.prev = prev;
 }
-exports.prepend = prepend;
 //# sourceMappingURL=manipulation.js.map
 
 /***/ }),
@@ -18450,7 +18463,12 @@ exports.prepend = prepend;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.findAll = exports.existsOne = exports.findOne = exports.findOneChild = exports.find = exports.filter = void 0;
+exports.filter = filter;
+exports.find = find;
+exports.findOneChild = findOneChild;
+exports.findOne = findOne;
+exports.existsOne = existsOne;
+exports.findAll = findAll;
 var domhandler_1 = __webpack_require__(/*! domhandler */ "./node_modules/domhandler/lib/index.js");
 /**
  * Search a node and its children for nodes passing a test function. If `node` is not an array, it will be wrapped in one.
@@ -18467,7 +18485,6 @@ function filter(test, node, recurse, limit) {
     if (limit === void 0) { limit = Infinity; }
     return find(test, Array.isArray(node) ? node : [node], recurse, limit);
 }
-exports.filter = filter;
 /**
  * Search an array of nodes and their children for nodes passing a test function.
  *
@@ -18481,7 +18498,7 @@ exports.filter = filter;
 function find(test, nodes, recurse, limit) {
     var result = [];
     /** Stack of the arrays we are looking at. */
-    var nodeStack = [nodes];
+    var nodeStack = [Array.isArray(nodes) ? nodes : [nodes]];
     /** Stack of the indices within the arrays. */
     var indexStack = [0];
     for (;;) {
@@ -18513,7 +18530,6 @@ function find(test, nodes, recurse, limit) {
         }
     }
 }
-exports.find = find;
 /**
  * Finds the first element inside of an array that matches a test function. This is an alias for `Array.prototype.find`.
  *
@@ -18526,7 +18542,6 @@ exports.find = find;
 function findOneChild(test, nodes) {
     return nodes.find(test);
 }
-exports.findOneChild = findOneChild;
 /**
  * Finds one element in a tree that passes a test.
  *
@@ -18538,22 +18553,20 @@ exports.findOneChild = findOneChild;
  */
 function findOne(test, nodes, recurse) {
     if (recurse === void 0) { recurse = true; }
-    var elem = null;
-    for (var i = 0; i < nodes.length && !elem; i++) {
-        var node = nodes[i];
-        if (!(0, domhandler_1.isTag)(node)) {
-            continue;
+    var searchedNodes = Array.isArray(nodes) ? nodes : [nodes];
+    for (var i = 0; i < searchedNodes.length; i++) {
+        var node = searchedNodes[i];
+        if ((0, domhandler_1.isTag)(node) && test(node)) {
+            return node;
         }
-        else if (test(node)) {
-            elem = node;
-        }
-        else if (recurse && node.children.length > 0) {
-            elem = findOne(test, node.children, true);
+        if (recurse && (0, domhandler_1.hasChildren)(node) && node.children.length > 0) {
+            var found = findOne(test, node.children, true);
+            if (found)
+                return found;
         }
     }
-    return elem;
+    return null;
 }
-exports.findOne = findOne;
 /**
  * Checks if a tree of nodes contains at least one node passing a test.
  *
@@ -18563,12 +18576,11 @@ exports.findOne = findOne;
  * @returns Whether a tree of nodes contains at least one node passing the test.
  */
 function existsOne(test, nodes) {
-    return nodes.some(function (checked) {
-        return (0, domhandler_1.isTag)(checked) &&
-            (test(checked) || existsOne(test, checked.children));
+    return (Array.isArray(nodes) ? nodes : [nodes]).some(function (node) {
+        return ((0, domhandler_1.isTag)(node) && test(node)) ||
+            ((0, domhandler_1.hasChildren)(node) && existsOne(test, node.children));
     });
 }
-exports.existsOne = existsOne;
 /**
  * Search an array of nodes and their children for elements passing a test function.
  *
@@ -18581,7 +18593,7 @@ exports.existsOne = existsOne;
  */
 function findAll(test, nodes) {
     var result = [];
-    var nodeStack = [nodes];
+    var nodeStack = [Array.isArray(nodes) ? nodes : [nodes]];
     var indexStack = [0];
     for (;;) {
         if (indexStack[0] >= nodeStack[0].length) {
@@ -18595,17 +18607,14 @@ function findAll(test, nodes) {
             continue;
         }
         var elem = nodeStack[0][indexStack[0]++];
-        if (!(0, domhandler_1.isTag)(elem))
-            continue;
-        if (test(elem))
+        if ((0, domhandler_1.isTag)(elem) && test(elem))
             result.push(elem);
-        if (elem.children.length > 0) {
+        if ((0, domhandler_1.hasChildren)(elem) && elem.children.length > 0) {
             indexStack.unshift(0);
             nodeStack.unshift(elem.children);
         }
     }
 }
-exports.findAll = findAll;
 //# sourceMappingURL=querying.js.map
 
 /***/ }),
@@ -18622,7 +18631,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.innerText = exports.textContent = exports.getText = exports.getInnerHTML = exports.getOuterHTML = void 0;
+exports.getOuterHTML = getOuterHTML;
+exports.getInnerHTML = getInnerHTML;
+exports.getText = getText;
+exports.textContent = textContent;
+exports.innerText = innerText;
 var domhandler_1 = __webpack_require__(/*! domhandler */ "./node_modules/domhandler/lib/index.js");
 var dom_serializer_1 = __importDefault(__webpack_require__(/*! dom-serializer */ "./node_modules/dom-serializer/lib/index.js"));
 var domelementtype_1 = __webpack_require__(/*! domelementtype */ "./node_modules/domelementtype/lib/index.js");
@@ -18636,7 +18649,6 @@ var domelementtype_1 = __webpack_require__(/*! domelementtype */ "./node_modules
 function getOuterHTML(node, options) {
     return (0, dom_serializer_1.default)(node, options);
 }
-exports.getOuterHTML = getOuterHTML;
 /**
  * @category Stringify
  * @deprecated Use the `dom-serializer` module directly.
@@ -18649,7 +18661,6 @@ function getInnerHTML(node, options) {
         ? node.children.map(function (node) { return getOuterHTML(node, options); }).join("")
         : "";
 }
-exports.getInnerHTML = getInnerHTML;
 /**
  * Get a node's inner text. Same as `textContent`, but inserts newlines for `<br>` tags. Ignores comments.
  *
@@ -18669,7 +18680,6 @@ function getText(node) {
         return node.data;
     return "";
 }
-exports.getText = getText;
 /**
  * Get a node's text content. Ignores comments.
  *
@@ -18688,7 +18698,6 @@ function textContent(node) {
         return node.data;
     return "";
 }
-exports.textContent = textContent;
 /**
  * Get a node's inner text, ignoring `<script>` and `<style>` tags. Ignores comments.
  *
@@ -18707,7 +18716,6 @@ function innerText(node) {
         return node.data;
     return "";
 }
-exports.innerText = innerText;
 //# sourceMappingURL=stringify.js.map
 
 /***/ }),
@@ -18721,7 +18729,14 @@ exports.innerText = innerText;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.prevElementSibling = exports.nextElementSibling = exports.getName = exports.hasAttrib = exports.getAttributeValue = exports.getSiblings = exports.getParent = exports.getChildren = void 0;
+exports.getChildren = getChildren;
+exports.getParent = getParent;
+exports.getSiblings = getSiblings;
+exports.getAttributeValue = getAttributeValue;
+exports.hasAttrib = hasAttrib;
+exports.getName = getName;
+exports.nextElementSibling = nextElementSibling;
+exports.prevElementSibling = prevElementSibling;
 var domhandler_1 = __webpack_require__(/*! domhandler */ "./node_modules/domhandler/lib/index.js");
 /**
  * Get a node's children.
@@ -18733,7 +18748,6 @@ var domhandler_1 = __webpack_require__(/*! domhandler */ "./node_modules/domhand
 function getChildren(elem) {
     return (0, domhandler_1.hasChildren)(elem) ? elem.children : [];
 }
-exports.getChildren = getChildren;
 /**
  * Get a node's parent.
  *
@@ -18744,7 +18758,6 @@ exports.getChildren = getChildren;
 function getParent(elem) {
     return elem.parent || null;
 }
-exports.getParent = getParent;
 /**
  * Gets an elements siblings, including the element itself.
  *
@@ -18773,7 +18786,6 @@ function getSiblings(elem) {
     }
     return siblings;
 }
-exports.getSiblings = getSiblings;
 /**
  * Gets an attribute from an element.
  *
@@ -18786,7 +18798,6 @@ function getAttributeValue(elem, name) {
     var _a;
     return (_a = elem.attribs) === null || _a === void 0 ? void 0 : _a[name];
 }
-exports.getAttributeValue = getAttributeValue;
 /**
  * Checks whether an element has an attribute.
  *
@@ -18800,7 +18811,6 @@ function hasAttrib(elem, name) {
         Object.prototype.hasOwnProperty.call(elem.attribs, name) &&
         elem.attribs[name] != null);
 }
-exports.hasAttrib = hasAttrib;
 /**
  * Get the tag name of an element.
  *
@@ -18811,7 +18821,6 @@ exports.hasAttrib = hasAttrib;
 function getName(elem) {
     return elem.name;
 }
-exports.getName = getName;
 /**
  * Returns the next element sibling of a node.
  *
@@ -18827,7 +18836,6 @@ function nextElementSibling(elem) {
         (_a = next, next = _a.next);
     return next;
 }
-exports.nextElementSibling = nextElementSibling;
 /**
  * Returns the previous element sibling of a node.
  *
@@ -18843,7 +18851,6 @@ function prevElementSibling(elem) {
         (_a = prev, prev = _a.prev);
     return prev;
 }
-exports.prevElementSibling = prevElementSibling;
 //# sourceMappingURL=traversal.js.map
 
 /***/ }),
@@ -43637,7 +43644,7 @@ const resolveBodyLength = async (headers, body) => {
       credentials: isCredentialsSupported ? withCredentials : undefined
     });
 
-    let response = await fetch(request);
+    let response = await fetch(request, fetchOptions);
 
     const isStreamResponse = supportsResponseStream && (responseType === 'stream' || responseType === 'response');
 
@@ -44431,8 +44438,8 @@ class Axios {
 
     if (!synchronousRequestInterceptors) {
       const chain = [_dispatchRequest_js__WEBPACK_IMPORTED_MODULE_5__["default"].bind(this), undefined];
-      chain.unshift.apply(chain, requestInterceptorChain);
-      chain.push.apply(chain, responseInterceptorChain);
+      chain.unshift(...requestInterceptorChain);
+      chain.push(...responseInterceptorChain);
       len = chain.length;
 
       promise = Promise.resolve(config);
@@ -45311,7 +45318,7 @@ function mergeConfig(config1, config2) {
     headers: (a, b , prop) => mergeDeepProperties(headersToObject(a), headersToObject(b),prop, true)
   };
 
-  _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
+  _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(Object.keys({...config1, ...config2}), function computeConfigValue(prop) {
     const merge = mergeMap[prop] || mergeDeepProperties;
     const configValue = merge(config1[prop], config2[prop], prop);
     (_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isUndefined(configValue) && merge !== mergeDirectKeys) || (config[prop] = configValue);
@@ -45628,7 +45635,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   VERSION: () => (/* binding */ VERSION)
 /* harmony export */ });
-const VERSION = "1.9.0";
+const VERSION = "1.11.0";
 
 /***/ }),
 
@@ -46652,7 +46659,7 @@ function throttle(fn, freq) {
       clearTimeout(timer);
       timer = null;
     }
-    fn.apply(null, args);
+    fn(...args);
   }
 
   const throttled = (...args) => {
@@ -46817,6 +46824,10 @@ function toFormData(obj, formData, options) {
       return value.toISOString();
     }
 
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isBoolean(value)) {
+      return value.toString();
+    }
+
     if (!useBlob && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isBlob(value)) {
       throw new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_2__["default"]('Blob is not supported. Use a Buffer instead.');
     }
@@ -46939,7 +46950,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function toURLEncodedForm(data, options) {
-  return (0,_toFormData_js__WEBPACK_IMPORTED_MODULE_0__["default"])(data, new _platform_index_js__WEBPACK_IMPORTED_MODULE_1__["default"].classes.URLSearchParams(), Object.assign({
+  return (0,_toFormData_js__WEBPACK_IMPORTED_MODULE_0__["default"])(data, new _platform_index_js__WEBPACK_IMPORTED_MODULE_1__["default"].classes.URLSearchParams(), {
     visitor: function(value, key, path, helpers) {
       if (_platform_index_js__WEBPACK_IMPORTED_MODULE_1__["default"].isNode && _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].isBuffer(value)) {
         this.append(key, value.toString('base64'));
@@ -46947,8 +46958,9 @@ function toURLEncodedForm(data, options) {
       }
 
       return helpers.defaultVisitor.apply(this, arguments);
-    }
-  }, options));
+    },
+    ...options
+  });
 }
 
 
@@ -47500,6 +47512,27 @@ const isPlainObject = (val) => {
 }
 
 /**
+ * Determine if a value is an empty object (safely handles Buffers)
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is an empty object, otherwise false
+ */
+const isEmptyObject = (val) => {
+  // Early return for non-objects or Buffers to prevent RangeError
+  if (!isObject(val) || isBuffer(val)) {
+    return false;
+  }
+  
+  try {
+    return Object.keys(val).length === 0 && Object.getPrototypeOf(val) === Object.prototype;
+  } catch (e) {
+    // Fallback for any other objects that might cause RangeError with Object.keys()
+    return false;
+  }
+}
+
+/**
  * Determine if a value is a Date
  *
  * @param {*} val The value to test
@@ -47621,6 +47654,11 @@ function forEach(obj, fn, {allOwnKeys = false} = {}) {
       fn.call(null, obj[i], i, obj);
     }
   } else {
+    // Buffer check
+    if (isBuffer(obj)) {
+      return;
+    }
+
     // Iterate over object keys
     const keys = allOwnKeys ? Object.getOwnPropertyNames(obj) : Object.keys(obj);
     const len = keys.length;
@@ -47634,6 +47672,10 @@ function forEach(obj, fn, {allOwnKeys = false} = {}) {
 }
 
 function findKey(obj, key) {
+  if (isBuffer(obj)){
+    return null;
+  }
+
   key = key.toLowerCase();
   const keys = Object.keys(obj);
   let i = keys.length;
@@ -47987,6 +48029,11 @@ const toJSONObject = (obj) => {
         return;
       }
 
+      //Buffer check
+      if (isBuffer(source)) {
+        return source;
+      }
+
       if(!('toJSON' in source)) {
         stack[i] = source;
         const target = isArray(source) ? [] : {};
@@ -48058,6 +48105,7 @@ const isIterable = (thing) => thing != null && isFunction(thing[iterator]);
   isBoolean,
   isObject,
   isPlainObject,
+  isEmptyObject,
   isReadableStream,
   isRequest,
   isResponse,
