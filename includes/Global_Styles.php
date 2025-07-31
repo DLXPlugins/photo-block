@@ -573,7 +573,7 @@ class Global_Styles {
 		}
 
 		// Get the global styles from cache.
-		$global_styles = wp_cache_get( 'dlx_pb_global_styles' );
+		$global_styles = wp_cache_get( 'dlx_pb_global_styles_posts' );
 
 		if ( false === $global_styles ) {
 			// Begin generating global styles for the file.
@@ -586,7 +586,7 @@ class Global_Styles {
 			);
 			$posts     = get_posts( $post_args );
 
-			wp_cache_set( 'dlx_pb_global_styles', $posts );
+			wp_cache_set( 'dlx_pb_global_styles_posts', $posts );
 			$global_styles = $posts;
 
 			// If there are no global styles, return.
