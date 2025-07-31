@@ -18,7 +18,7 @@ import {
 	PlaceHolder,
 } from '@wordpress/components';
 
-import { isURL, filterURLForDisplay } from '@wordpress/url';
+import { cleanForSlug } from '@wordpress/url';
 
 import {
 	Link2Off,
@@ -68,7 +68,7 @@ const MediaLink = ( props ) => {
 		};
 	} );
 
-	const { mediaLinkOverride, mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption, customLinkLightboxCaption, customLinkLightboxEnabled, customLinkLightboxShowCaption, globalStyle } = attributes;
+	const { mediaLinkOverride, mediaLinkType, mediaLinkTitle, mediaLinkUrl, lightboxCaption, lightboxEnabled, lightboxShowCaption, customLinkLightboxCaption, customLinkLightboxEnabled, customLinkLightboxShowCaption, globalStyle, lightboxGallerySlug } = attributes;
 
 	return (
 		<>
@@ -259,46 +259,54 @@ const MediaLink = ( props ) => {
 					) }
 					{ 'image' === mediaLinkType && (
 						<>
-							<PanelBody
-								title={ __( 'Lightbox', 'photo-block' ) }
-								initialOpen={ false }
-							>
-								<PanelRow>
-									<ToggleControl
-										label={ __( 'Enable lightbox', 'photo-block' ) }
-										checked={ lightboxEnabled }
-										onChange={ ( value ) => {
-											setAttributes( { lightboxEnabled: value } );
-										} }
-										help={ __( 'Popup the full size photo in a lightbox when clicked.', 'photo-block' ) }
-									/>
-								</PanelRow>
-								{ lightboxEnabled && (
-									<>
+							<PanelRow>
+								<ToggleControl
+									label={ __( 'Enable lightbox', 'photo-block' ) }
+									checked={ lightboxEnabled }
+									onChange={ ( value ) => {
+										setAttributes( { lightboxEnabled: value } );
+									} }
+									help={ __( 'Popup the full size photo in a lightbox when clicked.', 'photo-block' ) }
+								/>
+							</PanelRow>
+							{ lightboxEnabled && (
+								<>
+									<PanelRow>
+										<ToggleControl
+											label={ __( 'Show caption', 'photo-block' ) }
+											checked={ lightboxShowCaption }
+											onChange={ ( value ) => {
+												setAttributes( { lightboxShowCaption: value } );
+											} }
+										/>
+									</PanelRow>
+									{ lightboxShowCaption && (
 										<PanelRow>
-											<ToggleControl
-												label={ __( 'Show caption', 'photo-block' ) }
-												checked={ lightboxShowCaption }
+											<TextControl
+												label={ __( 'Custom Caption (optional)', 'photo-block' ) }
+												value={ lightboxCaption }
 												onChange={ ( value ) => {
-													setAttributes( { lightboxShowCaption: value } );
+													setAttributes( { lightboxCaption: value } );
 												} }
+												help={ __( 'Leave blank to use the photo\'s caption.', 'photo-block' ) }
 											/>
 										</PanelRow>
-										{ lightboxShowCaption && (
-											<PanelRow>
-												<TextControl
-													label={ __( 'Custom Caption (optional)', 'photo-block' ) }
-													value={ lightboxCaption }
-													onChange={ ( value ) => {
-														setAttributes( { lightboxCaption: value } );
-													} }
-													help={ __( 'Leave blank to use the photo\'s caption.', 'photo-block' ) }
-												/>
-											</PanelRow>
-										) }
-									</>
-								) }
-							</PanelBody>
+									) }
+									<PanelRow>
+										<TextControl
+											label={ __( 'Gallery Slug', 'photo-block' ) }
+											value={ lightboxGallerySlug }
+											onChange={ ( value ) => {
+												setAttributes( { lightboxGallerySlug: value } );
+											} }
+											onBlur={ ( e ) => {
+												setAttributes( { lightboxGallerySlug: cleanForSlug( e.target.value ) } );
+											} }
+											help={ __( 'The slug for the gallery. This is used to group photos together.', 'photo-block' ) }
+										/>
+									</PanelRow>
+								</>
+							) }
 						</>
 					) }
 					{ ( 'none' !== mediaLinkType ) && (

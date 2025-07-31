@@ -628,6 +628,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"lightboxGallerySlug": {
+			"type": "string",
+			"default": ""
+		},
 		"lightboxShowCaption": {
 			"type": "boolean",
 			"default": false

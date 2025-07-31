@@ -633,6 +633,10 @@ return array(
 				'type' => 'boolean',
 				'default' => false
 			),
+			'lightboxGallerySlug' => array(
+				'type' => 'string',
+				'default' => ''
+			),
 			'lightboxShowCaption' => array(
 				'type' => 'boolean',
 				'default' => false
