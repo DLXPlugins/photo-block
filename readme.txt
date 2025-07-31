@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.2.12
+Stable tag: 1.3.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@ Enhance your Block Editor with a fully customizable photo block, featuring advan
 
 == Description ==
 
-Photo Block adds a time-saving block to the Block Editor, allowing for advanced image customization with only a few clicks. Made for writers and layout builders, this block is extremely versatile with full caption support, responsive styling, and global styles.
+Photo Block adds a time-saving block to the Block Editor, allowing for advanced image customization with only a few clicks. Made for writers, photographers, and layout builders, this block is extremely versatile with full caption support, responsive styling, and global styles.
 
 > ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
 
@@ -127,6 +127,12 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.3.0 =
+* Released 2025-07-31
+* New feature: Cropping now pops up in a modal, giving much more room to crop/edit the photo. This solves a bug where cropping in smaller screens or columns would cause the layout to warp.
+* Bug fix: Cropping has been fixed for tall photos.
+* Bug fix: Duplicate cache keys were causing global styles to error.
+
 = 1.2.11 =
 * Released 2025-05-27
 * ⭐️ Please <a href="https://wordpress.org/support/plugin/photo-block/reviews/#new-post">Rate the Plugin</a> ❤️ to help spread the word and encourage future development.
@@ -209,7 +215,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.2.11 =
-This update fixes several global style issues, notably block editor output, and frontend style generation that could error out if a default wasn't set.
+= 1.3.0 =
+This update introduces a new feature where cropping now occurs in a modal, providing more space to edit photos and resolving layout issues on smaller screens or within columns. It also fixes a bug that affected cropping tall photos and addresses an issue where duplicate cache keys were causing errors with global styles.
 
 
