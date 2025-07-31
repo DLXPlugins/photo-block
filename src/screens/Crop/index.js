@@ -1,7 +1,7 @@
 import './editor.scss';
 import 'react-image-crop/src/ReactCrop.scss';
 
-import { useContext, useState, forwardRef, useEffect } from '@wordpress/element';
+import { useContext, useState, forwardRef, useEffect, useRef } from '@wordpress/element';
 import {
 	Spinner,
 	PanelBody,
@@ -195,6 +195,11 @@ const CropScreen = ( props ) => {
 	const setCenterCrop = ( imageWidth, imageHeight, newAspectRatio, maximumWidth = null, maximumHeight = null ) => {
 		const initialCropRatio = 1;
 
+		if ( ! newAspectRatio || newAspectRatio <= 0 ) {
+			console.error( 'Invalid aspect ratio', newAspectRatio );
+			return;
+		}
+
 		// Get the initial crop size.
 		const minDimension = Math.min( imageWidth, imageHeight );
 		const initialCropSize = minDimension * initialCropRatio;
@@ -209,8 +214,16 @@ const CropScreen = ( props ) => {
 			cropWidth = cropHeight * newAspectRatio;
 		}
 		if ( maximumWidth && maximumHeight ) {
-			cropWidth = maximumWidth;
-			cropHeight = maximumHeight;
+			const maxRatio = maximumWidth / maximumHeight;
+			if ( maxRatio > newAspectRatio ) {
+				// Limit by height
+				cropHeight = maximumHeight;
+				cropWidth = cropHeight * newAspectRatio;
+			} else {
+				// Limit by width
+				cropWidth = maximumWidth;
+				cropHeight = cropWidth / newAspectRatio;
+			}
 		}
 
 		// Check if crop width/height exceed image dimensions.
@@ -240,6 +253,12 @@ const CropScreen = ( props ) => {
 			newCrop.maxWidth = maximumWidth;
 			newCrop.maxHeight = maximumHeight;
 		}
+
+		if ( ! isFinite( cropWidth ) || ! isFinite( cropHeight ) ) {
+			console.error( 'Crop dimensions are invalid', { cropWidth, cropHeight } );
+			return;
+		}
+
 		setCrop( newCrop );
 	};
 
@@ -267,7 +286,7 @@ const CropScreen = ( props ) => {
 
 	/* Set Center Crop when image has finished loading */
 	useEffect( () => {
-		if ( reactCropImageRef ) {
+		if ( reactCropImageRef?.width && reactCropImageRef?.height ) {
 			// Get the current toolbar selection.
 			if ( 'original' === aspectRatioToolbarSelection ) {
 				handleAspectRatioChange( aspectRatioWidth, aspectRatioHeight, reactCropImageRef.width, reactCropImageRef.height );
@@ -305,7 +324,7 @@ const CropScreen = ( props ) => {
 	const handleAspectRatioChange = ( newAspectRatioWidth, newAspectRatioHeight, maximumWidth = null, maximumHeight = null ) => {
 		// Aspect ratio.
 		let newAspectRatio = parseInt( newAspectRatioWidth ) / parseInt( newAspectRatioHeight );
-		if ( null !== maximumWidth && null !== maximumHeight ) {
+		if ( null !== maximumWidth && null !== maximumHeight && maximumWidth > 0 && maximumHeight > 0 ) {
 			newAspectRatio = maximumWidth / maximumHeight;
 			setCropMaxWidth( maximumWidth );
 			setCropMaxHeight( maximumHeight );
@@ -408,7 +427,7 @@ const CropScreen = ( props ) => {
 										isSelected={ 'original' === aspectRatioToolbarSelection }
 										onClick={ () => {
 											setAspectRatioToolbarSelection( 'original' );
-											handleAspectRatioChange( fullsizePhoto?.width, fullsizePhoto?.height );
+											handleAspectRatioChange( fullsizePhoto?.width, fullsizePhoto?.height, fullsizePhoto?.width, fullsizePhoto?.height );
 											onClose();
 										} }
 										className="is-active"
@@ -682,7 +701,9 @@ const CropScreen = ( props ) => {
 									width={ fullsizePhoto?.width }
 									height={ fullsizePhoto?.height }
 									alt=""
-									ref={ setReactCropImageRef }
+									onLoad={ ( e ) => {
+										setReactCropImageRef( e.target );
+									} }
 								/>
 							</ReactCrop>
 						</>
