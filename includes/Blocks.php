@@ -775,6 +775,9 @@ class Blocks {
 				break;
 		}
 
+		// Get lightbox attributes.
+		$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
+
 		/**
 		 * Filter image markup in initial image form before other wrappers are added.
 		 *
@@ -815,11 +818,16 @@ class Blocks {
 				}
 				if ( $media_link_url ) {
 
-					// Get lightbox attributes.
-					$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
 					if ( $lightbox_enabled ) {
 						$media_link_atts['data-fancybox'] = 'true';
 						$media_link_atts['data-caption']  = esc_attr( $caption );
+
+						// Add gallery slug if set.
+						$media_link_lightbox_gallery_slug = esc_attr( $attributes['lightboxGallerySlug'] ?? '' );
+						if ( ! empty( $media_link_lightbox_gallery_slug ) ) {
+							$media_link_atts['data-fancybox'] = $media_link_lightbox_gallery_slug;
+							$media_link_atts['data-thumb']    = wp_get_attachment_image_src( $image_id, 'thumbnail' )[0];
+						}
 
 						// Register the lightbox script/style. Check wp_footer.
 						wp_register_script(
@@ -838,7 +846,14 @@ class Blocks {
 						);
 						wp_add_inline_script(
 							'dlx-photo-block-fancybox-js-inline',
-							'document.addEventListener("DOMContentLoaded", function() { if ( typeof jQuery !== "undefined" && typeof jQuery.fancybox !== "undefined" ) { jQuery("#' . esc_js( $unique_id ) . '[data-fancybox]").fancybox() } else if ( typeof Fancybox !== "undefined" ) { Fancybox.bind("#' . esc_js( $unique_id ) . ' [data-fancybox]"); }  });'
+							'document.addEventListener("DOMContentLoaded", function() {
+								var selector = "[data-fancybox]";
+								if ( typeof Fancybox !== "undefined" ) {
+									Fancybox.bind( selector );
+								} else if ( typeof jQuery !== "undefined" && typeof jQuery.fancybox !== "undefined" ) {
+									jQuery(selector).fancybox();
+								}
+							});'
 						);
 
 						// Get caption.

@@ -181,6 +181,7 @@ class Global_Styles {
 				'hideOnMobile',
 				'hideOnTablet',
 				'hideOnDesktop',
+				'lightboxGallerySlug',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -339,6 +340,7 @@ class Global_Styles {
 				'globalStyle',
 				'photoMode',
 				'hideCaption',
+				'lightboxGallerySlug',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
