@@ -844,10 +844,11 @@ class Blocks {
 							Functions::get_plugin_version(),
 							true
 						);
+						$fancybox_slug = 'none' === $media_link_lightbox_gallery_slug ? '' : $media_link_lightbox_gallery_slug;
 						wp_add_inline_script(
 							'dlx-photo-block-fancybox-js-inline',
 							'document.addEventListener("DOMContentLoaded", function() {
-								var selector = "[data-fancybox]";
+								var selector = ".' . esc_attr( $unique_id ) . ' [data-fancybox]' . ( 'none' !== $fancybox_slug ? ', [data-fancybox=\"' . esc_js( $fancybox_slug ) . '\"]' : '' ) . '";
 								if ( typeof Fancybox !== "undefined" ) {
 									Fancybox.bind( selector );
 								} else if ( typeof jQuery !== "undefined" && typeof jQuery.fancybox !== "undefined" ) {
