@@ -1038,7 +1038,9 @@ class Blocks {
 		}
 
 		// Get figure CSS advanced classes.
-		$figure_css_classes   = explode( ' ', $attributes['figureCSSClasses'] ?? '' );
+		$figure_css_classes = explode( ' ', $attributes['figureCSSClasses'] ?? '' );
+		// Trim array for empty values.
+		$figure_css_classes   = array_filter( $figure_css_classes );
 		$figure_css_classes[] = 'dlx-photo-block__figure';
 		if ( $has_global_style ) {
 			$figure_css_classes[] = $global_style_css_class;
@@ -1070,6 +1072,7 @@ class Blocks {
 			'dlx-photo-block__container',
 			'align' . esc_attr( $attributes['align'] ),
 			'dlx-photo-position-' . esc_attr( $attributes['photoPosition'] ),
+			esc_attr( $unique_id ),
 		);
 		if ( $has_global_style ) {
 			$section_css_classes[] = $global_style_css_class;

@@ -80,7 +80,7 @@ class Global_Styles {
 						'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $post->ID ),
 					);
 				}
-				wp_cache_set( 'dlx_pb_global_styles', $global_styles ); // Content would be attributes with key values `photoAttributes` and `captionAttributes`.
+				wp_cache_set( 'dlx_pb_global_styles', $global_styles, 'photo-block', 12 * HOUR_IN_SECONDS ); // Content would be attributes with key values `photoAttributes` and `captionAttributes`.
 				$vars['globalStyles'] = $global_styles;
 			} else {
 				wp_cache_set( 'dlx_pb_default_global_styles', array() );
@@ -573,7 +573,7 @@ class Global_Styles {
 		}
 
 		// Get the global styles from cache.
-		$global_styles = wp_cache_get( 'dlx_pb_global_styles_posts' );
+		$global_styles = wp_cache_get( 'dlx_pb_global_styles_posts', 'photo-block' );
 
 		if ( false === $global_styles ) {
 			// Begin generating global styles for the file.
@@ -586,7 +586,7 @@ class Global_Styles {
 			);
 			$posts     = get_posts( $post_args );
 
-			wp_cache_set( 'dlx_pb_global_styles_posts', $posts );
+			wp_cache_set( 'dlx_pb_global_styles_posts', $posts, 'photo-block', 12 * HOUR_IN_SECONDS );
 			$global_styles = $posts;
 
 			// If there are no global styles, return.

@@ -507,10 +507,10 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 	);
 
 	const styles = `
-		#${ uniqueId } .dlx-photo-block__screen-edit-image {
+		.${ uniqueId }.dlx-photo-block__screen-edit-image {
 			background: ${ photoBackgroundColor };
 		}
-		#${ uniqueId } img {
+		.${ uniqueId } img {
 			opacity: ${ photoOpacity };
 			${ photoBlur ? `filter: blur(${ photoBlur }px);` : '' }
 		}

@@ -102,8 +102,8 @@ class CSS_Helper {
 	 * Get the CSS for the given selector and unique ID.
 	 */
 	public function get_css() {
-		$css = '';
-		$css_prefix = '#';
+		$css        = '';
+		$css_prefix = '.';
 		if ( $this->is_class ) {
 			$css_prefix = '.';
 		}

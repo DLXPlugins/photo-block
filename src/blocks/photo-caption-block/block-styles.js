@@ -9,6 +9,11 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 	if ( attributes.length === 0 ) {
 		return '';
 	}
+
+	// Set all to use useClass.
+	useClass = true;
+
+	// Get variables.
 	const {
 		containerWidth,
 		containerHeight,

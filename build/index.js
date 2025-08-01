@@ -155,6 +155,10 @@ var getStyles = function getStyles(attributes, deviceType, uniqueId) {
   if (attributes.length === 0) {
     return '';
   }
+  // Set all to use useClass.
+  useClass = true;
+
+  // Get variables.
   var containerWidth = attributes.containerWidth,
     containerHeight = attributes.containerHeight,
     containerMinWidth = attributes.containerMinWidth,
@@ -956,6 +960,11 @@ var getCaptionStyles = function getCaptionStyles(attributes, deviceType, uniqueI
   if (attributes.length === 0) {
     return '';
   }
+
+  // Set all to use useClass.
+  useClass = true;
+
+  // Get variables.
   var containerWidth = attributes.containerWidth,
     containerHeight = attributes.containerHeight,
     containerMinWidth = attributes.containerMinWidth,
@@ -2414,7 +2423,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   var getCaption = function getCaption() {
     var maybeOverlayStyles = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     var maybeUniqueId = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block__caption ".concat(globalStyle, " align").concat(captionAlign, " ").concat(globalStyleCSSClassName, " ").concat(maybeOverlayStyles), {
+    var figClasses = classnames__WEBPACK_IMPORTED_MODULE_1___default()("dlx-photo-block__caption ".concat(uniqueId, " ").concat(globalStyle, " align").concat(captionAlign, " ").concat(globalStyleCSSClassName, " ").concat(maybeOverlayStyles), {
       'has-smart-styles': 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode
     });
 
@@ -2478,7 +2487,6 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       })));
     }
     return /*#__PURE__*/React.createElement("figcaption", {
-      id: uniqueId,
       className: figClasses
     }, /*#__PURE__*/React.createElement("div", _extends({
       className: "dlx-photo-block__caption-inner"
@@ -2497,7 +2505,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
   /**
    * Get overlay container classes.
    */
-  var overlayStyles = classnames__WEBPACK_IMPORTED_MODULE_1___default()('dlx-photo-block__caption-overlay', "overlay-type-".concat(overlayBackgroundType), {
+  var overlayStyles = classnames__WEBPACK_IMPORTED_MODULE_1___default()('dlx-photo-block__caption-overlay', uniqueId, "overlay-type-".concat(overlayBackgroundType), {
     'is-overlay': 'overlay' === captionPosition,
     'overlay-vertical-bottom': 'bottom' === overlayVerticalPosition,
     'overlay-vertical-middle': 'middle' === overlayVerticalPosition,
@@ -2521,8 +2529,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       'overlay-slide-right': overlayDisplayAnimation === 'slide-right'
     })
   }, 'overlay' === captionPosition && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: overlayStyles,
-    id: uniqueId
+    className: overlayStyles
   }, getCaption(overlayStyles, uniqueId))), 'overlay' !== captionPosition && /*#__PURE__*/React.createElement(React.Fragment, null, getCaption('', uniqueId))));
   if (null === blockUniqueId) {
     return null;
@@ -14232,7 +14239,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Add a CSS class to the link for styling purposes.', 'photo-block')
   }))))));
-  var styles = "\n\t\t#".concat(uniqueId, " .dlx-photo-block__screen-edit-image {\n\t\t\tbackground: ").concat(photoBackgroundColor, ";\n\t\t}\n\t\t#").concat(uniqueId, " img {\n\t\t\topacity: ").concat(photoOpacity, ";\n\t\t\t").concat(photoBlur ? "filter: blur(".concat(photoBlur, "px);") : '', "\n\t\t}\n\t");
+  var styles = "\n\t\t.".concat(uniqueId, ".dlx-photo-block__screen-edit-image {\n\t\t\tbackground: ").concat(photoBackgroundColor, ";\n\t\t}\n\t\t.").concat(uniqueId, " img {\n\t\t\topacity: ").concat(photoOpacity, ";\n\t\t\t").concat(photoBlur ? "filter: blur(".concat(photoBlur, "px);") : '', "\n\t\t}\n\t");
   var imageStyles = (0,_blocks_photo_block_block_styles__WEBPACK_IMPORTED_MODULE_15__["default"])(attributes, deviceType, uniqueId);
   return /*#__PURE__*/React.createElement(React.Fragment, null, localInspectorControls, !hasGlobalStyle(attributes.globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorAdvancedControls, null, advancedInspectorControls), localToolbar), /*#__PURE__*/React.createElement("style", null, styles, imageStyles), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__screen-edit"

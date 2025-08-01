@@ -596,7 +596,7 @@ class Functions {
 				$attributes['photoDropShadow']['blur'],
 				$attributes['photoDropShadow']['spread'],
 				$drop_shadow_color,
-				$is_class ? '.' : '#'
+				'.'
 			);
 		}
 		if ( (bool) $attributes['photoDropShadow']['enabled'] && 'overlay' === $attributes['captionPosition'] ) {
@@ -617,7 +617,7 @@ class Functions {
 				$attributes['photoDropShadow']['blur'],
 				$attributes['photoDropShadow']['spread'],
 				$drop_shadow_color,
-				$is_class ? '.' : '#'
+				'.'
 			);
 		}
 

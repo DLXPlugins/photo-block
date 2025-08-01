@@ -1550,7 +1550,7 @@ const PhotoCaptionBlock = ( props ) => {
 	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = ( maybeOverlayStyles = '', maybeUniqueId = '' ) => {
-		const figClasses = classnames( `dlx-photo-block__caption ${ globalStyle } align${ captionAlign } ${ globalStyleCSSClassName } ${ maybeOverlayStyles }`, {
+		const figClasses = classnames( `dlx-photo-block__caption ${ uniqueId } ${ globalStyle } align${ captionAlign } ${ globalStyleCSSClassName } ${ maybeOverlayStyles }`, {
 			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ),
 		} );
 
@@ -1617,7 +1617,7 @@ const PhotoCaptionBlock = ( props ) => {
 			);
 		}
 		return (
-			<figcaption id={ uniqueId } className={ figClasses } >
+			<figcaption className={ figClasses } >
 				<div className="dlx-photo-block__caption-inner" { ...innerBlockProps } />
 			</figcaption>
 		);
@@ -1640,6 +1640,7 @@ const PhotoCaptionBlock = ( props ) => {
 	 */
 	const overlayStyles = classnames(
 		'dlx-photo-block__caption-overlay',
+		uniqueId,
 		`overlay-type-${ overlayBackgroundType }`,
 		{
 			'is-overlay': 'overlay' === captionPosition,
@@ -1680,7 +1681,7 @@ const PhotoCaptionBlock = ( props ) => {
 			>
 				{ 'overlay' === captionPosition && (
 					<>
-						<div className={ overlayStyles } id={ uniqueId }>
+						<div className={ overlayStyles }>
 							{ getCaption( overlayStyles, uniqueId ) }
 						</div>
 					</>
