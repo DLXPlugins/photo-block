@@ -182,6 +182,18 @@ class Global_Styles {
 				'hideOnTablet',
 				'hideOnDesktop',
 				'lightboxGallerySlug',
+				'mediaLinkType',
+				'mediaLinkOverride',
+				'mediaLinkRel',
+				'mediaLinkAnchorId',
+				'mediaLinkUrl',
+				'mediaLinkClass',
+				'mediaLinkTitle',
+				'mediaLinkNewTab',
+				'dataMediaLinkRel',
+				'dataMediaLinkUrl',
+				'dataMediaLinkClass',
+				'dataMediaLinkNewTab',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.
@@ -341,6 +353,18 @@ class Global_Styles {
 				'photoMode',
 				'hideCaption',
 				'lightboxGallerySlug',
+				'mediaLinkType',
+				'mediaLinkOverride',
+				'mediaLinkRel',
+				'mediaLinkAnchorId',
+				'mediaLinkUrl',
+				'mediaLinkClass',
+				'mediaLinkTitle',
+				'mediaLinkNewTab',
+				'dataMediaLinkRel',
+				'dataMediaLinkUrl',
+				'dataMediaLinkClass',
+				'dataMediaLinkNewTab',
 			);
 			/**
 			 * Filter the photo keys to ignore when saving presets.

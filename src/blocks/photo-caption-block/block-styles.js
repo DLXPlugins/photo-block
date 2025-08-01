@@ -52,7 +52,7 @@ const getCaptionStyles = ( attributes, deviceType, uniqueId, useClass = false ) 
 		enableSmartStyles,
 	} = attributes;
 	let styles = `
-		figcaption${ useClass ? '.' : '#' }${ uniqueId } {
+		figcaption${ useClass ? '.' : '.' }${ uniqueId } {
 			--photo-block-caption-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
 			--photo-block-caption-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
 			--photo-block-caption-min-width: ${ getValueWithUnit( deviceType, containerMinWidth, 'min-width' ) }

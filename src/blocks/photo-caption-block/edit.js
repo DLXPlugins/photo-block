@@ -1565,7 +1565,7 @@ const PhotoCaptionBlock = ( props ) => {
 				);
 			} else if ( '' !== caption ) {
 				return (
-					<figcaption className={ figClasses } id={ maybeUniqueId ?? uniqueId }>
+					<figcaption className={ figClasses }>
 						<div className="dlx-photo-block__caption-inner">
 							{ htmlToReactParser.parse( caption ) }
 						</div>
@@ -1576,14 +1576,14 @@ const PhotoCaptionBlock = ( props ) => {
 		}
 		if ( hideCaption ) {
 			return (
-				<figcaption className={ figClasses } id={ uniqueId }>
+				<figcaption className={ figClasses }>
 					<div className="dlx-photo-block__caption-inner"></div>
 				</figcaption>
 			);
 		}
 		if ( 'single' === mode ) {
 			return (
-				<figcaption className={ figClasses } id={ uniqueId }>
+				<figcaption className={ figClasses }>
 					<div className="dlx-photo-block__caption-inner">
 						<RichText
 							tagName="div"
