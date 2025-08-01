@@ -105,7 +105,7 @@ class CSS_Helper {
 		$css        = '';
 		$css_prefix = '.';
 		if ( $this->is_class ) {
-			$css_prefix = '.';
+			$css_prefix = 'body .';
 		}
 
 		// Output general CSS.
