@@ -312,7 +312,7 @@ class Blocks {
 				}
 
 				// Set object cache.
-				wp_cache_set( 'dlx_pb_global_style_' . $global_style_slug, $global_style, 'dlx_photo_block', 60 * 60 );
+				wp_cache_set( 'dlx_pb_global_style_' . $global_style_slug, $global_style, 'photo-block', 60 * 60 );
 			}
 
 			// If we have a global style, get the attributes.
@@ -569,7 +569,7 @@ class Blocks {
 
 		if ( 'none' !== $global_style_slug && '' !== $global_style_slug ) {
 			// Try to get global style from cache.
-			$global_style = wp_cache_get( 'dlx_pb_global_style_' . $global_style_slug, 'dlx_photo_block' ); // can be WP_Post or null.
+			$global_style = wp_cache_get( 'dlx_pb_global_style_' . $global_style_slug, 'photo-block' ); // can be WP_Post or null.
 
 			// Get global style by slug.
 			if ( false === $global_style ) {
@@ -583,7 +583,7 @@ class Blocks {
 				}
 
 				// Set object cache.
-				wp_cache_set( 'dlx_pb_global_style_' . $global_style_slug, $global_style, 'dlx_photo_block', 60 * 60 );
+				wp_cache_set( 'dlx_pb_global_style_' . $global_style_slug, $global_style, 'photo-block', 60 * 60 );
 			}
 
 			// If we have a global style, get the attributes.

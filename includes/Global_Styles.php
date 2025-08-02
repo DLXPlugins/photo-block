@@ -48,8 +48,8 @@ class Global_Styles {
 		$vars['globalStylesGenerateNonce'] = wp_create_nonce( 'dlx_photo_block_generate_global_styles' );
 
 		// Get the default preset (if any), and return it as localized variable.
-		$default_global_styles = wp_cache_get( 'dlx_pb_global_styles' ); // can be false (empty) or array.
-		if ( ! empty( $default_global_styles ) ) {
+		$default_global_styles = wp_cache_get( 'dlx_pb_global_styles_posts' ); // can be false (empty) or array.
+		if ( ! empty( $default_global_styles ) && false !== $default_global_styles ) {
 			$vars['globalStyles'] = $default_global_styles;
 		}
 		if ( false === $default_global_styles ) {
@@ -595,6 +595,14 @@ class Global_Styles {
 				wp_delete_file( $upload_dir . 'global-styles.css' );
 				// Update the option.
 				update_option( 'dlx_pb_cache_bust_version', $cache_bust );
+
+				// Clear WP cache.
+				$cache_keys = array(
+					'dlx_pb_default_global_styles',
+					'dlx_pb_global_styles_posts',
+				);
+
+				wp_cache_delete_multiple( $cache_keys, 'photo-block' );
 			}
 		}
 
