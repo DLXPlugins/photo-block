@@ -316,7 +316,7 @@ const PhotoBlock = ( props ) => {
 
 	const block = (
 		<>
-			<section className="dlx-photo-block__container dlx-photo-block__block-wrapper" id={ uniqueId }>
+			<section className={ 'dlx-photo-block__container dlx-photo-block__block-wrapper ' + uniqueId }>
 				{ resizeListener }
 				{ initCurrentScreen() }
 			</section>
