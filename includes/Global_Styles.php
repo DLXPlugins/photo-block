@@ -80,10 +80,10 @@ class Global_Styles {
 						'save_nonce'   => wp_create_nonce( 'dlx_photo_block_save_global_styles_' . $post->ID ),
 					);
 				}
-				wp_cache_set( 'dlx_pb_global_styles', $global_styles, 'photo-block', 12 * HOUR_IN_SECONDS ); // Content would be attributes with key values `photoAttributes` and `captionAttributes`.
+				wp_cache_set( 'dlx_pb_global_styles_posts', $global_styles, 'photo-block', 12 * HOUR_IN_SECONDS ); // Content would be attributes with key values `photoAttributes` and `captionAttributes`.
 				$vars['globalStyles'] = $global_styles;
 			} else {
-				wp_cache_set( 'dlx_pb_default_global_styles', array() );
+				wp_cache_set( 'dlx_pb_global_styles_posts', array() );
 			}
 		}
 		return $vars;

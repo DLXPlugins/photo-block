@@ -75,7 +75,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 	let styles = '';
 	if ( 'overlay' === captionPosition ) {
 		styles += `
-			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
+			${ useClass ? '.' : '.' }${ uniqueId } .dlx-photo-block__image-wrapper {
 				--photo-block-photo-background-color: ${ getColor( photoBackgroundColor, photoBackgroundColorOpacity ) };
 				--photo-block-photo-background-Color-opacity: ${ photoBackgroundColorOpacity };
 				--photo-block-image-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
@@ -89,7 +89,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 				${ buildBorderCSS( photoBorder, deviceType, '--photo-block-image' ) };
 				--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 			}
-			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
+			${ useClass ? '.' : '.' }${ uniqueId } .dlx-photo-block__image-wrapper img {
 				--photo-block-image-opacity: ${ photoOpacity };
 				--photo-block-image-object-fit: ${ photoObjectFit };
 				--photo-block-blur: ${ photoBlur }px;
@@ -100,7 +100,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 		`;
 		if ( photoDropShadow.enabled ) {
 			styles += `
-				${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
+				${ useClass ? '.' : '.' }${ uniqueId } .dlx-photo-block__image-wrapper {
 					--photo-block-image-drop-shadow-horizontal: ${ photoDropShadow.horizontal }px;
 					--photo-block-image-drop-shadow-vertical: ${ photoDropShadow.vertical }px;
 					--photo-block-image-drop-shadow-blur: ${ photoDropShadow.blur }px;
@@ -111,7 +111,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 		}
 	} else {
 		styles += `
-			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper {
+			${ useClass ? '.' : '.' }${ uniqueId } .dlx-photo-block__image-wrapper {
 				--photo-block-photo-background-color: ${ getColor( photoBackgroundColor, photoBackgroundColorOpacity ) };
 				--photo-block-image-width: ${ getValueWithUnit( deviceType, containerWidth, 'width' ) }
 				--photo-block-image-height: ${ getValueWithUnit( deviceType, containerHeight, 'height' ) }
@@ -121,7 +121,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 				--photo-block-image-max-height: ${ getValueWithUnit( deviceType, containerMaxHeight, 'max-height' ) }
 				--photo-block-photo-border-radius: ${ buildDimensionsCSS( photoBorderRadius, deviceType ) };
 			}
-			${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
+			${ useClass ? '.' : '.' }${ uniqueId } .dlx-photo-block__image-wrapper img {
 				--photo-block-image-opacity: ${ photoOpacity };
 				--photo-block-image-object-fit: ${ photoObjectFit };
 				--photo-block-blur: ${ photoBlur }px;
@@ -137,10 +137,10 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 	}
 
 	// Apply outer margin to container.
-	styles += `${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__figure { --photo-block-figure-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
+	styles += `${ useClass ? '.' : '.' }${ uniqueId } .dlx-photo-block__figure { --photo-block-figure-margin: ${ buildDimensionsCSS( photoMarginSize, deviceType ) }; }`;
 	if ( photoDropShadow.enabled ) {
 		styles += `
-			.dlx-has-drop-shadow ${ useClass ? '.' : '#' }${ uniqueId } img {
+			.dlx-has-drop-shadow ${ useClass ? '.' : '.' }${ uniqueId } img {
 				--photo-block-image-drop-shadow-horizontal: ${ photoDropShadow.horizontal }px;
 				--photo-block-image-drop-shadow-vertical: ${ photoDropShadow.vertical }px;
 				--photo-block-image-drop-shadow-blur: ${ photoDropShadow.blur }px;
@@ -152,7 +152,7 @@ const getStyles = (attributes, deviceType, uniqueId, useClass = false ) => {
 	if ( photoAspectRatio ) {
 		if ( photoAspectRatio[ deviceType ] && aspectRatioRegex.test( photoAspectRatio[ deviceType ] ) ) {
 			styles += `
-				${ useClass ? '.' : '#' }${ uniqueId } .dlx-photo-block__image-wrapper img {
+				${ useClass ? '.' : '.' }${ uniqueId } .dlx-photo-block__image-wrapper img {
 					--photo-block-image-aspect-ratio: ${ getAspectRatio( photoAspectRatio[ deviceType ] ) } !important;
 				}
 			`;
