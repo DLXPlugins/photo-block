@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.3.0
+Stable tag: 1.3.10
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -127,6 +127,12 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.3.10 =
+* Released 2025-08-03
+* Bug fix: Object caching resulted in global styles saving/rendering correctly. This has been resolved.
+* Bug fix: Global styles wouldn't take priority in frontend styles.
+* New feature: You can give images a group slug so that they are popped up as a gallery in a lightbox.
+
 = 1.3.0 =
 * Released 2025-07-31
 * New feature: Cropping now pops up in a modal, giving much more room to crop/edit the photo. This solves a bug where cropping in smaller screens or columns would cause the layout to warp.
@@ -215,7 +221,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.3.0 =
-This update introduces a new feature where cropping now occurs in a modal, providing more space to edit photos and resolving layout issues on smaller screens or within columns. It also fixes a bug that affected cropping tall photos and addresses an issue where duplicate cache keys were causing errors with global styles.
+= 1.3.10 =
+Resolving several issues with global styles and object caching. Resolving specificity issues with global styles. Added the ability to group images for a gallery using Fancybox.
 
 
