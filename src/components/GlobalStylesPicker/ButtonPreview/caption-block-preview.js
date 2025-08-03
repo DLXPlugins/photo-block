@@ -22,13 +22,13 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 	 * @return {JSX.Element} The caption.
 	 */
 	const getCaption = () => {
-		const figClasses = classnames( `dlx-photo-block__caption align${ captionAlign }`, {
+		const figClasses = classnames( `dlx-photo-block__caption photo-block-preview align${ captionAlign }`, {
 			'has-smart-styles': ( 'advanced' === mode && 'data' !== photoMode && 'featuredImage' !== photoMode ),
 		} );
 
 		return (
-			<figcaption id={ 'photo-block-preview' } className={ figClasses }>
-				<div className="dlx-photo-block__caption-inner">This is a sample caption</div>
+			<figcaption className={ figClasses }>
+				<div className="dlx-photo-block__caption-inner">Sample Caption</div>
 			</figcaption>
 		);
 	};
@@ -36,6 +36,7 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 	const overlayStyles = classnames(
 		'dlx-photo-block__caption-wrapper',
 		`overlay-type-${ overlayBackgroundType }`,
+		'photo-block-preview',
 		{
 			'is-overlay': 'overlay' === captionPosition,
 			'overlay-vertical-bottom': 'bottom' === overlayVerticalPosition,
@@ -59,7 +60,7 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 		}
 	);
 
-	const styles = getStyles( captionAttributes, 'desktop', 'photo-block-preview' );	
+	const styles = getStyles( captionAttributes, 'desktop', 'photo-block-preview' );
 	return (
 		<>
 			<style>
@@ -67,7 +68,6 @@ const CaptionBlockPreview = ( { photoAttributes, captionAttributes, uniqueId } )
 			</style>
 			<div
 				className={ overlayStyles }
-				id="photo-block-preview"
 			>
 				{ 'overlay' === captionPosition && (
 					<>

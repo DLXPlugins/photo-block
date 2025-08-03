@@ -14,15 +14,15 @@ const PhotoBlockPreview = ( { globalStyle, photoAttributes, captionAttributes, u
 	let styles = getStyles( photoAttributes, 'desktop', 'photo-block-preview' );
 	styles += getCaptionStyles( captionAttributes, 'desktop', 'photo-block-preview' );
 	styles += `
-		#photo-block-preview .dlx-photo-block__screen-edit-image-wrapper {
+		.photo-block-preview .dlx-photo-block__screen-edit-image-wrapper {
 			padding: 16px;
 		}
-		#photo-block-preview .dlx-photo-block__screen-edit-image-inner {
+		.photo-block-preview .dlx-photo-block__screen-edit-image-inner {
 			min-width: 250px;
 			max-width: 250px;
 			max-height: 250px;
 		}
-		#photo-block-preview .dlx-photo-block__image-wrapper {
+		.photo-block-preview .dlx-photo-block__image-wrapper {
 			min-width: 250px;
 			max-width: 250px;
 			max-height: 250px;
