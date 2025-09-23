@@ -45,6 +45,7 @@ registerPlugin(
 						newAttributes.imageSize = propAttributes.imageSize;
 					}
 					if ( propAttributes.mediaLinkOverride )	{
+						newAttributes.mediaLinkOverride = propAttributes.mediaLinkOverride;
 						newAttributes.mediaLinkType = propAttributes.mediaLinkType;
 						newAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
 						newAttributes.mediaLinkNewTab = propAttributes.mediaLinkNewTab;
@@ -85,6 +86,7 @@ const returnBlockAttributes = ( attributes, blockType, innerBlocks ) => {
 						globalStyleAttributes.imageSize = attributes.imageSize;
 					}
 					if ( true === attributes.mediaLinkOverride )	{
+						globalStyleAttributes.mediaLinkOverride = attributes.mediaLinkOverride;
 						globalStyleAttributes.mediaLinkType = attributes.mediaLinkType;
 						globalStyleAttributes.mediaLinkTitle = attributes.mediaLinkTitle;
 						globalStyleAttributes.mediaLinkUrl = attributes.mediaLinkUrl;

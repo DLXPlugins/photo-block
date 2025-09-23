@@ -7454,7 +7454,7 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: globalStyle === (globalStyle === null || globalStyle === void 0 ? void 0 : globalStyle.slug) ? 'primary' : 'secondary',
     onClick: function onClick() {
-      var _globalStyle$content, _globalStyleObject$co, _globalStyleObject$co2, _globalStyleObject$co3, _globalStyleObject$co4, _globalStyleObject$co5, _globalStyleObject$co6, _globalStyleObject$co7, _select$getBlocksByCl;
+      var _globalStyle$content, _globalStyleObject$co, _globalStyleObject$co2, _globalStyleObject$co3, _globalStyleObject$co4, _globalStyleObject$co5, _globalStyleObject$co6, _select$getBlocksByCl;
       // Try to see if photo has caption.
       var hasCaption = false;
       if ((_globalStyle$content = globalStyle.content) !== null && _globalStyle$content !== void 0 && (_globalStyle$content = _globalStyle$content.photoAttributes) !== null && _globalStyle$content !== void 0 && _globalStyle$content.hasCaption || attributes.hasCaption) {
@@ -7465,15 +7465,12 @@ var GlobalStylesButtonPreview = function GlobalStylesButtonPreview(props) {
       props.setAttributes(_objectSpread(_objectSpread({}, globalStyleObject.content.photoAttributes), {}, {
         globalStyle: globalStyle.slug,
         hasCaption: hasCaption,
-        mediaLinkOverride: false,
-        imageSizeOverride: false,
-        imageSize: ((_globalStyleObject$co = globalStyleObject.content) === null || _globalStyleObject$co === void 0 || (_globalStyleObject$co = _globalStyleObject$co.photoAttributes) === null || _globalStyleObject$co === void 0 ? void 0 : _globalStyleObject$co.imageSize) || 'full',
-        mediaLinkType: ((_globalStyleObject$co2 = globalStyleObject.content) === null || _globalStyleObject$co2 === void 0 || (_globalStyleObject$co2 = _globalStyleObject$co2.photoAttributes) === null || _globalStyleObject$co2 === void 0 ? void 0 : _globalStyleObject$co2.mediaLinkType) || 'none',
+        imageSize: attributes.imageSizeOverride ? attributes.imageSize : ((_globalStyleObject$co = globalStyleObject.content) === null || _globalStyleObject$co === void 0 || (_globalStyleObject$co = _globalStyleObject$co.photoAttributes) === null || _globalStyleObject$co === void 0 ? void 0 : _globalStyleObject$co.imageSize) || 'full',
+        mediaLinkType: attributes.mediaLinkOverride ? attributes.mediaLinkType : ((_globalStyleObject$co2 = globalStyleObject.content) === null || _globalStyleObject$co2 === void 0 || (_globalStyleObject$co2 = _globalStyleObject$co2.photoAttributes) === null || _globalStyleObject$co2 === void 0 ? void 0 : _globalStyleObject$co2.mediaLinkType) || 'none',
         mediaLinkTitle: ((_globalStyleObject$co3 = globalStyleObject.content) === null || _globalStyleObject$co3 === void 0 || (_globalStyleObject$co3 = _globalStyleObject$co3.photoAttributes) === null || _globalStyleObject$co3 === void 0 ? void 0 : _globalStyleObject$co3.mediaLinkTitle) || '',
-        mediaLinkUrl: ((_globalStyleObject$co4 = globalStyleObject.content) === null || _globalStyleObject$co4 === void 0 || (_globalStyleObject$co4 = _globalStyleObject$co4.photoAttributes) === null || _globalStyleObject$co4 === void 0 ? void 0 : _globalStyleObject$co4.mediaLinkUrl) || '',
-        lightboxCaption: ((_globalStyleObject$co5 = globalStyleObject.content) === null || _globalStyleObject$co5 === void 0 || (_globalStyleObject$co5 = _globalStyleObject$co5.photoAttributes) === null || _globalStyleObject$co5 === void 0 ? void 0 : _globalStyleObject$co5.lightboxCaption) || '',
-        lightboxEnabled: ((_globalStyleObject$co6 = globalStyleObject.content) === null || _globalStyleObject$co6 === void 0 || (_globalStyleObject$co6 = _globalStyleObject$co6.photoAttributes) === null || _globalStyleObject$co6 === void 0 ? void 0 : _globalStyleObject$co6.lightboxEnabled) || false,
-        lightboxShowCaption: ((_globalStyleObject$co7 = globalStyleObject.content) === null || _globalStyleObject$co7 === void 0 || (_globalStyleObject$co7 = _globalStyleObject$co7.photoAttributes) === null || _globalStyleObject$co7 === void 0 ? void 0 : _globalStyleObject$co7.lightboxShowCaption) || false
+        lightboxCaption: ((_globalStyleObject$co4 = globalStyleObject.content) === null || _globalStyleObject$co4 === void 0 || (_globalStyleObject$co4 = _globalStyleObject$co4.photoAttributes) === null || _globalStyleObject$co4 === void 0 ? void 0 : _globalStyleObject$co4.lightboxCaption) || '',
+        lightboxEnabled: ((_globalStyleObject$co5 = globalStyleObject.content) === null || _globalStyleObject$co5 === void 0 || (_globalStyleObject$co5 = _globalStyleObject$co5.photoAttributes) === null || _globalStyleObject$co5 === void 0 ? void 0 : _globalStyleObject$co5.lightboxEnabled) || false,
+        lightboxShowCaption: ((_globalStyleObject$co6 = globalStyleObject.content) === null || _globalStyleObject$co6 === void 0 || (_globalStyleObject$co6 = _globalStyleObject$co6.photoAttributes) === null || _globalStyleObject$co6 === void 0 ? void 0 : _globalStyleObject$co6.lightboxShowCaption) || false
       }));
 
       // Try to get children of the block (caption).
@@ -8434,11 +8431,9 @@ var MediaLink = function MediaLink(props) {
       'is-pressed': 'none' === mediaLinkType
     }),
     onClick: function onClick() {
-      if (hasGlobalStyle(globalStyle)) {
-        setAttributes({
-          mediaLinkOverride: true
-        });
-      }
+      setAttributes({
+        mediaLinkOverride: true
+      });
       setAttributes({
         mediaLinkType: 'none'
       });
@@ -8452,11 +8447,9 @@ var MediaLink = function MediaLink(props) {
       'is-pressed': 'image' === mediaLinkType
     }),
     onClick: function onClick() {
-      if (hasGlobalStyle(globalStyle)) {
-        setAttributes({
-          mediaLinkOverride: true
-        });
-      }
+      setAttributes({
+        mediaLinkOverride: true
+      });
       setAttributes({
         mediaLinkType: 'image'
       });
@@ -8468,11 +8461,9 @@ var MediaLink = function MediaLink(props) {
       'is-pressed': 'page' === mediaLinkType
     }),
     onClick: function onClick() {
-      if (hasGlobalStyle(globalStyle)) {
-        setAttributes({
-          mediaLinkOverride: true
-        });
-      }
+      setAttributes({
+        mediaLinkOverride: true
+      });
       setAttributes({
         mediaLinkType: 'page'
       });
@@ -8485,11 +8476,9 @@ var MediaLink = function MediaLink(props) {
       'is-pressed': 'custom' === mediaLinkType
     }),
     onClick: function onClick() {
-      if (hasGlobalStyle(globalStyle)) {
-        setAttributes({
-          mediaLinkOverride: true
-        });
-      }
+      setAttributes({
+        mediaLinkOverride: true
+      });
       setAttributes({
         mediaLinkType: 'custom'
       });
@@ -12219,6 +12208,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
           newAttributes.imageSize = propAttributes.imageSize;
         }
         if (propAttributes.mediaLinkOverride) {
+          newAttributes.mediaLinkOverride = propAttributes.mediaLinkOverride;
           newAttributes.mediaLinkType = propAttributes.mediaLinkType;
           newAttributes.mediaLinkTitle = propAttributes.mediaLinkTitle;
           newAttributes.mediaLinkNewTab = propAttributes.mediaLinkNewTab;
@@ -12251,6 +12241,7 @@ var returnBlockAttributes = function returnBlockAttributes(attributes, blockType
             globalStyleAttributes.imageSize = attributes.imageSize;
           }
           if (true === attributes.mediaLinkOverride) {
+            globalStyleAttributes.mediaLinkOverride = attributes.mediaLinkOverride;
             globalStyleAttributes.mediaLinkType = attributes.mediaLinkType;
             globalStyleAttributes.mediaLinkTitle = attributes.mediaLinkTitle;
             globalStyleAttributes.mediaLinkUrl = attributes.mediaLinkUrl;

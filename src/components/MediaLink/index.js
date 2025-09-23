@@ -90,13 +90,11 @@ const MediaLink = ( props ) => {
 							} ) }
 
 							onClick={ () => {
-								if ( hasGlobalStyle( globalStyle ) ) {
-									setAttributes(
-										{
-											mediaLinkOverride: true,
-										}
-									);
-								}
+								setAttributes(
+									{
+										mediaLinkOverride: true,
+									}
+								);
 								setAttributes( { mediaLinkType: 'none' } );
 							} }
 						>
@@ -109,13 +107,11 @@ const MediaLink = ( props ) => {
 								'is-pressed': 'image' === mediaLinkType,
 							} ) }
 							onClick={ () => {
-								if ( hasGlobalStyle( globalStyle ) ) {
-									setAttributes(
-										{
-											mediaLinkOverride: true,
-										}
-									);
-								}
+								setAttributes(
+									{
+										mediaLinkOverride: true,
+									}
+								);
 								setAttributes( { mediaLinkType: 'image' } );
 							} }
 						>
@@ -128,13 +124,11 @@ const MediaLink = ( props ) => {
 								'is-pressed': 'page' === mediaLinkType,
 							} ) }
 							onClick={ () => {
-								if ( hasGlobalStyle( globalStyle ) ) {
-									setAttributes(
-										{
-											mediaLinkOverride: true,
-										}
-									);
-								}
+								setAttributes(
+									{
+										mediaLinkOverride: true,
+									}
+								);
 								setAttributes( { mediaLinkType: 'page' } );
 							} }
 							disabled={ 'photo' !== photoMode }
@@ -148,13 +142,11 @@ const MediaLink = ( props ) => {
 								'is-pressed': 'custom' === mediaLinkType,
 							} ) }
 							onClick={ () => {
-								if ( hasGlobalStyle( globalStyle ) ) {
-									setAttributes(
-										{
-											mediaLinkOverride: true,
-										}
-									);
-								}
+								setAttributes(
+									{
+										mediaLinkOverride: true,
+									}
+								);
 								setAttributes( { mediaLinkType: 'custom' } );
 							} }
 						>
