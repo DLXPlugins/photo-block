@@ -345,7 +345,7 @@ const UploadTypes = ( props ) => {
 				<MediaUploadCheck>
 					<MediaUpload
 						allowedTypes="image"
-						mode="browse"
+						mode={ ( imageData?.id || 0 ) === 0 ? 'upload' : 'browse' }
 						multiple={ false }
 						value={ imageData?.id || 0 }
 						title={ __( 'Please select a Photo', 'photo-block' ) }
