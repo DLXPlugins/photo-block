@@ -11853,7 +11853,7 @@ var UploadTypes = function UploadTypes(props) {
             while (1) switch (_context.prev = _context.next) {
               case 0:
                 try {
-                  insertBlock(newBlock, undefined, props.clientId);
+                  insertBlock(newBlock, undefined, props.clientId, false);
                 } catch (error) {
                   console.error('Error inserting block:', error);
                 }

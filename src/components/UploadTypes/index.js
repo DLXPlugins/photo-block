@@ -303,7 +303,7 @@ const UploadTypes = ( props ) => {
 					// Ensure block editor is ready
 					setTimeout( async() => {
 						try {
-							insertBlock( newBlock, undefined, props.clientId );
+							insertBlock( newBlock, undefined, props.clientId, false );
 						} catch ( error ) {
 							console.error( 'Error inserting block:', error );
 						}
