@@ -92,6 +92,9 @@ const ScreenshotOne = ( props ) => {
 					screen: 'edit',
 					photoMode: 'photo',
 					hasCaption: false,
+					mediaLinkType: 'custom',
+					mediaLinkOverride: true,
+					mediaLinkUrl: submitData.screenshotOneUrl,
 				} );
 			} else {
 				setError( 'screenshotOneUrl', {
