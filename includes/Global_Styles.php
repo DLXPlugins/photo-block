@@ -182,7 +182,8 @@ class Global_Styles {
 				'hideOnTablet',
 				'hideOnDesktop',
 				'lightboxGallerySlug',
-				'mediaLinkType',
+				'lightboxCaption',
+				'customLinkLightboxCaption',
 				'mediaLinkOverride',
 				'mediaLinkRel',
 				'mediaLinkAnchorId',
@@ -203,6 +204,10 @@ class Global_Styles {
 			 */
 			$photo_keys_to_ignore = apply_filters( 'dlx_photo_block_photo_keys_to_ignore', $photo_keys_to_ignore );
 			if ( in_array( $key, $photo_keys_to_ignore, true ) ) {
+				continue;
+			}
+			// Store the media link type, but ignore custom URLs.
+			if ( 'mediaLinkType' === $key && 'custom' === $value ) {
 				continue;
 			}
 			$photo_attributes[ $key ] = $value;
@@ -352,8 +357,9 @@ class Global_Styles {
 				'globalStyle',
 				'photoMode',
 				'hideCaption',
+				'lightboxCaption',
 				'lightboxGallerySlug',
-				'mediaLinkType',
+				'customLinkLightboxCaption',
 				'mediaLinkOverride',
 				'mediaLinkRel',
 				'mediaLinkAnchorId',
@@ -374,6 +380,10 @@ class Global_Styles {
 			 */
 			$photo_keys_to_ignore = apply_filters( 'dlx_photo_block_photo_keys_to_ignore', $photo_keys_to_ignore );
 			if ( in_array( $key, $photo_keys_to_ignore, true ) ) {
+				continue;
+			}
+			// Store the media link type, but ignore custom URLs.
+			if ( 'mediaLinkType' === $key && 'custom' === $value ) {
 				continue;
 			}
 			$photo_attributes[ $key ] = $value;
