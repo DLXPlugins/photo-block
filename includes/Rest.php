@@ -468,6 +468,17 @@ class Rest {
 		// Get the attachment ID.
 		$attachment_id = $uploaded_file;
 
+		// Update new image with old image's alt and caption meta data.
+		$old_image_alt     = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+		$old_image_caption = get_post_field( 'post_excerpt', $image_id );
+		update_post_meta( $attachment_id, '_wp_attachment_image_alt', sanitize_text_field( $old_image_alt ) );
+		wp_update_post(
+			array(
+				'ID'           => $attachment_id,
+				'post_excerpt' => sanitize_text_field( $old_image_caption ),
+			)
+		);
+		clean_post_cache( $attachment_id );
 		// Get the Image URL.
 		$attachment_data = Functions::get_image_data( $attachment_id, 'full' );
 
