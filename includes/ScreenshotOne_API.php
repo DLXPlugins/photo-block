@@ -143,11 +143,18 @@ class ScreenshotOne_API {
 		}
 		// If an incorrect response code was returned, return WP_Error.
 		$response_body       = wp_remote_retrieve_body( $response );
-		$maybe_response_body = json_decode( $response_body, true );
-		if ( is_array( $maybe_response_body ) ) {
-			$response_body = $maybe_response_body;
-		}
 		$retrieved_response_code = absint( $response['response']['code'] );
+		
+		// Get response headers for metadata.
+		$response_headers = wp_remote_retrieve_headers( $response );
+		
+		// Try to decode as JSON only if context is 'json'.
+		if ( 'json' === $context ) {
+			$maybe_response_body = json_decode( $response_body, true );
+			if ( is_array( $maybe_response_body ) ) {
+				$response_body = $maybe_response_body;
+			}
+		}
 
 		if ( $retrieved_response_code !== $response_code ) {
 
@@ -248,13 +255,25 @@ class ScreenshotOne_API {
 			return new \WP_Error( 'photo_block_error', $error_data['error'], $error_data );
 		}
 
-		if ( isset( $response_body['is_successful'] ) ) {
-			if ( ! $response_body['is_successful'] ) {
-				return new \WP_Error( 'photo_block_error', $response_body['error_message'], $response_body );
+		// Handle JSON responses.
+		if ( 'json' === $context ) {
+			if ( isset( $response_body['is_successful'] ) ) {
+				if ( ! $response_body['is_successful'] ) {
+					return new \WP_Error( 'photo_block_error', $response_body['error_message'], $response_body );
+				}
 			}
+			
+			// Add headers to response body for metadata access.
+			$response_body['_headers'] = $response_headers;
+			
+			return $response_body;
 		}
-
-		return $response_body;
+		
+		// For binary responses (like images), return both data and headers.
+		return array(
+			'data'    => $response_body,
+			'headers' => $response_headers,
+		);
 	}
 
 	/**
@@ -300,6 +319,7 @@ class ScreenshotOne_API {
 			'block_cookie_banners' => $params['screenshotOneBlockCookieBanners'] ? 'true' : 'false',
 			'block_ads'            => $params['screenshotOneBlockAds'] ? 'true' : 'false',
 			'ignore_host_errors'   => $params['screenshotOneIgnoreHostErrors'] ? 'true' : 'false',
+			'metadata_page_title'  => 'true',
 		);
 
 		// Build the query string maintaining parameter order.
@@ -316,7 +336,7 @@ class ScreenshotOne_API {
 
 		return $this->make_request(
 			'/take?' . $final_query_string,
-			'json',
+			'image',
 			array(
 				'api_key' => $this->api_key,
 				'body'    => array(),

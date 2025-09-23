@@ -219,8 +219,18 @@ class Rest {
 			);
 		}
 
-		// Get the image data.
-		$image_data = $screenshot_one_image_request;
+		// Get the image data and headers.
+		$image_data       = $screenshot_one_image_request['data'];
+		$response_headers = $screenshot_one_image_request['headers'];
+
+		// Extract page title from headers if available.
+		$page_title = '';
+		if ( isset( $response_headers['x-screenshotone-page-title'] ) ) {
+			$page_title = $response_headers['x-screenshotone-page-title'];
+		}
+
+		// generate filename from page title.
+		$filename = sanitize_file_name( 'screenshot-' . sanitize_title( wp_trim_words( $page_title, 10, '' ) ) . '.' . $params['screenshotOneDefaultImageFormat'] );
 
 		// Include WordPress filesystem functions.
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -231,7 +241,7 @@ class Rest {
 
 		// Prepare file array for media_handle_sideload.
 		$file_array = array(
-			'name'     => 'site-screenshot-' . time() . '.' . $params['screenshotOneDefaultImageFormat'],
+			'name'     => $filename,
 			'tmp_name' => $temp_file,
 		);
 
@@ -267,6 +277,7 @@ class Rest {
 			array(
 				'message'    => __( 'Screenshot saved successfully.', 'photo-block' ),
 				'attachment' => $attachment_data,
+				'page_title' => $page_title,
 			)
 		);
 	}
