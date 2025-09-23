@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, blocks, photo block, responsive block
 Requires at least: 6.5
 Tested up to: 6.8
-Stable tag: 1.3.10
+Stable tag: 1.4.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -127,6 +127,14 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Changelog ==
 
+= 1.4.0 =
+* Released 2025-09-23
+* Global Style fix: Media Link Type and Image Size are stored in global styles again, allowing per-block overrides. This makes it much quicker to add an image, set the global style, and only override if needed.
+* UX Fix: Media Library goes straight to upload unless there is an existing image.
+* New feature: Page title is added to ScreenshotOne-generated images.
+* New feature: Cropping an image also copies its alt and caption attributes.
+* UX Fix: Auto-selecting the caption is disabled and doesn't actually save time in practice. Captions are still auto-selected if a global style supports captions.
+
 = 1.3.10 =
 * Released 2025-08-03
 * Bug fix: Object caching resulted in global styles saving/rendering correctly. This has been resolved.
@@ -221,7 +229,7 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.3.10 =
-Resolving several issues with global styles and object caching. Resolving specificity issues with global styles. Added the ability to group images for a gallery using Fancybox.
+= 1.4.0 =
+Restored global style handling for media options with per-block overrides, improved media library UX, added page titles to ScreenshotOne images, copied alt/caption on crop, and refined caption selection behavior.
 
 
