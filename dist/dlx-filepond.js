@@ -17188,12 +17188,10 @@ filepond__WEBPACK_IMPORTED_MODULE_2__.registerPlugin((filepond_plugin_image_prev
 
 // todo - create synthetic event for filepond to show when toggled into.
 
-_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  // Only run in the block editor iframe canvas.
-  if (!document.body.classList.contains('block-editor-iframe__body')) {
-    return;
-  }
-  var blocks = document.querySelectorAll('.dlx-photo-block-filepond');
+var attachFilepond = function attachFilepond(filepondDocument) {
+  console.log(filepondDocument);
+  var blocks = filepondDocument.querySelectorAll('.dlx-photo-block-filepond');
+  console.log(blocks);
   if (!blocks.length) {
     return;
   }
@@ -17330,6 +17328,12 @@ _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(function () {
     // window.dlxPhotoBlockFilePonds ??= {};
     // window.dlxPhotoBlockFilePonds[ clientId ] = pond;
   });
+};
+_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  document.addEventListener('dlxPhotoBlockReplacePhoto', function (event) {
+    attachFilepond(event.detail.document);
+  });
+  attachFilepond(document);
 });
 })();
 

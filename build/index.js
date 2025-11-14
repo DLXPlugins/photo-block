@@ -13539,8 +13539,20 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Crop', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_21__["default"], null),
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace Photo', 'photo-block'),
-    onClick: function onClick() {
+    onClick: function onClick(e) {
       setScreen('initial');
+      setTimeout(function () {
+        var iframedDocument = e.view[0].document;
+        var replacePhotoEvent = new CustomEvent('dlxPhotoBlockReplacePhoto', {
+          detail: {
+            blockUniqueId: uniqueId,
+            clientId: clientId,
+            document: iframedDocument,
+            e: e
+          }
+        });
+        iframedDocument.dispatchEvent(replacePhotoEvent);
+      }, 300); // This delay is to ensure dom is updated before the event is dispatched.
       setJustCropped(false);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {

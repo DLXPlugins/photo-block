@@ -22,13 +22,11 @@ FilePond.registerPlugin(
 
 // todo - create synthetic event for filepond to show when toggled into.
 
-domReady( () => {
-	// Only run in the block editor iframe canvas.
-	if ( ! document.body.classList.contains( 'block-editor-iframe__body' ) ) {
-		return;
-	}
+const attachFilepond = ( filepondDocument ) => {
+	console.log( filepondDocument );
+	const blocks = filepondDocument.querySelectorAll( '.dlx-photo-block-filepond' );
 
-	const blocks = document.querySelectorAll( '.dlx-photo-block-filepond' );
+	console.log( blocks );
 
 	if ( ! blocks.length ) {
 		return;
@@ -185,4 +183,12 @@ domReady( () => {
 		// window.dlxPhotoBlockFilePonds ??= {};
 		// window.dlxPhotoBlockFilePonds[ clientId ] = pond;
 	} );
+}
+
+domReady( () => {
+	document.addEventListener( 'dlxPhotoBlockReplacePhoto', ( event ) => {
+		attachFilepond( event.detail.document );
+	} );
+
+	attachFilepond( document );
 } );
