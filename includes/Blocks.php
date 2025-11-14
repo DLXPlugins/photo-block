@@ -18,7 +18,7 @@ class Blocks {
 	public static function run() {
 		// Register the PhotoBlock.
 		add_action( 'init', array( static::class, 'register_block' ) );
-		add_action( 'enqueue_block_editor_assets', array( static::class, 'register_block_assets' ) );
+		add_action( 'enqueue_block_assets', array( static::class, 'register_block_assets' ) );
 		add_action( 'enqueue_block_assets', array( static::class, 'enqueue_frontend_assets' ) );
 
 		// Enqueue any frontend assets.
@@ -85,7 +85,7 @@ class Blocks {
 	 * Register frontend scripts/styles.
 	 */
 	public static function enqueue_frontend_assets() {
-		wp_enqueue_style(
+		wp_register_style(
 			'dlx-photo-block-frontend-and-editor',
 			Functions::get_plugin_url( 'dist/dlx-photo-block-style.css' ),
 			array(),
@@ -94,25 +94,34 @@ class Blocks {
 		);
 		if ( is_admin() ) {
 			// Load scripts in the admin in an iframe in the block editor.
-			wp_enqueue_style(
+			wp_register_style(
 				'dlx-css-gram',
 				Functions::get_plugin_url( 'dist/dlx-css-gram.css' ),
 				array(),
 				Functions::get_plugin_version(),
 				'all'
 			);
+			$filepond_asset_path = require Functions::get_plugin_dir( 'dist/dlx-filepond.asset.php' );
 			wp_enqueue_script(
 				'dlx-filepond',
 				Functions::get_plugin_url( 'dist/dlx-filepond.js' ),
-				array(),
-				Functions::get_plugin_version(),
+				$filepond_asset_path['dependencies'],
+				$filepond_asset_path['version'],
 				false
+			);
+			wp_localize_script(
+				'dlx-filepond',
+				'dlxFilepond',
+				array(
+					'restUrl'   => rest_url( 'dlxplugins/photo-block/v1' ),
+					'restNonce' => wp_create_nonce( 'wp_rest' ),
+				)
 			);
 			wp_enqueue_style(
 				'dlx-filepond',
 				Functions::get_plugin_url( 'dist/dlx-filepond.css' ),
 				array(),
-				Functions::get_plugin_version(),
+				$filepond_asset_path['version'],
 				'all'
 			);
 			wp_enqueue_style(
@@ -122,14 +131,14 @@ class Blocks {
 				Functions::get_plugin_version(),
 				'all'
 			);
-			wp_enqueue_style(
+			wp_register_style(
 				'dlx-photo-block-frontend-and-editor',
 				Functions::get_plugin_url( 'dist/dlx-photo-block-style.css' ),
 				array(),
 				Functions::get_plugin_version(),
 				'all'
 			);
-			wp_enqueue_style(
+			wp_register_style(
 				'dlx-photo-block-editor-css',
 				Functions::get_plugin_url( 'build/index.css' ),
 				array(),
@@ -253,6 +262,11 @@ class Blocks {
 
 		wp_localize_script(
 			'dlx-photo-block-editor',
+			'photoBlock',
+			$localized_vars
+		);
+		wp_localize_script(
+			'dlx-filepond-upload-target',
 			'photoBlock',
 			$localized_vars
 		);
