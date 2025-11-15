@@ -11371,6 +11371,25 @@ __webpack_require__.r(__webpack_exports__);
 var UploadTarget = function UploadTarget(props) {
   var blockUniqueId = props.blockUniqueId,
     clientId = props.clientId;
+  var filePondPlaceholderRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  /**
+   * This runs relative to the placeholder ref's element's document and 
+   * acts as a trigger to load the filepond instance into the placeholder.
+   */
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    if (!filePondPlaceholderRef.current) {
+      return;
+    }
+    var document = filePondPlaceholderRef.current.ownerDocument;
+    var loadUploadTargetEvent = new CustomEvent('dlxPhotoBlockLoadUploadTarget', {
+      detail: {
+        blockUniqueId: blockUniqueId,
+        clientId: clientId,
+        document: document
+      }
+    });
+    document.dispatchEvent(loadUploadTargetEvent);
+  }, [filePondPlaceholderRef]);
   var _useDispatch = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useDispatch)((0,_store__WEBPACK_IMPORTED_MODULE_5__.blockStore)(blockUniqueId)),
     setImageData = _useDispatch.setImageData,
     setFilepondInstance = _useDispatch.setFilepondInstance,
@@ -11398,7 +11417,8 @@ var UploadTarget = function UploadTarget(props) {
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block-filepond",
     "data-block-id": blockUniqueId,
-    "data-client-id": clientId
+    "data-client-id": clientId,
+    ref: filePondPlaceholderRef
   })), !isUploading && !isProcessingUpload && /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-target__label"
   }, /*#__PURE__*/React.createElement("div", {
@@ -11518,12 +11538,10 @@ var UploadTypes = function UploadTypes(props) {
   var _useSelect2 = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_8__.useSelect)(function (select) {
       return {
         imageData: select((0,_store__WEBPACK_IMPORTED_MODULE_9__.blockStore)(blockUniqueId)).getImageData(),
-        filepondInstance: select((0,_store__WEBPACK_IMPORTED_MODULE_9__.blockStore)(blockUniqueId)).getFilepondInstance(),
         photoMode: select((0,_store__WEBPACK_IMPORTED_MODULE_9__.blockStore)(blockUniqueId)).getPhotoMode()
       };
     }),
     imageData = _useSelect2.imageData,
-    filepondInstance = _useSelect2.filepondInstance,
     photoMode = _useSelect2.photoMode;
   var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_5__.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -11786,7 +11804,10 @@ var UploadTypes = function UploadTypes(props) {
     variant: "secondary",
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_20__["default"], null),
     onClick: function onClick() {
-      filepondInstance.browse();
+      var filepondInstance = window.dlxPhotoBlockFilePonds[blockUniqueId];
+      if (filepondInstance) {
+        filepondInstance.browse();
+      }
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Upload', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUploadCheck, null, /*#__PURE__*/React.createElement(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUpload, {
     allowedTypes: "image",
@@ -13541,18 +13562,6 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace Photo', 'photo-block'),
     onClick: function onClick(e) {
       setScreen('initial');
-      setTimeout(function () {
-        var iframedDocument = e.view[0].document;
-        var replacePhotoEvent = new CustomEvent('dlxPhotoBlockReplacePhoto', {
-          detail: {
-            blockUniqueId: uniqueId,
-            clientId: clientId,
-            document: iframedDocument,
-            e: e
-          }
-        });
-        iframedDocument.dispatchEvent(replacePhotoEvent);
-      }, 300); // This delay is to ensure dom is updated before the event is dispatched.
       setJustCropped(false);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Replace', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {

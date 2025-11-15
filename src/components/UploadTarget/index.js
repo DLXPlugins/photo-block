@@ -3,7 +3,7 @@
  */
 import './editor.scss';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import {
 	useContext,
@@ -19,9 +19,29 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { blockStore } from '../../store';
 
 const UploadTarget = ( props ) => {
-	
 
 	const { blockUniqueId, clientId } = props;
+
+	const filePondPlaceholderRef = useRef( null );
+	/**
+	 * This runs relative to the placeholder ref's element's document and 
+	 * acts as a trigger to load the filepond instance into the placeholder.
+	 */
+	useEffect( () => {
+		if ( ! filePondPlaceholderRef.current ) {
+			return;
+		}
+		const document = filePondPlaceholderRef.current.ownerDocument;
+		const loadUploadTargetEvent = new CustomEvent( 'dlxPhotoBlockLoadUploadTarget', {
+			detail: {
+				blockUniqueId,
+				clientId,
+				document,
+			},
+		} );
+		document.dispatchEvent( loadUploadTargetEvent );
+	}, [ filePondPlaceholderRef ] );
+
 
 	const {
 		setImageData,
@@ -51,7 +71,7 @@ const UploadTarget = ( props ) => {
 		<>
 			<div className="dlx-photo-block__upload-target__container">
 				<div className="dlx-photo-block__upload-target__filepond">
-					<div className="dlx-photo-block-filepond" data-block-id={ blockUniqueId } data-client-id={ clientId }></div>
+					<div className="dlx-photo-block-filepond" data-block-id={ blockUniqueId } data-client-id={ clientId } ref={ filePondPlaceholderRef }></div>
 				</div>
 				{ ! isUploading && ! isProcessingUpload && (
 					<div className="dlx-photo-block__upload-target__label">

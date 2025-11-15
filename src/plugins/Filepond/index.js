@@ -23,10 +23,8 @@ FilePond.registerPlugin(
 // todo - create synthetic event for filepond to show when toggled into.
 
 const attachFilepond = ( filepondDocument ) => {
-	console.log( filepondDocument );
 	const blocks = filepondDocument.querySelectorAll( '.dlx-photo-block-filepond' );
 
-	console.log( blocks );
 
 	if ( ! blocks.length ) {
 		return;
@@ -180,13 +178,19 @@ const attachFilepond = ( filepondDocument ) => {
 		} );
 
 		// If you still want to stash the instance somewhere:
-		// window.dlxPhotoBlockFilePonds ??= {};
-		// window.dlxPhotoBlockFilePonds[ clientId ] = pond;
+		window.dlxPhotoBlockFilePonds ??= {};
+		window.dlxPhotoBlockFilePonds[ blockUniqueId ] = pond;
+
+		// If in an iframe, store the instance in the parent window.
+		if ( window.parent ) {
+			window.parent.dlxPhotoBlockFilePonds ??= {};
+			window.parent.dlxPhotoBlockFilePonds[ blockUniqueId ] = pond;
+		}
 	} );
 }
 
 domReady( () => {
-	document.addEventListener( 'dlxPhotoBlockReplacePhoto', ( event ) => {
+	document.addEventListener( 'dlxPhotoBlockLoadUploadTarget', ( event ) => {
 		attachFilepond( event.detail.document );
 	} );
 

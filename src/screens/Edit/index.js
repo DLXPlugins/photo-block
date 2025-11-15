@@ -634,18 +634,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						label={ __( 'Replace Photo', 'photo-block' ) }
 						onClick={ ( e ) => {
 							setScreen( 'initial' );
-							setTimeout( () => {
-								const iframedDocument = e.view[ 0 ].document;
-								const replacePhotoEvent = new CustomEvent( 'dlxPhotoBlockReplacePhoto', {
-									detail: {
-										blockUniqueId: uniqueId,
-										clientId,
-										document: iframedDocument,
-										e,
-									},
-								} );
-								iframedDocument.dispatchEvent( replacePhotoEvent );
-							}, 300 ); // This delay is to ensure dom is updated before the event is dispatched.
 							setJustCropped( false );
 						} }
 					>

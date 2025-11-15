@@ -17189,13 +17189,12 @@ filepond__WEBPACK_IMPORTED_MODULE_2__.registerPlugin((filepond_plugin_image_prev
 // todo - create synthetic event for filepond to show when toggled into.
 
 var attachFilepond = function attachFilepond(filepondDocument) {
-  console.log(filepondDocument);
   var blocks = filepondDocument.querySelectorAll('.dlx-photo-block-filepond');
-  console.log(blocks);
   if (!blocks.length) {
     return;
   }
   blocks.forEach(function (inputEl) {
+    var _window, _window$dlxPhotoBlock;
     var clientId = inputEl.getAttribute('data-client-id');
     var blockUniqueId = inputEl.getAttribute('data-block-id');
 
@@ -17325,12 +17324,19 @@ var attachFilepond = function attachFilepond(filepondDocument) {
     });
 
     // If you still want to stash the instance somewhere:
-    // window.dlxPhotoBlockFilePonds ??= {};
-    // window.dlxPhotoBlockFilePonds[ clientId ] = pond;
+    (_window$dlxPhotoBlock = (_window = window).dlxPhotoBlockFilePonds) !== null && _window$dlxPhotoBlock !== void 0 ? _window$dlxPhotoBlock : _window.dlxPhotoBlockFilePonds = {};
+    window.dlxPhotoBlockFilePonds[blockUniqueId] = pond;
+
+    // If in an iframe, store the instance in the parent window.
+    if (window.parent) {
+      var _window$parent, _window$parent$dlxPho;
+      (_window$parent$dlxPho = (_window$parent = window.parent).dlxPhotoBlockFilePonds) !== null && _window$parent$dlxPho !== void 0 ? _window$parent$dlxPho : _window$parent.dlxPhotoBlockFilePonds = {};
+      window.parent.dlxPhotoBlockFilePonds[blockUniqueId] = pond;
+    }
   });
 };
 _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  document.addEventListener('dlxPhotoBlockReplacePhoto', function (event) {
+  document.addEventListener('dlxPhotoBlockLoadUploadTarget', function (event) {
     attachFilepond(event.detail.document);
   });
   attachFilepond(document);
