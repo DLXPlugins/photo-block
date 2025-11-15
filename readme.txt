@@ -1,40 +1,93 @@
-=== Photo Block - A Powerful Image Block ===
+=== Photo Block - A Better Responsive Image Block With Lightbox and Caption Support ===
 Contributors: ronalfy
-Tags: image block, blocks, photo block, responsive block
-Requires at least: 6.5
-Tested up to: 6.8
-Stable tag: 1.4.0
+Tags: image block, image lightbox, captions, global styles, responsive
+Requires at least: 6.8
+Tested up to: 6.9
+Stable tag: 1.5.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/DLXPlugins
 
-Enhance your Block Editor with a fully customizable photo block, featuring advanced caption control, responsive styling, and global styles.
+Use this all-in-one image block plugin for responsive images, caption and lightbox support, and global styles.
 
 == Description ==
 
-Photo Block adds a time-saving block to the Block Editor, allowing for advanced image customization with only a few clicks. Made for writers, photographers, and layout builders, this block is extremely versatile with full caption support, responsive styling, and global styles.
-
-> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
-
-=== Core Features ===
-
-1. **Responsive Controls**: Customize image sizes, padding, margins, border, and style settings for different screen sizes—ensuring your photos look perfect on any device.
-2. **Advanced Caption Control**: A fully featured caption block is included, allowing you to position and overlay captions to match your photo style.
-3. **Intuitive Cropping**: Crop your image using built-in tools, setting the aspect ratio, rotation, and more.
-5. **Flexible Image Sources**: Upload directly from the block, use the WordPress media library, download from a URL, or provide a URL to an image.
-6. **Global Styles**: Global styles allow you to save your design settings and easily apply them to other photo blocks, which allows you to maintain a consistent look across your site. With global styles, you can add the block, upload the photo, and apply advanced customization in just 4 clicks.
-7. **Query Loop Support**: Seamlessly integrate Photo Block into a Query Loop block as a featured image for dynamic content.
-8. **ScreenshotOne Support**: Use the <a href="https://screenshotone.com/">ScreenshotOne</a> service to generate website screenshots right from Photo Block.
-
-> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
+**Photo Block** is an advanced yet intuitive responsive **image block plugin for WordPress** that makes adding, styling, cropping, and managing photos inside the block editor a breeze.
 
 ## Quick Links:
 
-* <a href="https://dlxplugins.com/plugins/photo-block/">Plugin Home</a>
-* <a href="https://docs.dlxplugins.com/v/photo-block/">Documentation</a>
-* <a href="https://dlxplugins.com/support/">Support</a>
-* <a href="https://github.com/DLXPlugins/photo-block">Source Code</a> (Including Uncompressed Scripts)
+🏠 <a href="https://dlxplugins.com/plugins/photo-block/">Plugin Home</a> | 📗 <a href="https://docs.dlxplugins.com/v/photo-block/">Documentation</a> | 🙏 <a href="https://dlxplugins.com/support/">Support</a> | 🤓 <a href="https://github.com/DLXPlugins/photo-block">Source Code</a>
+
+Photo Block combines many features from other image blocks into one, resulting in a fully featured alternative that includes **responsive controls**,**easy cropping**, **global styles**, **caption overlays**, and **lightbox support**.
+Whether creating a blog, recipe, portfolio, tutorial, or building a site, Photo Block provides you with complete visual control while maintaining speed, responsiveness, and accessibility.
+
+Photo Block was designed for anyone who needs a better way to display images, such as photographers, designers, agencies, and bloggers who want to stand out with polished, on-brand visuals without needing to touch code. With **Global Styles**, you can maintain a consistent brand look and feel, ensuring all images adhere to a similar visual style.
+
+> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
+
+=== Key Features ===
+* **Easy and Flexible Uploading**
+ Upload directly, choose from the Media Library, or import via a URL. Supports external image sources, such as **ScreenshotOne**, for automatic screenshots. Every image uploads quickly and previews instantly.
+* **Smart Cropping and Custom Ratios**
+Define image proportions with built-in ratio presets or enter your own. The smart cropper respects hard crops and presets, such as a known aspect ratio, or you can perform a completely custom crop.
+* **Responsive Image Settings**
+Every dimension, including padding, width, height,  margins, and borders, has responsive controls. Adjust your images to ensure they scale beautifully across desktop, tablet, and mobile devices.
+* **Advanced Sizing, Aspect Ratio, and Object Fit**
+Fine-tune image width, height, and object-fit for a consistent layout. Set an aspect ratio for a custom fit. This is ideal for creating hero images, grids, and feature sections with pixel-perfect alignment.
+* **Multi-Line and Overlay Captions**
+ Add expressive, multi-line captions or display them as overlays with hover effects. Position captions at the top, bottom, or center, and mix typography blocks for creative layouts.
+* **Built-In Lightbox**
+ Enable a responsive lightbox with just a few clicks by opening link settings. Viewers can expand and browse larger versions of your images without leaving the page.
+* **CSS Gram Filters**
+ Quickly style your images with 26 built-in CSS Gram filters. Adjust warmth, contrast, or add vintage flair directly in the editor without having to use photo editing software.
+* **Drop Shadow Support**
+ Add depth with customizable drop shadows. A subtle toggle turns flat images into elegant, layered visuals.
+* **Global Style Presets**
+ Save your favorite image settings as Global Styles. Apply them anywhere with a single click and update them site-wide later for consistent branding and appearance.
+* **Query Loop Integration**
+ Use Photo Block within the Query Loop block as a featured image source. Captions and settings pull automatically, making it perfect for archives and blog lists. The plugin works well inside a GenerateBlocks or Kadence loop, and also supports the Core Query block.
+
+=== Why Choose Photo Block ===
+
+Photo Block was built for creators who outgrow the default image block, but don’t want a bloated gallery plugin or block suite. With intuitive uploading and global styles, you can go from uploaded to published in less than 4 clicks.
+
+This image block blends powerful design tools with a lightweight, intuitive interface that feels like part of WordPress itself.
+
+* **Native to the block editor**. No nags or shortcodes — everything happens inline.
+* **Truly responsive**. Adjust image presentation for every device size.
+* **Reusable and Global styles**. Choose a global style to keep images on brand and consistent.
+* **No upsells or limits**. Photo Block is 100% free and open source.
+* **Accessible**. Fully supports captions, alt text, and semantic markup.
+* **Future-proof**. The plugin is built with the latest block techniques and architecture and is continuously updated.
+
+If you’ve been searching for a **better Gutenberg image block**, Photo Block delivers a professional image presentation toolkit without complexity or cost.
+
+=== Use Cases ===
+
+* **Photography portfolios**: Crop and style high-resolution photos with lightbox support.
+* **Blogs and articles**: Add responsive, branded images with consistent captions.
+* **Business websites**: Maintain uniform image styling using global presets.
+* **Online magazines**: Ensure consistent styling using **Global Styles** across the entire site.
+* **Site builders**: Photo Block can assist with page or site building, acting as a logo source, hero image, and even decorative images.
+
+Photo Block adapts to virtually any WordPress design scenario, offering both creative freedom and practical control.
+
+=== Technical Highlights ===
+
+* **Uploader**: Media Library, drag-and-drop, remote URL uploads, and ScreenshotOne support.
+* **Cropping**: Smart cropper with presets or custom aspect ratios.
+* **Responsive Controls**: Device-specific padding, margin, and border adjustments.
+* **Sizing Options**: Adjustable width, max width, height, max height, and object-fit per device.
+* **Caption System**: Multi-line, block-based, and overlay caption styles.
+* **Lightbox**: Optional responsive lightbox with custom caption support.
+* **Filters**: CSS Gram effects (26 available presets).
+* **Shadows**: Toggle drop shadows for visual depth and 3D-looking images.
+* **Global Styles**: Save and reuse configurations site-wide.
+* **Query Loop Ready**: Works as a featured image block source.
+* **Accessibility**: Encourages alt text and uses semantic markup.
+
+> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
 
 ## Development:
 
@@ -56,8 +109,17 @@ To assist or help this plugin financially, <a href="https://github.com/sponsors/
 1. Search for “Photo Block” on the Add Plugins screen in WordPress.
 2. Install and activate the plugin from your admin dashboard.
 3. Once activated, use the block in any page or post by adding "Photo Block" from the block selector.
+4. Add a Photo Block in your post or page.
+5. Upload an image or paste an image URL.
+6. Crop and adjust using the custom ratio cropper.
+7. Configure styling: margins, borders, shadows, or filters.
+8. Add a caption: standard or overlay mode.
+9. Save as a Global Style to reuse later.
+10. Enable Lightbox for interactive viewing.
+11. Publish and enjoy a responsive, beautifully styled image.
 
 > <a href="https://docs.dlxplugins.com/v/photo-block/">In-depth Documentation</a> - Please check out our thorough documentation ❤️️
+
 
 == Frequently Asked Questions ==
 
@@ -65,11 +127,45 @@ To assist or help this plugin financially, <a href="https://github.com/sponsors/
 
 Yes. <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a free demo</a> via InstaWP (no email or login required).
 
-= How does this block differs from the core image block? =
+= Can I use Photo Block alongside the default Image block? =
+
+Yes. Photo Block is completely independent and can be used alongside the default WordPress Image block.
+
+= Does Photo Block work with the Query Loop block? =
+
+Yes. It’s fully compatible and can be used as a featured image block within dynamic loops.
+= Is Photo Block mobile-friendly? =
+Absolutely. All dimension controls include responsive breakpoints, ensuring the best presentation on all devices.
+
+= How does this block differ from the core image block? =
 
 Photo Block offers more advanced customization options like responsive layouts, a fully-featurd caption, caption overlays, and the ability to reuse styles across multiple blocks using global styles. It’s built for power users who want more control over their image presentation.
 
 Please see the <a href="https://docs.dlxplugins.com/photo-block">Photo Block documentation</a> for a full list of features.
+
+= How do Global Styles work? =
+
+You can save your Photo Block’s current configuration as a global style and reapply it anywhere. Updating a global style automatically updates every image using it.
+
+= Can I add captions or overlay text? =
+
+Yes. Captions can be standard, multi-line, or overlayed on the image with optional hover animations. Captions can be positioned toward the top or bottom of the image, or as an overlay. Advanced options allow you to create multi-line captions with blocks of your choice.
+
+= Does Photo Block include a lightbox? =
+
+Yes. The block has an integrated lightbox option that displays images in a responsive popup. The lightbox supports captions, and even custom captions.
+= Are CSS filters supported? =
+
+Yes. You can choose from 26 CSS Gram filter presets directly in the editor.
+
+= Can I control margins and spacing? =
+
+Yes. Every spacing control (margin, padding, border) includes desktop, tablet, and mobile options.
+
+= Does it work with Full Site Editing? =
+
+Yes. Photo Block is compatible with FSE templates and custom block patterns.
+
 
 = Does this work with data? =
 
@@ -85,11 +181,7 @@ If you have a specific block suite query loop you'd like to see Photo Block inte
 
 = Does this work with the Classic Editor? =
 
-No, this plugin is specificalliy built for the block editor.
-
-= Does it work on mobile devices? =
-
-You can set different styles for different device breakpoints.
+No, this plugin is specifically built for the block editor.
 
 = How can I get help? =
 
@@ -101,7 +193,7 @@ Yes, we are planning on integrating with other services in the future depending 
 
 = Are you planning on adding any premium features? =
 
-Yes, we are planning on adding premium features in the future depending on this block's popularity and usage. The goal at this time is to keep the plugin free, open-source, and address any bugs or feature requests that come up.
+Not at this time.
 
 = I have a feature request. =
 
@@ -126,6 +218,11 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 16. Save or overwrite a global style using the Global Styles modal.
 
 == Changelog ==
+
+= 1.5.0 =
+* Released 2025-11-15
+* Updating block.json to version 3, so that the block will now load properly in an iframe editor.
+* Updating Filepond scripts and creating custom loader for iframe compatibility.
 
 = 1.4.0 =
 * Released 2025-09-23
@@ -229,7 +326,5 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.4.0 =
-Restored global style handling for media options with per-block overrides, improved media library UX, added page titles to ScreenshotOne images, copied alt/caption on crop, and refined caption selection behavior.
-
-
+= 1.5.0 =
+Block.json version 3 ensures that the block loads properly in an iframe. Uploading has been updated to work in an iframe.
