@@ -63,12 +63,10 @@ const UploadTypes = ( props ) => {
 	// Get current block data.
 	const {
 		imageData,
-		filepondInstance,
 		photoMode,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
-			filepondInstance: select( blockStore( blockUniqueId ) ).getFilepondInstance(),
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
 		};
 	} );
@@ -337,7 +335,10 @@ const UploadTypes = ( props ) => {
 					variant="secondary"
 					icon={ <Upload /> }
 					onClick={ () => {
-						filepondInstance.browse();
+						const filepondInstance = window.dlxPhotoBlockFilePonds[ blockUniqueId ];
+						if ( filepondInstance ) {
+							filepondInstance.browse();
+						}
 					} }
 				>
 					{ __( 'Upload', 'photo-block' ) }

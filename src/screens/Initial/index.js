@@ -60,7 +60,7 @@ const InitialScreen = ( props ) => {
 						)
 					}
 				>
-					<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } />
+					<UploadTarget attributes={ props.attributes } setAttributes={ props.setAttributes } blockUniqueId={ blockUniqueId } clientId={ clientId } />
 				</div>
 			</div>
 		</>

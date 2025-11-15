@@ -632,7 +632,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					<ToolbarButton
 						icon={ <Image /> }
 						label={ __( 'Replace Photo', 'photo-block' ) }
-						onClick={ () => {
+						onClick={ ( e ) => {
 							setScreen( 'initial' );
 							setJustCropped( false );
 						} }
