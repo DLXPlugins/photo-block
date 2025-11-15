@@ -265,11 +265,6 @@ class Blocks {
 			'photoBlock',
 			$localized_vars
 		);
-		wp_localize_script(
-			'dlx-filepond-upload-target',
-			'photoBlock',
-			$localized_vars
-		);
 
 		// Inline vars to avoid caching of scripts.
 		wp_add_inline_script(
