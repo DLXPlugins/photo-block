@@ -19,12 +19,12 @@ Use this all-in-one image block plugin for responsive images, caption and lightb
 
 🏠 <a href="https://dlxplugins.com/plugins/photo-block/">Plugin Home</a> | 📗 <a href="https://docs.dlxplugins.com/v/photo-block/">Documentation</a> | 🙏 <a href="https://dlxplugins.com/support/">Support</a> | 🤓 <a href="https://github.com/DLXPlugins/photo-block">Source Code</a>
 
+> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
+
 Photo Block combines many features from other image blocks into one, resulting in a fully featured alternative that includes **responsive controls**,**easy cropping**, **global styles**, **caption overlays**, and **lightbox support**.
 Whether creating a blog, recipe, portfolio, tutorial, or building a site, Photo Block provides you with complete visual control while maintaining speed, responsiveness, and accessibility.
 
 Photo Block was designed for anyone who needs a better way to display images, such as photographers, designers, agencies, and bloggers who want to stand out with polished, on-brand visuals without needing to touch code. With **Global Styles**, you can maintain a consistent brand look and feel, ensuring all images adhere to a similar visual style.
-
-> ❤️ <a href="https://app.instawp.io/launch?t=photo-block&d=v2">Spin up a Free Demo</a> ❤️
 
 === Key Features ===
 * **Easy and Flexible Uploading**
