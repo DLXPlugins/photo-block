@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, image lightbox, captions, global styles, responsive
 Requires at least: 6.8
 Tested up to: 6.9
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -199,6 +199,10 @@ Not at this time.
 
 Please leave a detailed note on <a href="https://dlxplugins.com/support/">our support page</a>.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the undefined plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/279bc543-8c41-46dc-bae7-c826715e3071). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Screenshots ==
 1. Adding a photo with Photo Block is easy in the block editor.
 2. Crop, replace, and adjust the accessibility options for your photo.
@@ -218,6 +222,10 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 16. Save or overwrite a global style using the Global Styles modal.
 
 == Changelog ==
+
+= 1.5.1 =
+* Released 2025-11-16
+* Bug fix: global styles would error out or not work if in a query loop.
 
 = 1.5.0 =
 * Released 2025-11-15
@@ -326,5 +334,5 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 
 == Upgrade Notice ==
 
-= 1.5.0 =
-Block.json version 3 ensures that the block loads properly in an iframe. Uploading has been updated to work in an iframe.
+= 1.5.1 =
+Bug fix: global styles would error out or not work if in a query loop.
