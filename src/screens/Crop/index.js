@@ -41,7 +41,10 @@ const CropScreen = ( props ) => {
 		setAspectRatioToolbarSelection,
 	} = useDispatch( blockStore( blockUniqueId ) );
 
+	const { createErrorNotice } = useDispatch( 'core/notices' );
+
 	const {
+		imageData,
 		aspectRatioWidth,
 		aspectRatioHeight,
 		aspectRatioToolbarSelection,
@@ -50,6 +53,7 @@ const CropScreen = ( props ) => {
 		getAspectRatioUnit,
 	} = useSelect( ( select ) => {
 		return {
+			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			aspectRatioWidth: select( blockStore( blockUniqueId ) ).getAspectRatioWidth(),
 			aspectRatioHeight: select( blockStore( blockUniqueId ) ).getAspectRatioHeight(),
 			aspectRatioToolbarSelection: select( blockStore( blockUniqueId ) ).getAspectRatioToolbarSelection(),
@@ -74,11 +78,8 @@ const CropScreen = ( props ) => {
 	const [ cropAspectRatio, setCropAspectRatio ] = useState( aspectRatioWidth / aspectRatioHeight );
 
 	const {
-		imageData,
 		uniqueId,
 	} = attributes;
-
-	const { url, id, width, height } = imageData;
 
 	/**
 	 * Rotate an image.
@@ -177,6 +178,7 @@ const CropScreen = ( props ) => {
 				cropHeight: scaledCropHeight,
 				imageId,
 				rotateDegrees: rotate,
+				cropNonce: imageData.crop_nonce,
 			},
 			`${ photoBlock.restUrl + '/image/crop' }`,
 			'POST'
@@ -196,7 +198,6 @@ const CropScreen = ( props ) => {
 		const initialCropRatio = 1;
 
 		if ( ! newAspectRatio || newAspectRatio <= 0 ) {
-			console.error( 'Invalid aspect ratio', newAspectRatio );
 			return;
 		}
 
@@ -370,7 +371,12 @@ const CropScreen = ( props ) => {
 									setPhotoMode( 'photo' );
 									setScreen( 'edit' );
 								} else {
-								// todo: error handling.
+									setPhotoMode( 'photo' );
+									setScreen( 'edit' );
+									createErrorNotice( data.data.message, {
+										type: 'snackbar',
+										explicitDismiss: true,
+									} );
 								}
 							} ).catch( ( error ) => {
 							} ).then( () => {
@@ -637,9 +643,15 @@ const CropScreen = ( props ) => {
 									setPhotoMode( 'photo' );
 									setScreen( 'edit' );
 								} else {
-								// todo: error handling.
+									setPhotoMode( 'photo' );
+									setScreen( 'edit' );
+									createErrorNotice( data.data.message, {
+										type: 'snackbar',
+										explicitDismiss: true,
+									} );
 								}
 							} ).catch( ( error ) => {
+								
 							} ).then( () => {
 								setIsSaving( false );
 							} );

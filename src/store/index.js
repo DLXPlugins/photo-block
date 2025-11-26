@@ -12,6 +12,9 @@ const DEFAULT_STATE = {
 		caption: '',
 		file_size: '',
 		dimensions: '',
+		edit_nonce: '',
+		crop_nonce: '',
+		can_edit: false,
 	},
 	imageData: {
 		id: 0,
@@ -24,6 +27,9 @@ const DEFAULT_STATE = {
 		caption: '',
 		file_size: '',
 		dimensions: '',
+		edit_nonce: '',
+		crop_nonce: '',
+		can_edit: false,
 	},
 	currentScreen: 'loading', /* can be loading, initial, edit, crop, data, featuredImage, effects. */
 	isUploading: false,

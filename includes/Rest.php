@@ -324,9 +324,25 @@ class Rest {
 	 * @param WP_REST_Request $request The REST request object.
 	 **/
 	public static function rest_save_alt_text( $request ) {
-		$image_id = absint( $request->get_param( 'imageId' ) );
-		$alt_text = sanitize_textarea_field( $request->get_param( 'altText' ) );
+		$image_id   = absint( $request->get_param( 'imageId' ) );
+		$alt_text   = sanitize_textarea_field( $request->get_param( 'altText' ) );
+		$edit_nonce = sanitize_text_field( $request->get_param( 'editNonce' ) );
 
+		// Verify nonce and ensure image is editable.
+		if ( ! wp_verify_nonce( $edit_nonce, 'pb_edit_image_' . $image_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Invalid nonce.', 'photo-block' ),
+				)
+			);
+		}
+		if ( ! current_user_can( 'edit_post', $image_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permission to edit this image.', 'photo-block' ),
+				)
+			);
+		}
 		// Bail early if no image id or if zero.
 		if ( ! $image_id ) {
 			wp_send_json_error(
@@ -354,7 +370,23 @@ class Rest {
 	public static function rest_save_title_text( $request ) {
 		$image_id   = absint( $request->get_param( 'imageId' ) );
 		$title_text = sanitize_textarea_field( $request->get_param( 'titleText' ) );
+		$edit_nonce = sanitize_text_field( $request->get_param( 'editNonce' ) );
 
+		// Verify nonce and ensure image is editable.
+		if ( ! wp_verify_nonce( $edit_nonce, 'pb_edit_image_' . $image_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Invalid nonce.', 'photo-block' ),
+				)
+			);
+		}
+		if ( ! current_user_can( 'edit_post', $image_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permission to edit this image.', 'photo-block' ),
+				)
+			);
+		}
 		// Bail early if no image id or if zero.
 		if ( ! $image_id ) {
 			wp_send_json_error(
@@ -390,7 +422,23 @@ class Rest {
 		$crop_height = absint( $request->get_param( 'cropHeight' ) );
 		$rotate      = intval( $request->get_param( 'rotateDegrees' ) );
 		$image_id    = absint( $request->get_param( 'imageId' ) );
+		$crop_nonce  = sanitize_text_field( $request->get_param( 'cropNonce' ) );
 
+		// Verify nonce and ensure image is croppable.
+		if ( ! wp_verify_nonce( $crop_nonce, 'pb_crop_image_' . $image_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Invalid nonce.', 'photo-block' ),
+				)
+			);
+		}
+		if ( ! current_user_can( 'edit_post', $image_id ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permission to crop this image.', 'photo-block' ),
+				)
+			);
+		}
 		// Bail early if no image id or if zero.
 		if ( ! $image_id ) {
 			wp_send_json_error(

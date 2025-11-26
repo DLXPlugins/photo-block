@@ -44,11 +44,7 @@ import {
 	Undo2,
 	ClipboardCheck,
 } from 'lucide-react';
-import {
-	positionLeft,
-	positionRight,
-	positionCenter,
-} from '@wordpress/icons';
+import { positionLeft, positionRight, positionCenter } from '@wordpress/icons';
 import { applyFilters } from '@wordpress/hooks';
 import classnames from 'classnames';
 import { blockStore } from '../../store';
@@ -68,11 +64,20 @@ const EditScreen = forwardRef( ( props, ref ) => {
 
 	const attributes = props.attributes || {};
 
-	const innerBlockCount = useSelect( ( coreSelect ) => coreSelect( 'core/block-editor' ).getBlock( clientId ).innerBlocks ).length;
+	const innerBlockCount = useSelect(
+		( coreSelect ) =>
+			coreSelect( 'core/block-editor' ).getBlock( clientId ).innerBlocks
+	).length;
 
 	// Apply filters to attributes.
 	useEffect( () => {
-		const newAttributes = applyFilters( 'dlx_photo_block_attributes', props.attributes, props.attributes.globalStyle, clientId, 'photo' );
+		const newAttributes = applyFilters(
+			'dlx_photo_block_attributes',
+			props.attributes,
+			props.attributes.globalStyle,
+			clientId,
+			'photo'
+		);
 
 		setAttributes( {
 			...props.attributes,
@@ -80,16 +85,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		} );
 	}, [] );
 
-	const {
-		uniqueId,
-		imageSize,
-		cssGramFilter,
-		globalStyle,
-		photoPosition,
-	} = attributes;
+	const { uniqueId, imageSize, cssGramFilter, globalStyle, photoPosition } =
+		attributes;
 
 	const { globalStyleCSSClassName } = useSelect( ( newSelect ) => {
-		const maybeGlobalStyle = newSelect( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
+		const maybeGlobalStyle =
+			newSelect( globalStylesStore ).getGlobalStyleBySlug( globalStyle );
 		if ( Object.keys( maybeGlobalStyle ).length === 0 ) {
 			return '';
 		}
@@ -131,16 +132,18 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
 			captionPosition: select( blockStore( blockUniqueId ) ).getCaptionPosition(),
 			photoMode: select( blockStore( blockUniqueId ) ).getPhotoMode(),
-			originalImageData: select( blockStore( blockUniqueId ) ).getOriginalImageData(),
+			originalImageData: select(
+				blockStore( blockUniqueId )
+			).getOriginalImageData(),
 			isJustCropped: select( blockStore( blockUniqueId ) ).getJustCropped(),
-			hideCaption: select( blockStore( blockUniqueId ) ).getHideCaption( attributes.hideCaption ),
+			hideCaption: select( blockStore( blockUniqueId ) ).getHideCaption(
+				attributes.hideCaption
+			),
 		};
 	} );
 
 	// Get global style data.
-	const {
-		hasGlobalStyle,
-	} = useSelect( ( select ) => {
+	const { hasGlobalStyle } = useSelect( ( select ) => {
 		return {
 			hasGlobalStyle: select( globalStylesStore ).hasGlobalStyle,
 		};
@@ -185,7 +188,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		await SendCommand(
 			photoBlock.restNonce,
 			{},
-			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${ imageData.id
+			`${ photoBlock.restUrl + '/get-image-by-size' }/id=${
+				imageData.id
 			}/size=${ size }`,
 			'GET'
 		)
@@ -219,82 +223,90 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 *
 	 * @param {string} altText The alt text.
 	 */
-	const handleAltChange = useCallback( debounce( async( altText ) => {
-		// Ignore manual mode, which is direct URL input. Nothing to save to.
-		if ( 'manual' === photoMode || 'url' === photoMode ) {
-			return;
-		}
+	const handleAltChange = useCallback(
+		debounce( async( altText ) => {
+			// Ignore manual mode, which is direct URL input. Nothing to save to.
+			if ( 'manual' === photoMode || 'url' === photoMode ) {
+				return;
+			}
 
-		// Set snackbar notice.
-		createInfoNotice( __( 'Saving alt text…', 'photo-block' ), {
-			type: 'snackbar',
-		} );
-
-		// Commence saving.
-		setIsSavingAlt( true );
-		await SendCommand(
-			photoBlock.restNonce,
-			{
-				imageId: imageData.id,
-				altText,
-			},
-			`${ photoBlock.restUrl + '/image/save-alt' }`,
-			'POST'
-		)
-			.then( ( response ) => {
-				createSuccessNotice( __( 'Alt text saved.', 'photo-block' ), {
-					type: 'snackbar',
-				} );
-			} )
-			.catch( ( error ) => {
-				// todo: error checking/display.
-				console.error( error );
-			} )
-			.then( () => {
-				setIsSavingAlt( false );
+			// Set snackbar notice.
+			createInfoNotice( __( 'Saving alt text…', 'photo-block' ), {
+				type: 'snackbar',
 			} );
-	}, 1000 ), [] );
+
+			// Commence saving.
+			setIsSavingAlt( true );
+			await SendCommand(
+				photoBlock.restNonce,
+				{
+					imageId: imageData.id,
+					altText,
+					editNonce: imageData.edit_nonce,
+				},
+				`${ photoBlock.restUrl + '/image/save-alt' }`,
+				'POST'
+			)
+				.then( ( response ) => {
+					createSuccessNotice( __( 'Alt text saved.', 'photo-block' ), {
+						type: 'snackbar',
+					} );
+				} )
+				.catch( ( error ) => {
+					// todo: error checking/display.
+					console.error( error );
+				} )
+				.then( () => {
+					setIsSavingAlt( false );
+				} );
+		}, 1000 ),
+		[]
+	);
 
 	/**
 	 * Handle changes to the title text.
 	 *
 	 * @param {string} titleText The title text.
 	 */
-	const handleTitleChange = useCallback( debounce( async( titleText ) => {
-		// Ignore manual mode, which is direct URL input. Nothing to save to.
-		if ( 'manual' === photoMode || 'url' === photoMode ) {
-			return;
-		}
+	const handleTitleChange = useCallback(
+		debounce( async( titleText ) => {
+			// Ignore manual mode, which is direct URL input. Nothing to save to.
+			if ( 'manual' === photoMode || 'url' === photoMode ) {
+				return;
+			}
 
-		// Set snackbar notice.
-		createInfoNotice( __( 'Saving title text…', 'photo-block' ), {
-			type: 'snackbar',
-		} );
-
-		// Commence saving.
-		setIsSavingTitle( true );
-		await SendCommand(
-			photoBlock.restNonce,
-			{
-				imageId: imageData.id,
-				titleText,
-			},
-			`${ photoBlock.restUrl + '/image/save-title' }`,
-			'POST'
-		)
-			.then( ( response ) => {
-				createSuccessNotice( __( 'Title text saved.', 'photo-block' ), {
-					type: 'snackbar',
-				} );
-			} )
-			.catch( ( error ) => {
-				// todo: error checking/display.
-				console.error( error );
-			} )
-			.then( () => {
-				setIsSavingTitle( false );
+			// Set snackbar notice.
+			createInfoNotice( __( 'Saving title text…', 'photo-block' ), {
+				type: 'snackbar',
 			} );
-	}, 1500 ), [] );
+
+			// Commence saving.
+			setIsSavingTitle( true );
+			await SendCommand(
+				photoBlock.restNonce,
+				{
+					imageId: imageData.id,
+					titleText,
+					editNonce: imageData.edit_nonce,
+				},
+				`${ photoBlock.restUrl + '/image/save-title' }`,
+				'POST'
+			)
+				.then( ( response ) => {
+					createSuccessNotice( __( 'Title text saved.', 'photo-block' ), {
+						type: 'snackbar',
+					} );
+				} )
+				.catch( ( error ) => {
+					// todo: error checking/display.
+					console.error( error );
+				} )
+				.then( () => {
+					setIsSavingTitle( false );
+				} );
+		}, 1500 ),
+		[]
+	);
 
 	// Image Sizes.
 	const imageSizeOptions = [];
@@ -317,53 +329,55 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				scrollAfterOpen={ false }
 			>
 				<>
-					<TextControl
-						label={ __( 'Photo Title', 'photo-block' ) }
-						value={ attributes.imageData.title }
-						onChange={ ( title ) => {
-							setAttributes( { imageData: { ...imageData, title } } );
-							setImageData( { ...imageData, title } );
-							handleTitleChange( title );
-						} }
-						className={
-							classnames( 'photo-block__title-text',
-								{ 'is-saving': isSavingTitle }
-							)
-						}
-						placeholder={ __(
-							'Please enter a title for this photo.',
-							'photo-block'
-						) }
-					/>
-					{ isSavingTitle && (
+					{ imageData.can_edit && (
 						<>
-							<div className="photo-block__text-saving"><Spinner /> { __( 'Saving title text…', 'photo-block' ) }</div>
-						</>
-					) }
-				</>
-				<>
-					<TextareaControl
-						label={ __( 'Alt Text', 'photo-block' ) }
-						value={ attributes.imageData.alt }
-						onChange={ ( alt ) => {
-							setAttributes( { imageData: { ...imageData, alt } } );
-							setImageData( { ...imageData, alt } );
-							handleAltChange( alt );
-						} }
-						className={
-							classnames( 'photo-block__alt-text',
-								{ 'is-saving': isSavingAlt }
-							)
-						}
-						placeholder={ __( 'Please describe this photo.', 'photo-block' ) }
-						help={ __(
-							'Alt text provides a description of the photo for screen readers and search engines.',
-							'photo-block'
-						) }
-					/>
-					{ isSavingAlt && (
-						<>
-							<div className="photo-block__text-saving"><Spinner /> { __( 'Saving alt text…', 'photo-block' ) }</div>
+							<TextControl
+								label={ __( 'Photo Title', 'photo-block' ) }
+								value={ attributes.imageData.title }
+								onChange={ ( title ) => {
+									setAttributes( { imageData: { ...imageData, title } } );
+									setImageData( { ...imageData, title } );
+									handleTitleChange( title );
+								} }
+								className={ classnames( 'photo-block__title-text', {
+									'is-saving': isSavingTitle,
+								} ) }
+								placeholder={ __(
+									'Please enter a title for this photo.',
+									'photo-block'
+								) }
+							/>
+							{ isSavingTitle && (
+								<>
+									<div className="photo-block__text-saving">
+										<Spinner /> { __( 'Saving title text…', 'photo-block' ) }
+									</div>
+								</>
+							) }
+							<TextareaControl
+								label={ __( 'Alt Text', 'photo-block' ) }
+								value={ attributes.imageData.alt }
+								onChange={ ( alt ) => {
+									setAttributes( { imageData: { ...imageData, alt } } );
+									setImageData( { ...imageData, alt } );
+									handleAltChange( alt );
+								} }
+								className={ classnames( 'photo-block__alt-text', {
+									'is-saving': isSavingAlt,
+								} ) }
+								placeholder={ __( 'Please describe this photo.', 'photo-block' ) }
+								help={ __(
+									'Alt text provides a description of the photo for screen readers and search engines.',
+									'photo-block'
+								) }
+							/>
+							{ isSavingAlt && (
+								<>
+									<div className="photo-block__text-saving">
+										<Spinner /> { __( 'Saving alt text…', 'photo-block' ) }
+									</div>
+								</>
+							) }
 						</>
 					) }
 				</>
@@ -384,7 +398,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						/>
 						{ imageSizeLoading && (
 							<>
-								<div className="photo-block__text-saving"><Spinner /> { __( 'Loading image size…', 'photo-block' ) }</div>
+								<div className="photo-block__text-saving">
+									<Spinner /> { __( 'Loading image size…', 'photo-block' ) }
+								</div>
 							</>
 						) }
 						<div className="photo-block__image-info">
@@ -402,13 +418,19 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									label={ __( 'Copy URL', 'photo-block' ) }
 									onClick={ () => {
 										if ( navigator.clipboard && window.isSecureContext ) {
-											navigator.clipboard.writeText( imageData.url ).then( () => {
-												createSuccessNotice( __( 'URL copied to clipboard.', 'photo-block' ), {
-													type: 'snackbar',
+											navigator.clipboard
+												.writeText( imageData.url )
+												.then( () => {
+													createSuccessNotice(
+														__( 'URL copied to clipboard.', 'photo-block' ),
+														{
+															type: 'snackbar',
+														}
+													);
+												} )
+												.catch( ( error ) => {
+													console.error( error );
 												} );
-											} ).catch( ( error ) => {
-												console.error( error );
-											} );
 										} else {
 											// Fallback for older browsers
 											const textArea = document.createElement( 'textarea' );
@@ -417,9 +439,12 @@ const EditScreen = forwardRef( ( props, ref ) => {
 											textArea.select();
 											try {
 												document.execCommand( 'copy' );
-												createSuccessNotice( __( 'URL copied to clipboard.', 'photo-block' ), {
-													type: 'snackbar',
-												} );
+												createSuccessNotice(
+													__( 'URL copied to clipboard.', 'photo-block' ),
+													{
+														type: 'snackbar',
+													}
+												);
 											} catch ( error ) {
 												console.error( error );
 											}
@@ -429,26 +454,33 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									className="photo-block__copy-url-button"
 								/>
 							</div>
-							{
-								( imageData.dimensions && imageData.file_size ) && (
-									<div className="photo-block__image-info-items">
-										{ imageData.file_size && (
-											<div className="photo-block__image-info-item">
-												<BaseControl id="photo-block__image-info-file-size" label={ __( 'File Size', 'photo-block' ) }>
-													<p>{ imageData.file_size }</p>
-												</BaseControl>
-											</div>
-										) }
-										{ imageData.dimensions && (
-											<div className="photo-block__image-info-item">
-												<BaseControl id="photo-block__image-info-dimensions" label={ __( 'Dimensions', 'photo-block' ) }>
-													<p>{ imageData.dimensions.width } x { imageData.dimensions.height }</p>
-												</BaseControl>
-											</div>
-										) }
-									</div>
-								)
-							}
+							{ imageData.dimensions && imageData.file_size && (
+								<div className="photo-block__image-info-items">
+									{ imageData.file_size && (
+										<div className="photo-block__image-info-item">
+											<BaseControl
+												id="photo-block__image-info-file-size"
+												label={ __( 'File Size', 'photo-block' ) }
+											>
+												<p>{ imageData.file_size }</p>
+											</BaseControl>
+										</div>
+									) }
+									{ imageData.dimensions && (
+										<div className="photo-block__image-info-item">
+											<BaseControl
+												id="photo-block__image-info-dimensions"
+												label={ __( 'Dimensions', 'photo-block' ) }
+											>
+												<p>
+													{ imageData.dimensions.width } x{ ' ' }
+													{ imageData.dimensions.height }
+												</p>
+											</BaseControl>
+										</div>
+									) }
+								</div>
+							) }
 						</div>
 					</div>
 				}
@@ -506,127 +538,118 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	const localToolbar = (
 		<>
 			<BlockControls>
-				{
-					! hasGlobalStyle( globalStyle ) && (
-						<AlignmentToolbar { ...props } />
-					)
-				}
-				{
-					! hasGlobalStyle( globalStyle ) && (
-						<ToolbarGroup>
-							<ToolbarDropdownMenu
-								icon={ getCenterIcon() }
-								label={ __( 'Align', 'photo-block' ) }
-								className="dlx-photo-block__alignment-dropdown"
-							>
-								{ ( { onClose } ) => (
-									<>
-										<MenuGroup className="dlx-photo-block__alignment-dropdown-group">
-
-											<MenuItem
-												icon={ <AlignLeft /> }
-												isSelected={ 'left' === photoPosition }
-												onClick={ () => {
-													setAttributes( { photoPosition: 'left' } );
-													onClose();
-												} }
-												iconPosition="left"
-												label={ __( 'Align Left', 'photo-block' ) }
-												role="menuitemradio"
-												className={
-													classnames( {
-														'is-active': 'left' === photoPosition,
-													} )
-												}
-											>
-												{ __( 'Left', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem
-												icon={ <AlignCenter /> }
-												isSelected={ 'center' === photoPosition }
-												onClick={ () => {
-													setAttributes( { photoPosition: 'center' } );
-													onClose();
-												} }
-												iconPosition="left"
-												label={ __( 'Align Center', 'photo-block' ) }
-												role="menuitemradio"
-												className={
-													classnames( {
-														'is-active': 'center' === photoPosition,
-													} )
-												}
-											>
-												{ __( 'Center', 'photo-block' ) }
-											</MenuItem>
-											<MenuItem
-												icon={ <AlignRight /> }
-												isSelected={ 'right' === photoPosition }
-												onClick={ () => {
-													setAttributes( { photoPosition: 'right' } );
-													onClose();
-												} }
-												iconPosition="left"
-												label={ __( 'Align Right', 'photo-block' ) }
-												role="menuitemradio"
-												className={
-													classnames( {
-														'is-active': 'right' === photoPosition,
-													} )
-												}
-											>
-												{ __( 'Right', 'photo-block' ) }
-											</MenuItem>
-										</MenuGroup>
-									</>
-								) }
-							</ToolbarDropdownMenu>
-						</ToolbarGroup>
-					)
-				}
-				{
-					innerBlockCount === 0 && (
-						<ToolbarGroup>
-							<ToolbarButton
-								icon={ <CaptionsOff /> }
-								label={ hideCaption ? __( 'Show Caption', 'photo-block' ) : __( 'Hide Caption', 'photo-block' ) }
-								onClick={ () => {
-									setAttributes( { hideCaption: ! hideCaption } );
-									setHideCaption( ! hideCaption );
-								} }
-								isPressed={ true === hideCaption }
-							/>
-						</ToolbarGroup>
-					)
-				}
+				{ ! hasGlobalStyle( globalStyle ) && <AlignmentToolbar { ...props } /> }
+				{ ! hasGlobalStyle( globalStyle ) && (
+					<ToolbarGroup>
+						<ToolbarDropdownMenu
+							icon={ getCenterIcon() }
+							label={ __( 'Align', 'photo-block' ) }
+							className="dlx-photo-block__alignment-dropdown"
+						>
+							{ ( { onClose } ) => (
+								<>
+									<MenuGroup className="dlx-photo-block__alignment-dropdown-group">
+										<MenuItem
+											icon={ <AlignLeft /> }
+											isSelected={ 'left' === photoPosition }
+											onClick={ () => {
+												setAttributes( { photoPosition: 'left' } );
+												onClose();
+											} }
+											iconPosition="left"
+											label={ __( 'Align Left', 'photo-block' ) }
+											role="menuitemradio"
+											className={ classnames( {
+												'is-active': 'left' === photoPosition,
+											} ) }
+										>
+											{ __( 'Left', 'photo-block' ) }
+										</MenuItem>
+										<MenuItem
+											icon={ <AlignCenter /> }
+											isSelected={ 'center' === photoPosition }
+											onClick={ () => {
+												setAttributes( { photoPosition: 'center' } );
+												onClose();
+											} }
+											iconPosition="left"
+											label={ __( 'Align Center', 'photo-block' ) }
+											role="menuitemradio"
+											className={ classnames( {
+												'is-active': 'center' === photoPosition,
+											} ) }
+										>
+											{ __( 'Center', 'photo-block' ) }
+										</MenuItem>
+										<MenuItem
+											icon={ <AlignRight /> }
+											isSelected={ 'right' === photoPosition }
+											onClick={ () => {
+												setAttributes( { photoPosition: 'right' } );
+												onClose();
+											} }
+											iconPosition="left"
+											label={ __( 'Align Right', 'photo-block' ) }
+											role="menuitemradio"
+											className={ classnames( {
+												'is-active': 'right' === photoPosition,
+											} ) }
+										>
+											{ __( 'Right', 'photo-block' ) }
+										</MenuItem>
+									</MenuGroup>
+								</>
+							) }
+						</ToolbarDropdownMenu>
+					</ToolbarGroup>
+				) }
+				{ innerBlockCount === 0 && (
+					<ToolbarGroup>
+						<ToolbarButton
+							icon={ <CaptionsOff /> }
+							label={
+								hideCaption
+									? __( 'Show Caption', 'photo-block' )
+									: __( 'Hide Caption', 'photo-block' )
+							}
+							onClick={ () => {
+								setAttributes( { hideCaption: ! hideCaption } );
+								setHideCaption( ! hideCaption );
+							} }
+							isPressed={ true === hideCaption }
+						/>
+					</ToolbarGroup>
+				) }
 				<ToolbarGroup>
-					{
-						isJustCropped && (
+					{ isJustCropped && imageData.can_edit && (
+						<ToolbarButton
+							icon={ <Undo2 /> }
+							label={ __( 'Undo Crop', 'photo-block' ) }
+							onClick={ () => {
+								setAttributes( { imageData: originalImageData } );
+								setJustCropped( false );
+								setImageData( originalImageData );
+								setScreen( 'edit' );
+							} }
+						>
+							{ __( 'Undo Crop', 'photo-block' ) }
+						</ToolbarButton>
+					) }
+					{ imageData.can_edit && (
+						<>
 							<ToolbarButton
-								icon={ <Undo2 /> }
-								label={ __( 'Undo Crop', 'photo-block' ) }
+								icon={ <Crop /> }
+								label={ __( 'Crop', 'photo-block' ) }
 								onClick={ () => {
-									setAttributes( { imageData: originalImageData } );
 									setJustCropped( false );
-									setImageData( originalImageData );
-									setScreen( 'edit' );
+									setScreen( 'crop' );
 								} }
+								disabled={ 'photo' !== photoMode }
 							>
-								{ __( 'Undo Crop', 'photo-block' ) }
+								{ __( 'Crop', 'photo-block' ) }
 							</ToolbarButton>
-						)
-					}
-					<ToolbarButton
-						icon={ <Crop /> }
-						label={ __( 'Crop', 'photo-block' ) }
-						onClick={ () => {
-							setJustCropped( false );
-							setScreen( 'crop' );
-						} }
-						disabled={ 'photo' !== photoMode }
-					>
-						{ __( 'Crop', 'photo-block' ) }
-					</ToolbarButton>
+						</>
+					) }
 				</ToolbarGroup>
 				<ToolbarGroup>
 					<ToolbarButton
@@ -641,14 +664,16 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					</ToolbarButton>
 				</ToolbarGroup>
 				<ToolbarGroup>
-					<ToolbarButton
-						icon={ <Accessibility /> }
-						label={ __( 'Set Accessibility Options', 'photo-block' ) }
-						onMouseDown={ () => {
-							setA11yPopover( true );
-						} }
-						ref={ setA11yButton }
-					/>
+					{ imageData.can_edit && (
+						<ToolbarButton
+							icon={ <Accessibility /> }
+							label={ __( 'Set Accessibility Options', 'photo-block' ) }
+							onMouseDown={ () => {
+								setA11yPopover( true );
+							} }
+							ref={ setA11yButton }
+						/>
+					) }
 					{
 						<ToolbarButton
 							icon={ <Link /> }
@@ -672,7 +697,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					} }
 				/>
 			) }
-			{ a11yPopover && (
+			{ imageData.can_edit && a11yPopover && (
 				<Popover
 					position="bottom center"
 					anchor={ a11yButton }
@@ -701,7 +726,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						/>
 						{ isSavingTitle && (
 							<>
-								<div className="photo-block__text-saving"><Spinner /> { __( 'Saving title text…', 'photo-block' ) }</div>
+								<div className="photo-block__text-saving">
+									<Spinner /> { __( 'Saving title text…', 'photo-block' ) }
+								</div>
 							</>
 						) }
 						<TextareaControl
@@ -718,9 +745,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								'photo-block'
 							) }
 						/>
-						{ ( isSavingAlt ) && (
+						{ isSavingAlt && (
 							<>
-								<div className="photo-block__text-saving"><Spinner /> { __( 'Saving alt text…', 'photo-block' ) }</div>
+								<div className="photo-block__text-saving">
+									<Spinner /> { __( 'Saving alt text…', 'photo-block' ) }
+								</div>
 							</>
 						) }
 					</div>
@@ -766,7 +795,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			}
 			<style>{ styles }</style>
 			<div className="dlx-photo-block__screen-edit">
-				{ ( imageLoading ) && (
+				{ imageLoading && (
 					<div
 						className="dlx-photo-block__screen-edit-spinner"
 						style={ {
@@ -779,7 +808,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<Spinner />
 					</div>
 				) }
-				<figure className={ `dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure ${ globalStyleCSSClassName }` }>
+				<figure
+					className={ `dlx-photo-block__screen-edit-image-wrapper dlx-photo-block__figure ${ globalStyleCSSClassName }` }
+				>
 					{ 'top' === captionPosition && (
 						<div
 							className="dlx-photo-block__screen-edit-caption dlx-photo-block__caption"

@@ -299,6 +299,9 @@ class Functions {
 			'title'           => get_the_title( $attachment_id ),
 			'file_size'       => $file_size_kb,
 			'dimensions'      => $file_dimensions,
+			'edit_nonce'      => wp_create_nonce( 'pb_edit_image_' . $attachment_id ),
+			'crop_nonce'      => wp_create_nonce( 'pb_crop_image_' . $attachment_id ),
+			'can_edit'        => current_user_can( 'edit_post', $attachment_id ),
 		);
 
 		return $return;
