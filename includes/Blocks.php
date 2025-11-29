@@ -290,13 +290,14 @@ class Blocks {
 	 * @param WP_Block $block               The caption block content and attributes.
 	 */
 	public static function caption_frontend( $attributes, $innerblocks_content, $block ) {
-		if ( is_admin() ) {
+		$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
+		if ( is_admin() && ! $doing_ajax ) {
 			return;
 		}
 
 		// Determine if we want to execute this markup. Ignore for REST and admin requests.
 		$can_output = true;
-		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {
+		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
 			$can_output = false;
 		}
 
@@ -520,7 +521,13 @@ class Blocks {
 				'dlx-photo-block-caption-' . $unique_id,
 				esc_html( $css_output )
 			);
-			wp_print_styles( 'dlx-photo-block-caption-' . $unique_id );
+			add_action(
+				'wp_footer',
+				function () use ( $unique_id ) {
+					wp_print_styles( array( 'dlx-photo-block-caption-' . $unique_id ) );
+				},
+				100
+			);
 			?>
 			<?php
 		}
@@ -537,13 +544,14 @@ class Blocks {
 	 * @param WP_Block $block               The photo block content and attributes.
 	 */
 	public static function block_frontend( $attributes, $innerblocks_content, $block ) {
-		if ( is_admin() ) {
+		$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
+		if ( is_admin() && ! $doing_ajax ) {
 			return;
 		}
 
 		// Determine if we want to execute this markup. Ignore for REST and admin requests.
 		$can_output = true;
-		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || is_admin() ) {
+		if ( ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
 			$can_output = false;
 		}
 
@@ -643,9 +651,20 @@ class Blocks {
 				);
 
 				if ( ! wp_style_is( 'dlx-photo-block-global-styles', 'done' ) ) {
-					wp_print_styles( 'dlx-photo-block-global-styles' );
+					wp_print_styles( array( 'dlx-photo-block-global-styles' ) );
 				}
 			}
+		}
+
+		if ( ! wp_style_is( 'dlx-photo-block-frontend-and-editor', 'done' ) ) {
+			wp_register_style(
+				'dlx-photo-block-frontend-and-editor',
+				Functions::get_plugin_url( 'dist/dlx-photo-block-style.css' ),
+				array(),
+				Functions::get_plugin_version(),
+				'all'
+			);
+			wp_print_styles( array( 'dlx-photo-block-frontend-and-editor' ) );
 		}
 
 		// Let's sanitize the attributes.
@@ -1184,7 +1203,7 @@ class Blocks {
 			add_action(
 				'wp_footer',
 				function () use ( $unique_id ) {
-					wp_print_styles( 'dlx-photo-block-' . $unique_id );
+					wp_print_styles( array( 'dlx-photo-block-' . $unique_id ) );
 				},
 				100
 			);
