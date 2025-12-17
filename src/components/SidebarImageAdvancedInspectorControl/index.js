@@ -7,13 +7,15 @@ import {
 } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 import { useSelect } from '@wordpress/data';
 import CustomAttributesControl from '../../components/CustomAttributes';
 import globalStylesStore from '../../store/global-styles';
 
 const SidebarImageAdvancedInspectorControl = ( props ) => {
-	const { attributes, setAttributes } = props;
+	const {
+		attributes = {},
+		setAttributes = () => {},
+	} = props;
 	const {
 		htmlAnchor,
 		figureCSSClasses,
@@ -129,15 +131,6 @@ const SidebarImageAdvancedInspectorControl = ( props ) => {
 		</>
 	);
 	return ( stylesInspectorControls );
-};
-
-SidebarImageAdvancedInspectorControl.defaultProps = {
-	attributes: {},
-	setAttributes: () => {},
-};
-
-SidebarImageAdvancedInspectorControl.propTypes = {
-	attributes: PropTypes.object,
 };
 
 export default SidebarImageAdvancedInspectorControl;

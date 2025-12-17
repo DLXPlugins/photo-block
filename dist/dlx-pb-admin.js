@@ -27538,16 +27538,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/a11y */ "@wordpress/a11y");
-/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_a11y__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/a11y */ "@wordpress/a11y");
+/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_a11y__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -27555,23 +27553,28 @@ function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" 
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 // eslint-disable-next-line no-unused-vars
 
- // ES6
 
 
 
 
 var Notice = function Notice(props) {
-  var message = props.message,
-    status = props.status,
-    politeness = props.politeness,
-    icon = props.icon,
-    className = props.className,
-    inline = props.inline,
+  var _props$message = props.message,
+    message = _props$message === void 0 ? '' : _props$message,
+    _props$status = props.status,
+    status = _props$status === void 0 ? 'info' : _props$status,
+    _props$politeness = props.politeness,
+    politeness = _props$politeness === void 0 ? 'polite' : _props$politeness,
+    _props$icon = props.icon,
+    icon = _props$icon === void 0 ? null : _props$icon,
+    _props$className = props.className,
+    className = _props$className === void 0 ? '' : _props$className,
+    _props$inline = props.inline,
+    inline = _props$inline === void 0 ? false : _props$inline,
     children = props.children,
     _props$hasToTop = props.hasToTop,
     hasToTop = _props$hasToTop === void 0 ? false : _props$hasToTop;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    (0,_wordpress_a11y__WEBPACK_IMPORTED_MODULE_2__.speak)(message, politeness);
+    (0,_wordpress_a11y__WEBPACK_IMPORTED_MODULE_1__.speak)(message, politeness);
   }, [message, status, politeness]);
   var hasIcon = function hasIcon() {
     return icon !== null;
@@ -27583,18 +27586,18 @@ var Notice = function Notice(props) {
       fill: "#6c757d"
     });
   };
-  var containerClasses = classnames__WEBPACK_IMPORTED_MODULE_5___default()(className, 'dlx-pb-admin__notice', _defineProperty(_defineProperty(_defineProperty({
+  var containerClasses = classnames__WEBPACK_IMPORTED_MODULE_4___default()(className, 'dlx-pb-admin__notice', _defineProperty(_defineProperty(_defineProperty({
     'dlx-pb-admin__notice--has-icon': hasIcon()
   }, "dlx-pb-admin__notice-type--".concat(status), true), "dlx-pb-admin__notice-appearance--inline", inline), "dlx-pb-admin__notice-appearance--block", !inline));
   var actions = [{
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Back to Top', 'wp-dlx-pb-comments'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Back to Top', 'wp-dlx-pb-comments'),
     url: '#dlx-pb-admin-header',
     variant: 'link',
     className: 'dlx-pb-admin__notice-action dlx-pb-admin__notice-action--to-top'
   }];
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: containerClasses
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Notice, _extends({
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Notice, _extends({
     isDismissible: false,
     spokenMessage: message,
     actions: hasToTop ? actions : []
@@ -27603,24 +27606,6 @@ var Notice = function Notice(props) {
   }, getIcon(icon)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "dlx-pb-admin__notice-message"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, message, " ", children, " "))));
-};
-Notice.defaultProps = {
-  message: '',
-  status: 'info',
-  politeness: 'polite',
-  icon: null,
-  className: '',
-  inline: false,
-  hasToTop: false
-};
-Notice.propTypes = {
-  message: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string).isRequired,
-  status: prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOf(['info', 'warning', 'success', 'error']),
-  politeness: prop_types__WEBPACK_IMPORTED_MODULE_1___default().oneOf(['assertive', 'polite']),
-  icon: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().func),
-  className: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().string),
-  inline: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().bool),
-  hasToTop: (prop_types__WEBPACK_IMPORTED_MODULE_1___default().bool)
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Notice);
 

@@ -3,7 +3,6 @@
  */
 import './editor.scss';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { __ } from '@wordpress/i18n';
 
 import {
@@ -19,10 +18,10 @@ const GradientPickerControl = ( props ) => {
 	const [ gradientPickerButtonAnchor, setGradientPickerButtonAnchor ] = useState( null );
 
 	const {
-		label,
-		onChange,
-		value,
-		clearable,
+		label = __( 'Gradient Color', 'photo-block' ),
+		onChange = () => {},
+		value = '',
+		clearable = false,
 	} = props;
 
 	/**
@@ -95,20 +94,6 @@ const GradientPickerControl = ( props ) => {
 
 		</BaseControl>
 	);
-};
-
-GradientPickerControl.defaultProps = {
-	label: __( 'Gradient Color', 'photo-block' ),
-	clearable: false,
-	value: '',
-	onChange: () => {},
-};
-
-GradientPickerControl.propTypes = {
-	clearable: PropTypes.bool,
-	value: PropTypes.string.isRequired,
-	label: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
 };
 
 export default GradientPickerControl;

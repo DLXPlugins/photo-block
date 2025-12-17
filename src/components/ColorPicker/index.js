@@ -9,7 +9,6 @@ import classnames from 'classnames';
 import hexToRgba from 'hex-to-rgba';
 import rgb2hex from 'rgb2hex';
 import { __ } from '@wordpress/i18n';
-import PropTypes from 'prop-types';
 
 import {
 	Tooltip,
@@ -28,12 +27,12 @@ const ColorPickerControl = ( props ) => {
 	const [ opacity, setOpacity ] = useState( props.opacity );
 
 	const {
-		defaultColor,
+		defaultColor = 'transparent',
 		defaultColors,
-		value,
+		value = '',
 		onChange,
-		onOpacityChange,
-		label,
+		onOpacityChange = () => {},
+		label = __( 'Color', 'photo-block' ),
 		alpha = false,
 		slug,
 		hideLabelFromVision = false,
@@ -262,26 +261,6 @@ const ColorPickerControl = ( props ) => {
 			</div>
 		</BaseControl>
 	);
-};
-
-ColorPickerControl.propTypes = {
-	label: PropTypes.string,
-	onChange: PropTypes.func.isRequired,
-	onOpacityChange: PropTypes.func,
-	value: PropTypes.string,
-	defaultColor: PropTypes.string,
-	alpha: PropTypes.bool,
-	hideLabelFromVision: PropTypes.bool,
-	defaultColors: PropTypes.array.isRequired,
-};
-
-ColorPickerControl.defaultProps = {
-	label: __( 'Color', 'photo-block' ),
-	value: '',
-	defaultColor: 'transparent',
-	alpha: false,
-	hideLabelFromVision: false,
-	onOpacityChange: () => {},
 };
 
 export default ColorPickerControl;

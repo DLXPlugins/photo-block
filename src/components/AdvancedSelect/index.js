@@ -4,7 +4,6 @@ import './editor.scss';
  */
 import React, { useState, useEffect, createRef, useCallback } from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
 /**
  * WordPress dependencies
@@ -43,12 +42,20 @@ const AdvancedSelectControl = ( props ) => {
 	 */
 	const inputRef = createRef();
 
-	const restEndPoint = props.restEndpoint;
-	const restNonce = props.restNonce;
-	const children = props.children;
-	const params = props.params;
-	const acceptDirectInput = props.acceptDirectInput;
-	const currentSelectedSuggestion = props.currentSelectedSuggestion;
+	const {
+		restEndpoint: restEndPoint,
+		restNonce,
+		children = () => ( <></> ),
+		params,
+		acceptDirectInput = false,
+		currentSelectedSuggestion,
+		savedValue,
+		hasInititialFocus = false,
+		label = __( 'Search by ID or title', 'photo-block' ),
+		placeholder = __( 'Search by ID or title', 'photo-block' ),
+		onItemSelect = () => {},
+		itemIcon = <></>,
+	} = props;
 
 	/**
 	 * Set Unique Instance ID.
@@ -68,7 +75,7 @@ const AdvancedSelectControl = ( props ) => {
 	const [ selectedSuggestionIndex, setSelectedSuggestionIndex ] = useState( null );
 	const [ suggestionListboxId, setSuggestionListboxId ] = useState( '' );
 	const [ suggestionValue, setSuggestionValue ] = useState( '' );
-	const [ savedSuggestionValue, setSavedSuggestionValue ] = useState( props.savedValue );
+	const [ savedSuggestionValue, setSavedSuggestionValue ] = useState( savedValue );
 	const [ uniqueInstanceId, setUniqueInstanceId ] = useState(
 		`post-search-control-${ generatedUniqueId }`
 	);
@@ -120,10 +127,10 @@ const AdvancedSelectControl = ( props ) => {
 	 * Set Focus to input.
 	 */
 	useEffect( () => {
-		if ( inputRef.current && props.hasInititialFocus ) {
+		if ( inputRef.current && hasInititialFocus ) {
 			inputRef.current.focus();
 		}
-	}, [ inputRef ] );
+	}, [ inputRef, hasInititialFocus ] );
 
 	/**
 	 * Set the current input.
@@ -199,7 +206,7 @@ const AdvancedSelectControl = ( props ) => {
 					if ( acceptDirectInput && '' !== suggestionValue ) {
 						setCurrentSuggestion( suggestionValue );
 						setShowSuggestions( false );
-						props.onItemSelect( event, suggestionValue );
+						onItemSelect( event, suggestionValue );
 					} else {
 						debouncedRequest( event.target.value );
 					}
@@ -210,7 +217,7 @@ const AdvancedSelectControl = ( props ) => {
 					if ( acceptDirectInput && '' !== suggestionValue ) {
 						setCurrentSuggestion( suggestionValue );
 						setShowSuggestions( false );
-						props.onItemSelect( event, suggestionValue );
+						onItemSelect( event, suggestionValue );
 					}
 					break;
 				}
@@ -251,7 +258,7 @@ const AdvancedSelectControl = ( props ) => {
 				if ( acceptDirectInput && '' !== suggestionValue ) {
 					setCurrentSuggestion( suggestionValue );
 					setShowSuggestions( false );
-					props.onItemSelect( event, suggestionValue );
+					onItemSelect( event, suggestionValue );
 				}
 				break;
 			}
@@ -260,7 +267,7 @@ const AdvancedSelectControl = ( props ) => {
 				if ( acceptDirectInput && '' !== suggestionValue ) {
 					setCurrentSuggestion( suggestionValue );
 					setShowSuggestions( false );
-					props.onItemSelect( event, suggestionValue );
+					onItemSelect( event, suggestionValue );
 				}
 				break;
 			}
@@ -348,7 +355,7 @@ const AdvancedSelectControl = ( props ) => {
 									htmlFor={ uniqueInstanceId }
 									className="photo-block-pub-advanced-select__input-label"
 								>
-									{ props.label }
+									{ label }
 								</label>
 							</div>
 							<div className="photo-block-pub-advanced-select__suggestion-display-wrapper">
@@ -367,7 +374,7 @@ const AdvancedSelectControl = ( props ) => {
 											setSelectedSuggestion( null );
 											setSelectedSuggestionIndex( null );
 											setSuggestions( [] );
-											props.onItemSelect( null, null );
+											onItemSelect( null, null );
 										} }
 									/>
 								</div>
@@ -381,7 +388,7 @@ const AdvancedSelectControl = ( props ) => {
 									htmlFor={ uniqueInstanceId }
 									className="photo-block-pub-advanced-select__input-label"
 								>
-									{ props.label }
+									{ label }
 								</label>
 							</div>
 							<div className="photo-block-pub-advanced-select__input-search-wrapper">
@@ -389,12 +396,12 @@ const AdvancedSelectControl = ( props ) => {
 									id={ uniqueInstanceId }
 									type="text"
 									className="photo-block-pub-advanced-select__input"
-									placeholder={ props.placeholder }
+									placeholder={ placeholder }
 									value={ suggestionValue }
 									onChange={ onChange }
 									onFocus={ onFocus }
 									onKeyDown={ onKeyDown }
-									label={ props.label }
+									label={ label }
 									hideLabelFromVision={ true }
 									aria-autocomplete="list"
 									ref={ inputRef }
@@ -410,7 +417,7 @@ const AdvancedSelectControl = ( props ) => {
 									className="photo-block-pub-advanced-select__search-button"
 									icon={ <Search /> }
 									iconSize={ 18 }
-									label={ props.label }
+									label={ label }
 									onClick={ () => {
 										setShowSuggestions( true );
 									} }
@@ -431,7 +438,7 @@ const AdvancedSelectControl = ( props ) => {
 														value: '',
 													};
 													setCurrentSuggestion( newSuggestion );
-													props.onItemSelect( e, suggestionValue );
+													onItemSelect( e, suggestionValue );
 												} }
 											/>
 										</>
@@ -455,28 +462,6 @@ const AdvancedSelectControl = ( props ) => {
 			</div>
 		</div>
 	);
-};
-
-AdvancedSelectControl.defaultProps = {
-	label: __( 'Search by ID or title', 'photo-block' ),
-	placeholder: __( 'Search by ID or title', 'photo-block' ),
-	onItemSelect: () => {},
-	children: () => ( <></> ),
-	hasInititialFocus: false,
-	acceptDirectInput: false,
-	itemIcon: <></>,
-};
-
-AdvancedSelectControl.propTypes = {
-	restEndpoint: PropTypes.string.isRequired,
-	restNonce: PropTypes.string.isRequired,
-	label: PropTypes.string.isRequired,
-	placeholder: PropTypes.string.isRequired,
-	onItemSelect: PropTypes.func.isRequired,
-	children: PropTypes.func.isRequired,
-	hasInititialFocus: PropTypes.bool.isRequired,
-	acceptDirectInput: PropTypes.bool,
-	itemIcon: PropTypes.element.isRequired,
 };
 
 export default AdvancedSelectControl;

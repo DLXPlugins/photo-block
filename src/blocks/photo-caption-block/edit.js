@@ -793,7 +793,12 @@ const PhotoCaptionBlock = ( props ) => {
 						label={ __( 'Overlay Border', 'photo-block' ) }
 						values={ overlayBorder }
 						onValuesChange={ ( values ) => {
-							setAttributes( { overlayBorder: values } );
+							const overlayBorderValues = { ...overlayBorder };
+							const newValue = values[ deviceType.toLowerCase() ];
+							if ( newValue ) {
+								overlayBorderValues[ deviceType.toLowerCase() ] = newValue;
+							}
+							setAttributes( { overlayBorder: overlayBorderValues } );
 						} }
 						labelTop={ __( 'Top Border', 'photo-block' ) }
 						labelRight={ __( 'Right Border', 'photo-block' ) }
@@ -826,8 +831,13 @@ const PhotoCaptionBlock = ( props ) => {
 							values={ captionTypography }
 							screenSize={ deviceType }
 							onValuesChange={ ( formValues ) => {
+								const captionTypographyValues = { ...captionTypography };
+								const newValue = formValues[ deviceType.toLowerCase() ];
+								if ( newValue ) {
+									captionTypographyValues[ deviceType.toLowerCase() ] = newValue;
+								}
 								setAttributes( {
-									captionTypography: formValues,
+									captionTypography: captionTypographyValues,
 								} );
 							} }
 							label={ __( 'Caption Typography', 'photo-block' ) }
@@ -882,7 +892,12 @@ const PhotoCaptionBlock = ( props ) => {
 									values={ captionBaseFontSize }
 									screenSize={ deviceType }
 									onValuesChange={ ( newValues ) => {
-										setAttributes( { captionBaseFontSize: newValues } );
+										const captionBaseFontSizeValues = { ...captionBaseFontSize };
+										const newValue = newValues[ deviceType.toLowerCase() ];
+										if ( newValue ) {
+											captionBaseFontSizeValues[ deviceType.toLowerCase() ] = newValue;
+										}
+										setAttributes( { captionBaseFontSize: captionBaseFontSizeValues } );
 									} }
 									min={ 0 }
 									max={ 36 }
@@ -1130,7 +1145,12 @@ const PhotoCaptionBlock = ( props ) => {
 					label={ __( 'Caption Padding', 'photo-block' ) }
 					values={ captionPaddingSize }
 					onValuesChange={ ( values ) => {
-						setAttributes( { captionPaddingSize: values } );
+						const captionPaddingSizeValues = { ...captionPaddingSize };
+						const newValue = values[ deviceType.toLowerCase() ];
+						if ( newValue ) {
+							captionPaddingSizeValues[ deviceType.toLowerCase() ] = newValue;
+						}
+						setAttributes( { captionPaddingSize: captionPaddingSizeValues } );
 					} }
 					labelTop={ __( 'Top Padding', 'photo-block' ) }
 					labelRight={ __( 'Right Padding', 'photo-block' ) }
@@ -1142,7 +1162,12 @@ const PhotoCaptionBlock = ( props ) => {
 					label={ __( 'Caption Margin', 'photo-block' ) }
 					values={ captionMarginSize }
 					onValuesChange={ ( values ) => {
-						setAttributes( { captionMarginSize: values } );
+						const captionMarginSizeValues = { ...captionMarginSize };
+						const newValue = values[ deviceType.toLowerCase() ];
+						if ( newValue ) {
+							captionMarginSizeValues[ deviceType.toLowerCase() ] = newValue;
+						}
+						setAttributes( { captionMarginSize: captionMarginSizeValues } );
 					} }
 					labelTop={ __( 'Top Margin', 'photo-block' ) }
 					labelRight={ __( 'Right Margin', 'photo-block' ) }
@@ -1155,7 +1180,12 @@ const PhotoCaptionBlock = ( props ) => {
 					label={ __( 'Caption Border', 'photo-block' ) }
 					values={ captionBorder }
 					onValuesChange={ ( values ) => {
-						setAttributes( { captionBorder: values } );
+						const captionBorderValues = { ...captionBorder };
+						const newValue = values[ deviceType.toLowerCase() ];
+						if ( newValue ) {
+							captionBorderValues[ deviceType.toLowerCase() ] = newValue;
+						}
+						setAttributes( { captionBorder: captionBorderValues } );
 					} }
 					labelTop={ __( 'Top Border', 'photo-block' ) }
 					labelRight={ __( 'Right Border', 'photo-block' ) }
@@ -1167,7 +1197,12 @@ const PhotoCaptionBlock = ( props ) => {
 					label={ __( 'Caption Border Radius', 'photo-block' ) }
 					values={ captionBorderRadius }
 					onValuesChange={ ( values ) => {
-						setAttributes( { captionBorderRadius: values } );
+						const captionBorderRadiusValues = { ...captionBorderRadius };
+						const newValue = values[ deviceType.toLowerCase() ];
+						if ( newValue ) {
+							captionBorderRadiusValues[ deviceType.toLowerCase() ] = newValue;
+						}
+						setAttributes( { captionBorderRadius: captionBorderRadiusValues } );
 					} }
 					labelTop={ __( 'Top-left Radius', 'photo-block' ) }
 					labelRight={ __( 'Top-right Radius', 'photo-block' ) }
@@ -1204,7 +1239,12 @@ const PhotoCaptionBlock = ( props ) => {
 						screenSize={ deviceType }
 						units={ heightUnits }
 						onValuesChange={ ( newValues ) => {
-							setAttributes( { containerHeight: newValues } );
+							const containerHeightValues = { ...containerHeight };
+							const newValue = newValues[ deviceType.toLowerCase() ];
+							if ( newValue ) {
+								containerHeightValues[ deviceType.toLowerCase() ] = newValue;
+							}
+							setAttributes( { containerHeight: containerHeightValues } );
 						} }
 					/>
 				</div>
@@ -1214,7 +1254,12 @@ const PhotoCaptionBlock = ( props ) => {
 						values={ containerMinWidth }
 						screenSize={ deviceType }
 						onValuesChange={ ( newValues ) => {
-							setAttributes( { containerMinWidth: newValues } );
+							const containerMinWidthValues = { ...containerMinWidth };
+							const newValue = newValues[ deviceType.toLowerCase() ];
+							if ( newValue ) {
+								containerMinWidthValues[ deviceType.toLowerCase() ] = newValue;
+							}
+							setAttributes( { containerMinWidth: containerMinWidthValues } );
 						} }
 					/>
 				</div>
@@ -1225,7 +1270,12 @@ const PhotoCaptionBlock = ( props ) => {
 						screenSize={ deviceType }
 						units={ heightUnits }
 						onValuesChange={ ( newValues ) => {
-							setAttributes( { containerMinHeight: newValues } );
+							const containerMinHeightValues = { ...containerMinHeight };
+							const newValue = newValues[ deviceType.toLowerCase() ];
+							if ( newValue ) {
+								containerMinHeightValues[ deviceType.toLowerCase() ] = newValue;
+							}
+							setAttributes( { containerMinHeight: containerMinHeightValues } );
 						} }
 					/>
 				</div>
@@ -1235,7 +1285,12 @@ const PhotoCaptionBlock = ( props ) => {
 						values={ containerMaxWidth }
 						screenSize={ deviceType }
 						onValuesChange={ ( newValues ) => {
-							setAttributes( { containerMaxWidth: newValues } );
+							const containerMaxWidthValues = { ...containerMaxWidth };
+							const newValue = newValues[ deviceType.toLowerCase() ];
+							if ( newValue ) {
+								containerMaxWidthValues[ deviceType.toLowerCase() ] = newValue;
+							}
+							setAttributes( { containerMaxWidth: containerMaxWidthValues } );
 						} }
 					/>
 				</div>
@@ -1246,7 +1301,12 @@ const PhotoCaptionBlock = ( props ) => {
 						screenSize={ deviceType }
 						units={ heightUnits }
 						onValuesChange={ ( newValues ) => {
-							setAttributes( { containerMaxHeight: newValues } );
+							const containerMaxHeightValues = { ...containerMaxHeight };
+							const newValue = newValues[ deviceType.toLowerCase() ];
+							if ( newValue ) {
+								containerMaxHeightValues[ deviceType.toLowerCase() ] = newValue;
+							}
+							setAttributes( { containerMaxHeight: containerMaxHeightValues } );
 						} }
 					/>
 				</div>

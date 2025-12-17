@@ -13019,902 +13019,6 @@ const toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").to
 
 /***/ }),
 
-/***/ "./node_modules/object-assign/index.js":
-/*!*********************************************!*\
-  !*** ./node_modules/object-assign/index.js ***!
-  \*********************************************/
-/***/ ((module) => {
-
-"use strict";
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
-
-/* eslint-disable no-unused-vars */
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
-
-		// Detect buggy property enumeration order in older V8 versions.
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
-
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
-}
-
-module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/prop-types/checkPropTypes.js":
-/*!***************************************************!*\
-  !*** ./node_modules/prop-types/checkPropTypes.js ***!
-  \***************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var printWarning = function() {};
-
-if (true) {
-  var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
-  var loggedTypeFailures = {};
-  var has = __webpack_require__(/*! ./lib/has */ "./node_modules/prop-types/lib/has.js");
-
-  printWarning = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) { /**/ }
-  };
-}
-
-/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
-function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
-  if (true) {
-    for (var typeSpecName in typeSpecs) {
-      if (has(typeSpecs, typeSpecName)) {
-        var error;
-        // Prop type validation may throw. In case they do, we don't want to
-        // fail the render phase where it didn't fail before. So we log it.
-        // After these have been cleaned up, we'll let them throw.
-        try {
-          // This is intentionally an invariant that gets caught. It's the same
-          // behavior as without this statement except with a better message.
-          if (typeof typeSpecs[typeSpecName] !== 'function') {
-            var err = Error(
-              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
-              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.' +
-              'This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.'
-            );
-            err.name = 'Invariant Violation';
-            throw err;
-          }
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
-        } catch (ex) {
-          error = ex;
-        }
-        if (error && !(error instanceof Error)) {
-          printWarning(
-            (componentName || 'React class') + ': type specification of ' +
-            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
-            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
-            'You may have forgotten to pass an argument to the type checker ' +
-            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
-            'shape all require an argument).'
-          );
-        }
-        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
-          // Only monitor this failure once because there tends to be a lot of the
-          // same error.
-          loggedTypeFailures[error.message] = true;
-
-          var stack = getStack ? getStack() : '';
-
-          printWarning(
-            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
-          );
-        }
-      }
-    }
-  }
-}
-
-/**
- * Resets warning cache when testing.
- *
- * @private
- */
-checkPropTypes.resetWarningCache = function() {
-  if (true) {
-    loggedTypeFailures = {};
-  }
-}
-
-module.exports = checkPropTypes;
-
-
-/***/ }),
-
-/***/ "./node_modules/prop-types/factoryWithTypeCheckers.js":
-/*!************************************************************!*\
-  !*** ./node_modules/prop-types/factoryWithTypeCheckers.js ***!
-  \************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
-var assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
-
-var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
-var has = __webpack_require__(/*! ./lib/has */ "./node_modules/prop-types/lib/has.js");
-var checkPropTypes = __webpack_require__(/*! ./checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
-
-var printWarning = function() {};
-
-if (true) {
-  printWarning = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-}
-
-function emptyFunctionThatReturnsNull() {
-  return null;
-}
-
-module.exports = function(isValidElement, throwOnDirectAccess) {
-  /* global Symbol */
-  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-
-  /**
-   * Returns the iterator method function contained on the iterable object.
-   *
-   * Be sure to invoke the function with the iterable as context:
-   *
-   *     var iteratorFn = getIteratorFn(myIterable);
-   *     if (iteratorFn) {
-   *       var iterator = iteratorFn.call(myIterable);
-   *       ...
-   *     }
-   *
-   * @param {?object} maybeIterable
-   * @return {?function}
-   */
-  function getIteratorFn(maybeIterable) {
-    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
-    if (typeof iteratorFn === 'function') {
-      return iteratorFn;
-    }
-  }
-
-  /**
-   * Collection of methods that allow declaration and validation of props that are
-   * supplied to React components. Example usage:
-   *
-   *   var Props = require('ReactPropTypes');
-   *   var MyArticle = React.createClass({
-   *     propTypes: {
-   *       // An optional string prop named "description".
-   *       description: Props.string,
-   *
-   *       // A required enum prop named "category".
-   *       category: Props.oneOf(['News','Photos']).isRequired,
-   *
-   *       // A prop named "dialog" that requires an instance of Dialog.
-   *       dialog: Props.instanceOf(Dialog).isRequired
-   *     },
-   *     render: function() { ... }
-   *   });
-   *
-   * A more formal specification of how these methods are used:
-   *
-   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
-   *   decl := ReactPropTypes.{type}(.isRequired)?
-   *
-   * Each and every declaration produces a function with the same signature. This
-   * allows the creation of custom validation functions. For example:
-   *
-   *  var MyLink = React.createClass({
-   *    propTypes: {
-   *      // An optional string or URI prop named "href".
-   *      href: function(props, propName, componentName) {
-   *        var propValue = props[propName];
-   *        if (propValue != null && typeof propValue !== 'string' &&
-   *            !(propValue instanceof URI)) {
-   *          return new Error(
-   *            'Expected a string or an URI for ' + propName + ' in ' +
-   *            componentName
-   *          );
-   *        }
-   *      }
-   *    },
-   *    render: function() {...}
-   *  });
-   *
-   * @internal
-   */
-
-  var ANONYMOUS = '<<anonymous>>';
-
-  // Important!
-  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
-  var ReactPropTypes = {
-    array: createPrimitiveTypeChecker('array'),
-    bigint: createPrimitiveTypeChecker('bigint'),
-    bool: createPrimitiveTypeChecker('boolean'),
-    func: createPrimitiveTypeChecker('function'),
-    number: createPrimitiveTypeChecker('number'),
-    object: createPrimitiveTypeChecker('object'),
-    string: createPrimitiveTypeChecker('string'),
-    symbol: createPrimitiveTypeChecker('symbol'),
-
-    any: createAnyTypeChecker(),
-    arrayOf: createArrayOfTypeChecker,
-    element: createElementTypeChecker(),
-    elementType: createElementTypeTypeChecker(),
-    instanceOf: createInstanceTypeChecker,
-    node: createNodeChecker(),
-    objectOf: createObjectOfTypeChecker,
-    oneOf: createEnumTypeChecker,
-    oneOfType: createUnionTypeChecker,
-    shape: createShapeTypeChecker,
-    exact: createStrictShapeTypeChecker,
-  };
-
-  /**
-   * inlined Object.is polyfill to avoid requiring consumers ship their own
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-   */
-  /*eslint-disable no-self-compare*/
-  function is(x, y) {
-    // SameValue algorithm
-    if (x === y) {
-      // Steps 1-5, 7-10
-      // Steps 6.b-6.e: +0 != -0
-      return x !== 0 || 1 / x === 1 / y;
-    } else {
-      // Step 6.a: NaN == NaN
-      return x !== x && y !== y;
-    }
-  }
-  /*eslint-enable no-self-compare*/
-
-  /**
-   * We use an Error-like object for backward compatibility as people may call
-   * PropTypes directly and inspect their output. However, we don't use real
-   * Errors anymore. We don't inspect their stack anyway, and creating them
-   * is prohibitively expensive if they are created too often, such as what
-   * happens in oneOfType() for any type before the one that matched.
-   */
-  function PropTypeError(message, data) {
-    this.message = message;
-    this.data = data && typeof data === 'object' ? data: {};
-    this.stack = '';
-  }
-  // Make `instanceof Error` still work for returned errors.
-  PropTypeError.prototype = Error.prototype;
-
-  function createChainableTypeChecker(validate) {
-    if (true) {
-      var manualPropTypeCallCache = {};
-      var manualPropTypeWarningCount = 0;
-    }
-    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
-      componentName = componentName || ANONYMOUS;
-      propFullName = propFullName || propName;
-
-      if (secret !== ReactPropTypesSecret) {
-        if (throwOnDirectAccess) {
-          // New behavior only for users of `prop-types` package
-          var err = new Error(
-            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-            'Use `PropTypes.checkPropTypes()` to call them. ' +
-            'Read more at http://fb.me/use-check-prop-types'
-          );
-          err.name = 'Invariant Violation';
-          throw err;
-        } else if ( true && typeof console !== 'undefined') {
-          // Old behavior for people using React.PropTypes
-          var cacheKey = componentName + ':' + propName;
-          if (
-            !manualPropTypeCallCache[cacheKey] &&
-            // Avoid spamming the console because they are often not actionable except for lib authors
-            manualPropTypeWarningCount < 3
-          ) {
-            printWarning(
-              'You are manually calling a React.PropTypes validation ' +
-              'function for the `' + propFullName + '` prop on `' + componentName + '`. This is deprecated ' +
-              'and will throw in the standalone `prop-types` package. ' +
-              'You may be seeing this warning due to a third-party PropTypes ' +
-              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
-            );
-            manualPropTypeCallCache[cacheKey] = true;
-            manualPropTypeWarningCount++;
-          }
-        }
-      }
-      if (props[propName] == null) {
-        if (isRequired) {
-          if (props[propName] === null) {
-            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
-          }
-          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
-        }
-        return null;
-      } else {
-        return validate(props, propName, componentName, location, propFullName);
-      }
-    }
-
-    var chainedCheckType = checkType.bind(null, false);
-    chainedCheckType.isRequired = checkType.bind(null, true);
-
-    return chainedCheckType;
-  }
-
-  function createPrimitiveTypeChecker(expectedType) {
-    function validate(props, propName, componentName, location, propFullName, secret) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== expectedType) {
-        // `propValue` being instance of, say, date/regexp, pass the 'object'
-        // check, but we can offer a more precise error message here rather than
-        // 'of type `object`'.
-        var preciseType = getPreciseType(propValue);
-
-        return new PropTypeError(
-          'Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'),
-          {expectedType: expectedType}
-        );
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createAnyTypeChecker() {
-    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
-  }
-
-  function createArrayOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
-      }
-      var propValue = props[propName];
-      if (!Array.isArray(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
-      }
-      for (var i = 0; i < propValue.length; i++) {
-        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
-        if (error instanceof Error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createElementTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!isValidElement(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createElementTypeTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!ReactIs.isValidElementType(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createInstanceTypeChecker(expectedClass) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!(props[propName] instanceof expectedClass)) {
-        var expectedClassName = expectedClass.name || ANONYMOUS;
-        var actualClassName = getClassName(props[propName]);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createEnumTypeChecker(expectedValues) {
-    if (!Array.isArray(expectedValues)) {
-      if (true) {
-        if (arguments.length > 1) {
-          printWarning(
-            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
-            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
-          );
-        } else {
-          printWarning('Invalid argument supplied to oneOf, expected an array.');
-        }
-      }
-      return emptyFunctionThatReturnsNull;
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      for (var i = 0; i < expectedValues.length; i++) {
-        if (is(propValue, expectedValues[i])) {
-          return null;
-        }
-      }
-
-      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
-        var type = getPreciseType(value);
-        if (type === 'symbol') {
-          return String(value);
-        }
-        return value;
-      });
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createObjectOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
-      }
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
-      }
-      for (var key in propValue) {
-        if (has(propValue, key)) {
-          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
-          if (error instanceof Error) {
-            return error;
-          }
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createUnionTypeChecker(arrayOfTypeCheckers) {
-    if (!Array.isArray(arrayOfTypeCheckers)) {
-       true ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : 0;
-      return emptyFunctionThatReturnsNull;
-    }
-
-    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-      var checker = arrayOfTypeCheckers[i];
-      if (typeof checker !== 'function') {
-        printWarning(
-          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
-          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
-        );
-        return emptyFunctionThatReturnsNull;
-      }
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      var expectedTypes = [];
-      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-        var checker = arrayOfTypeCheckers[i];
-        var checkerResult = checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret);
-        if (checkerResult == null) {
-          return null;
-        }
-        if (checkerResult.data && has(checkerResult.data, 'expectedType')) {
-          expectedTypes.push(checkerResult.data.expectedType);
-        }
-      }
-      var expectedTypesMessage = (expectedTypes.length > 0) ? ', expected one of type [' + expectedTypes.join(', ') + ']': '';
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`' + expectedTypesMessage + '.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createNodeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!isNode(props[propName])) {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function invalidValidatorError(componentName, location, propFullName, key, type) {
-    return new PropTypeError(
-      (componentName || 'React class') + ': ' + location + ' type `' + propFullName + '.' + key + '` is invalid; ' +
-      'it must be a function, usually from the `prop-types` package, but received `' + type + '`.'
-    );
-  }
-
-  function createShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      for (var key in shapeTypes) {
-        var checker = shapeTypes[key];
-        if (typeof checker !== 'function') {
-          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createStrictShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      // We need to check all keys in case some are required but missing from props.
-      var allKeys = assign({}, props[propName], shapeTypes);
-      for (var key in allKeys) {
-        var checker = shapeTypes[key];
-        if (has(shapeTypes, key) && typeof checker !== 'function') {
-          return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
-        }
-        if (!checker) {
-          return new PropTypeError(
-            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
-            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-            '\nValid keys: ' + JSON.stringify(Object.keys(shapeTypes), null, '  ')
-          );
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-
-    return createChainableTypeChecker(validate);
-  }
-
-  function isNode(propValue) {
-    switch (typeof propValue) {
-      case 'number':
-      case 'string':
-      case 'undefined':
-        return true;
-      case 'boolean':
-        return !propValue;
-      case 'object':
-        if (Array.isArray(propValue)) {
-          return propValue.every(isNode);
-        }
-        if (propValue === null || isValidElement(propValue)) {
-          return true;
-        }
-
-        var iteratorFn = getIteratorFn(propValue);
-        if (iteratorFn) {
-          var iterator = iteratorFn.call(propValue);
-          var step;
-          if (iteratorFn !== propValue.entries) {
-            while (!(step = iterator.next()).done) {
-              if (!isNode(step.value)) {
-                return false;
-              }
-            }
-          } else {
-            // Iterator will provide entry [k,v] tuples rather than values.
-            while (!(step = iterator.next()).done) {
-              var entry = step.value;
-              if (entry) {
-                if (!isNode(entry[1])) {
-                  return false;
-                }
-              }
-            }
-          }
-        } else {
-          return false;
-        }
-
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  function isSymbol(propType, propValue) {
-    // Native Symbol.
-    if (propType === 'symbol') {
-      return true;
-    }
-
-    // falsy value can't be a Symbol
-    if (!propValue) {
-      return false;
-    }
-
-    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
-    if (propValue['@@toStringTag'] === 'Symbol') {
-      return true;
-    }
-
-    // Fallback for non-spec compliant Symbols which are polyfilled.
-    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
-      return true;
-    }
-
-    return false;
-  }
-
-  // Equivalent of `typeof` but with special handling for array and regexp.
-  function getPropType(propValue) {
-    var propType = typeof propValue;
-    if (Array.isArray(propValue)) {
-      return 'array';
-    }
-    if (propValue instanceof RegExp) {
-      // Old webkits (at least until Android 4.0) return 'function' rather than
-      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
-      // passes PropTypes.object.
-      return 'object';
-    }
-    if (isSymbol(propType, propValue)) {
-      return 'symbol';
-    }
-    return propType;
-  }
-
-  // This handles more types than `getPropType`. Only used for error messages.
-  // See `createPrimitiveTypeChecker`.
-  function getPreciseType(propValue) {
-    if (typeof propValue === 'undefined' || propValue === null) {
-      return '' + propValue;
-    }
-    var propType = getPropType(propValue);
-    if (propType === 'object') {
-      if (propValue instanceof Date) {
-        return 'date';
-      } else if (propValue instanceof RegExp) {
-        return 'regexp';
-      }
-    }
-    return propType;
-  }
-
-  // Returns a string that is postfixed to a warning about an invalid type.
-  // For example, "undefined" or "of type array"
-  function getPostfixForTypeWarning(value) {
-    var type = getPreciseType(value);
-    switch (type) {
-      case 'array':
-      case 'object':
-        return 'an ' + type;
-      case 'boolean':
-      case 'date':
-      case 'regexp':
-        return 'a ' + type;
-      default:
-        return type;
-    }
-  }
-
-  // Returns class name of the object, if any.
-  function getClassName(propValue) {
-    if (!propValue.constructor || !propValue.constructor.name) {
-      return ANONYMOUS;
-    }
-    return propValue.constructor.name;
-  }
-
-  ReactPropTypes.checkPropTypes = checkPropTypes;
-  ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
-  ReactPropTypes.PropTypes = ReactPropTypes;
-
-  return ReactPropTypes;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/prop-types/index.js":
-/*!******************************************!*\
-  !*** ./node_modules/prop-types/index.js ***!
-  \******************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-if (true) {
-  var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "./node_modules/prop-types/factoryWithTypeCheckers.js")(ReactIs.isElement, throwOnDirectAccess);
-} else // removed by dead control flow
-{}
-
-
-/***/ }),
-
-/***/ "./node_modules/prop-types/lib/ReactPropTypesSecret.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
-  \*************************************************************/
-/***/ ((module) => {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-module.exports = ReactPropTypesSecret;
-
-
-/***/ }),
-
-/***/ "./node_modules/prop-types/lib/has.js":
-/*!********************************************!*\
-  !*** ./node_modules/prop-types/lib/has.js ***!
-  \********************************************/
-/***/ ((module) => {
-
-module.exports = Function.call.bind(Object.prototype.hasOwnProperty);
-
-
-/***/ }),
-
 /***/ "./node_modules/react-hook-form/dist/index.esm.mjs":
 /*!*********************************************************!*\
   !*** ./node_modules/react-hook-form/dist/index.esm.mjs ***!
@@ -17292,215 +16396,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/react-is/cjs/react-is.development.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-/** @license React v16.13.1
- * react-is.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-
-
-if (true) {
-  (function() {
-'use strict';
-
-// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-var hasSymbol = typeof Symbol === 'function' && Symbol.for;
-var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
-var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
-var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
-var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
-var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
-var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
-// (unstable) APIs that have been removed. Can we remove the symbols?
-
-var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
-var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
-var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
-var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
-var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
-var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
-var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
-var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
-var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
-var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
-var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
-
-function isValidElementType(type) {
-  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
-}
-
-function typeOf(object) {
-  if (typeof object === 'object' && object !== null) {
-    var $$typeof = object.$$typeof;
-
-    switch ($$typeof) {
-      case REACT_ELEMENT_TYPE:
-        var type = object.type;
-
-        switch (type) {
-          case REACT_ASYNC_MODE_TYPE:
-          case REACT_CONCURRENT_MODE_TYPE:
-          case REACT_FRAGMENT_TYPE:
-          case REACT_PROFILER_TYPE:
-          case REACT_STRICT_MODE_TYPE:
-          case REACT_SUSPENSE_TYPE:
-            return type;
-
-          default:
-            var $$typeofType = type && type.$$typeof;
-
-            switch ($$typeofType) {
-              case REACT_CONTEXT_TYPE:
-              case REACT_FORWARD_REF_TYPE:
-              case REACT_LAZY_TYPE:
-              case REACT_MEMO_TYPE:
-              case REACT_PROVIDER_TYPE:
-                return $$typeofType;
-
-              default:
-                return $$typeof;
-            }
-
-        }
-
-      case REACT_PORTAL_TYPE:
-        return $$typeof;
-    }
-  }
-
-  return undefined;
-} // AsyncMode is deprecated along with isAsyncMode
-
-var AsyncMode = REACT_ASYNC_MODE_TYPE;
-var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
-var ContextConsumer = REACT_CONTEXT_TYPE;
-var ContextProvider = REACT_PROVIDER_TYPE;
-var Element = REACT_ELEMENT_TYPE;
-var ForwardRef = REACT_FORWARD_REF_TYPE;
-var Fragment = REACT_FRAGMENT_TYPE;
-var Lazy = REACT_LAZY_TYPE;
-var Memo = REACT_MEMO_TYPE;
-var Portal = REACT_PORTAL_TYPE;
-var Profiler = REACT_PROFILER_TYPE;
-var StrictMode = REACT_STRICT_MODE_TYPE;
-var Suspense = REACT_SUSPENSE_TYPE;
-var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
-
-function isAsyncMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
-    }
-  }
-
-  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
-}
-function isConcurrentMode(object) {
-  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
-}
-function isContextConsumer(object) {
-  return typeOf(object) === REACT_CONTEXT_TYPE;
-}
-function isContextProvider(object) {
-  return typeOf(object) === REACT_PROVIDER_TYPE;
-}
-function isElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-}
-function isForwardRef(object) {
-  return typeOf(object) === REACT_FORWARD_REF_TYPE;
-}
-function isFragment(object) {
-  return typeOf(object) === REACT_FRAGMENT_TYPE;
-}
-function isLazy(object) {
-  return typeOf(object) === REACT_LAZY_TYPE;
-}
-function isMemo(object) {
-  return typeOf(object) === REACT_MEMO_TYPE;
-}
-function isPortal(object) {
-  return typeOf(object) === REACT_PORTAL_TYPE;
-}
-function isProfiler(object) {
-  return typeOf(object) === REACT_PROFILER_TYPE;
-}
-function isStrictMode(object) {
-  return typeOf(object) === REACT_STRICT_MODE_TYPE;
-}
-function isSuspense(object) {
-  return typeOf(object) === REACT_SUSPENSE_TYPE;
-}
-
-exports.AsyncMode = AsyncMode;
-exports.ConcurrentMode = ConcurrentMode;
-exports.ContextConsumer = ContextConsumer;
-exports.ContextProvider = ContextProvider;
-exports.Element = Element;
-exports.ForwardRef = ForwardRef;
-exports.Fragment = Fragment;
-exports.Lazy = Lazy;
-exports.Memo = Memo;
-exports.Portal = Portal;
-exports.Profiler = Profiler;
-exports.StrictMode = StrictMode;
-exports.Suspense = Suspense;
-exports.isAsyncMode = isAsyncMode;
-exports.isConcurrentMode = isConcurrentMode;
-exports.isContextConsumer = isContextConsumer;
-exports.isContextProvider = isContextProvider;
-exports.isElement = isElement;
-exports.isForwardRef = isForwardRef;
-exports.isFragment = isFragment;
-exports.isLazy = isLazy;
-exports.isMemo = isMemo;
-exports.isPortal = isPortal;
-exports.isProfiler = isProfiler;
-exports.isStrictMode = isStrictMode;
-exports.isSuspense = isSuspense;
-exports.isValidElementType = isValidElementType;
-exports.typeOf = typeOf;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/index.js":
-/*!****************************************!*\
-  !*** ./node_modules/react-is/index.js ***!
-  \****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-if (false) // removed by dead control flow
-{} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/rgb2hex/index.js":
 /*!***************************************!*\
   !*** ./node_modules/rgb2hex/index.js ***!
@@ -19298,8 +18193,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay Border', 'photo-block'),
     values: overlayBorder,
     onValuesChange: function onValuesChange(values) {
+      var overlayBorderValues = _objectSpread({}, overlayBorder);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        overlayBorderValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        overlayBorder: values
+        overlayBorder: overlayBorderValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top Border', 'photo-block'),
@@ -19330,8 +18230,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     values: captionTypography,
     screenSize: deviceType,
     onValuesChange: function onValuesChange(formValues) {
+      var captionTypographyValues = _objectSpread({}, captionTypography);
+      var newValue = formValues[deviceType.toLowerCase()];
+      if (newValue) {
+        captionTypographyValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        captionTypography: formValues
+        captionTypography: captionTypographyValues
       });
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Typography', 'photo-block')
@@ -19379,8 +18284,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     values: captionBaseFontSize,
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
+      var captionBaseFontSizeValues = _objectSpread({}, captionBaseFontSize);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        captionBaseFontSizeValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        captionBaseFontSize: newValues
+        captionBaseFontSize: captionBaseFontSizeValues
       });
     },
     min: 0,
@@ -19591,8 +18501,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Padding', 'photo-block'),
     values: captionPaddingSize,
     onValuesChange: function onValuesChange(values) {
+      var captionPaddingSizeValues = _objectSpread({}, captionPaddingSize);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        captionPaddingSizeValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        captionPaddingSize: values
+        captionPaddingSize: captionPaddingSizeValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top Padding', 'photo-block'),
@@ -19604,8 +18519,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Margin', 'photo-block'),
     values: captionMarginSize,
     onValuesChange: function onValuesChange(values) {
+      var captionMarginSizeValues = _objectSpread({}, captionMarginSize);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        captionMarginSizeValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        captionMarginSize: values
+        captionMarginSize: captionMarginSizeValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top Margin', 'photo-block'),
@@ -19618,8 +18538,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Border', 'photo-block'),
     values: captionBorder,
     onValuesChange: function onValuesChange(values) {
+      var captionBorderValues = _objectSpread({}, captionBorder);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        captionBorderValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        captionBorder: values
+        captionBorder: captionBorderValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top Border', 'photo-block'),
@@ -19631,8 +18556,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Border Radius', 'photo-block'),
     values: captionBorderRadius,
     onValuesChange: function onValuesChange(values) {
+      var captionBorderRadiusValues = _objectSpread({}, captionBorderRadius);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        captionBorderRadiusValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        captionBorderRadius: values
+        captionBorderRadius: captionBorderRadiusValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top-left Radius', 'photo-block'),
@@ -19668,8 +18598,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     screenSize: deviceType,
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
+      var containerHeightValues = _objectSpread({}, containerHeight);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerHeightValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerHeight: newValues
+        containerHeight: containerHeightValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
@@ -19679,8 +18614,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     values: containerMinWidth,
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
+      var containerMinWidthValues = _objectSpread({}, containerMinWidth);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerMinWidthValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerMinWidth: newValues
+        containerMinWidth: containerMinWidthValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
@@ -19691,8 +18631,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     screenSize: deviceType,
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
+      var containerMinHeightValues = _objectSpread({}, containerMinHeight);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerMinHeightValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerMinHeight: newValues
+        containerMinHeight: containerMinHeightValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
@@ -19702,8 +18647,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     values: containerMaxWidth,
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
+      var containerMaxWidthValues = _objectSpread({}, containerMaxWidth);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerMaxWidthValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerMaxWidth: newValues
+        containerMaxWidth: containerMaxWidthValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
@@ -19714,8 +18664,13 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     screenSize: deviceType,
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
+      var containerMaxHeightValues = _objectSpread({}, containerMaxHeight);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerMaxHeightValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerMaxHeight: newValues
+        containerMaxHeight: containerMaxHeightValues
       });
     }
   }))));
@@ -22235,10 +21190,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(rgb2hex__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__);
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -22250,7 +21203,6 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
  *
  * Credit: Forked from @generateblocks
  */
-
 
 
 
@@ -22275,12 +21227,16 @@ var ColorPickerControl = function ColorPickerControl(props) {
     _useState8 = _slicedToArray(_useState7, 2),
     opacity = _useState8[0],
     setOpacity = _useState8[1];
-  var defaultColor = props.defaultColor,
+  var _props$defaultColor = props.defaultColor,
+    defaultColor = _props$defaultColor === void 0 ? 'transparent' : _props$defaultColor,
     defaultColors = props.defaultColors,
-    value = props.value,
+    _props$value = props.value,
+    value = _props$value === void 0 ? '' : _props$value,
     _onChange = props.onChange,
-    onOpacityChange = props.onOpacityChange,
-    label = props.label,
+    _props$onOpacityChang = props.onOpacityChange,
+    onOpacityChange = _props$onOpacityChang === void 0 ? function () {} : _props$onOpacityChang,
+    _props$label = props.label,
+    label = _props$label === void 0 ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Color', 'photo-block') : _props$label,
     _props$alpha = props.alpha,
     alpha = _props$alpha === void 0 ? false : _props$alpha,
     slug = props.slug,
@@ -22365,7 +21321,7 @@ var ColorPickerControl = function ColorPickerControl(props) {
       setIsVisible(false);
     }
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.BaseControl, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
     className: "photo-block-component-color-picker-wrapper"
   }, !!label && !hideLabelFromVision && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("h3", {
     className: "photo-block-color-component-label"
@@ -22375,7 +21331,7 @@ var ColorPickerControl = function ColorPickerControl(props) {
     className: "photo-block-color-picker-area photo-block-component-color-picker-palette"
   }, !isVisible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('components-color-palette__item-wrapper components-circular-option-picker__option-wrapper photo-block-color-picker-area photo-block-component-color-picker-palette', value ? '' : 'components-color-palette__custom-color')
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Tooltip, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Tooltip, {
     text: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Choose Color', 'photo-block')
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("button", {
     type: "button",
@@ -22390,7 +21346,7 @@ var ColorPickerControl = function ColorPickerControl(props) {
     className: "components-color-palette__custom-color-gradient"
   }))))), isVisible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('components-color-palette__item-wrapper components-circular-option-picker__option-wrapper photo-block-color-picker-area photo-block-component-color-picker-palette', value ? '' : 'components-color-palette__custom-color')
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Tooltip, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Tooltip, {
     text: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Choose Color', 'photo-block')
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("button", {
     type: "button",
@@ -22403,13 +21359,13 @@ var ColorPickerControl = function ColorPickerControl(props) {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", {
     className: "components-color-palette__custom-color-gradient"
-  })))), isVisible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Popover, {
+  })))), isVisible && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Popover, {
     className: "photo-block-component-color-picker",
     onClose: toggleClose,
     noArrow: false
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.BaseControl, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
     key: colorKey
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.ColorPicker, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ColorPicker, {
     key: colorKey,
     color: color,
     onChangeComplete: function onChangeComplete(newColor) {
@@ -22421,9 +21377,9 @@ var ColorPickerControl = function ColorPickerControl(props) {
     defaultValue: defaultColor
   })), alpha && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-component-color-opacity"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Tooltip, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Tooltip, {
     text: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Opacity', 'photo-block')
-  }, opacityIcon), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.RangeControl, {
+  }, opacityIcon), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.RangeControl, {
     value: opacity,
     onChange: function onChange(opacityValue) {
       var newColor = _getColor(color, opacityValue);
@@ -22437,9 +21393,9 @@ var ColorPickerControl = function ColorPickerControl(props) {
     step: 0.01,
     initialPosition: 1,
     disabled: color.indexOf('var(') === 0
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.BaseControl, {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
     className: "photo-block-component-color-picker-palette"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.ColorPalette, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ColorPalette, {
     colors: getDefaultColors(),
     value: color,
     onChange: function onChange(newColor) {
@@ -22451,30 +21407,12 @@ var ColorPickerControl = function ColorPickerControl(props) {
     clearable: false
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "components-color-clear-color"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
     onClick: function onClick() {
       _onChange(slug, defaultColor);
       setColor(defaultColor);
     }
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Clear Color', 'photo-block')))))));
-};
-ColorPickerControl.propTypes = {
-  label: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().string),
-  onChange: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().func).isRequired,
-  onOpacityChange: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().func),
-  value: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().string),
-  defaultColor: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().string),
-  alpha: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().bool),
-  hideLabelFromVision: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().bool),
-  defaultColors: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().array).isRequired
-};
-ColorPickerControl.defaultProps = {
-  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Color', 'photo-block'),
-  value: '',
-  defaultColor: 'transparent',
-  alpha: false,
-  hideLabelFromVision: false,
-  onOpacityChange: function onOpacityChange() {}
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ColorPickerControl);
 
@@ -25528,12 +24466,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/GradientPicker/editor.scss");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -25543,7 +24479,6 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 /**
  * Gradient Picker
  */
-
 
 
 
@@ -25561,10 +24496,14 @@ var GradientPickerControl = function GradientPickerControl(props) {
     _useState6 = _slicedToArray(_useState5, 2),
     gradientPickerButtonAnchor = _useState6[0],
     setGradientPickerButtonAnchor = _useState6[1];
-  var label = props.label,
-    onChange = props.onChange,
-    value = props.value,
-    clearable = props.clearable;
+  var _props$label = props.label,
+    label = _props$label === void 0 ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Color', 'photo-block') : _props$label,
+    _props$onChange = props.onChange,
+    onChange = _props$onChange === void 0 ? function () {} : _props$onChange,
+    _props$value = props.value,
+    value = _props$value === void 0 ? '' : _props$value,
+    _props$clearable = props.clearable,
+    clearable = _props$clearable === void 0 ? false : _props$clearable;
 
   /**
    * Get a gradient style object.
@@ -25599,11 +24538,11 @@ var GradientPickerControl = function GradientPickerControl(props) {
       setIsToggled(false);
     }, 500);
   };
-  return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.BaseControl, {
+  return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
     className: "photo-block-component-gradient-picker-wrapper"
-  }, /*#__PURE__*/React.createElement("h3", null, label), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
+  }, /*#__PURE__*/React.createElement("h3", null, label), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
     className: "photo-block-component-gradient-picker",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Open Gradient Picker', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Open Gradient Picker', 'photo-block'),
     style: getGradientStyles(),
     ref: setGradientPickerButtonAnchor,
     onClick: function onClick() {
@@ -25613,31 +24552,19 @@ var GradientPickerControl = function GradientPickerControl(props) {
         setIsVisible(!isVisible);
       }
     }
-  }), true === isVisible && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Popover, {
+  }), true === isVisible && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Popover, {
     className: "photo-block-component-gradient-picker-popover",
     noArrow: false,
     anchor: gradientPickerButtonAnchor,
     placement: "left",
     offset: 8,
     onClose: toggleClose
-  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.GradientPicker, {
+  }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.GradientPicker, {
     value: value,
     onChange: onChange,
     clearable: clearable,
     gradients: []
   })));
-};
-GradientPickerControl.defaultProps = {
-  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Gradient Color', 'photo-block'),
-  clearable: false,
-  value: '',
-  onChange: function onChange() {}
-};
-GradientPickerControl.propTypes = {
-  clearable: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
-  value: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
-  label: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
-  onChange: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func).isRequired
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GradientPickerControl);
 
@@ -26397,14 +25324,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/Notice/editor.scss");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/a11y */ "@wordpress/a11y");
-/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_a11y__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/a11y */ "@wordpress/a11y");
+/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_a11y__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -26416,19 +25341,26 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 
 
-
 var Notice = function Notice(props) {
-  var message = props.message,
-    status = props.status,
-    politeness = props.politeness,
-    icon = props.icon,
-    className = props.className,
-    inline = props.inline,
+  var _props$message = props.message,
+    message = _props$message === void 0 ? '' : _props$message,
+    _props$status = props.status,
+    status = _props$status === void 0 ? 'info' : _props$status,
+    _props$politeness = props.politeness,
+    politeness = _props$politeness === void 0 ? 'polite' : _props$politeness,
+    _props$icon = props.icon,
+    icon = _props$icon === void 0 ? null : _props$icon,
+    _props$className = props.className,
+    className = _props$className === void 0 ? '' : _props$className,
+    _props$inline = props.inline,
+    inline = _props$inline === void 0 ? false : _props$inline,
     children = props.children,
-    animate = props.animate,
-    animationType = props.animationType;
+    _props$animate = props.animate,
+    animate = _props$animate === void 0 ? false : _props$animate,
+    _props$animationType = props.animationType,
+    animationType = _props$animationType === void 0 ? 'fadein' : _props$animationType;
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    (0,_wordpress_a11y__WEBPACK_IMPORTED_MODULE_3__.speak)(message, politeness);
+    (0,_wordpress_a11y__WEBPACK_IMPORTED_MODULE_2__.speak)(message, politeness);
   }, [message, status, politeness]);
   var hasIcon = function hasIcon() {
     return icon !== null;
@@ -26440,12 +25372,12 @@ var Notice = function Notice(props) {
       fill: "#6c757d"
     });
   };
-  var containerClasses = classnames__WEBPACK_IMPORTED_MODULE_5___default()(className, 'photo-block-admin__notice', _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({
+  var containerClasses = classnames__WEBPACK_IMPORTED_MODULE_4___default()(className, 'photo-block-admin__notice', _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({
     'photo-block-admin__notice--photo-block-icon': hasIcon()
   }, "photo-block-admin__notice-type--".concat(status), true), "photo-block-admin__notice-appearance--inline", inline), "photo-block-admin__notice-appearance--block", !inline), "photo-block-admin__notice-animate", animate), "photo-block-admin__notice-animate--".concat(animationType), animate));
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: containerClasses
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Notice, _extends({
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Notice, _extends({
     isDismissible: false,
     spokenMessage: message,
     actions: []
@@ -26454,26 +25386,6 @@ var Notice = function Notice(props) {
   }, getIcon(icon)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-admin__notice-message"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, message, " ", children, " "))));
-};
-Notice.defaultProps = {
-  message: '',
-  status: 'info',
-  politeness: 'polite',
-  icon: null,
-  className: '',
-  inline: false,
-  animate: false,
-  animationType: 'fadein'
-};
-Notice.propTypes = {
-  message: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
-  status: prop_types__WEBPACK_IMPORTED_MODULE_2___default().oneOf(['info', 'warning', 'success', 'error']),
-  politeness: prop_types__WEBPACK_IMPORTED_MODULE_2___default().oneOf(['assertive', 'polite']),
-  icon: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().elementType),
-  className: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  inline: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
-  animate: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
-  animatitionType: prop_types__WEBPACK_IMPORTED_MODULE_2___default().oneOf(['fadein', 'fadeout'])
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Notice);
 
@@ -26506,11 +25418,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editor.scss */ "./src/components/PanelBody/editor.scss");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -26531,18 +25441,18 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-
 var PanelBodyControl = function PanelBodyControl(props) {
   var uniqueId = props.uniqueId,
     _props$initialOpen = props.initialOpen,
     initialOpen = _props$initialOpen === void 0 ? true : _props$initialOpen,
     _props$id = props.id,
-    id = _props$id === void 0 ? '' : _props$id;
+    id = _props$id === void 0 ? '' : _props$id,
+    children = props.children;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(initialOpen),
     _useState2 = _slicedToArray(_useState, 2),
     isPanelOpen = _useState2[0],
     setIsPanelOpen = _useState2[1];
-  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_4__["default"])(),
+  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_3__["default"])(),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 1),
     deviceType = _useDeviceType2[0];
 
@@ -26566,7 +25476,7 @@ var PanelBodyControl = function PanelBodyControl(props) {
       }
     }
   }, [deviceType]);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, _extends({}, props, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, _extends({}, props, {
     onToggle: function onToggle(next) {
       // get local storage value.
       var stored = localStorage.getItem("photo-block-panel-body-".concat(uniqueId));
@@ -26582,17 +25492,7 @@ var PanelBodyControl = function PanelBodyControl(props) {
       localStorage.setItem("photo-block-panel-body-".concat(uniqueId), JSON.stringify(storageValueToSave));
     },
     initialOpen: isPanelOpen
-  }), props.children);
-};
-PanelBodyControl.defaultProps = {
-  uniqueId: '',
-  initialOpen: true,
-  id: ''
-};
-PanelBodyControl.propTypes = {
-  uniqueId: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired,
-  initialOpen: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().bool),
-  id: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string).isRequired
+  }), children);
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PanelBodyControl);
 
@@ -26765,13 +25665,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _components_CustomAttributes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/CustomAttributes */ "./src/components/CustomAttributes/index.js");
-/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
-
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _components_CustomAttributes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/CustomAttributes */ "./src/components/CustomAttributes/index.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 
 
 
@@ -26780,8 +25677,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspectorControl(props) {
-  var attributes = props.attributes,
-    setAttributes = props.setAttributes;
+  var _props$attributes = props.attributes,
+    attributes = _props$attributes === void 0 ? {} : _props$attributes,
+    _props$setAttributes = props.setAttributes,
+    setAttributes = _props$setAttributes === void 0 ? function () {} : _props$setAttributes;
   var htmlAnchor = attributes.htmlAnchor,
     figureCSSClasses = attributes.figureCSSClasses,
     imageCSSClasses = attributes.imageCSSClasses,
@@ -26792,9 +25691,9 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
     hideOnDesktop = attributes.hideOnDesktop;
 
   // Get global style data.
-  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(function (select) {
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(function (select) {
       return {
-        hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_7__["default"]).hasGlobalStyle
+        hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_6__["default"]).hasGlobalStyle
       };
     }),
     hasGlobalStyle = _useSelect.hasGlobalStyle;
@@ -26825,7 +25724,7 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
       });
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Add CSS class(es) directly to the image tag.', 'photo-block')
-  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_components_CustomAttributes__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_components_CustomAttributes__WEBPACK_IMPORTED_MODULE_5__["default"], {
     attributes: attributes,
     setAttributes: setAttributes
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
@@ -26876,13 +25775,6 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
   }))));
   return stylesInspectorControls;
 };
-SidebarImageAdvancedInspectorControl.defaultProps = {
-  attributes: {},
-  setAttributes: function setAttributes() {}
-};
-SidebarImageAdvancedInspectorControl.propTypes = {
-  attributes: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().object)
-};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SidebarImageAdvancedInspectorControl);
 
 /***/ }),
@@ -26925,21 +25817,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__);
 /* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rgb2hex */ "./node_modules/rgb2hex/index.js");
 /* harmony import */ var rgb2hex__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(rgb2hex__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _components_ColorPicker__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/ColorPicker */ "./src/components/ColorPicker/index.js");
-/* harmony import */ var _components_DropShadow__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/DropShadow */ "./src/components/DropShadow/index.js");
-/* harmony import */ var _components_CSSGramButtonGroup__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../components/CSSGramButtonGroup */ "./src/components/CSSGramButtonGroup/index.js");
-/* harmony import */ var _components_AspectRatioResponsive__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../components/AspectRatioResponsive */ "./src/components/AspectRatioResponsive/index.js");
-/* harmony import */ var _components_SizeResponsive__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../components/SizeResponsive */ "./src/components/SizeResponsive/index.js");
-/* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
-/* harmony import */ var _components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../components/DimensionsResponsive */ "./src/components/DimensionsResponsive/index.js");
-/* harmony import */ var _components_BorderResponsive__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../components/BorderResponsive */ "./src/components/BorderResponsive/index.js");
-/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../components/PanelBody */ "./src/components/PanelBody/index.js");
-/* harmony import */ var _GlobalStyles__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../GlobalStyles */ "./src/components/GlobalStyles/index.js");
-/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _components_ColorPicker__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../components/ColorPicker */ "./src/components/ColorPicker/index.js");
+/* harmony import */ var _components_DropShadow__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../components/DropShadow */ "./src/components/DropShadow/index.js");
+/* harmony import */ var _components_CSSGramButtonGroup__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../components/CSSGramButtonGroup */ "./src/components/CSSGramButtonGroup/index.js");
+/* harmony import */ var _components_AspectRatioResponsive__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../components/AspectRatioResponsive */ "./src/components/AspectRatioResponsive/index.js");
+/* harmony import */ var _components_SizeResponsive__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../components/SizeResponsive */ "./src/components/SizeResponsive/index.js");
+/* harmony import */ var _hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../hooks/useDeviceType */ "./src/hooks/useDeviceType.js");
+/* harmony import */ var _components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../components/DimensionsResponsive */ "./src/components/DimensionsResponsive/index.js");
+/* harmony import */ var _components_BorderResponsive__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../components/BorderResponsive */ "./src/components/BorderResponsive/index.js");
+/* harmony import */ var _components_PanelBody__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../components/PanelBody */ "./src/components/PanelBody/index.js");
+/* harmony import */ var _GlobalStyles__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../GlobalStyles */ "./src/components/GlobalStyles/index.js");
+/* harmony import */ var _store_global_styles__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../../store/global-styles */ "./src/store/global-styles.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -26971,7 +25861,6 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-
 var canSavePresets = photoBlockUser.canSavePresets;
 var isRgba = function isRgba(color) {
   return color.startsWith('rgba');
@@ -26982,8 +25871,10 @@ var isRgba = function isRgba(color) {
  */
 var heightUnits = ['px', 'em', 'rem', '%', 'vh'];
 var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) {
-  var attributes = props.attributes,
-    setAttributes = props.setAttributes,
+  var _props$attributes = props.attributes,
+    attributes = _props$attributes === void 0 ? {} : _props$attributes,
+    _props$setAttributes = props.setAttributes,
+    setAttributes = _props$setAttributes === void 0 ? function () {} : _props$setAttributes,
     blockUniqueId = props.blockUniqueId;
   var uniqueId = attributes.uniqueId,
     photoOpacity = attributes.photoOpacity,
@@ -27006,14 +25897,14 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     photoBorderRadius = attributes.photoBorderRadius,
     photoBorder = attributes.photoBorder,
     containerWidth = attributes.containerWidth;
-  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_17__["default"])('Desktop'),
+  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_16__["default"])('Desktop'),
     _useDeviceType2 = _slicedToArray(_useDeviceType, 1),
     deviceType = _useDeviceType2[0];
 
   // Get global style data.
-  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_11__.useSelect)(function (select) {
+  var _useSelect = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_10__.useSelect)(function (select) {
       return {
-        hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_22__["default"]).hasGlobalStyle
+        hasGlobalStyle: select(_store_global_styles__WEBPACK_IMPORTED_MODULE_21__["default"]).hasGlobalStyle
       };
     }),
     hasGlobalStyle = _useSelect.hasGlobalStyle;
@@ -27024,7 +25915,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     }
     return attributes.photoBackgroundColor;
   }, [attributes.photoBackgroundColor]);
-  var stylesInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_20__["default"], {
+  var stylesInspectorControls = /*#__PURE__*/React.createElement(React.Fragment, null, !hasGlobalStyle(globalStyle) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_19__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Image Styles', 'photo-block'),
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_3__["default"], null),
     className: "photo-block__inspector-panel",
@@ -27032,7 +25923,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     uniqueId: uniqueId,
     initialOpen: true,
     scrollAfterOpen: false
-  }, /*#__PURE__*/React.createElement(_components_ColorPicker__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_ColorPicker__WEBPACK_IMPORTED_MODULE_11__["default"], {
     value: photoBackgroundColorRgb,
     key: 'background-color-photo',
     onChange: function onChange(slug, newColorValue) {
@@ -27083,11 +25974,11 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
         })
       });
     }
-  }), photoDropShadow.enabled && /*#__PURE__*/React.createElement(_components_DropShadow__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  }), photoDropShadow.enabled && /*#__PURE__*/React.createElement(_components_DropShadow__WEBPACK_IMPORTED_MODULE_12__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Drop Shadow', 'photo-block'),
     attributes: attributes,
     setAttributes: setAttributes
-  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_20__["default"], {
+  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_19__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('CSS Styles', 'photo-block'),
     className: "photo-block__inspector-panel",
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_7__["default"], null),
@@ -27095,11 +25986,11 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     uniqueId: uniqueId,
     initialOpen: false,
     scrollAfterOpen: false
-  }, /*#__PURE__*/React.createElement(_components_CSSGramButtonGroup__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_CSSGramButtonGroup__WEBPACK_IMPORTED_MODULE_13__["default"], {
     attributes: attributes,
     setAttributes: setAttributes,
     blockUniqueId: blockUniqueId
-  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_20__["default"], {
+  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_19__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Padding, Margin, and Border', 'photo-block'),
     initialOpen: false,
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_5__["default"], null),
@@ -27107,12 +25998,17 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     id: "photo-block__photo-dimensions-styles",
     uniqueId: uniqueId,
     scrollAfterOpen: false
-  }, /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_18__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_17__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Padding', 'photo-block'),
     values: photoPaddingSize,
     onValuesChange: function onValuesChange(values) {
+      var photoPaddingSizeValues = _objectSpread({}, photoPaddingSize);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        photoPaddingSizeValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        photoPaddingSize: values
+        photoPaddingSize: photoPaddingSizeValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Top Padding', 'photo-block'),
@@ -27121,12 +26017,17 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Padding', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Padding', 'photo-block'),
     allowNegatives: false
-  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_18__["default"], {
+  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_17__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Margin', 'photo-block'),
     values: photoMarginSize,
     onValuesChange: function onValuesChange(values) {
+      var photoMarginSizeValues = _objectSpread({}, photoMarginSize);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        photoMarginSizeValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        photoMarginSize: values
+        photoMarginSize: photoMarginSizeValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Top Margin', 'photo-block'),
@@ -27135,12 +26036,17 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Margin', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Margin', 'photo-block'),
     allowNegatives: true
-  }), /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_19__["default"], {
+  }), /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_18__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Border', 'photo-block'),
     values: photoBorder,
     onValuesChange: function onValuesChange(values) {
+      var photoBorderValues = _objectSpread({}, photoBorder);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        photoBorderValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        photoBorder: values
+        photoBorder: photoBorderValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Top Border', 'photo-block'),
@@ -27149,12 +26055,17 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Border', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Border', 'photo-block'),
     allowNegatives: false
-  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_18__["default"], {
+  }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_17__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Border Radius', 'photo-block'),
     values: photoBorderRadius,
     onValuesChange: function onValuesChange(values) {
+      var photoBorderRadiusValues = _objectSpread({}, photoBorderRadius);
+      var newValue = values[deviceType.toLowerCase()];
+      if (newValue) {
+        photoBorderRadiusValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        photoBorderRadius: values
+        photoBorderRadius: photoBorderRadiusValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Top-left Radius', 'photo-block'),
@@ -27164,7 +26075,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Border Radius', 'photo-block'),
     isBorderRadius: true,
     allowNegatives: false
-  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_20__["default"], {
+  })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_19__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Container Sizing', 'photo-block'),
     initialOpen: false,
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_6__["default"], null),
@@ -27237,7 +26148,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
       });
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter a custom object position in CSS format.', 'photo-block')
-  })), /*#__PURE__*/React.createElement(_components_AspectRatioResponsive__WEBPACK_IMPORTED_MODULE_15__["default"], {
+  })), /*#__PURE__*/React.createElement(_components_AspectRatioResponsive__WEBPACK_IMPORTED_MODULE_14__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Aspect Ratio', 'photo-block'),
     screenSize: deviceType,
     values: photoAspectRatio,
@@ -27248,74 +26159,104 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     }
   }), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-width"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_16__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_15__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Width', 'photo-block'),
     values: containerWidth,
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
+      var containerWidthValues = _objectSpread({}, containerWidth);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerWidthValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerWidth: newValues
+        containerWidth: containerWidthValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-height"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_16__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_15__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Height', 'photo-block'),
     values: containerHeight,
     screenSize: deviceType,
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
+      var containerHeightValues = _objectSpread({}, containerHeight);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerHeightValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerHeight: newValues
+        containerHeight: containerHeightValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-min-width"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_16__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_15__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Min Width', 'photo-block'),
     values: containerMinWidth,
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
+      var containerMinWidthValues = _objectSpread({}, containerMinWidth);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerMinWidthValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerMinWidth: newValues
+        containerMinWidth: containerMinWidthValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-min-height"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_16__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_15__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Min Height', 'photo-block'),
     values: containerMinHeight,
     screenSize: deviceType,
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
+      var containerMinHeightValues = _objectSpread({}, containerMinHeight);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerMinHeightValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerMinHeight: newValues
+        containerMinHeight: containerMinHeightValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__container-max-width"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_16__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_15__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Max Width', 'photo-block'),
     values: containerMaxWidth,
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
+      var containerMaxWidthValues = _objectSpread({}, containerMaxWidth);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerMaxWidthValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerMaxWidth: newValues
+        containerMaxWidth: containerMaxWidthValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__containermax-height"
-  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_16__["default"], {
+  }, /*#__PURE__*/React.createElement(_components_SizeResponsive__WEBPACK_IMPORTED_MODULE_15__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Max Height', 'photo-block'),
     values: containerMaxHeight,
     screenSize: deviceType,
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
+      var containerMaxHeightValues = _objectSpread({}, containerMaxHeight);
+      var newValue = newValues[deviceType.toLowerCase()];
+      if (newValue) {
+        containerMaxHeightValues[deviceType.toLowerCase()] = newValue;
+      }
       setAttributes({
-        containerMaxHeight: newValues
+        containerMaxHeight: containerMaxHeightValues
       });
     }
-  })))), canSavePresets && /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_20__["default"], {
+  })))), canSavePresets && /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_19__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Global Styles', 'photo-block'),
     initialOpen: false,
     icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_4__["default"], null),
@@ -27327,17 +26268,10 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Global Styles', 'photo-block'),
     id: "photo-block-global-styles",
     className: "photo-block-global-styles"
-  }, /*#__PURE__*/React.createElement(_GlobalStyles__WEBPACK_IMPORTED_MODULE_21__["default"], _extends({}, props, {
+  }, /*#__PURE__*/React.createElement(_GlobalStyles__WEBPACK_IMPORTED_MODULE_20__["default"], _extends({}, props, {
     globalStyle: props.globalStyle
   }))))));
   return /*#__PURE__*/React.createElement(React.Fragment, null, stylesInspectorControls);
-};
-SidebarImageInspectorControl.defaultProps = {
-  attributes: {},
-  setAttributes: function setAttributes() {}
-};
-SidebarImageInspectorControl.propTypes = {
-  attributes: (prop_types__WEBPACK_IMPORTED_MODULE_10___default().object)
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SidebarImageInspectorControl);
 
@@ -28524,27 +27458,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 /* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
-/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/keycodes */ "@wordpress/keycodes");
-/* harmony import */ var _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/a11y */ "@wordpress/a11y");
-/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_a11y__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
-/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/url */ "@wordpress/url");
-/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/corner-down-left.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/external-link.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file-text.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/search.js");
-/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-x.js");
-/* harmony import */ var _utils_SendCommand__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../utils/SendCommand */ "./src/utils/SendCommand.js");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/keycodes */ "@wordpress/keycodes");
+/* harmony import */ var _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/a11y */ "@wordpress/a11y");
+/* harmony import */ var _wordpress_a11y__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_a11y__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/url */ "@wordpress/url");
+/* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/corner-down-left.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/external-link.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file-text.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/file.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/search.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/circle-x.js");
+/* harmony import */ var _utils_SendCommand__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../utils/SendCommand */ "./src/utils/SendCommand.js");
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
@@ -28559,7 +27491,6 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 /**
  * External dependencies
  */
-
 
 
 
@@ -28587,13 +27518,22 @@ var _URLPicker = function URLPicker(props) {
    * Create Refs for inputs.
    */
   var inputRef = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_1__.createRef)();
-  var restEndPoint = props.restEndpoint;
-  var restNonce = props.restNonce;
+  var restEndPoint = props.restEndpoint,
+    restNonce = props.restNonce,
+    _props$label = props.label,
+    label = _props$label === void 0 ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Page', 'photo-block') : _props$label,
+    _props$onItemSelect = props.onItemSelect,
+    onItemSelect = _props$onItemSelect === void 0 ? function () {} : _props$onItemSelect,
+    _props$hasInititialFo = props.hasInititialFocus,
+    hasInititialFocus = _props$hasInititialFo === void 0 ? false : _props$hasInititialFo,
+    _props$itemIcon = props.itemIcon,
+    itemIcon = _props$itemIcon === void 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null) : _props$itemIcon,
+    savedValue = props.savedValue;
 
   /**
    * Set Unique Instance ID.
    */
-  var generatedUniqueId = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_8__.useInstanceId)(_URLPicker, 'app');
+  var generatedUniqueId = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_7__.useInstanceId)(_URLPicker, 'app');
 
   /**
    * Set State.
@@ -28634,7 +27574,7 @@ var _URLPicker = function URLPicker(props) {
     _useState16 = _slicedToArray(_useState15, 2),
     suggestionValue = _useState16[0],
     setSuggestionValue = _useState16[1];
-  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(props.savedValue),
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(savedValue),
     _useState18 = _slicedToArray(_useState17, 2),
     savedSuggestionValue = _useState18[0],
     setSavedSuggestionValue = _useState18[1];
@@ -28650,7 +27590,7 @@ var _URLPicker = function URLPicker(props) {
   /**
    * Debounceing for delay.
    */
-  var debouncedRequest = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_8__.useDebounce)(function (value) {
+  var debouncedRequest = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_7__.useDebounce)(function (value) {
     updateSuggestions(value);
   }, 200);
 
@@ -28665,7 +27605,7 @@ var _URLPicker = function URLPicker(props) {
       setSuggestionValue(savedSuggestionValue);
       var newSuggestion = {
         permalink: savedSuggestionValue,
-        label: (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_9__.filterURLForDisplay)(savedSuggestionValue),
+        label: (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_8__.filterURLForDisplay)(savedSuggestionValue),
         slug: '',
         value: ''
       };
@@ -28682,10 +27622,10 @@ var _URLPicker = function URLPicker(props) {
    * Set Focus to input.
    */
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if (inputRef.current && props.hasInititialFocus) {
+    if (inputRef.current && hasInititialFocus) {
       inputRef.current.focus();
     }
-  }, [inputRef]);
+  }, [inputRef, hasInititialFocus]);
 
   /**
    * Set the current input.
@@ -28703,7 +27643,7 @@ var _URLPicker = function URLPicker(props) {
    */
   var onFocus = function onFocus(event) {
     event.preventDefault();
-    if (null === selectedSuggestion && '' !== suggestionValue && !(0,_wordpress_url__WEBPACK_IMPORTED_MODULE_9__.isURL)(suggestionValue)) {
+    if (null === selectedSuggestion && '' !== suggestionValue && !(0,_wordpress_url__WEBPACK_IMPORTED_MODULE_8__.isURL)(suggestionValue)) {
       debouncedRequest(suggestionValue);
     }
   };
@@ -28727,7 +27667,7 @@ var _URLPicker = function URLPicker(props) {
       switch (event.keyCode) {
         // When UP is pressed, if the caret is at the start of the text, move it to the 0
         // position.
-        case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__.UP:
+        case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__.UP:
           {
             if (0 !== event.target.selectionStart) {
               event.preventDefault();
@@ -28739,7 +27679,7 @@ var _URLPicker = function URLPicker(props) {
           }
         // When DOWN is pressed, if the caret is not at the end of the text, move it to the
         // last position.
-        case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__.DOWN:
+        case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__.DOWN:
           {
             if (suggestionValue !== event.target.selectionStart) {
               event.preventDefault();
@@ -28751,7 +27691,7 @@ var _URLPicker = function URLPicker(props) {
           }
 
         // Submitting while loading should trigger onSubmit.
-        case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__.ENTER:
+        case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__.ENTER:
           {
             event.preventDefault();
             debouncedRequest(event.target.value);
@@ -28761,7 +27701,7 @@ var _URLPicker = function URLPicker(props) {
       return null;
     }
     switch (event.keyCode) {
-      case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__.UP:
+      case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__.UP:
         {
           event.preventDefault();
           var previousIndex = !selectedSuggestionIndex ? suggestions.length - 1 : selectedSuggestionIndex - 1;
@@ -28769,7 +27709,7 @@ var _URLPicker = function URLPicker(props) {
           setSelectedSuggestion(suggestions[previousIndex].value);
           break;
         }
-      case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__.DOWN:
+      case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__.DOWN:
         {
           event.preventDefault();
           if (!showSuggestions && suggestions.length > 0) {
@@ -28783,20 +27723,20 @@ var _URLPicker = function URLPicker(props) {
           setSelectedSuggestion(suggestions[nextIndex].value);
           break;
         }
-      case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__.TAB:
+      case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__.TAB:
         {
           if (selectedSuggestion !== null) {
             // Announce a link has been selected when tabbing away from the input field.
-            (0,_wordpress_a11y__WEBPACK_IMPORTED_MODULE_6__.speak)((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Link selected.', 'photo-block'));
+            (0,_wordpress_a11y__WEBPACK_IMPORTED_MODULE_5__.speak)((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Link selected.', 'photo-block'));
           }
           break;
         }
-      case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_5__.ENTER:
+      case _wordpress_keycodes__WEBPACK_IMPORTED_MODULE_4__.ENTER:
         {
           event.preventDefault();
           setShowSuggestions(false);
           if (selectedSuggestion !== null) {
-            props.onItemSelect(event, getSuggestion(selectedSuggestion));
+            onItemSelect(event, getSuggestion(selectedSuggestion));
             inputRef.current.focus();
           }
           break;
@@ -28839,7 +27779,7 @@ var _URLPicker = function URLPicker(props) {
     value = value.trim();
 
     // Return early if value is a URL.
-    if ((0,_wordpress_url__WEBPACK_IMPORTED_MODULE_9__.isURL)(value)) {
+    if ((0,_wordpress_url__WEBPACK_IMPORTED_MODULE_8__.isURL)(value)) {
       setSuggestions([]);
       setShowSuggestions(false);
       setLoading(false);
@@ -28875,7 +27815,7 @@ var _URLPicker = function URLPicker(props) {
             _context.p = 0;
             setLoading(true);
             _context.n = 1;
-            return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_16__["default"])(restNonce, {
+            return (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_15__["default"])(restNonce, {
               signal: abortController.signal,
               search: encodeURIComponent(value)
             }, restEndPoint, 'POST').then(function (response) {
@@ -28910,20 +27850,20 @@ var _URLPicker = function URLPicker(props) {
     className: "photo-block-pub-url-input__suggestion-item"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", {
     className: "photo-block-pub-url-input__suggestion-label"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
     variant: "link",
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null),
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null),
     iconSize: 18,
     iconPosition: "right",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Open in new tab', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Open in new tab', 'photo-block'),
     href: currentSuggestion.permalink,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_9__.filterURLForDisplay)(currentSuggestion.permalink))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
+  }, (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_8__.filterURLForDisplay)(currentSuggestion.permalink))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
     variant: "secondary",
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_15__["default"], null),
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_14__["default"], null),
     iconSize: 18,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Remove Current Selection', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Remove Current Selection', 'photo-block'),
     onClick: function onClick() {
       setCurrentSuggestion(null);
     }
@@ -28931,40 +27871,40 @@ var _URLPicker = function URLPicker(props) {
     className: "photo-block-pub-url-search-wrapper"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("input", {
     type: "text",
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Paste in URL or search', 'photo-block'),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Paste in URL or search', 'photo-block'),
     id: uniqueInstanceId,
     className: "photo-block-pub-url-input__input",
     value: suggestionValue,
     onChange: onChange,
     onFocus: onFocus,
     onKeyDown: onKeyDown,
-    "aria-label": props.label ? undefined : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Page', 'photo-block'),
+    "aria-label": label ? undefined : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Page', 'photo-block'),
     "aria-autocomplete": "list",
     ref: inputRef
   }), loading && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-pub-url-input__loading"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Spinner, null)), !loading && !(0,_wordpress_url__WEBPACK_IMPORTED_MODULE_9__.isURL)(suggestionValue) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Spinner, null)), !loading && !(0,_wordpress_url__WEBPACK_IMPORTED_MODULE_8__.isURL)(suggestionValue) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
     className: "photo-block-pub-url-input__search-button",
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_14__["default"], null),
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_13__["default"], null),
     iconSize: 18,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Search for a Page', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Search for a Page', 'photo-block'),
     onClick: function onClick() {
       setShowSuggestions(true);
     }
-  })), !loading && (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_9__.isURL)(suggestionValue) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
+  })), !loading && (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_8__.isURL)(suggestionValue) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
     className: "photo-block-pub-url-input__apply-button",
-    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null),
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_9__["default"], null),
     iconSize: 18,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Apply Link', 'photo-block'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Apply Link', 'photo-block'),
     onClick: function onClick(e) {
       var newSuggestion = {
         permalink: suggestionValue,
-        label: (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_9__.filterURLForDisplay)(suggestionValue),
+        label: (0,_wordpress_url__WEBPACK_IMPORTED_MODULE_8__.filterURLForDisplay)(suggestionValue),
         slug: '',
         value: ''
       };
       setCurrentSuggestion(newSuggestion);
-      props.onItemSelect(e, suggestionValue);
+      onItemSelect(e, suggestionValue);
     }
   }))))), showSuggestions && !!suggestions.length && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-suggestions-wrapper"
@@ -28977,7 +27917,7 @@ var _URLPicker = function URLPicker(props) {
     var suggestionClass = classnames__WEBPACK_IMPORTED_MODULE_2___default()('photo-block-url-input__suggestion', {
       'is-selected': suggestion.value === selectedSuggestion
     });
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_7__.Button, {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
       key: suggestionId,
       id: suggestionId,
       value: suggestion.value,
@@ -28989,9 +27929,9 @@ var _URLPicker = function URLPicker(props) {
         setSelectedSuggestionIndex(index);
         setCurrentSuggestion(suggestion);
         setShowSuggestions(false);
-        props.onItemSelect(e, suggestion.permalink);
+        onItemSelect(e, suggestion.permalink);
       },
-      icon: 'post' === suggestion.type ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"], null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_13__["default"], null),
+      icon: 'post' === suggestion.type ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_12__["default"], null),
       iconSize: 2,
       iconPosition: "left"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", {
@@ -29002,20 +27942,6 @@ var _URLPicker = function URLPicker(props) {
       className: "photo-block-search-item-info"
     }, suggestion.permalink)));
   }))));
-};
-_URLPicker.defaultProps = {
-  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Page', 'photo-block'),
-  onItemSelect: function onItemSelect() {},
-  hasInititialFocus: false,
-  itemIcon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null)
-};
-_URLPicker.propTypes = {
-  restEndpoint: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string).isRequired,
-  restNonce: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string).isRequired,
-  label: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string).isRequired,
-  onItemSelect: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func).isRequired,
-  hasInititialFocus: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().bool).isRequired,
-  itemIcon: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().element).isRequired
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_URLPicker);
 

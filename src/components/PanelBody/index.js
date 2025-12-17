@@ -3,12 +3,16 @@
  */
 import './editor.scss';
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { PanelBody } from '@wordpress/components';
 import useDeviceType from '../../hooks/useDeviceType';
 
 const PanelBodyControl = ( props ) => {
-	const { uniqueId, initialOpen = true, id = '' } = props;
+	const {
+		uniqueId,
+		initialOpen = true,
+		id = '',
+		children,
+	} = props;
 
 	const [ isPanelOpen, setIsPanelOpen ] = useState( initialOpen );
 
@@ -60,21 +64,9 @@ const PanelBodyControl = ( props ) => {
 			} }
 			initialOpen={ isPanelOpen }
 		>
-			{ props.children }
+			{ children }
 		</PanelBody>
 	);
-};
-
-PanelBodyControl.defaultProps = {
-	uniqueId: '',
-	initialOpen: true,
-	id: '',
-};
-
-PanelBodyControl.propTypes = {
-	uniqueId: PropTypes.string.isRequired,
-	initialOpen: PropTypes.bool,
-	id: PropTypes.string.isRequired,
 };
 
 export default PanelBodyControl;

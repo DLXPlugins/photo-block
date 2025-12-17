@@ -14,14 +14,22 @@ import {
 	FileText,
 	File,
 } from 'lucide-react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useSelect } from '@wordpress/data';
 import AdvancedSelectControl from '../../components/AdvancedSelect';
 import { blockStore } from '../../store';
 
 export const MetaFieldControl = ( props ) => {
-	const { setAttributes, attributeName, endpoint, params, label, placeholder, currentSuggestion, acceptDirectInput } = props;
+	const {
+		setAttributes,
+		attributeName,
+		endpoint = '/search/custom-fields',
+		params,
+		label = __( 'Select a Custom Field', 'photo-block' ),
+		placeholder = __( 'Search by ID or title', 'photo-block' ),
+		currentSuggestion,
+		acceptDirectInput = true,
+	} = props;
 
 	const [ currentMetaFieldSuggestion, setCurrentMetaFieldSuggestion ] = useState( currentSuggestion );
 
@@ -435,20 +443,4 @@ export const DataSelect = ( props ) => {
 			}
 		</>
 	);
-};
-
-MetaFieldControl.propTypes = {
-	setAttributes: PropTypes.func.isRequired,
-	label: PropTypes.string.isRequired,
-	placeholder: PropTypes.string,
-	acceptDirectInput: PropTypes.bool,
-	attributeName: PropTypes.string.isRequired,
-	endpoint: PropTypes.string,
-};
-
-MetaFieldControl.defaultProps = {
-	label: __( 'Select a Custom Field', 'photo-block' ),
-	placeholder: __( 'Search by ID or title', 'photo-block' ),
-	acceptDirectInput: true,
-	endpoint: '/search/custom-fields',
 };

@@ -4,7 +4,6 @@ import './editor.scss';
  */
 import React, { useState, useEffect, createRef, useCallback } from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
 /**
  * WordPress dependencies
@@ -45,8 +44,15 @@ const URLPicker = ( props ) => {
 	 */
 	const inputRef = createRef();
 
-	const restEndPoint = props.restEndpoint;
-	const restNonce = props.restNonce;
+	const {
+		restEndpoint: restEndPoint,
+		restNonce,
+		label = __( 'Page', 'photo-block' ),
+		onItemSelect = () => {},
+		hasInititialFocus = false,
+		itemIcon = <></>,
+		savedValue,
+	} = props;
 
 	/**
 	 * Set Unique Instance ID.
@@ -66,7 +72,7 @@ const URLPicker = ( props ) => {
 	const [ selectedSuggestionIndex, setSelectedSuggestionIndex ] = useState( null );
 	const [ suggestionListboxId, setSuggestionListboxId ] = useState( '' );
 	const [ suggestionValue, setSuggestionValue ] = useState( '' );
-	const [ savedSuggestionValue, setSavedSuggestionValue ] = useState( props.savedValue );
+	const [ savedSuggestionValue, setSavedSuggestionValue ] = useState( savedValue );
 	const [ uniqueInstanceId, setUniqueInstanceId ] = useState(
 		`url-input-control-${ generatedUniqueId }`
 	);
@@ -107,10 +113,10 @@ const URLPicker = ( props ) => {
 	 * Set Focus to input.
 	 */
 	useEffect( () => {
-		if ( inputRef.current && props.hasInititialFocus ) {
+		if ( inputRef.current && hasInititialFocus ) {
 			inputRef.current.focus();
 		}
-	}, [ inputRef ] );
+	}, [ inputRef, hasInititialFocus ] );
 
 	/**
 	 * Set the current input.
@@ -227,7 +233,7 @@ const URLPicker = ( props ) => {
 				event.preventDefault();
 				setShowSuggestions( false );
 				if ( selectedSuggestion !== null ) {
-					props.onItemSelect( event, getSuggestion( selectedSuggestion ) );
+					onItemSelect( event, getSuggestion( selectedSuggestion ) );
 					inputRef.current.focus();
 				}
 
@@ -371,7 +377,7 @@ const URLPicker = ( props ) => {
 								onFocus={ onFocus }
 								onKeyDown={ onKeyDown }
 								aria-label={
-									props.label
+									label
 										? undefined
 										: __( 'Page', 'photo-block' )
 								}
@@ -416,7 +422,7 @@ const URLPicker = ( props ) => {
 													value: '',
 												};
 												setCurrentSuggestion( newSuggestion );
-												props.onItemSelect( e, suggestionValue );
+												onItemSelect( e, suggestionValue );
 											} }
 										/>
 									</>
@@ -458,7 +464,7 @@ const URLPicker = ( props ) => {
 										setSelectedSuggestionIndex( index );
 										setCurrentSuggestion( suggestion );
 										setShowSuggestions( false );
-										props.onItemSelect( e, suggestion.permalink );
+										onItemSelect( e, suggestion.permalink );
 									} }
 									icon={ 'post' === suggestion.type ? <FileText /> : <File /> }
 									iconSize={ 2 }
@@ -476,22 +482,6 @@ const URLPicker = ( props ) => {
 			) }
 		</div>
 	);
-};
-
-URLPicker.defaultProps = {
-	label: __( 'Page', 'photo-block' ),
-	onItemSelect: () => {},
-	hasInititialFocus: false,
-	itemIcon: <></>,
-};
-
-URLPicker.propTypes = {
-	restEndpoint: PropTypes.string.isRequired,
-	restNonce: PropTypes.string.isRequired,
-	label: PropTypes.string.isRequired,
-	onItemSelect: PropTypes.func.isRequired,
-	hasInititialFocus: PropTypes.bool.isRequired,
-	itemIcon: PropTypes.element.isRequired,
 };
 
 export default URLPicker;
