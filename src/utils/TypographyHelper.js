@@ -134,6 +134,9 @@ export function buildDimensionsCSS( props, screenSize ) {
  * @return {string} The color in hex, rgba, or CSS var format.
  */
 const getColor = ( colorValue, opacityValue = 1 ) => {
+	if ( ! colorValue ) {
+		return '';
+	}
 	// Test for CSS var values in color value.
 	if ( colorValue.indexOf( 'var(' ) === 0 ) {
 		return colorValue;

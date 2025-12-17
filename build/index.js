@@ -19822,6 +19822,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     value: 'rem'
   }];
   var getColor = function getColor(colorValue) {
+    if (!colorValue) {
+      return '';
+    }
     if (isRgba(colorValue)) {
       var hexParams = rgb2hex__WEBPACK_IMPORTED_MODULE_17___default()(colorValue);
       return hexParams.hex;
@@ -33216,6 +33219,9 @@ function buildDimensionsCSS(props, screenSize) {
  */
 var getColor = function getColor(colorValue) {
   var opacityValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  if (!colorValue) {
+    return '';
+  }
   // Test for CSS var values in color value.
   if (colorValue.indexOf('var(') === 0) {
     return colorValue;

@@ -82,6 +82,9 @@ const BorderResponsiveControl = ( props ) => {
 		];
 
 	const getColor = ( colorValue ) => {
+		if ( ! colorValue ) {
+			return '';
+		}
 		if ( isRgba( colorValue ) ) {
 			const hexParams = rgb2hex( colorValue );
 			return hexParams.hex;
