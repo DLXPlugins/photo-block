@@ -190,10 +190,7 @@ const SidebarImageInspectorControl = ( props ) => {
 							values={ photoPaddingSize }
 							onValuesChange={ ( values ) => {
 								const photoPaddingSizeValues = { ...photoPaddingSize };
-								const newValue = values[ deviceType.toLowerCase() ];
-								if ( newValue ) {
-									photoPaddingSizeValues[ deviceType.toLowerCase() ] = newValue;
-								}
+								photoPaddingSizeValues[ deviceType ] = values[ deviceType ];
 								setAttributes( { photoPaddingSize: photoPaddingSizeValues } );
 							} }
 							labelTop={ __( 'Top Padding', 'photo-block' ) }
@@ -202,16 +199,14 @@ const SidebarImageInspectorControl = ( props ) => {
 							labelLeft={ __( 'Left Padding', 'photo-block' ) }
 							labelAll={ __( 'Change Padding', 'photo-block' ) }
 							allowNegatives={ false }
+							screenSize={ deviceType }
 						/>
 						<DimensionsResponsiveControl
 							label={ __( 'Photo Margin', 'photo-block' ) }
 							values={ photoMarginSize }
 							onValuesChange={ ( values ) => {
 								const photoMarginSizeValues = { ...photoMarginSize };
-								const newValue = values[ deviceType.toLowerCase() ];
-								if ( newValue ) {
-									photoMarginSizeValues[ deviceType.toLowerCase() ] = newValue;
-								}
+								photoMarginSizeValues[ deviceType ] = values[ deviceType ];
 								setAttributes( { photoMarginSize: photoMarginSizeValues } );
 							} }
 							labelTop={ __( 'Top Margin', 'photo-block' ) }
@@ -220,16 +215,14 @@ const SidebarImageInspectorControl = ( props ) => {
 							labelLeft={ __( 'Left Margin', 'photo-block' ) }
 							labelAll={ __( 'Change Margin', 'photo-block' ) }
 							allowNegatives={ true }
+							screenSize={ deviceType }
 						/>
 						<BorderResponsiveControl
 							label={ __( 'Photo Border', 'photo-block' ) }
 							values={ photoBorder }
 							onValuesChange={ ( values ) => {
 								const photoBorderValues = { ...photoBorder };
-								const newValue = values[ deviceType.toLowerCase() ];
-								if ( newValue ) {
-									photoBorderValues[ deviceType.toLowerCase() ] = newValue;
-								}
+								photoBorderValues[ deviceType ] = values[ deviceType ];
 								setAttributes( { photoBorder: photoBorderValues } );
 							} }
 							labelTop={ __( 'Top Border', 'photo-block' ) }
@@ -238,16 +231,14 @@ const SidebarImageInspectorControl = ( props ) => {
 							labelLeft={ __( 'Left Border', 'photo-block' ) }
 							labelAll={ __( 'Change Border', 'photo-block' ) }
 							allowNegatives={ false }
+							screenSize={ deviceType }
 						/>
 						<DimensionsResponsiveControl
 							label={ __( 'Photo Border Radius', 'photo-block' ) }
 							values={ photoBorderRadius }
 							onValuesChange={ ( values ) => {
 								const photoBorderRadiusValues = { ...photoBorderRadius };
-								const newValue = values[ deviceType.toLowerCase() ];
-								if ( newValue ) {
-									photoBorderRadiusValues[ deviceType.toLowerCase() ] = newValue;
-								}
+								photoBorderRadiusValues[ deviceType ] = values[ deviceType ];
 								setAttributes( { photoBorderRadius: photoBorderRadiusValues } );
 							} }
 							labelTop={ __( 'Top-left Radius', 'photo-block' ) }
@@ -257,6 +248,7 @@ const SidebarImageInspectorControl = ( props ) => {
 							labelAll={ __( 'Change Border Radius', 'photo-block' ) }
 							isBorderRadius={ true }
 							allowNegatives={ false }
+							screenSize={ deviceType }
 						/>
 
 					</PanelBodyControl>
@@ -345,10 +337,7 @@ const SidebarImageInspectorControl = ( props ) => {
 								screenSize={ deviceType }
 								onValuesChange={ ( newValues ) => {
 									const containerWidthValues = { ...containerWidth };
-									const newValue = newValues[ deviceType.toLowerCase() ];
-									if ( newValue ) {
-										containerWidthValues[ deviceType.toLowerCase() ] = newValue;
-									}
+									containerWidthValues[ deviceType ] = newValues[ deviceType ];
 									setAttributes( { containerWidth: containerWidthValues } );
 								} }
 							/>
@@ -361,10 +350,7 @@ const SidebarImageInspectorControl = ( props ) => {
 								units={ heightUnits }
 								onValuesChange={ ( newValues ) => {
 									const containerHeightValues = { ...containerHeight };
-									const newValue = newValues[ deviceType.toLowerCase() ];
-									if ( newValue ) {
-										containerHeightValues[ deviceType.toLowerCase() ] = newValue;
-									}
+									containerHeightValues[ deviceType ] = newValues[ deviceType ];
 									setAttributes( { containerHeight: containerHeightValues } );
 								} }
 							/>
@@ -376,10 +362,7 @@ const SidebarImageInspectorControl = ( props ) => {
 								screenSize={ deviceType }
 								onValuesChange={ ( newValues ) => {
 									const containerMinWidthValues = { ...containerMinWidth };
-									const newValue = newValues[ deviceType.toLowerCase() ];
-									if ( newValue ) {
-										containerMinWidthValues[ deviceType.toLowerCase() ] = newValue;
-									}
+									containerMinWidthValues[ deviceType ] = newValues[ deviceType ];
 									setAttributes( { containerMinWidth: containerMinWidthValues } );
 								} }
 							/>
@@ -392,10 +375,7 @@ const SidebarImageInspectorControl = ( props ) => {
 								units={ heightUnits }
 								onValuesChange={ ( newValues ) => {
 									const containerMinHeightValues = { ...containerMinHeight };
-									const newValue = newValues[ deviceType.toLowerCase() ];
-									if ( newValue ) {
-										containerMinHeightValues[ deviceType.toLowerCase() ] = newValue;
-									}
+									containerMinHeightValues[ deviceType ] = newValues[ deviceType ];
 									setAttributes( { containerMinHeight: containerMinHeightValues } );
 								} }
 							/>
@@ -407,10 +387,7 @@ const SidebarImageInspectorControl = ( props ) => {
 								screenSize={ deviceType }
 								onValuesChange={ ( newValues ) => {
 									const containerMaxWidthValues = { ...containerMaxWidth };
-									const newValue = newValues[ deviceType.toLowerCase() ];
-									if ( newValue ) {
-										containerMaxWidthValues[ deviceType.toLowerCase() ] = newValue;
-									}
+									containerMaxWidthValues[ deviceType ] = newValues[ deviceType ];
 									setAttributes( { containerMaxWidth: containerMaxWidthValues } );
 								} }
 							/>
@@ -423,10 +400,7 @@ const SidebarImageInspectorControl = ( props ) => {
 								units={ heightUnits }
 								onValuesChange={ ( newValues ) => {
 									const containerMaxHeightValues = { ...containerMaxHeight };
-									const newValue = newValues[ deviceType.toLowerCase() ];
-									if ( newValue ) {
-										containerMaxHeightValues[ deviceType.toLowerCase() ] = newValue;
-									}
+									containerMaxHeightValues[ deviceType ] = newValues[ deviceType ];
 									setAttributes( { containerMaxHeight: containerMaxHeightValues } );
 								} }
 							/>

@@ -1,7 +1,7 @@
 import './editor.scss';
 
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import {
 	Button,
 	BaseControl,
@@ -11,8 +11,7 @@ import {
 } from '@wordpress/components';
 import { Link, Unlink } from 'lucide-react';
 import classnames from 'classnames';
-import { useForm, Controller, useWatch } from 'react-hook-form';
-
+import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 import useDeviceType from '../../hooks/useDeviceType';
 import HeadingIconResponsive from '../HeadingIconResponsive';
 import {
@@ -34,7 +33,7 @@ const DimensionsResponsiveControl = ( props ) => {
 		isBorderRadius = false,
 		allowNegatives = false,
 	} = props;
-	const [ deviceType ] = useDeviceType( 'Desktop' );
+	const [ deviceType, setScreenSize ] = useState( props.screenSize );
 	const {
 		onUnitChange,
 		splitValues,
@@ -53,53 +52,72 @@ const DimensionsResponsiveControl = ( props ) => {
 			{ label: 'VW', value: 'vw' },
 		];
 
-	const getDefaultValues = () => {
+	const getDefaultValues = ( newProps ) => {
 		return {
 			mobile: {
-				top: props.values.mobile.top,
-				right: props.values.mobile.right,
-				bottom: props.values.mobile.bottom,
-				left: props.values.mobile.left,
-				topUnit: props.values.mobile.topUnit,
-				rightUnit: props.values.mobile.rightUnit,
-				bottomUnit: props.values.mobile.bottomUnit,
-				leftUnit: props.values.mobile.leftUnit,
-				unitSync: props.values.mobile.unitSync,
+				top: newProps.values.mobile.top,
+				right: newProps.values.mobile.right,
+				bottom: newProps.values.mobile.bottom,
+				left: newProps.values.mobile.left,
+				topUnit: newProps.values.mobile.topUnit,
+				rightUnit: newProps.values.mobile.rightUnit,
+				bottomUnit: newProps.values.mobile.bottomUnit,
+				leftUnit: newProps.values.mobile.leftUnit,
+				unitSync: newProps.values.mobile.unitSync,
 			},
 			tablet: {
-				top: props.values.tablet.top,
-				right: props.values.tablet.right,
-				bottom: props.values.tablet.bottom,
-				left: props.values.tablet.left,
-				topUnit: props.values.tablet.topUnit,
-				rightUnit: props.values.tablet.rightUnit,
-				bottomUnit: props.values.tablet.bottomUnit,
-				leftUnit: props.values.tablet.leftUnit,
-				unitSync: props.values.tablet.unitSync,
+				top: newProps.values.tablet.top,
+				right: newProps.values.tablet.right,
+				bottom: newProps.values.tablet.bottom,
+				left: newProps.values.tablet.left,
+				topUnit: newProps.values.tablet.topUnit,
+				rightUnit: newProps.values.tablet.rightUnit,
+				bottomUnit: newProps.values.tablet.bottomUnit,
+				leftUnit: newProps.values.tablet.leftUnit,
+				unitSync: newProps.values.tablet.unitSync,
 			},
 			desktop: {
-				top: props.values.desktop.top,
-				right: props.values.desktop.right,
-				bottom: props.values.desktop.bottom,
-				left: props.values.desktop.left,
-				topUnit: props.values.desktop.topUnit,
-				rightUnit: props.values.desktop.rightUnit,
-				bottomUnit: props.values.desktop.bottomUnit,
-				leftUnit: props.values.desktop.leftUnit,
-				unitSync: props.values.desktop.unitSync,
+				top: newProps.values.desktop.top,
+				right: newProps.values.desktop.right,
+				bottom: newProps.values.desktop.bottom,
+				left: newProps.values.desktop.left,
+				topUnit: newProps.values.desktop.topUnit,
+				rightUnit: newProps.values.desktop.rightUnit,
+				bottomUnit: newProps.values.desktop.bottomUnit,
+				leftUnit: newProps.values.desktop.leftUnit,
+				unitSync: newProps.values.desktop.unitSync,
 			},
 		};
 	};
 
-	const { control, setValue, getValues } = useForm( {
-		defaultValues: getDefaultValues(),
+	const { control, setValue, getValues, reset } = useForm( {
+		defaultValues: getDefaultValues( props ),
 	} );
 
 	const formValues = useWatch( { control } );
 
+	const { isDirty } = useFormState( { control } );
+
 	useEffect( () => {
-		onValuesChange( formValues );
+		if ( isDirty ) {
+			onValuesChange( formValues );
+			reset( formValues, {
+				keepDirty: false,
+			} );
+		}
 	}, [ formValues ] );
+
+	useEffect( () => {
+		setScreenSize( props.screenSize );
+		const newDefaultValues = getDefaultValues( props );
+		setValue(
+			props.screenSize.toLowerCase(),
+			newDefaultValues[ props.screenSize.toLowerCase() ],
+			{
+				shouldDirty: false,
+			}
+		);
+	}, [ props.screenSize ] );
 
 	/**
 	 * Change the all values in parent.
@@ -145,7 +163,7 @@ const DimensionsResponsiveControl = ( props ) => {
 		currentValues.rightUnit = newUnit;
 		currentValues.bottomUnit = newUnit;
 		currentValues.leftUnit = newUnit;
-		setValue( deviceType, currentValues );
+		setValue( deviceType, currentValues, { shouldDirty: true } );
 	};
 
 	const onDimensionChange = ( value ) => {
@@ -161,7 +179,7 @@ const DimensionsResponsiveControl = ( props ) => {
 		const sync = geHierarchicalPlaceholderValue(
 			values,
 			deviceType,
-			getValues( deviceType ).unitSync,
+			formValues[ deviceType ].unitSync,
 			'unitSync'
 		);
 		return sync;
@@ -377,7 +395,7 @@ const DimensionsResponsiveControl = ( props ) => {
 								step={ getRangeControlStep( 'topUnit' ) }
 								onChange={ ( newValue ) => {
 									onChange( newValue );
-									onDimensionChange( newValue );
+									onDimensionChange( newValue + getHierarchicalValueUnit( props.values, deviceType, getValues( `${ deviceType }.topUnit` ), 'topUnit' ) );
 								} }
 								withInputField={ false }
 								hideLabelFromVision={ true }
@@ -391,7 +409,7 @@ const DimensionsResponsiveControl = ( props ) => {
 							// Disable syncing.
 							const oldValues = getValues( deviceType );
 							oldValues.unitSync = false;
-							setValue( deviceType, oldValues );
+							setValue( deviceType, oldValues, { shouldDirty: false } );
 							syncUnits(
 								getHierarchicalValueUnit(
 									props.values,
@@ -455,7 +473,12 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 					{
-						getValues( `${ deviceType }.topUnit` ) && (
+						'' !== getHierarchicalValueUnit(
+							props.values,
+							deviceType,
+							getValues( `${ deviceType }.topUnit` ),
+							'topUnit'
+						) && (
 							<Controller
 								name={ `${ deviceType }.topUnit` }
 								control={ control }
@@ -508,7 +531,12 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 					{
-						getValues( `${ deviceType }.rightUnit` ) && (
+						'' !== getHierarchicalValueUnit(
+							props.values,
+							deviceType,
+							getValues( `${ deviceType }.rightUnit` ),
+							'rightUnit'
+						) && (
 							<Controller
 								name={ `${ deviceType }.rightUnit` }
 								control={ control }
@@ -561,7 +589,12 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 					{
-						getValues( `${ deviceType }.bottomUnit` ) && (
+						'' !== getHierarchicalValueUnit(
+							props.values,
+							deviceType,
+							getValues( `${ deviceType }.bottomUnit` ),
+							'bottomUnit'
+						) && (
 							<Controller
 								name={ `${ deviceType }.bottomUnit` }
 								control={ control }
@@ -614,7 +647,12 @@ const DimensionsResponsiveControl = ( props ) => {
 						) }
 					/>
 					{
-						getValues( `${ deviceType }.leftUnit` ) && (
+						'' !== getHierarchicalValueUnit(
+							props.values,
+							deviceType,
+							getValues( `${ deviceType }.leftUnit` ),
+							'leftUnit'
+						) && (
 							<Controller
 								name={ `${ deviceType }.leftUnit` }
 								control={ control }
@@ -645,7 +683,7 @@ const DimensionsResponsiveControl = ( props ) => {
 					onClick={ () => {
 						const oldValues = getValues( deviceType );
 						oldValues.unitSync = true;
-						setValue( deviceType, oldValues );
+						setValue( deviceType, oldValues, { shouldDirty: false } );
 					} }
 					isPressed={ false }
 					icon={ <Link /> }

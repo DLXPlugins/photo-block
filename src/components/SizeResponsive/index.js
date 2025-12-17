@@ -43,19 +43,19 @@ import useUnits from '../../hooks/useUnits';
 
 const SizeResponsiveControl = ( props ) => {
 	const [ screenSize, setScreenSize ] = useState( 'desktop' );
-	const getDefaultValues = () => {
+	const getDefaultValues = ( newProps ) => {
 		return {
 			mobile: {
-				width: props.values.mobile.width,
-				unit: props.values.mobile.unit,
+				width: newProps.values.mobile.width,
+				unit: newProps.values.mobile.unit,
 			},
 			tablet: {
-				width: props.values.tablet.width,
-				unit: props.values.tablet.unit,
+				width: newProps.values.tablet.width,
+				unit: newProps.values.tablet.unit,
 			},
 			desktop: {
-				width: props.values.desktop.width,
-				unit: props.values.desktop.unit,
+				width: newProps.values.desktop.width,
+				unit: newProps.values.desktop.unit,
 			},
 		};
 	};
@@ -67,9 +67,11 @@ const SizeResponsiveControl = ( props ) => {
 		getUnitValue,
 	} = useUnits();
 
-	const { control, setValue, getValues } = useForm( {
-		defaultValues: getDefaultValues(),
+	const { control, setValue, getValues, reset } = useForm( {
+		defaultValues: getDefaultValues( props ),
 	} );
+
+	const { isDirty } = useFormState( { control } );
 
 	const formValues = useWatch( { control } );
 
@@ -78,14 +80,23 @@ const SizeResponsiveControl = ( props ) => {
 	} = props;
 
 	useEffect( () => {
-		onValuesChange( formValues );
+		if ( isDirty ) {
+			onValuesChange( formValues );
+			reset( formValues, {
+				keepDirty: false,
+			} );
+		}
 	}, [ formValues ] );
 
 	useEffect( () => {
 		setScreenSize( props.screenSize );
+		const newDefaultValues = getDefaultValues( props );
 		setValue(
-			props.screenSize,
-			getValues( props.screenSize )
+			props.screenSize.toLowerCase(),
+			newDefaultValues[ props.screenSize.toLowerCase() ],
+			{
+				shouldDirty: false,
+			}
 		);
 	}, [ props.screenSize ] );
 

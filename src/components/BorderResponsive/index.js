@@ -13,7 +13,7 @@ import {
 } from '@wordpress/components';
 import { Link, Unlink } from 'lucide-react';
 import classnames from 'classnames';
-import { useForm, Controller, useWatch } from 'react-hook-form';
+import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 
 import useDeviceType from '../../hooks/useDeviceType';
 import HeadingIconResponsive from '../HeadingIconResponsive';
@@ -45,7 +45,7 @@ const BorderResponsiveControl = ( props ) => {
 		labelLeft,
 		labelAll,
 	} = props;
-	const [ deviceType ] = useDeviceType( 'Desktop' );
+	const [ deviceType, setScreenSize ] = useState( props.screenSize );
 
 	const {
 		onUnitChange,
@@ -76,7 +76,6 @@ const BorderResponsiveControl = ( props ) => {
 		? props.units
 		: [
 			{ label: 'PX', value: 'px' },
-			{ label: '%', value: '%' },
 			{ label: 'EM', value: 'em' },
 			{ label: 'REM', value: 'rem' },
 		];
@@ -92,113 +91,132 @@ const BorderResponsiveControl = ( props ) => {
 		return colorValue;
 	};
 
-	const getDefaultValues = () => {
+	const getDefaultValues = ( newProps ) => {
 		return {
 			mobile: {
 				top: {
-					width: props.values.mobile.top.width,
-					unit: props.values.mobile.top.unit,
-					opacity: props.values.mobile.top.opacity,
-					color: getColor( props.values.mobile.top.color ),
-					borderStyle: props.values.mobile.top.borderStyle,
+					width: newProps.values.mobile.top.width,
+					unit: newProps.values.mobile.top.unit,
+					opacity: newProps.values.mobile.top.opacity,
+					color: getColor( newProps.values.mobile.top.color ),
+					borderStyle: newProps.values.mobile.top.borderStyle,
 				},
 				right: {
-					width: props.values.mobile.right.width,
-					unit: props.values.mobile.right.unit,
-					opacity: props.values.mobile.right.opacity,
-					color: getColor( props.values.mobile.right.color ),
-					borderStyle: props.values.mobile.right.borderStyle,
+					width: newProps.values.mobile.right.width,
+					unit: newProps.values.mobile.right.unit,
+					opacity: newProps.values.mobile.right.opacity,
+					color: getColor( newProps.values.mobile.right.color ),
+					borderStyle: newProps.values.mobile.right.borderStyle,
 				},
 				bottom: {
-					width: props.values.mobile.bottom.width,
-					unit: props.values.mobile.bottom.unit,
-					opacity: props.values.mobile.bottom.opacity,
-					color: getColor( props.values.mobile.bottom.color ),
-					borderStyle: props.values.mobile.bottom.borderStyle,
+					width: newProps.values.mobile.bottom.width,
+					unit: newProps.values.mobile.bottom.unit,
+					opacity: newProps.values.mobile.bottom.opacity,
+					color: getColor( newProps.values.mobile.bottom.color ),
+					borderStyle: newProps.values.mobile.bottom.borderStyle,
 				},
 				left: {
-					width: props.values.mobile.left.width,
-					unit: props.values.mobile.left.unit,
-					opacity: props.values.mobile.left.opacity,
-					color: getColor( props.values.mobile.left.color ),
-					borderStyle: props.values.mobile.left.borderStyle,
+					width: newProps.values.mobile.left.width,
+					unit: newProps.values.mobile.left.unit,
+					opacity: newProps.values.mobile.left.opacity,
+					color: getColor( newProps.values.mobile.left.color ),
+					borderStyle: newProps.values.mobile.left.borderStyle,
 				},
-				unitSync: props.values.mobile.unitSync,
+				unitSync: newProps.values.mobile.unitSync,
 			},
 			tablet: {
 				top: {
-					width: props.values.tablet.top.width,
-					unit: props.values.tablet.top.unit,
-					opacity: props.values.tablet.top.opacity,
-					color: getColor( props.values.tablet.top.color ),
-					borderStyle: props.values.tablet.top.borderStyle,
+					width: newProps.values.tablet.top.width,
+					unit: newProps.values.tablet.top.unit,
+					opacity: newProps.values.tablet.top.opacity,
+					color: getColor( newProps.values.tablet.top.color ),
+					borderStyle: newProps.values.tablet.top.borderStyle,
 				},
 				right: {
-					width: props.values.tablet.right.width,
-					unit: props.values.tablet.right.unit,
-					opacity: props.values.tablet.right.opacity,
-					color: getColor( props.values.tablet.right.color ),
-					borderStyle: props.values.tablet.right.borderStyle,
+					width: newProps.values.tablet.right.width,
+					unit: newProps.values.tablet.right.unit,
+					opacity: newProps.values.tablet.right.opacity,
+					color: getColor( newProps.values.tablet.right.color ),
+					borderStyle: newProps.values.tablet.right.borderStyle,
 				},
 				bottom: {
-					width: props.values.tablet.bottom.width,
-					unit: props.values.tablet.bottom.unit,
-					opacity: props.values.tablet.bottom.opacity,
-					color: getColor( props.values.tablet.bottom.color ),
-					borderStyle: props.values.tablet.bottom.borderStyle,
+					width: newProps.values.tablet.bottom.width,
+					unit: newProps.values.tablet.bottom.unit,
+					opacity: newProps.values.tablet.bottom.opacity,
+					color: getColor( newProps.values.tablet.bottom.color ),
+					borderStyle: newProps.values.tablet.bottom.borderStyle,
 				},
 				left: {
-					width: props.values.tablet.left.width,
-					unit: props.values.tablet.left.unit,
-					opacity: props.values.tablet.left.opacity,
-					color: getColor( props.values.tablet.left.color ),
-					borderStyle: props.values.tablet.left.borderStyle,
+					width: newProps.values.tablet.left.width,
+					unit: newProps.values.tablet.left.unit,
+					opacity: newProps.values.tablet.left.opacity,
+					color: getColor( newProps.values.tablet.left.color ),
+					borderStyle: newProps.values.tablet.left.borderStyle,
 				},
-				unitSync: props.values.tablet.unitSync,
+				unitSync: newProps.values.tablet.unitSync,
 			},
 			desktop: {
 				top: {
-					width: props.values.desktop.top.width,
-					unit: props.values.desktop.top.unit,
-					opacity: props.values.desktop.top.opacity,
-					color: getColor( props.values.desktop.top.color ),
-					borderStyle: props.values.desktop.top.borderStyle,
+					width: newProps.values.desktop.top.width,
+					unit: newProps.values.desktop.top.unit,
+					opacity: newProps.values.desktop.top.opacity,
+					color: getColor( newProps.values.desktop.top.color ),
+					borderStyle: newProps.values.desktop.top.borderStyle,
 				},
 				right: {
-					width: props.values.desktop.right.width,
-					unit: props.values.desktop.right.unit,
-					opacity: props.values.desktop.right.opacity,
-					color: getColor( props.values.desktop.right.color ),
-					borderStyle: props.values.desktop.right.borderStyle,
+					width: newProps.values.desktop.right.width,
+					unit: newProps.values.desktop.right.unit,
+					opacity: newProps.values.desktop.right.opacity,
+					color: getColor( newProps.values.desktop.right.color ),
+					borderStyle: newProps.values.desktop.right.borderStyle,
 				},
 				bottom: {
-					width: props.values.desktop.bottom.width,
-					unit: props.values.desktop.bottom.unit,
-					opacity: props.values.desktop.bottom.opacity,
-					color: getColor( props.values.desktop.bottom.color ),
-					borderStyle: props.values.desktop.bottom.borderStyle,
+					width: newProps.values.desktop.bottom.width,
+					unit: newProps.values.desktop.bottom.unit,
+					opacity: newProps.values.desktop.bottom.opacity,
+					color: getColor( newProps.values.desktop.bottom.color ),
+					borderStyle: newProps.values.desktop.bottom.borderStyle,
 				},
 				left: {
-					width: props.values.desktop.left.width,
-					unit: props.values.desktop.left.unit,
-					opacity: props.values.desktop.left.opacity,
-					color: getColor( props.values.desktop.left.color ),
-					borderStyle: props.values.desktop.left.borderStyle,
+					width: newProps.values.desktop.left.width,
+					unit: newProps.values.desktop.left.unit,
+					opacity: newProps.values.desktop.left.opacity,
+					color: getColor( newProps.values.desktop.left.color ),
+					borderStyle: newProps.values.desktop.left.borderStyle,
 				},
-				unitSync: props.values.desktop.unitSync,
+				unitSync: newProps.values.desktop.unitSync,
 			},
 		};
 	};
 
-	const { control, setValue, getValues } = useForm( {
-		defaultValues: getDefaultValues(),
+	const { control, setValue, getValues, reset } = useForm( {
+		defaultValues: getDefaultValues( props ),
 	} );
 
 	const formValues = useWatch( { control } );
 
+	const { isDirty } = useFormState( { control } );
+
 	useEffect( () => {
-		onValuesChange( formValues );
+		if ( isDirty ) {
+			onValuesChange( formValues );
+			reset( formValues, {
+				keepDirty: false,
+			} );
+		}
 	}, [ formValues ] );
+
+	useEffect( () => {
+		setScreenSize( props.screenSize );
+		const newDefaultValues = getDefaultValues( props );
+		setValue(
+			props.screenSize,
+			newDefaultValues[ props.screenSize ],
+			{
+				shouldDirty: false,
+			}
+		);
+	}, [ props.screenSize ] );
 
 	/**
 	 * Change the all values in parent.
@@ -234,7 +252,7 @@ const BorderResponsiveControl = ( props ) => {
 			oldValues.bottom[ key ] = value;
 			oldValues.left[ key ] = value;
 			setValue( deviceType, oldValues );
-			syncUnits( value );
+			syncUnits( getHierarchicalValueUnit( props.values, deviceType, oldValues.top.unit, 'top', 'unit' ) );
 		}
 	};
 
@@ -248,10 +266,10 @@ const BorderResponsiveControl = ( props ) => {
 		const topValues = currentValues.top;
 
 		// Set the values.
-		setValue( `${ deviceType }.top`, topValues );
-		setValue( `${ deviceType }.right`, topValues );
-		setValue( `${ deviceType }.bottom`, topValues );
-		setValue( `${ deviceType }.left`, topValues );
+		setValue( `${ deviceType }.top`, topValues, { shouldDirty: true } );
+		setValue( `${ deviceType }.right`, topValues, { shouldDirty: true } );
+		setValue( `${ deviceType }.bottom`, topValues, { shouldDirty: true } );
+		setValue( `${ deviceType }.left`, topValues, { shouldDirty: true } );
 	};
 
 	/**
@@ -260,13 +278,16 @@ const BorderResponsiveControl = ( props ) => {
 	 * @param {string} newUnit The new unit value.
 	 */
 	const syncUnits = ( newUnit ) => {
+		if ( newUnit?.unit ) {
+			newUnit = newUnit.unit;
+		}
 		// Toggle unit sync value.
 		const currentValues = getValues( deviceType );
 		currentValues.top.unit = newUnit;
 		currentValues.right.unit = newUnit;
 		currentValues.bottom.unit = newUnit;
 		currentValues.left.unit = newUnit;
-		setValue( deviceType, currentValues );
+		setValue( deviceType, currentValues, { shouldDirty: true } );
 	};
 
 	/**
@@ -444,6 +465,7 @@ const BorderResponsiveControl = ( props ) => {
 										label={ __( 'Solid', 'photo-block' ) }
 										onClick={ () => {
 											onChange( 'solid' );
+											setValue( `${ deviceType }.${ unitVar }.borderStyle`, 'solid', { shouldDirty: true } );
 											setPopoverClosed( true );
 										} }
 										isPressed={ 'solid' === getBorderStyle( unitVar ) }
@@ -456,6 +478,7 @@ const BorderResponsiveControl = ( props ) => {
 										isPressed={ 'dashed' === getBorderStyle( unitVar ) }
 										onClick={ () => {
 											onChange( 'dashed' );
+											setValue( `${ deviceType }.${ unitVar }.borderStyle`, 'dashed', { shouldDirty: true } );
 											setPopoverClosed( true );
 										} }
 									>
@@ -467,6 +490,7 @@ const BorderResponsiveControl = ( props ) => {
 										isPressed={ 'dotted' === getBorderStyle( unitVar ) }
 										onClick={ () => {
 											onChange( 'dotted' );
+											setValue( `${ deviceType }.${ unitVar }.borderStyle`, 'dotted', { shouldDirty: true } );
 											setPopoverClosed( true );
 										} }
 									>
@@ -478,6 +502,7 @@ const BorderResponsiveControl = ( props ) => {
 										isPressed={ 'double' === getBorderStyle( unitVar ) }
 										onClick={ () => {
 											onChange( 'double' );
+											setValue( `${ deviceType }.${ unitVar }.borderStyle`, 'double', { shouldDirty: true } );
 											setPopoverClosed( true );
 										} }
 									>
@@ -724,7 +749,7 @@ const BorderResponsiveControl = ( props ) => {
 								step={ getRangeControlStep( 'top', 'unit' ) }
 								onChange={ ( newValue ) => {
 									onChange( newValue );
-									onDimensionChange( newValue, 'width' );
+									onDimensionChange( newValue + getHierarchicalValueUnit( props.values, deviceType, getValues( `${ deviceType }.top.unit` ), 'top', 'unit' ), 'width' );
 								} }
 								withInputField={ false }
 								hideLabelFromVision={ true }
@@ -738,7 +763,7 @@ const BorderResponsiveControl = ( props ) => {
 							// Disable syncing.
 							const oldValues = getValues( deviceType );
 							oldValues.unitSync = false;
-							setValue( deviceType, oldValues );
+							setValue( deviceType, oldValues, { shouldDirty: false } );
 							syncUnits(
 								getHierarchicalValueUnit(
 									props.values,
@@ -1196,7 +1221,7 @@ const BorderResponsiveControl = ( props ) => {
 							onClick={ () => {
 								const oldValues = getValues( deviceType );
 								oldValues.unitSync = true;
-								setValue( deviceType, oldValues );
+								setValue( deviceType, oldValues, { shouldDirty: false } );
 								syncValues();
 							} }
 							isPressed={ false }

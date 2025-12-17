@@ -18194,10 +18194,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     values: overlayBorder,
     onValuesChange: function onValuesChange(values) {
       var overlayBorderValues = _objectSpread({}, overlayBorder);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        overlayBorderValues[deviceType.toLowerCase()] = newValue;
-      }
+      overlayBorderValues[deviceType] = values[deviceType];
       setAttributes({
         overlayBorder: overlayBorderValues
       });
@@ -18206,13 +18203,16 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Right Border', 'photo-block'),
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Border', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Border', 'photo-block'),
-    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border', 'photo-block')
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border', 'photo-block'),
+    screenSize: deviceType
   }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_27__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay Border Radius', 'photo-block'),
     values: overlayBorderRadius,
     onValuesChange: function onValuesChange(values) {
+      var overlayBorderRadiusValues = _objectSpread({}, overlayBorderRadius);
+      overlayBorderRadiusValues[deviceType] = values[deviceType];
       setAttributes({
-        overlayBorderRadius: values
+        overlayBorderRadius: overlayBorderRadiusValues
       });
     },
     labelTop: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Top-left Radius', 'photo-block'),
@@ -18231,10 +18231,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     screenSize: deviceType,
     onValuesChange: function onValuesChange(formValues) {
       var captionTypographyValues = _objectSpread({}, captionTypography);
-      var newValue = formValues[deviceType.toLowerCase()];
-      if (newValue) {
-        captionTypographyValues[deviceType.toLowerCase()] = newValue;
-      }
+      captionTypographyValues[deviceType] = formValues[deviceType];
       setAttributes({
         captionTypography: captionTypographyValues
       });
@@ -18502,10 +18499,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     values: captionPaddingSize,
     onValuesChange: function onValuesChange(values) {
       var captionPaddingSizeValues = _objectSpread({}, captionPaddingSize);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        captionPaddingSizeValues[deviceType.toLowerCase()] = newValue;
-      }
+      captionPaddingSizeValues[deviceType] = values[deviceType];
       setAttributes({
         captionPaddingSize: captionPaddingSizeValues
       });
@@ -18514,16 +18508,14 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Right Padding', 'photo-block'),
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Padding', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Padding', 'photo-block'),
-    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Padding', 'photo-block')
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Padding', 'photo-block'),
+    screenSize: deviceType
   }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_27__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Margin', 'photo-block'),
     values: captionMarginSize,
     onValuesChange: function onValuesChange(values) {
       var captionMarginSizeValues = _objectSpread({}, captionMarginSize);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        captionMarginSizeValues[deviceType.toLowerCase()] = newValue;
-      }
+      captionMarginSizeValues[deviceType] = values[deviceType];
       setAttributes({
         captionMarginSize: captionMarginSizeValues
       });
@@ -18533,16 +18525,14 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Margin', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Margin', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Margin', 'photo-block'),
-    allowNegatives: true
+    allowNegatives: true,
+    screenSize: deviceType
   }), /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_28__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Border', 'photo-block'),
     values: captionBorder,
     onValuesChange: function onValuesChange(values) {
       var captionBorderValues = _objectSpread({}, captionBorder);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        captionBorderValues[deviceType.toLowerCase()] = newValue;
-      }
+      captionBorderValues[deviceType] = values[deviceType];
       setAttributes({
         captionBorder: captionBorderValues
       });
@@ -18551,16 +18541,14 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     labelRight: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Right Border', 'photo-block'),
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom Border', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Left Border', 'photo-block'),
-    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border', 'photo-block')
+    labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border', 'photo-block'),
+    screenSize: deviceType
   }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_27__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Border Radius', 'photo-block'),
     values: captionBorderRadius,
     onValuesChange: function onValuesChange(values) {
       var captionBorderRadiusValues = _objectSpread({}, captionBorderRadius);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        captionBorderRadiusValues[deviceType.toLowerCase()] = newValue;
-      }
+      captionBorderRadiusValues[deviceType] = values[deviceType];
       setAttributes({
         captionBorderRadius: captionBorderRadiusValues
       });
@@ -18570,7 +18558,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom-right Radius', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom-left Radius', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border Radius', 'photo-block'),
-    isBorderRadius: true
+    isBorderRadius: true,
+    screenSize: deviceType
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Container Sizing', 'photo-block'),
     initialOpen: false,
@@ -18586,8 +18575,10 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     values: containerWidth,
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
+      var containerWidthValues = _objectSpread({}, containerWidth);
+      containerWidthValues[deviceType] = newValues[deviceType];
       setAttributes({
-        containerWidth: newValues
+        containerWidth: containerWidthValues
       });
     }
   })), /*#__PURE__*/React.createElement("div", {
@@ -18599,10 +18590,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
       var containerHeightValues = _objectSpread({}, containerHeight);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerHeightValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerHeightValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerHeight: containerHeightValues
       });
@@ -18615,10 +18603,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
       var containerMinWidthValues = _objectSpread({}, containerMinWidth);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerMinWidthValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerMinWidthValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerMinWidth: containerMinWidthValues
       });
@@ -18632,10 +18617,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
       var containerMinHeightValues = _objectSpread({}, containerMinHeight);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerMinHeightValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerMinHeightValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerMinHeight: containerMinHeightValues
       });
@@ -18648,10 +18630,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
       var containerMaxWidthValues = _objectSpread({}, containerMaxWidth);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerMaxWidthValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerMaxWidthValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerMaxWidth: containerMaxWidthValues
       });
@@ -18665,10 +18644,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
       var containerMaxHeightValues = _objectSpread({}, containerMaxHeight);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerMaxHeightValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerMaxHeightValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerMaxHeight: containerMaxHeightValues
       });
@@ -19759,61 +19735,59 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     labelBottom = props.labelBottom,
     labelLeft = props.labelLeft,
     labelAll = props.labelAll;
-  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_8__["default"])('Desktop'),
-    _useDeviceType2 = _slicedToArray(_useDeviceType, 1),
-    deviceType = _useDeviceType2[0];
+  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(props.screenSize),
+    _useState2 = _slicedToArray(_useState, 2),
+    deviceType = _useState2[0],
+    setScreenSize = _useState2[1];
   var _useUnits = (0,_hooks_useUnits__WEBPACK_IMPORTED_MODULE_16__["default"])(),
     onUnitChange = _useUnits.onUnitChange,
     splitValues = _useUnits.splitValues,
     getNumericValue = _useUnits.getNumericValue,
     getUnitValue = _useUnits.getUnitValue,
     startsWithNumber = _useUnits.startsWithNumber;
-  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    showBorderStylePopoverSync = _useState2[0],
-    setShowBorderStylePopoverSync = _useState2[1];
   var _useState3 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState4 = _slicedToArray(_useState3, 2),
-    showBorderStylePopoverTop = _useState4[0],
-    setShowBorderStylePopoverTop = _useState4[1];
+    showBorderStylePopoverSync = _useState4[0],
+    setShowBorderStylePopoverSync = _useState4[1];
   var _useState5 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState6 = _slicedToArray(_useState5, 2),
-    showBorderStylePopoverRight = _useState6[0],
-    setShowBorderStylePopoverRight = _useState6[1];
+    showBorderStylePopoverTop = _useState6[0],
+    setShowBorderStylePopoverTop = _useState6[1];
   var _useState7 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState8 = _slicedToArray(_useState7, 2),
-    showBorderStylePopoverBottom = _useState8[0],
-    setShowBorderStylePopoverBottom = _useState8[1];
+    showBorderStylePopoverRight = _useState8[0],
+    setShowBorderStylePopoverRight = _useState8[1];
   var _useState9 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState0 = _slicedToArray(_useState9, 2),
-    showBorderStylePopoverLeft = _useState0[0],
-    setShowBorderStylePopoverLeft = _useState0[1];
-  var _useState1 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    showBorderStylePopoverBottom = _useState0[0],
+    setShowBorderStylePopoverBottom = _useState0[1];
+  var _useState1 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(false),
     _useState10 = _slicedToArray(_useState1, 2),
-    borderStyleSyncButtonRef = _useState10[0],
-    setBorderSyncStyleButtonRef = _useState10[1];
+    showBorderStylePopoverLeft = _useState10[0],
+    setShowBorderStylePopoverLeft = _useState10[1];
   var _useState11 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
     _useState12 = _slicedToArray(_useState11, 2),
-    borderStyleTopButtonRef = _useState12[0],
-    setBorderStyleTopButtonRef = _useState12[1];
+    borderStyleSyncButtonRef = _useState12[0],
+    setBorderSyncStyleButtonRef = _useState12[1];
   var _useState13 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
     _useState14 = _slicedToArray(_useState13, 2),
-    borderStyleRightButtonRef = _useState14[0],
-    setBorderStyleRightButtonRef = _useState14[1];
+    borderStyleTopButtonRef = _useState14[0],
+    setBorderStyleTopButtonRef = _useState14[1];
   var _useState15 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
     _useState16 = _slicedToArray(_useState15, 2),
-    borderStyleBottomButtonRef = _useState16[0],
-    setBorderStyleBottomButtonRef = _useState16[1];
+    borderStyleRightButtonRef = _useState16[0],
+    setBorderStyleRightButtonRef = _useState16[1];
   var _useState17 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
     _useState18 = _slicedToArray(_useState17, 2),
-    borderStyleLeftButtonRef = _useState18[0],
-    setBorderStyleLeftButtonRef = _useState18[1];
+    borderStyleBottomButtonRef = _useState18[0],
+    setBorderStyleBottomButtonRef = _useState18[1];
+  var _useState19 = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(),
+    _useState20 = _slicedToArray(_useState19, 2),
+    borderStyleLeftButtonRef = _useState20[0],
+    setBorderStyleLeftButtonRef = _useState20[1];
   var units = props !== null && props !== void 0 && props.units ? props.units : [{
     label: 'PX',
     value: 'px'
-  }, {
-    label: '%',
-    value: '%'
   }, {
     label: 'EM',
     value: 'em'
@@ -19831,115 +19805,132 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }
     return colorValue;
   };
-  var getDefaultValues = function getDefaultValues() {
+  var getDefaultValues = function getDefaultValues(newProps) {
     return {
       mobile: {
         top: {
-          width: props.values.mobile.top.width,
-          unit: props.values.mobile.top.unit,
-          opacity: props.values.mobile.top.opacity,
-          color: getColor(props.values.mobile.top.color),
-          borderStyle: props.values.mobile.top.borderStyle
+          width: newProps.values.mobile.top.width,
+          unit: newProps.values.mobile.top.unit,
+          opacity: newProps.values.mobile.top.opacity,
+          color: getColor(newProps.values.mobile.top.color),
+          borderStyle: newProps.values.mobile.top.borderStyle
         },
         right: {
-          width: props.values.mobile.right.width,
-          unit: props.values.mobile.right.unit,
-          opacity: props.values.mobile.right.opacity,
-          color: getColor(props.values.mobile.right.color),
-          borderStyle: props.values.mobile.right.borderStyle
+          width: newProps.values.mobile.right.width,
+          unit: newProps.values.mobile.right.unit,
+          opacity: newProps.values.mobile.right.opacity,
+          color: getColor(newProps.values.mobile.right.color),
+          borderStyle: newProps.values.mobile.right.borderStyle
         },
         bottom: {
-          width: props.values.mobile.bottom.width,
-          unit: props.values.mobile.bottom.unit,
-          opacity: props.values.mobile.bottom.opacity,
-          color: getColor(props.values.mobile.bottom.color),
-          borderStyle: props.values.mobile.bottom.borderStyle
+          width: newProps.values.mobile.bottom.width,
+          unit: newProps.values.mobile.bottom.unit,
+          opacity: newProps.values.mobile.bottom.opacity,
+          color: getColor(newProps.values.mobile.bottom.color),
+          borderStyle: newProps.values.mobile.bottom.borderStyle
         },
         left: {
-          width: props.values.mobile.left.width,
-          unit: props.values.mobile.left.unit,
-          opacity: props.values.mobile.left.opacity,
-          color: getColor(props.values.mobile.left.color),
-          borderStyle: props.values.mobile.left.borderStyle
+          width: newProps.values.mobile.left.width,
+          unit: newProps.values.mobile.left.unit,
+          opacity: newProps.values.mobile.left.opacity,
+          color: getColor(newProps.values.mobile.left.color),
+          borderStyle: newProps.values.mobile.left.borderStyle
         },
-        unitSync: props.values.mobile.unitSync
+        unitSync: newProps.values.mobile.unitSync
       },
       tablet: {
         top: {
-          width: props.values.tablet.top.width,
-          unit: props.values.tablet.top.unit,
-          opacity: props.values.tablet.top.opacity,
-          color: getColor(props.values.tablet.top.color),
-          borderStyle: props.values.tablet.top.borderStyle
+          width: newProps.values.tablet.top.width,
+          unit: newProps.values.tablet.top.unit,
+          opacity: newProps.values.tablet.top.opacity,
+          color: getColor(newProps.values.tablet.top.color),
+          borderStyle: newProps.values.tablet.top.borderStyle
         },
         right: {
-          width: props.values.tablet.right.width,
-          unit: props.values.tablet.right.unit,
-          opacity: props.values.tablet.right.opacity,
-          color: getColor(props.values.tablet.right.color),
-          borderStyle: props.values.tablet.right.borderStyle
+          width: newProps.values.tablet.right.width,
+          unit: newProps.values.tablet.right.unit,
+          opacity: newProps.values.tablet.right.opacity,
+          color: getColor(newProps.values.tablet.right.color),
+          borderStyle: newProps.values.tablet.right.borderStyle
         },
         bottom: {
-          width: props.values.tablet.bottom.width,
-          unit: props.values.tablet.bottom.unit,
-          opacity: props.values.tablet.bottom.opacity,
-          color: getColor(props.values.tablet.bottom.color),
-          borderStyle: props.values.tablet.bottom.borderStyle
+          width: newProps.values.tablet.bottom.width,
+          unit: newProps.values.tablet.bottom.unit,
+          opacity: newProps.values.tablet.bottom.opacity,
+          color: getColor(newProps.values.tablet.bottom.color),
+          borderStyle: newProps.values.tablet.bottom.borderStyle
         },
         left: {
-          width: props.values.tablet.left.width,
-          unit: props.values.tablet.left.unit,
-          opacity: props.values.tablet.left.opacity,
-          color: getColor(props.values.tablet.left.color),
-          borderStyle: props.values.tablet.left.borderStyle
+          width: newProps.values.tablet.left.width,
+          unit: newProps.values.tablet.left.unit,
+          opacity: newProps.values.tablet.left.opacity,
+          color: getColor(newProps.values.tablet.left.color),
+          borderStyle: newProps.values.tablet.left.borderStyle
         },
-        unitSync: props.values.tablet.unitSync
+        unitSync: newProps.values.tablet.unitSync
       },
       desktop: {
         top: {
-          width: props.values.desktop.top.width,
-          unit: props.values.desktop.top.unit,
-          opacity: props.values.desktop.top.opacity,
-          color: getColor(props.values.desktop.top.color),
-          borderStyle: props.values.desktop.top.borderStyle
+          width: newProps.values.desktop.top.width,
+          unit: newProps.values.desktop.top.unit,
+          opacity: newProps.values.desktop.top.opacity,
+          color: getColor(newProps.values.desktop.top.color),
+          borderStyle: newProps.values.desktop.top.borderStyle
         },
         right: {
-          width: props.values.desktop.right.width,
-          unit: props.values.desktop.right.unit,
-          opacity: props.values.desktop.right.opacity,
-          color: getColor(props.values.desktop.right.color),
-          borderStyle: props.values.desktop.right.borderStyle
+          width: newProps.values.desktop.right.width,
+          unit: newProps.values.desktop.right.unit,
+          opacity: newProps.values.desktop.right.opacity,
+          color: getColor(newProps.values.desktop.right.color),
+          borderStyle: newProps.values.desktop.right.borderStyle
         },
         bottom: {
-          width: props.values.desktop.bottom.width,
-          unit: props.values.desktop.bottom.unit,
-          opacity: props.values.desktop.bottom.opacity,
-          color: getColor(props.values.desktop.bottom.color),
-          borderStyle: props.values.desktop.bottom.borderStyle
+          width: newProps.values.desktop.bottom.width,
+          unit: newProps.values.desktop.bottom.unit,
+          opacity: newProps.values.desktop.bottom.opacity,
+          color: getColor(newProps.values.desktop.bottom.color),
+          borderStyle: newProps.values.desktop.bottom.borderStyle
         },
         left: {
-          width: props.values.desktop.left.width,
-          unit: props.values.desktop.left.unit,
-          opacity: props.values.desktop.left.opacity,
-          color: getColor(props.values.desktop.left.color),
-          borderStyle: props.values.desktop.left.borderStyle
+          width: newProps.values.desktop.left.width,
+          unit: newProps.values.desktop.left.unit,
+          opacity: newProps.values.desktop.left.opacity,
+          color: getColor(newProps.values.desktop.left.color),
+          borderStyle: newProps.values.desktop.left.borderStyle
         },
-        unitSync: props.values.desktop.unitSync
+        unitSync: newProps.values.desktop.unitSync
       }
     };
   };
   var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useForm)({
-      defaultValues: getDefaultValues()
+      defaultValues: getDefaultValues(props)
     }),
     control = _useForm.control,
     setValue = _useForm.setValue,
-    getValues = _useForm.getValues;
+    getValues = _useForm.getValues,
+    reset = _useForm.reset;
   var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useWatch)({
     control: control
   });
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useFormState)({
+      control: control
+    }),
+    isDirty = _useFormState.isDirty;
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    onValuesChange(formValues);
+    if (isDirty) {
+      onValuesChange(formValues);
+      reset(formValues, {
+        keepDirty: false
+      });
+    }
   }, [formValues]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    setScreenSize(props.screenSize);
+    var newDefaultValues = getDefaultValues(props);
+    setValue(props.screenSize, newDefaultValues[props.screenSize], {
+      shouldDirty: false
+    });
+  }, [props.screenSize]);
 
   /**
    * Change the all values in parent.
@@ -19975,7 +19966,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       _oldValues2.bottom[key] = value;
       _oldValues2.left[key] = value;
       setValue(deviceType, _oldValues2);
-      syncUnits(value);
+      syncUnits((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.getHierarchicalValueUnit)(props.values, deviceType, _oldValues2.top.unit, 'top', 'unit'));
     }
   };
 
@@ -19989,10 +19980,18 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     var topValues = currentValues.top;
 
     // Set the values.
-    setValue("".concat(deviceType, ".top"), topValues);
-    setValue("".concat(deviceType, ".right"), topValues);
-    setValue("".concat(deviceType, ".bottom"), topValues);
-    setValue("".concat(deviceType, ".left"), topValues);
+    setValue("".concat(deviceType, ".top"), topValues, {
+      shouldDirty: true
+    });
+    setValue("".concat(deviceType, ".right"), topValues, {
+      shouldDirty: true
+    });
+    setValue("".concat(deviceType, ".bottom"), topValues, {
+      shouldDirty: true
+    });
+    setValue("".concat(deviceType, ".left"), topValues, {
+      shouldDirty: true
+    });
   };
 
   /**
@@ -20001,13 +20000,19 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
    * @param {string} newUnit The new unit value.
    */
   var syncUnits = function syncUnits(newUnit) {
+    var _newUnit;
+    if ((_newUnit = newUnit) !== null && _newUnit !== void 0 && _newUnit.unit) {
+      newUnit = newUnit.unit;
+    }
     // Toggle unit sync value.
     var currentValues = getValues(deviceType);
     currentValues.top.unit = newUnit;
     currentValues.right.unit = newUnit;
     currentValues.bottom.unit = newUnit;
     currentValues.left.unit = newUnit;
-    setValue(deviceType, currentValues);
+    setValue(deviceType, currentValues, {
+      shouldDirty: true
+    });
   };
 
   /**
@@ -20164,6 +20169,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Solid', 'photo-block'),
           onClick: function onClick() {
             onChange('solid');
+            setValue("".concat(deviceType, ".").concat(unitVar, ".borderStyle"), 'solid', {
+              shouldDirty: true
+            });
             setPopoverClosed(true);
           },
           isPressed: 'solid' === getBorderStyle(unitVar)
@@ -20173,6 +20181,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           isPressed: 'dashed' === getBorderStyle(unitVar),
           onClick: function onClick() {
             onChange('dashed');
+            setValue("".concat(deviceType, ".").concat(unitVar, ".borderStyle"), 'dashed', {
+              shouldDirty: true
+            });
             setPopoverClosed(true);
           }
         }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dashed', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
@@ -20181,6 +20192,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           isPressed: 'dotted' === getBorderStyle(unitVar),
           onClick: function onClick() {
             onChange('dotted');
+            setValue("".concat(deviceType, ".").concat(unitVar, ".borderStyle"), 'dotted', {
+              shouldDirty: true
+            });
             setPopoverClosed(true);
           }
         }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Dotted', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
@@ -20189,6 +20203,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           isPressed: 'double' === getBorderStyle(unitVar),
           onClick: function onClick() {
             onChange('double');
+            setValue("".concat(deviceType, ".").concat(unitVar, ".borderStyle"), 'double', {
+              shouldDirty: true
+            });
             setPopoverClosed(true);
           }
         }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Double', 'photo-block')));
@@ -20379,7 +20396,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           step: getRangeControlStep('top', 'unit'),
           onChange: function onChange(newValue) {
             _onChange4(newValue);
-            onDimensionChange(newValue, 'width');
+            onDimensionChange(newValue + (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".top.unit")), 'top', 'unit'), 'width');
           },
           withInputField: false,
           hideLabelFromVision: true
@@ -20392,7 +20409,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
         // Disable syncing.
         var oldValues = getValues(deviceType);
         oldValues.unitSync = false;
-        setValue(deviceType, oldValues);
+        setValue(deviceType, oldValues, {
+          shouldDirty: false
+        });
         syncUnits((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".top.unit")), 'top', 'unit'));
       },
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Modify all values separately.', 'photo-block'),
@@ -20751,7 +20770,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       onClick: function onClick() {
         var oldValues = getValues(deviceType);
         oldValues.unitSync = true;
-        setValue(deviceType, oldValues);
+        setValue(deviceType, oldValues, {
+          shouldDirty: false
+        });
         syncValues();
       },
       isPressed: false,
@@ -21613,9 +21634,10 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
     isBorderRadius = _props$isBorderRadius === void 0 ? false : _props$isBorderRadius,
     _props$allowNegatives = props.allowNegatives,
     allowNegatives = _props$allowNegatives === void 0 ? false : _props$allowNegatives;
-  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_8__["default"])('Desktop'),
-    _useDeviceType2 = _slicedToArray(_useDeviceType, 1),
-    deviceType = _useDeviceType2[0];
+  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(props.screenSize),
+    _useState2 = _slicedToArray(_useState, 2),
+    deviceType = _useState2[0],
+    setScreenSize = _useState2[1];
   var _useUnits = (0,_hooks_useUnits__WEBPACK_IMPORTED_MODULE_11__["default"])(),
     onUnitChange = _useUnits.onUnitChange,
     splitValues = _useUnits.splitValues,
@@ -21638,55 +21660,72 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
     label: 'VW',
     value: 'vw'
   }];
-  var getDefaultValues = function getDefaultValues() {
+  var getDefaultValues = function getDefaultValues(newProps) {
     return {
       mobile: {
-        top: props.values.mobile.top,
-        right: props.values.mobile.right,
-        bottom: props.values.mobile.bottom,
-        left: props.values.mobile.left,
-        topUnit: props.values.mobile.topUnit,
-        rightUnit: props.values.mobile.rightUnit,
-        bottomUnit: props.values.mobile.bottomUnit,
-        leftUnit: props.values.mobile.leftUnit,
-        unitSync: props.values.mobile.unitSync
+        top: newProps.values.mobile.top,
+        right: newProps.values.mobile.right,
+        bottom: newProps.values.mobile.bottom,
+        left: newProps.values.mobile.left,
+        topUnit: newProps.values.mobile.topUnit,
+        rightUnit: newProps.values.mobile.rightUnit,
+        bottomUnit: newProps.values.mobile.bottomUnit,
+        leftUnit: newProps.values.mobile.leftUnit,
+        unitSync: newProps.values.mobile.unitSync
       },
       tablet: {
-        top: props.values.tablet.top,
-        right: props.values.tablet.right,
-        bottom: props.values.tablet.bottom,
-        left: props.values.tablet.left,
-        topUnit: props.values.tablet.topUnit,
-        rightUnit: props.values.tablet.rightUnit,
-        bottomUnit: props.values.tablet.bottomUnit,
-        leftUnit: props.values.tablet.leftUnit,
-        unitSync: props.values.tablet.unitSync
+        top: newProps.values.tablet.top,
+        right: newProps.values.tablet.right,
+        bottom: newProps.values.tablet.bottom,
+        left: newProps.values.tablet.left,
+        topUnit: newProps.values.tablet.topUnit,
+        rightUnit: newProps.values.tablet.rightUnit,
+        bottomUnit: newProps.values.tablet.bottomUnit,
+        leftUnit: newProps.values.tablet.leftUnit,
+        unitSync: newProps.values.tablet.unitSync
       },
       desktop: {
-        top: props.values.desktop.top,
-        right: props.values.desktop.right,
-        bottom: props.values.desktop.bottom,
-        left: props.values.desktop.left,
-        topUnit: props.values.desktop.topUnit,
-        rightUnit: props.values.desktop.rightUnit,
-        bottomUnit: props.values.desktop.bottomUnit,
-        leftUnit: props.values.desktop.leftUnit,
-        unitSync: props.values.desktop.unitSync
+        top: newProps.values.desktop.top,
+        right: newProps.values.desktop.right,
+        bottom: newProps.values.desktop.bottom,
+        left: newProps.values.desktop.left,
+        topUnit: newProps.values.desktop.topUnit,
+        rightUnit: newProps.values.desktop.rightUnit,
+        bottomUnit: newProps.values.desktop.bottomUnit,
+        leftUnit: newProps.values.desktop.leftUnit,
+        unitSync: newProps.values.desktop.unitSync
       }
     };
   };
   var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useForm)({
-      defaultValues: getDefaultValues()
+      defaultValues: getDefaultValues(props)
     }),
     control = _useForm.control,
     setValue = _useForm.setValue,
-    getValues = _useForm.getValues;
+    getValues = _useForm.getValues,
+    reset = _useForm.reset;
   var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useWatch)({
     control: control
   });
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_7__.useFormState)({
+      control: control
+    }),
+    isDirty = _useFormState.isDirty;
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    onValuesChange(formValues);
+    if (isDirty) {
+      onValuesChange(formValues);
+      reset(formValues, {
+        keepDirty: false
+      });
+    }
   }, [formValues]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
+    setScreenSize(props.screenSize);
+    var newDefaultValues = getDefaultValues(props);
+    setValue(props.screenSize.toLowerCase(), newDefaultValues[props.screenSize.toLowerCase()], {
+      shouldDirty: false
+    });
+  }, [props.screenSize]);
 
   /**
    * Change the all values in parent.
@@ -21732,7 +21771,9 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
     currentValues.rightUnit = newUnit;
     currentValues.bottomUnit = newUnit;
     currentValues.leftUnit = newUnit;
-    setValue(deviceType, currentValues);
+    setValue(deviceType, currentValues, {
+      shouldDirty: true
+    });
   };
   var onDimensionChange = function onDimensionChange(value) {
     changeAllValues(value);
@@ -21744,7 +21785,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
    * @return {boolean} The sync value.
    */
   var isSync = function isSync() {
-    var sync = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.geHierarchicalPlaceholderValue)(values, deviceType, getValues(deviceType).unitSync, 'unitSync');
+    var sync = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.geHierarchicalPlaceholderValue)(values, deviceType, formValues[deviceType].unitSync, 'unitSync');
     return sync;
   };
 
@@ -21927,7 +21968,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           step: getRangeControlStep('topUnit'),
           onChange: function onChange(newValue) {
             _onChange3(newValue);
-            onDimensionChange(newValue);
+            onDimensionChange(newValue + (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".topUnit")), 'topUnit'));
           },
           withInputField: false,
           hideLabelFromVision: true
@@ -21940,7 +21981,9 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
         // Disable syncing.
         var oldValues = getValues(deviceType);
         oldValues.unitSync = false;
-        setValue(deviceType, oldValues);
+        setValue(deviceType, oldValues, {
+          shouldDirty: false
+        });
         syncUnits((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".topUnit")), 'topUnit'));
       },
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Modify all values separately.', 'photo-block'),
@@ -21986,7 +22029,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), getValues("".concat(deviceType, ".topUnit")) && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), '' !== (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".topUnit")), 'topUnit') && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
       name: "".concat(deviceType, ".topUnit"),
       control: control,
       render: function render(_ref5) {
@@ -22029,7 +22072,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), getValues("".concat(deviceType, ".rightUnit")) && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), '' !== (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".rightUnit")), 'rightUnit') && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
       name: "".concat(deviceType, ".rightUnit"),
       control: control,
       render: function render(_ref7) {
@@ -22072,7 +22115,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), getValues("".concat(deviceType, ".bottomUnit")) && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), '' !== (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".bottomUnit")), 'bottomUnit') && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
       name: "".concat(deviceType, ".bottomUnit"),
       control: control,
       render: function render(_ref9) {
@@ -22115,7 +22158,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           autoComplete: "off"
         });
       }
-    }), getValues("".concat(deviceType, ".leftUnit")) && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
+    }), '' !== (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".leftUnit")), 'leftUnit') && /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
       name: "".concat(deviceType, ".leftUnit"),
       control: control,
       render: function render(_ref1) {
@@ -22139,7 +22182,9 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
       onClick: function onClick() {
         var oldValues = getValues(deviceType);
         oldValues.unitSync = true;
-        setValue(deviceType, oldValues);
+        setValue(deviceType, oldValues, {
+          shouldDirty: false
+        });
       },
       isPressed: false,
       icon: /*#__PURE__*/React.createElement(lucide_react__WEBPACK_IMPORTED_MODULE_4__["default"], null),
@@ -26006,10 +26051,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     values: photoPaddingSize,
     onValuesChange: function onValuesChange(values) {
       var photoPaddingSizeValues = _objectSpread({}, photoPaddingSize);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        photoPaddingSizeValues[deviceType.toLowerCase()] = newValue;
-      }
+      photoPaddingSizeValues[deviceType] = values[deviceType];
       setAttributes({
         photoPaddingSize: photoPaddingSizeValues
       });
@@ -26019,16 +26061,14 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Bottom Padding', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Padding', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Padding', 'photo-block'),
-    allowNegatives: false
+    allowNegatives: false,
+    screenSize: deviceType
   }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_17__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Margin', 'photo-block'),
     values: photoMarginSize,
     onValuesChange: function onValuesChange(values) {
       var photoMarginSizeValues = _objectSpread({}, photoMarginSize);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        photoMarginSizeValues[deviceType.toLowerCase()] = newValue;
-      }
+      photoMarginSizeValues[deviceType] = values[deviceType];
       setAttributes({
         photoMarginSize: photoMarginSizeValues
       });
@@ -26038,16 +26078,14 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Bottom Margin', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Margin', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Margin', 'photo-block'),
-    allowNegatives: true
+    allowNegatives: true,
+    screenSize: deviceType
   }), /*#__PURE__*/React.createElement(_components_BorderResponsive__WEBPACK_IMPORTED_MODULE_18__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Border', 'photo-block'),
     values: photoBorder,
     onValuesChange: function onValuesChange(values) {
       var photoBorderValues = _objectSpread({}, photoBorder);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        photoBorderValues[deviceType.toLowerCase()] = newValue;
-      }
+      photoBorderValues[deviceType] = values[deviceType];
       setAttributes({
         photoBorder: photoBorderValues
       });
@@ -26057,16 +26095,14 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Bottom Border', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Left Border', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Border', 'photo-block'),
-    allowNegatives: false
+    allowNegatives: false,
+    screenSize: deviceType
   }), /*#__PURE__*/React.createElement(_components_DimensionsResponsive__WEBPACK_IMPORTED_MODULE_17__["default"], {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Photo Border Radius', 'photo-block'),
     values: photoBorderRadius,
     onValuesChange: function onValuesChange(values) {
       var photoBorderRadiusValues = _objectSpread({}, photoBorderRadius);
-      var newValue = values[deviceType.toLowerCase()];
-      if (newValue) {
-        photoBorderRadiusValues[deviceType.toLowerCase()] = newValue;
-      }
+      photoBorderRadiusValues[deviceType] = values[deviceType];
       setAttributes({
         photoBorderRadius: photoBorderRadiusValues
       });
@@ -26077,7 +26113,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Bottom-left Radius', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Change Border Radius', 'photo-block'),
     isBorderRadius: true,
-    allowNegatives: false
+    allowNegatives: false,
+    screenSize: deviceType
   })), /*#__PURE__*/React.createElement(_components_PanelBody__WEBPACK_IMPORTED_MODULE_19__["default"], {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Container Sizing', 'photo-block'),
     initialOpen: false,
@@ -26168,10 +26205,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
       var containerWidthValues = _objectSpread({}, containerWidth);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerWidthValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerWidthValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerWidth: containerWidthValues
       });
@@ -26185,10 +26219,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
       var containerHeightValues = _objectSpread({}, containerHeight);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerHeightValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerHeightValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerHeight: containerHeightValues
       });
@@ -26201,10 +26232,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
       var containerMinWidthValues = _objectSpread({}, containerMinWidth);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerMinWidthValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerMinWidthValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerMinWidth: containerMinWidthValues
       });
@@ -26218,10 +26246,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
       var containerMinHeightValues = _objectSpread({}, containerMinHeight);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerMinHeightValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerMinHeightValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerMinHeight: containerMinHeightValues
       });
@@ -26234,10 +26259,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     screenSize: deviceType,
     onValuesChange: function onValuesChange(newValues) {
       var containerMaxWidthValues = _objectSpread({}, containerMaxWidth);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerMaxWidthValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerMaxWidthValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerMaxWidth: containerMaxWidthValues
       });
@@ -26251,10 +26273,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     units: heightUnits,
     onValuesChange: function onValuesChange(newValues) {
       var containerMaxHeightValues = _objectSpread({}, containerMaxHeight);
-      var newValue = newValues[deviceType.toLowerCase()];
-      if (newValue) {
-        containerMaxHeightValues[deviceType.toLowerCase()] = newValue;
-      }
+      containerMaxHeightValues[deviceType] = newValues[deviceType];
       setAttributes({
         containerMaxHeight: containerMaxHeightValues
       });
@@ -26346,19 +26365,19 @@ var SizeResponsiveControl = function SizeResponsiveControl(props) {
     _useState2 = _slicedToArray(_useState, 2),
     screenSize = _useState2[0],
     setScreenSize = _useState2[1];
-  var getDefaultValues = function getDefaultValues() {
+  var getDefaultValues = function getDefaultValues(newProps) {
     return {
       mobile: {
-        width: props.values.mobile.width,
-        unit: props.values.mobile.unit
+        width: newProps.values.mobile.width,
+        unit: newProps.values.mobile.unit
       },
       tablet: {
-        width: props.values.tablet.width,
-        unit: props.values.tablet.unit
+        width: newProps.values.tablet.width,
+        unit: newProps.values.tablet.unit
       },
       desktop: {
-        width: props.values.desktop.width,
-        unit: props.values.desktop.unit
+        width: newProps.values.desktop.width,
+        unit: newProps.values.desktop.unit
       }
     };
   };
@@ -26368,21 +26387,34 @@ var SizeResponsiveControl = function SizeResponsiveControl(props) {
     getNumericValue = _useUnits.getNumericValue,
     getUnitValue = _useUnits.getUnitValue;
   var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useForm)({
-      defaultValues: getDefaultValues()
+      defaultValues: getDefaultValues(props)
     }),
     control = _useForm.control,
     setValue = _useForm.setValue,
-    getValues = _useForm.getValues;
+    getValues = _useForm.getValues,
+    reset = _useForm.reset;
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useFormState)({
+      control: control
+    }),
+    isDirty = _useFormState.isDirty;
   var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_6__.useWatch)({
     control: control
   });
   var onValuesChange = props.onValuesChange;
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
-    onValuesChange(formValues);
+    if (isDirty) {
+      onValuesChange(formValues);
+      reset(formValues, {
+        keepDirty: false
+      });
+    }
   }, [formValues]);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(function () {
     setScreenSize(props.screenSize);
-    setValue(props.screenSize, getValues(props.screenSize));
+    var newDefaultValues = getDefaultValues(props);
+    setValue(props.screenSize.toLowerCase(), newDefaultValues[props.screenSize.toLowerCase()], {
+      shouldDirty: false
+    });
   }, [props.screenSize]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
     className: "dlx-photo-block__max-width-responsive-control"
@@ -26882,54 +26914,55 @@ var TypographyControl = function TypographyControl(props) {
     getNumericValue = _useUnits.getNumericValue,
     getUnitValue = _useUnits.getUnitValue,
     startsWithNumber = _useUnits.startsWithNumber;
-  var _useDeviceType = (0,_hooks_useDeviceType__WEBPACK_IMPORTED_MODULE_7__["default"])('Desktop'),
-    _useDeviceType2 = _slicedToArray(_useDeviceType, 1),
-    screenSize = _useDeviceType2[0];
-  var getDefaultValues = function getDefaultValues() {
+  var _useState19 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('desktop'),
+    _useState20 = _slicedToArray(_useState19, 2),
+    screenSize = _useState20[0],
+    setScreenSize = _useState20[1];
+  var getDefaultValues = function getDefaultValues(newProps) {
     return {
       mobile: {
-        fontFamily: props.values.mobile.fontFamily,
-        fontFamilySlug: props.values.mobile.fontFamilySlug,
-        fontSize: props.values.mobile.fontSize,
-        fontSizeUnit: props.values.mobile.fontSizeUnit,
-        fontWeight: props.values.mobile.fontWeight,
-        lineHeight: props.values.mobile.lineHeight,
-        lineHeightUnit: props.values.mobile.lineHeightUnit,
-        textTransform: props.values.mobile.textTransform,
-        letterSpacing: props.values.mobile.letterSpacing,
-        letterSpacingUnit: props.values.mobile.letterSpacingUnit,
-        fontType: props.values.mobile.fontType,
-        fontFallback: props.values.mobile.fontFallback
+        fontFamily: newProps.values.mobile.fontFamily,
+        fontFamilySlug: newProps.values.mobile.fontFamilySlug,
+        fontSize: newProps.values.mobile.fontSize,
+        fontSizeUnit: newProps.values.mobile.fontSizeUnit,
+        fontWeight: newProps.values.mobile.fontWeight,
+        lineHeight: newProps.values.mobile.lineHeight,
+        lineHeightUnit: newProps.values.mobile.lineHeightUnit,
+        textTransform: newProps.values.mobile.textTransform,
+        letterSpacing: newProps.values.mobile.letterSpacing,
+        letterSpacingUnit: newProps.values.mobile.letterSpacingUnit,
+        fontType: newProps.values.mobile.fontType,
+        fontFallback: newProps.values.mobile.fontFallback
       },
       tablet: {
-        fontFamily: props.values.tablet.fontFamily,
-        fontFamilySlug: props.values.tablet.fontFamilySlug,
-        fontSize: props.values.tablet.fontSize,
-        fontSizeUnit: props.values.tablet.fontSizeUnit,
-        fontWeight: props.values.tablet.fontWeight,
-        lineHeight: props.values.tablet.lineHeight,
-        lineHeightUnit: props.values.tablet.lineHeightUnit,
-        textTransform: props.values.tablet.textTransform,
-        letterSpacing: props.values.tablet.letterSpacing,
-        letterSpacingUnit: props.values.tablet.letterSpacingUnit,
-        fontType: props.values.tablet.fontType,
-        fontFallback: props.values.tablet.fontFallback
+        fontFamily: newProps.values.tablet.fontFamily,
+        fontFamilySlug: newProps.values.tablet.fontFamilySlug,
+        fontSize: newProps.values.tablet.fontSize,
+        fontSizeUnit: newProps.values.tablet.fontSizeUnit,
+        fontWeight: newProps.values.tablet.fontWeight,
+        lineHeight: newProps.values.tablet.lineHeight,
+        lineHeightUnit: newProps.values.tablet.lineHeightUnit,
+        textTransform: newProps.values.tablet.textTransform,
+        letterSpacing: newProps.values.tablet.letterSpacing,
+        letterSpacingUnit: newProps.values.tablet.letterSpacingUnit,
+        fontType: newProps.values.tablet.fontType,
+        fontFallback: newProps.values.tablet.fontFallback
       },
       desktop: {
-        fontFamily: props.values.desktop.fontFamily,
-        fontFamilySlug: props.values.desktop.fontFamilySlug,
-        fontSize: props.values.desktop.fontSize,
-        fontSizeUnit: props.values.desktop.fontSizeUnit,
-        fontWeight: props.values.desktop.fontWeight,
-        lineHeight: props.values.desktop.lineHeight,
-        lineHeightUnit: props.values.desktop.lineHeightUnit,
-        textTransform: props.values.desktop.textTransform,
-        letterSpacing: props.values.desktop.letterSpacing,
-        letterSpacingUnit: props.values.desktop.letterSpacingUnit,
-        fontType: props.values.desktop.fontType,
-        fontFallback: props.values.desktop.fontFallback
+        fontFamily: newProps.values.desktop.fontFamily,
+        fontFamilySlug: newProps.values.desktop.fontFamilySlug,
+        fontSize: newProps.values.desktop.fontSize,
+        fontSizeUnit: newProps.values.desktop.fontSizeUnit,
+        fontWeight: newProps.values.desktop.fontWeight,
+        lineHeight: newProps.values.desktop.lineHeight,
+        lineHeightUnit: newProps.values.desktop.lineHeightUnit,
+        textTransform: newProps.values.desktop.textTransform,
+        letterSpacing: newProps.values.desktop.letterSpacing,
+        letterSpacingUnit: newProps.values.desktop.letterSpacingUnit,
+        fontType: newProps.values.desktop.fontType,
+        fontFallback: newProps.values.desktop.fontFallback
       },
-      captionCustomTypography: props.values.captionCustomTypography
+      captionCustomTypography: newProps.values.captionCustomTypography
     };
   };
   var _useSettings = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useSettings)('typography.fontFamilies'),
@@ -26937,20 +26970,34 @@ var TypographyControl = function TypographyControl(props) {
     blockLevelFontFamilies = _useSettings2[0]; // This may be undefined.
 
   var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_5__.useForm)({
-      defaultValues: getDefaultValues()
+      defaultValues: getDefaultValues(props)
     }),
     control = _useForm.control,
     setValue = _useForm.setValue,
-    getValues = _useForm.getValues;
+    getValues = _useForm.getValues,
+    reset = _useForm.reset;
   var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_5__.useWatch)({
     control: control
   });
+  var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_5__.useFormState)({
+      control: control
+    }),
+    isDirty = _useFormState.isDirty;
   var label = props.label;
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    props.onValuesChange(formValues);
+    if (isDirty) {
+      props.onValuesChange(formValues);
+      reset(formValues, {
+        keepDirty: false
+      });
+    }
   }, [formValues]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    setValue(props.screenSize, getValues(props.screenSize));
+    setScreenSize(props.screenSize.toLowerCase());
+    var newDefaultValues = getDefaultValues(props);
+    setValue(props.screenSize.toLowerCase(), newDefaultValues[props.screenSize.toLowerCase()], {
+      shouldDirty: false
+    });
   }, [props.screenSize]);
 
   /**
@@ -33260,7 +33307,8 @@ function buildBorderCSS(props, screenSize, prefix) {
   }
   screenSize = screenSize.toLowerCase();
   var border = props[screenSize];
-  if (true === getHierarchicalValueUnit(props, screenSize, border.unitSync, 'unitSync')) {
+  var maybeUnitSync = border.unitSync;
+  if (true === getHierarchicalValueUnit(props, screenSize, border.unitSync, 'unitSync') && maybeUnitSync) {
     var topValue = geHierarchicalPlaceholderValue(props, screenSize, border.top.width, 'top', 'width');
     var _topUnit3 = geHierarchicalPlaceholderValue(props, screenSize, border.top.unit, 'top', 'unit');
     var _topColor = getColor(geHierarchicalPlaceholderValue(props, screenSize, border.top.color, 'top', 'color'), geHierarchicalPlaceholderValue(props, screenSize, border.top.opacity, 'top', 'opacity'));

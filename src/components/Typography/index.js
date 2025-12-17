@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { ButtonGroup, Button, Tooltip, SelectControl, BaseControl, TextControl, Popover, PanelRow } from '@wordpress/components';
 import { useSettings } from '@wordpress/block-editor';
-import { useForm, Controller, useWatch } from 'react-hook-form';
+import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 import { Type } from 'lucide-react';
 import { geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
 import useDeviceType from '../../hooks/useDeviceType';
@@ -104,53 +104,53 @@ const TypographyControl = ( props ) => {
 		startsWithNumber,
 	} = useUnits();
 
-	const [ screenSize ] = useDeviceType( 'Desktop' );
+	const [ screenSize, setScreenSize ] = useState( 'desktop' );
 
-	const getDefaultValues = () => {
+	const getDefaultValues = ( newProps ) => {
 		return {
 			mobile: {
-				fontFamily: props.values.mobile.fontFamily,
-				fontFamilySlug: props.values.mobile.fontFamilySlug,
-				fontSize: props.values.mobile.fontSize,
-				fontSizeUnit: props.values.mobile.fontSizeUnit,
-				fontWeight: props.values.mobile.fontWeight,
-				lineHeight: props.values.mobile.lineHeight,
-				lineHeightUnit: props.values.mobile.lineHeightUnit,
-				textTransform: props.values.mobile.textTransform,
-				letterSpacing: props.values.mobile.letterSpacing,
-				letterSpacingUnit: props.values.mobile.letterSpacingUnit,
-				fontType: props.values.mobile.fontType,
-				fontFallback: props.values.mobile.fontFallback,
+				fontFamily: newProps.values.mobile.fontFamily,
+				fontFamilySlug: newProps.values.mobile.fontFamilySlug,
+				fontSize: newProps.values.mobile.fontSize,
+				fontSizeUnit: newProps.values.mobile.fontSizeUnit,
+				fontWeight: newProps.values.mobile.fontWeight,
+				lineHeight: newProps.values.mobile.lineHeight,
+				lineHeightUnit: newProps.values.mobile.lineHeightUnit,
+				textTransform: newProps.values.mobile.textTransform,
+				letterSpacing: newProps.values.mobile.letterSpacing,
+				letterSpacingUnit: newProps.values.mobile.letterSpacingUnit,
+				fontType: newProps.values.mobile.fontType,
+				fontFallback: newProps.values.mobile.fontFallback,
 			},
 			tablet: {
-				fontFamily: props.values.tablet.fontFamily,
-				fontFamilySlug: props.values.tablet.fontFamilySlug,
-				fontSize: props.values.tablet.fontSize,
-				fontSizeUnit: props.values.tablet.fontSizeUnit,
-				fontWeight: props.values.tablet.fontWeight,
-				lineHeight: props.values.tablet.lineHeight,
-				lineHeightUnit: props.values.tablet.lineHeightUnit,
-				textTransform: props.values.tablet.textTransform,
-				letterSpacing: props.values.tablet.letterSpacing,
-				letterSpacingUnit: props.values.tablet.letterSpacingUnit,
-				fontType: props.values.tablet.fontType,
-				fontFallback: props.values.tablet.fontFallback,
+				fontFamily: newProps.values.tablet.fontFamily,
+				fontFamilySlug: newProps.values.tablet.fontFamilySlug,
+				fontSize: newProps.values.tablet.fontSize,
+				fontSizeUnit: newProps.values.tablet.fontSizeUnit,
+				fontWeight: newProps.values.tablet.fontWeight,
+				lineHeight: newProps.values.tablet.lineHeight,
+				lineHeightUnit: newProps.values.tablet.lineHeightUnit,
+				textTransform: newProps.values.tablet.textTransform,
+				letterSpacing: newProps.values.tablet.letterSpacing,
+				letterSpacingUnit: newProps.values.tablet.letterSpacingUnit,
+				fontType: newProps.values.tablet.fontType,
+				fontFallback: newProps.values.tablet.fontFallback,
 			},
 			desktop: {
-				fontFamily: props.values.desktop.fontFamily,
-				fontFamilySlug: props.values.desktop.fontFamilySlug,
-				fontSize: props.values.desktop.fontSize,
-				fontSizeUnit: props.values.desktop.fontSizeUnit,
-				fontWeight: props.values.desktop.fontWeight,
-				lineHeight: props.values.desktop.lineHeight,
-				lineHeightUnit: props.values.desktop.lineHeightUnit,
-				textTransform: props.values.desktop.textTransform,
-				letterSpacing: props.values.desktop.letterSpacing,
-				letterSpacingUnit: props.values.desktop.letterSpacingUnit,
-				fontType: props.values.desktop.fontType,
-				fontFallback: props.values.desktop.fontFallback,
+				fontFamily: newProps.values.desktop.fontFamily,
+				fontFamilySlug: newProps.values.desktop.fontFamilySlug,
+				fontSize: newProps.values.desktop.fontSize,
+				fontSizeUnit: newProps.values.desktop.fontSizeUnit,
+				fontWeight: newProps.values.desktop.fontWeight,
+				lineHeight: newProps.values.desktop.lineHeight,
+				lineHeightUnit: newProps.values.desktop.lineHeightUnit,
+				textTransform: newProps.values.desktop.textTransform,
+				letterSpacing: newProps.values.desktop.letterSpacing,
+				letterSpacingUnit: newProps.values.desktop.letterSpacingUnit,
+				fontType: newProps.values.desktop.fontType,
+				fontFallback: newProps.values.desktop.fontFallback,
 			},
-			captionCustomTypography: props.values.captionCustomTypography,
+			captionCustomTypography: newProps.values.captionCustomTypography,
 		};
 	};
 
@@ -160,20 +160,37 @@ const TypographyControl = ( props ) => {
 		control,
 		setValue,
 		getValues,
+		reset,
 	} = useForm( {
-		defaultValues: getDefaultValues(),
+		defaultValues: getDefaultValues( props ),
 	} );
 
 	const formValues = useWatch( { control } );
 
+	const { isDirty } = useFormState( { control } );
+
+
 	const { label } = props;
 
 	useEffect( () => {
-		props.onValuesChange( formValues );
+		if ( isDirty ) {
+			props.onValuesChange( formValues );
+			reset( formValues, {
+				keepDirty: false,
+			} );
+		}
 	}, [ formValues ] );
 
 	useEffect( () => {
-		setValue( props.screenSize, getValues( props.screenSize ) );
+		setScreenSize( props.screenSize.toLowerCase() );
+		const newDefaultValues = getDefaultValues( props );
+		setValue(
+			props.screenSize.toLowerCase(),
+			newDefaultValues[ props.screenSize.toLowerCase() ],
+			{
+				shouldDirty: false,
+			}
+		);
 	}, [ props.screenSize ] );
 
 	/**

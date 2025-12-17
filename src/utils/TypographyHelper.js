@@ -177,8 +177,9 @@ export function buildBorderCSS( props, screenSize, prefix ) {
 	}
 	screenSize = screenSize.toLowerCase();
 	const border = props[ screenSize ];
+	const maybeUnitSync = border.unitSync;
 
-	if ( true === getHierarchicalValueUnit( props, screenSize, border.unitSync, 'unitSync' ) ) {
+	if ( true === getHierarchicalValueUnit( props, screenSize, border.unitSync, 'unitSync' ) && maybeUnitSync ) {
 		const topValue = geHierarchicalPlaceholderValue( props, screenSize, border.top.width, 'top', 'width' );
 		const topUnit = geHierarchicalPlaceholderValue( props, screenSize, border.top.unit, 'top', 'unit' );
 		const topColor = getColor(

@@ -794,10 +794,7 @@ const PhotoCaptionBlock = ( props ) => {
 						values={ overlayBorder }
 						onValuesChange={ ( values ) => {
 							const overlayBorderValues = { ...overlayBorder };
-							const newValue = values[ deviceType.toLowerCase() ];
-							if ( newValue ) {
-								overlayBorderValues[ deviceType.toLowerCase() ] = newValue;
-							}
+							overlayBorderValues[ deviceType ] = values[ deviceType ];
 							setAttributes( { overlayBorder: overlayBorderValues } );
 						} }
 						labelTop={ __( 'Top Border', 'photo-block' ) }
@@ -805,12 +802,15 @@ const PhotoCaptionBlock = ( props ) => {
 						labelBottom={ __( 'Bottom Border', 'photo-block' ) }
 						labelLeft={ __( 'Left Border', 'photo-block' ) }
 						labelAll={ __( 'Change Border', 'photo-block' ) }
+						screenSize={ deviceType }
 					/>
 					<DimensionsResponsiveControl
 						label={ __( 'Overlay Border Radius', 'photo-block' ) }
 						values={ overlayBorderRadius }
 						onValuesChange={ ( values ) => {
-							setAttributes( { overlayBorderRadius: values } );
+							const overlayBorderRadiusValues = { ...overlayBorderRadius };
+							overlayBorderRadiusValues[ deviceType ] = values[ deviceType ];
+							setAttributes( { overlayBorderRadius: overlayBorderRadiusValues } );
 						} }
 						labelTop={ __( 'Top-left Radius', 'photo-block' ) }
 						labelRight={ __( 'Top-right Radius', 'photo-block' ) }
@@ -832,10 +832,7 @@ const PhotoCaptionBlock = ( props ) => {
 							screenSize={ deviceType }
 							onValuesChange={ ( formValues ) => {
 								const captionTypographyValues = { ...captionTypography };
-								const newValue = formValues[ deviceType.toLowerCase() ];
-								if ( newValue ) {
-									captionTypographyValues[ deviceType.toLowerCase() ] = newValue;
-								}
+								captionTypographyValues[ deviceType ] = formValues[ deviceType ];
 								setAttributes( {
 									captionTypography: captionTypographyValues,
 								} );
@@ -1146,10 +1143,7 @@ const PhotoCaptionBlock = ( props ) => {
 					values={ captionPaddingSize }
 					onValuesChange={ ( values ) => {
 						const captionPaddingSizeValues = { ...captionPaddingSize };
-						const newValue = values[ deviceType.toLowerCase() ];
-						if ( newValue ) {
-							captionPaddingSizeValues[ deviceType.toLowerCase() ] = newValue;
-						}
+						captionPaddingSizeValues[ deviceType ] = values[ deviceType ];
 						setAttributes( { captionPaddingSize: captionPaddingSizeValues } );
 					} }
 					labelTop={ __( 'Top Padding', 'photo-block' ) }
@@ -1157,16 +1151,14 @@ const PhotoCaptionBlock = ( props ) => {
 					labelBottom={ __( 'Bottom Padding', 'photo-block' ) }
 					labelLeft={ __( 'Left Padding', 'photo-block' ) }
 					labelAll={ __( 'Change Padding', 'photo-block' ) }
+					screenSize={ deviceType }
 				/>
 				<DimensionsResponsiveControl
 					label={ __( 'Caption Margin', 'photo-block' ) }
 					values={ captionMarginSize }
 					onValuesChange={ ( values ) => {
 						const captionMarginSizeValues = { ...captionMarginSize };
-						const newValue = values[ deviceType.toLowerCase() ];
-						if ( newValue ) {
-							captionMarginSizeValues[ deviceType.toLowerCase() ] = newValue;
-						}
+						captionMarginSizeValues[ deviceType ] = values[ deviceType ];
 						setAttributes( { captionMarginSize: captionMarginSizeValues } );
 					} }
 					labelTop={ __( 'Top Margin', 'photo-block' ) }
@@ -1175,16 +1167,14 @@ const PhotoCaptionBlock = ( props ) => {
 					labelLeft={ __( 'Left Margin', 'photo-block' ) }
 					labelAll={ __( 'Change Margin', 'photo-block' ) }
 					allowNegatives={ true }
+					screenSize={ deviceType }
 				/>
 				<BorderResponsiveControl
 					label={ __( 'Caption Border', 'photo-block' ) }
 					values={ captionBorder }
 					onValuesChange={ ( values ) => {
 						const captionBorderValues = { ...captionBorder };
-						const newValue = values[ deviceType.toLowerCase() ];
-						if ( newValue ) {
-							captionBorderValues[ deviceType.toLowerCase() ] = newValue;
-						}
+						captionBorderValues[ deviceType ] = values[ deviceType ];
 						setAttributes( { captionBorder: captionBorderValues } );
 					} }
 					labelTop={ __( 'Top Border', 'photo-block' ) }
@@ -1192,16 +1182,14 @@ const PhotoCaptionBlock = ( props ) => {
 					labelBottom={ __( 'Bottom Border', 'photo-block' ) }
 					labelLeft={ __( 'Left Border', 'photo-block' ) }
 					labelAll={ __( 'Change Border', 'photo-block' ) }
+					screenSize={ deviceType }
 				/>
 				<DimensionsResponsiveControl
 					label={ __( 'Caption Border Radius', 'photo-block' ) }
 					values={ captionBorderRadius }
 					onValuesChange={ ( values ) => {
 						const captionBorderRadiusValues = { ...captionBorderRadius };
-						const newValue = values[ deviceType.toLowerCase() ];
-						if ( newValue ) {
-							captionBorderRadiusValues[ deviceType.toLowerCase() ] = newValue;
-						}
+						captionBorderRadiusValues[ deviceType ] = values[ deviceType ];
 						setAttributes( { captionBorderRadius: captionBorderRadiusValues } );
 					} }
 					labelTop={ __( 'Top-left Radius', 'photo-block' ) }
@@ -1210,6 +1198,7 @@ const PhotoCaptionBlock = ( props ) => {
 					labelLeft={ __( 'Bottom-left Radius', 'photo-block' ) }
 					labelAll={ __( 'Change Border Radius', 'photo-block' ) }
 					isBorderRadius={ true }
+					screenSize={ deviceType }
 				/>
 
 			</PanelBody>
@@ -1228,7 +1217,9 @@ const PhotoCaptionBlock = ( props ) => {
 						values={ containerWidth }
 						screenSize={ deviceType }
 						onValuesChange={ ( newValues ) => {
-							setAttributes( { containerWidth: newValues } );
+							const containerWidthValues = { ...containerWidth };
+							containerWidthValues[ deviceType ] = newValues[ deviceType ];
+							setAttributes( { containerWidth: containerWidthValues } );
 						} }
 					/>
 				</div>
@@ -1240,10 +1231,7 @@ const PhotoCaptionBlock = ( props ) => {
 						units={ heightUnits }
 						onValuesChange={ ( newValues ) => {
 							const containerHeightValues = { ...containerHeight };
-							const newValue = newValues[ deviceType.toLowerCase() ];
-							if ( newValue ) {
-								containerHeightValues[ deviceType.toLowerCase() ] = newValue;
-							}
+							containerHeightValues[ deviceType ] = newValues[ deviceType ];
 							setAttributes( { containerHeight: containerHeightValues } );
 						} }
 					/>
@@ -1255,10 +1243,7 @@ const PhotoCaptionBlock = ( props ) => {
 						screenSize={ deviceType }
 						onValuesChange={ ( newValues ) => {
 							const containerMinWidthValues = { ...containerMinWidth };
-							const newValue = newValues[ deviceType.toLowerCase() ];
-							if ( newValue ) {
-								containerMinWidthValues[ deviceType.toLowerCase() ] = newValue;
-							}
+							containerMinWidthValues[ deviceType ] = newValues[ deviceType ];
 							setAttributes( { containerMinWidth: containerMinWidthValues } );
 						} }
 					/>
@@ -1271,10 +1256,7 @@ const PhotoCaptionBlock = ( props ) => {
 						units={ heightUnits }
 						onValuesChange={ ( newValues ) => {
 							const containerMinHeightValues = { ...containerMinHeight };
-							const newValue = newValues[ deviceType.toLowerCase() ];
-							if ( newValue ) {
-								containerMinHeightValues[ deviceType.toLowerCase() ] = newValue;
-							}
+							containerMinHeightValues[ deviceType ] = newValues[ deviceType ];
 							setAttributes( { containerMinHeight: containerMinHeightValues } );
 						} }
 					/>
@@ -1286,10 +1268,7 @@ const PhotoCaptionBlock = ( props ) => {
 						screenSize={ deviceType }
 						onValuesChange={ ( newValues ) => {
 							const containerMaxWidthValues = { ...containerMaxWidth };
-							const newValue = newValues[ deviceType.toLowerCase() ];
-							if ( newValue ) {
-								containerMaxWidthValues[ deviceType.toLowerCase() ] = newValue;
-							}
+							containerMaxWidthValues[ deviceType ] = newValues[ deviceType ];
 							setAttributes( { containerMaxWidth: containerMaxWidthValues } );
 						} }
 					/>
@@ -1302,10 +1281,7 @@ const PhotoCaptionBlock = ( props ) => {
 						units={ heightUnits }
 						onValuesChange={ ( newValues ) => {
 							const containerMaxHeightValues = { ...containerMaxHeight };
-							const newValue = newValues[ deviceType.toLowerCase() ];
-							if ( newValue ) {
-								containerMaxHeightValues[ deviceType.toLowerCase() ] = newValue;
-							}
+							containerMaxHeightValues[ deviceType ] = newValues[ deviceType ];
 							setAttributes( { containerMaxHeight: containerMaxHeightValues } );
 						} }
 					/>
