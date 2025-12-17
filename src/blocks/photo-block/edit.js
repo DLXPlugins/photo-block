@@ -97,7 +97,7 @@ const PhotoBlock = ( props ) => {
 
 					// Get the old screen, and if it's not edit, set new screen to initial.
 					const oldScreen = oldStore.getCurrentScreen();
-					let newScreen = 'initial';
+					let newScreen = 'loading';
 					switch ( oldScreen ) {
 						case 'edit':
 						case 'crop':
