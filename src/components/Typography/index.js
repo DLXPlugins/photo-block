@@ -263,6 +263,8 @@ const TypographyControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Font Family', 'photo-block' ) }
 										value={ getValues( 'captionCustomTypography' ) }
 										onChange={ ( newValue ) => {
@@ -280,6 +282,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { newValue } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							type="hidden"
 							value={ getValues( screenSize ).fontFamily }
 						/>
@@ -290,6 +294,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							type="hidden"
 							value={ getValues( screenSize ).fontFallback }
 						/>
@@ -300,6 +306,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							type="hidden"
 							value={ getValues( 'captionCustomTypography' ) }
 						/>
@@ -342,6 +350,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { onChange } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Font Size', 'photo-block' ) }
 							value={ getValues( screenSize ).fontSize }
 							onChange={ ( newValue ) => {
@@ -368,6 +378,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							type="hidden"
 							value={ getValues( screenSize ).fontSizeUnit }
 						/>
@@ -458,6 +470,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { onChange, value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Line Height', 'photo-block' ) }
 							value={ getValues( screenSize ).lineHeight }
 							onChange={ ( newValue ) => {
@@ -484,6 +498,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							type="hidden"
 							value={ getValues( screenSize ).lineHeightUnit }
 						/>
@@ -543,6 +559,8 @@ const TypographyControl = ( props ) => {
 				control={ control }
 				render={ ( { field: { value } } ) => (
 					<TextControl
+						__next40pxDefaultSize={ true }
+						__nextHasNoMarginBottom={ true }
 						type="hidden"
 						value={ getValues( screenSize ).fontType }
 					/>
@@ -558,6 +576,8 @@ const TypographyControl = ( props ) => {
 				control={ control }
 				render={ ( { field: { value } } ) => (
 					<TextControl
+						__next40pxDefaultSize={ true }
+						__nextHasNoMarginBottom={ true }
 						type="hidden"
 						value={ getValues( screenSize ).fontFallback }
 					/>
@@ -574,6 +594,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { onChange, value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Letter Spacing', 'photo-block' ) }
 							value={ getValues( screenSize ).letterSpacing }
 							onChange={ ( newValue ) => {
@@ -600,6 +622,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							type="hidden"
 							value={ getValues( screenSize ).letterSpacingUnit }
 						/>

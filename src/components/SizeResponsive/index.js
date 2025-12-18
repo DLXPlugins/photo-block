@@ -126,6 +126,8 @@ const SizeResponsiveControl = ( props ) => {
 					name={ `${ screenSize }.width` }
 					render={ ( { field: { onChange, value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							type={ 'text' }
 							value={ getValues( screenSize ).width }
 							onChange={ ( newValue ) => {

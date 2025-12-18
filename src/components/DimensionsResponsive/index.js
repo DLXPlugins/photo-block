@@ -332,6 +332,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
+								__next40pxDefaultSize={ true }
 								label={ labelAll }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }
@@ -451,6 +452,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
+								__next40pxDefaultSize={ true }
 								label={ labelTop }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }
@@ -509,6 +511,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
+								__next40pxDefaultSize={ true }
 								label={ labelRight }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }
@@ -567,6 +570,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
+								__next40pxDefaultSize={ true }
 								label={ labelBottom }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }
@@ -625,6 +629,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
+								__next40pxDefaultSize={ true }
 								label={ labelLeft }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }

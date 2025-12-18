@@ -74,6 +74,8 @@ const DropShadowControl = ( props ) => {
 						<div className="dlx-photo-block__drop-shadow-control__settings__offset__wrapper">
 							<div className="dlx-photo-block__drop-shadow-control__settings__offset__x">
 								<TextControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'X Offset', 'photo-block' ) }
 									value={ attributes.photoDropShadow.horizontal }
 									type="number"
@@ -89,6 +91,8 @@ const DropShadowControl = ( props ) => {
 							</div>
 							<div className="dlx-photo-block__drop-shadow-control__settings__offset__y">
 								<TextControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Y Offset', 'photo-block' ) }
 									value={ attributes.photoDropShadow.vertical }
 									type="number"

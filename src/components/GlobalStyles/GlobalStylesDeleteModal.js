@@ -106,7 +106,7 @@ const GlobalStylesDeleteModal = ( props ) => {
 				<Controller
 					name="editId"
 					control={ control }
-					render={ ( { field } ) => <TextControl type="hidden" { ...field } /> }
+					render={ ( { field } ) => <TextControl __next40pxDefaultSize={ true } __nextHasNoMarginBottom={ true } type="hidden" { ...field } /> }
 				/>
 				<Button
 					type="submit"

@@ -28493,7 +28493,8 @@ var Settings = function Settings(props) {
           clearErrors('screenshotOneAccessKey');
           clearErrors('apiKeyError');
         },
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter your ScreenshotOne API key.', 'photo-block')
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter your ScreenshotOne API key.', 'photo-block'),
+        __next40pxDefaultSize: true
       }), 'required' === ((_errors$screenshotOne = errors.screenshotOneAccessKey) === null || _errors$screenshotOne === void 0 ? void 0 : _errors$screenshotOne.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Notice__WEBPACK_IMPORTED_MODULE_10__["default"], {
         message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('An API key is required.', 'photo-block'),
         status: "error",
@@ -28537,7 +28538,8 @@ var Settings = function Settings(props) {
           field.onChange(newValue);
           clearErrors('screenshotOneSecretKey');
         },
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter your ScreenshotOne secret key for signed requests.', 'photo-block')
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter your ScreenshotOne secret key for signed requests.', 'photo-block'),
+        __next40pxDefaultSize: true
       }));
     }
   })), 'required' === ((_errors$screenshotOne3 = errors.screenshotOneSecretKey) === null || _errors$screenshotOne3 === void 0 ? void 0 : _errors$screenshotOne3.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -28640,7 +28642,8 @@ var Settings = function Settings(props) {
       var field = _ref0.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Max Image Width', 'photo-block'),
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter the maximum image width for ScreenshotOne.', 'photo-block')
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter the maximum image width for ScreenshotOne.', 'photo-block'),
+        __next40pxDefaultSize: true
       }));
     }
   })), 'required' === ((_errors$screenshotOne4 = errors.screenshotOneMaxImageWidth) === null || _errors$screenshotOne4 === void 0 ? void 0 : _errors$screenshotOne4.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -28679,7 +28682,8 @@ var Settings = function Settings(props) {
       var field = _ref1.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Max Image Height', 'photo-block'),
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter the maximum image height for ScreenshotOne.', 'photo-block')
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter the maximum image height for ScreenshotOne.', 'photo-block'),
+        __next40pxDefaultSize: true
       }));
     }
   })), 'required' === ((_errors$screenshotOne6 = errors.screenshotOneMaxImageHeight) === null || _errors$screenshotOne6 === void 0 ? void 0 : _errors$screenshotOne6.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -28718,7 +28722,8 @@ var Settings = function Settings(props) {
       var field = _ref10.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Viewport Width', 'photo-block'),
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter the viewport width for ScreenshotOne.', 'photo-block')
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter the viewport width for ScreenshotOne.', 'photo-block'),
+        __next40pxDefaultSize: true
       }));
     }
   })), 'required' === ((_errors$screenshotOne8 = errors.screenshotOneViewportWidth) === null || _errors$screenshotOne8 === void 0 ? void 0 : _errors$screenshotOne8.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -28757,7 +28762,8 @@ var Settings = function Settings(props) {
       var field = _ref11.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, _extends({}, field, {
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Viewport Height', 'photo-block'),
-        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter the viewport height for ScreenshotOne.', 'photo-block')
+        help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enter the viewport height for ScreenshotOne.', 'photo-block'),
+        __next40pxDefaultSize: true
       }));
     }
   })), 'required' === ((_errors$screenshotOne0 = errors.screenshotOneViewportHeight) === null || _errors$screenshotOne0 === void 0 ? void 0 : _errors$screenshotOne0.type) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {

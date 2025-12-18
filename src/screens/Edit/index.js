@@ -332,6 +332,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					{ imageData.can_edit && (
 						<>
 							<TextControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Photo Title', 'photo-block' ) }
 								value={ attributes.imageData.title }
 								onChange={ ( title ) => {
@@ -406,6 +408,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						<div className="photo-block__image-info">
 							<div className="photo-block__image-info-item">
 								<TextControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									disabled={ true }
 									value={ imageData.url }
 									className="photo-block__image-info-item-text"
@@ -708,6 +712,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					<div className="dlx-photo-block__a11y-popover">
 						<h3>{ __( 'Accessibility Options', 'photo-block' ) }</h3>
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Photo Title', 'photo-block' ) }
 							value={ attributes.imageData.title }
 							onChange={ ( title ) => {

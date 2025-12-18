@@ -74,6 +74,7 @@ const AspectRatioResponsiveControl = ( props ) => {
 					pattern={ aspectRatioRegex }
 					render={ ( { field: { onChange, value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
 							type={ 'text' }
 							value={ value }
 							onChange={ ( newValue ) => {

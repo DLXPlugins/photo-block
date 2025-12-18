@@ -42,6 +42,8 @@ const SidebarImageAdvancedInspectorControl = ( props ) => {
 				<>
 					<PanelRow>
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'HTML Anchor', 'photo-block' ) }
 							value={ htmlAnchor }
 							onChange={ ( value ) => {
@@ -52,6 +54,8 @@ const SidebarImageAdvancedInspectorControl = ( props ) => {
 					</PanelRow>
 					<PanelRow>
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Figure CSS Class(es)', 'photo-block' ) }
 							value={ figureCSSClasses }
 							onChange={ ( value ) => {
@@ -62,6 +66,8 @@ const SidebarImageAdvancedInspectorControl = ( props ) => {
 					</PanelRow>
 					<PanelRow>
 						<TextControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Image CSS Class(es)', 'photo-block' ) }
 							value={ imageCSSClasses }
 							onChange={ ( value ) => {

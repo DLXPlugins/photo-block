@@ -235,6 +235,8 @@ const MediaLink = ( props ) => {
 										{ customLinkLightboxShowCaption && (
 											<PanelRow>
 												<TextControl
+													__next40pxDefaultSize={ true }
+													__nextHasNoMarginBottom={ true }
 													label={ __( 'Custom Caption (optional)', 'photo-block' ) }
 													value={ customLinkLightboxCaption }
 													onChange={ ( value ) => {
@@ -275,6 +277,8 @@ const MediaLink = ( props ) => {
 									{ lightboxShowCaption && (
 										<PanelRow>
 											<TextControl
+												__next40pxDefaultSize={ true }
+												__nextHasNoMarginBottom={ true }
 												label={ __( 'Custom Caption (optional)', 'photo-block' ) }
 												value={ lightboxCaption }
 												onChange={ ( value ) => {
@@ -286,6 +290,8 @@ const MediaLink = ( props ) => {
 									) }
 									<PanelRow>
 										<TextControl
+											__next40pxDefaultSize={ true }
+											__nextHasNoMarginBottom={ true }
 											label={ __( 'Gallery Slug', 'photo-block' ) }
 											value={ lightboxGallerySlug }
 											onChange={ ( value ) => {
@@ -327,6 +333,8 @@ const MediaLink = ( props ) => {
 							}
 							<PanelRow>
 								<TextControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Link Title', 'photo-block' ) }
 									value={ mediaLinkTitle }
 									onChange={ ( value ) => {
@@ -337,6 +345,8 @@ const MediaLink = ( props ) => {
 							</PanelRow>
 							<PanelRow>
 								<TextControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Link Rel', 'photo-block' ) }
 									value={ attributes.mediaLinkRel }
 									onChange={ ( value ) => {
@@ -348,6 +358,8 @@ const MediaLink = ( props ) => {
 							</PanelRow>
 							<PanelRow>
 								<TextControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Link Class', 'photo-block' ) }
 									value={ attributes.mediaLinkClass }
 									onChange={ ( value ) => {
@@ -359,6 +371,8 @@ const MediaLink = ( props ) => {
 							</PanelRow>
 							<PanelRow>
 								<TextControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Link Anchor ID', 'photo-block' ) }
 									value={ attributes.mediaLinkAnchorId }
 									onChange={ ( value ) => {

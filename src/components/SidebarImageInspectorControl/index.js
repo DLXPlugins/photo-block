@@ -308,6 +308,8 @@ const SidebarImageInspectorControl = ( props ) => {
 						{ ( 'none' !== photoObjectFit && 'custom' === photoObjectPosition ) && (
 							<PanelRow>
 								<TextControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Custom Object Position', 'photo-block' ) }
 									value={ photoObjectPositionCustom }
 									onChange={ ( newObjectPositionCustom ) => {

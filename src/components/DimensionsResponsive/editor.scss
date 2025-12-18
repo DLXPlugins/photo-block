@@ -51,7 +51,8 @@
 .dlx-photo-block__dimensions-responsive-sync-interface,
 .dlx-photo-block__dimensions-responsive-manual-interface-item,
 .dlx-photo-block__border-responsive-sync-interface-input {
-	input[type="text"] {
+	input[type="text"],
+	.components-text-control__input[type=text].is-next-40px-default-size {
 		max-width: 28px;
 		height: 40px;
 		border: none;

@@ -155,6 +155,8 @@ const UploadTypes = ( props ) => {
 				</div>
 				<div className="dlx-photo-block__upload-types-url__container">
 					<TextControl
+						__next40pxDefaultSize={ true }
+						__nextHasNoMarginBottom={ true }
 						type="url"
 						className={
 							classnames( 'dlx-photo-block__upload-types-url__input', {

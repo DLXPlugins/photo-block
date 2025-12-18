@@ -679,6 +679,7 @@ const BorderResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
+								__next40pxDefaultSize={ true }
 								label={ labelAll }
 								className="dlx-photo-block__border-responsive-sync-interface-input"
 								value={ value }
@@ -864,6 +865,7 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
 										label={ labelTop }
 										className="dlx-photo-block__border-responsive-sync-interface-input"
 										value={ value }
@@ -965,6 +967,7 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
 										label={ labelRight }
 										className="dlx-photo-block__border-responsive-sync-interface-input"
 										value={ value }
@@ -1066,6 +1069,7 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
 										label={ labelBottom }
 										className="dlx-photo-block__border-responsive-sync-interface-input"
 										value={ value }

@@ -406,6 +406,8 @@ const GlobalStylesSaveModal = ( props ) => {
 										} }
 										render={ ( { field } ) => (
 											<TextControl
+												__next40pxDefaultSize={ true }
+												__nextHasNoMarginBottom={ true }
 												{ ...field }
 												label={ __( 'Global Style Name', 'photo-block' ) }
 												className={ classnames( 'photo-block-admin__text-control', {
@@ -461,6 +463,8 @@ const GlobalStylesSaveModal = ( props ) => {
 										}
 										render={ ( { field: { onChange, value } } ) => (
 											<TextControl
+												__next40pxDefaultSize={ true }
+												__nextHasNoMarginBottom={ true }
 												label={ __( 'Global Style CSS Class', 'photo-block' ) }
 												value={ value }
 												className={ classnames( 'photo-block-admin__text-control', {

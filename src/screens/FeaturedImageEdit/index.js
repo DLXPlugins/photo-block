@@ -444,6 +444,8 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 										</PanelRow>
 										<PanelRow>
 											<TextControl
+												__next40pxDefaultSize={ true }
+												__nextHasNoMarginBottom={ true }
 												label={ __( 'Gallery Slug', 'photo-block' ) }
 												value={ lightboxGallerySlug }
 												onChange={ ( value ) => {
@@ -478,6 +480,8 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 								</PanelRow>
 								<PanelRow>
 									<TextControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Link Rel', 'photo-block' ) }
 										value={ attributes.dataMediaLinkRel }
 										onChange={ ( value ) => {
@@ -489,6 +493,8 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 								</PanelRow>
 								<PanelRow>
 									<TextControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Link Class', 'photo-block' ) }
 										value={ attributes.dataMediaLinkClass }
 										onChange={ ( value ) => {

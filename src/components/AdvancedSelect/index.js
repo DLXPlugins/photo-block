@@ -405,6 +405,7 @@ const AdvancedSelectControl = ( props ) => {
 									hideLabelFromVision={ true }
 									aria-autocomplete="list"
 									ref={ inputRef }
+									__next40pxDefaultSize={ true }
 								/>
 								{
 									( loading ) && (

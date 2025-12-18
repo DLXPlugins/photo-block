@@ -103,6 +103,7 @@ const BackgroundSelectorControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
+								__next40pxDefaultSize={ true }
 								label={ __( 'Background Size', 'photo-block' ) }
 								value={ value }
 								onChange={ ( newValue ) => {
@@ -118,6 +119,7 @@ const BackgroundSelectorControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
+								__next40pxDefaultSize={ true }
 								label={ __( 'Background Position', 'photo-block' ) }
 								value={ value }
 								onChange={ ( newValue ) => {
@@ -139,6 +141,7 @@ const BackgroundSelectorControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { onChange, value } } ) => (
 						<TextControl
+							__next40pxDefaultSize={ true }
 							label={ __( 'Background Image', 'photo-block' ) }
 							value={ value }
 							onChange={ ( newValue ) => {

@@ -2947,8 +2947,11 @@ svg.lucide * {
   display: none;
 }
 .dlx-photo-block__dimensions-responsive-sync-interface input[type=text],
+.dlx-photo-block__dimensions-responsive-sync-interface .components-text-control__input[type=text].is-next-40px-default-size,
 .dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text],
-.dlx-photo-block__border-responsive-sync-interface-input input[type=text] {
+.dlx-photo-block__dimensions-responsive-manual-interface-item .components-text-control__input[type=text].is-next-40px-default-size,
+.dlx-photo-block__border-responsive-sync-interface-input input[type=text],
+.dlx-photo-block__border-responsive-sync-interface-input .components-text-control__input[type=text].is-next-40px-default-size {
   max-width: 28px;
   height: 40px;
   border: none;
@@ -2962,10 +2965,16 @@ svg.lucide * {
   background: none;
 }
 .dlx-photo-block__dimensions-responsive-sync-interface input[type=text]::-webkit-outer-spin-button, .dlx-photo-block__dimensions-responsive-sync-interface input[type=text]::-webkit-inner-spin-button,
+.dlx-photo-block__dimensions-responsive-sync-interface .components-text-control__input[type=text].is-next-40px-default-size::-webkit-outer-spin-button,
+.dlx-photo-block__dimensions-responsive-sync-interface .components-text-control__input[type=text].is-next-40px-default-size::-webkit-inner-spin-button,
 .dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text]::-webkit-outer-spin-button,
 .dlx-photo-block__dimensions-responsive-manual-interface-item input[type=text]::-webkit-inner-spin-button,
+.dlx-photo-block__dimensions-responsive-manual-interface-item .components-text-control__input[type=text].is-next-40px-default-size::-webkit-outer-spin-button,
+.dlx-photo-block__dimensions-responsive-manual-interface-item .components-text-control__input[type=text].is-next-40px-default-size::-webkit-inner-spin-button,
 .dlx-photo-block__border-responsive-sync-interface-input input[type=text]::-webkit-outer-spin-button,
-.dlx-photo-block__border-responsive-sync-interface-input input[type=text]::-webkit-inner-spin-button {
+.dlx-photo-block__border-responsive-sync-interface-input input[type=text]::-webkit-inner-spin-button,
+.dlx-photo-block__border-responsive-sync-interface-input .components-text-control__input[type=text].is-next-40px-default-size::-webkit-outer-spin-button,
+.dlx-photo-block__border-responsive-sync-interface-input .components-text-control__input[type=text].is-next-40px-default-size::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

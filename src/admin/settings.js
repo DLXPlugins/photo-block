@@ -284,6 +284,7 @@ const Settings = ( props ) => {
 																		clearErrors( 'apiKeyError' );
 																	} }
 																	help={ __( 'Enter your ScreenshotOne API key.', 'photo-block' ) }
+																	__next40pxDefaultSize={ true }
 																/>
 																{
 																	'required' === errors.screenshotOneAccessKey?.type && (
@@ -334,6 +335,7 @@ const Settings = ( props ) => {
 																		clearErrors( 'screenshotOneSecretKey' );
 																	} }
 																	help={ __( 'Enter your ScreenshotOne secret key for signed requests.', 'photo-block' ) }
+																	__next40pxDefaultSize={ true }
 																/>
 															</>
 														) }
@@ -446,6 +448,7 @@ const Settings = ( props ) => {
 																			{ ...field }
 																			label={ __( 'Max Image Width', 'photo-block' ) }
 																			help={ __( 'Enter the maximum image width for ScreenshotOne.', 'photo-block' ) }
+																			__next40pxDefaultSize={ true }
 																		/>
 																	) }
 																/>
@@ -482,6 +485,7 @@ const Settings = ( props ) => {
 																			{ ...field }
 																			label={ __( 'Max Image Height', 'photo-block' ) }
 																			help={ __( 'Enter the maximum image height for ScreenshotOne.', 'photo-block' ) }
+																			__next40pxDefaultSize={ true }
 																		/>
 																	) }
 																/>
@@ -518,6 +522,7 @@ const Settings = ( props ) => {
 																			{ ...field }
 																			label={ __( 'Viewport Width', 'photo-block' ) }
 																			help={ __( 'Enter the viewport width for ScreenshotOne.', 'photo-block' ) }
+																			__next40pxDefaultSize={ true }
 																		/>
 																	) }
 																/>
@@ -554,6 +559,7 @@ const Settings = ( props ) => {
 																			{ ...field }
 																			label={ __( 'Viewport Height', 'photo-block' ) }
 																			help={ __( 'Enter the viewport height for ScreenshotOne.', 'photo-block' ) }
+																			__next40pxDefaultSize={ true }
 																		/>
 																	) }
 																/>

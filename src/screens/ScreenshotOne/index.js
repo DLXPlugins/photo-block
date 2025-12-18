@@ -122,6 +122,8 @@ const ScreenshotOne = ( props ) => {
 								render={ ( { field } ) => (
 									<>
 										<TextControl
+											__next40pxDefaultSize={ true }
+											__nextHasNoMarginBottom={ true }
 											label={ __( 'Add Screenshot URL', 'photo-block' ) }
 											type="url"
 											help={ __( 'Add a screenshot URL to generate a screenshot.', 'photo-block' ) }
@@ -176,6 +178,8 @@ const ScreenshotOne = ( props ) => {
 											name="screenshotOneMaxImageWidth"
 											render={ ( { field } ) => (
 												<TextControl
+													__next40pxDefaultSize={ true }
+													__nextHasNoMarginBottom={ true }
 													label={ __( 'Max Image Width', 'photo-block' ) }
 													{ ...field }
 													type="number"
@@ -190,6 +194,8 @@ const ScreenshotOne = ( props ) => {
 											name="screenshotOneMaxImageHeight"
 											render={ ( { field } ) => (
 												<TextControl
+													__next40pxDefaultSize={ true }
+													__nextHasNoMarginBottom={ true }
 													label={ __( 'Max Image Height', 'photo-block' ) }
 													{ ...field }
 													type="number"
@@ -204,6 +210,8 @@ const ScreenshotOne = ( props ) => {
 											name="screenshotOneViewportWidth"
 											render={ ( { field } ) => (
 												<TextControl
+													__next40pxDefaultSize={ true }
+													__nextHasNoMarginBottom={ true }
 													label={ __( 'Viewport Width', 'photo-block' ) }
 													{ ...field }
 													type="number"
@@ -218,6 +226,8 @@ const ScreenshotOne = ( props ) => {
 											name="screenshotOneViewportHeight"
 											render={ ( { field } ) => (
 												<TextControl
+													__next40pxDefaultSize={ true }
+													__nextHasNoMarginBottom={ true }
 													label={ __( 'Viewport Height', 'photo-block' ) }
 													{ ...field }
 													type="number"

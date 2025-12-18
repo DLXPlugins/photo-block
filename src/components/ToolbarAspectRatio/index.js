@@ -144,6 +144,8 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Aspect Ratio Width', 'photo-block' ) }
 										value={ value }
 										onChange={ ( newValue ) => {
@@ -180,6 +182,8 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Aspect Ratio Height', 'photo-block' ) }
 										value={ value }
 										onChange={ ( newValue ) => {
@@ -199,6 +203,8 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Pixel Width', 'photo-block' ) }
 										value={ value }
 										onChange={ ( newValue ) => {
@@ -235,6 +241,8 @@ const ToolbarAspectRatio = forwardRef( ( props, ref ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Pixel Height', 'photo-block' ) }
 										value={ value }
 										onChange={ ( newValue ) => {

@@ -1062,6 +1062,7 @@ const PhotoCaptionBlock = ( props ) => {
 									setAttributes( { htmlAnchor: value } );
 								} }
 								help={ __( 'Enter a word or two — without spaces — to make a unique web address just for this caption, called an "anchor." Then, you\'ll be able to link directly to this caption on your page.', 'photo-block' ) }
+								__next40pxDefaultSize={ true }
 							/>
 						</PanelRow>
 						<PanelRow>
@@ -1072,6 +1073,7 @@ const PhotoCaptionBlock = ( props ) => {
 									setAttributes( { imageCSSClasses: value } );
 								} }
 								help={ __( 'Add CSS class(es) directly to the figcaption tag.', 'photo-block' ) }
+								__next40pxDefaultSize={ true }
 							/>
 						</PanelRow>
 						<PanelRow>
