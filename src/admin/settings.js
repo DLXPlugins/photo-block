@@ -193,6 +193,7 @@ const Settings = ( props ) => {
 											name="hideCaptionAppender"
 											render={ ( { field } ) => (
 												<ToggleControl
+													__nextHasNoMarginBottom={ true }
 													{ ...field }
 													checked={ field.value }
 													onChange={ ( value ) => {
@@ -217,6 +218,7 @@ const Settings = ( props ) => {
 											name="screenshotOneEnabled"
 											render={ ( { field } ) => (
 												<ToggleControl
+													__nextHasNoMarginBottom={ true }
 													{ ...field }
 													checked={ field.value }
 													onChange={ ( value ) => {
@@ -430,6 +432,8 @@ const Settings = ( props ) => {
 																	name="screenshotOneDefaultImageFormat"
 																	render={ ( { field } ) => (
 																		<SelectControl
+																			__next40pxDefaultSize={ true }
+																			__nextHasNoMarginBottom={ true }
 																			{ ...field }
 																			options={ imageFormats }
 																			label={ __( 'Default Image Format', 'photo-block' ) }
@@ -586,57 +590,60 @@ const Settings = ( props ) => {
 																	</div>
 																)
 															}
-															<div className="dlx-admin__row">
-																<Controller
-																	name="screenshotOneBlockCookieBanners"
-																	control={ control }
-																	render={ ( { field } ) => (
-																		<ToggleControl
-																			{ ...field }
-																			checked={ field.value }
-																			onChange={ ( value ) => {
-																				field.onChange( value );
-																			} }
-																			label={ __( 'Block Cookie Banners', 'photo-block' ) }
-																			help={ __( 'If enabled, ScreenshotOne will block cookie banners from showing.', 'photo-block' ) }
-																		/>
-																	) }
-																/>
-															</div>
-															<div className="dlx-admin__row">
-																<Controller
-																	name="screenshotOneBlockAds"
-																	control={ control }
-																	render={ ( { field } ) => (
-																		<ToggleControl
-																			{ ...field }
-																			checked={ field.value }
-																			onChange={ ( value ) => {
-																				field.onChange( value );
-																			} }
-																			label={ __( 'Block Ads', 'photo-block' ) }
-																			help={ __( 'If enabled, ScreenshotOne will block ads from showing.', 'photo-block' ) }
-																		/>
-																	) }
-																/>
-															</div>
-															<div className="dlx-admin__row">
-																<Controller
-																	name="screenshotOneIgnoreHostErrors"
-																	control={ control }
-																	render={ ( { field } ) => (
-																		<ToggleControl
-																			{ ...field }
-																			checked={ field.value }
-																			onChange={ ( value ) => {
-																				field.onChange( value );
-																			} }
-																			label={ __( 'Ignore Host Errors', 'photo-block' ) }
-																			help={ __( 'If enabled, ScreenshotOne will ignore host errors. For example, if you need a screenshot of a 404 or error page.', 'photo-block' ) }
-																		/>
-																	) }
-																/>
-															</div>
+														<div className="dlx-admin__row">
+															<Controller
+																name="screenshotOneBlockCookieBanners"
+																control={ control }
+																render={ ( { field } ) => (
+																	<ToggleControl
+																		__nextHasNoMarginBottom={ true }
+																		{ ...field }
+																		checked={ field.value }
+																		onChange={ ( value ) => {
+																			field.onChange( value );
+																		} }
+																		label={ __( 'Block Cookie Banners', 'photo-block' ) }
+																		help={ __( 'If enabled, ScreenshotOne will block cookie banners from showing.', 'photo-block' ) }
+																	/>
+																) }
+															/>
+														</div>
+														<div className="dlx-admin__row">
+															<Controller
+																name="screenshotOneBlockAds"
+																control={ control }
+																render={ ( { field } ) => (
+																	<ToggleControl
+																		__nextHasNoMarginBottom={ true }
+																		{ ...field }
+																		checked={ field.value }
+																		onChange={ ( value ) => {
+																			field.onChange( value );
+																		} }
+																		label={ __( 'Block Ads', 'photo-block' ) }
+																		help={ __( 'If enabled, ScreenshotOne will block ads from showing.', 'photo-block' ) }
+																	/>
+																) }
+															/>
+														</div>
+														<div className="dlx-admin__row">
+															<Controller
+																name="screenshotOneIgnoreHostErrors"
+																control={ control }
+																render={ ( { field } ) => (
+																	<ToggleControl
+																		__nextHasNoMarginBottom={ true }
+																		{ ...field }
+																		checked={ field.value }
+																		onChange={ ( value ) => {
+																			field.onChange( value );
+																		} }
+																		label={ __( 'Ignore Host Errors', 'photo-block' ) }
+																		help={ __( 'If enabled, ScreenshotOne will ignore host errors. For example, if you need a screenshot of a 404 or error page.', 'photo-block' ) }
+																	/>
+																) }
+															/>
+														</div>
 														</>
 													)
 												}
@@ -650,23 +657,24 @@ const Settings = ( props ) => {
 									{ __( 'Advanced Settings', 'photo-block' ) }
 								</th>
 								<td>
-									<div className="dlx-admin__row">
-										<Controller
-											name="debugModeEnabled"
-											control={ control }
-											render={ ( { field } ) => (
-												<ToggleControl 
-													{ ...field }
-													checked={ field.value }
-													onChange={ ( value ) => {
-														field.onChange( value );
-													} }
-													label={ __( 'Debug Mode', 'photo-block' ) }
-													help={ __( 'If enabled, ScreenshotOne will output debug information to the error log and make public any private post types.', 'photo-block' ) }
-												/>
-											) }
-										/>
-									</div>
+							<div className="dlx-admin__row">
+									<Controller
+										name="debugModeEnabled"
+										control={ control }
+										render={ ( { field } ) => (
+											<ToggleControl
+												__nextHasNoMarginBottom={ true }
+												{ ...field }
+												checked={ field.value }
+												onChange={ ( value ) => {
+													field.onChange( value );
+												} }
+												label={ __( 'Debug Mode', 'photo-block' ) }
+												help={ __( 'If enabled, ScreenshotOne will output debug information to the error log and make public any private post types.', 'photo-block' ) }
+											/>
+										) }
+									/>
+								</div>
 								</td>
 							</tr>
 						</tbody>

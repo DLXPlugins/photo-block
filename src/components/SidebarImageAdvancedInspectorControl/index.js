@@ -81,57 +81,62 @@ const SidebarImageAdvancedInspectorControl = ( props ) => {
 							attributes={ attributes }
 							setAttributes={ setAttributes }
 						/>
-					</PanelRow>
-					<PanelRow>
-						<ToggleControl
-							label={ __( 'Skip Lazy Loading', 'photo-block' ) }
-							checked={ skipLazyLoading }
-							onChange={ ( value ) => {
-								setAttributes( { skipLazyLoading: value } );
-							} }
-							help={ __( 'Set a flag which will signal that the image should not be lazy loaded.', 'photo-block' ) }
-						/>
-					</PanelRow>
-					<PanelRow>
-						<ToggleControl
-							label={ __( 'Enable Image Protection', 'photo-block' ) }
-							checked={ imageProtectionEnabled }
-							onChange={ ( value ) => {
-								setAttributes( { imageProtectionEnabled: value } );
-							} }
-							help={ __( 'Prevent this photo from being downloaded by using the right+click button.', 'photo-block' ) }
-						/>
-					</PanelRow>
-					<PanelRow>
-						<ToggleControl
-							label={ __( 'Hide on Mobile', 'photo-block' ) }
-							checked={ hideOnMobile }
-							onChange={ ( value ) => {
-								setAttributes( { hideOnMobile: value } );
-							} }
-							help={ __( 'Hide this photo on mobile devices.', 'photo-block' ) }
-						/>
-					</PanelRow>
-					<PanelRow>
-						<ToggleControl
-							label={ __( 'Hide on Tablet', 'photo-block' ) }
-							checked={ hideOnTablet }
-							onChange={ ( value ) => {
-								setAttributes( { hideOnTablet: value } );
-							} }
-							help={ __( 'Hide this photo on tablet devices.', 'photo-block' ) }
-						/>
-					</PanelRow>
-					<PanelRow>
-						<ToggleControl
-							label={ __( 'Hide on Desktop', 'photo-block' ) }
-							checked={ hideOnDesktop }
-							onChange={ ( value ) => {
-								setAttributes( { hideOnDesktop: value } );
-							} }
-							help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
-						/>
-					</PanelRow>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					__nextHasNoMarginBottom={ true }
+					label={ __( 'Skip Lazy Loading', 'photo-block' ) }
+					checked={ skipLazyLoading }
+					onChange={ ( value ) => {
+						setAttributes( { skipLazyLoading: value } );
+					} }
+					help={ __( 'Set a flag which will signal that the image should not be lazy loaded.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					__nextHasNoMarginBottom={ true }
+					label={ __( 'Enable Image Protection', 'photo-block' ) }
+					checked={ imageProtectionEnabled }
+					onChange={ ( value ) => {
+						setAttributes( { imageProtectionEnabled: value } );
+					} }
+					help={ __( 'Prevent this photo from being downloaded by using the right+click button.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					__nextHasNoMarginBottom={ true }
+					label={ __( 'Hide on Mobile', 'photo-block' ) }
+					checked={ hideOnMobile }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnMobile: value } );
+					} }
+					help={ __( 'Hide this photo on mobile devices.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					__nextHasNoMarginBottom={ true }
+					label={ __( 'Hide on Tablet', 'photo-block' ) }
+					checked={ hideOnTablet }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnTablet: value } );
+					} }
+					help={ __( 'Hide this photo on tablet devices.', 'photo-block' ) }
+				/>
+			</PanelRow>
+			<PanelRow>
+				<ToggleControl
+					__nextHasNoMarginBottom={ true }
+					label={ __( 'Hide on Desktop', 'photo-block' ) }
+					checked={ hideOnDesktop }
+					onChange={ ( value ) => {
+						setAttributes( { hideOnDesktop: value } );
+					} }
+					help={ __( 'Hide this photo on desktop devices.', 'photo-block' ) }
+				/>
+			</PanelRow>
 				</>
 			) }
 		</>

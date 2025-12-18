@@ -4365,6 +4365,14 @@ svg.lucide * {
 .photo-block-typography-picker > .components-base-control__field {
   overflow: hidden;
 }
+.photo-block-typography-picker .components-text-control__input,
+.photo-block-typography-picker .components-text-control__input.is-next-40px-default-size {
+  height: unset;
+}
+.photo-block-typography-picker .components-select-control__input {
+  min-height: unset !important;
+  height: unset !important;
+}
 .photo-block-typography-picker .components-base-control {
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;

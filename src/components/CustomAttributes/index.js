@@ -77,7 +77,7 @@ const CustomAttributesControl = ( props ) => {
 
 	return (
 		<>
-			<BaseControl className="dlx-photo-block__custom-attributes-control">
+			<BaseControl className="dlx-photo-block__custom-attributes-control" __nextHasNoMarginBottom={ true }>
 				<h3>{ __( 'Custom Attributes', 'photo-block' ) }</h3>
 				<Button
 					variant="secondary"

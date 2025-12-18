@@ -15,7 +15,6 @@ import ColorPickerControl from '../ColorPicker';
 import classNames from 'classnames';
 
 const BackgroundSelectorControl = ( props ) => {
-
 	const mediaUploadButton = useRef( null );
 
 	const [ backgroundSettingsVisible, setBackgroundSettingsVisible ] =
@@ -28,7 +27,6 @@ const BackgroundSelectorControl = ( props ) => {
 
 	// Background error image state.
 	const [ errorImage, setErrorImage ] = useState( false );
-	
 
 	const getDefaultValues = () => {
 		return {
@@ -68,6 +66,8 @@ const BackgroundSelectorControl = ( props ) => {
 				control={ control }
 				render={ ( { field: { onChange, value } } ) => (
 					<SelectControl
+						__next40pxDefaultSize={ true }
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Background Repeat', 'photo-block' ) }
 						value={ value }
 						options={ backgroundRepeat }
@@ -93,7 +93,7 @@ const BackgroundSelectorControl = ( props ) => {
 
 	const getPopoverContent = () => {
 		return (
-			<BaseControl className="photo-block-background-settings-popover">
+			<BaseControl className="photo-block-background-settings-popover" __nextHasNoMarginBottom={ true }>
 				<div className="photo-block-background-selector__row_item">
 					{ getBackgroundRepeat() }
 				</div>
@@ -104,6 +104,7 @@ const BackgroundSelectorControl = ( props ) => {
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Background Size', 'photo-block' ) }
 								value={ value }
 								onChange={ ( newValue ) => {
@@ -120,6 +121,7 @@ const BackgroundSelectorControl = ( props ) => {
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Background Position', 'photo-block' ) }
 								value={ value }
 								onChange={ ( newValue ) => {
@@ -142,6 +144,7 @@ const BackgroundSelectorControl = ( props ) => {
 					render={ ( { field: { onChange, value } } ) => (
 						<TextControl
 							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Background Image', 'photo-block' ) }
 							value={ value }
 							onChange={ ( newValue ) => {
@@ -163,7 +166,7 @@ const BackgroundSelectorControl = ( props ) => {
 									setValue( 'url', '' );
 									setValue( 'id', '0' );
 									mediaUploadButton.current.focus();
-									setTimeout(() => {
+									setTimeout( () => {
 										setErrorImage( false );
 									}, 8000 );
 								}
@@ -196,7 +199,7 @@ const BackgroundSelectorControl = ( props ) => {
 	};
 
 	return (
-		<BaseControl className="photo-block-background-selector-wrapper">
+		<BaseControl className="photo-block-background-selector-wrapper" __nextHasNoMarginBottom={ true }>
 			<div className="photo-block-background-selector__row_item">
 				{ getBackgroundUploader() }
 			</div>
@@ -254,6 +257,8 @@ const BackgroundSelectorControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { onChange, value } } ) => (
 						<RangeControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Background Opacity', 'photo-block' ) }
 							value={ value }
 							onChange={ ( newValue ) => onChange( newValue ) }
@@ -270,6 +275,8 @@ const BackgroundSelectorControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { onChange, value } } ) => (
 						<RangeControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Background Opacity Hover', 'photo-block' ) }
 							value={ value }
 							onChange={ ( newValue ) => onChange( newValue ) }

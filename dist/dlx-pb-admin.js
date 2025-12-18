@@ -28427,7 +28427,9 @@ var Settings = function Settings(props) {
     name: "hideCaptionAppender",
     render: function render(_ref5) {
       var field = _ref5.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({}, field, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true
+      }, field, {
         checked: field.value,
         onChange: function onChange(value) {
           field.onChange(value);
@@ -28445,7 +28447,9 @@ var Settings = function Settings(props) {
     name: "screenshotOneEnabled",
     render: function render(_ref6) {
       var field = _ref6.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({}, field, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true
+      }, field, {
         checked: field.value,
         onChange: function onChange(value) {
           field.onChange(value);
@@ -28620,7 +28624,10 @@ var Settings = function Settings(props) {
     name: "screenshotOneDefaultImageFormat",
     render: function render(_ref9) {
       var field = _ref9.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.SelectControl, _extends({}, field, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.SelectControl, _extends({
+        __next40pxDefaultSize: true,
+        __nextHasNoMarginBottom: true
+      }, field, {
         options: imageFormats,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Default Image Format', 'photo-block'),
         help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Select the default image format for ScreenshotOne.', 'photo-block')
@@ -28793,7 +28800,9 @@ var Settings = function Settings(props) {
     control: control,
     render: function render(_ref12) {
       var field = _ref12.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({}, field, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true
+      }, field, {
         checked: field.value,
         onChange: function onChange(value) {
           field.onChange(value);
@@ -28809,7 +28818,9 @@ var Settings = function Settings(props) {
     control: control,
     render: function render(_ref13) {
       var field = _ref13.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({}, field, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true
+      }, field, {
         checked: field.value,
         onChange: function onChange(value) {
           field.onChange(value);
@@ -28825,7 +28836,9 @@ var Settings = function Settings(props) {
     control: control,
     render: function render(_ref14) {
       var field = _ref14.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({}, field, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true
+      }, field, {
         checked: field.value,
         onChange: function onChange(value) {
           field.onChange(value);
@@ -28843,7 +28856,9 @@ var Settings = function Settings(props) {
     control: control,
     render: function render(_ref15) {
       var field = _ref15.field;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({}, field, {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true
+      }, field, {
         checked: field.value,
         onChange: function onChange(value) {
           field.onChange(value);

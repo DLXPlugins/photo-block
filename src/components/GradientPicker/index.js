@@ -59,7 +59,7 @@ const GradientPickerControl = ( props ) => {
 	};
 
 	return (
-		<BaseControl className="photo-block-component-gradient-picker-wrapper">
+		<BaseControl className="photo-block-component-gradient-picker-wrapper" __nextHasNoMarginBottom={ true }>
 			<h3>{ label }</h3>
 			<Button
 				className="photo-block-component-gradient-picker"

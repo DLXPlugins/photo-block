@@ -236,6 +236,8 @@ const TypographyControl = ( props ) => {
 					control={ control }
 					render={ ( { field: { onChange, value } } ) => (
 						<SelectControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Font Family', 'photo-block' ) }
 							value={ geHierarchicalPlaceholderValue( props.values, screenSize, getValues( screenSize ).fontFamilySlug, 'fontFamilySlug' ) }
 							options={ fonts }
@@ -330,6 +332,8 @@ const TypographyControl = ( props ) => {
 				control={ control }
 				render={ ( { field: { onChange, value } } ) => (
 					<SelectControl
+						__next40pxDefaultSize={ true }
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Text Transform', 'photo-block' ) }
 						value={ geHierarchicalPlaceholderValue( props.values, screenSize, getValues( screenSize ).textTransform, 'textTransform' ) }
 						options={ textTransform }
@@ -450,6 +454,8 @@ const TypographyControl = ( props ) => {
 				control={ control }
 				render={ ( { field: { onChange, value } } ) => (
 					<SelectControl
+						__next40pxDefaultSize={ true }
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Font Weight', 'photo-block' ) }
 						value={ getValues( screenSize ).fontWeight }
 						options={ fontWeights }
@@ -678,7 +684,7 @@ const TypographyControl = ( props ) => {
 
 	const getPopoverContent = () => {
 		return (
-			<BaseControl className="photo-block-typography-picker">
+			<BaseControl className="photo-block-typography-picker" __nextHasNoMarginBottom={ true }>
 				<div className="photo-block-typography-picker__row photo-block-typography-picker__row__col-full">
 					<div className="photo-block-typography-picker__row_item">
 						{ getFonts() }
@@ -712,7 +718,7 @@ const TypographyControl = ( props ) => {
 	};
 
 	return (
-		<BaseControl className="photo-block-typography-picker-wrapper">
+		<BaseControl className="photo-block-typography-picker-wrapper" __nextHasNoMarginBottom={ true }>
 			<div className="photo-block-typography-component-devices">
 				<HeadingIconResponsive heading={ label } screenSize={ screenSize } />
 			</div>

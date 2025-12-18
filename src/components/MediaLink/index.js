@@ -213,6 +213,7 @@ const MediaLink = ( props ) => {
 							>
 								<PanelRow>
 									<ToggleControl
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Enable lightbox', 'photo-block' ) }
 										checked={ customLinkLightboxEnabled }
 										onChange={ ( value ) => {
@@ -225,6 +226,7 @@ const MediaLink = ( props ) => {
 									<>
 										<PanelRow>
 											<ToggleControl
+												__nextHasNoMarginBottom={ true }
 												label={ __( 'Show caption', 'photo-block' ) }
 												checked={ customLinkLightboxShowCaption }
 												onChange={ ( value ) => {
@@ -255,6 +257,7 @@ const MediaLink = ( props ) => {
 						<>
 							<PanelRow>
 								<ToggleControl
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Enable lightbox', 'photo-block' ) }
 									checked={ lightboxEnabled }
 									onChange={ ( value ) => {
@@ -267,6 +270,7 @@ const MediaLink = ( props ) => {
 								<>
 									<PanelRow>
 										<ToggleControl
+											__nextHasNoMarginBottom={ true }
 											label={ __( 'Show caption', 'photo-block' ) }
 											checked={ lightboxShowCaption }
 											onChange={ ( value ) => {
@@ -316,6 +320,7 @@ const MediaLink = ( props ) => {
 								( ! lightboxEnabled || 'image' !== mediaLinkType ) && (
 									<PanelRow>
 										<ToggleControl
+											__nextHasNoMarginBottom={ true }
 											label={ __( 'Open in new tab', 'photo-block' ) }
 											checked={ attributes.mediaLinkNewTab }
 											onChange={ ( value ) => {

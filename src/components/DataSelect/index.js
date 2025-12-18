@@ -191,6 +191,8 @@ export const DataSelect = ( props ) => {
 				)
 			}
 			<SelectControl
+				__next40pxDefaultSize={ true }
+				__nextHasNoMarginBottom={ true }
 				label={ __( 'Data Source', 'photo-block' ) }
 				value={ getAttribute( 'Source' ) }
 				onChange={ ( source ) => {
@@ -207,6 +209,8 @@ export const DataSelect = ( props ) => {
 				( getAttribute( 'Source' ) === 'postType' ) && (
 					<>
 						<SelectControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Select a Post Type', 'photo-block' ) }
 							value={ getAttribute( 'PostType' ) }
 							onChange={ ( value ) => {
@@ -299,6 +303,8 @@ export const DataSelect = ( props ) => {
 							( getAttribute( 'PostId' ) !== '' ) && (
 								<>
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Post Data Type', 'photo-block' ) }
 										value={ getAttribute( 'PostTypeSource' ) }
 										onChange={ ( type ) => {
@@ -357,6 +363,8 @@ export const DataSelect = ( props ) => {
 				( getAttribute( 'Source' ) === 'currentImage' ) && (
 					<>
 						<SelectControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Image Data Type', 'photo-block' ) }
 							value={ getAttribute( 'Type' ) }
 							onChange={ ( type ) => {
@@ -390,6 +398,8 @@ export const DataSelect = ( props ) => {
 				( getAttribute( 'Source' ) === 'currentPost' ) && (
 					<>
 						<SelectControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Post Data Type', 'photo-block' ) }
 							value={ getAttribute( 'TypePost' ) }
 							onChange={ ( type ) => {

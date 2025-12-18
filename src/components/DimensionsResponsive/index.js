@@ -182,7 +182,6 @@ const DimensionsResponsiveControl = ( props ) => {
 		if ( ! formValues[ deviceType ].unitSync ) {
 			return false;
 		}
-		console.log( formValues );
 		const sync = geHierarchicalPlaceholderValue(
 			values,
 			deviceType,
@@ -365,6 +364,8 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<SelectControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-select"
 								label={ __( 'Unit', 'photo-block' ) }
 								value={ getHierarchicalValueUnit(
@@ -389,6 +390,8 @@ const DimensionsResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<RangeControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-range"
 								label={ labelAll }
 								value={ Number(
@@ -495,6 +498,8 @@ const DimensionsResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										className="dlx-photo-block__dimensions-responsive-sync-interface-select"
 										label={ __( 'Unit', 'photo-block' ) }
 										value={ getHierarchicalValueUnit(
@@ -555,6 +560,8 @@ const DimensionsResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										className="dlx-photo-block__dimensions-responsive-sync-interface-select"
 										label={ __( 'Unit', 'photo-block' ) }
 										value={ getHierarchicalValueUnit(
@@ -615,6 +622,8 @@ const DimensionsResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										className="dlx-photo-block__dimensions-responsive-sync-interface-select"
 										label={ __( 'Unit', 'photo-block' ) }
 										value={ getHierarchicalValueUnit(
@@ -675,6 +684,8 @@ const DimensionsResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										className="dlx-photo-block__dimensions-responsive-sync-interface-select"
 										label={ __( 'Unit', 'photo-block' ) }
 										value={ getHierarchicalValueUnit(
@@ -712,7 +723,7 @@ const DimensionsResponsiveControl = ( props ) => {
 
 	return (
 		<>
-			<BaseControl className="dlx-photo-block__dimensions-responsive">
+			<BaseControl className="dlx-photo-block__dimensions-responsive" __nextHasNoMarginBottom={ true }>
 				<HeadingIconResponsive heading={ label } screenSize={ deviceType } />
 				{ getSyncInterface() }
 				{ getManualInterface() }

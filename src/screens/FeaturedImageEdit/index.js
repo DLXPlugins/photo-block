@@ -200,6 +200,8 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 					>
 						<PanelRow>
 							<SelectControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Image Size', 'photo-block' ) }
 								value={ imageSize }
 								onChange={ ( size ) => {
@@ -225,6 +227,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 							>
 								<div className="dlx-photo-block__data-row">
 									<ToggleControl
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Enable a Fallback Image', 'photo-block' ) }
 										checked={ dataHasFallbackImage }
 										onChange={ ( value ) => {
@@ -236,6 +239,8 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 									<>
 										<div className="dlx-photo-block__data-row">
 											<SelectControl
+												__next40pxDefaultSize={ true }
+												__nextHasNoMarginBottom={ true }
 												label={ __( 'Select the Fallback Image Size', 'photo-block' ) }
 												value={ dataFallbackImageSize }
 												onChange={ ( size ) => {
@@ -401,6 +406,8 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 					<div className="dlx-photo-block__a11y-popover">
 						<h3>{ __( 'Select a Link Source', 'photo-block' ) }</h3>
 						<SelectControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Link To', 'photo-block' ) }
 							value={ dataMediaLinkSource }
 							onChange={ ( value ) => {
@@ -420,6 +427,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 							<>
 								<PanelRow>
 									<ToggleControl
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Enable lightbox', 'photo-block' ) }
 										checked={ lightboxEnabled }
 										onChange={ ( value ) => {
@@ -435,6 +443,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 									<>
 										<PanelRow>
 											<ToggleControl
+												__nextHasNoMarginBottom={ true }
 												label={ __( 'Show caption in Lightbox', 'photo-block' ) }
 												checked={ lightboxShowCaption }
 												onChange={ ( value ) => {
@@ -465,6 +474,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 							>
 								<PanelRow>
 									<ToggleControl
+										__nextHasNoMarginBottom={ true }
 										label={ __( 'Open in new tab', 'photo-block' ) }
 										checked={ dataMediaLinkNewTab }
 										onChange={ ( value ) => {

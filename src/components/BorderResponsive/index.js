@@ -452,7 +452,7 @@ const BorderResponsiveControl = ( props ) => {
 	const getPopoverButtonGroup = ( unitVar, setPopoverClosed ) => {
 		return (
 			<div className="dlx-photo-block__border-responsive-sync-interface-border-style-popover">
-				<BaseControl>
+				<BaseControl __nextHasNoMarginBottom={ true }>
 					<h3>{ __( 'Border Style', 'photo-block' ) }</h3>
 					<ButtonGroup className="dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons">
 						<Controller
@@ -602,7 +602,7 @@ const BorderResponsiveControl = ( props ) => {
 							noArrow={ false }
 						>
 							<div className="dlx-photo-block__border-responsive-sync-interface-border-style-popover">
-								<BaseControl>
+								<BaseControl __nextHasNoMarginBottom={ true }>
 									<h3>{ __( 'Border Style', 'photo-block' ) }</h3>
 									<ButtonGroup className="dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons">
 										<Controller
@@ -680,6 +680,7 @@ const BorderResponsiveControl = ( props ) => {
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ labelAll }
 								className="dlx-photo-block__border-responsive-sync-interface-input"
 								value={ value }
@@ -709,6 +710,8 @@ const BorderResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<SelectControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								className="dlx-photo-block__border-responsive-sync-interface-select"
 								label={ __( 'Unit', 'photo-block' ) }
 								value={ getHierarchicalValueUnit(
@@ -734,6 +737,8 @@ const BorderResponsiveControl = ( props ) => {
 						control={ control }
 						render={ ( { field: { onChange, value } } ) => (
 							<RangeControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								className="dlx-photo-block__border-responsive-sync-interface-range"
 								label={ labelAll }
 								value={ Number(
@@ -866,6 +871,7 @@ const BorderResponsiveControl = ( props ) => {
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
 										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ labelTop }
 										className="dlx-photo-block__border-responsive-sync-interface-input"
 										value={ value }
@@ -892,6 +898,8 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										className="dlx-photo-block__border-responsive-sync-interface-select"
 										label={ __( 'Unit', 'photo-block' ) }
 										value={ getHierarchicalValueUnit(
@@ -968,6 +976,7 @@ const BorderResponsiveControl = ( props ) => {
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
 										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ labelRight }
 										className="dlx-photo-block__border-responsive-sync-interface-input"
 										value={ value }
@@ -994,6 +1003,8 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										className="dlx-photo-block__border-responsive-sync-interface-select"
 										label={ __( 'Unit', 'photo-block' ) }
 										value={ getHierarchicalValueUnit(
@@ -1070,6 +1081,7 @@ const BorderResponsiveControl = ( props ) => {
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
 										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ labelBottom }
 										className="dlx-photo-block__border-responsive-sync-interface-input"
 										value={ value }
@@ -1098,6 +1110,8 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										className="dlx-photo-block__border-responsive-sync-interface-select"
 										label={ __( 'Unit', 'photo-block' ) }
 										value={ getHierarchicalValueUnit(
@@ -1173,6 +1187,8 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<TextControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										label={ labelLeft }
 										className="dlx-photo-block__border-responsive-sync-interface-input"
 										value={ value }
@@ -1201,6 +1217,8 @@ const BorderResponsiveControl = ( props ) => {
 								control={ control }
 								render={ ( { field: { onChange, value } } ) => (
 									<SelectControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										className="dlx-photo-block__border-responsive-sync-interface-select"
 										label={ __( 'Unit', 'photo-block' ) }
 										value={ getHierarchicalValueUnit(
@@ -1240,7 +1258,7 @@ const BorderResponsiveControl = ( props ) => {
 
 	return (
 		<>
-			<BaseControl className="dlx-photo-block__border-responsive">
+			<BaseControl className="dlx-photo-block__border-responsive" __nextHasNoMarginBottom={ true }>
 				<HeadingIconResponsive heading={ label } screenSize={ deviceType } />
 				{ getSyncInterface() }
 				{ getManualInterface() }

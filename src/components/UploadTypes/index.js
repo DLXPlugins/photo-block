@@ -142,6 +142,7 @@ const UploadTypes = ( props ) => {
 			<>
 				<div className="dlx-photo-block__upload-types-checkbox__container">
 					<ToggleControl
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Save image URL manually.', 'photo-block' ) }
 						checked={ 'url' === photoMode }
 						onChange={ ( value ) => {

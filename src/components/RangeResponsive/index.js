@@ -13,7 +13,6 @@ import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useForm, Controller, useWatch, useFormState } from 'react-hook-form';
 
-
 import UnitPicker from '../UnitPicker';
 import { getHierarchicalValueUnit, geHierarchicalPlaceholderValue } from '../../utils/TypographyHelper';
 import HeadingIconResponsive from '../HeadingIconResponsive';
@@ -60,7 +59,7 @@ const RangeResponsiveControl = ( props ) => {
 
 	return (
 		<>
-			<BaseControl className="dlx-photo-block__max-width-responsive-control">
+			<BaseControl className="dlx-photo-block__max-width-responsive-control" __nextHasNoMarginBottom={ true }>
 				<HeadingIconResponsive
 					screenSize={ screenSize }
 					heading={ props.label }
@@ -84,6 +83,8 @@ const RangeResponsiveControl = ( props ) => {
 					name={ `${ screenSize }.value` }
 					render={ ( { field: { onChange, value } } ) => (
 						<RangeControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							value={ parseInt( geHierarchicalPlaceholderValue( props.values, screenSize, getValues( screenSize ).value, 'value' ) || 0 ) }
 							onChange={ ( newValue ) => {
 								onChange( newValue );

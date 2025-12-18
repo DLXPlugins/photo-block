@@ -6,6 +6,15 @@
 		overflow: hidden;
 	}
 
+	.components-text-control__input,
+	.components-text-control__input.is-next-40px-default-size {
+		height: unset;
+	}
+	.components-select-control__input {
+		min-height: unset !important;
+		height: unset !important;
+	}
+
 	.components-base-control {
 		padding-bottom: 0 !important; // override core styles.
 		margin-bottom: 0 !important; // override core styles.

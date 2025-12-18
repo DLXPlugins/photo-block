@@ -40,7 +40,7 @@ const DropShadowControl = ( props ) => {
 
 	return (
 		<>
-			<BaseControl className="dlx-photo-block__drop-shadow-control">
+			<BaseControl className="dlx-photo-block__drop-shadow-control" __nextHasNoMarginBottom={ true }>
 				<h3 className="dlx-photo-block__drop-shadow-control__title">{ __( 'Drop Shadow', 'photo-block' ) }</h3>
 				<div className="dlx-photo-block__drop-shadow-control__settings">
 					<div className="dlx-photo-block__drop-shadow-control__settings__color">
@@ -111,6 +111,8 @@ const DropShadowControl = ( props ) => {
 					<div className="dlx-photo-block__drop-shadow-control__settings__blur">
 						<div className="dlx-photo-block__drop-shadow-control__settings__blur__wrapper">
 							<RangeControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Blur', 'photo-block' ) }
 								value={ attributes.photoDropShadow.blur }
 								onChange={ ( value ) => {
@@ -130,6 +132,8 @@ const DropShadowControl = ( props ) => {
 					<div className="dlx-photo-block__drop-shadow-control__settings__spread">
 						<div className="dlx-photo-block__drop-shadow-control__settings__spread__wrapper">
 							<RangeControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Spread', 'photo-block' ) }
 								value={ attributes.photoDropShadow.spread }
 								onChange={ ( value ) => {
@@ -148,6 +152,7 @@ const DropShadowControl = ( props ) => {
 					</div>
 					<div className="dlx-photo-block__drop-shadow-control__settings__inset">
 						<ToggleControl
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Inset', 'photo-block' ) }
 							checked={ attributes.photoDropShadow.inset }
 							onChange={ ( value ) => {

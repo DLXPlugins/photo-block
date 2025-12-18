@@ -123,7 +123,7 @@ const ColorPickerControl = ( props ) => {
 	};
 
 	return (
-		<BaseControl className="photo-block-component-color-picker-wrapper">
+		<BaseControl className="photo-block-component-color-picker-wrapper" __nextHasNoMarginBottom={ true }>
 			{ ( !! label && ! hideLabelFromVision ) && (
 				<h3 className="photo-block-color-component-label">
 					<span>{ label }</span>
@@ -195,7 +195,7 @@ const ColorPickerControl = ( props ) => {
 							onClose={ toggleClose }
 							noArrow={ false }
 						>
-							<BaseControl key={ colorKey }>
+							<BaseControl key={ colorKey } __nextHasNoMarginBottom={ true }>
 								<ColorPicker
 									key={ colorKey }
 									color={ color }
@@ -216,6 +216,8 @@ const ColorPickerControl = ( props ) => {
 									</Tooltip>
 
 									<RangeControl
+										__next40pxDefaultSize={ true }
+										__nextHasNoMarginBottom={ true }
 										value={ opacity }
 										onChange={ ( opacityValue ) => {
 											const newColor = getColor( color, opacityValue );
@@ -232,7 +234,7 @@ const ColorPickerControl = ( props ) => {
 									/>
 								</div>
 							) }
-							<BaseControl className="photo-block-component-color-picker-palette">
+							<BaseControl className="photo-block-component-color-picker-palette" __nextHasNoMarginBottom={ true }>
 								<ColorPalette
 									colors={ getDefaultColors() }
 									value={ color }

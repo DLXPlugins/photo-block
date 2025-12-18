@@ -537,24 +537,25 @@ const GlobalStylesSaveModal = ( props ) => {
 							) }
 						</>
 					) }
-					<div className="photo-block-global-styles-row photo-block-global-styles-apply-option">
-						<Controller
-							name="globalStyleApplyToBlock"
-							control={ control }
-							render={ ( { field } ) => (
-								<ToggleControl
-									label={ __(
-										'Apply this global style to the selected block.',
-										'photo-block'
-									) }
-									checked={ field.value }
-									onChange={ () => {
-										field.onChange( ! field.value );
-									} }
-								/>
-							) }
-						/>
-					</div>
+				<div className="photo-block-global-styles-row photo-block-global-styles-apply-option">
+					<Controller
+						name="globalStyleApplyToBlock"
+						control={ control }
+						render={ ( { field } ) => (
+							<ToggleControl
+								__nextHasNoMarginBottom={ true }
+								label={ __(
+									'Apply this global style to the selected block.',
+									'photo-block'
+								) }
+								checked={ field.value }
+								onChange={ () => {
+									field.onChange( ! field.value );
+								} }
+							/>
+						) }
+					/>
+				</div>
 					<div className="photo-block-global-styles-modal-button-group">
 						<Button
 							type="submit"

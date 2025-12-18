@@ -63,7 +63,7 @@ const AspectRatioResponsiveControl = ( props ) => {
 
 	return (
 		<>
-			<BaseControl className="dlx-photo-block__max-width-responsive-control">
+			<BaseControl className="dlx-photo-block__max-width-responsive-control" __nextHasNoMarginBottom={ true }>
 				<HeadingIconResponsive
 					screenSize={ screenSize }
 					heading={ props.label }

@@ -160,6 +160,8 @@ const ScreenshotOne = ( props ) => {
 											name="screenshotOneDefaultImageFormat"
 											render={ ( { field } ) => (
 												<SelectControl
+													__next40pxDefaultSize={ true }
+													__nextHasNoMarginBottom={ true }
 													label={ __( 'Select Image Format', 'photo-block' ) }
 													options={ [
 														{ value: 'jpg', label: 'JPEG' },
@@ -237,51 +239,54 @@ const ScreenshotOne = ( props ) => {
 										/>
 									</div>
 								</div>
-								<div className="dlx-photo-block__panel-toggles">
-									<div className="dlx-photo-block__panel-row">
-										<Controller
-											control={ control }
-											name="screenshotOneBlockCookieBanners"
-											render={ ( { field } ) => (
-												<ToggleControl
-													label={ __( 'Block Cookie Banners', 'photo-block' ) }
-													{ ...field }
-													checked={ field.value }
-													disabled={ loading }
-												/>
-											) }
-										/>
-									</div>
-									<div className="dlx-photo-block__panel-row">
-										<Controller
-											control={ control }
-											name="screenshotOneBlockAds"
-											render={ ( { field } ) => (
-												<ToggleControl
-													label={ __( 'Block Ads', 'photo-block' ) }
-													{ ...field }
-													checked={ field.value }
-													disabled={ loading }
-												/>
-											) }
-										/>
-									</div>
-									<div className="dlx-photo-block__panel-row">
-										<Controller
-											control={ control }
-											name="screenshotOneIgnoreHostErrors"
-											render={ ( { field } ) => (
-												<ToggleControl
-													label={ __( 'Ignore Host Errors', 'photo-block' ) }
-													{ ...field }
-													checked={ field.value }
-													disabled={ loading }
-													help={ __( 'If enabled, ScreenshotOne will ignore host errors. For example, if you need a screenshot of a 404 or error page.', 'photo-block' ) }
-												/>
-											) }
-										/>
-									</div>
+							<div className="dlx-photo-block__panel-toggles">
+								<div className="dlx-photo-block__panel-row">
+									<Controller
+										control={ control }
+										name="screenshotOneBlockCookieBanners"
+										render={ ( { field } ) => (
+											<ToggleControl
+												__nextHasNoMarginBottom={ true }
+												label={ __( 'Block Cookie Banners', 'photo-block' ) }
+												{ ...field }
+												checked={ field.value }
+												disabled={ loading }
+											/>
+										) }
+									/>
 								</div>
+								<div className="dlx-photo-block__panel-row">
+									<Controller
+										control={ control }
+										name="screenshotOneBlockAds"
+										render={ ( { field } ) => (
+											<ToggleControl
+												__nextHasNoMarginBottom={ true }
+												label={ __( 'Block Ads', 'photo-block' ) }
+												{ ...field }
+												checked={ field.value }
+												disabled={ loading }
+											/>
+										) }
+									/>
+								</div>
+								<div className="dlx-photo-block__panel-row">
+									<Controller
+										control={ control }
+										name="screenshotOneIgnoreHostErrors"
+										render={ ( { field } ) => (
+											<ToggleControl
+												__nextHasNoMarginBottom={ true }
+												label={ __( 'Ignore Host Errors', 'photo-block' ) }
+												{ ...field }
+												checked={ field.value }
+												disabled={ loading }
+												help={ __( 'If enabled, ScreenshotOne will ignore host errors. For example, if you need a screenshot of a 404 or error page.', 'photo-block' ) }
+											/>
+										) }
+									/>
+								</div>
+							</div>
 							</PanelBody>
 						</div>
 					</div>

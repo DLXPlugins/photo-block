@@ -18033,6 +18033,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Position Right', 'photo-block')
   }))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide Caption in Overlay', 'photo-block'),
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide the caption when the overlay is displayed. This is useful if you would like an overlay, but not a caption.', 'photo-block'),
     checked: hideCaption,
@@ -18042,6 +18043,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
       });
     }
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Display Overlay on Hover', 'photo-block'),
     checked: overlayDisplayOnHover,
     onChange: function onChange(value) {
@@ -18051,6 +18053,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Display the overlay only when the image is hovered over.', 'photo-block')
   }), overlayDisplayOnHover && !hideCaption && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Display Animation', 'photo-block'),
     value: overlayDisplayAnimation,
     options: [{
@@ -18076,7 +18080,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     }
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
     id: "dlx-photo-block__overlay-background-type",
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Background Type', 'photo-block')
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Background Type', 'photo-block'),
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ButtonGroup, {
     className: "dlx-photo-block__overlay-background-type"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Button, {
@@ -18164,6 +18169,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay Gradient', 'photo-block')
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.RangeControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Gradient Opacity', 'photo-block'),
     value: overlayBackgroundGradientOpacity,
     onChange: function onChange(newValue) {
@@ -18175,6 +18182,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     max: 1,
     step: 0.01
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.RangeControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Gradient Opacity on Hover', 'photo-block'),
     value: overlayBackgroundGradientOpacityHover,
     onChange: function onChange(newValue) {
@@ -18243,6 +18252,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Typography', 'photo-block')
   })), 'advanced' === mode && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Enable Smart Styles', 'photo-block'),
     checked: enableSmartStyles,
     onChange: function onChange(newValue) {
@@ -18252,6 +18262,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Enable smart styles to style the individual elements of the caption.', 'photo-block')
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Allow All Blocks Inside Multiline Captions', 'photo-block'),
     checked: enableAllBlocks,
     onChange: function onChange(newValue) {
@@ -18261,6 +18272,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Not all internal blocks are styled in multi-line captions. However, this adds flexibility to the caption.', 'photo-block')
   })), enableSmartStyles && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Text Font Family', 'photo-block'),
     value: captionTextFontFamily,
     onChange: function onChange(newValue) {
@@ -18271,6 +18284,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     options: blockFontFamilies,
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Set the font family for common elements such as paragraphs and quotes.', 'photo-block')
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Headings Font Family', 'photo-block'),
     value: captionHeadingsFontFamily,
     onChange: function onChange(newValue) {
@@ -18458,6 +18473,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     attributes: attributes,
     setAttributes: setAttributes
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide on Mobile', 'photo-block'),
     checked: hideOnMobile,
     onChange: function onChange(value) {
@@ -18467,6 +18483,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide this photo on mobile devices.', 'photo-block')
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide on Tablet', 'photo-block'),
     checked: hideOnTablet,
     onChange: function onChange(value) {
@@ -18476,6 +18493,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide this photo on tablet devices.', 'photo-block')
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide on Desktop', 'photo-block'),
     checked: hideOnDesktop,
     onChange: function onChange(value) {
@@ -19284,7 +19302,8 @@ var AspectRatioResponsiveControl = function AspectRatioResponsiveControl(props) 
     });
   }, [props.screenSize]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
-    className: "dlx-photo-block__max-width-responsive-control"
+    className: "dlx-photo-block__max-width-responsive-control",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_6__["default"], {
     screenSize: screenSize,
     heading: props.label
@@ -19454,6 +19473,8 @@ var BackgroundSelectorControl = function BackgroundSelectorControl(props) {
           _onChange = _ref$field.onChange,
           value = _ref$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Background Repeat', 'photo-block'),
           value: value,
           options: backgroundRepeat,
@@ -19477,7 +19498,8 @@ var BackgroundSelectorControl = function BackgroundSelectorControl(props) {
   };
   var getPopoverContent = function getPopoverContent() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
-      className: "photo-block-background-settings-popover"
+      className: "photo-block-background-settings-popover",
+      __nextHasNoMarginBottom: true
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "photo-block-background-selector__row_item"
     }, getBackgroundRepeat()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
@@ -19491,6 +19513,7 @@ var BackgroundSelectorControl = function BackgroundSelectorControl(props) {
           value = _ref2$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Background Size', 'photo-block'),
           value: value,
           onChange: function onChange(newValue) {
@@ -19509,6 +19532,7 @@ var BackgroundSelectorControl = function BackgroundSelectorControl(props) {
           value = _ref3$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Background Position', 'photo-block'),
           value: value,
           onChange: function onChange(newValue) {
@@ -19530,6 +19554,7 @@ var BackgroundSelectorControl = function BackgroundSelectorControl(props) {
           value = _ref4$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Background Image', 'photo-block'),
           value: value,
           onChange: function onChange(newValue) {
@@ -19581,7 +19606,8 @@ var BackgroundSelectorControl = function BackgroundSelectorControl(props) {
     }))));
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
-    className: "photo-block-background-selector-wrapper"
+    className: "photo-block-background-selector-wrapper",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-background-selector__row_item"
   }, getBackgroundUploader()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
@@ -19637,6 +19663,8 @@ var BackgroundSelectorControl = function BackgroundSelectorControl(props) {
         _onChange6 = _ref7$field.onChange,
         value = _ref7$field.value;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
+        __next40pxDefaultSize: true,
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Background Opacity', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
@@ -19657,6 +19685,8 @@ var BackgroundSelectorControl = function BackgroundSelectorControl(props) {
         _onChange7 = _ref8$field.onChange,
         value = _ref8$field.value;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
+        __next40pxDefaultSize: true,
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Background Opacity Hover', 'photo-block'),
         value: value,
         onChange: function onChange(newValue) {
@@ -20175,7 +20205,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
   var getPopoverButtonGroup = function getPopoverButtonGroup(unitVar, setPopoverClosed) {
     return /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover"
-    }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, null, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
+    }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
+      __nextHasNoMarginBottom: true
+    }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons"
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
       name: "".concat(deviceType, ".").concat(unitVar, ".borderStyle"),
@@ -20299,7 +20331,9 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
       noArrow: false
     }, /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover"
-    }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, null, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
+    }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
+      __nextHasNoMarginBottom: true
+    }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Border Style', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, {
       className: "dlx-photo-block__border-responsive-sync-interface-border-style-popover-buttons"
     }, /*#__PURE__*/React.createElement(react_hook_form__WEBPACK_IMPORTED_MODULE_7__.Controller, {
       name: "".concat(deviceType, ".top.borderStyle"),
@@ -20363,6 +20397,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           value = _ref4$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelAll,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
@@ -20388,6 +20423,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange3 = _ref5$field.onChange,
           value = _ref5$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".top.unit")), 'top', 'unit'),
@@ -20409,6 +20446,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange4 = _ref6$field.onChange,
           value = _ref6$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__border-responsive-sync-interface-range",
           label: labelAll,
           value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.geHierarchicalPlaceholderValue)(values, deviceType, value, 'top', 'width')),
@@ -20507,6 +20546,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           value = _ref8$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelTop,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
@@ -20529,6 +20569,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange7 = _ref9$field.onChange,
           value = _ref9$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.getHierarchicalValueUnit)(props.values, deviceType, value, 'top', 'unit'),
@@ -20589,6 +20631,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           value = _ref1$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelRight,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
@@ -20611,6 +20654,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange0 = _ref10$field.onChange,
           value = _ref10$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.getHierarchicalValueUnit)(props.values, deviceType, value, 'right', 'unit'),
@@ -20671,6 +20716,7 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           value = _ref12$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelBottom,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
@@ -20695,6 +20741,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange11 = _ref13$field.onChange,
           value = _ref13$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.getHierarchicalValueUnit)(props.values, deviceType, value, 'bottom', 'unit'),
@@ -20754,6 +20802,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange13 = _ref15$field.onChange,
           value = _ref15$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelLeft,
           className: "dlx-photo-block__border-responsive-sync-interface-input",
           value: value,
@@ -20778,6 +20828,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
           _onChange14 = _ref16$field.onChange,
           value = _ref16$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__border-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_11__.getHierarchicalValueUnit)(props.values, deviceType, value, 'left', 'unit'),
@@ -20805,7 +20857,8 @@ var BorderResponsiveControl = function BorderResponsiveControl(props) {
     }))));
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
-    className: "dlx-photo-block__border-responsive"
+    className: "dlx-photo-block__border-responsive",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
     heading: label,
     screenSize: deviceType
@@ -20972,7 +21025,8 @@ var CSSGramButtonGroup = function CSSGramButtonGroup(props) {
     currentFilter = _useState2[0],
     setCurrentFilter = _useState2[1];
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
-    className: "dlx-photo-block__css-gram-button-group"
+    className: "dlx-photo-block__css-gram-button-group",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a CSS Filter', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ButtonGroup, null, cssGramOptions.map(function (option) {
     return /*#__PURE__*/React.createElement(_CSSGramButtonPreview__WEBPACK_IMPORTED_MODULE_6__["default"], {
       key: option.value,
@@ -21370,7 +21424,8 @@ var ColorPickerControl = function ColorPickerControl(props) {
     }
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
-    className: "photo-block-component-color-picker-wrapper"
+    className: "photo-block-component-color-picker-wrapper",
+    __nextHasNoMarginBottom: true
   }, !!label && !hideLabelFromVision && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("h3", {
     className: "photo-block-color-component-label"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("span", null, label)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
@@ -21412,7 +21467,8 @@ var ColorPickerControl = function ColorPickerControl(props) {
     onClose: toggleClose,
     noArrow: false
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
-    key: colorKey
+    key: colorKey,
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ColorPicker, {
     key: colorKey,
     color: color,
@@ -21428,6 +21484,8 @@ var ColorPickerControl = function ColorPickerControl(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Tooltip, {
     text: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Opacity', 'photo-block')
   }, opacityIcon), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.RangeControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     value: opacity,
     onChange: function onChange(opacityValue) {
       var newColor = _getColor(color, opacityValue);
@@ -21442,7 +21500,8 @@ var ColorPickerControl = function ColorPickerControl(props) {
     initialPosition: 1,
     disabled: color.indexOf('var(') === 0
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.BaseControl, {
-    className: "photo-block-component-color-picker-palette"
+    className: "photo-block-component-color-picker-palette",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.ColorPalette, {
     colors: getDefaultColors(),
     value: color,
@@ -21572,7 +21631,8 @@ var CustomAttributesControl = function CustomAttributesControl(props) {
     return customAttributeOutput;
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
-    className: "dlx-photo-block__custom-attributes-control"
+    className: "dlx-photo-block__custom-attributes-control",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Custom Attributes', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
     variant: "secondary",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Add Attribute', 'photo-block'),
@@ -21819,7 +21879,6 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
     if (!formValues[deviceType].unitSync) {
       return false;
     }
-    console.log(formValues);
     var sync = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.geHierarchicalPlaceholderValue)(values, deviceType, formValues[deviceType].unitSync, 'unitSync');
     return sync;
   };
@@ -21976,6 +22035,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           _onChange2 = _ref2$field.onChange,
           value = _ref2$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, getValues("".concat(deviceType, ".topUnit")), 'topUnit'),
@@ -21997,6 +22058,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           _onChange3 = _ref3$field.onChange,
           value = _ref3$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-range",
           label: labelAll,
           value: Number((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.geHierarchicalPlaceholderValue)(values, deviceType, '' !== value ? value : 0, 'top')),
@@ -22076,6 +22139,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           _onChange5 = _ref5$field.onChange,
           value = _ref5$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, value, 'topUnit'),
@@ -22121,6 +22186,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           _onChange7 = _ref7$field.onChange,
           value = _ref7$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, value, 'rightUnit'),
@@ -22166,6 +22233,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           _onChange9 = _ref9$field.onChange,
           value = _ref9$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, value, 'bottomUnit'),
@@ -22211,6 +22280,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           _onChange1 = _ref1$field.onChange,
           value = _ref1$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-select",
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Unit', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.getHierarchicalValueUnit)(props.values, deviceType, value, 'leftUnit'),
@@ -22237,7 +22308,8 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
     }));
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
-    className: "dlx-photo-block__dimensions-responsive"
+    className: "dlx-photo-block__dimensions-responsive",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
     heading: label,
     screenSize: deviceType
@@ -22320,7 +22392,8 @@ var DropShadowControl = function DropShadowControl(props) {
     return attributes.photoDropShadow.color;
   }, [attributes.photoDropShadow.color]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
-    className: "dlx-photo-block__drop-shadow-control"
+    className: "dlx-photo-block__drop-shadow-control",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement("h3", {
     className: "dlx-photo-block__drop-shadow-control__title"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Drop Shadow', 'photo-block')), /*#__PURE__*/React.createElement("div", {
@@ -22388,6 +22461,8 @@ var DropShadowControl = function DropShadowControl(props) {
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__drop-shadow-control__settings__blur__wrapper"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.RangeControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Blur', 'photo-block'),
     value: attributes.photoDropShadow.blur,
     onChange: function onChange(value) {
@@ -22405,6 +22480,8 @@ var DropShadowControl = function DropShadowControl(props) {
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__drop-shadow-control__settings__spread__wrapper"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.RangeControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Spread', 'photo-block'),
     value: attributes.photoDropShadow.spread,
     onChange: function onChange(value) {
@@ -22420,6 +22497,7 @@ var DropShadowControl = function DropShadowControl(props) {
   }))), /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__drop-shadow-control__settings__inset"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Inset', 'photo-block'),
     checked: attributes.photoDropShadow.inset,
     onChange: function onChange(value) {
@@ -23839,6 +23917,7 @@ var GlobalStylesSaveModal = function GlobalStylesSaveModal(props) {
     render: function render(_ref4) {
       var field = _ref4.field;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__.__)('Apply this global style to the selected block.', 'photo-block'),
         checked: field.value,
         onChange: function onChange() {
@@ -24651,7 +24730,8 @@ var GradientPickerControl = function GradientPickerControl(props) {
     }, 500);
   };
   return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
-    className: "photo-block-component-gradient-picker-wrapper"
+    className: "photo-block-component-gradient-picker-wrapper",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement("h3", null, label), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
     className: "photo-block-component-gradient-picker",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Open Gradient Picker', 'photo-block'),
@@ -25281,6 +25361,7 @@ var MediaLink = function MediaLink(props) {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Lightbox', 'photo-block'),
     initialOpen: false
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Enable lightbox', 'photo-block'),
     checked: customLinkLightboxEnabled,
     onChange: function onChange(value) {
@@ -25290,6 +25371,7 @@ var MediaLink = function MediaLink(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Popup the photo when clicked.', 'photo-block')
   })), customLinkLightboxEnabled && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Show caption', 'photo-block'),
     checked: customLinkLightboxShowCaption,
     onChange: function onChange(value) {
@@ -25309,6 +25391,7 @@ var MediaLink = function MediaLink(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Leave blank for no caption.', 'photo-block')
   }))))), 'image' === mediaLinkType && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Enable lightbox', 'photo-block'),
     checked: lightboxEnabled,
     onChange: function onChange(value) {
@@ -25318,6 +25401,7 @@ var MediaLink = function MediaLink(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Popup the full size photo in a lightbox when clicked.', 'photo-block')
   })), lightboxEnabled && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Show caption', 'photo-block'),
     checked: lightboxShowCaption,
     onChange: function onChange(value) {
@@ -25356,6 +25440,7 @@ var MediaLink = function MediaLink(props) {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Advanced', 'photo-block'),
     initialOpen: false
   }, (!lightboxEnabled || 'image' !== mediaLinkType) && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__.__)('Open in new tab', 'photo-block'),
     checked: attributes.mediaLinkNewTab,
     onChange: function onChange(value) {
@@ -25715,7 +25800,8 @@ var RangeResponsiveControl = function RangeResponsiveControl(props) {
     setValue(props.screenSize, getValues(props.screenSize));
   }, [props.screenSize]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
-    className: "dlx-photo-block__max-width-responsive-control"
+    className: "dlx-photo-block__max-width-responsive-control",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_7__["default"], {
     screenSize: screenSize,
     heading: props.label
@@ -25743,6 +25829,8 @@ var RangeResponsiveControl = function RangeResponsiveControl(props) {
         _onChange = _ref2$field.onChange,
         value = _ref2$field.value;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RangeControl, {
+        __next40pxDefaultSize: true,
+        __nextHasNoMarginBottom: true,
         value: parseInt((0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_6__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).value, 'value') || 0),
         onChange: function onChange(newValue) {
           _onChange(newValue);
@@ -25860,6 +25948,7 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
     attributes: attributes,
     setAttributes: setAttributes
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Skip Lazy Loading', 'photo-block'),
     checked: skipLazyLoading,
     onChange: function onChange(value) {
@@ -25869,6 +25958,7 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Set a flag which will signal that the image should not be lazy loaded.', 'photo-block')
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Enable Image Protection', 'photo-block'),
     checked: imageProtectionEnabled,
     onChange: function onChange(value) {
@@ -25878,6 +25968,7 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Prevent this photo from being downloaded by using the right+click button.', 'photo-block')
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide on Mobile', 'photo-block'),
     checked: hideOnMobile,
     onChange: function onChange(value) {
@@ -25887,6 +25978,7 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide this photo on mobile devices.', 'photo-block')
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide on Tablet', 'photo-block'),
     checked: hideOnTablet,
     onChange: function onChange(value) {
@@ -25896,6 +25988,7 @@ var SidebarImageAdvancedInspectorControl = function SidebarImageAdvancedInspecto
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide this photo on tablet devices.', 'photo-block')
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide on Desktop', 'photo-block'),
     checked: hideOnDesktop,
     onChange: function onChange(value) {
@@ -26075,6 +26168,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     slug: 'background-color-photo',
     alpha: true
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RangeControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Opacity', 'photo-block'),
     value: photoOpacity,
     onChange: function onChange(newOpacity) {
@@ -26086,6 +26181,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     max: 1,
     step: 0.01
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.RangeControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Blur', 'photo-block'),
     value: photoBlur,
     onChange: function onChange(newBlur) {
@@ -26097,6 +26194,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     max: 10,
     step: 0.01
   }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Enable Dropshadow', 'photo-block'),
     checked: photoDropShadow.enabled,
     onChange: function onChange(newDropShadowEnabled) {
@@ -26208,6 +26306,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     uniqueId: uniqueId,
     scrollAfterOpen: false
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Object Fit', 'photo-block'),
     value: photoObjectFit,
     options: [{
@@ -26236,6 +26336,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('How the image should be resized to fit its container.', 'photo-block')
   })), 'none' !== photoObjectFit && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Object Position', 'photo-block'),
     value: photoObjectPosition,
     options: [{
@@ -26506,7 +26608,8 @@ var SizeResponsiveControl = function SizeResponsiveControl(props) {
     });
   }, [props.screenSize]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
-    className: "dlx-photo-block__max-width-responsive-control"
+    className: "dlx-photo-block__max-width-responsive-control",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/React.createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_9__["default"], {
     screenSize: screenSize,
     heading: props.label
@@ -27159,6 +27262,8 @@ var TypographyControl = function TypographyControl(props) {
           _onChange = _ref$field.onChange,
           value = _ref$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Family', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_6__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).fontFamilySlug, 'fontFamilySlug'),
           options: fonts,
@@ -27255,6 +27360,8 @@ var TypographyControl = function TypographyControl(props) {
           _onChange3 = _ref6$field.onChange,
           value = _ref6$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Text Transform', 'photo-block'),
           value: (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_6__.geHierarchicalPlaceholderValue)(props.values, screenSize, getValues(screenSize).textTransform, 'textTransform'),
           options: textTransform,
@@ -27374,6 +27481,8 @@ var TypographyControl = function TypographyControl(props) {
           _onChange5 = _ref9$field.onChange,
           value = _ref9$field.value;
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+          __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Weight', 'photo-block'),
           value: getValues(screenSize).fontWeight,
           options: fontWeights,
@@ -27564,7 +27673,8 @@ var TypographyControl = function TypographyControl(props) {
   };
   var getPopoverContent = function getPopoverContent() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
-      className: "photo-block-typography-picker"
+      className: "photo-block-typography-picker",
+      __nextHasNoMarginBottom: true
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
       className: "photo-block-typography-picker__row photo-block-typography-picker__row__col-full"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
@@ -27588,7 +27698,8 @@ var TypographyControl = function TypographyControl(props) {
     }, getLetterSpacing())));
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
-    className: "photo-block-typography-picker-wrapper"
+    className: "photo-block-typography-picker-wrapper",
+    __nextHasNoMarginBottom: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement("div", {
     className: "photo-block-typography-component-devices"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_HeadingIconResponsive__WEBPACK_IMPORTED_MODULE_8__["default"], {
@@ -28618,6 +28729,7 @@ var UploadTypes = function UploadTypes(props) {
     return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "dlx-photo-block__upload-types-checkbox__container"
     }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ToggleControl, {
+      __nextHasNoMarginBottom: true,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_15__.__)('Save image URL manually.', 'photo-block'),
       checked: 'url' === photoMode,
       onChange: function onChange(value) {
@@ -30942,6 +31054,8 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     initialOpen: true,
     scrollAfterOpen: false
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Image Size', 'photo-block'),
     value: imageSize,
     onChange: function onChange(size) {
@@ -30968,6 +31082,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__data-row"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Enable a Fallback Image', 'photo-block'),
     checked: dataHasFallbackImage,
     onChange: function onChange(value) {
@@ -30978,6 +31093,8 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
   })), dataHasFallbackImage && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__data-row"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select the Fallback Image Size', 'photo-block'),
     value: dataFallbackImageSize,
     onChange: function onChange(size) {
@@ -31104,6 +31221,8 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__a11y-popover"
   }, /*#__PURE__*/React.createElement("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Select a Link Source', 'photo-block')), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Link To', 'photo-block'),
     value: dataMediaLinkSource,
     onChange: function onChange(value) {
@@ -31124,6 +31243,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
   }, /*#__PURE__*/React.createElement("option", {
     value: "postPermalink"
   }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Post Permalink', 'photo-block')))), 'imageData' === dataMediaLinkSource && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Enable lightbox', 'photo-block'),
     checked: lightboxEnabled,
     onChange: function onChange(value) {
@@ -31138,6 +31258,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Popup the full size photo in a lightbox when clicked.', 'photo-block')
   })), lightboxEnabled && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Show caption in Lightbox', 'photo-block'),
     checked: lightboxShowCaption,
     onChange: function onChange(value) {
@@ -31160,6 +31281,7 @@ var FeaturedImageScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.for
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Advanced', 'photo-block'),
     initialOpen: false
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)('Open in new tab', 'photo-block'),
     checked: dataMediaLinkNewTab,
     onChange: function onChange(value) {
@@ -31787,6 +31909,8 @@ var ScreenshotOne = function ScreenshotOne(props) {
     render: function render(_ref3) {
       var field = _ref3.field;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, _extends({
+        __next40pxDefaultSize: true,
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Select Image Format', 'photo-block'),
         options: [{
           value: 'jpg',
@@ -31876,6 +32000,7 @@ var ScreenshotOne = function ScreenshotOne(props) {
     render: function render(_ref8) {
       var field = _ref8.field;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Block Cookie Banners', 'photo-block')
       }, field, {
         checked: field.value,
@@ -31890,6 +32015,7 @@ var ScreenshotOne = function ScreenshotOne(props) {
     render: function render(_ref9) {
       var field = _ref9.field;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Block Ads', 'photo-block')
       }, field, {
         checked: field.value,
@@ -31904,6 +32030,7 @@ var ScreenshotOne = function ScreenshotOne(props) {
     render: function render(_ref0) {
       var field = _ref0.field;
       return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, _extends({
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_7__.__)('Ignore Host Errors', 'photo-block')
       }, field, {
         checked: field.value,

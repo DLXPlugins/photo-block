@@ -68,7 +68,7 @@ const CSSGramButtonGroup = ( props ) => {
 
 	return (
 		<>
-			<BaseControl className="dlx-photo-block__css-gram-button-group">
+			<BaseControl className="dlx-photo-block__css-gram-button-group" __nextHasNoMarginBottom={ true }>
 				<h3>{ __( 'Select a CSS Filter', 'photo-block' ) }</h3>
 				<ButtonGroup>
 					{

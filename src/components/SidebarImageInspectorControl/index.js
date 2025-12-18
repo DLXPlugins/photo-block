@@ -122,6 +122,8 @@ const SidebarImageInspectorControl = ( props ) => {
 							alpha={ true }
 						/>
 						<RangeControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Opacity', 'photo-block' ) }
 							value={ photoOpacity }
 							onChange={ ( newOpacity ) => {
@@ -132,6 +134,8 @@ const SidebarImageInspectorControl = ( props ) => {
 							step={ 0.01 }
 						/>
 						<RangeControl
+							__next40pxDefaultSize={ true }
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Blur', 'photo-block' ) }
 							value={ photoBlur }
 							onChange={ ( newBlur ) => {
@@ -142,6 +146,7 @@ const SidebarImageInspectorControl = ( props ) => {
 							step={ 0.01 }
 						/>
 						<ToggleControl
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Enable Dropshadow', 'photo-block' ) }
 							checked={ photoDropShadow.enabled }
 							onChange={ ( newDropShadowEnabled ) => {
@@ -263,6 +268,8 @@ const SidebarImageInspectorControl = ( props ) => {
 					>
 						<PanelRow>
 							<SelectControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Object Fit', 'photo-block' ) }
 								value={ photoObjectFit }
 								options={ [
@@ -285,6 +292,8 @@ const SidebarImageInspectorControl = ( props ) => {
 						{ 'none' !== photoObjectFit && (
 							<PanelRow>
 								<SelectControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Object Position', 'photo-block' ) }
 									value={ photoObjectPosition }
 									options={ [
@@ -424,7 +433,7 @@ const SidebarImageInspectorControl = ( props ) => {
 				>
 					<PanelRow>
 						<BaseControl
-							__nextHasNoMarginBottom
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Global Styles', 'photo-block' ) }
 							id="photo-block-global-styles"
 							className="photo-block-global-styles"

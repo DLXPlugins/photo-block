@@ -466,7 +466,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									{ imageData.file_size && (
 										<div className="photo-block__image-info-item">
 											<BaseControl
-												__nextHasNoMarginBottom
+												__nextHasNoMarginBottom={ true }
 												id="photo-block__image-info-file-size"
 												label={ __( 'File Size', 'photo-block' ) }
 											>
@@ -477,7 +477,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									{ imageData.dimensions && (
 										<div className="photo-block__image-info-item">
 											<BaseControl
-												__nextHasNoMarginBottom
+												__nextHasNoMarginBottom={ true }
 												id="photo-block__image-info-dimensions"
 												label={ __( 'Dimensions', 'photo-block' ) }
 											>

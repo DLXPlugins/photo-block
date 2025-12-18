@@ -453,7 +453,7 @@ const PhotoCaptionBlock = ( props ) => {
 					initialOpen={ true }
 				>
 					<BaseControl
-						__nextHasNoMarginBottom
+						__nextHasNoMarginBottom={ true }
 						id="dlx-photo-block__overlay-vertical-position"
 						label={ __( 'Overlay Vertical Position', 'photo-block' ) }
 					>
@@ -494,7 +494,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</ButtonGroup>
 					</BaseControl>
 					<BaseControl
-						__nextHasNoMarginBottom
+						__nextHasNoMarginBottom={ true }
 						id="dlx-photo-block__overlay-horizontal-position"
 						label={ __( 'Overlay Horizontal Position', 'photo-block' ) }
 					>
@@ -535,7 +535,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</ButtonGroup>
 					</BaseControl>
 					<BaseControl
-						__nextHasNoMarginBottom
+						__nextHasNoMarginBottom={ true }
 						id="dlx-photo-caption-vertical-position"
 						label={ __( 'Caption Vertical Position', 'photo-block' ) }
 					>
@@ -576,7 +576,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</ButtonGroup>
 					</BaseControl>
 					<BaseControl
-						__nextHasNoMarginBottom
+						__nextHasNoMarginBottom={ true }
 						id="dlx-photo-caption-horizontal-position"
 						label={ __( 'Caption Horizontal Position', 'photo-block' ) }
 					>
@@ -617,6 +617,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</ButtonGroup>
 					</BaseControl>
 					<ToggleControl
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Hide Caption in Overlay', 'photo-block' ) }
 						help={ __( 'Hide the caption when the overlay is displayed. This is useful if you would like an overlay, but not a caption.', 'photo-block' ) }
 						checked={ hideCaption }
@@ -625,6 +626,7 @@ const PhotoCaptionBlock = ( props ) => {
 						} }
 					/>
 					<ToggleControl
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Display Overlay on Hover', 'photo-block' ) }
 						checked={ overlayDisplayOnHover }
 						onChange={ ( value ) => {
@@ -637,6 +639,8 @@ const PhotoCaptionBlock = ( props ) => {
 					{
 						( overlayDisplayOnHover && ! hideCaption ) && (
 							<SelectControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Display Animation', 'photo-block' ) }
 								value={ overlayDisplayAnimation }
 								options={ [
@@ -654,7 +658,7 @@ const PhotoCaptionBlock = ( props ) => {
 							/>
 						)
 					}
-					<BaseControl id="dlx-photo-block__overlay-background-type" label={ __( 'Background Type', 'photo-block' ) }>
+					<BaseControl id="dlx-photo-block__overlay-background-type" label={ __( 'Background Type', 'photo-block' ) } __nextHasNoMarginBottom={ true }>
 						<ButtonGroup className="dlx-photo-block__overlay-background-type">
 							<Button
 								variant={ 'none' === overlayBackgroundType ? 'primary' : 'secondary' }
@@ -761,6 +765,8 @@ const PhotoCaptionBlock = ( props ) => {
 								label={ __( 'Overlay Gradient', 'photo-block' ) }
 							/>
 							<RangeControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Gradient Opacity', 'photo-block' ) }
 								value={ overlayBackgroundGradientOpacity }
 								onChange={ ( newValue ) => {
@@ -771,6 +777,8 @@ const PhotoCaptionBlock = ( props ) => {
 								step={ 0.01 }
 							/>
 							<RangeControl
+								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Gradient Opacity on Hover', 'photo-block' ) }
 								value={ overlayBackgroundGradientOpacityHover }
 								onChange={ ( newValue ) => {
@@ -850,6 +858,7 @@ const PhotoCaptionBlock = ( props ) => {
 					<>
 						<PanelRow>
 							<ToggleControl
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Enable Smart Styles', 'photo-block' ) }
 								checked={ enableSmartStyles }
 								onChange={ ( newValue ) => {
@@ -860,6 +869,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</PanelRow>
 						<PanelRow>
 							<ToggleControl
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Allow All Blocks Inside Multiline Captions', 'photo-block' ) }
 								checked={ enableAllBlocks }
 								onChange={ ( newValue ) => {
@@ -871,6 +881,8 @@ const PhotoCaptionBlock = ( props ) => {
 						{ enableSmartStyles && (
 							<>
 								<SelectControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Text Font Family', 'photo-block' ) }
 									value={ captionTextFontFamily }
 									onChange={ ( newValue ) => {
@@ -880,6 +892,8 @@ const PhotoCaptionBlock = ( props ) => {
 									help={ __( 'Set the font family for common elements such as paragraphs and quotes.', 'photo-block' ) }
 								/>
 								<SelectControl
+									__next40pxDefaultSize={ true }
+									__nextHasNoMarginBottom={ true }
 									label={ __( 'Headings Font Family', 'photo-block' ) }
 									value={ captionHeadingsFontFamily }
 									onChange={ ( newValue ) => {
@@ -1089,6 +1103,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</PanelRow>
 						<PanelRow>
 							<ToggleControl
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Hide on Mobile', 'photo-block' ) }
 								checked={ hideOnMobile }
 								onChange={ ( value ) => {
@@ -1099,6 +1114,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</PanelRow>
 						<PanelRow>
 							<ToggleControl
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Hide on Tablet', 'photo-block' ) }
 								checked={ hideOnTablet }
 								onChange={ ( value ) => {
@@ -1109,6 +1125,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</PanelRow>
 						<PanelRow>
 							<ToggleControl
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Hide on Desktop', 'photo-block' ) }
 								checked={ hideOnDesktop }
 								onChange={ ( value ) => {
@@ -1122,7 +1139,7 @@ const PhotoCaptionBlock = ( props ) => {
 			{ canSavePresets && (
 				<PanelRow>
 					<BaseControl
-						__nextHasNoMarginBottom
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Global Styles', 'photo-block' ) }
 						id="photo-block-global-styles"
 						className="photo-block-global-styles"
