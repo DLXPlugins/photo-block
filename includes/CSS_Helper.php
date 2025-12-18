@@ -7,6 +7,10 @@
 
 namespace DLXPlugins\PhotoBlock;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 /**
  * CSS Helper to output responsive styles.
  */

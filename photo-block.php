@@ -17,6 +17,10 @@
 
 namespace DLXPlugins\PhotoBlock;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 define( 'DLX_PHOTO_BLOCK_VERSION', '1.6.0' );
 define( 'DLX_PHOTO_BLOCK_CACHE_VERSION', '1.0.12' ); // For cache busting global styles.
 define( 'DLX_PHOTO_BLOCK_FILE', __FILE__ );

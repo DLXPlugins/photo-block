@@ -7,6 +7,10 @@
 
 namespace DLXPlugins\PhotoBlock;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
 /**
  * Global Styles class.
  */
