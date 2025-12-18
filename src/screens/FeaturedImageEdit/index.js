@@ -605,7 +605,7 @@ const FeaturedImageScreen = forwardRef( ( props, ref ) => {
 							( ! imageLoading && ( ! hasImage || typeof dataImages[ postId ] === 'undefined' ) ) && (
 								<>
 									<div className="dlx-photo-block__preview">
-										<img src={ photoBlock.blockPreviewImage } alt={ __( 'Block Preview', 'photo-block' ) } style={ { maxWidth: '100%', height: 'auto' } } />
+										{ __( 'No image found.', 'photo-block' ) }
 									</div>
 								</>
 							)
