@@ -357,6 +357,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 								</>
 							) }
 							<TextareaControl
+								__nextHasNoMarginBottom={ true }
 								label={ __( 'Alt Text', 'photo-block' ) }
 								value={ attributes.imageData.alt }
 								onChange={ ( alt ) => {
@@ -386,6 +387,8 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				{
 					<div className="photo-block__image-size-control">
 						<SelectControl
+							__next40pxDefaultSize
+							__nextHasNoMarginBottom
 							label={ __( 'Image Size', 'photo-block' ) }
 							value={ imageSize }
 							onChange={ ( size ) => {
@@ -463,6 +466,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									{ imageData.file_size && (
 										<div className="photo-block__image-info-item">
 											<BaseControl
+												__nextHasNoMarginBottom
 												id="photo-block__image-info-file-size"
 												label={ __( 'File Size', 'photo-block' ) }
 											>
@@ -473,6 +477,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 									{ imageData.dimensions && (
 										<div className="photo-block__image-info-item">
 											<BaseControl
+												__nextHasNoMarginBottom
 												id="photo-block__image-info-dimensions"
 												label={ __( 'Dimensions', 'photo-block' ) }
 											>
@@ -738,6 +743,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							</>
 						) }
 						<TextareaControl
+							__nextHasNoMarginBottom={ true }
 							label={ __( 'Alt Text', 'photo-block' ) }
 							value={ attributes.imageData.alt }
 							onChange={ ( alt ) => {

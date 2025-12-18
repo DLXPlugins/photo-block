@@ -38,6 +38,7 @@ const CustomAttributesControl = ( props ) => {
 				<div className="dlx-photo-block__custom-attributes-control__attribute" key={ index }>
 					<TextControl
 						__next40pxDefaultSize={ true }
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Name', 'photo-block' ) }
 						value={ attributeValues.name }
 						placeholder="data-"
@@ -49,6 +50,7 @@ const CustomAttributesControl = ( props ) => {
 					/>
 					<TextControl
 						__next40pxDefaultSize={ true }
+						__nextHasNoMarginBottom={ true }
 						label={ __( 'Value', 'photo-block' ) }
 						value={ attributeValues.value }
 						onChange={ ( value ) => {

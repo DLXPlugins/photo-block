@@ -453,6 +453,7 @@ const PhotoCaptionBlock = ( props ) => {
 					initialOpen={ true }
 				>
 					<BaseControl
+						__nextHasNoMarginBottom
 						id="dlx-photo-block__overlay-vertical-position"
 						label={ __( 'Overlay Vertical Position', 'photo-block' ) }
 					>
@@ -493,6 +494,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</ButtonGroup>
 					</BaseControl>
 					<BaseControl
+						__nextHasNoMarginBottom
 						id="dlx-photo-block__overlay-horizontal-position"
 						label={ __( 'Overlay Horizontal Position', 'photo-block' ) }
 					>
@@ -533,6 +535,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</ButtonGroup>
 					</BaseControl>
 					<BaseControl
+						__nextHasNoMarginBottom
 						id="dlx-photo-caption-vertical-position"
 						label={ __( 'Caption Vertical Position', 'photo-block' ) }
 					>
@@ -573,6 +576,7 @@ const PhotoCaptionBlock = ( props ) => {
 						</ButtonGroup>
 					</BaseControl>
 					<BaseControl
+						__nextHasNoMarginBottom
 						id="dlx-photo-caption-horizontal-position"
 						label={ __( 'Caption Horizontal Position', 'photo-block' ) }
 					>
@@ -818,6 +822,7 @@ const PhotoCaptionBlock = ( props ) => {
 						labelLeft={ __( 'Bottom-left Radius', 'photo-block' ) }
 						labelAll={ __( 'Change Border Radius', 'photo-block' ) }
 						isBorderRadius={ true }
+						screenSize={ deviceType }
 					/>
 				</PanelBody>
 			) }
@@ -1117,6 +1122,7 @@ const PhotoCaptionBlock = ( props ) => {
 			{ canSavePresets && (
 				<PanelRow>
 					<BaseControl
+						__nextHasNoMarginBottom
 						label={ __( 'Global Styles', 'photo-block' ) }
 						id="photo-block-global-styles"
 						className="photo-block-global-styles"

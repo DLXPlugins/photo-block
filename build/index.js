@@ -17897,6 +17897,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay Settings', 'photo-block'),
     initialOpen: true
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
+    __nextHasNoMarginBottom: true,
     id: "dlx-photo-block__overlay-vertical-position",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay Vertical Position', 'photo-block')
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ButtonGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Button, {
@@ -17930,6 +17931,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Position Bottom', 'photo-block')
   }))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
+    __nextHasNoMarginBottom: true,
     id: "dlx-photo-block__overlay-horizontal-position",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Overlay Horizontal Position', 'photo-block')
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ButtonGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Button, {
@@ -17963,6 +17965,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Position Right', 'photo-block')
   }))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
+    __nextHasNoMarginBottom: true,
     id: "dlx-photo-caption-vertical-position",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Vertical Position', 'photo-block')
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ButtonGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Button, {
@@ -17996,6 +17999,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Position Bottom', 'photo-block')
   }))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
+    __nextHasNoMarginBottom: true,
     id: "dlx-photo-caption-horizontal-position",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Horizontal Position', 'photo-block')
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.ButtonGroup, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.Button, {
@@ -18220,7 +18224,8 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     labelBottom: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom-right Radius', 'photo-block'),
     labelLeft: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Bottom-left Radius', 'photo-block'),
     labelAll: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Change Border Radius', 'photo-block'),
-    isBorderRadius: true
+    isBorderRadius: true,
+    screenSize: deviceType
   })), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Caption Settings', 'photo-block'),
     initialOpen: true
@@ -18480,6 +18485,7 @@ var PhotoCaptionBlock = function PhotoCaptionBlock(props) {
     },
     help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Hide this photo on desktop devices.', 'photo-block')
   }))), canSavePresets && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.BaseControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Global Styles', 'photo-block'),
     id: "photo-block-global-styles",
     className: "photo-block-global-styles"
@@ -21527,6 +21533,7 @@ var CustomAttributesControl = function CustomAttributesControl(props) {
         key: index
       }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
         __next40pxDefaultSize: true,
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Name', 'photo-block'),
         value: attributeValues.name,
         placeholder: "data-",
@@ -21539,6 +21546,7 @@ var CustomAttributesControl = function CustomAttributesControl(props) {
         }
       }), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextControl, {
         __next40pxDefaultSize: true,
+        __nextHasNoMarginBottom: true,
         label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Value', 'photo-block'),
         value: attributeValues.value,
         onChange: function onChange(value) {
@@ -21805,6 +21813,13 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
    * @return {boolean} The sync value.
    */
   var isSync = function isSync() {
+    if (!formValues[deviceType]) {
+      return false;
+    }
+    if (!formValues[deviceType].unitSync) {
+      return false;
+    }
+    console.log(formValues);
     var sync = (0,_utils_TypographyHelper__WEBPACK_IMPORTED_MODULE_10__.geHierarchicalPlaceholderValue)(values, deviceType, formValues[deviceType].unitSync, 'unitSync');
     return sync;
   };
@@ -21939,6 +21954,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           value = _ref$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelAll,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
           value: value,
@@ -22036,6 +22052,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           value = _ref4$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelTop,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
           value: value,
@@ -22080,6 +22097,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           value = _ref6$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelRight,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
           value: value,
@@ -22124,6 +22142,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           value = _ref8$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelBottom,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
           value: value,
@@ -22168,6 +22187,7 @@ var DimensionsResponsiveControl = function DimensionsResponsiveControl(props) {
           value = _ref0$field.value;
         return /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextControl, {
           __next40pxDefaultSize: true,
+          __nextHasNoMarginBottom: true,
           label: labelLeft,
           className: "dlx-photo-block__dimensions-responsive-sync-interface-input",
           value: value,
@@ -26355,6 +26375,7 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     uniqueId: uniqueId,
     scrollAfterOpen: false
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Global Styles', 'photo-block'),
     id: "photo-block-global-styles",
     className: "photo-block-global-styles"
@@ -30336,6 +30357,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }), isSavingTitle && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving title text…', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt Text', 'photo-block'),
     value: attributes.imageData.alt,
     onChange: function onChange(alt) {
@@ -30359,6 +30381,8 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving alt text…', 'photo-block'))))), /*#__PURE__*/React.createElement("div", {
     className: "photo-block__image-size-control"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    __next40pxDefaultSize: true,
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Image Size', 'photo-block'),
     value: imageSize,
     onChange: function onChange(size) {
@@ -30424,11 +30448,13 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }, imageData.file_size && /*#__PURE__*/React.createElement("div", {
     className: "photo-block__image-info-item"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
+    __nextHasNoMarginBottom: true,
     id: "photo-block__image-info-file-size",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('File Size', 'photo-block')
   }, /*#__PURE__*/React.createElement("p", null, imageData.file_size))), imageData.dimensions && /*#__PURE__*/React.createElement("div", {
     className: "photo-block__image-info-item"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
+    __nextHasNoMarginBottom: true,
     id: "photo-block__image-info-dimensions",
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Dimensions', 'photo-block')
   }, /*#__PURE__*/React.createElement("p", null, imageData.dimensions.width, " x", ' ', imageData.dimensions.height))))))));
@@ -30606,6 +30632,7 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
   }), isSavingTitle && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "photo-block__text-saving"
   }, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null), " ", (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Saving title text…', 'photo-block'))), /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
+    __nextHasNoMarginBottom: true,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Alt Text', 'photo-block'),
     value: attributes.imageData.alt,
     onChange: function onChange(alt) {

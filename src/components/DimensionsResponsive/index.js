@@ -176,6 +176,13 @@ const DimensionsResponsiveControl = ( props ) => {
 	 * @return {boolean} The sync value.
 	 */
 	const isSync = () => {
+		if ( ! formValues[ deviceType ] ) {
+			return false;
+		}
+		if ( ! formValues[ deviceType ].unitSync ) {
+			return false;
+		}
+		console.log( formValues );
 		const sync = geHierarchicalPlaceholderValue(
 			values,
 			deviceType,
@@ -333,6 +340,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ labelAll }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }
@@ -453,6 +461,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ labelTop }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }
@@ -512,6 +521,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ labelRight }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }
@@ -571,6 +581,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ labelBottom }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }
@@ -630,6 +641,7 @@ const DimensionsResponsiveControl = ( props ) => {
 						render={ ( { field: { onChange, value } } ) => (
 							<TextControl
 								__next40pxDefaultSize={ true }
+								__nextHasNoMarginBottom={ true }
 								label={ labelLeft }
 								className="dlx-photo-block__dimensions-responsive-sync-interface-input"
 								value={ value }

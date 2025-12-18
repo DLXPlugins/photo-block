@@ -424,6 +424,7 @@ const SidebarImageInspectorControl = ( props ) => {
 				>
 					<PanelRow>
 						<BaseControl
+							__nextHasNoMarginBottom
 							label={ __( 'Global Styles', 'photo-block' ) }
 							id="photo-block-global-styles"
 							className="photo-block-global-styles"
