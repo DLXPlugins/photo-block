@@ -127,6 +127,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		originalImageData,
 		isJustCropped,
 		hideCaption,
+		newUniqueId,
 	} = useSelect( ( select ) => {
 		return {
 			imageData: select( blockStore( blockUniqueId ) ).getImageData(),
@@ -139,6 +140,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			hideCaption: select( blockStore( blockUniqueId ) ).getHideCaption(
 				attributes.hideCaption
 			),
+			newUniqueId: select( blockStore( blockUniqueId ) ).isNewUniqueId(),
 		};
 	} );
 
@@ -163,6 +165,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 			setImageLoading( false );
 		}
 	}, [] );
+
+	/**
+	 * Get image whenever size changes.
+	 */
+	useEffect( () => {
+		if ( 'photo' === photoMode && newUniqueId ) {
+			getImageFromSize( imageSize );
+		}
+	}, [ newUniqueId ] );
 
 	/**
 	 * Retrieve an image based on size from REST API.
@@ -190,8 +201,9 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					// Image could not be found.
 					// If a URL is found in imageData, set photoMode to url.
 					if ( imageData.url ) {
-						setAttributes( { photoMode: 'url' } );
+						setAttributes( { photoMode: 'url', imageData: { ...imageData, id: 0 } } );
 						setPhotoMode( 'url' );
+						setImageData( { ...imageData, id: 0 } );
 					}
 					// Set image ID to 0 in image data.
 					setImageData( { ...imageData, id: 0 } );

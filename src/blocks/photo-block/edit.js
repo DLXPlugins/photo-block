@@ -126,6 +126,7 @@ const PhotoBlock = ( props ) => {
 			uniqueIds.push( permUniqueId );
 			realUniqueId = permUniqueId;
 		} else {
+			dispatch( blockStore( uniqueId ) ).setNewUniqueId( true );
 			setBlockUniqueId( uniqueId );
 			uniqueIds.push( uniqueId );
 			realUniqueId = uniqueId;

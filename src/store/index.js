@@ -50,6 +50,7 @@ const DEFAULT_STATE = {
 	aspectRatioToolbarSelection: 'square',
 	aspectRatioUnit: 'ratio',
 	hideCaption: photoBlock.settings.hideCaptionAppender,
+	newUniqueId: false,
 };
 
 const actions = {
@@ -169,6 +170,18 @@ const actions = {
 			hideCaption,
 		};
 	},
+	/**
+	 * Set the new unique ID.
+	 *
+	 * @param {boolean} newUniqueId Whether the block is a new unique ID.
+	 * @return {Object} The action object.
+	 */
+	setNewUniqueId( newUniqueId = false ) {
+		return {
+			type: 'SET_NEW_UNIQUE_ID',
+			newUniqueId,
+		};
+	},
 };
 
 const createBlockStore = ( uniqueId ) => {
@@ -272,6 +285,11 @@ const createBlockStore = ( uniqueId ) => {
 						...state,
 						hideCaption: action.hideCaption,
 					};
+				case 'SET_NEW_UNIQUE_ID':
+					return {
+						...state,
+						newUniqueId: action.newUniqueId,
+					};
 				default:
 					return state;
 			}
@@ -343,6 +361,9 @@ const createBlockStore = ( uniqueId ) => {
 					return true;
 				}
 				return state.hideCaption;
+			},
+			isNewUniqueId( state ) {
+				return true === state.newUniqueId;
 			},
 		},
 	} );
