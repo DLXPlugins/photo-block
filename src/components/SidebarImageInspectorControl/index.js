@@ -327,6 +327,8 @@ const SidebarImageInspectorControl = ( props ) => {
 							screenSize={ deviceType }
 							values={ photoAspectRatio }
 							onValuesChange={ ( newValues ) => {
+								const photoAspectRatioValues = { ...photoAspectRatio };
+								photoAspectRatioValues[ deviceType ] = newValues[ deviceType ];
 								setAttributes( { photoAspectRatio: newValues } );
 							} }
 						/>

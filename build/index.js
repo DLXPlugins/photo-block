@@ -19231,41 +19231,49 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 var AspectRatioResponsiveControl = function AspectRatioResponsiveControl(props) {
-  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)('desktop'),
-    _useState2 = _slicedToArray(_useState, 2),
-    screenSize = _useState2[0],
-    setScreenSize = _useState2[1];
+  var _useState = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useState)(props.screenSize),
+    _useState2 = _slicedToArray(_useState, 1),
+    screenSize = _useState2[0];
   var aspectRatioRef = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useRef)(null);
-  var getDefaultValues = function getDefaultValues() {
-    var _props$values$mobile, _props$values$tablet, _props$values$desktop;
+  var getDefaultValues = function getDefaultValues(newProps) {
+    var _newProps$values$mobi, _newProps$values$tabl, _newProps$values$desk;
     return {
-      mobile: (_props$values$mobile = props.values.mobile) !== null && _props$values$mobile !== void 0 ? _props$values$mobile : '',
-      tablet: (_props$values$tablet = props.values.tablet) !== null && _props$values$tablet !== void 0 ? _props$values$tablet : '',
-      desktop: (_props$values$desktop = props.values.desktop) !== null && _props$values$desktop !== void 0 ? _props$values$desktop : ''
+      mobile: (_newProps$values$mobi = newProps.values.mobile) !== null && _newProps$values$mobi !== void 0 ? _newProps$values$mobi : '',
+      tablet: (_newProps$values$tabl = newProps.values.tablet) !== null && _newProps$values$tabl !== void 0 ? _newProps$values$tabl : '',
+      desktop: (_newProps$values$desk = newProps.values.desktop) !== null && _newProps$values$desk !== void 0 ? _newProps$values$desk : ''
     };
   };
   var _useForm = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_4__.useForm)({
-      defaultValues: getDefaultValues()
+      defaultValues: getDefaultValues(props)
     }),
     control = _useForm.control,
     setValue = _useForm.setValue,
     getValues = _useForm.getValues,
     setError = _useForm.setError,
-    clearErrors = _useForm.clearErrors;
+    clearErrors = _useForm.clearErrors,
+    reset = _useForm.reset;
   var formValues = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_4__.useWatch)({
     control: control
   });
   var _useFormState = (0,react_hook_form__WEBPACK_IMPORTED_MODULE_4__.useFormState)({
       control: control
     }),
-    errors = _useFormState.errors;
+    errors = _useFormState.errors,
+    isDirty = _useFormState.isDirty;
   var onValuesChange = props.onValuesChange;
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    onValuesChange(formValues);
+    if (isDirty) {
+      onValuesChange(formValues);
+      reset(formValues, {
+        keepDirty: false
+      });
+    }
   }, [formValues]);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
-    setScreenSize(props.screenSize);
-    setValue(props.screenSize, getValues(props.screenSize));
+    var newDefaultValues = getDefaultValues(props);
+    setValue(props.screenSize, newDefaultValues[props.screenSize], {
+      shouldDirty: false
+    });
   }, [props.screenSize]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.BaseControl, {
     className: "dlx-photo-block__max-width-responsive-control"
@@ -26193,6 +26201,8 @@ var SidebarImageInspectorControl = function SidebarImageInspectorControl(props) 
     screenSize: deviceType,
     values: photoAspectRatio,
     onValuesChange: function onValuesChange(newValues) {
+      var photoAspectRatioValues = _objectSpread({}, photoAspectRatio);
+      photoAspectRatioValues[deviceType] = newValues[deviceType];
       setAttributes({
         photoAspectRatio: newValues
       });

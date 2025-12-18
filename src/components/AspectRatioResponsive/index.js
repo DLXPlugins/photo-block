@@ -18,24 +18,23 @@ import HeadingIconResponsive from '../HeadingIconResponsive';
 import { getAspectRatio, aspectRatioRegex } from '../../utils/AspectRatioHelper';
 
 const AspectRatioResponsiveControl = ( props ) => {
-	const [ screenSize, setScreenSize ] = useState( 'desktop' );
+	const [ screenSize ] = useState( props.screenSize );
 	const aspectRatioRef = useRef( null );
-	const getDefaultValues = () => {
+	const getDefaultValues = ( newProps ) => {
 		return {
-			mobile: props.values.mobile ?? '',
-			tablet: props.values.tablet ?? '',
-			desktop: props.values.desktop ?? '',
+			mobile: newProps.values.mobile ?? '',
+			tablet: newProps.values.tablet ?? '',
+			desktop: newProps.values.desktop ?? '',
 		};
 	};
 
-
-	const { control, setValue, getValues, setError, clearErrors } = useForm( {
-		defaultValues: getDefaultValues(),
+	const { control, setValue, getValues, setError, clearErrors, reset } = useForm( {
+		defaultValues: getDefaultValues( props ),
 	} );
 
 	const formValues = useWatch( { control } );
 
-	const { errors } = useFormState( { control } );
+	const { errors, isDirty } = useFormState( { control } );
 
 
 	const {
@@ -43,14 +42,22 @@ const AspectRatioResponsiveControl = ( props ) => {
 	} = props;
 
 	useEffect( () => {
-		onValuesChange( formValues );
+		if ( isDirty ) {
+			onValuesChange( formValues );
+			reset( formValues, {
+				keepDirty: false,
+			} );
+		}
 	}, [ formValues ] );
 
 	useEffect( () => {
-		setScreenSize( props.screenSize );
+		const newDefaultValues = getDefaultValues( props );
 		setValue(
 			props.screenSize,
-			getValues( props.screenSize )
+			newDefaultValues[ props.screenSize ],
+			{
+				shouldDirty: false,
+			}
 		);
 	}, [ props.screenSize ] );
 
