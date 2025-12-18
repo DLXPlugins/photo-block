@@ -167,11 +167,15 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	}, [] );
 
 	/**
-	 * Get image whenever size changes.
+	 * Get image whenever a  new unique ID is set and image doesn't belong to the site.
 	 */
 	useEffect( () => {
 		if ( 'photo' === photoMode && newUniqueId ) {
-			getImageFromSize( imageSize );
+			const siteUrl = photoBlock.siteUrl;
+			// If Image URL doesn't start with the site URL, grab the image from the site URL.
+			if ( ! imageData.url.startsWith( siteUrl ) ) {
+				getImageFromSize( imageSize );
+			}
 		}
 	}, [ newUniqueId ] );
 
@@ -780,24 +784,26 @@ const EditScreen = forwardRef( ( props, ref ) => {
 		return '';
 	}, [ attributes, deviceType, uniqueId, hasGlobalStyle, globalStyle ] );
 
-	const photoImg = (
-		<img
-			src={ url }
-			className={ classnames(
-				`photo-block-${ cssGramFilter } dlx-photo-block__image`,
-				{
-					'has-css-gram': cssGramFilter !== 'none',
-				}
-			) }
-			alt=""
-			onLoad={ () => {
-				setImageLoading( false );
-			} }
-			ref={ ref }
-			width={ imageData.width }
-			height={ imageData.height }
-		/>
-	);
+	const photoImg = useMemo( () => {
+		return (
+			<img
+				src={ url }
+				className={ classnames(
+					`photo-block-${ cssGramFilter } dlx-photo-block__image`,
+					{
+						'has-css-gram': cssGramFilter !== 'none',
+					}
+				) }
+				alt=""
+				onLoad={ () => {
+					setImageLoading( false );
+				} }
+				ref={ ref }
+				width={ imageData.width }
+				height={ imageData.height }
+			/>
+		);
+	}, [ attributes ] );
 
 	return (
 		<>

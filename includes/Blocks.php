@@ -246,6 +246,7 @@ class Blocks {
 			'blockPreviewImage'       => Functions::get_plugin_url( 'assets/dlx-photo-block-preview.jpg' ),
 			'settings'                => $options,
 			'supportedQueryBlocks'    => Functions::get_supported_query_blocks(),
+			'siteUrl'                 => esc_url_raw( rtrim( site_url(), '/' ) ),
 		);
 
 		// Add inline script to detect user role.
