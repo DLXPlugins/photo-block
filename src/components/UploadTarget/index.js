@@ -10,13 +10,15 @@ import {
 	useState,
 } from '@wordpress/element';
 
-import { Upload } from 'lucide-react';
+import { Upload, AlertCircle } from 'lucide-react';
 
 import { __ } from '@wordpress/i18n';
 
 import { useDispatch, useSelect } from '@wordpress/data';
 
 import { blockStore } from '../../store';
+
+import { Notice as WPNotice } from '@wordpress/components';
 
 const UploadTarget = ( props ) => {
 
@@ -70,10 +72,22 @@ const UploadTarget = ( props ) => {
 	return (
 		<>
 			<div className="dlx-photo-block__upload-target__container">
-				<div className="dlx-photo-block__upload-target__filepond">
-					<div className="dlx-photo-block-filepond" data-block-id={ blockUniqueId } data-client-id={ clientId } ref={ filePondPlaceholderRef }></div>
-				</div>
-				{ ! isUploading && ! isProcessingUpload && (
+				{ isUploadError && (
+					<WPNotice
+						status="error"
+						politeness="assertive"
+						icon={ AlertCircle }
+						inline={ false }
+					>
+						{ __( 'An error occurred while uploading the image', 'photo-block' ) }
+					</WPNotice>
+				) }
+				{ ! isUploadError && (
+					<div className="dlx-photo-block__upload-target__filepond">
+						<div className="dlx-photo-block-filepond" data-block-id={ blockUniqueId } data-client-id={ clientId } ref={ filePondPlaceholderRef }></div>
+					</div>
+				) }
+				{ ! isUploading && ! isProcessingUpload && ! isUploadError && (
 					<div className="dlx-photo-block__upload-target__label">
 						<div className="dlx-photo-block__upload-target__label-svg">
 							<Upload />

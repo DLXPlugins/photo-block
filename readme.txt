@@ -227,6 +227,7 @@ Please report security bugs found in the source code of the undefined plugin thr
 * Released 2025-12-18
 * Bug fixes: Uploading has been fixed for Filepond in iframes.
 * Bug fixes: Dimension and responsive components have been re-worked and should be much more reliable.
+* Bug fixes: Overlay captions now respect image width.
 * Deprecation notices: Removing most JS deprecation notices.
 
 = 1.6.0 =

@@ -59,8 +59,9 @@ const UploadStatus = ( props ) => {
 						variant="secondary"
 						icon={ <Redo2 /> }
 						onClick={ () => {
-							setIsUploading( true );
 							setIsUploadError( false );
+							setIsProcessingUpload( true );
+							setIsUploading( true );
 							filepondInstance.addFile( imageData.file ); // Start upload process again.
 						} }
 					>

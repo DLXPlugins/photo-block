@@ -174,7 +174,21 @@ const attachFilepond = ( filepondDocument ) => {
 		pond.on( 'processfile', ( error, file ) => {
 			setIsProcessingUpload( false );
 			setIsUploading( false );
-			setScreen( 'edit' );
+			if ( file.serverId ) {
+				const attachmentData = JSON.parse( file.serverId );
+				setImageData( attachmentData );
+				setPhotoMode( 'photo' );
+
+				updateAttrs( {
+					imageData: attachmentData,
+					photoMode: 'photo',
+				} );
+				setScreen( 'edit' );
+			} else {
+				setIsUploadError( true );
+				setIsUploading( false );
+				setIsProcessingUpload( false );
+			}
 		} );
 
 		// If you still want to stash the instance somewhere:

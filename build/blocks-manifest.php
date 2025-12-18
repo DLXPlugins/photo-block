@@ -96,12 +96,12 @@ return array(
 			'photoDropShadow' => array(
 				'type' => 'object',
 				'default' => array(
-					'color' => '#000000',
-					'opacity' => 1,
-					'blur' => 0,
-					'spread' => 0,
-					'horizontal' => 0,
-					'vertical' => 0,
+					'color' => '#3F3F37',
+					'opacity' => 0.85,
+					'blur' => 10,
+					'spread' => 2,
+					'horizontal' => 2,
+					'vertical' => 2,
 					'inset' => false,
 					'enabled' => false
 				)
