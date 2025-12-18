@@ -35,6 +35,15 @@
 	width: 100%;
 	align-items: flex-start;
 }
+.dlx-photo-position-left section .dlx-photo-block__screen-edit {
+	justify-content: flex-start;
+}
+.dlx-photo-position-right section .dlx-photo-block__screen-edit {
+	justify-content: flex-end;
+}
+.dlx-photo-position-center section .dlx-photo-block__screen-edit {
+	justify-content: center;
+}
 .aligncenter .dlx-photo-block__screen-edit {
 	justify-content: center;
 }

@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, image lightbox, captions, global styles, responsive
 Requires at least: 6.8
 Tested up to: 6.9
-Stable tag: 1.6.0
+Stable tag: 1.7.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -223,6 +223,12 @@ Please report security bugs found in the source code of the undefined plugin thr
 
 == Changelog ==
 
+= 1.7.0 =
+* Released 2025-12-18
+* Bug fixes: Uploading has been fixed for Filepond in iframes.
+* Bug fixes: Dimension and responsive components have been re-worked and should be much more reliable.
+* Deprecation notices: Removing most JS deprecation notices.
+
 = 1.6.0 =
 * Released 2025-11-26
 * Security fix: prevent those without adequate privileges from saving alt text and title text as reported by Patchstack. Also protects against unauthorized cropping.
@@ -338,5 +344,5 @@ Please report security bugs found in the source code of the undefined plugin thr
 
 == Upgrade Notice ==
 
-= 1.6.0 =
-Security fix: prevent those without adequate privileges from saving alt text and title text as reported by Patchstack. Also protects against unauthorized cropping.
+= 1.7.0 =
+Numerous bug fixes in the dimension components with responsive breakpoints. Deprecation notices have been resolved.
