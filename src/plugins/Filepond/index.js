@@ -23,8 +23,7 @@ FilePond.registerPlugin(
 // todo - create synthetic event for filepond to show when toggled into.
 
 const attachFilepond = ( filepondDocument ) => {
-	const blocks = filepondDocument.querySelectorAll( '.dlx-photo-block-filepond' );
-
+	const blocks = filepondDocument.querySelectorAll( '.dlx-photo-block__upload-target__container' );
 
 	if ( ! blocks.length ) {
 		return;
@@ -33,6 +32,7 @@ const attachFilepond = ( filepondDocument ) => {
 	blocks.forEach( ( inputEl ) => {
 		const clientId = inputEl.getAttribute( 'data-client-id' );
 		const blockUniqueId = inputEl.getAttribute( 'data-block-id' );
+		const filepondElement = inputEl.querySelector( '.dlx-photo-block-filepond' );
 
 		// Helper for updating block attributes from here.
 		const updateAttrs = ( attrs ) => {
@@ -81,7 +81,7 @@ const attachFilepond = ( filepondDocument ) => {
 			window.parent.wp.data.dispatch( 'dlxplugins/photo-block/' + blockUniqueId ).setImageData( data );
 		};
 
-		const pond = FilePond.create( inputEl, {
+		const pond = FilePond.create( filepondElement, {
 			allowMultiple: false,
 			maxFiles: 1,
 			credits: false,
@@ -178,10 +178,10 @@ const attachFilepond = ( filepondDocument ) => {
 				const attachmentData = JSON.parse( file.serverId );
 				setImageData( attachmentData );
 				setPhotoMode( 'photo' );
-
 				updateAttrs( {
 					imageData: attachmentData,
 					photoMode: 'photo',
+					screen: 'edit',
 				} );
 				setScreen( 'edit' );
 			} else {

@@ -225,10 +225,13 @@ Please report security bugs found in the source code of the undefined plugin thr
 
 = 1.7.0 =
 * Released 2025-12-18
+* Bug fixes: Colors were erroring out block with undefined error.
 * Bug fixes: Uploading has been fixed for Filepond in iframes.
 * Bug fixes: Dimension and responsive components have been re-worked and should be much more reliable.
 * Bug fixes: Overlay captions now respect image width.
 * Deprecation notices: Removing most JS deprecation notices.
+* Bug fixes: Removed default fallback image if nothing is set in a query loop.
+* Bug fixes: Image was retrieving new size everytime, causing block to invalidate. This should speed things up.
 
 = 1.6.0 =
 * Released 2025-11-26

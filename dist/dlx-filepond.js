@@ -17189,7 +17189,7 @@ filepond__WEBPACK_IMPORTED_MODULE_2__.registerPlugin((filepond_plugin_image_prev
 // todo - create synthetic event for filepond to show when toggled into.
 
 var attachFilepond = function attachFilepond(filepondDocument) {
-  var blocks = filepondDocument.querySelectorAll('.dlx-photo-block-filepond');
+  var blocks = filepondDocument.querySelectorAll('.dlx-photo-block__upload-target__container');
   if (!blocks.length) {
     return;
   }
@@ -17197,6 +17197,7 @@ var attachFilepond = function attachFilepond(filepondDocument) {
     var _window, _window$dlxPhotoBlock;
     var clientId = inputEl.getAttribute('data-client-id');
     var blockUniqueId = inputEl.getAttribute('data-block-id');
+    var filepondElement = inputEl.querySelector('.dlx-photo-block-filepond');
 
     // Helper for updating block attributes from here.
     var updateAttrs = function updateAttrs(attrs) {
@@ -17247,7 +17248,7 @@ var attachFilepond = function attachFilepond(filepondDocument) {
       }
       window.parent.wp.data.dispatch('dlxplugins/photo-block/' + blockUniqueId).setImageData(data);
     };
-    var pond = filepond__WEBPACK_IMPORTED_MODULE_2__.create(inputEl, {
+    var pond = filepond__WEBPACK_IMPORTED_MODULE_2__.create(filepondElement, {
       allowMultiple: false,
       maxFiles: 1,
       credits: false,
@@ -17326,7 +17327,8 @@ var attachFilepond = function attachFilepond(filepondDocument) {
         setPhotoMode('photo');
         updateAttrs({
           imageData: attachmentData,
-          photoMode: 'photo'
+          photoMode: 'photo',
+          screen: 'edit'
         });
         setScreen('edit');
       } else {

@@ -120,6 +120,20 @@ const GlobalStylesPicker = ( props ) => {
 											...newGlobalStyle,
 										};
 
+										// Strip out keys that should not be applied to the photo.
+										const photoAttributesToStrip = [
+											'inQueryLoop',
+										];
+										photoAttributesToStrip.forEach( ( key ) => {
+											delete photoAttributes[ key ];
+										} );
+										const captionAttributesToStrip = [
+											'inQueryLoop',
+										];
+										captionAttributesToStrip.forEach( ( key ) => {
+											delete captionAttributes[ key ];
+										} );
+
 										// Need to apply global styles to the photo.
 										updateBlockAttributes( props.clientId, photoAttributes );
 

@@ -24598,6 +24598,16 @@ var GlobalStylesPicker = function GlobalStylesPicker(props) {
         var photoAttributes = _objectSpread(_objectSpread({}, globalStyle.content.photoAttributes), newGlobalStyle);
         var captionAttributes = _objectSpread(_objectSpread({}, globalStyle.content.captionAttributes), newGlobalStyle);
 
+        // Strip out keys that should not be applied to the photo.
+        var photoAttributesToStrip = ['inQueryLoop'];
+        photoAttributesToStrip.forEach(function (key) {
+          delete photoAttributes[key];
+        });
+        var captionAttributesToStrip = ['inQueryLoop'];
+        captionAttributesToStrip.forEach(function (key) {
+          delete captionAttributes[key];
+        });
+
         // Need to apply global styles to the photo.
         updateBlockAttributes(props.clientId, photoAttributes);
 
@@ -28513,7 +28523,9 @@ var UploadTarget = function UploadTarget(props) {
     isProcessingUpload = _useSelect.isProcessingUpload,
     isUploadError = _useSelect.isUploadError;
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "dlx-photo-block__upload-target__container"
+    className: "dlx-photo-block__upload-target__container",
+    "data-block-id": blockUniqueId,
+    "data-client-id": clientId
   }, isUploadError && /*#__PURE__*/React.createElement(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__.Notice, {
     status: "error",
     politeness: "assertive",
@@ -28523,8 +28535,6 @@ var UploadTarget = function UploadTarget(props) {
     className: "dlx-photo-block__upload-target__filepond"
   }, /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block-filepond",
-    "data-block-id": blockUniqueId,
-    "data-client-id": clientId,
     ref: filePondPlaceholderRef
   })), !isUploading && !isProcessingUpload && !isUploadError && /*#__PURE__*/React.createElement("div", {
     className: "dlx-photo-block__upload-target__label"
@@ -30271,15 +30281,6 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
       setImageLoading(false);
     }
   }, []);
-
-  /**
-   * Get image whenever size changes.
-   */
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if ('photo' === photoMode) {
-      getImageFromSize(imageSize);
-    }
-  }, [imageSize]);
 
   /**
    * Retrieve an image based on size from REST API.

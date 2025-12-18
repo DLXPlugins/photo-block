@@ -165,15 +165,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	}, [] );
 
 	/**
-	 * Get image whenever size changes.
-	 */
-	useEffect( () => {
-		if ( 'photo' === photoMode ) {
-			getImageFromSize( imageSize );
-		}
-	}, [ imageSize ] );
-
-	/**
 	 * Retrieve an image based on size from REST API.
 	 *
 	 * @param {string} size Image size.

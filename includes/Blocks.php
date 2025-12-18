@@ -655,7 +655,13 @@ class Blocks {
 				);
 
 				if ( ! wp_style_is( 'dlx-photo-block-global-styles', 'done' ) ) {
-					wp_print_styles( array( 'dlx-photo-block-global-styles' ) );
+					add_action(
+						'wp_footer',
+						function () {
+							wp_print_styles( array( 'dlx-photo-block-global-styles' ) );
+						},
+						100
+					);
 				}
 			}
 		}
@@ -668,7 +674,15 @@ class Blocks {
 				Functions::get_plugin_version(),
 				'all'
 			);
-			wp_print_styles( array( 'dlx-photo-block-frontend-and-editor' ) );
+			if ( ! wp_style_is( 'dlx-photo-block-frontend-and-editor', 'done' ) ) {
+				add_action(
+					'wp_footer',
+					function () {
+						wp_print_styles( array( 'dlx-photo-block-frontend-and-editor' ) );
+					},
+					100
+				);
+			}
 		}
 
 		// Let's sanitize the attributes.

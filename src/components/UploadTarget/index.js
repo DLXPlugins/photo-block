@@ -71,7 +71,7 @@ const UploadTarget = ( props ) => {
 
 	return (
 		<>
-			<div className="dlx-photo-block__upload-target__container">
+			<div className="dlx-photo-block__upload-target__container" data-block-id={ blockUniqueId } data-client-id={ clientId }>
 				{ isUploadError && (
 					<WPNotice
 						status="error"
@@ -84,7 +84,7 @@ const UploadTarget = ( props ) => {
 				) }
 				{ ! isUploadError && (
 					<div className="dlx-photo-block__upload-target__filepond">
-						<div className="dlx-photo-block-filepond" data-block-id={ blockUniqueId } data-client-id={ clientId } ref={ filePondPlaceholderRef }></div>
+						<div className="dlx-photo-block-filepond" ref={ filePondPlaceholderRef }></div>
 					</div>
 				) }
 				{ ! isUploading && ! isProcessingUpload && ! isUploadError && (

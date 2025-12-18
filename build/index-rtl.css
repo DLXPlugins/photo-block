@@ -1887,6 +1887,9 @@ svg.lucide * {
 .dlx-photo-block__upload-types__container button.dlx-photo-block__upload-types__back.components-button {
   color: #FFF;
 }
+.dlx-photo-block__upload-types-checkbox__container .components-toggle-control {
+  margin-bottom: 12px !important;
+}
 .dlx-photo-block__upload-types-url__container {
   display: grid;
   grid-template-columns: 1fr 75px 75px;
