@@ -170,14 +170,11 @@ const EditScreen = forwardRef( ( props, ref ) => {
 	 * Get image whenever a  new unique ID is set and image doesn't belong to the site.
 	 */
 	useEffect( () => {
-		if ( 'photo' === photoMode && newUniqueId ) {
-			const siteUrl = photoBlock.siteUrl;
-			// If Image URL doesn't start with the site URL, grab the image from the site URL.
-			if ( ! imageData.url.startsWith( siteUrl ) ) {
-				getImageFromSize( imageSize );
-			}
+		if ( 'photo' === photoMode && attributes?.checkImageSource ) {
+			getImageFromSize( imageSize );
+			setAttributes( { checkImageSource: false } );
 		}
-	}, [ newUniqueId ] );
+	}, [] );
 
 	/**
 	 * Retrieve an image based on size from REST API.
@@ -210,6 +207,14 @@ const EditScreen = forwardRef( ( props, ref ) => {
 						setImageData( { ...imageData, id: 0 } );
 					}
 					// Set image ID to 0 in image data.
+					setImageData( { ...imageData, id: 0 } );
+					return;
+				}
+				// Image found, but do URLs differ?
+				if ( imageData.url !== data.url ) {
+					// IF so, set the photo mode to url.
+					setAttributes( { photoMode: 'url', imageData: { ...imageData, id: 0 } } );
+					setPhotoMode( 'url' );
 					setImageData( { ...imageData, id: 0 } );
 					return;
 				}

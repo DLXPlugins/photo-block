@@ -6,3 +6,4 @@ import './blocks/photo-block/index.js';
 import './blocks/photo-caption-block/index.js';
 import './plugins/GlobalStyles/index.js';
 import './plugins/CaptionInnerBlocks/index.js';
+import './plugins/PasteDetect.js/index.js';

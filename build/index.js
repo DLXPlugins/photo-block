@@ -16761,7 +16761,6 @@ var PhotoBlock = function PhotoBlock(props) {
       uniqueIds.push(permUniqueId);
       realUniqueId = permUniqueId;
     } else {
-      (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.dispatch)((0,_store__WEBPACK_IMPORTED_MODULE_8__.blockStore)(uniqueId)).setNewUniqueId(true);
       setBlockUniqueId(uniqueId);
       uniqueIds.push(uniqueId);
       realUniqueId = uniqueId;
@@ -29326,6 +29325,87 @@ var returnBlockAttributes = function returnBlockAttributes(attributes, blockType
 
 /***/ }),
 
+/***/ "./src/plugins/PasteDetect.js/index.js":
+/*!*********************************************!*\
+  !*** ./src/plugins/PasteDetect.js/index.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/dom-ready */ "@wordpress/dom-ready");
+/* harmony import */ var _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0__);
+
+_wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(function () {
+  var _window$parent;
+  if (!((_window$parent = window.parent) !== null && _window$parent !== void 0 && (_window$parent = _window$parent.wp) !== null && _window$parent !== void 0 && _window$parent.data)) {
+    return;
+  }
+  var _window$parent$wp$dat = window.parent.wp.data,
+    subscribe = _window$parent$wp$dat.subscribe,
+    select = _window$parent$wp$dat.select,
+    dispatch = _window$parent$wp$dat.dispatch;
+  var seen = new Set();
+  var initialized = false;
+
+  /**
+   * Recursively process blocks and their innerBlocks.
+   *
+   * @param {Array}    blocks   Array of blocks to process.
+   * @param {Function} callback Callback function to execute for each block.
+   */
+  var _processBlocksRecursively = function processBlocksRecursively(blocks, callback) {
+    blocks.forEach(function (block) {
+      callback(block);
+
+      // Get innerBlocks for this block.
+      var innerBlocks = select('core/block-editor').getBlocks(block.clientId);
+      if (innerBlocks && innerBlocks.length > 0) {
+        _processBlocksRecursively(innerBlocks, callback);
+      }
+    });
+  };
+  var unsubscribe = subscribe(function () {
+    var blocks = select('core/block-editor').getBlocks();
+
+    // wait for all blocks.
+    if (!initialized) {
+      if (!blocks.length) {
+        return;
+      }
+
+      // Prime seen set with all blocks including innerBlocks.
+      _processBlocksRecursively(blocks, function (block) {
+        seen.add(block.clientId);
+      });
+      initialized = true;
+      return;
+    }
+
+    // React only to newly inserted blocks (including innerBlocks).
+    _processBlocksRecursively(blocks, function (block) {
+      var _block$attributes;
+      if (seen.has(block.clientId)) {
+        return;
+      }
+      seen.add(block.clientId);
+      if (block.name !== 'dlxplugins/photo-block') {
+        return;
+      }
+      if ((_block$attributes = block.attributes) !== null && _block$attributes !== void 0 && (_block$attributes = _block$attributes.imageData) !== null && _block$attributes !== void 0 && _block$attributes.url) {
+        dispatch('core/block-editor').updateBlockAttributes(block.clientId, {
+          checkImageSource: true
+        });
+      }
+    });
+  });
+  return function () {
+    unsubscribe();
+  };
+});
+
+/***/ }),
+
 /***/ "./src/screens/Crop/editor.scss":
 /*!**************************************!*\
   !*** ./src/screens/Crop/editor.scss ***!
@@ -30289,14 +30369,13 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
    * Get image whenever a  new unique ID is set and image doesn't belong to the site.
    */
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    if ('photo' === photoMode && newUniqueId) {
-      var siteUrl = photoBlock.siteUrl;
-      // If Image URL doesn't start with the site URL, grab the image from the site URL.
-      if (!imageData.url.startsWith(siteUrl)) {
-        getImageFromSize(imageSize);
-      }
+    if ('photo' === photoMode && attributes !== null && attributes !== void 0 && attributes.checkImageSource) {
+      getImageFromSize(imageSize);
+      setAttributes({
+        checkImageSource: false
+      });
     }
-  }, [newUniqueId]);
+  }, []);
 
   /**
    * Retrieve an image based on size from REST API.
@@ -30339,6 +30418,21 @@ var EditScreen = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
                   }));
                 }
                 // Set image ID to 0 in image data.
+                setImageData(_objectSpread(_objectSpread({}, imageData), {}, {
+                  id: 0
+                }));
+                return;
+              }
+              // Image found, but do URLs differ?
+              if (imageData.url !== data.url) {
+                // IF so, set the photo mode to url.
+                setAttributes({
+                  photoMode: 'url',
+                  imageData: _objectSpread(_objectSpread({}, imageData), {}, {
+                    id: 0
+                  })
+                });
+                setPhotoMode('url');
                 setImageData(_objectSpread(_objectSpread({}, imageData), {}, {
                   id: 0
                 }));
@@ -33895,6 +33989,17 @@ module.exports = window["wp"]["data"];
 
 /***/ }),
 
+/***/ "@wordpress/dom-ready":
+/*!**********************************!*\
+  !*** external ["wp","domReady"] ***!
+  \**********************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["domReady"];
+
+/***/ }),
+
 /***/ "@wordpress/element":
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
@@ -34098,9 +34203,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _blocks_photo_caption_block_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./blocks/photo-caption-block/index.js */ "./src/blocks/photo-caption-block/index.js");
 /* harmony import */ var _plugins_GlobalStyles_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugins/GlobalStyles/index.js */ "./src/plugins/GlobalStyles/index.js");
 /* harmony import */ var _plugins_CaptionInnerBlocks_index_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./plugins/CaptionInnerBlocks/index.js */ "./src/plugins/CaptionInnerBlocks/index.js");
+/* harmony import */ var _plugins_PasteDetect_js_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./plugins/PasteDetect.js/index.js */ "./src/plugins/PasteDetect.js/index.js");
 /**
  * WordPress Block initialization.
  */
+
 
 
 

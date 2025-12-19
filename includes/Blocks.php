@@ -791,6 +791,9 @@ class Blocks {
 			}
 		}
 
+		// Get lightbox attributes.
+		$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
+
 		// Check if we're in URL mode.
 		$image_markup = '';
 		switch ( $attributes['photoMode'] ) { /* can be image, featuredImage, data, or url. */
@@ -821,9 +824,6 @@ class Blocks {
 				);
 				break;
 		}
-
-		// Get lightbox attributes.
-		$lightbox_enabled = (bool) $attributes['lightboxEnabled'] ?? false;
 
 		/**
 		 * Filter image markup in initial image form before other wrappers are added.
@@ -873,7 +873,9 @@ class Blocks {
 						$media_link_lightbox_gallery_slug = esc_attr( $attributes['lightboxGallerySlug'] ?? '' );
 						if ( ! empty( $media_link_lightbox_gallery_slug ) ) {
 							$media_link_atts['data-fancybox'] = $media_link_lightbox_gallery_slug;
-							$media_link_atts['data-thumb']    = wp_get_attachment_image_src( $image_id, 'thumbnail' )[0];
+							if ( 0 !== $image_id ) {
+								$media_link_atts['data-thumb'] = wp_get_attachment_image_src( $image_id, 'thumbnail' )[0];
+							}
 						}
 
 						// Register the lightbox script/style. Check wp_footer.
