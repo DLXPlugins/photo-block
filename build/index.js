@@ -29370,7 +29370,7 @@ _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(function () {
 
     // wait for all blocks.
     if (!initialized) {
-      if (!blocks.length) {
+      if (!blocks.length || !blocks.length > 0) {
         return;
       }
 

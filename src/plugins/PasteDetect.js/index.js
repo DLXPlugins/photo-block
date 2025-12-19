@@ -32,7 +32,7 @@ domReady( () => {
 
 		// wait for all blocks.
 		if ( ! initialized ) {
-			if ( ! blocks.length ) {
+			if ( ! blocks.length || ! blocks.length > 0 ) {
 				return;
 			}
 
