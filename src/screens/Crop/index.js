@@ -275,8 +275,7 @@ const CropScreen = ( props ) => {
 				'GET'
 			);
 			const { data } = response;
-			const aspectRatioWidthPixels = data.width;
-			const aspectRatioHeightPixels = data.height;
+			setImageData( { ...imageData, crop_nonce: data.crop_nonce } );
 			setFullsizePhoto( data );
 
 			// Set crop value.
