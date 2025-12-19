@@ -351,4 +351,4 @@ Please report security bugs found in the source code of the undefined plugin thr
 == Upgrade Notice ==
 
 = 1.7.0 =
-Fixed numberous bugs including color errors, Filepond iframe uploads, dimension/responsive reliability, overlay caption widths, removed JS deprecations, query loop fallbacks, image size caching, and cross-site image pasting issues.
+Fixed numberous bugs including color errors, Filepond iframe uploads, dimension/responsive reliability, overlay caption widths and fonts, removed JS deprecations, query loop fallbacks, image size caching, and cross-site image pasting issues.
