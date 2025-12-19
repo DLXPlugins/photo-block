@@ -204,22 +204,20 @@ Please leave a detailed note on <a href="https://dlxplugins.com/support/">our su
 Please report security bugs found in the source code of the undefined plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/279bc543-8c41-46dc-bae7-c826715e3071). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 == Screenshots ==
-1. Adding a photo with Photo Block is easy in the block editor.
-2. Crop, replace, and adjust the accessibility options for your photo.
-3. Global Styles allow you to save your design settings and easily apply them to other photo blocks.
-4. The caption block is fully featured, allowing you to position and overlay captions to match your photo style.
-5. Select a global style, adjust the images's title and alt attributes, sand select the image size.
-6. Adjust the image's background color, opacity, blur, and drop shadow.
-7. Select form 26 different CSS styles using CSS Gram.
-8. Adjust the padding, margin, and border of the photo.
-9. Set sizing for the photo, and set the object fit (if desired).
-10. Set the caption overlay's positio, and enable an overlay on hover.
-11. Set the overlay type to None, Solid, Gradient, or Image.
-12. Set the caption's typography, background color, and text color.
-13. Set the caption's padding, margin, and border.
-14. Set the caption's sizing using available block options.
-15. Global Styles panel, which allows you to save and edit global styles.
-16. Save or overwrite a global style using the Global Styles modal.
+1. Example image, showcasing an overlay multi-line caption, padding, and dropshadow.
+2. Example image within content, showcasing a bottom caption and dropshadow.
+3. Exaxmple image with overlay caption, CSS Gram filter, and dropshadow.
+4. Upload using the drop-in uploader, Media Library, by URL, or take a screenshot using ScreenshotOne.
+5. Set the link source, linking to a URL, pop the image in a lightbox, or a custom URL.
+6. Global Styles allow you to save your design settings and easily apply them to other photo blocks.
+7. Adjust the image's opacity, add blur, and add a dropshadow.
+8. Use CSS Gram's image effects for quick filters for your photo.
+9. Set dimensions, including padding, margin, border, and border radius. Adjust width/height, and set and edit global styles.
+10. Set the caption's position, having the caption on the top, bottom, or as an overlay.
+11. Set the caption's typography, background color, and text color.
+12. Set the overlay color, whether it shows on hover, and set the overlay background type (None, Solid, Gradient, or Image).
+13. An intuitive cropper allows you to crop by preset aspect ratio such as 16:9, or select a custom aspect ratio.
+14. Take a website screenshot using the ScreenshotOne service, which is integrated right with Photo Block.
 
 == Changelog ==
 
