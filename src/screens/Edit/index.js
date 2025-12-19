@@ -210,14 +210,6 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					setImageData( { ...imageData, id: 0 } );
 					return;
 				}
-				// Image found, but do URLs differ?
-				if ( imageData.url !== data.url ) {
-					// IF so, set the photo mode to url.
-					setAttributes( { photoMode: 'url', imageData: { ...imageData, id: 0 } } );
-					setPhotoMode( 'url' );
-					setImageData( { ...imageData, id: 0 } );
-					return;
-				}
 				setImageData( { ...imageData, ...data } );
 				setAttributes( { imageData: { ...imageData, ...data } } );
 			} )
