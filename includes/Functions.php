@@ -270,6 +270,12 @@ class Functions {
 	 */
 	public static function get_image_data( $attachment_id, $size = 'full' ) {
 
+		$attachment_id = absint( $attachment_id );
+
+		if ( 0 === $attachment_id ) {
+			return false;
+		}
+
 		// Get requested size.
 		$image_attachment = wp_get_attachment_image_src( $attachment_id, $size );
 		if ( ! $image_attachment ) {

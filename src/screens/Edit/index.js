@@ -333,7 +333,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 				scrollAfterOpen={ false }
 			>
 				<>
-					{ imageData.can_edit && (
+					{ ( imageData.can_edit || photoBlockUser.canModifySettings ) && (
 						<>
 							<TextControl
 								__next40pxDefaultSize={ true }
@@ -634,7 +634,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					</ToolbarGroup>
 				) }
 				<ToolbarGroup>
-					{ isJustCropped && imageData.can_edit && (
+					{ isJustCropped && ( imageData.can_edit || photoBlockUser.canModifySettings ) && (
 						<ToolbarButton
 							icon={ <Undo2 /> }
 							label={ __( 'Undo Crop', 'photo-block' ) }
@@ -648,7 +648,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 							{ __( 'Undo Crop', 'photo-block' ) }
 						</ToolbarButton>
 					) }
-					{ imageData.can_edit && (
+					{ ( imageData.can_edit || photoBlockUser.canModifySettings ) && (
 						<>
 							<ToolbarButton
 								icon={ <Crop /> }
@@ -677,7 +677,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					</ToolbarButton>
 				</ToolbarGroup>
 				<ToolbarGroup>
-					{ imageData.can_edit && (
+					{ ( imageData.can_edit || photoBlockUser.canModifySettings ) && (
 						<ToolbarButton
 							icon={ <Accessibility /> }
 							label={ __( 'Set Accessibility Options', 'photo-block' ) }
@@ -710,7 +710,7 @@ const EditScreen = forwardRef( ( props, ref ) => {
 					} }
 				/>
 			) }
-			{ imageData.can_edit && a11yPopover && (
+			{ ( imageData.can_edit || photoBlockUser.canModifySettings ) && a11yPopover && (
 				<Popover
 					position="bottom center"
 					anchor={ a11yButton }
