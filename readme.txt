@@ -232,6 +232,7 @@ Please report security bugs found in the source code of the undefined plugin thr
 * Deprecation notices: Removing most JS deprecation notices.
 * Bug fixes: Removed default fallback image if nothing is set in a query loop.
 * Bug fixes: Image was retrieving new size everytime, causing block to invalidate. This should speed things up.
+* Bug fixes: Copying an image from site to site wouldn't invalidate the image, causing the block to think the image was local.
 
 = 1.6.0 =
 * Released 2025-11-26
@@ -349,4 +350,4 @@ Please report security bugs found in the source code of the undefined plugin thr
 == Upgrade Notice ==
 
 = 1.7.0 =
-Numerous bug fixes in the dimension components with responsive breakpoints. Deprecation notices have been resolved.
+Fixed numberous bugs including color errors, Filepond iframe uploads, dimension/responsive reliability, overlay caption widths, removed JS deprecations, query loop fallbacks, image size caching, and cross-site image pasting issues.

@@ -499,7 +499,7 @@ class Blocks {
 		}
 		?>
 			<div class="<?php echo esc_attr( implode( ' ', $caption_hover_overlay_styles ) ); ?> <?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
-				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?>">
+				<figcaption class="<?php echo esc_attr( implode( ' ', $caption_overlay_styles ) ); ?> <?php echo implode( ' ', $caption_classes ); ?>">
 					<div class="dlx-photo-block__caption-inner"><?php echo wp_kses( $caption, Functions::get_kses_allowed_html( true, true ) ); ?></div>
 				</figcaption>
 			</div>
