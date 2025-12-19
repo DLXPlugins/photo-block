@@ -1,6 +1,6 @@
-=== Photo Block - A Better Responsive Image Block With Lightbox and Caption Support ===
+=== Photo Block - A Modern Image Block With Lightbox and Caption Support ===
 Contributors: ronalfy
-Tags: image block, image lightbox, captions, global styles, responsive
+Tags: image block, image lightbox, captions, images, responsive image
 Requires at least: 6.8
 Tested up to: 6.9
 Stable tag: 1.7.0
@@ -224,7 +224,7 @@ Please report security bugs found in the source code of the undefined plugin thr
 == Changelog ==
 
 = 1.7.0 =
-* Released 2025-12-18
+* Released 2025-12-19
 * Bug fixes: Colors were erroring out block with undefined error.
 * Bug fixes: Uploading has been fixed for Filepond in iframes.
 * Bug fixes: Dimension and responsive components have been re-worked and should be much more reliable.
@@ -351,4 +351,4 @@ Please report security bugs found in the source code of the undefined plugin thr
 == Upgrade Notice ==
 
 = 1.7.0 =
-Fixed numberous bugs including color errors, Filepond iframe uploads, dimension/responsive reliability, overlay caption widths and fonts, removed JS deprecations, query loop fallbacks, image size caching, and cross-site image pasting issues.
+This release focuses on stability and reliability improvements across the block. It fixes several issues related to colors, image handling, uploads in iframes, and caption overlays, improves performance by preventing unnecessary image invalidation, removes noisy JavaScript deprecation warnings, and reworks dimension and responsive controls for more consistent behavior.
