@@ -233,6 +233,7 @@ Please report security bugs found in the source code of the undefined plugin thr
 * Bug fixes: Removed default fallback image if nothing is set in a query loop.
 * Bug fixes: Image was retrieving new size everytime, causing block to invalidate. This should speed things up.
 * Bug fixes: Copying an image from site to site wouldn't invalidate the image, causing the block to think the image was local.
+* Bug fixes: Resolving caption overlay styles and figcaption styles not being output correctly.
 
 = 1.6.0 =
 * Released 2025-11-26
