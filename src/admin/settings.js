@@ -55,6 +55,7 @@ const Settings = ( props ) => {
 			saveNonce: dlxPBAdmin.saveNonce,
 			resetNonce: dlxPBAdmin.resetNonce,
 			hideCaptionAppender: dlxPBAdmin.hideCaptionAppender,
+			insertOnPaste: dlxPBAdmin.insertOnPaste,
 			screenshotOneEnabled: dlxPBAdmin.screenshotOneEnabled,
 			screenshotOneAccessKey: dlxPBAdmin.screenshotOneAccessKey,
 			screenshotOneAPIValid: dlxPBAdmin.screenshotOneAPIValid,
@@ -201,6 +202,24 @@ const Settings = ( props ) => {
 													} }
 													label={ __( 'Hide Caption Appender by Default', 'photo-block' ) }
 													help={ __( 'If hidden, you can still show the caption by enabling it in the block toolbar.', 'photo-block' ) }
+												/>
+											) }
+										/>
+									</div>
+									<div className="dlx-admin__row">
+										<Controller
+											control={ control }
+											name="insertOnPaste"
+											render={ ( { field } ) => (
+												<ToggleControl
+													__nextHasNoMarginBottom={ true }
+													{ ...field }
+													checked={ field.value }
+													onChange={ ( value ) => {
+														field.onChange( value );
+													} }
+													label={ __( 'Insert on Paste', 'photo-block' ) }
+													help={ __( 'If enabled, any pasted images will be inserted as a Photo Block.', 'photo-block' ) }
 												/>
 											) }
 										/>

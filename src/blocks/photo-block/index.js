@@ -1,6 +1,6 @@
 import metadata from './block.json';
 import { registerBlockType, createBlock } from '@wordpress/blocks';
-import { InnerBlocks, getBlock } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 import Edit from './edit';
 import PhotoBlockIcon from '../../components/Icons/PhotoBlockIcon';
 
@@ -14,6 +14,21 @@ registerBlockType( metadata, {
 	},
 	transforms: {
 		from: [
+			{
+				type: 'files',
+				isMatch: ( files ) => {
+					return files.length > 0 && files[ 0 ].type.includes( 'image/' ) && photoBlock.settings.insertOnPaste;
+				},
+				priority: 1,
+				transform: ( files ) => {
+					const newAttributes = {
+						photoMode: 'none',
+						loadFile: true,
+						file: files[ 0 ],
+					};
+					return createBlock( 'dlxplugins/photo-block', newAttributes );
+				},
+			},
 			{
 				type: 'enter',
 				regExp: /^photoblock$/,

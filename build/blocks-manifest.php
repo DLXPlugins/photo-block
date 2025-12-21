@@ -245,6 +245,14 @@ return array(
 				'type' => 'string',
 				'default' => 'none'
 			),
+			'file' => array(
+				'type' => 'object',
+				'default' => null
+			),
+			'loadFile' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
 			'cssGramFilter' => array(
 				'type' => 'string',
 				'default' => 'none'

@@ -285,7 +285,7 @@ class ScreenshotOne_API {
 
 		return $this->make_request(
 			'/usage',
-			'',
+			'json',
 			array(
 				'api_key' => $this->api_key,
 				'body'    => array(

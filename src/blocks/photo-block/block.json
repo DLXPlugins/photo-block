@@ -242,6 +242,14 @@
 			"type": "string",
 			"default": "none"
 		},
+		"file": {
+			"type": "object",
+			"default": null
+		},
+		"loadFile": {
+			"type": "boolean",
+			"default": false
+		},
 		"cssGramFilter": {
 			"type": "string",
 			"default": "none"

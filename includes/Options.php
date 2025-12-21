@@ -122,6 +122,7 @@ class Options {
 	public static function get_defaults() {
 		$defaults = array(
 			'hideCaptionAppender'                    => false,
+			'insertOnPaste'                          => true,
 			'screenshotOneEnabled'                   => false,
 			'screenshotOneAccessKey'                 => '',
 			'screenshotOneSecretKey'                 => '',
