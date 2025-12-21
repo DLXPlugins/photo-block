@@ -1,7 +1,7 @@
 /**
  * This is the initial screen of the block. It is the first screen that the user sees when they add the block to the editor.
  */
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import {
 	InspectorControls,
 } from '@wordpress/block-editor';
@@ -21,7 +21,7 @@ import ScreenshotOneContext from '../../contexts/ScreenshotOne';
  * @return {Function} Component.
  */
 const InitialScreen = ( props ) => {
-	const { blockUniqueId, clientId } = props;
+	const { blockUniqueId, clientId, setAttributes } = props;
 	const {
 		isUploading,
 		isProcessingUpload,
@@ -35,6 +35,17 @@ const InitialScreen = ( props ) => {
 	} );
 
 	const [ isScreenshotOneTypeSelected, setIsScreenshotOneTypeSelected ] = useState( false );
+
+	useEffect( () => {
+		if ( props.attributes.loadFile && photoBlock.settings.insertOnPaste ) {
+			const filepondInstance = window.dlxPhotoBlockFilePonds[ blockUniqueId ];
+			if ( filepondInstance ) {
+				filepondInstance.addFile( props.attributes.file );
+				filepondInstance.processFile();
+				setAttributes( { loadFile: false, file: null } );
+			}
+		}
+	}, [] );
 
 	// Set the local inspector controls.
 	const localInspectorControls = (

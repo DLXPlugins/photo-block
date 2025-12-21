@@ -238,6 +238,7 @@ class Admin {
 				'savescreenshotOneAccessKeyNonce'        => wp_create_nonce( 'dlx-pb-admin-save-screenshot-one-api-key' ),
 				'revokescreenshotOneAccessKeyNonce'      => wp_create_nonce( 'dlx-pb-admin-revoke-screenshot-one-api-key' ),
 				'hideCaptionAppender'                    => (bool) $options['hideCaptionAppender'],
+				'insertOnPaste'                          => (bool) $options['insertOnPaste'],
 				'screenshotOneEnabled'                   => (bool) $options['screenshotOneEnabled'],
 				'screenshotOneAccessKey'                 => $options['screenshotOneAccessKey'],
 				'screenshotOneSecretKey'                 => $options['screenshotOneSecretKey'],
