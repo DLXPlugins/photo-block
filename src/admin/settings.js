@@ -218,8 +218,8 @@ const Settings = ( props ) => {
 													onChange={ ( value ) => {
 														field.onChange( value );
 													} }
-													label={ __( 'Insert on Paste', 'photo-block' ) }
-													help={ __( 'If enabled, any pasted images will be inserted as a Photo Block.', 'photo-block' ) }
+													label={ __( 'Insert on Paste/Drop', 'photo-block' ) }
+													help={ __( 'If enabled, any pasted/dropped images will be inserted as a Photo Block.', 'photo-block' ) }
 												/>
 											) }
 										/>
