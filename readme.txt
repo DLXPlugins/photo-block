@@ -3,7 +3,7 @@ Contributors: ronalfy
 Tags: image block, image lightbox, captions, images, responsive image
 Requires at least: 6.8
 Tested up to: 6.9
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -221,6 +221,11 @@ Please report security bugs found in the source code of the undefined plugin thr
 
 == Changelog ==
 
+= 1.7.1 =
+* Released 2025-12-21
+* Bug fix: Fixing ScreenshotOne API return result.
+* New feature: Adding ability to paste images directly into the block. Default behavior is to use the regular image block.
+
 = 1.7.0 =
 * Released 2025-12-19
 * Bug fixes: Colors were erroring out block with undefined error.
@@ -348,5 +353,5 @@ Please report security bugs found in the source code of the undefined plugin thr
 
 == Upgrade Notice ==
 
-= 1.7.0 =
-This release focuses on stability and reliability improvements across the block. It fixes several issues related to colors, image handling, uploads in iframes, and caption overlays, improves performance by preventing unnecessary image invalidation, removes noisy JavaScript deprecation warnings, and reworks dimension and responsive controls for more consistent behavior.
+= 1.7.1 =
+Fix ScreenshotOne usage stats. Allow new option for pasting / dropping images directly.
